@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="index.css">
+        <link href="https://fonts.googleapis.com/css?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" crossorigin="anonymous">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="https://unpkg.com/react@17.0.1/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.production.min.js" crossorigin></script>
+        <title>Tarpeeksi Hyvae Soft</title>
+    </head>
+    <body>
+        <div id="page-loading-bar-container">
+
+            <div id="page-loading-bar"></div>
+
+        </div>
+
+        <div id="doodle-app-container"></div>
+
+        <div id="skipper-of-doodle"
+             title="Skip to content"
+             onclick="activate_doodle_skipper()">
+        
+            <i class="fas fa-angle-down"></i>
+
+        </div>
+
+        <div id="page">
+
+            <div id="header">
+
+                <span id="title">
+                    
+                    tarpeeksi hyvae soft
+
+                </span>
+
+            </div>
+
+            <div id="contact-form"></div>
+
+            <div id="software-listing"></div>
+
+        </div>
+
+        <script>
+            // Keeps track of how much of the page's assets have finished loading. Used
+            // to display to the user a loading bar while the page is loading. Valid
+            // values range from 0 to 100 (0 = nothing loaded, 100 = all loaded).
+            //
+            // To modify this value, call set_percent_page_loaded().
+            let percentPageLoaded = 0;
+
+            const loadingBarContainerElement = document.getElementById("page-loading-bar-container");
+            const loadingBarElement = document.getElementById("page-loading-bar");
+            if (!loadingBarContainerElement || !loadingBarElement)
+            {
+                window.alert("Malformed page.");
+            }
+
+            set_percent_page_loaded(5);
+
+            function set_percent_page_loaded(percent)
+            {
+                if ((percent < 0) || (percent > 100))
+                {
+                    window.alert("Invalid percentage.");
+                }
+
+                percentPageLoaded = Math.max(percentPageLoaded, percent);
+                loadingBarElement.style.width = `${percentPageLoaded}%`;
+
+                if (percentPageLoaded >= 100)
+                {
+                    loadingBarContainerElement.style.opacity = 0;
+                    loadingBarContainerElement.ontransitionend = (event)=>
+                    {
+                        if (event.propertyName == "opacity")
+                        {
+                            loadingBarContainerElement.style.display = "none";
+                        }
+                    }
+                }
+            }
+
+            // To simulate continuous loading, we'll keep incrementing the percent loaded
+            // variable by a small value. (The actual page-loading code will also modify
+            // the variable.)
+            {
+                const maxSyntheticPercentLoaded = 98;
+                const intervalMs = 200;
+                const lerp = (x, y, interval)=>(x + (interval * (y - x)));
+
+                const intervalId = setInterval(()=>
+                {
+                    if (percentPageLoaded >= maxSyntheticPercentLoaded)
+                    {
+                        clearInterval(intervalId);
+                        return;
+                    }
+
+                    const newPercentage = lerp(percentPageLoaded, maxSyntheticPercentLoaded, 0.02);
+
+                    set_percent_page_loaded(Math.min(maxSyntheticPercentLoaded, newPercentage));
+                }, intervalMs);
+            }
+        </script>
+
+        <script>
+            function activate_doodle_skipper()
+            {
+                const skipperElement = document.getElementById("skipper-of-doodle");
+                const pageElement = document.getElementById("page");
+
+                skipperElement.remove();
+                pageElement.scrollIntoView(true);
+            }
+        </script>
+
+        <script type="module" src="./soft/system/contact-form/contact-form.js"></script>
+
+        <script type="module">
+            import {run_doodle} from "./soft/system/doodles/wireframe-textured-rendering/doodle.js";
+
+            run_doodle("./soft/system/doodles/wireframe-textured-rendering", {
+                isTexturingInitiallyEnabled: true,
+            });
+
+            set_percent_page_loaded(70);
+        </script>
+
+        <script type="module">
+            import {SoftwareListItem} from "./soft/system/react-components/SoftwareListItem.js"
+            import {load_software_collection} from "./soft/system/load-software-collection.js";
+
+            const doodleControlsElement = document.body.querySelector(".doodle .controls");
+
+            // Don't allow the user to manipulate the doodle's controls while we're still
+            // unfinished transitioning-in the page. Otherwise, there could be some visual
+            // glitches etc.
+            if (doodleControlsElement)
+            {
+                doodleControlsElement.classList.add("frozen");
+            }
+
+            load_software_collection("./software-collection.json")
+                .then(software=>{
+                    set_percent_page_loaded(80);
+
+                    rerender_software_list(software);
+                    set_percent_page_loaded(90);
+
+                    reveal_page();
+                    set_percent_page_loaded(100);
+            });
+
+            function reveal_page()
+            {
+                window.scrollTo(0, 0);
+                document.documentElement.style.scrollBehavior = "smooth"; // Should be set to smooth AFTER we've scrolled to 0,0.
+                
+                document.getElementById("page").style.visibility = "visible";
+                document.getElementById("page").style.opacity = 1;
+                document.getElementById("skipper-of-doodle").style.visibility = "visible";
+                document.getElementById("skipper-of-doodle").style.opacity = 1;
+                document.querySelector(".doodle").style.visibility = "visible";
+                document.querySelector(".doodle").style.opacity = 1;
+                
+                document.body.style.overflowY = "auto";
+                document.body.style.backgroundColor = "whitesmoke";
+
+                document.getElementById("page").ontransitionend = (event)=>
+                {
+                    if (event.propertyName == "opacity")
+                    {
+                        document.body.style.backgroundImage = "none";
+
+                        // Now that the doodle has finished transitioning in, we can let the user
+                        // manipulate its controls.
+                        if (doodleControlsElement)
+                        {
+                            doodleControlsElement.classList.remove("frozen");
+                        }
+
+                        window.addEventListener("scroll", ()=>
+                        {
+                            const skipperElement = document.getElementById("skipper-of-doodle");
+
+                            if (skipperElement)
+                            {
+                                skipperElement.remove();
+                            }
+                        }, {once: true});
+                    }
+                };
+
+                // The doodle element is intended to take up the full screen's height. However,
+                // on mobile, this height value depends on whether the browser's toolbar is
+                // visible, and we'd rather not have the doodle suddenly be resized when the
+                // toolbar is scrolled out of view. So we'll just force it into a fixed size
+                // corresponding to the screen's height.
+                {
+                    set_height();
+                    window.addEventListener("resize", set_height);
+
+                    function set_height()
+                    {
+                        const height = document.documentElement.clientHeight;
+                        
+                        document.querySelector(".doodle").style.height = `${height}px`;
+                        document.getElementById("page").style.top = `${height}px`;
+                    }
+                }
+
+                return;
+            }
+
+            function rerender_software_list(software)
+            {
+                const listItemsContainer = document.getElementById("software-listing");
+
+                const softwareListItems = Object.keys(software).map((softwareName, idx)=>
+                {
+                    return React.createElement(SoftwareListItem,
+                                               {
+                                                   key: softwareName,
+                                                   software: software[softwareName],
+                                                   callbackSelectionToggled: ()=>{},
+                                               });
+                });
+
+                ReactDOM.unmountComponentAtNode(listItemsContainer);
+                ReactDOM.render(softwareListItems, listItemsContainer);
+
+                return;
+            }
+        </script>
+    </body>
+</html>

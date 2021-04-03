@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport"
+              content="width=device-width">
+        <meta http-equiv="content-type"
+              content="text/html; charset=UTF-8">
+        <link rel="stylesheet"
+              type="text/css"
+              href="index.css">
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+              integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
+              crossorigin="anonymous">
+        <title>RallySportED</title>
+    </head>
+    <body>
+        <div id="html-ui"
+             v-if="uiVisible"
+             v-cloak>
+
+            <div class="menu-bar">
+
+                <div class="button-bar main">
+
+                    <div class="button"
+                         title="Download this track as a ZIP file"
+                         onclick="Rsed.core.current_project().download_as_zip();">
+
+                        <i class="fas fa-fw fa-download"></i>
+                        Download
+
+                    </div>
+
+                    <div class="button"
+                         title="Rename this track"
+                         onclick="Rsed.core.current_project().rename();">
+
+                        <i class="fas fa-fw fa-tag"></i>
+                        Rename
+
+                    </div>
+
+                    <div id="stream-button"
+                         class="button right stream"
+                         :class="streamStatus"
+                         :title="((streamStatus == 'disabled' || streamStatus == 'viewer')
+                                 ? `Host this track's data from your browser`
+                                 : (streamStatus == 'initializing')
+                                   ? `Setting up...`
+                                   : `Downloads: ${streamViewerCount}`)"
+                         :onclick="((streamStatus == 'disabled' || streamStatus == 'viewer')
+                                    ? `Rsed.stream.start('server');`
+                                    : 'Rsed.stream.stop()')"></a>
+
+                        <i class="fas"
+                           :class="((streamStatus == 'initializing')
+                                    ? 'fa-fw fa-spin fa-spinner'
+                                    : 'fa-fw fa-project-diagram')"></i>
+
+                        {{(streamStatus == "server")
+                          ? `Sharing (${streamViewerCount})`
+                          : (streamStatus == "initializing")
+                            ? "Initializing..."
+                            : "Quick share"}}
+
+                    </div>
+
+                </div>
+
+                <div class="button-bar">
+
+                    <div class="button"
+                         title="View tracks made by others"
+                         onclick="window.open('/rallysport-content/tracks/', '_blank', 'noopener');">
+
+                        <i class="fas fa-fw fa-search"></i>
+                        More tracks
+
+                    </div>
+
+                    <div class="button"
+                         title="View RallySportED-js on GitHub"
+                         onclick="window.open('https://www.github.com/leikareipa/rallysported-js/', '_blank', 'noopener');">
+
+                        <i class="fab fa-fw fa-github"></i>
+                        GitHub
+
+                    </div>
+
+                    <div class="button"
+                         title="Open the user's guide"
+                         onclick="window.open('./user-guide/', '_blank', 'noopener');">
+
+                        <i class="fas fa-fw fa-gas-pump"></i>
+                        Help
+
+                    </div>
+
+                </div>
+
+                <div class="button-bar">
+
+                    <div class="button"
+                         title="Drive this track in practice"
+                         onclick="Rsed.player.play(false);">
+
+                        <i class="fas fa-fw fa-bug"></i>
+                        Test
+
+                    </div>
+
+                    <div class="button"
+                         title="Race this track against the CPU"
+                         onclick="Rsed.player.play(true);">
+
+                        <i class="fas fa-fw fa-play"></i>
+                        Play
+
+                    </div>
+
+                </div>
+
+            </div>
+            
+            <div id="prop-dropdown"
+                 class="dropdown-menu">
+                 
+                <div class="item"
+                     v-for="prop in propList"
+                     v-on:click="activate_prop(prop.propName)">{{prop.propName}}</div>
+
+            </div>
+
+        </div>
+
+        <div id="render-canvas-container"
+             ondrop="window.drop_handler(event);"
+             ondragover="event.preventDefault();">
+
+             <canvas id="render-canvas" class="canvas"></canvas>
+
+        </div>
+
+        <div id="jsdos-container">
+
+            <canvas id="jsdos-canvas" width="320" height="200"></canvas>
+
+            <div id="stop-jsbox-button"
+                 class="button stop top right"
+                 style="display: none;"
+                 title="Exit the player"
+                 v-if="Rsed.player.is_playing()"
+                 onclick="Rsed.player.stop();">
+
+                <i class="fas fa-times fa-2x"></i>
+                
+            </div>
+
+        </div>
+
+        <div id="popup-notifications-container"></div>
+
+        <div id="blue-screen">
+
+            <h1>
+                <i class="fas fa-fw fa-otter"></i>
+                That failed... Maybe reloading would fix it?
+            </h1>
+
+            <div id="error-description">
+                Undefined error
+            </div>
+
+        </div>
+
+        <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+        <script src="./js-dos/js-dos.js"></script>
+        <script src="./client/js/rallysported.cat.js" defer></script>
+    
+    </body>
+</html>

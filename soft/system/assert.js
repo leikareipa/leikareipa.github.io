@@ -1,0 +1,1 @@
+"use strict";export function panic_if_not_type(a,...b){for(const c of b){const b=(()=>"array"===a?Array.isArray(c):typeof c===a)();b||panic(`A property is of the wrong type; expected "${a}".`)}}export function panic_if(a,b){return panic_if_not_type("boolean",a),panic_if_not_type("string",b),void(a&&panic(b))}export function panic(a){throw console.error(a),new Error(a)}

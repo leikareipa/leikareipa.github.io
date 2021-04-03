@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport"
+              content="width=device-width">
+        <meta http-equiv="content-type"
+              content="text/html; charset=UTF-8">
+        <title>OBJ models sample - Mesh preview</title>
+    </head>
+    <body>
+        <script type="module">
+            import {start_mesh_preview} from "../../src/mesh-preview.js";
+            import {load_obj} from "./load-obj.js";
+
+            const meshesMetadata = [
+                {name: "Sphere"},
+                {name: "Suzanne"},
+                {name: "Torus"},
+            ];
+
+            start_mesh_preview({
+                get_mesh_data,
+                meshesMetadata,
+                modulePath: "../../src/",
+                defaultViewDistance: 3.2,
+                defaultOrientation: [0.3, 0, 0],
+                rotationDelta: [0.0005, 0.0003, 0],
+                infoText: "Meshes from Blender",
+            });
+
+            async function get_mesh_data(meshMetadata)
+            {
+                const mesh = await load_obj(`./models/${meshMetadata.name}.obj`,
+                                            `./models/${meshMetadata.name}.mtl`);
+
+                return mesh;
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,235 @@
+:root
+{
+    --border-color--main: lightgray;
+    --border-color--secondary: lightgray;
+    --border-color--highlight: gray;
+    --color--disabled: lightgray;
+}
+
+body
+{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: sans-serif;
+    background-color: rgb(245, 245, 245);
+}
+
+.mesh-preview > .info-box
+{
+    user-select: none;
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    border: 1px solid var(--border-color--main);
+    border-radius: 3px;
+    height: 0;
+    display: flex;
+    padding: 28px;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: white;
+    white-space: nowrap;
+    transition: width 0.25s;
+    box-shadow: white 0px 0px 0px 6px;
+}
+
+.mesh-preview > .info-box.expanded
+{
+    justify-content: left;
+    border-color: var(--border-color--highlight);
+}
+
+.mesh-preview > .info-box a
+{
+    text-decoration: none;
+    color: inherit;
+}
+
+.mesh-preview > .info-box a:hover
+{
+    text-decoration: underline;
+}
+
+.mesh-preview > .rendering
+{
+    position: relative;
+    top: 0;
+    z-index: 0;
+}
+
+.mesh-preview > .luujanko-surface
+{
+    pointer-events: none;
+}
+
+.mesh-preview > .control-panel
+{
+    user-select: none;
+    position: absolute;
+    top: 3%;
+    right: 3%;
+    z-index: 1;
+    border: 1px solid var(--border-color--main);
+    border-radius: 3px;
+    width: 280px;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: white 0px 0px 0px 6px;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+    transition: none;
+}
+
+.mesh-preview > .control-panel.dragging
+{
+    border-color: var(--border-color--highlight);
+}
+
+.mesh-preview > .control-panel.drag-auto
+{
+    transition-timing-function: ease-out;
+    transition: top 0.175s,
+                left 0.175s;
+}
+
+.mesh-preview > .control-panel .section
+{
+    padding: 0 20px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mesh-preview > .control-panel .section.polycount
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.mesh-preview > .control-panel .section.fields
+{
+    height: auto;
+    padding: 20px 20px;
+}
+
+.mesh-preview > .control-panel .section.dragger
+{
+    padding: 0;
+    height: 45px;
+}
+
+.mesh-preview > .control-panel .section + .section
+{
+    border-top: 1px solid var(--border-color--secondary);
+}
+
+.mesh-preview > .control-panel .dragger
+{
+    cursor: grab;
+    background-color: lightgray;
+
+    /* Image source: https://stackoverflow.com/a/17893379. */
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABZJREFUeNpi2r9//38gYGAEESAAEGAAasgJOgzOKCoAAAAASUVORK5CYII=);
+}
+
+.mesh-preview > .control-panel.dragging .dragger
+{
+    cursor: grabbing;
+    border-color: gray;
+}
+
+.mesh-preview > .control-panel hr
+{
+    margin-top: 27px;
+    margin-bottom: 5px;
+    border: none;
+    border-bottom: 1px solid var(--border-color--secondary);
+}
+
+.mesh-preview > .control-panel .field
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.mesh-preview > .control-panel .field + .field
+{
+    margin-top: 10px;
+}
+
+.mesh-preview > .control-panel .field select,
+.mesh-preview > .control-panel .field input
+{
+    appearance: none;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid var(--border-color--secondary);
+    border-radius: 6px;
+    background-color: white;
+    outline: none;
+}
+
+.mesh-preview > .control-panel .field select:focus,
+.mesh-preview > .control-panel .field input:focus
+{
+    border-color: var(--border-color--highlight);
+}
+
+.mesh-preview > .control-panel .field input[type="number"]::-webkit-outer-spin-button,
+.mesh-preview > .control-panel .field input[type="number"]::-webkit-inner-spin-button
+{
+    display: none;
+}
+
+.mesh-preview > .control-panel .field input[type="number"]
+{
+    -moz-appearance: textfield;
+}
+
+.mesh-preview > .control-panel .field.disabled *
+{
+    color: var(--color-disabled);
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* Vue transitions. */
+.mesh-preview-transition-flip-enter-active,
+.mesh-preview-transition-flip-leave-active
+{
+    transition: transform 0.2s,
+                opacity 0.2s;
+}
+.mesh-preview-transition-flip-enter
+{
+    transform: rotateX(-90deg);
+}
+.mesh-preview-transition-flip-leave-to 
+{
+    transform: rotateX(90deg);
+}
+
+.mesh-preview-transition-drop-enter-active,
+.mesh-preview-transition-drop-leave-active
+{
+    transition: transform 0.2s;
+}
+.mesh-preview-transition-drop-enter-active
+{
+    transition: transform 0.1s;
+}
+.mesh-preview-transition-drop-enter
+{
+    transform: translateY(-50px) scale(2.2);
+}
+.mesh-preview-transition-drop-leave-to 
+{
+    transform: translateY(40px);
+    filter: blur(1px);
+    color: var(--color--disabled);
+}

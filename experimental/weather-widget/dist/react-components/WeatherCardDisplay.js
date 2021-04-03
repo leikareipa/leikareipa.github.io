@@ -1,0 +1,1 @@
+"use strict";import{WeatherCard}from"./WeatherCard.js";export function WeatherCardDisplay(a={}){const b=a.weatherData.map((b,c)=>React.createElement(WeatherCard,{key:c,timestamp:b.timestamp,temperatureC:b.temperature,weatherSymbolId:b.weatherSymbol3,temperatureDisplayScale:a.temperatureDisplayScale}));return React.createElement("div",{className:"WeatherCardDisplay"},b)}

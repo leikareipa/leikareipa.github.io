@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Beginner weather app with React</title>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="index.css">
+    </head>
+    <body>
+        <div id="weather-app" class="WeatherApp"></div>
+
+        <script src="https://unpkg.com/react@16.8.6/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js" crossorigin></script>
+        <script type="module">
+            import {fmi_weather_api} from "./dist/fmi-weather-api/fmi-weather-api.js";
+            import {WeatherApp} from "./dist/react-components/WeatherApp.js";
+
+            (async()=>
+            {
+                const place = (()=>
+                {
+                    const defaultPlace = "Helsinki";
+                    const userPlace = (new URLSearchParams(window.location.search).get("place") || "").replace(/\s/g, "");
+                    const isValidUserPlace = /^[\p{L},]+$/u.test(userPlace);
+
+                    return (isValidUserPlace? userPlace : defaultPlace);
+                })();
+
+                const weatherData = await fmi_weather_api().get_forecast(
+                {
+                    place,
+                    timeStepHr: 2,
+                    numForecasts: 6,
+                });
+
+                const weatherApp = React.createElement(WeatherApp,
+                {
+                    place,
+                    weatherData,
+                    title: ("Weather forecast for " + string_to_title_case(place)),
+                });
+
+                ReactDOM.render(weatherApp, document.getElementById("weather-app"));
+            })();
+
+            function string_to_title_case(string = "")
+            {
+                return string[0].toUpperCase() +
+                       string.slice(1).replace(/, */, ", ")
+                                      .replace(/,? \p{L}/ug, (match)=>match.toUpperCase());
+            }
+        </script>
+    </body>
+</html>

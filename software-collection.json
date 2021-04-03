@@ -1,0 +1,842 @@
+{
+"software":
+[
+    {
+        "title":"VCS",
+        "platforms":["Windows", "Linux", "GitHub"],
+        "madeWith":["C++", "Qt", "OpenCV"],
+        "keywords":["vcs","visionrgb","capture","windows"],
+        "resourceId":"vcs",
+        "media":
+        [
+            {"type":"image", "urn":"vcs-4.png", "width":642, "height":509},
+            {"type":"image", "urn":"vcs-3.png", "width":656, "height":519}
+        ],
+        "files":
+        [
+            {"platform":"Windows", "version":"2.4.0"},
+            {"platform":"Windows", "version":"2.3.2"},
+            {"platform":"Windows", "version":"2.3.1"},
+            {"platform":"Windows", "version":"2.3.0"},
+            {"platform":"Windows", "version":"2.2.0"},
+            {"platform":"Windows", "version":"2.1.0"},
+            {"platform":"Windows", "version":"2.0.1"},
+            {"platform":"Windows", "version":"2.0.0"},
+            {"platform":"Windows", "version":"1.6.5"},
+            {"platform":"Windows", "version":"1.6.4"},
+            {"platform":"Windows", "version":"1.6.3"},
+            {"platform":"Windows", "version":"1.6.2"},
+            {"platform":"Windows", "version":"1.6.1"},
+            {"platform":"Windows", "version":"1.5.2"},
+            {"platform":"Windows", "version":"1.5.1"},
+            {"platform":"Windows", "version":"1.4.2"},
+            {"platform":"Windows", "version":"1.4.1"},
+            {"platform":"Windows", "version":"1.3.6"},
+            {"platform":"Windows", "version":"1.3.5"},
+            {"platform":"Windows", "version":"1.3.4"},
+            {"platform":"Windows", "version":"1.3.3"},
+            {"platform":"Windows", "version":"1.3.2"},
+            {"platform":"Windows", "version":"1.3.1.1"},
+            {"platform":"Windows", "version":"1.3.1"},
+            {"platform":"Windows", "version":"1.2.7"},
+            {"platform":"Windows", "version":"1.2.6"},
+            {"platform":"Windows", "version":"1.2.5"},
+            {"platform":"Windows", "version":"1.2.4"},
+            {"platform":"Windows", "version":"1.2"},
+            {"platform":"Windows", "version":"1.1.8"},
+            {"platform":"Windows", "version":"1.1.7b"},
+            {"platform":"Windows", "version":"1.1.7"},
+            {"platform":"Windows", "version":"1.1.4"},
+            {"platform":"Windows", "version":"1.1.2"},
+            {"platform":"Windows", "version":"1.1.1"},
+            {"platform":"Windows", "version":"1.1"},
+            {"platform":"Windows", "version":"1.0"},
+            {"platform":"Windows", "version":"beta.5_6"},
+            {"platform":"Windows", "version":"beta.5_5"},
+            {"platform":"Windows", "version":"beta.5_4"},
+            {"platform":"Windows", "version":"beta.5_3"},
+            {"platform":"Windows", "version":"beta.5_2"},
+            {"platform":"Windows", "version":"beta.5_1"},
+            {"platform":"Windows", "version":"beta.5"},
+            {"platform":"Windows", "version":"beta.1"}
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/vcs"}
+        ],
+        "description":
+        [
+            "A useful capture tool for Datapath's VisionRGB range of capture cards. Features anti-tearing, advanced image filtering, unlimited video presets with activation by resolution, refresh rate and shortcut, as well as several other things that enable high-quality analog and digital capture for recreational and professional use. Made between 2017-2020."
+        ]
+    },
+
+    {
+        "title":"PCbi",
+        "platforms":["Linux"],
+        "madeWith":["C++", "Qt", "OpenGL", "JavaScript", "Blender"],
+        "keywords":["pcbi","pcem","frontend"],
+        "resourceId":"pcbi",
+        "media":
+        [
+            {"type":"youtube", "urn":"4Xh8L9PbXeM"},
+            {"type":"image", "urn":"pcbi-1.png", "width":1169, "height":748},
+            {"type":"image", "urn":"pcbi-2.png", "width":1169, "height":748},
+            {"type":"image", "urn":"pcbi-5.png", "width":1282, "height":749}
+        ],
+        "files":
+        [
+            {"platform":"Linux", "version":"0.17.1"},
+            {"platform":"Linux", "version":"0.17.0"},
+            {"platform":"Linux", "version":"0.16.2"},
+            {"platform":"Linux", "version":"0.16.1"},
+            {"platform":"Linux", "version":"0.16.0"},
+            {"platform":"Linux", "version":"0.15.0"},
+            {"platform":"Linux", "version":"0.14.0"},
+            {"platform":"Linux", "version":"alpha.7_1b"},
+            {"platform":"Linux", "version":"alpha.2a"},
+            {"platform":"Linux", "version":"alpha.1"}
+        ],
+        "links":
+        [
+            {"title":"Additional content", "url":"https://github.com/leikareipa/pcbi-content"},
+            {"title":"Dev playlist on YouTube", "url":"https://www.youtube.com/playlist?list=PLMVzQTDRXhK_CZ3j-Lax7fRICLvbL_7do"}
+        ],
+        "description":
+        [
+            "A rad 3D frontend for the PC emulator PCem, and a retro PC-building simulation. Assemble a PC in 3D from olden parts and have PCem emulate it on the machine's screen. Uses shared memory to communicate with PCem. The second version number indicates the version of PCem supported. Made between 2018-2021."
+        ]
+    },
+
+    {
+        "title":"RallySportED / frontend",
+        "platforms":["browsers"],
+        "madeWith":["JavaScript", "Vue.js"],
+        "keywords":["rallysported","rally-sport","asset editor","dos","linux"],
+        "resourceId":"rallysported",
+        "media":
+        [
+            {"type":"image", "urn":"rallysported-1.png", "width":1920, "height":929}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"Run in browser", "url":"https://www.tarpeeksihyvaesoft.com/rallysported/"},
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/rallysported-frontend/"}
+        ],
+        "description":
+        [
+            "A browser-based asset editor for the 1990s cult game Rally-Sport. Lets you create and edit tracks, textures, and some other aspects of the game. To play the modified content in-game, also grab the separately-distributed backend tools. The backend tools also include an AI editor for creating custom CPU drivers for new tracks. Made between 2019-2021."
+        ]
+    },
+
+    {
+        "title":"RallySportED / backend",
+        "platforms":["DOS"],
+        "madeWith":["x86 assembly", "C", "C++"],
+        "keywords":["rallysported","rally-sport","asset editor","dos","linux"],
+        "resourceId":"rallysported",
+        "media":
+        [
+        ],
+        "files":
+        [
+            {"platform":"DOS", "version":"beta.10_1"},
+            {"platform":"DOS", "version":"beta.10"},
+            {"platform":"DOS", "version":"beta.9_1"},
+            {"platform":"DOS", "version":"beta.9"},
+            {"platform":"DOS", "version":"beta.8_5b"},
+            {"platform":"DOS", "version":"beta.8_5"},
+            {"platform":"DOS", "version":"beta.8_4"},
+            {"platform":"DOS", "version":"beta.8_3"},
+            {"platform":"DOS", "version":"beta.8_2"},
+            {"platform":"DOS", "version":"beta.8"},
+            {"platform":"DOS", "version":"beta.7_pre"},
+            {"platform":"DOS", "version":"beta.6"},
+            {"platform":"DOS", "version":"beta.3"},
+            {"platform":"DOS", "version":"beta.2"},
+            {"platform":"DOS", "version":"beta.1"}
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/rallysported-backend/"}
+        ],
+        "description":
+        [
+            "Supportive tools for RallySportED. Includes the loader program required to play RallySportED-made content in the game, an AI editor, a keyboard remapper, and some other useful things. Made between 2016-2020."
+        ]
+    },
+
+    {
+        "title":"Rally-Sport Content",
+        "platforms":["browsers","GitHub"],
+        "madeWith":["PHP", "JavaScript"],
+        "keywords":["rally-sport content","rallysported","assets","service"],
+        "resourceId":"rallysport-content",
+        "media":
+        [
+            {"type":"image", "urn":"rallysport-content-2.png", "width":1920, "height":930}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"Access in browser", "url":"https://www.tarpeeksihyvaesoft.com/rallysport-content/tracks/"},
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/rallysport-content"}
+        ],
+        "description":
+        [
+            "A platform to share user-made content for Rally-Sport. Provides a documented REST API for querying content and implements a custom MVC framework for generating views into the data. Also comes with a handy front-end for accessing with a browser. Due to EU copyright laws etc., new user registration is disabled. Made in 2020."
+        ]
+    },
+
+    {
+        "title":"Ultima VII DOS Cache Patch",
+        "platforms":["GitHub", "DOS"],
+        "madeWith":["x86 assembly"],
+        "keywords":["ultima vii dos cache path","ultima 7 dos cache path","u7dcp","dos"],
+        "resourceId":"u7dcp",
+        "media":
+        [
+            {"type":"youtube", "urn":"a2tyyWk766s"},
+            {"type":"image", "urn":"u7dcp-1.png", "width":640, "height":400}
+        ],
+        "files":
+        [
+            {"platform":"DOS", "version":"1.0"}
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/u7dcp"}
+        ],
+        "description":
+        [
+            "Patches a famous bug in Ultima 7, where the game forces the CPU cache on at launch. With this patch, the CPU cache can remain off, leading to improved gameplay speed on post-486 PCs. Made in 2017."
+        ]
+    },
+
+    {
+        "title":"DOS Path Tracing Benchmark",
+        "platforms":["DOS"],
+        "madeWith":["C++"],
+        "keywords":["dos path tracing benchmark","path_bench","path-tracing","dos"],
+        "resourceId":"dos-path-bench",
+        "media":
+        [
+            {"type":"image", "urn":"dos-path-bench-2.png", "width":1280, "height":800}
+        ],
+        "files":
+        [
+            {"platform":"DOS", "version":"1.0"}
+        ],
+        "links":
+        [
+        ],
+        "description":
+        [
+            "Test your DOS era processor's floating-point performance with this grayscale path tracer that renders a scene of spheres and counts the number of seconds it took. A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so, and the Xeon E3-1230 in less than one second. Made in 2017."
+        ]
+    },
+
+    {
+        "title":"Retro n-gon renderer",
+        "platforms":["browsers", "GitHub"],
+        "madeWith":["JavaScript"],
+        "keywords":["retro n-gon renderer","rngon","rasterizer"],
+        "resourceId":"rngon",
+        "media":
+        [
+            {"type":"image", "urn":"rngon-5.png", "width":1920, "height":929},
+            {"type":"image", "urn":"rngon-4.png", "width":1920, "height":929},
+            {"type":"image", "urn":"rngon-1.png", "width":1914, "height":925},
+            {"type":"image", "urn":"rngon-2.png", "width":1913, "height":926}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/retro-ngon"},
+            {"title":"View interactive samples", "url":"https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/"}
+        ],
+        "description":
+        [
+            "A software 3D renderer for HTML5. Rasterizes n-sided polygons onto a canvas or an offscreen buffer. Features genuine retro aesthetics, vertex and pixel shaders, async rendering, an easy-to-use API, docs, cool samples, and more. Very customizable: from simple wireframe rendering to full ray-traced lighting. Easy to integrate into an existing JavaScript project. Made between 2019-2020."
+        ]
+    },
+
+    {
+        "title":"Luujanko",
+        "platforms":["browsers", "GitHub"],
+        "madeWith":["JavaScript"],
+        "keywords":["luujanko","rasterizer", "rendering"],
+        "resourceId":"luujanko",
+        "media":
+        [
+            {"type":"image", "urn":"luujanko-1.png", "width":1920, "height":929}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/luujanko"},
+            {"title":"View interactive samples", "url":"https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/"}
+        ],
+        "description":
+        [
+            "A minimalist SVG wireframe renderer for HTML5. Has an easy, streamlined API and is simple to integrate into an existing JavaScript project. Made in 2020."
+        ]
+    },
+
+    {
+        "title":"Lintulista",
+        "platforms":["browsers", "GitHub"],
+        "madeWith":["JavaScript", "React", "PHP", "MySQL", "C++"],
+        "keywords":["lintulista","bird"],
+        "resourceId":"lintulista",
+        "media":
+        [
+            {"type":"image", "urn":"lintulista-1.png", "width":952, "height":464},
+            {"type":"image", "urn":"lintulista-2.png", "width":952, "height":464},
+            {"type":"youtube", "urn":"ncM-ybapv_g"}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"Run in browser", "url":"https://www.tarpeeksihyvaesoft.com/lintulista/"},
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/lintulista"}
+        ],
+        "description":
+        [
+            "A cool app for hobbyist birdwatchers to keep track of their sightings. Was my first full-stack project. Made in 2019."
+        ]
+    },
+
+    {
+        "title":"Kelpo",
+        "platforms":["GitHub"],
+        "madeWith":["C", "OpenGL", "Direct3D", "Glide"],
+        "keywords":["kelpo","rendering","rasterizer"],
+        "resourceId":"kelpo",
+        "media":
+        [
+            {"type":"image", "urn":"kelpo-1.png", "width":639, "height":479}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/kelpo"}
+        ],
+        "description":
+        [
+            "A minimalist retro-oriented 3D rasterizer API wrapper. The idea is to create an umbrella API that exposes a minimal unifying feature set supported by as many old 1990s 3D cards as reasonably possible. Currently works with Direct3D 5-7, OpenGL 1.2, OpenGL 3.0, and Glide 3. Planned support includes the proprietary 3D APIs of Matrox, S3, and ATi. Made between 2019-2020."
+        ]
+    },
+
+    {
+        "title":"KAC file format",
+        "platforms":["GitHub"],
+        "madeWith":["C", "C++","Qt"],
+        "keywords":["kac","mesh"],
+        "resourceId":"kac",
+        "media":
+        [
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/kac-file-format"}
+        ],
+        "description":
+        [
+            "A retro-themed binary format for storing 3D models and their textures; a companion format for the Kelpo renderer. Designed with the limitations of 1990s 3D hardware in mind. An importer and exporter are provided. Made between 2019-2020."
+        ]
+    },
+
+    {
+        "title":"Serlain",
+        "platforms":["browsers", "GitHub"],
+        "madeWith":["JavaScript", "React"],
+        "keywords":["serlain","wayback machine","retro"],
+        "resourceId":"serlain",
+        "media":
+        [
+            {"type":"image", "urn":"serlain-4.png", "width":1192, "height":683}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"Run in browser", "url":"https://www.tarpeeksihyvaesoft.com/experimental/serlain/"},
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/serlain"}
+        ],
+        "description":
+        [
+            "Looks like an old browser, acts like an old browser - and it almost is. Serlain is a frontend for Internet Archive's Wayback Machine that displays archived web content inside period-correct-looking faux browsers. Pretty cool. Made between 2019-2021."
+        ]
+    },
+
+    {
+        "title":"YQR",
+        "platforms":["Linux","Windows"],
+        "madeWith":["C++", "OpenCL"],
+        "keywords":["rendering","path tracing","ray tracing"],
+        "resourceId":"yqr",
+        "media":
+        [
+            {"type":"image", "urn":"yqr-3.png", "width":512, "height":512},
+            {"type":"image", "urn":"yqr-5.png", "width":512, "height":512}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+        ],
+        "description":
+        [
+            "My first path tracer. Served as a sandbox for personal experimentation in realistic offline rendering, including subsurface scattering, spectral rendering, and volumetric effects (fog, clouds, snow). Ray intersections were computed on the GPU. Made between 2011-2014."
+        ]
+    },
+
+    {
+        "title":"Mesh preview",
+        "platforms":["browsers","GitHub"],
+        "madeWith":["JavaScript", "Vue.js"],
+        "keywords":["mesh preview"],
+        "resourceId":"mesh-preview",
+        "media":
+        [
+            {"type":"image", "urn":"mesh-preview-1.png", "width":1920, "height":930}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/mesh-preview"},
+            {"title":"View interactive sample", "url":"https://www.tarpeeksihyvaesoft.com/experimental/mesh-preview/samples/obj-models/"}
+        ],
+        "description":
+        [
+            "A wireframe visualizer for 3D meshes. Intended for previewing mesh data e.g. when working on an importer for a mesh file format. Simple, streamlined interface. Allows multiple meshes to be specified and provides an easy-to-use GUI for selecting between them. Made between 2020-2021."
+        ]
+    },
+
+    {
+        "title":"Wray",
+        "platforms":["browsers", "GitHub"],
+        "madeWith":["JavaScript"],
+        "keywords":["wray","rendering","path tracing"],
+        "resourceId":"wray",
+        "media":
+        [
+            {"type":"image", "urn":"wray-1.png", "width":1302, "height":793}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"View sample", "url":"https://www.tarpeeksihyvaesoft.com/s/wray/samples/sample1.html?threads=all&pixelSize=4&resolution=1280x720"},
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/wray"}
+        ],
+        "description":
+        [
+            "A vanilla JavaScript vanilla path tracer. Features Blender scene import, PFM export, multithreaded rendering, Drago 2003 tonemapping, and BVH tree acceleration. Made between 2019-2020."
+        ]
+    },
+
+    {
+        "title":"Cloud simulation",
+        "platforms":["Linux","Windows"],
+        "madeWith":["C++", "Qt", "OpenCL"],
+        "keywords":["ifu","clouds","rendering","path tracing","ray tracing"],
+        "resourceId":"ifu",
+        "media":
+        [
+            {"type":"image", "urn":"ifu-1.png", "width":720, "height":496},
+            {"type":"image", "urn":"ifu-2.png", "width":512, "height":512}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"Old video on YouTube", "url":"https://www.youtube.com/watch?v=5B3CRZNemVM"}
+        ],
+        "description":
+        [
+            "Ever wanted a cloud physics simulator and renderer? Maybe not, but Ifu provides. Condensation from moist rising air is simulated and rendered into physically realistic images of clouds. You can view the state of the simulation as it runs and configure the atmospheric properties as you like. Naturally simulates effects like pilei. Requires a beefy computer and some knowledge of cloud-related atmospheric processes. Made between 2013-2014."
+        ]
+    },
+
+    {
+        "title":"What",
+        "platforms":["GitHub", "browsers"],
+        "madeWith":["JavaScript", "Vue.js"],
+        "keywords":["audio", "spectrogram", "av"],
+        "resourceId":"what",
+        "media":
+        [
+            {"type":"image", "urn":"what-1.png", "width":960, "height":465}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/what"},
+            {"title":"Run in browser", "url":"https://www.tarpeeksihyvaesoft.com/experimental/what/"}
+        ],
+        "description":
+        [
+            "A HTML5 video player whose seek bar presents a spectrogram of the video's audio. Made in 2020."
+        ]
+    },
+
+    {
+        "title":"NPTO",
+        "platforms":["Linux","Windows"],
+        "madeWith":["C++", "Qt"],
+        "keywords":["npto","typing"],
+        "resourceId":"npto",
+        "media":
+        [
+            {"type":"image", "urn":"npto-1.png", "width":1002, "height":564},
+            {"type":"image", "urn":"npto-2.png", "width":600, "height":338},
+            {"type":"youtube", "urn":"YgnRp6bsnhk"}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+        ],
+        "description":
+        [
+            "Already a pretty fast typist? Get better with NPTO. Provides detailed statistics on your typing: percentage of mis-presses for each key, breakdown of typing time per key, and so on. Not a typing tutor but rather something for more experienced typists. Made in 2015."
+        ]
+    },
+
+    {
+        "title":"ranssi",
+        "platforms":["Linux"],
+        "madeWith":["C++", "Qt"],
+        "keywords":["ranssi","typing","transcription"],
+        "resourceId":"ranssi",
+        "media":
+        [
+            {"type":"image", "urn":"ranssi-1.png", "width":1108, "height":689}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://github.com/leikareipa/ranssi/"}
+        ],
+        "description":
+        [
+            "An IDE for transcribers. Minimalist interface, audio controls, highlighting of common typing errors, integration with git to commit saves into a repository, etc. Has been in commercial use. Made in 2018."
+        ]
+    },
+
+    {
+        "title":"Tracks for Rally-Sport",
+        "platforms":["DOS"],
+        "madeWith":["RallySportED"],
+        "keywords":["rally-sport","rallysported","retro","modding"],
+        "resourceId":"rstracks",
+        "media":
+        [
+            {"type":"image", "urn":"rstracks-10.png", "width":1920, "height":902},
+            {"type":"image", "urn":"rstracks-7.png", "width":1920, "height":901},
+            {"type":"image", "urn":"rstracks-8.png", "width":1920, "height":901},
+            {"type":"image", "urn":"rstracks-1.png", "width":1920, "height":901},
+            {"type":"image", "urn":"rstracks-2.png", "width":1920, "height":901},
+            {"type":"image", "urn":"rstracks-3.png", "width":1920, "height":901},
+            {"type":"image", "urn":"rstracks-4.png", "width":1920, "height":901},
+            {"type":"image", "urn":"rstracks-5.png", "width":1920, "height":901},
+            {"type":"image", "urn":"rstracks-6.png", "width":1920, "height":901},
+            {"type":"image", "urn":"rstracks-9.png", "width":1920, "height":901}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"View tracks", "url":"https://tarpeeksihyvaesoft.com/rallysport-content/tracks/?by=user.rgg-f9t-h28"}
+        ],
+        "description":
+        [
+            "I've made a number of after-market tracks for the classic racing game Rally-Sport using the RallySportED toolset I made. Some of the tracks are good, some of them are less good, but all are guaranteed fun in their own ways. Made between 2016-2020."
+        ]
+    },
+
+    {
+        "title":"smartti parseri",
+        "platforms":["Linux"],
+        "madeWith":["C++", "Qt"],
+        "keywords":["smartti parseri","hard drive","harddrive","smart","statistics"],
+        "resourceId":"smartti-parseri",
+        "media":
+        [
+            {"type":"image", "urn":"smartti-parseri-2.png", "width":562, "height":857},
+            {"type":"image", "urn":"smartti-parseri-1.png", "width":562, "height":857}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+        ],
+        "description":
+        [
+            "Turns hard drive SMART logs into graphs. Implements its own simple scripting language to combine and process various SMART attributes' values into new ones. Made in 2015."
+        ]
+    },
+    
+    {
+        "title":"DOS video chip compatibility list",
+        "platforms":["browsers"],
+        "madeWith":["HTML", "CSS", "JavaScript", "C++", "PHP"],
+        "keywords":["dos","benchmark"],
+        "resourceId":"dosvideo",
+        "media":
+        [
+            {"type":"image", "urn":"dosvideo-1.png", "width":1904, "height":929}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"Run in browser", "url":"https://www.tarpeeksihyvaesoft.com/dosvideo/"},
+            {"title":"Original matrix", "url":"https://web.archive.org/web/20180103021524/https://gona.mactar.hu/DOS_TESTS/"}
+        ],
+        "description":
+        [
+            "An early web dev effort of mine, whose goal was to redesign Gona's very useful but somewhat hard-to-read DOS video chip compatibility matrix for improved accessibility. I harvested the HTML matrix data into JSON and implemented a front-end for at-a-glance-friendly access to the data. Made in 2018."
+        ]
+    },
+
+    {
+        "title":"Vond",
+        "platforms":["GitHub"],
+        "madeWith":["C++"],
+        "keywords":["vond","rendering","rasterizer", "voxel"],
+        "resourceId":"vond",
+        "media":
+        [
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/vond"}
+        ],
+        "description":
+        [
+            "A hybrid voxel/polygon 3D renderer that runs on the CPU. Draws inspiration from old voxel-based games, like Delta Force and Outcast. Made between 2018-2020."
+        ]
+    },
+
+    {
+        "title":"gpl-dta",
+        "platforms":["GitHub"],
+        "madeWith":["C++","PHP"],
+        "keywords":["gpl-dta","gpl dta","grand prix legends"],
+        "resourceId":"gpl-dta",
+        "media":
+        [
+            {"type":"image", "urn":"gpl-dta-1.png", "width":1913, "height":924}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/gpl-dta"}
+        ],
+        "description":
+        [
+            "A set of cross-platform command-line tools for converting the DAT files of Grand Prix Legends into more standard formats. Can selectively extract files from DTAs, export MIPs and SRBs into PNG, and convert 3DOs into OBJ. Written to scratch a personal itch and so isn't 100% accurate, but close enough. Made in 2019."
+        ]
+    },
+
+    {
+        "title":"Barefoot BankView",
+        "platforms":["Linux"],
+        "madeWith":["C++","Qt"],
+        "keywords":["barefoot","bbview"],
+        "resourceId":"bbview",
+        "media":
+        [
+            {"type":"image", "urn":"bbview-1.png", "width":727, "height":350}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+        ],
+        "description":
+        [
+            "A utility to visualize NAND cell wear on Indilinx Barefoot SSDs. Made in 2015."
+        ]
+    },
+
+    {
+        "title":"slowray",
+        "platforms":["Game Boy Advance", "Linux", "GitHub"],
+        "madeWith":["C"],
+        "keywords":["slowray","game boy advance","gameboy","devkit advance","rendering","path tracing","ray tracing"],
+        "resourceId":"slowray",
+        "media":
+        [
+            {"type":"image", "urn":"slowray-1.png", "width":480, "height":320},
+            {"type":"image", "urn":"slowray-3.png", "width":480, "height":320},
+            {"type":"image", "urn":"slowray-2.png", "width":480, "height":320}
+        ],
+        "files":
+        [
+            {"platform":"Game Boy Advance", "version":"alpha.1"},
+            {"platform":"Linux", "version":"alpha.1"}
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/slowray"}
+        ],
+        "description":
+        [
+            "A simple path tracer that can be compiled to run on the Game Boy Advance. Its code also compiles for desktop platforms. Made originally in about 2016; this version made in 2019."
+        ]
+    },
+
+    {
+        "title":"AV Scissors",
+        "platforms":["GitHub"],
+        "madeWith":["C++", "Qt"],
+        "keywords":["av scissors","audio","video"],
+        "resourceId":"avscissors",
+        "media":
+        [
+            {"type":"image", "urn":"avscissors-1.png", "width":1060, "height":721}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/avscissors"}
+        ],
+        "description":
+        [
+            "A Qt-based video player whose timeline highlights the parts of the video that contain movement or sounds. Useful for pet surveillance and that sort of thing. You may find that the program works well for some videos and less well for others; typically, a suitable recording has good image and audio quality with little background noise. Made in 2018."
+        ]
+    },
+
+    {
+        "title":"Waterfall plotting",
+        "platforms":[],
+        "madeWith":["C++", "Qt"],
+        "keywords":["waterfall", "graphing"],
+        "resourceId":"csd",
+        "media":
+        [
+            {"type":"image", "urn":"csd-1.png", "width":368, "height":277},
+            {"type":"image", "urn":"csd-2.png", "width":368, "height":277},
+            {"type":"image", "urn":"csd-3.png", "width":368, "height":277}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+        ],
+        "description":
+        [
+            "A tool to generate simple waterfall plots from headphone impulse responses. Made in 2013."
+        ]
+    },
+
+    {
+        "title":"limpynet",
+        "platforms":["GitHub"],
+        "madeWith":["C++"],
+        "keywords":["limpynet","neural","ai"],
+        "resourceId":"limpynet",
+        "media":
+        [
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/limpynet"}
+        ],
+        "description":
+        [
+            "A feed-forward neural net with customizable layering. Learns the MNIST digits to about 97%, depending on the settings provided. Written from scratch. Made in 2016."
+        ]
+    },
+
+    {
+        "title":"VRGB-FPS",
+        "platforms":["GitHub", "Windows"],
+        "madeWith":["C++"],
+        "keywords":["vrgb-fps","datapath","visionrgb"],
+        "resourceId":"vrgbfps",
+        "media":
+        [
+        ],
+        "files":
+        [
+            {"platform":"Windows", "version":"1.0"}
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/vrgb-fps"}
+        ],
+        "description":
+        [
+            "A command-line tool that shows the current output rate (frames per second) of a Datapath VisionRGB capture card. Useful for e.g. estimating the card's maximun capture rate while excluding external factors like host CPU/GPU speed. Works with cards that implement the RGBEasy API. Made in 2017."
+        ]
+    },
+
+    {
+        "title":"DOS C Compiler Benchmark",
+        "platforms":["DOS", "GitHub"],
+        "madeWith":["C"],
+        "keywords":["dos c compiler benchmark","rendering","rasterizer"],
+        "resourceId":"dccb",
+        "media":
+        [
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/dccb"}
+        ],
+        "description":
+        [
+            "A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C compilers. Compatible with a variety of legacy C toolchains, such as from Microsoft, Borland, and HI-TECH. The program renders a spinning sphere in VGA mode 13h, then provides characteristics of its runtime performance."
+        ]
+    }
+]
+}

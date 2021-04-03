@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>Tomb Raider / Lara's home - Render sample - Retro n-gon renderer</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="../sample-base.css">
+    </head>
+    <body id="sample-container">
+        <iframe id="render-target"
+                style="width: 100vw; height: 100vh; border: none;">
+        </iframe>
+
+        <div class="infoboxes-container additional">
+            <div class="infobox lighting-mode" style="width: 250px;">
+                <div class="title">Lighting</div>
+                <div class="value">-</div>
+                <div class="adjust left" onclick="change_shading_mode(-1);"></div>
+                <div class="adjust right" onclick="change_shading_mode(1);"></div>
+            </div>
+        </div>
+
+        <div id="copyright-notice"
+             style="position: absolute;
+                    z-index: 1000;
+                    color: white;
+                    background-color: black;
+                    bottom: 5px;
+                    left: 5px;
+                    padding: 7px;
+                    font-family: sans-serif;">
+            &#9888; Textures and models from Tomb Raider (1996, Core Design / Eidos)
+        </div>
+
+        <script>
+            const shadingModes = ["None", "Flat", "Gouraud", "Baked to vertex"];
+
+            // Select the "Gouraud" shading option by default.
+            change_shading_mode(-1);
+
+            function change_shading_mode(direction = 1)
+            {
+                // Rotate the current shading mode (array element #0) left or right.
+                if (direction == 1) shadingModes.push(shadingModes.shift());
+                else if (direction == -1) shadingModes.unshift(shadingModes.pop());
+
+                SHADING_MODE = shadingModes[0];
+
+                document.querySelector(".infobox.lighting-mode .value").innerHTML = SHADING_MODE;
+
+                return;
+            }
+        </script>
+
+        <script>
+            const renderer = (new URLSearchParams(window.location.search).get("renderer") || "dev");
+            const renderTarget = document.getElementById("render-target");
+            renderTarget.src = `../sample-base.html?sample=tomb-raider-home&renderer=${renderer}`;
+        </script>
+    </body>
+</html>

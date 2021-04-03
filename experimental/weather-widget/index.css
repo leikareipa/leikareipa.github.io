@@ -1,0 +1,93 @@
+/* Placeholder stylings.*/
+
+body
+{
+    background-color: rgb(255, 255, 255);
+    color: dimgray;
+    text-align: center;
+    padding-top: 25px;
+}
+
+#weather-app
+{
+    display: inline-block;
+    width: 540px;
+}
+
+#weather-app .Header
+{
+    text-align: left;
+}
+
+#weather-app .Title
+{
+    display: inline-block;
+}
+
+#weather-app .TemperatureScaleSelector
+{
+    display: inline-block;
+    margin-left: 18px;
+    font-size: 80%;
+}
+
+#weather-app .TemperatureScaleSelectorElement
+{
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#weather-app .TemperatureScaleSelectorElement.inactive
+{
+    color: rgba(0, 0, 0, 0.2);
+}
+
+#weather-app .TemperatureScaleSelectorElement:first-child
+{
+    margin-left: 0;
+}
+
+#weather-app .WeatherCardDisplay
+{
+    padding-top: 2px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+#weather-app .WeatherCard
+{
+    flex-grow: 1;
+    padding: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgb(249, 249, 247);
+    margin: 3px;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 85%;
+    box-shadow: 0px 6px 4px -3px #00000023;
+    font-variant: small-caps;
+}
+
+#weather-app .WeatherCard:first-child
+{
+    margin-left: 0;
+}
+
+#weather-app .WeatherCard:last-child
+{
+    margin-right: 0;
+}
+
+#weather-app .WeatherCard .Timestamp
+{
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 80%;
+}
+
+#weather-app .WeatherSymbol
+{
+    width: 45px;
+    height: 45px;
+}

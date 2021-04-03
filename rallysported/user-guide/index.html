@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+              integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
+              crossorigin="anonymous">
+        <title>RallySportED's User Guide</title>
+    </head>
+    <body>
+        <header>
+            <i class="fas fa-gas-pump"
+               style="margin-right: 10px;"></i>
+            RallySportED's User Guide
+        </header>
+
+        <div id="main-container">
+
+            <div id="help-topics">
+                <!-- This will be filled in with data from topics.js.-->
+            </div>
+
+            <div id="side-panel">
+                <h2>
+                    <i class="fas fa-list"></i>
+                    Topics
+                </h2>
+
+                <ul id="topic-list">
+                    <!-- This will be filled in with data from topics.js-->
+                </ul>
+            </div>
+
+        </div>
+
+        <script type="module">
+            import {helpTopics} from "./topics.js"
+            
+            // Create DOM elements for each help topic and insert them onto the page.
+            for (const topicTitle of Object.keys(helpTopics))
+            {
+                // Simplified topic title to be used as a DOM element id.
+                const simplifiedTopicTitle = topicTitle
+                                             .toLowerCase()
+                                             .replace(/[^a-zA-Z\d\s]/g, "")
+                                             .replace(/\s+/g, "-");
+
+                const helpTopicAnchor = document.createElement("span");
+                helpTopicAnchor.className = "topic-anchor";
+                helpTopicAnchor.id = simplifiedTopicTitle;
+
+                const helpTopicElement = document.createElement("div");
+                helpTopicElement.className = "help-topic";
+                helpTopicElement.innerHTML = `<h2>${topicTitle}</h2> ${helpTopics[topicTitle]}`;
+
+                const helpTopicLink = document.createElement("li");
+                helpTopicLink.innerHTML = `<a href="#${simplifiedTopicTitle}">${topicTitle}</a></li>`
+
+                document.getElementById("help-topics").appendChild(helpTopicAnchor);
+                document.getElementById("help-topics").appendChild(helpTopicElement);
+                document.getElementById("topic-list").appendChild(helpTopicLink);
+            }
+        </script>
+
+        <script>
+            document.onscroll = (event)=>
+            {
+                const originalOffset = parseFloat(getComputedStyle(document.body).getPropertyValue("--header-height"));
+                document.getElementById("side-panel").style.top = `${Math.max(0, (originalOffset - window.scrollY))}px`;
+            }
+        </script>
+    </body>
+</html>

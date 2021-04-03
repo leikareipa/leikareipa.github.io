@@ -1,0 +1,1 @@
+"use strict";import{panic_if_not_type,panic}from"./assert.js";export async function load_software_collection(a){panic_if_not_type("string",a);const b=await(async()=>{try{const b=await fetch(a);return b.ok||panic("Failed to fetch the software collection."),b.json()}catch(a){panic(a)}})();return b.software.reduce((a,b)=>(a[b.title]={...b},a),[])}

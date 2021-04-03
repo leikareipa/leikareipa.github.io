@@ -1,0 +1,174 @@
+#sample-container
+{
+    margin: 0;
+    overflow: hidden;
+    background-color: rgb(143, 143, 143);
+    color: lightgray;
+}
+
+#loading-bar
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 100%;
+    z-index: 1000;
+    font-style: italic;
+    color: lightgray;
+}
+
+#loading-bar .fas
+{
+    color: white;
+    font-size: 125%;
+}
+
+#loading-bar .spin
+{
+    animation: fa-spin 2s infinite linear;
+}
+
+body
+{
+    background-color: rgb(143, 143, 143);
+    margin: 0px;
+    text-align: center;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+/* Upscale the n-gon renderer's output with nearest-neighbor interpolation.*/
+.rngon-pixelated-upscale
+{
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+}
+
+/* Styling for the canvas element that holds the n-gon rendering.*/
+.rngon-canvas
+{
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0px;
+}
+
+.notice
+{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 25px;
+    background-color: black;
+    color: white;
+}
+
+.infoboxes-container
+{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+/* For infoboxes created by individual samples.*/
+.infoboxes-container.additional
+{
+    width: 100%;
+    justify-content: center;
+    top: calc(100% - 45px - 75px);
+    pointer-events: none;
+}
+
+.infoboxes-container .infobox + .infobox
+{
+    margin-left: 10px;
+}
+
+.infobox
+{
+    line-height: 20px;
+    pointer-events: initial;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    width: 90px;
+    height: 65px;
+    background-color: black;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoboxes-container.additional .infobox
+{
+    width: 150px;
+    height: 75px;
+    line-height: 21px;
+}
+
+.infobox > .title
+{
+    color: white;
+    font-size: 90%;
+    text-align: center;
+}
+
+.infobox > .value
+{
+    font-weight: bold;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.infobox > .adjust
+{
+    cursor: pointer;
+    padding: 5px 15px;
+    color: lightgray;
+    font-weight: bold;
+    position: absolute;
+    transform: translateY(-50%);
+}
+
+.infobox > .adjust.left
+{
+    left: 5px;
+    top: 50%;
+}
+
+.infobox > .adjust.right
+{
+    right: 5px;
+    top: 50%;
+}
+
+.infobox > .adjust::before
+{
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+}
+
+.infobox > .adjust.left::before
+{
+    content: "\f0d9";
+}
+
+.infobox > .adjust.right::before
+{
+    content: "\f0da";
+}
+
+.infoboxes-container.additional .infobox > .adjust.left::before,
+.infoboxes-container.additional .infobox > .adjust.right::before
+{
+    font-size: 140%;
+}

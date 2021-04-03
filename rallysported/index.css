@@ -1,0 +1,407 @@
+:root
+{
+    --zindex-dosbox: 9999;
+    --zindex-popups: 99999;
+}
+
+*
+{
+    /* Avoid some issues with double-clicks over the canvas initiating drags.*/
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+body
+{
+    font-family: sans-serif;
+    cursor: url("./client/assets/cursors/rsed-cursor-arrow.png"), auto;
+    text-align: center;
+    align-content: center;
+    background-color: black;
+    color: rgb(255, 255, 255);
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden;
+    background-size: 25px 25px;
+    background-image: linear-gradient(to right, rgb(20, 20, 20) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgb(20, 20, 20) 1px, transparent 1px);
+}
+
+#render-canvas-container
+{
+    width: 100%;
+    height: 100vh;
+    background-color: transparent;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+#render-canvas
+{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    padding: 0;
+    margin: 0;
+}
+
+#jsdos-container
+{
+    cursor: default;
+    z-index: var(--zindex-dosbox);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+/* For the HTML5 canvas that displays RallySportED's render output.*/
+#jsdos-canvas
+{
+    position: relative;
+    z-index: 0;
+    object-fit: contain;
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    padding: 0;
+    margin: 0;
+}
+
+#jsdos-container .button
+{
+    margin: 0;
+    padding: 10px;
+    background-color: transparent;
+    color: rgb(184, 184, 184);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Above the js-dos canvas.*/
+    cursor: pointer;
+}
+
+#jsdos-container .button:hover
+{
+    color: whitesmoke;
+}
+
+#jsdos-container .button.top
+{
+    top: 10px;
+    bottom: unset;
+}
+
+#jsdos-container .button.right
+{
+    right: 20px;
+    left: unset;
+}
+
+.dosbox-container
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#html-ui
+{
+    font-family: sans-serif;
+    background-image: linear-gradient(rgb(60, 60, 60), rgb(60, 60, 60));
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    height: 32px;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: initial;
+    border-bottom: 1px solid black;
+}
+
+#html-ui .menu-bar
+{
+    display: flex;
+    height: 100%;
+}
+
+#html-ui .menu-bar > .button-bar
+{
+    display: flex;
+    height: 100%;
+}
+
+#html-ui .menu-bar > .button-bar:last-of-type
+{
+    border-right: none;
+}
+
+#html-ui .menu-bar .button
+{
+    cursor: pointer;
+    color: black;
+    display: flex;
+    vertical-align: text-bottom;
+    font-size: 85%;
+    text-decoration: none;
+    color: #c2c2c2;
+    background: transparent;
+    padding: 0 10px 0 10px;
+    align-items: center;
+    height: 100%;
+}
+
+#html-ui .menu-bar .button:hover
+{
+    color: white;
+}
+
+#html-ui .menu-bar .button:active
+{
+    transform: translateY(1px);
+}
+
+#html-ui .menu-bar .button > a
+{
+    color: inherit;
+    text-decoration: none;
+}
+
+#html-ui .menu-bar .button .fas,
+#html-ui .menu-bar .button .fab
+{
+    margin-right: 4px;
+}
+
+#html-ui .button.stream.streamer,
+#html-ui .button.stream.server,
+#html-ui .button.stream.streamer .fas,
+#html-ui .button.stream.server .fas
+{
+    color: white;
+}
+
+#html-ui .button.stream.initializing
+{
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+#html-ui .button.stream.waiting:hover
+{
+    background-color: inherit;
+    background-image: inherit;
+}
+
+#html-ui .button.stream.waiting:active
+{
+    border-bottom: inherit;
+    background-image: inherit;
+}
+
+.dropdown-menu
+{
+    cursor: url("./client/assets/cursors/rsed-cursor-arrow.png"), auto;
+    font-family: sans-serif;
+    text-align: left;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: white;
+    border: none;
+    z-index: 3;
+    display: none;
+    padding: 10px;
+    box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.dropdown-menu > .item
+{
+    cursor: url("./client/assets/cursors/rsed-cursor-fingerhand.png"), auto;
+    text-transform: capitalize;
+    color: black;
+    padding: 3px 18px;
+    border-radius: 2px;
+    white-space: nowrap;
+}
+
+.dropdown-menu > .item:hover
+{
+    background-color: black;
+    color: white;
+    box-shadow: 0 7px 8px -5px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    transform: scale(1.05);
+}
+
+.dropdown-menu.show
+{
+    display: block;
+}
+
+#popup-notifications-container
+{
+    cursor: initial;
+    z-index: var(--zindex-popups);
+    width: 420px;
+    height: auto;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#popup-notifications-container .popup-notification
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    text-align: left;
+    word-wrap: break-word;
+    color: black;
+    background-color: yellow;
+    font-weight: bold;
+}
+
+#popup-notifications-container .icon-element
+{
+    margin-right: 20px;
+    font-size: 150%;
+}
+
+#popup-notifications-container > .popup-notification:not(:last-child)
+{
+    border-bottom: 1px solid black;
+}
+
+#popup-notifications-container .popup-notification.error .text-container::before
+{
+    content: "Error! ";
+}
+
+#blue-screen
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999; /* Above everything else.*/
+    cursor: initial; /* Remove RallySportED-js's own cursor graphic.*/
+    display: none; /* Will be displayed when a fatal error occurs.*/
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: gray;
+    color: rgb(210, 210, 210);
+}
+
+#blue-screen > *
+{
+    transform: translateY(-20vh);
+}
+
+#blue-screen h1
+{
+    font-size: 200%;
+    font-weight: bold;
+}
+
+#blue-screen #error-description
+{
+    font-size: 100%;
+    color: white;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+#blue-screen #error-description::before
+{
+    content: "Error: ";
+}
+
+[v-cloak]
+{
+    display: none !important;
+}
+
+.animation-flip
+{
+    animation-name: animation-flip-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.2s;
+}
+
+.animation-popup-slide-in
+{
+    animation-name: animation-popup-slide-in-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 0.3s;
+}
+
+@keyframes animation-flip-frames
+{
+    0% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+@keyframes animation-popup-slide-in-frames
+{
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0px); }
+}
+
+@media only screen and (max-width: 980px)
+{
+    #popup-notifications-container
+    {
+        border-radius: 0;
+        bottom: 0;
+        right: 0;
+        transform: none;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 600px)
+{
+    #html-ui .button-bar:not(.main)
+    {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 450px)
+{
+    #html-ui .button-bar
+    {
+        display: none;
+    }
+}
