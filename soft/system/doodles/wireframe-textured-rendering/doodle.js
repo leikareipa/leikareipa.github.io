@@ -30,7 +30,7 @@ export function run_doodle(doodleAssetPath = "./", args = {})
             isHighResRender: false,
             areAssetsInitialized: false,
             areControlsFrozen: false,
-            viewRotationSpeed: 0.00012,
+            viewRotationSpeed: 0.00009,
             viewPosition: [40767, 2450, -33562],
             viewDirectionRetroNgon: Rngon.rotation_vector(0, 1.13, 0),
             viewDirectionLuujanko: Luu.rotation(0, -2.7, 0),

@@ -1,0 +1,124 @@
+.animation-bulge
+{
+    animation-name: animation-bulge-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.25s;
+}
+
+.animation-jump
+{
+    animation-name: animation-jump-frames;
+    animation-iteration-count: 2;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.3s;
+}
+
+.animation-fadeout
+{
+    animation-name: animation-fadeout-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-duration: 0.25s;
+}
+
+.animation-fadein
+{
+    animation-name: animation-fadeout-frames;
+    animation-direction: reverse;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-duration: 0.15s;
+}
+
+.animation-spin
+{
+    animation-name: animation-spin-frames;
+    animation-iteration-count: 100;
+    animation-timing-function: linear;
+    animation-duration: 1s;
+}
+
+.animation-flip
+{
+    animation-name: animation-flip-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.55s;
+}
+
+.animation-jumping
+{
+    animation-name: animation-jump-frames;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.45s;
+}
+
+.animation-dialog-flip
+{
+    animation-name: animation-dialog-flip-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.15s;
+}
+
+.animation-slide-down
+{
+    animation-name: animation-slide-down-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.15s;
+}
+
+@keyframes animation-slide-down-frames
+{
+    0% { opacity: 0; margin-top: -3px;  }
+    100% { opacity: 1; margin-top: 0; }
+}
+
+@keyframes animation-dialog-flip-frames
+{
+    0% { opacity: 0; transform: translateX(-50%) rotateX(30deg); }
+    100% { opacity: 1; transform: translateX(-50%) rotateX(0deg); }
+}
+
+@keyframes animation-bulge-frames
+{
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes animation-jump-frames
+{
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes animation-fadeout-frames
+{
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes animation-spin-frames
+{
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(45deg); }
+}
+
+@keyframes animation-flip-frames
+{
+    0% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+@keyframes animation-reveal-new-list-button-frames
+{
+    0% { opacity: 0; transform: translateY(-80px); }
+    60% { opacity: 1; transform: translateY(0px); }
+    70% { opacity: 1; transform: translateY(-6px); }
+    100% { opacity: 1; transform: translateY(0px); }
+}

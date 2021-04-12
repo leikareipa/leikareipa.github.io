@@ -1,0 +1,938 @@
+* a
+{
+    color: inherit;
+}
+
+html
+{
+    height: 100%;
+}
+
+body
+{
+    height: 100%;
+    background-color: #c0c0c0;
+    color: white;
+    text-align: center;
+    margin: 0;
+    overflow-y: scroll;
+    background-color: #dbdbdb;
+    background-size: 20px 20px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+
+    position: relative;
+    z-index: 1;
+    font-family: "Delius", sans-serif;
+}
+
+footer
+{
+    font-family: sans-serif;
+    color: rgb(128, 128, 128);
+    padding-top: 0;
+    padding-bottom: 35px;
+    font-size: 90%;
+    opacity: 0;
+}
+
+#content
+{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#content > #header
+{
+    opacity: 0;
+    background-color: #77716c;
+    padding-bottom: 180px;
+    background-size: 20px 20px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+}
+
+#app-title
+{
+    position: absolute;
+    top: 11px;
+    left: 13%;
+    z-index: 0;
+}
+
+#app-name
+{
+    position: relative;
+    font-family: "Beth Ellen";
+    z-index: 1;
+    color: #e1e1e1;
+    font-size: 275%;
+}
+
+#observations-list-container
+{
+    flex: 1;
+}
+
+#observation-list
+{
+    position: relative;
+    z-index: 1;
+    min-height: 710px;
+    background-color: transparent;
+
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+#observation-list:empty::before
+{
+    font-variant: normal;
+    text-rendering: auto;
+    position: relative;
+    top: 0;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    content: "\f520";
+    display: inline-block;
+    vertical-align: middle;
+    height: 140px;
+    line-height: 140px;
+    font-weight: 900;
+    animation: fa-spin 2.7s infinite linear;
+    font-size: 70px;
+    color: #77716c;
+}
+
+.app-menu
+{
+    position: absolute;
+    z-index: 3;
+    top: 70px;
+    left: calc(14% + 355px); /* Next to the app title.*/
+    display: flex;
+    flex-direction: row;
+}
+
+.app-menu > .app-menu-item
+{
+    text-align: center;
+    margin: 7px;
+    margin-right: 5px;
+    color: #f1f1f1;
+    padding: 15px;
+}
+
+.app-menu > .app-menu-item a
+{
+    text-decoration: none;
+}
+
+.app-menu > .app-menu-item:hover
+{
+    color: white;
+    border-bottom: 4px dotted #e9e9e9;
+}
+
+.AsyncIconButton.enabled
+{
+    cursor: pointer;
+}
+
+.AsyncIconButton.enabled:active
+{
+    border-bottom-width: 3px;
+}
+
+.AsyncIconButton.waiting
+{
+    cursor: auto;
+}
+
+.AsyncIconButton.disabled
+{
+    cursor: auto;
+}
+
+.Button,
+.MenuButton,
+.CheckBoxButton
+{
+    cursor: pointer;
+}
+
+.Button.disabled,
+.MenuButton.disabled,
+.CheckBoxButton.disabled
+{
+    cursor: auto;
+}
+
+.MenuButton > .dropdown > .items > *:first-child
+{
+    border-radius: 13px 2px 0 0;
+}
+
+.MenuButton > .dropdown > .items > *:last-child
+{
+    border-radius: 0 0 13px 13px;
+}
+
+.ObservationList > .ObservationListMenuBar
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    width: 405px;
+    position: absolute;
+    top: 65px;
+    right: 13%;
+    color: rgba(241, 241, 241, 0.45);
+    opacity: 1;
+    height: 45px;
+    line-height: 45px;
+    z-index: 41; /* Above observation list elements.*/
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons
+{
+    margin-left: 25px;
+    display: flex;
+    flex-direction: row;
+    flex-basis: 152px;
+    justify-content: flex-end;
+}
+
+.ObservationList > .ObservationListMenuBar.sticky
+{
+    position: fixed;
+    top: 2px;
+    right: 16px;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons *
+{
+    flex-grow: 1;
+    margin-left: 0px;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton.sticky-search
+{
+    transform: none;
+    background-color: red;
+    position: sticky;
+    top: 0;
+    right: 0;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .Button,
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton,
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton
+{
+    position: relative;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .Button > .icon,
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon,
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton > .icon
+{
+    color: #f1f1f1;
+}
+
+/* Font Awesome icons.*/
+.ObservationList > .ObservationListMenuBar > .buttons > .Button > .icon .fas,
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .icon .fas,
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton > .icon .fas
+{
+    transform: scale(1.1);
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .Button > .tooltip,
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .tooltip,
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton > .tooltip
+{
+    white-space: nowrap;
+    position: absolute;
+    top: -37px;
+    left: 10px;
+    background-color: #e1dfdf;
+    color: rgb(51, 51, 51);
+    border-radius: 13px 13px 13px 2px;
+    font-size: 100%;
+    font-family: "Nunito";
+    line-height: 100%;
+    padding: 9px;
+    padding-left: 13px;
+    padding-right: 13px;
+    min-width: 45px;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown
+{
+    user-select: none;
+    -moz-user-select: none;
+
+    color: white;
+    border-radius: 13px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 15px 20px rgba(15, 7, 0, 0.2);
+
+    position: absolute;
+    top: 52px;
+    right: 18px;
+    z-index: 1000;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.custom-menu
+{
+    border-radius: 13px 2px 13px 13px;
+    background-color: white;
+    color: black;
+    cursor: auto;
+    text-align: center;
+    padding-bottom: 5px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.active
+{
+    animation-name: animation-slide-down-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.15s;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title
+{
+    padding-top: 2px;
+    padding-bottom: 2px;
+    color: rgb(8, 8, 8);
+    background-color: white;
+    cursor: auto;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > div
+{
+    color: black;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .item:hover
+{
+    background-color: white;
+    transform: scale(1.08);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title:hover
+{
+    background-color: white;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.inactive
+{
+    display: none;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.active
+{
+    display: block;
+}
+
+.ObservationList > .ObservationListMenuBar > .BirdSearch
+{
+    flex: 2;
+    flex-shrink: 0;
+}
+
+.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar
+{
+    text-align: left;
+}
+
+.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar > .search-field
+{
+    width: 100%;
+    height: 45px;
+    outline: none;
+    padding: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 50px;
+    padding-left: 41px; /* Make room for the embedded search icon on the left.*/
+    border: none;
+
+    position: relative;
+    z-index: 21;
+
+    color: black;
+    background-color: #e1dfdf;
+}
+
+.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar > .search-field.active
+{
+    background-color: #f1f1f1;
+    box-shadow: 0px 7px 2px -4px rgba(0, 0, 0, 0.1);
+}
+
+.ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar > .icon
+{
+    text-align: left;
+    position: relative;
+    top: -44px;
+    left: 15px;
+    z-index: 22;
+    color: rgb(51, 51, 51);
+    pointer-events: none;
+}
+
+.BirdSearchResultsDisplay,
+.BirdSearchResultsDisplay.logged-in
+{
+    position: absolute;
+    top: 49px; /* Below the search input field.*/
+    right: calc(12% + 128px); /* Level with the search input field.*/
+    z-index: 10; /* Above the observation list.*/
+}
+
+.BirdSearchResultsDisplay.active
+{
+    animation-name: animation-slide-down-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.15s;
+}
+
+.BirdSearchResult
+{
+    font-family: "Nunito", serif;
+    font-size: 98%;
+    width: 380px; /* Width of the parent container minus padding.*/
+    color: black;
+    background-color: #ffffff;
+    padding: 6px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 16px;
+    margin-top: 4px;
+    box-shadow: 0 20px 15px 20px rgba(15, 7, 0, 0.2);
+
+    position: relative;
+    z-index: 20;
+}
+
+.BirdSearchResult > .AsyncIconButton
+{
+    color: white;
+    position: absolute;
+    bottom: -25px;
+    right: 0px;
+    width: 65px;
+    height: 65px;
+    line-height: 65px;
+    background-color: rgb(184, 30, 30);
+    border-radius: 50%;
+    border: 4px solid white;
+    font-size: 125%;
+}
+
+.BirdSearchResult.not-previously-observed > .AsyncIconButton
+{
+    background-color: #3578d8;
+}
+
+.BirdSearchResult > .AsyncIconButton.waiting
+{
+    color: white;
+    background-color: #c1c1c1;
+}
+
+.BirdSearchResult > .AsyncIconButton .fas
+{
+    transform: translateX(-1px) translateY(1px);
+}
+
+.BirdSearchResult.not-previously-observed > .AsyncIconButton .fas
+{
+    transform: none;
+}
+
+.BirdSearchResult .BirdThumbnail
+{
+    width: 110px;
+    height: 110px;
+    margin-left: 10px;
+    margin-right: 28px;
+    border-radius: 50%;
+    border: 10px solid white;
+    box-shadow: -5px 0px 7px -2px rgba(0, 0, 0, 0.3);
+}
+
+.BirdSearchResult > .card
+{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    line-height: 140%;
+    height: 90px; /* Height of the bird thumbnail in .BirdSearchResult.*/
+}
+
+.BirdSearchResult > .card > *
+{
+    flex: 0;
+}
+
+.BirdSearchResult > .card > .bird-name
+{
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: bold;
+    font-size: 100%;
+    margin-bottom: 3px;
+}
+
+.BirdSearchResult > .card > .date-observed
+{
+    font-size: 95%;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.BirdSearchResult > .card > .date-observed > .edit-date
+{
+    cursor: pointer; /* The element is clickable.*/
+}
+
+/* Show a pen icon next to the element.*/
+.BirdSearchResult > .card > .date-observed > .edit-date:hover::after
+{
+    display: inline-block;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    content: "\f304";
+    font-size: 85%;
+    font-weight: 900;
+    margin-left: 5px;
+}
+
+.BirdSearchResult > .card > .classification
+{
+    font-size: 90%;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.ObservationList
+{
+    display: inline-block;
+    width: 100%;
+}
+
+.ObservationList > .ObservationListFootnotes
+{
+    background-color: transparent;
+    color: #e1dfdf;
+    font-family: "Delius", sans-serif;
+    position: absolute;
+    top: 89px;
+    left: 13%;
+    text-align: left;
+}
+
+.ObservationList > .observation-cards
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    transform: translateY(-40px);
+}
+
+.ObservationList > .observation-cards.sata-lajia > .ObservationCardGhost
+{
+    display: block;
+}
+
+.ObservationCard,
+.ObservationCardGhost
+{
+    position: relative;
+    color: black;
+    background-color: transparent;
+    align-items: center;
+    border-radius: 3px;
+    margin: 8px;
+    z-index: 40;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.ObservationCard > .BirdThumbnail,
+.ObservationCardGhost > .BirdThumbnail
+{
+    position: relative;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    border: 16px solid #f3f3f3;
+    box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.6);
+    z-index: 2;
+    background-color: #f3f3f3;
+}
+
+.ObservationCardGhost > .BirdThumbnail
+{
+    background-color: #dbdbdb;
+    border: 1px dashed rgb(143, 143, 143);
+    padding: 15px;
+    box-shadow: none;
+}
+
+.ObservationCard > .observation-info,
+.ObservationCardGhost > .observation-info
+{
+    font-family: "Nunito", serif;
+    font-size: 98%;
+    border-radius: 3px;
+    width: 196px;
+    margin-top: -15px;
+    padding-top: 24px;
+    padding-bottom: 13px;
+    background-color: #eaeaea;
+    line-height: 115%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.2);
+}
+
+.ObservationCardGhost > .observation-info
+{
+    width: 194px;
+    margin-top: -15px;
+    background-color: #dbdbdb;
+    border: 1px dashed rgb(143, 143, 143);
+    padding-top: 23px;
+    padding-bottom: 12px;
+    box-shadow: none;
+}
+
+.ObservationCard > .observation-info > .bird-name,
+.ObservationCardGhost > .observation-info > .bird-name
+{
+    color: rgba(0, 0, 0, 1);
+    font-weight: bold;
+    font-size: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+}
+
+.ObservationCard > .observation-info > .date,
+.ObservationCardGhost > .observation-info > .date
+{
+    font-size: 80%;
+    color: rgba(0, 0, 0, 0.7);
+    margin-top: 1px;
+}
+
+.Dialog
+{
+    font-family: sans-serif;
+    min-width: 450px;
+    padding-top: 0px;
+    padding-bottom: 1px;
+    background-color: #f9f9f9;
+    border-radius: 3px;
+    display: inline-block;
+    color: black;
+    z-index: 200;
+    box-shadow: 0 6px 30px -7px rgba(0, 0, 0, 0.95);
+    border: 6px solid #3591e7;
+
+    /* Temp hack. Fixes the background border showing through the title's corners.*/
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+
+    /* Center in the viewport.*/
+    position: fixed;
+    transform: translateX(-50%);
+    top: 20px;
+    left: 50%;
+}
+
+.Dialog.QueryObservationDate
+{
+    min-width: 400px;
+}
+
+.Dialog > .title
+{
+    text-align: left;
+    padding: 18px;
+    color: white;
+    border-radius: 0;
+    background-color:#3591e7;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+
+    user-select: none;
+    -moz-user-select: none;
+}
+
+.Dialog > .title > .title-icon
+{
+    margin-right: 5px;
+    font-size: 125%;
+}
+
+.Dialog > .button-bar
+{
+    position: absolute;
+    bottom: -78px;
+    right: 0;
+    display: flex;
+    width: 100%;
+    filter: drop-shadow(0px 0px 14px black);
+}
+
+.Dialog > .button-bar > *
+{
+    font-weight: bold;
+
+    user-select: none;
+    -moz-user-select: none;
+
+    margin: 5px;
+    padding: 0px;
+    font-size: 95%;
+    color: #f2f2f2;
+    cursor: pointer;
+    flex: 1;
+
+    transition: transform 0.025s ease-in-out;
+}
+
+.Dialog > .button-bar > .accept
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.Dialog > .button-bar > .reject:active
+{
+    transform: translateY(2px);
+}
+
+.Dialog > .button-bar > *:hover
+{
+    color: white;
+}
+
+.Dialog > .button-bar > *.disabled
+{
+    color: rgb(168, 168, 168);
+    cursor: auto;
+    pointer-events: none;
+}
+
+.Dialog > .button-bar > *.waiting
+{
+    color: white;
+}
+
+.Dialog > .form
+{
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    display: flex;
+}
+
+.Dialog > .form > .fields
+{
+    flex: 1;
+}
+
+.Dialog > .form > .BirdThumbnail
+{
+    width: 100px;
+    height: 100px;
+    margin-right: 25px;
+    border-radius: 50%;
+}
+
+.Dialog > .form > .fields input
+{
+    outline: none;
+    border-radius: 4px;
+    padding-right: 15px;
+    padding-left: 15px;
+    background-color: white;
+    transition: box-shadow 0.1s ease-in-out;
+    border: 1px solid #e1e1e1;
+    min-height: 47px;
+}
+
+.Dialog > .form > .fields input:focus
+{
+    border: 1px solid #3591e7;
+}
+
+.Dialog.QueryObservationDate > .form > .fields > .date-bar
+{
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+}
+
+.Dialog.QueryObservationDate > .form > .fields > .date-bar *
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.Dialog.QueryObservationDate > .form > .fields > .date-bar > .month
+{
+    flex: 2;
+}
+
+.Dialog.QueryObservationDate > .form > .fields .ScrollerLabel
+{
+    text-align: center;
+}
+
+.Dialog.QueryObservationDate > .form > .fields > .bird-name
+{
+    color: black;
+    text-align: left;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields > .date-bar
+{
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields > .date-bar *
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields > .date-bar > .month
+{
+    flex: 2;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields .ScrollerLabel
+{
+    text-align: center;
+}
+
+.Dialog.QueryAddNewObservation > .form > .fields > .bird-name
+{
+    color: black;
+    text-align: left;
+}
+
+.Dialog.QueryObservationDeletion
+{
+    min-width: 450px;
+    padding-bottom: 2px;
+}
+
+.Dialog.QueryLoginCredentials > .form > .fields
+{
+    text-align: left;
+}
+
+.Dialog.QueryLoginCredentials
+{
+    min-width: 450px;
+    max-width: 450px;
+}
+
+.Dialog.QueryLoginCredentials input
+{
+    margin: 10px 0;
+}
+
+.Dialog.QueryObservationDeletion > .form > .fields,
+.Dialog.QueryLoginCredentials > .form > .fields
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.Dialog.QueryObservationDeletion > .form > .fields > .list-id
+{
+    flex: 1;
+}
+
+.Dialog.QueryObservationDeletion > .form > .fields > .bird-name
+{
+    color: black;
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+.Dialog.QueryLoginCredentials > .form > .fields > .instruction
+{
+    font-size: 90%;
+    color: gray;
+    margin-top: 6px;
+}
+
+.Dialog.QueryObservationDeletion > .form > .fields > .instruction
+{
+    margin-left: auto;
+    margin-right: 4px;
+    margin-top: 9px;
+    font-size: 80%;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.ScrollerLabel
+{
+    user-select: none;
+    -moz-user-select: none;
+}
+
+.ScrollerLabel .Scroller
+{
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.2);
+}
+
+.ScrollerLabel .Scroller:hover
+{
+    color: #3591e7;
+}
+
+.ScrollerLabel .Scroller:active
+{
+    color: #2c81cf;
+}

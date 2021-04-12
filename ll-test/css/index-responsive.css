@@ -1,0 +1,40 @@
+@media only screen and (max-width: 800px)
+{
+    .app-menu
+    {
+        top: 38px;
+    }
+
+    #app-title
+    {
+        top: 12px;
+    }
+
+    header
+    {
+        padding-bottom: 140px;
+    }
+}
+
+@media only screen and (max-width: 650px)
+{
+    .app-menu
+    {
+        left: 0;
+        width: 100%;
+        top: 80px;
+    }
+
+    #app-title
+    {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 15px;
+    }
+
+    header
+    {
+        padding-bottom: 180px;
+        border-radius: 0;
+    }
+}

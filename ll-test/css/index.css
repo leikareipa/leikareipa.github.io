@@ -1,0 +1,257 @@
+* a
+{
+    color: inherit;
+}
+
+body
+{
+    background-color: #464646;
+    color: rgb(216, 216, 216);
+    text-align: center;
+    margin: 0;
+
+    background-color: #dbdbdb;
+    background-size: 20px 20px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+}
+
+header
+{
+    position: relative;
+    color: #f1f1f1;
+    padding-bottom: 220px;
+    background-color: #797572;
+    background-size: 20px 20px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+
+    border-radius: 0 0 0 150px;
+}
+
+footer
+{
+    color: rgb(117, 117, 117);
+    font-family: sans-serif;
+    font-size: 85%;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    background-color:  rgba(255, 255, 255, 0.35);
+}
+
+#app-title
+{
+    position: absolute;
+    top: 46px;
+    left: 10%;
+    z-index: 2;
+}
+
+#app-name
+{
+    position: relative;
+    font-family: "Beth Ellen";
+    z-index: 1;
+    font-size: 275%;
+}
+
+#content
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: transparent;
+    margin-bottom: -130px;
+    min-height: 359px;
+}
+
+#create-new-list
+{
+    height: 103px;
+}
+
+#content > *
+{
+    transform: translateY(-30px);
+}
+
+#info
+{
+    font-size: 90%;
+    color: rgb(0, 0, 0);
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 30px;
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+#info > .entry
+{
+    margin: 10px;
+    flex-basis: 350px;
+    margin-top: 50px;
+}
+
+#info > .entry > .text
+{
+    text-align: left;
+    font-family: sans-serif;
+}
+
+#info > .entry > .title
+{
+    font-family: serif;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.app-menu
+{
+    font-family: "Delius", sans-serif;
+    position: absolute;
+    z-index: 3;
+    top: 75px;
+    left: calc(10% + 250px); /* Next to the app title.*/
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 300px;
+}
+
+.app-menu > .app-menu-item
+{
+    text-align: center;
+    margin: 7px;
+    margin-right: 5px;
+    padding: 15px;
+}
+
+.app-menu > .app-menu-item a
+{
+    text-decoration: none;
+}
+
+.app-menu > .app-menu-item:hover
+{
+    color: white;
+}
+
+.CreateNewListButton
+{
+    margin-top: 45px;
+    height: auto;
+    width: 100%;
+    max-width: 500px;
+    display: inline-block;
+    color: black;
+
+    animation-name: animation-reveal-new-list-button-frames;
+    animation-timing-function: ease-in;
+    animation-duration: 0.55s;
+}
+
+.CreateNewListButton > .button
+{
+    user-select: none;
+    -moz-user-select: none;
+
+    transform: translateY(-22px);
+    font-family: sans-serif;
+    height: 20px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    border-radius: 10px;
+    background-color: #0966e0;
+    color: rgb(255, 255, 255);
+    border: 1px solid transparent;
+    flex: 2;
+    box-shadow: 0px 7px 3px -4px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    transition: all 0.05s ease-out;
+}
+
+.CreateNewListButton > .button.step-1
+{
+    cursor: pointer;
+}
+
+.CreateNewListButton > .button.step-1:active
+{
+    transform: translateY(-20px);
+    box-shadow: 0px 5px 3px -4px rgba(0, 0, 0, 0.15);
+}
+
+.CreateNewListButton > .button.step-3
+{
+    user-select: auto;
+    -moz-user-select: auto;
+}
+
+.CreateNewListButton > .button.step-fail
+{
+    background-color: rgb(185, 58, 58);
+}
+
+.ObservationCard
+{
+    position: relative;
+    color: black;
+    background-color: transparent;
+    align-items: center;
+    border-radius: 3px;
+    margin: 8px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.ObservationCard .BirdThumbnail
+{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 16px solid #f3f3f3;
+    box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.6);
+    z-index: 2;
+    background-color: #f3f3f3;
+}
+
+.ObservationCard > .observation-info
+{
+    font-family: "Nunito", serif;
+    font-size: 98%;
+    border-radius: 3px;
+    width: 196px;
+    margin-top: -15px;
+    padding-top: 24px;
+    padding-bottom: 13px;
+    background-color: #eaeaea;
+    line-height: 115%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 2px 5px -4px rgba(0, 0, 0, 0.2);
+}
+
+.ObservationCard > .observation-info > .bird-name
+{
+    color: rgba(0, 0, 0, 1);
+    font-weight: bold;
+    font-size: 90%;
+}
+
+.ObservationCard > .observation-info > .date
+{
+    font-size: 80%;
+    color: rgba(0, 0, 0, 0.7);
+}

@@ -448,7 +448,7 @@
         ],
         "links":
         [
-            {"title":"View sample", "url":"https://www.tarpeeksihyvaesoft.com/s/wray/samples/sample1.html?threads=all&pixelSize=4&resolution=1280x720"},
+            {"title":"View sample", "url":"https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720"},
             {"title":"GitHub", "url":"https://www.github.com/leikareipa/wray"}
         ],
         "description":

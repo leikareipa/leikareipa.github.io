@@ -1,0 +1,95 @@
+@media only screen and (max-width: 1600px)
+{
+    #app-title
+    {
+        left: 10%;
+    }
+
+    .ObservationList > .ObservationListFootnotes
+    {
+        left: 10%;
+    }
+
+    .ObservationList > .ObservationListMenuBar
+    {
+        right: 10%;
+    }
+}
+
+@media only screen and (max-width: 1100px)
+{
+    #app-title
+    {
+        left: 7%;
+    }
+
+    .ObservationList > .ObservationListFootnotes
+    {
+        left: 7%;
+    }
+
+    .ObservationList > .ObservationListMenuBar
+    {
+        right: 7%;
+    }
+}
+
+@media only screen and (max-width: 900px)
+{
+    #content > #header
+    {
+        padding-bottom: 220px;
+    }
+
+    #app-title
+    {
+        left: 2.5%;
+        top: 0px;
+    }
+
+    .ObservationList > .ObservationListFootnotes
+    {
+        left: 2.5%;
+        top: -140px;
+    }
+
+    .ObservationList > .ObservationListMenuBar
+    {
+        width: 95vw;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -90px;
+    }
+
+    .ObservationList > .ObservationListMenuBar.sticky
+    {
+        right: 0;
+        width: 99vw;
+    }
+
+    .BirdSearchResultsDisplay
+    {
+        left: 0;
+        top: 49px;
+    }
+
+    #content > #header
+    {
+        border-radius: 0;
+    }
+}
+
+@media only screen and (max-width: 500px)
+{
+    .Dialog.QueryObservationDate,
+    .Dialog.QueryObservationDeletion
+    {
+        max-width: 90vw;
+        min-width: 90vw;
+    }
+
+    .BirdSearchResult
+    {
+        width: 85vw;
+    }
+}
