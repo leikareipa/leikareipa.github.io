@@ -52,25 +52,20 @@ export function ObservationListMenuBar(props = {}) {
     })
   }), React.createElement(MenuButton, {
     icon: "fas fa-question fa-fw fa-lg",
-    title: tr("Information"),
-    menuTitle: tr("Information"),
     id: "list-info",
-    showTooltip: false,
-    customMenu: React.createElement("div", null, React.createElement("div", {
-      style: {
-        textAlign: "center"
-      }
-    }, tr("About Lintulista")), React.createElement("a", {
-      href: "./guide/",
-      target: "_blank",
-      rel: "noopener noreferrer"
-    }, tr("User's guide")), React.createElement("br", null), React.createElement("a", {
-      href: "mailto:sw@tarpeeksihyvaesoft.com"
-    }, tr("Contact us")), React.createElement("br", null), React.createElement("a", {
-      href: "./guide/images.html",
-      target: "_blank",
-      rel: "noopener noreferrer"
-    }, tr("Image info")), React.createElement("br", null))
+    title: tr("Information"),
+    menuTitle: "Lintulista",
+    items: [{
+      text: tr("Image info"),
+      callbackOnSelect: () => window.open("./guide/images.html")
+    }, {
+      text: tr("User's guide"),
+      callbackOnSelect: () => window.open("./guide/")
+    }, {
+      text: "GitHub",
+      callbackOnSelect: () => window.open("https://github.com/leikareipa/lintulista/")
+    }],
+    showTooltip: false
   }), React.createElement(Button, {
     className: `lock ${isLoggedIn ? "unlocked" : "locked"}`,
     title: isLoggedIn ? tr("Log out") : tr("Log in to edit the list"),
@@ -80,6 +75,7 @@ export function ObservationListMenuBar(props = {}) {
     icon: "fas fa-language fa-fw",
     id: "list-sorting",
     title: tr("Language"),
+    menuTitle: tr("Language"),
     items: [{
       text: "English",
       callbackOnSelect: () => setLanguage({

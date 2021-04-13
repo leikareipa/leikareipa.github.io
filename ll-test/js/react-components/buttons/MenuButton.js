@@ -78,7 +78,7 @@ export function MenuButton(props = {}) {
           className: "items"
         }, props.menuTitle.length ? React.createElement("div", {
           className: "title"
-        }, props.title) : React.createElement(React.Fragment, null), itemElements));
+        }, props.menuTitle) : React.createElement(React.Fragment, null), itemElements));
       }
     }
   })();

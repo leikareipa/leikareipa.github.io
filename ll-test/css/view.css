@@ -35,7 +35,7 @@ footer
     font-size: 90%;
     opacity: 0;
 }
-
+  
 #content
 {
     display: flex;
@@ -60,7 +60,7 @@ footer
 #app-title
 {
     position: absolute;
-    top: 11px;
+    top: 13px;
     left: 13%;
     z-index: 0;
 }
@@ -175,7 +175,7 @@ footer
 
 .MenuButton > .dropdown > .items > *:first-child
 {
-    border-radius: 13px 2px 0 0;
+    border-radius: 13px 13px 0 0;
 }
 
 .MenuButton > .dropdown > .items > *:last-child
@@ -260,11 +260,11 @@ footer
 {
     white-space: nowrap;
     position: absolute;
-    top: -37px;
-    left: 10px;
+    top: -39px;
+    left: 50%;
     background-color: #e1dfdf;
     color: rgb(51, 51, 51);
-    border-radius: 13px 13px 13px 2px;
+    border-radius: 13px 13px 13px 0;
     font-size: 100%;
     font-family: "Nunito";
     line-height: 100%;
@@ -272,6 +272,20 @@ footer
     padding-left: 13px;
     padding-right: 13px;
     min-width: 45px;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .Button > .tooltip:before,
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .tooltip:before,
+.ObservationList > .ObservationListMenuBar > .buttons > .CheckBoxButton > .tooltip:before
+{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    border-top: 7px solid #e1dfdf;
+    border-left: 0px solid transparent;
+    border-right: 10px solid transparent;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown
@@ -287,14 +301,26 @@ footer
     box-shadow: 0 20px 15px 20px rgba(15, 7, 0, 0.2);
 
     position: absolute;
-    top: 52px;
-    right: 18px;
+    top: 59px;
+    right: calc(50% - 35px);
     z-index: 1000;
+}
+
+.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown:before
+{
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    right: 20px;
+    width: 0;
+    border-bottom: 15px solid #f1f1f1;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.custom-menu
 {
-    border-radius: 13px 2px 13px 13px;
+    border-radius: 13px;
     background-color: white;
     color: black;
     cursor: auto;
@@ -317,7 +343,7 @@ footer
     padding-top: 2px;
     padding-bottom: 2px;
     color: rgb(8, 8, 8);
-    background-color: white;
+    background-color: #f1f1f1;
     cursor: auto;
 }
 
@@ -332,14 +358,8 @@ footer
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .item:hover
 {
-    background-color: white;
-    transform: scale(1.08);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-}
-
-.ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title:hover
-{
-    background-color: white;
+    background-color: #3591e7;
+    color: white;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown.inactive
@@ -366,7 +386,7 @@ footer
 .ObservationList > .ObservationListMenuBar > .BirdSearch > .BirdSearchBar > .search-field
 {
     width: 100%;
-    height: 45px;
+    height: 44px;
     outline: none;
     padding: 10px;
     padding-top: 15px;
@@ -549,7 +569,7 @@ footer
     color: #e1dfdf;
     font-family: "Delius", sans-serif;
     position: absolute;
-    top: 89px;
+    top: 91px;
     left: 13%;
     text-align: left;
 }
@@ -935,4 +955,34 @@ footer
 .ScrollerLabel .Scroller:active
 {
     color: #2c81cf;
+}
+
+/* Wavy bottom border. Courtesy of https://stackoverflow.com/a/33763912.*/
+.header-wave
+{
+    position: relative;
+}
+.header-wave::before
+{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-repeat: repeat;
+    height: 11px;
+    background-size: 20px 40px;
+    background-image: radial-gradient(circle at 10px -15px, transparent 20px, #dbdbdb 21px);
+}
+.header-wave::after
+{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-repeat: repeat;
+    height: 15px;
+    background-size: 40px 40px;
+    background-image: radial-gradient(circle at 10px 25px, #dbdbdb 20px, transparent 21px);
 }

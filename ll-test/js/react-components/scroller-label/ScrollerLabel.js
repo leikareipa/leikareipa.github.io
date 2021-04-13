@@ -3,6 +3,7 @@
 import { ll_assert_native_type } from "../../assert.js";
 import { LL_PrivateError } from "../../private-error.js";
 import { Scroller } from "./Scroller.js";
+import { tr } from "../../translator.js";
 export function ScrollerLabel(props = {}) {
   ScrollerLabel.validate_props(props);
   const language = ReactRedux.useSelector(state => state.language);
@@ -13,7 +14,8 @@ export function ScrollerLabel(props = {}) {
     return () => props.onChange(underlyingValue);
   }, [underlyingValue]);
   return React.createElement("div", {
-    className: "ScrollerLabel"
+    className: "ScrollerLabel",
+    "data-language": language
   }, React.createElement(Scroller, {
     icon: "fas fa-caret-up fa-2x",
     additionalClassName: "up",
@@ -37,20 +39,16 @@ export function ScrollerLabel(props = {}) {
         return underlyingValue;
 
       case "month-name":
-        return month_name(underlyingValue - 1, language);
+        return month_name(underlyingValue - 1);
 
       default:
         throw LL_PrivateError("Unknown value type.");
     }
   }
 
-  function month_name(idx = 0, language = "fiFI") {
-    const monthNames = {
-      fiFI: ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"],
-      enEN: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      lat: ["Ianuarius", "Februarius", "Martius", "Aprilis", "Maius", "Iunius", "Iulius", "Augustus", "September", "October", "November", "December"]
-    };
-    return (monthNames[language] || monthNames["fiFI"])[idx % 12];
+  function month_name(idx = 0) {
+    const monthNames = [tr("January"), tr("February"), tr("March"), tr("April"), tr("May"), tr("June"), tr("July"), tr("August"), tr("September"), tr("October"), tr("November"), tr("December")];
+    return monthNames[idx % 12];
   }
 }
 

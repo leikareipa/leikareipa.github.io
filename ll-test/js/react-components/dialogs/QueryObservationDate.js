@@ -14,7 +14,7 @@ export function QueryObservationDate(props = {}) {
   let year = props.observation.year;
   return React.createElement(Dialog, {
     component: "QueryObservationDate",
-    title: tr("Change observation date"),
+    title: tr("Change date of observation"),
     enterAccepts: true,
     rejectButtonText: tr("Cancel"),
     acceptButtonText: tr("Save"),

@@ -109,7 +109,7 @@ export const translations = {
     fiFI: "Kirjautuminen on voimassa, kunnes kirjaudut ulos tai lataat sivun uudelleen; kuitenkin korkeintaan kuutisen tuntia.",
     lat: "Vestri login pagina reload nec remanebit ex activae usque ad log. Ceterum de ipso post sex horas initium eris."
   },
-  "Change observation date": {
+  "Change date of observation": {
     fiFI: "Muokkaa havaintopäivämäärää",
     lat: "Mutare observationis diem"
   },
@@ -160,5 +160,53 @@ export const translations = {
   "Language": {
     fiFI: "Kieli",
     lat: "Lingua"
+  },
+  "January": {
+    fiFI: "tammikuu",
+    lat: "Ianuarius"
+  },
+  "February": {
+    fiFI: "helmikuu",
+    lat: "Februarius"
+  },
+  "March": {
+    fiFI: "maaliskuu",
+    lat: "Martius"
+  },
+  "April": {
+    fiFI: "huhtikuu",
+    lat: "Aprilis"
+  },
+  "May": {
+    fiFI: "toukokuu",
+    lat: "Maius"
+  },
+  "June": {
+    fiFI: "kesäkuu",
+    lat: "Iunius"
+  },
+  "July": {
+    fiFI: "heinäkuu",
+    lat: "Iulius"
+  },
+  "August": {
+    fiFI: "elokuu",
+    lat: "Augustus"
+  },
+  "September": {
+    fiFI: "syyskuu",
+    lat: "September"
+  },
+  "October": {
+    fiFI: "lokakuu",
+    lat: "October"
+  },
+  "November": {
+    fiFI: "marraskuu",
+    lat: "November"
+  },
+  "December": {
+    fiFI: "joulukuu",
+    lat: "December"
   }
 };
