@@ -1,6 +1,10 @@
 "use strict";
 
 export const translations = {
+  "Loading Lintulista. Just a moment...": {
+    fiFI: "Ladataan Lintulistaa. Pieni hetki...",
+    lat: "Parat Lintulista. Placet exspectare..."
+  },
   "Unrecognized observation data": {
     fiFI: "Tuntematon havaintotieto",
     lat: "Non cognita notitia observationis"

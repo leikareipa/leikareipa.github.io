@@ -4,7 +4,7 @@ import { ll_assert_type } from "./assert.js";
 import { LL_Observation } from "./observation.js";
 const initialState = {
   isLoggedIn: false,
-  is100LajiaMode: true,
+  is100LajiaMode: false,
   observations: [],
   knownBirds: [],
   language: "fiFI"
@@ -37,7 +37,8 @@ function reducer(state = initialState, action) {
     case "set-observations":
       {
         return { ...state,
-          observations: observations_sorted_by_date(action.observations)
+          observations: observations_sorted_by_date(action.observations),
+          is100LajiaMode: action.observations.length <= 0
         };
       }
 

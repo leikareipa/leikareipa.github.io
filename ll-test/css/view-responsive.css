@@ -1,6 +1,6 @@
 @media only screen and (max-width: 1600px)
 {
-    #app-title
+    #lintulista #app-title
     {
         left: 10%;
     }
@@ -18,7 +18,7 @@
 
 @media only screen and (max-width: 1100px)
 {
-    #app-title
+    #lintulista #app-title
     {
         left: 7%;
     }
@@ -36,35 +36,40 @@
 
 @media only screen and (max-width: 900px)
 {
-    #content > #header
+    #lintulista.app-running > header
     {
-        padding-bottom: 220px;
+        min-height: 230px;
     }
 
-    #app-title
+    #lintulista.app-running  #app-title
     {
-        left: 2.5%;
-        top: 0px;
+        left: 3%;
+        top: -4px;
     }
 
     .ObservationList > .ObservationListFootnotes
     {
-        left: 2.5%;
-        top: -140px;
+        left: 3%;
+        top: 75px;
     }
 
     .ObservationList > .ObservationListMenuBar
     {
-        width: 95vw;
-        left: 50%;
-        transform: translateX(-50%);
-        top: -90px;
+        width: 83vw;
+        left: 3%;
+        top: 118px;
+    }
+
+    .ObservationList > .ObservationListMenuBar .buttons
+    {
+        flex-basis: 160px;
     }
 
     .ObservationList > .ObservationListMenuBar.sticky
     {
         right: 0;
-        width: 99vw;
+        width: 93vw;
+        left: 15px;
     }
 
     .BirdSearchResultsDisplay
@@ -73,7 +78,7 @@
         top: 49px;
     }
 
-    #content > #header
+    #lintulista > header
     {
         border-radius: 0;
     }
@@ -84,12 +89,100 @@
     .Dialog.QueryObservationDate,
     .Dialog.QueryObservationDeletion
     {
-        max-width: 90vw;
-        min-width: 90vw;
+        max-width: 93vw;
+        min-width: 93vw;
     }
 
-    .BirdSearchResult
+    .ObservationList > .ObservationListMenuBar .MenuButton.list-language
     {
-        width: 85vw;
+        display: none;
+    }
+
+    .ObservationList > .ObservationListMenuBar.sticky
+    {
+        left: 10px;
+    }
+
+    .ObservationList > .ObservationListMenuBar .buttons
+    {
+        flex-basis: 125px;
+    }
+
+    .ObservationList > .ObservationListMenuBar .buttons
+    {
+        flex-basis: 130px;
+        margin-left: 20px;
+    }
+
+    .BirdSearchResultsDisplay
+    {
+        left: 0;
+        top: 49px;
+        width: 95vw;
+    }
+
+    .CheckBoxButton .tooltip,
+    .MenuButton .tooltip
+    {
+        display: none;
+    }
+
+    .ObservationList > .ObservationListMenuBar
+    {
+        width: 95vw;
+    }
+}
+
+@media only screen and (max-width: 450px)
+{
+    .ObservationCard .BirdThumbnail
+    {
+        width: 190px;
+        height: 190px;
+    }
+
+    .ObservationList > .ObservationListMenuBar .buttons
+    {
+        flex-basis: 120px;
+        margin-left: 10px;
+    }
+}
+
+@media only screen and (max-width: 410px)
+{
+    .ObservationList > .ObservationListFootnotes
+    {
+        left: 5%;
+    }
+
+    #lintulista.app-running  #app-title
+    {
+        left: 5%;
+    }
+
+    .BirdSearchResult .BirdThumbnail
+    {
+        margin-right: 15px;
+    }
+
+    .ObservationList > .ObservationListMenuBar.non-sticky
+    {
+        display: none;
+    }
+
+    #lintulista.app-running  > header
+    {
+        min-height: 160px;
+    }
+
+    .ObservationList > .ObservationListMenuBar.sticky
+    {
+        left: 10px;
+    }
+
+    .ObservationList > .ObservationListMenuBar .buttons
+    {
+        flex-basis: 120px;
+        margin-left: 15px;
     }
 }

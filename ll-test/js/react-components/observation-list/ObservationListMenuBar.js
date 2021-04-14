@@ -9,12 +9,12 @@ import { CheckBoxButton } from "../buttons/CheckBoxButton.js";
 import { Button } from "../buttons/Button.js";
 import { tr } from "../../translator.js";
 import { ll_error_popup } from "../../message-popup.js";
+import { ll_hash_navigate } from "../../hash-router.js";
 export function ObservationListMenuBar(props = {}) {
   ObservationListMenuBar.validate_props(props);
   const isLoggedIn = ReactRedux.useSelector(state => state.isLoggedIn);
   const is100LajiaMode = ReactRedux.useSelector(state => state.is100LajiaMode);
   const setIs100LajiaMode = ReactRedux.useDispatch();
-  const setLanguage = ReactRedux.useDispatch();
   const [isBarSticky, setIsBarSticky] = React.useState(false);
   React.useEffect(() => {
     update_sticky_scroll();
@@ -34,7 +34,7 @@ export function ObservationListMenuBar(props = {}) {
     }
   });
   return React.createElement("div", {
-    className: `ObservationListMenuBar ${isBarSticky ? "sticky" : ""}`
+    className: `ObservationListMenuBar ${isBarSticky ? "sticky" : "non-sticky"}`
   }, React.createElement(BirdSearch, {
     backend: props.backend
   }), React.createElement("div", {
@@ -73,27 +73,18 @@ export function ObservationListMenuBar(props = {}) {
     callbackOnButtonClick: handle_login_button_click
   }), React.createElement(MenuButton, {
     icon: "fas fa-language fa-fw",
-    id: "list-sorting",
+    id: "list-language",
     title: tr("Language"),
     menuTitle: tr("Language"),
     items: [{
       text: "English",
-      callbackOnSelect: () => setLanguage({
-        type: "set-language",
-        language: "enEN"
-      })
+      callbackOnSelect: () => ll_hash_navigate("language", "enEN")
     }, {
       text: "Latine",
-      callbackOnSelect: () => setLanguage({
-        type: "set-language",
-        language: "lat"
-      })
+      callbackOnSelect: () => ll_hash_navigate("language", "lat")
     }, {
       text: "Suomi",
-      callbackOnSelect: () => setLanguage({
-        type: "set-language",
-        language: "fiFI"
-      })
+      callbackOnSelect: () => ll_hash_navigate("language", "fiFI")
     }],
     showTooltip: false
   })));

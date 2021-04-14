@@ -17,26 +17,46 @@ body
     margin: 0;
     overflow-y: scroll;
     background-color: #dbdbdb;
-    background-size: 20px 20px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
-
     position: relative;
     z-index: 1;
     font-family: "Delius", sans-serif;
 }
 
-footer
+#lintulista header
 {
+    box-sizing: border-box;
+    text-align: left;
+    background-color: #77716c;
+    background-size: 20px 20px;
+    min-height: 50vh;
+    height: 50vh;
+    transition: min-height 0.4s ease-in-out;
+}
+
+#lintulista.app-running header
+{
+    box-sizing: content-box;
+    height: 0;
+    min-height: 180px;
+}
+
+#lintulista footer
+{
+    display: none;
     font-family: sans-serif;
-    color: rgb(128, 128, 128);
+    color: gray;
     padding-top: 0;
     padding-bottom: 35px;
     font-size: 90%;
-    opacity: 0;
 }
-  
-#content
+
+#lintulista.app-running footer,
+#lintulista.app-running #app-title
+{
+    display: inline;
+}
+
+#lintulista
 {
     display: flex;
     flex-direction: column;
@@ -47,31 +67,51 @@ footer
     width: 100%;
 }
 
-#content > #header
+#lintulista .startup-loading-spinner
 {
-    opacity: 0;
-    background-color: #77716c;
-    padding-bottom: 180px;
-    background-size: 20px 20px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+    animation: swing 5s ease-in-out infinite,
+               reveal-fadein 1.2s linear;
+    font-family: sans-serif;
+    padding: 15px 30px;
+    background-color: #989898;
+    color: white;
+    font-size: 120%;
+    border-radius: 6px;
+    border-bottom: 2px solid gray;
 }
 
-#app-title
+#lintulista #app-container
 {
-    position: absolute;
-    top: 13px;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-40px);
+}
+
+#lintulista.app-running #app-container
+{
+    flex-grow: 1;
+    transform: none;
+    display: initial;
+}
+
+#lintulista #app-title
+{
+    display: none;
+    text-transform: lowercase;
+    position: relative;
+    top: 34px;
     left: 13%;
     z-index: 0;
-}
-
-#app-name
-{
-    position: relative;
     font-family: "Beth Ellen";
-    z-index: 1;
     color: #e1e1e1;
     font-size: 275%;
+}
+
+#lintulista.app-running #app-title
+{
+    top: 13px;
 }
 
 #observations-list-container
@@ -79,34 +119,9 @@ footer
     flex: 1;
 }
 
-#observation-list
+.no-display
 {
-    position: relative;
-    z-index: 1;
-    min-height: 710px;
-    background-color: transparent;
-
-    padding: 10px;
-    padding-bottom: 0px;
-}
-
-#observation-list:empty::before
-{
-    font-variant: normal;
-    text-rendering: auto;
-    position: relative;
-    top: 0;
-    -webkit-font-smoothing: antialiased;
-    font-family: "Font Awesome 5 Free";
-    content: "\f520";
-    display: inline-block;
-    vertical-align: middle;
-    height: 140px;
-    line-height: 140px;
-    font-weight: 900;
-    animation: fa-spin 2.7s infinite linear;
-    font-size: 70px;
-    color: #77716c;
+    display: none;
 }
 
 .app-menu
@@ -212,8 +227,8 @@ footer
 .ObservationList > .ObservationListMenuBar.sticky
 {
     position: fixed;
-    top: 2px;
-    right: 16px;
+    top: 6px;
+    right: 50px;
     filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
 }
 
@@ -335,14 +350,14 @@ footer
     animation-name: animation-slide-down-frames;
     animation-iteration-count: 1;
     animation-timing-function: ease-in-out;
-    animation-duration: 0.15s;
+    animation-duration: 0.2s;
 }
 
 .ObservationList > .ObservationListMenuBar > .buttons > .MenuButton > .dropdown > .items > .title
 {
     padding-top: 2px;
     padding-bottom: 2px;
-    color: rgb(8, 8, 8);
+    color: black;
     background-color: #f1f1f1;
     cursor: auto;
 }
@@ -419,13 +434,13 @@ footer
     pointer-events: none;
 }
 
-.BirdSearchResultsDisplay,
-.BirdSearchResultsDisplay.logged-in
+.BirdSearchResultsDisplay
 {
     position: absolute;
     top: 49px; /* Below the search input field.*/
     right: calc(12% + 128px); /* Level with the search input field.*/
     z-index: 10; /* Above the observation list.*/
+    width: 390px;
 }
 
 .BirdSearchResultsDisplay.active
@@ -438,9 +453,10 @@ footer
 
 .BirdSearchResult
 {
+    box-sizing: border-box;
     font-family: "Nunito", serif;
     font-size: 98%;
-    width: 380px; /* Width of the parent container minus padding.*/
+    width: 100%;
     color: black;
     background-color: #ffffff;
     padding: 6px;
@@ -576,11 +592,13 @@ footer
 
 .ObservationList > .observation-cards
 {
+    position: relative;
+    top: -45px;
+    animation: reveal-up 0.8s ease-in-out;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    transform: translateY(-40px);
 }
 
 .ObservationList > .observation-cards.sata-lajia > .ObservationCardGhost
@@ -607,8 +625,8 @@ footer
 .ObservationCardGhost > .BirdThumbnail
 {
     position: relative;
-    width: 170px;
-    height: 170px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     border: 16px solid #f3f3f3;
     box-shadow: 0 3px 5px -4px rgba(0, 0, 0, 0.6);
@@ -958,11 +976,11 @@ footer
 }
 
 /* Wavy bottom border. Courtesy of https://stackoverflow.com/a/33763912.*/
-.header-wave
+#lintulista > header.wave
 {
     position: relative;
 }
-.header-wave::before
+#lintulista > header.wave::before
 {
     content: "";
     position: absolute;
@@ -974,7 +992,7 @@ footer
     background-size: 20px 40px;
     background-image: radial-gradient(circle at 10px -15px, transparent 20px, #dbdbdb 21px);
 }
-.header-wave::after
+#lintulista > header.wave::after
 {
     content: "";
     position: absolute;
@@ -985,4 +1003,43 @@ footer
     height: 15px;
     background-size: 40px 40px;
     background-image: radial-gradient(circle at 10px 25px, #dbdbdb 20px, transparent 21px);
+}
+
+.wave.glide::before,
+.wave.glide::after
+{
+    animation: slide-right 3s linear infinite;
+}
+
+.wave.paused::before,
+.wave.paused::after
+{
+    animation-play-state: paused !important;
+}
+
+@keyframes slide-right
+{
+    0%   {left: -40px;}
+    100% {left: 0px;}
+}
+
+@keyframes swing
+{
+    0%   {transform: rotate(-2deg);}
+    50%  {transform: rotate(2deg);}
+    100% {transform: rotate(-2deg);}
+}
+
+@keyframes reveal-up
+{
+    0%   {opacity: 0; transform: translateY(0px) rotateY(15deg);}
+    60%  {opacity: 0; transform: translateY(0px) rotateY(15deg);}
+    100% {opacity: 1; transform: translateY(0px) rotateY(0deg);}
+}
+
+@keyframes reveal-fadein
+{
+    0%   {opacity: 0;}
+    80%  {opacity: 0;}
+    100% {opacity: 1;}
 }

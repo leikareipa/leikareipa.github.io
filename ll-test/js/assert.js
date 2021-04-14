@@ -46,7 +46,7 @@ export function ll_assert_native_type(typeName = "", ...variables) {
     }
 
     if (!isOfType) {
-      throw LL_PrivateError(`Unexpected variable type "${typeof variable}". Expected "${typeName}".`);
+      throw LL_PrivateError(`Unexpected variable type: "${typeof variable}". Expected "${typeName}".`);
     }
   }
 

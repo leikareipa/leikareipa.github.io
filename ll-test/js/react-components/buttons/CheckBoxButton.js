@@ -9,10 +9,7 @@ export function CheckBoxButton(props = {}) {
                                            ${isChecked ? "checked" : "not-checked"}`,
     onClick: handle_click
   }, React.createElement("div", {
-    className: "tooltip",
-    style: {
-      display: props.showTooltip ? "initial" : "none"
-    }
+    className: `tooltip ${props.showTooltip ? "" : "no-display"}`
   }, props.tooltip), React.createElement("div", {
     className: "icon",
     title: props.title
