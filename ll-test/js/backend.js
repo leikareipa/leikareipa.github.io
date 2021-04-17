@@ -5,7 +5,6 @@ import { ll_backend_request } from "./backend-request.js";
 import { LL_Observation } from "./observation.js";
 import { LL_Bird } from "./bird.js";
 import { LL_BaseType } from "./base-type.js";
-import { delay } from "./delay.js";
 export async function LL_Backend(listKey, reduxStore) {
   const knownBirds = Object.freeze((await ll_backend_request.get_known_birds_list()));
   reduxStore.dispatch({
@@ -17,7 +16,6 @@ export async function LL_Backend(listKey, reduxStore) {
   });
   const observations = await ll_backend_request.get_observations(listKey);
   update_observation_store(observations);
-  await delay(5000);
   let loginToken = null;
   let loginValidUntil = undefined;
   const publicInterface = Object.freeze({
