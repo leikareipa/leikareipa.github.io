@@ -1,7 +1,7 @@
 "use strict";
 
 import { is_defined, ll_assert_native_type } from "../../assert.js";
-import { BackendAccess } from "../../backend-access.js";
+import { LL_Backend } from "../../backend.js";
 export function CreateNewListButton(props = {}) {
   CreateNewListButton.validate_props(props);
   const [currentStep, setCurrentStep] = React.useState("1");
@@ -20,7 +20,7 @@ export function CreateNewListButton(props = {}) {
       case "2":
         {
           (async () => {
-            const keys = await BackendAccess.create_new_list();
+            const keys = await LL_Backend.create_new_list();
 
             if (keys) {
               setNewListKeys(keys);

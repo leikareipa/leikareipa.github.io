@@ -1,19 +1,10 @@
 "use strict";
 
-import { darken_viewport } from "./darken-viewport.js";
 import { LL_BaseType } from "./base-type.js";
-import { LL_PrivateError } from "./private-error.js";
-import { LL_PublicError } from "./public-error.js";
+import { LL_Throwable } from "./throwable.js";
 export function ll_assert(condition, failMessage = "") {
   if (!condition) {
-    throw LL_PrivateError(failMessage);
-  }
-
-  return;
-}
-export function ll_public_assert(condition, failMessage = "") {
-  if (!condition) {
-    throw LL_PublicError(failMessage);
+    throw LL_Throwable(failMessage);
   }
 
   return;
@@ -23,30 +14,32 @@ export function ll_assert_type(type, ...objects) {
 
   for (const object of objects) {
     if (!type.is_parent_of(object)) {
-      throw LL_PrivateError(`Unexpected object type. Expected ${type.name}.`);
+      throw LL_Throwable(`Unexpected object type. Expected ${type.name}.`);
     }
   }
 
   return;
 }
-export function ll_assert_native_type(typeName = "", ...variables) {
-  ll_assert(typeof typeName === "string", "Invalid argument.");
-
+export function ll_assert_native_type(typeName, ...variables) {
   for (const variable of variables) {
     let isOfType = false;
 
-    switch (typeName) {
-      case "array":
-        isOfType = Array.isArray(variable);
-        break;
+    if (typeof typeName === "string") {
+      switch (typeName) {
+        case "array":
+          isOfType = Array.isArray(variable);
+          break;
 
-      default:
-        isOfType = typeof variable === typeName;
-        break;
+        default:
+          isOfType = typeof variable === typeName;
+          break;
+      }
+    } else if (typeof typeName === "function") {
+      isOfType = variable instanceof typeName;
     }
 
     if (!isOfType) {
-      throw LL_PrivateError(`Unexpected variable type: "${typeof variable}". Expected "${typeName}".`);
+      throw LL_Throwable(`Unexpected variable type "${typeof variable}". Expected "${typeName}".`);
     }
   }
 

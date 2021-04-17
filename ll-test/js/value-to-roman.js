@@ -42,7 +42,7 @@ const numerals = Object.freeze([{
   9: "MX"
 }]);
 export function value2roman(value = 1) {
-  if (value < 0 || value > 9999) {
+  if (value < 1 || value > 9999) {
     console.error(`The value ${value} is out of range for conversion to roman numerals.`);
     return value;
   }

@@ -1,3 +1,9 @@
+:root
+{
+    --zindex-dialog: 200;
+    --zindex-popups: 50; /* Below shades.*/
+}
+
 * a
 {
     color: inherit;
@@ -621,6 +627,29 @@ body
     flex-direction: column;
 }
 
+.ObservationCard .BirdThumbnail,
+.ObservationCard .observation-info
+{
+    transform: none;
+    transition: background-color 1.5s ease,
+                border-color 1.5s ease,
+                transform 1s ease,
+                box-shadow 1s ease;
+}
+
+.ObservationCard.highlighted .BirdThumbnail
+{
+    transform: scale(1.04);
+    box-shadow: 0 3px 10px -4px rgba(0, 0, 0, 0.6);
+}
+
+.ObservationCard.highlighted .BirdThumbnail,
+.ObservationCard.highlighted .observation-info
+{
+    border-color: palegoldenrod;
+    background-color: palegoldenrod;
+}
+
 .ObservationCard > .BirdThumbnail,
 .ObservationCardGhost > .BirdThumbnail
 {
@@ -696,14 +725,12 @@ body
     font-family: sans-serif;
     min-width: 450px;
     padding-top: 0px;
-    padding-bottom: 1px;
     background-color: #f9f9f9;
     border-radius: 3px;
     display: inline-block;
     color: black;
-    z-index: 200;
+    z-index: var(--zindex-dialog);
     box-shadow: 0 6px 30px -7px rgba(0, 0, 0, 0.95);
-    border: 6px solid #3591e7;
 
     /* Temp hack. Fixes the background border showing through the title's corners.*/
     border-top-right-radius: 10px;
@@ -716,23 +743,20 @@ body
     left: 50%;
 }
 
-.Dialog.QueryObservationDate
+.Dialog.QueryNewObservationDate
 {
     min-width: 400px;
 }
 
 .Dialog > .title
 {
+    user-select: none;
     text-align: left;
-    padding: 18px;
+    padding: 20px 18px;
     color: white;
     border-radius: 0;
-    background-color:#3591e7;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-
-    user-select: none;
-    -moz-user-select: none;
+    background-color: #3591e7;
+    border-top: 1px solid #63a9fb;
 }
 
 .Dialog > .title > .title-icon
@@ -744,7 +768,8 @@ body
 .Dialog > .button-bar
 {
     position: absolute;
-    bottom: -78px;
+    bottom: -80px;
+    line-height: 24px;
     right: 0;
     display: flex;
     width: 100%;
@@ -804,6 +829,9 @@ body
     padding-right: 20px;
     padding-bottom: 20px;
     display: flex;
+    background-color: #f9f9f9;
+    border-top: none;
+    align-items: center;
 }
 
 .Dialog > .form > .fields
@@ -817,6 +845,8 @@ body
     height: 100px;
     margin-right: 25px;
     border-radius: 50%;
+    border: 10px solid white;
+    box-shadow: -5px 0px 7px -2px rgb(0 0 0 / 30%);
 }
 
 .Dialog > .form > .fields input
@@ -836,7 +866,27 @@ body
     border: 1px solid #3591e7;
 }
 
-.Dialog.QueryObservationDate > .form > .fields > .date-bar
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar .value
+{
+    background-color: white;
+    border: 1px solid lightgray;
+    padding: 6px;
+    border-radius: 6px;
+    margin: 0 5px 0 5px;
+    min-width: 35px;
+}
+
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar > .year .value
+{
+    min-width: 50px;
+}
+
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar > .month .value
+{
+    min-width: 95px;
+}
+
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar
 {
     display: flex;
     width: 100%;
@@ -844,23 +894,22 @@ body
     flex-direction: row;
 }
 
-.Dialog.QueryObservationDate > .form > .fields > .date-bar *
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar *
 {
-    flex: 1;
     min-width: 0;
 }
 
-.Dialog.QueryObservationDate > .form > .fields > .date-bar > .month
+.Dialog.QueryNewObservationDate > .form > .fields > .date-bar > .month
 {
-    flex: 2;
+    flex: 1;
 }
 
-.Dialog.QueryObservationDate > .form > .fields .ScrollerLabel
+.Dialog.QueryNewObservationDate > .form > .fields .ScrollerLabel
 {
     text-align: center;
 }
 
-.Dialog.QueryObservationDate > .form > .fields > .bird-name
+.Dialog.QueryNewObservationDate > .form > .fields > .bird-name
 {
     color: black;
     text-align: left;
@@ -896,10 +945,9 @@ body
     text-align: left;
 }
 
-.Dialog.QueryObservationDeletion
+.Dialog.ConfirmObservationDeletion
 {
     min-width: 450px;
-    padding-bottom: 2px;
 }
 
 .Dialog.QueryLoginCredentials > .form > .fields
@@ -918,19 +966,19 @@ body
     margin: 10px 0;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields,
+.Dialog.ConfirmObservationDeletion > .form > .fields,
 .Dialog.QueryLoginCredentials > .form > .fields
 {
     display: flex;
     flex-direction: column;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields > .list-id
+.Dialog.ConfirmObservationDeletion > .form > .fields > .list-id
 {
     flex: 1;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields > .bird-name
+.Dialog.ConfirmObservationDeletion > .form > .fields > .bird-name
 {
     color: black;
     text-align: left;
@@ -944,7 +992,7 @@ body
     margin-top: 6px;
 }
 
-.Dialog.QueryObservationDeletion > .form > .fields > .instruction
+.Dialog.ConfirmObservationDeletion > .form > .fields > .instruction
 {
     margin-left: auto;
     margin-right: 4px;
@@ -1042,4 +1090,63 @@ body
     0%   {opacity: 0;}
     80%  {opacity: 0;}
     100% {opacity: 1;}
+}
+
+#popup-notifications-container
+{
+    cursor: initial;
+    z-index: var(--zindex-popups);
+    width: 290px;
+    height: auto;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+#popup-notifications-container .popup-notification
+{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    height: auto;
+    padding: 20px;
+    text-align: left;
+    word-wrap: break-word;
+    color: white;
+    background-color: #77716c;
+    border: 1px solid #404040;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: bottom 0.3s ease-out;
+}
+
+#popup-notifications-container > .popup-notification:not(:last-child)
+{
+    opacity: 0.75;
+    border: none;
+}
+
+#popup-notifications-container > .popup-notification:hover
+{
+    opacity: 1;
+}
+
+#popup-notifications-container .popup-notification.error
+{
+    background-color: #b92020;
+    border-color: #7b0303;
+}
+
+#popup-notifications-container .icon-element
+{
+    margin-right: 20px;
+    font-size: 150%;
 }

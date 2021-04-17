@@ -1,14 +1,9 @@
 "use strict";
 
-import { ll_assert_native_type, ll_assert_type, ll_public_assert } from "../../assert.js";
-import { open_modal_dialog } from "../../open-modal-dialog.js";
-import { QueryObservationDate } from "../dialogs/QueryObservationDate.js";
-import { QueryObservationDeletion } from "../dialogs/QueryObservationDeletion.js";
+import { ll_assert_native_type, ll_assert_type } from "../../assert.js";
 import { BirdSearchResult } from "./BirdSearchResult.js";
 import { BirdSearchBar } from "./BirdSearchBar.js";
-import { LL_Observation } from "../../observation.js";
 import { LL_Bird } from "../../bird.js";
-import { tr } from "../../translator.js";
 export function BirdSearch(props = {}) {
   BirdSearch.validate_props(props);
   const knownBirds = ReactRedux.useSelector(state => state.knownBirds);
@@ -66,63 +61,12 @@ export function BirdSearch(props = {}) {
       return React.createElement(BirdSearchResult, {
         key: bird.species,
         bird: bird,
+        backend: props.backend,
         observation: observation ? observation : null,
         userHasEditRights: isLoggedIn,
-        cbAddObservation: add_bird_to_list,
-        cbRemoveObservation: remove_bird_from_list,
-        cbChangeObservationDate: change_observation_date
+        cbCloseSelf: reset_search_results
       });
     }
-  }
-
-  async function add_bird_to_list(bird = LL_Bird) {
-    ll_assert_type(LL_Bird, bird);
-    const date = new Date();
-    const observation = LL_Observation({
-      species: bird.species,
-      day: date.getDate(),
-      month: date.getMonth() + 1,
-      year: date.getFullYear()
-    });
-    await props.backend.add_observation(observation);
-    reset_search_results();
-  }
-
-  async function remove_bird_from_list(bird = LL_Bird) {
-    ll_assert_type(LL_Bird, bird);
-    const observation = LL_Observation({
-      species: bird.species
-    });
-    await open_modal_dialog(QueryObservationDeletion, {
-      observation,
-      onAccept: async () => {
-        await props.backend.delete_observation(observation);
-      }
-    });
-    reset_search_results();
-  }
-
-  async function change_observation_date(bird = LL_Bird) {
-    ll_assert_type(LL_Bird, bird);
-    const observation = observations.find(obs => obs.species === bird.species);
-    ll_public_assert(LL_Observation.is_parent_of(observation), tr("Unrecognized observation data"));
-    await open_modal_dialog(QueryObservationDate, {
-      observation,
-      onAccept: async ({
-        year,
-        month,
-        day
-      }) => {
-        const modifiedObservation = LL_Observation({
-          species: bird.species,
-          day,
-          month,
-          year
-        });
-        await props.backend.add_observation(modifiedObservation);
-      }
-    });
-    reset_search_results();
   }
 
   function reset_search_results() {

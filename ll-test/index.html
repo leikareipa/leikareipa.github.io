@@ -34,8 +34,11 @@
             <div id="app-container">
             </div>
 
+            <div id="popup-notifications-container">
+            </div>
+
             <footer id="footer">
-                Lintulista &copy;
+                Lintulista by
                 <a href="https://www.tarpeeksihyvaesoft.com" target="_blank">Tarpeeksi Hyvae Soft</a>
                 2021
 
@@ -47,18 +50,28 @@
             
         </div>
 
-        <script type="module">
-            import {ll_hash_route} from "./js/hash-router.js";
-            import {ll_error_popup} from "./js/message-popup.js";
+        <script>
+            window.onerror = function(message, source, lineno, colno, error)
+            {
+                /// TODO.
+                console.error("Uncaught error", error)
+                document.getElementById("lintulista").remove();
+            }
 
-            window.onhashchange = ()=>{
+            window.onunhandledrejection = function(error)
+            {
+                /// TODO.
+                document.getElementById("lintulista").remove();
+            };
+
+            window.onhashchange = function()
+            {
                 window.location.reload();
             };
+        </script>
 
-            window.onunhandledrejection = (error)=>{
-                ll_error_popup(error);
-            };
-            
+        <script type="module">
+            import {ll_hash_route} from "./js/hash-router.js";
             ll_hash_route(window.location.hash);
         </script>
     </body>

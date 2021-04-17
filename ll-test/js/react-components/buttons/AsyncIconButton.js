@@ -2,7 +2,7 @@
 
 import { ll_assert_native_type } from "../../assert.js";
 import { ll_error_popup } from "../../message-popup.js";
-import { LL_PrivateError } from "../../private-error.js";
+import { LL_Throwable } from "../../throwable.js";
 export function AsyncIconButton(props = {}) {
   AsyncIconButton.validate_props(props);
   const [currentIcon, setCurrentIcon] = React.useState(props.icon);
@@ -76,7 +76,7 @@ export function AsyncIconButton(props = {}) {
         }
 
       default:
-        throw LL_PrivateError("Unknown button state.");
+        throw LL_Throwable("Unknown button state.");
     }
   }
 }

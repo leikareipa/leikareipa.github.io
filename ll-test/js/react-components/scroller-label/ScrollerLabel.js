@@ -1,9 +1,10 @@
 "use strict";
 
 import { ll_assert_native_type } from "../../assert.js";
-import { LL_PrivateError } from "../../private-error.js";
+import { LL_Throwable } from "../../throwable.js";
 import { Scroller } from "./Scroller.js";
 import { tr } from "../../translator.js";
+import { value2roman } from "../../value-to-roman.js";
 export function ScrollerLabel(props = {}) {
   ScrollerLabel.validate_props(props);
   const language = ReactRedux.useSelector(state => state.language);
@@ -36,13 +37,13 @@ export function ScrollerLabel(props = {}) {
   function displayable_value() {
     switch (props.type) {
       case "integer":
-        return underlyingValue;
+        return language === "lat" ? value2roman(underlyingValue) : underlyingValue;
 
       case "month-name":
         return month_name(underlyingValue - 1);
 
       default:
-        throw LL_PrivateError("Unknown value type.");
+        throw LL_Throwable("Unknown value type.");
     }
   }
 

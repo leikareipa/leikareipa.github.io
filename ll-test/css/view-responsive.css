@@ -86,8 +86,8 @@
 
 @media only screen and (max-width: 500px)
 {
-    .Dialog.QueryObservationDate,
-    .Dialog.QueryObservationDeletion
+    .Dialog.QueryNewObservationDate,
+    .Dialog.ConfirmObservationDeletion
     {
         max-width: 93vw;
         min-width: 93vw;

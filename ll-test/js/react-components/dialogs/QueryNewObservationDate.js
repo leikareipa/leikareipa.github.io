@@ -6,28 +6,29 @@ import { BirdThumbnail } from "../misc/BirdThumbnail.js";
 import { Dialog } from "./Dialog.js";
 import { tr } from "../../translator.js";
 import { LL_Observation } from "../../observation.js";
-export function QueryObservationDate(props = {}) {
-  QueryObservationDate.validateProps(props);
+export function QueryNewObservationDate(props = {}) {
+  QueryNewObservationDate.validateProps(props);
   const language = ReactRedux.useSelector(state => state.language);
-  let day = props.observation.day;
-  let month = props.observation.month;
-  let year = props.observation.year;
+  let day = props.args.observation.day;
+  let month = props.args.observation.month;
+  let year = props.args.observation.year;
   return React.createElement(Dialog, {
-    component: "QueryObservationDate",
-    title: tr("Change date of observation"),
+    component: "QueryNewObservationDate",
+    title: tr("Date of observation"),
     enterAccepts: true,
+    acceptButtonIcon: "fas fa-clock",
     rejectButtonText: tr("Cancel"),
     acceptButtonText: tr("Save"),
     onDialogAccept: accept,
-    onDialogReject: reject
+    onDialogReject: props.onReject
   }, React.createElement(BirdThumbnail, {
-    species: props.observation.species,
+    species: props.args.observation.species,
     useLazyLoading: false
   }), React.createElement("div", {
     className: "fields"
   }, React.createElement("div", {
     className: "bird-name"
-  }, props.observation.species), React.createElement("div", {
+  }, props.args.observation.species), React.createElement("div", {
     className: "date-bar"
   }, React.createElement("div", {
     className: "day"
@@ -65,21 +66,16 @@ export function QueryObservationDate(props = {}) {
   })))));
 
   function accept() {
-    props.onDialogAccept({
-      day,
-      month,
-      year
-    });
-  }
-
-  function reject() {
-    props.onDialogReject();
+    props.return.day = day;
+    props.return.month = month;
+    props.return.year = year;
+    props.onAccept();
   }
 }
 
-QueryObservationDate.validateProps = function (props) {
-  ll_assert_native_type("object", props);
-  ll_assert_native_type("function", props.onDialogAccept, props.onDialogReject);
-  ll_assert_type(LL_Observation, props.observation);
+QueryNewObservationDate.validateProps = function (props) {
+  ll_assert_native_type("object", props, props.args, props.return);
+  ll_assert_native_type("function", props.onAccept, props.onReject);
+  ll_assert_type(LL_Observation, props.args.observation);
   return;
 };

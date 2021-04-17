@@ -5,10 +5,6 @@ export const translations = {
     fiFI: "Ladataan Lintulistaa. Pieni hetki...",
     lat: "Parat Lintulista. Placet exspectare..."
   },
-  "Unrecognized observation data": {
-    fiFI: "Tuntematon havaintotieto",
-    lat: "Non cognita notitia observationis"
-  },
   "Encountered an error": {
     fiFI: "Sattui virhe",
     lat: "Errorem offendit nec"
@@ -17,24 +13,40 @@ export const translations = {
     fiFI: "Listan tunniste puuttuu",
     lat: "Nullum album fuit id provisum"
   },
-  "Failed to update the observation": {
-    fiFI: "Havainnon tietoja ei voitu päivittää",
-    lat: "Deficio ad update in observationis"
+  "Added the observation": {
+    fiFI: "Laji lisättiin listaan",
+    lat: "Addidit observationis"
   },
   "Failed to add the observation": {
-    fiFI: "Havaintoa ei voitu lisätä",
+    fiFI: "Lajin lisääminen epäonnistui",
     lat: "Deficio addere ad observationis"
   },
-  "Failed to remove the observation": {
-    fiFI: "Havaintoa ei voitu poistaa",
-    lat: "Deficio ad removendum est observationis"
+  "The date was set": {
+    fiFI: "Päivämäärä tallennettiin",
+    lat: "In tempore positum"
   },
-  "Invalid server response": {
-    fiFI: "Palvelinyhteysvirhe",
-    lat: "Servo responsione invalida"
+  "Failed to set the date": {
+    fiFI: "Päivämäärää ei voitu tallentaa",
+    lat: "Deficio ad diem"
+  },
+  "Deleted the observation": {
+    fiFI: "Laji poistettiin listalta",
+    lat: "Remota autem observationis"
+  },
+  "Failed to delete the observation": {
+    fiFI: "Lajin poisto epäonnistui",
+    lat: "Deficio ad delere observationis"
+  },
+  "You've logged in": {
+    fiFI: "Kirjauduit sisään",
+    lat: "Tu signati in"
+  },
+  "You've logged out": {
+    fiFI: "Kirjauduit ulos",
+    lat: "Tu signati ex"
   },
   "Login failed": {
-    fiFI: "Sisäänkirjautuminen epäonnistui",
+    fiFI: "Kirjautuminen epäonnistui",
     lat: "Intro defuit"
   },
   "Logout failed": {
@@ -46,7 +58,7 @@ export const translations = {
     lat: "Intro album ut recensere"
   },
   "Log in": {
-    fiFI: "Kirjaudu sisään",
+    fiFI: "Kirjaudu",
     lat: "Intro"
   },
   "Logging in...": {
@@ -113,9 +125,9 @@ export const translations = {
     fiFI: "Kirjautuminen on voimassa, kunnes kirjaudut ulos tai lataat sivun uudelleen; kuitenkin korkeintaan kuutisen tuntia.",
     lat: "Vestri login pagina reload nec remanebit ex activae usque ad log. Ceterum de ipso post sex horas initium eris."
   },
-  "Change date of observation": {
-    fiFI: "Muokkaa havaintopäivämäärää",
-    lat: "Mutare observationis diem"
+  "Date of observation": {
+    fiFI: "Havaintopäivämäärä",
+    lat: "Observationis diem"
   },
   "Delete an observation": {
     fiFI: "Poista havainto",

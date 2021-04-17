@@ -3,6 +3,7 @@
 import { ll_assert_type } from "./assert.js";
 import { LL_Observation } from "./observation.js";
 const initialState = {
+  highlightedSpecies: null,
   isLoggedIn: false,
   is100LajiaMode: false,
   observations: [],
@@ -31,6 +32,20 @@ function reducer(state = initialState, action) {
       {
         return { ...state,
           isLoggedIn: action.isLoggedIn
+        };
+      }
+
+    case "set-highlighted-species":
+      {
+        return { ...state,
+          highlightedSpecies: action.species
+        };
+      }
+
+    case "remove-species-highlight":
+      {
+        return { ...state,
+          highlightedSpecies: null
         };
       }
 

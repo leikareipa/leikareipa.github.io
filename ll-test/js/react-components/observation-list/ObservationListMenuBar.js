@@ -1,18 +1,14 @@
 "use strict";
 
 import { ll_assert_native_type } from "../../assert.js";
-import { open_modal_dialog } from "../../open-modal-dialog.js";
-import { QueryLoginCredentials } from "../dialogs/QueryLoginCredentials.js";
 import { BirdSearch } from "../bird-search/BirdSearch.js";
 import { MenuButton } from "../buttons/MenuButton.js";
 import { CheckBoxButton } from "../buttons/CheckBoxButton.js";
-import { Button } from "../buttons/Button.js";
+import { ObservationList_MenuBar_LoginButton } from "../buttons/ObservationList_MenuBar_LoginButton.js";
 import { tr } from "../../translator.js";
-import { ll_error_popup } from "../../message-popup.js";
 import { ll_hash_navigate } from "../../hash-router.js";
 export function ObservationListMenuBar(props = {}) {
   ObservationListMenuBar.validate_props(props);
-  const isLoggedIn = ReactRedux.useSelector(state => state.isLoggedIn);
   const is100LajiaMode = ReactRedux.useSelector(state => state.is100LajiaMode);
   const setIs100LajiaMode = ReactRedux.useDispatch();
   const [isBarSticky, setIsBarSticky] = React.useState(false);
@@ -66,11 +62,8 @@ export function ObservationListMenuBar(props = {}) {
       callbackOnSelect: () => window.open("https://github.com/leikareipa/lintulista/")
     }],
     showTooltip: false
-  }), React.createElement(Button, {
-    className: `lock ${isLoggedIn ? "unlocked" : "locked"}`,
-    title: isLoggedIn ? tr("Log out") : tr("Log in to edit the list"),
-    icon: isLoggedIn ? "fas fa-user fa-fw fa-lg" : "fas fa-lock fa-fw fa-lg",
-    callbackOnButtonClick: handle_login_button_click
+  }), React.createElement(ObservationList_MenuBar_LoginButton, {
+    backend: props.backend
   }), React.createElement(MenuButton, {
     icon: "fas fa-language fa-fw",
     id: "list-language",
@@ -88,31 +81,7 @@ export function ObservationListMenuBar(props = {}) {
     }],
     showTooltip: false
   })));
-
-  async function handle_login_button_click() {
-    if (isLoggedIn) {
-      try {
-        await props.backend.logout();
-      } catch (error) {
-        ll_error_popup(error);
-      }
-    } else {
-      await open_modal_dialog(QueryLoginCredentials, {
-        onAccept: async function ({
-          username,
-          password
-        }) {
-          await props.backend.login(username, password);
-        }
-      });
-    }
-
-    return;
-  }
 }
-ObservationListMenuBar.defaultProps = {
-  enabled: true
-};
 
 ObservationListMenuBar.validate_props = function (props) {
   ll_assert_native_type("object", props, props.backend);
