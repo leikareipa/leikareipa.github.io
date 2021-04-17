@@ -75,15 +75,14 @@ body
 
 #lintulista .startup-loading-spinner
 {
-    animation: swing 5s ease-in-out infinite,
-               reveal-fadein 1.2s linear;
+    animation: reveal-flip 1.2s linear;
     font-family: sans-serif;
     padding: 15px 30px;
-    background-color: #989898;
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
     font-size: 120%;
     border-radius: 6px;
-    border-bottom: 2px solid gray;
+    border-bottom: 1px solid black;
 }
 
 #lintulista #app-container
@@ -1085,11 +1084,11 @@ body
     100% {opacity: 1; transform: translateY(0px) rotateY(0deg);}
 }
 
-@keyframes reveal-fadein
+@keyframes reveal-flip
 {
-    0%   {opacity: 0;}
-    80%  {opacity: 0;}
-    100% {opacity: 1;}
+    0%   {transform: rotateX(90deg);}
+    80%  {transform: rotateX(90deg);}
+    100% {transform: rotateX(0deg);}
 }
 
 #popup-notifications-container
@@ -1139,6 +1138,11 @@ body
     opacity: 1;
 }
 
+#popup-notifications-container > .popup-notification.transitioning-in
+{
+    opacity: 0;
+}
+
 #popup-notifications-container .popup-notification.error
 {
     background-color: #b92020;
@@ -1147,6 +1151,6 @@ body
 
 #popup-notifications-container .icon-element
 {
-    margin-right: 20px;
+    margin-right: 15px;
     font-size: 150%;
 }

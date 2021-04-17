@@ -13,7 +13,7 @@ export const translations = {
     fiFI: "Listan tunniste puuttuu",
     lat: "Nullum album fuit id provisum"
   },
-  "Added the observation": {
+  "The observation has been added": {
     fiFI: "Laji lisättiin listaan",
     lat: "Addidit observationis"
   },
@@ -21,15 +21,15 @@ export const translations = {
     fiFI: "Lajin lisääminen epäonnistui",
     lat: "Deficio addere ad observationis"
   },
-  "The date was set": {
+  "The date has been saved": {
     fiFI: "Päivämäärä tallennettiin",
     lat: "In tempore positum"
   },
-  "Failed to set the date": {
+  "Failed to save the date": {
     fiFI: "Päivämäärää ei voitu tallentaa",
     lat: "Deficio ad diem"
   },
-  "Deleted the observation": {
+  "The observation has been deleted": {
     fiFI: "Laji poistettiin listalta",
     lat: "Remota autem observationis"
   },

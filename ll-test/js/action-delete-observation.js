@@ -10,7 +10,7 @@ import { lla_close_dialog } from "./action-close-dialog.js";
 import { ll_assert_type } from "./assert.js";
 export const lla_delete_observation = LL_Action({
   failMessage: "Failed to delete the observation",
-  successMessage: "Deleted the observation",
+  successMessage: "The observation has been deleted",
   act: async function ({
     bird,
     backend

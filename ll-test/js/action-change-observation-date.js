@@ -8,8 +8,8 @@ import { LL_Action } from "./action.js";
 import { LL_Backend } from "./backend.js";
 import { ll_assert, ll_assert_type } from "./assert.js";
 export const lla_change_observation_date = LL_Action({
-  failMessage: "Failed to set the date",
-  successMessage: "The date was set",
+  failMessage: "Failed to save the date",
+  successMessage: "The date has been saved",
   act: async function ({
     observation,
     backend
