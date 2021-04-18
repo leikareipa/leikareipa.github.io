@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lintulista!</title>
+
+        <meta name="referrer" content="no-referrer">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Nunito|Delius|Beth+Ellen&display=swap" rel="stylesheet"> 
+        
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="./css/view.css">
+        <link rel="stylesheet" type="text/css" href="./css/view-animations.css">
+        <link rel="stylesheet" type="text/css" href="./css/view-responsive.css">
+
+        <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/redux@4.0.5/dist/redux.js"></script>
+        <script src="https://unpkg.com/react-redux@7.2.3/dist/react-redux.js"></script>
+    </head>
+    <body>
+
+        <div id="lintulista">
+
+            <header class="wave">
+                <div id="app-title">
+                    Lintulista
+                    <i class="fas fa-feather-alt fa-sm"
+                        style="transform: translateY(-17px) translateX(-20px);">
+                    </i>
+                </div>
+            </header>
+
+            <div id="app-container">
+            </div>
+
+            <div id="popup-notifications-container">
+            </div>
+
+            <footer id="footer">
+                Lintulista by
+                <a href="https://www.tarpeeksihyvaesoft.com" target="_blank">Tarpeeksi Hyvae Soft</a>
+                2021
+
+                &ndash;
+
+                Photos by
+                <a href="./guide/images.html" target="_blank">a variety of authors</a>
+            </footer>
+            
+        </div>
+
+        <div id="blue-screen">
+
+            <h1>
+                <i class="fas fa-fw fa-otter"
+                   style="font-size: 400%;
+                          position: absolute;
+                          transform: translateY(calc(-100% - 10px));
+                          display: block;
+                          margin-bottom: 25px;">
+                </i>
+
+                Lintulista has crashed
+            </h1>
+
+            <div class="error-description">
+                Undefined error
+            </div>
+
+        </div>
+
+        <script type="module">
+            import {ll_crash_app} from "./js/crash-app.js";
+
+            window.onerror = function(message, source, lineno, colno, error)
+            {
+                console.error("Uncaught error", error);
+                ll_crash_app(error);
+            }
+
+            window.onunhandledrejection = function(error)
+            {
+                console.error("Uncaught async error", error)
+                ll_crash_app(error);
+            };
+
+            window.onhashchange = function()
+            {
+                window.location.reload();
+            };
+        </script>
+
+        <script type="module">
+            import {ll_hash_route} from "./js/hash-router.js";
+            ll_hash_route(window.location.hash);
+        </script>
+    </body>
+</html>
