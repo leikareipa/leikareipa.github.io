@@ -3,7 +3,7 @@
 import { LL_BaseType } from "./base-type.js";
 import { ll_assert_native_type } from "./assert.js";
 import { ll_crash_app } from "./crash-app.js";
-import { ll_error_popup__, ll_message_popup } from "./message-popup.js";
+import { ll_error_popup, ll_message_popup } from "./message-popup.js";
 export const LL_Action = function (props = {}) {
   ll_assert_native_type("object", props);
   props = { ...props,
@@ -33,7 +33,7 @@ export const LL_Action = function (props = {}) {
         } else {
           await props.on_error(error, args);
           console.warn("Caught in Action:", error);
-          ll_error_popup__(props.failMessage);
+          ll_error_popup(props.failMessage);
         }
 
         return null;

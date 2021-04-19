@@ -93,7 +93,7 @@ async function route_404(url = "") {
         margin: 0;
         border: none;
     `;
-  iframe.src = "./404/";
+  iframe.src = "404.html";
   const bsContainer = document.getElementById("blue-screen");
   ll_assert_native_type(Element, bsContainer);
   bsContainer.innerHTML = "";

@@ -2,7 +2,6 @@
 
 import { tr } from "./translator.js";
 import { ll_assert_native_type } from "./assert.js";
-import { LL_Throwable } from "./throwable.js";
 export function ll_message_popup(message = "") {
   ll_assert_native_type("string", message);
   popup(tr(message), {
@@ -10,21 +9,12 @@ export function ll_message_popup(message = "") {
   });
   return;
 }
-export function ll_error_popup__(errorMessage = "") {
+export function ll_error_popup(errorMessage = "") {
   ll_assert_native_type("string", errorMessage);
   popup(tr(errorMessage), {
     type: "error"
   });
   return;
-}
-export function ll_error_popup(error = {}) {
-  const errorMessage = error.message || error.reason.message || "Unknown error";
-
-  if (LL_Throwable.is_parent_of(error)) {
-    console.error(`Lintulista: ${errorMessage}`);
-  } else {
-    console.error(`External error: ${errorMessage}`);
-  }
 }
 
 function popup(string = "", args = {}) {

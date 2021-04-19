@@ -2,11 +2,15 @@
 
 import { ll_assert_native_type } from "../../assert.js";
 import { tr } from "../../translator.js";
+import { lla_export_observations_to_csv } from "../../action-export-obs-to-csv.js";
 export function ObservationListFootnotes(props = {}) {
   ObservationListFootnotes.validate_props(props);
-  const obsCount = props.numObservationsInList ? React.createElement(React.Fragment, null, tr("The list has %1 species", props.numObservationsInList), ".") : React.createElement(React.Fragment, null, tr("The list is currently empty"));
-  const obsDownload = props.numObservationsInList ? React.createElement("span", {
-    onClick: props.callbackDownloadList,
+  const observations = ReactRedux.useSelector(state => state.observations);
+  const obsCount = observations.length ? React.createElement(React.Fragment, null, tr("The list has %1 species", observations.length), ".") : React.createElement(React.Fragment, null, tr("The list is currently empty"));
+  const obsDownload = observations.length ? React.createElement("span", {
+    onClick: async () => await lla_export_observations_to_csv.async({
+      observations
+    }),
     style: {
       textDecoration: "underline",
       cursor: "pointer",
@@ -22,7 +26,5 @@ export function ObservationListFootnotes(props = {}) {
 
 ObservationListFootnotes.validate_props = function (props) {
   ll_assert_native_type("object", props);
-  ll_assert_native_type("number", props.numObservationsInList);
-  ll_assert_native_type("function", props.callbackDownloadList);
   return;
 };

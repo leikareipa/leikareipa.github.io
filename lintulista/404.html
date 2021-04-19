@@ -24,7 +24,7 @@
             body .far
             {
                 margin: 10px;
-                font-size: 150%;
+                font-size: 140%;
             }
 
             .badnews
@@ -39,14 +39,14 @@
     <body>
         <div class="badnews">
             <i class="fas fa-plug"></i>
-            404: Not Found
+            Not found (404)
         </div>
 
         <script>
             document.querySelector(".badnews").animate([
-                    {filter: "blur(15px)", transform: "rotateX(90deg)"},
+                    {filter: "blur(20px)", transform: "rotateX(90deg)"},
                     {filter: "none", transform: "none"}
-                ], {duration: 300, easing: "ease-in-out", fill: "forwards", delay: 200});
+                ], {duration: 350, easing: "ease-in-out", fill: "forwards", delay: 200});
         </script>
     </body>
 </html>

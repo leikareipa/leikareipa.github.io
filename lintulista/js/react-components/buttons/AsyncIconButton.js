@@ -38,8 +38,8 @@ export function AsyncIconButton(props = {}) {
         resetState: (state = "enabled") => set_button_state(state)
       });
     } catch (error) {
-      ll_error_popup(error);
       set_button_state("enabled");
+      throw error;
     }
   }
 

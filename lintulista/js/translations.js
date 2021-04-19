@@ -1,10 +1,6 @@
 "use strict";
 
 export const translations = {
-  "Loading Lintulista. Just a moment...": {
-    fiFI: "Ladataan Lintulistaa. Pieni hetki...",
-    lat: "Parat Lintulista. Placet exspectare..."
-  },
   "Lintulista failed to start": {
     fiFI: "Lintulistaa ei voitu käynnistää",
     lat: "Lintulista defecit incipere"
@@ -16,6 +12,10 @@ export const translations = {
   "No list id was provided": {
     fiFI: "Listan tunniste puuttuu",
     lat: "Nullum album fuit id provisum"
+  },
+  "Failed to download CSV": {
+    fiFI: "CSV:n lataus epäonnistui",
+    lat: "CSV defecit receptio"
   },
   "The observation has been added": {
     fiFI: "Laji lisättiin listaan",
