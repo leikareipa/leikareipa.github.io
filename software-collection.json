@@ -108,7 +108,32 @@
     },
 
     {
-        "title":"RallySportED / frontend",
+        "title":"Lintulista",
+        "platforms":["browsers", "GitHub"],
+        "madeWith":["JavaScript", "React", "Node.js", "PostgreSQL", "C++"],
+        "keywords":["lintulista","bird"],
+        "resourceId":"lintulista",
+        "media":
+        [
+            {"type":"image", "urn":"lintulista-4.png", "width":952, "height":465}
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"View sample", "url":"https://www.tarpeeksihyvaesoft.com/lintulista/#samplelst"},
+            {"title":"GitHub (client)", "url":"https://www.github.com/leikareipa/lintulista-client"},
+            {"title":"GitHub (server)", "url":"https://www.github.com/leikareipa/lintulista-server"}
+        ],
+        "description":
+        [
+            "A full-stack web app for hobbyist birdwatchers to keep track of their sightings. This is currently closed-access, but the code is open-source and a public sample is provided (see links, below). Made between 2019-2021."
+        ]
+    },
+
+    {
+        "title":"RallySportED (frontend)",
         "platforms":["browsers"],
         "madeWith":["JavaScript", "Vue.js"],
         "keywords":["rallysported","rally-sport","asset editor","dos","linux"],
@@ -132,7 +157,7 @@
     },
 
     {
-        "title":"RallySportED / backend",
+        "title":"RallySportED (backend)",
         "platforms":["DOS"],
         "madeWith":["x86 assembly", "C", "C++"],
         "keywords":["rallysported","rally-sport","asset editor","dos","linux"],
@@ -193,50 +218,26 @@
     },
 
     {
-        "title":"Ultima VII DOS Cache Patch",
-        "platforms":["GitHub", "DOS"],
-        "madeWith":["x86 assembly"],
-        "keywords":["ultima vii dos cache path","ultima 7 dos cache path","u7dcp","dos"],
-        "resourceId":"u7dcp",
+        "title":"Wray",
+        "platforms":["browsers", "GitHub"],
+        "madeWith":["JavaScript"],
+        "keywords":["wray","rendering","path tracing"],
+        "resourceId":"wray",
         "media":
         [
-            {"type":"youtube", "urn":"a2tyyWk766s"},
-            {"type":"image", "urn":"u7dcp-1.png", "width":640, "height":400}
+            {"type":"image", "urn":"wray-1.png", "width":1302, "height":793}
         ],
         "files":
         [
-            {"platform":"DOS", "version":"1.0"}
         ],
         "links":
         [
-            {"title":"GitHub", "url":"https://www.github.com/leikareipa/u7dcp"}
+            {"title":"Run live sample", "url":"https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720"},
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/wray"}
         ],
         "description":
         [
-            "Patches a famous bug in Ultima 7, where the game forces the CPU cache on at launch. With this patch, the CPU cache can remain off, leading to improved gameplay speed on post-486 PCs. Made in 2017."
-        ]
-    },
-
-    {
-        "title":"DOS Path Tracing Benchmark",
-        "platforms":["DOS"],
-        "madeWith":["C++"],
-        "keywords":["dos path tracing benchmark","path_bench","path-tracing","dos"],
-        "resourceId":"dos-path-bench",
-        "media":
-        [
-            {"type":"image", "urn":"dos-path-bench-2.png", "width":1280, "height":800}
-        ],
-        "files":
-        [
-            {"platform":"DOS", "version":"1.0"}
-        ],
-        "links":
-        [
-        ],
-        "description":
-        [
-            "Test your DOS era processor's floating-point performance with this grayscale path tracer that renders a scene of spheres and counts the number of seconds it took. A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so, and the Xeon E3-1230 in less than one second. Made in 2017."
+            "A vanilla JavaScript path tracer. Features Blender scene import, PFM export, multithreaded rendering, Drago 2003 tonemapping, and BVH tree acceleration. Made between 2019-2020."
         ]
     },
 
@@ -263,7 +264,7 @@
         ],
         "description":
         [
-            "A software 3D renderer for HTML5. Rasterizes n-sided polygons onto a canvas or an offscreen buffer. Features genuine retro aesthetics, vertex and pixel shaders, async rendering, an easy-to-use API, docs, cool samples, and more. Very customizable: from simple wireframe rendering to full ray-traced lighting. Easy to integrate into an existing JavaScript project. Made between 2019-2020."
+            "A well-featured software 3D renderer for HTML5 Canvas. Rasterizes n-sided polygons onto a canvas or an offscreen buffer. Features genuine retro aesthetics, vertex and pixel shaders, async rendering, an easy-to-use API, docs, cool samples, and more. Very customizable: from simple wireframe rendering to full ray-traced lighting. Easy to integrate into an existing JavaScript project. Made between 2019-2020."
         ]
     },
 
@@ -288,32 +289,6 @@
         "description":
         [
             "A minimalist SVG wireframe renderer for HTML5. Has an easy, streamlined API and is simple to integrate into an existing JavaScript project. Made in 2020."
-        ]
-    },
-
-    {
-        "title":"Lintulista",
-        "platforms":["browsers", "GitHub"],
-        "madeWith":["JavaScript", "React", "PHP", "MySQL", "C++"],
-        "keywords":["lintulista","bird"],
-        "resourceId":"lintulista",
-        "media":
-        [
-            {"type":"image", "urn":"lintulista-1.png", "width":952, "height":464},
-            {"type":"image", "urn":"lintulista-2.png", "width":952, "height":464},
-            {"type":"youtube", "urn":"ncM-ybapv_g"}
-        ],
-        "files":
-        [
-        ],
-        "links":
-        [
-            {"title":"Run in browser", "url":"https://www.tarpeeksihyvaesoft.com/lintulista/"},
-            {"title":"GitHub", "url":"https://www.github.com/leikareipa/lintulista"}
-        ],
-        "description":
-        [
-            "A cool app for hobbyist birdwatchers to keep track of their sightings. Was my first full-stack project. Made in 2019."
         ]
     },
 
@@ -377,35 +352,11 @@
         ],
         "links":
         [
-            {"title":"Run in browser", "url":"https://www.tarpeeksihyvaesoft.com/experimental/serlain/"},
             {"title":"GitHub", "url":"https://www.github.com/leikareipa/serlain"}
         ],
         "description":
         [
-            "Looks like an old browser, acts like an old browser - and it almost is. Serlain is a frontend for Internet Archive's Wayback Machine that displays archived web content inside period-correct-looking faux browsers. Pretty cool. Made between 2019-2021."
-        ]
-    },
-
-    {
-        "title":"YQR",
-        "platforms":["Linux","Windows"],
-        "madeWith":["C++", "OpenCL"],
-        "keywords":["rendering","path tracing","ray tracing"],
-        "resourceId":"yqr",
-        "media":
-        [
-            {"type":"image", "urn":"yqr-3.png", "width":512, "height":512},
-            {"type":"image", "urn":"yqr-5.png", "width":512, "height":512}
-        ],
-        "files":
-        [
-        ],
-        "links":
-        [
-        ],
-        "description":
-        [
-            "My first path tracer. Served as a sandbox for personal experimentation in realistic offline rendering, including subsurface scattering, spectral rendering, and volumetric effects (fog, clouds, snow). Ray intersections were computed on the GPU. Made between 2011-2014."
+            "Looks like an old browser, acts like an old browser - and almost is one. Serlain is a frontend for Internet Archive's Wayback Machine that displays archived web content inside period-correct-looking faux browsers. Pretty cool. Made between 2019-2021."
         ]
     },
 
@@ -434,30 +385,6 @@
     },
 
     {
-        "title":"Wray",
-        "platforms":["browsers", "GitHub"],
-        "madeWith":["JavaScript"],
-        "keywords":["wray","rendering","path tracing"],
-        "resourceId":"wray",
-        "media":
-        [
-            {"type":"image", "urn":"wray-1.png", "width":1302, "height":793}
-        ],
-        "files":
-        [
-        ],
-        "links":
-        [
-            {"title":"View sample", "url":"https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720"},
-            {"title":"GitHub", "url":"https://www.github.com/leikareipa/wray"}
-        ],
-        "description":
-        [
-            "A vanilla JavaScript vanilla path tracer. Features Blender scene import, PFM export, multithreaded rendering, Drago 2003 tonemapping, and BVH tree acceleration. Made between 2019-2020."
-        ]
-    },
-
-    {
         "title":"Cloud simulation",
         "platforms":["Linux","Windows"],
         "madeWith":["C++", "Qt", "OpenCL"],
@@ -465,7 +392,6 @@
         "resourceId":"ifu",
         "media":
         [
-            {"type":"image", "urn":"ifu-1.png", "width":720, "height":496},
             {"type":"image", "urn":"ifu-2.png", "width":512, "height":512}
         ],
         "files":
@@ -606,6 +532,54 @@
             "Turns hard drive SMART logs into graphs. Implements its own simple scripting language to combine and process various SMART attributes' values into new ones. Made in 2015."
         ]
     },
+
+    {
+        "title":"Ultima VII DOS Cache Patch",
+        "platforms":["GitHub", "DOS"],
+        "madeWith":["x86 assembly"],
+        "keywords":["ultima vii dos cache path","ultima 7 dos cache path","u7dcp","dos"],
+        "resourceId":"u7dcp",
+        "media":
+        [
+            {"type":"youtube", "urn":"a2tyyWk766s"},
+            {"type":"image", "urn":"u7dcp-1.png", "width":640, "height":400}
+        ],
+        "files":
+        [
+            {"platform":"DOS", "version":"1.0"}
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/u7dcp"}
+        ],
+        "description":
+        [
+            "Patches a famous bug in Ultima 7, where the game forces the CPU cache on at launch. With this patch, the CPU cache can remain off, leading to improved gameplay speed on post-486 PCs. Made in 2017."
+        ]
+    },
+
+    {
+        "title":"DOS Path Tracing Benchmark",
+        "platforms":["DOS"],
+        "madeWith":["C++"],
+        "keywords":["dos path tracing benchmark","path_bench","path-tracing","dos"],
+        "resourceId":"dos-path-bench",
+        "media":
+        [
+            {"type":"image", "urn":"dos-path-bench-2.png", "width":1280, "height":800}
+        ],
+        "files":
+        [
+            {"platform":"DOS", "version":"1.0"}
+        ],
+        "links":
+        [
+        ],
+        "description":
+        [
+            "Test your DOS era processor's floating-point performance with this grayscale path tracer that renders a scene of spheres and counts the number of seconds it took. A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so, and the Xeon E3-1230 in less than one second. Made in 2017."
+        ]
+    },
     
     {
         "title":"DOS video chip compatibility list",
@@ -622,12 +596,33 @@
         ],
         "links":
         [
-            {"title":"Run in browser", "url":"https://www.tarpeeksihyvaesoft.com/dosvideo/"},
             {"title":"Original matrix", "url":"https://web.archive.org/web/20180103021524/https://gona.mactar.hu/DOS_TESTS/"}
         ],
         "description":
         [
             "An early web dev effort of mine, whose goal was to redesign Gona's very useful but somewhat hard-to-read DOS video chip compatibility matrix for improved accessibility. I harvested the HTML matrix data into JSON and implemented a front-end for at-a-glance-friendly access to the data. Made in 2018."
+        ]
+    },
+
+    {
+        "title":"DOS C Compiler Benchmark",
+        "platforms":["DOS", "GitHub"],
+        "madeWith":["C"],
+        "keywords":["dos c compiler benchmark","rendering","rasterizer"],
+        "resourceId":"dccb",
+        "media":
+        [
+        ],
+        "files":
+        [
+        ],
+        "links":
+        [
+            {"title":"GitHub", "url":"https://www.github.com/leikareipa/dccb"}
+        ],
+        "description":
+        [
+            "A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C compilers. Compatible with a variety of legacy C toolchains, such as from Microsoft, Borland, and HI-TECH. The program renders a spinning sphere in VGA mode 13h, then provides characteristics of its runtime performance."
         ]
     },
 
@@ -814,28 +809,6 @@
         "description":
         [
             "A command-line tool that shows the current output rate (frames per second) of a Datapath VisionRGB capture card. Useful for e.g. estimating the card's maximun capture rate while excluding external factors like host CPU/GPU speed. Works with cards that implement the RGBEasy API. Made in 2017."
-        ]
-    },
-
-    {
-        "title":"DOS C Compiler Benchmark",
-        "platforms":["DOS", "GitHub"],
-        "madeWith":["C"],
-        "keywords":["dos c compiler benchmark","rendering","rasterizer"],
-        "resourceId":"dccb",
-        "media":
-        [
-        ],
-        "files":
-        [
-        ],
-        "links":
-        [
-            {"title":"GitHub", "url":"https://www.github.com/leikareipa/dccb"}
-        ],
-        "description":
-        [
-            "A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C compilers. Compatible with a variety of legacy C toolchains, such as from Microsoft, Borland, and HI-TECH. The program renders a spinning sphere in VGA mode 13h, then provides characteristics of its runtime performance."
         ]
     }
 ]
