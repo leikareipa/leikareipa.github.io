@@ -7,26 +7,33 @@
 
 "use strict";
 
-import {transparencyModel} from "./assets/transparency.rngon-model.js";
+import {torusModel} from "./assets/models/torus.rngon-model.js";
 
-// Initialize the model's n-gons. This will also load into memory any textures
-// etc. associated with the model. We can then call the .ngons property to access
-// the n-gon array for rendering the model and so on.
-//
-// Note: The n-gon array is populated asynchronously (pending network access
-// for texture data etc.) and so will remain uninitialized for some time after
-// the call.
-//
-transparencyModel.initialize();
-
-export const sample_scene = ()=>
-{
-    return Rngon.mesh(transparencyModel.ngons,
+export const sample = {
+    initialize: function()
     {
-        translation: Rngon.translation_vector(-22, -10, 0),
-        rotation: Rngon.rotation_vector(0, -90, 0),
-        scaling: Rngon.scaling_vector(25, 25, 30)
-    });
-};
+        torusModel.initialize();
+    },
+    tick: function()
+    {
+        this.numTicks++;
+        
+        for (const ngon of torusModel.ngons)
+        {
+            ngon.material.color = Rngon.color_rgba(215, 215, 115, parent.MODEL_ALPHA);
+        }
 
-export const sampleRenderOptions = {}
+        const rotationSpeed = 0.4;
+    
+        return {
+            mesh: Rngon.mesh(torusModel.ngons, {
+                scaling: Rngon.scaling_vector(30, 30, 30),
+                translation: Rngon.translation_vector(-3, 3, 0),
+                rotation: Rngon.rotation_vector((-60 + rotationSpeed * this.numTicks),
+                                                (-60 + rotationSpeed * this.numTicks),
+                                                0),
+            }),
+        };
+    },
+    numTicks: 0,
+};
