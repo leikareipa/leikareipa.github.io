@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (20 March 2021 03:42:45 UTC)
+// VERSION: live (02 May 2021 05:54:29 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -2787,39 +2787,73 @@ const meta = "fa-fw";
 switch (args.notificationType)
 {
 case "info": return `${meta} fas fa-info`;
-case "warning": return `${meta} fas fa-cat`;
+case "warning": return `${meta} fas fa-toilet-paper-slash`;
 case "error": return `${meta} fas fa-spider`;
 case "fatal": return `${meta} fas fa-otter`;
 default: return `${meta} fas far fa-comment`;
 }
 })();
+// Spacing (in pixels) between two adjacent popup elements.
+const popupVerticalSpacing = 1;
 const popupElement = document.createElement("div");
 const iconElement = document.createElement("i");
 const textContainer = document.createElement("div");
-iconElement.classList.add(...(`icon-element far ${faIcon}`.split(" ")));
+iconElement.classList.add(...(`icon-element ${faIcon}`.split(" ")));
 textContainer.classList.add("text-container");
-popupElement.classList.add("popup-notification",
-"animation-popup-slide-in",
-args.notificationType);
-textContainer.innerHTML = `${args.notificationType == "fatal"? "Fatal:" : ""}
-${string}`;
+popupElement.classList.add("popup-notification", "transitioning-in", args.notificationType);
+textContainer.innerHTML = string;
 popupElement.appendChild(iconElement);
 popupElement.appendChild(textContainer);
 popupElement.onclick = close_popup;
-document.getElementById("popup-notifications-container").appendChild(popupElement);
+const container = document.getElementById("popup-notifications-container");
+container.appendChild(popupElement);
+update_vertical_positions();
+append_transition_in();
 const removalTimer = (args.timeoutMs <= 0)
 ? false
 : setTimeout(close_popup, args.timeoutMs);
-const publicInterface =
-{
-close: close_popup,
-};
+const publicInterface = Object.freeze({
+close: ()=>close_popup(true),
+});
 return publicInterface;
-function close_popup()
+function close_popup(initiatedByUser = false)
 {
-clearTimeout(removalTimer);
-popupElement.remove();
+if (initiatedByUser &&
+popupElement.classList.contains("transitioning-in"))
+{
 return;
+}
+clearTimeout(removalTimer);
+const fadeout = popupElement.animate([
+{transform: "rotateX(90deg)", opacity: "0"}
+], {duration: 200, easing: "ease-in-out"});
+fadeout.onfinish = ()=>{
+popupElement.remove();
+update_vertical_positions();
+}
+return;
+}
+// Adds a transitioning animation to the popup. Assumes that the popup element
+// has just been added to the DOM and has an opacity of 0.
+function append_transition_in()
+{
+setTimeout(()=>popupElement.classList.remove("transitioning-in"), 0);
+return;
+}
+// Arrange the currently open popups vertically bottom to top from newest to
+// oldest. (The first popup node is expected to be the oldest.)
+function update_vertical_positions()
+{
+const popups = Array.from(container.children).filter(p=>p.classList.contains("popup-notification"));
+if (!popups.length) {
+return;
+}
+let totalHeight = popups.reduce((totalHeight, popup)=>{
+return (totalHeight + popup.offsetHeight + popupVerticalSpacing);
+}, 0);
+for (const popup of popups) {
+popup.style.bottom = `${totalHeight -= (popup.offsetHeight + popupVerticalSpacing)}px`;
+}
 }
 }
 /*
@@ -5569,7 +5603,7 @@ add_location: (trackId = 0, newPropId = 0, location = {x:0,y:0,z:0})=>
 {
 if (trackPropLocations[trackId].locations.length >= Rsed.constants.maxPropCount)
 {
-Rsed.alert("Maximum number of props already in use. Remove some to add more.");
+Rsed.alert("All prop slots are already in use.");
 return;
 }
 Rsed.assert && ((trackId >= 0) &&
