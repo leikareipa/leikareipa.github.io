@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (02 May 2021 05:54:29 UTC)
+// VERSION: live (03 May 2021 16:54:36 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -9245,7 +9245,7 @@ depthSort: "painter",
 useDepthBuffer: false,
 // For each pixel we're rendered, mark its texture UV coordinates into our
 // mouse-picking buffer.
-pixelShaderFunction: function({renderWidth, renderHeight, fragmentBuffer})
+pixelShader: function({renderWidth, renderHeight, fragmentBuffer})
 {
 for (let i = 0; i < (renderWidth * renderHeight); i++)
 {
