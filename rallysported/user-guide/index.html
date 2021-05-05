@@ -12,9 +12,10 @@
     </head>
     <body>
         <header>
-            <i class="fas fa-gas-pump"
-               style="margin-right: 10px;"></i>
-            RallySportED's User Guide
+            <i class="fas fa-user-injured"
+               style="margin-right: 10px;">
+            </i>
+            User's Guide: RallySportED-js
         </header>
 
         <div id="main-container">
@@ -24,11 +25,6 @@
             </div>
 
             <div id="side-panel">
-                <h2>
-                    <i class="fas fa-list"></i>
-                    Topics
-                </h2>
-
                 <ul id="topic-list">
                     <!-- This will be filled in with data from topics.js-->
                 </ul>
@@ -39,6 +35,8 @@
         <script type="module">
             import {helpTopics} from "./topics.js"
             
+            let numTopics = 0;
+
             // Create DOM elements for each help topic and insert them onto the page.
             for (const topicTitle of Object.keys(helpTopics))
             {
@@ -54,7 +52,7 @@
 
                 const helpTopicElement = document.createElement("div");
                 helpTopicElement.className = "help-topic";
-                helpTopicElement.innerHTML = `<h2>${topicTitle}</h2> ${helpTopics[topicTitle]}`;
+                helpTopicElement.innerHTML = `<h2>${++numTopics}. ${topicTitle}</h2> ${helpTopics[topicTitle]}`;
 
                 const helpTopicLink = document.createElement("li");
                 helpTopicLink.innerHTML = `<a href="#${simplifiedTopicTitle}">${topicTitle}</a></li>`

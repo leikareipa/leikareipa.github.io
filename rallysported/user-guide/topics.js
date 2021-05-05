@@ -13,37 +13,20 @@ export const helpTopics = [];
 
 helpTopics["Introduction"] = `
     <p>
-        RallySportED is a contemporary asset editor (modding tool) for the classic DOS-era
-        racing game Rally-Sport.
+        RallySportED is a contemporary asset editor for the classic racing game Rally-Sport.
     </p>
         
     <p>
-        RallySportED-js is a JavaScript port of RallySportED, allowing you to create new
-        Rally-Sport tracks in your browser!
-    </p>
-
-    <hr>
-
-    <p>
-        RallySportED is &copy; Tarpeeksi Hyvae Soft. Its source code is available on GitHub:
-        <a href="https://github.com/leikareipa/rallysported">/rallysported</a>.
+        RallySportED-js is a JavaScript port of RallySportED.
     </p>
 
     <p>
-        Rally-Sport is &copy; Jukka Jäkälä. Mr. Jäkälä is not affiliated with RallySportED
-        nor with Tarpeeksi Hyvae Soft.
-    </p>
-
-    <p>
-        Any rights remain with their respective holders.
+        RallySportED &copy; Tarpeeksi Hyvae Soft. Rally-Sport &copy; Jukka Jäkälä, who is not
+        affiliated with RallySportED. Any rights remain with their respective holders.
     </p>
 `;
 
 helpTopics["System requirements"] = `
-    <p>
-        RallySportED-js has the following system requirements:
-    </p>
-
     <ul>
         <li>An up-to-date browser with JavaScript enabled (recommended: Google Chrome)</li>
         <li>A decent CPU (recommended: at least a mid-range machine bought within the last 4 yrs.)</li>
@@ -201,7 +184,7 @@ helpTopics["Tutorial: Creating a track"] = `
     </p>
 
     <h3>
-        1. Starting out
+        Starting out
     </h3>
 
     <p>
@@ -286,7 +269,7 @@ helpTopics["Tutorial: Creating a track"] = `
     </p>
 
     <h3>
-        2. Laying the road
+        Laying the road
     </h3>
     
     <p>
@@ -311,7 +294,7 @@ helpTopics["Tutorial: Creating a track"] = `
     <img src="img/tut-curvesmooth.png">
 
     <h3>
-        3. Decorating the terrain
+        Decorating the terrain
     </h3>
 
     <p>
@@ -340,12 +323,12 @@ helpTopics["Tutorial: Creating a track"] = `
     <img src="img/tut-billboards.png">
 
     <p>
-        <b>Tip 1:</b> If you're not happy with the default Rally-Sport textures, you can
+        <b>Tip:</b> If you're not happy with the default Rally-Sport textures, you can
         hover the cursor over a texture and press the T key to open the texture editor.
     </p>
 
     <p>
-        <b>Tip 2:</b> Any ground tile painted with texture #0 is considered by Rally-Sport a
+        <b>Tip:</b> Any ground tile painted with texture #0 is considered by Rally-Sport a
         water tile. In-game, water tiles form a smooth surface of a pre-determined height,
         while the tiles' actual heights determine how deep the water is when driven into. To
         see water tiles' actual heights in RallySportED-js, use the W key to enable the
@@ -353,7 +336,7 @@ helpTopics["Tutorial: Creating a track"] = `
     </p>
 
     <h3>
-        4. Testing the track in Rally-Sport
+        Testing the track in Rally-Sport
     </h3>
 
     <p>
@@ -393,7 +376,7 @@ helpTopics["Tutorial: Creating a track"] = `
     </p>
 
     <h3>
-        5. Adding an AI opponent
+        Adding an AI opponent
     </h3>
 
     <p>

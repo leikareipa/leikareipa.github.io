@@ -1,6 +1,6 @@
 :root
 {
-    --header-height: 74px;
+    --header-height: 80px;
     --side-panel-width: 330px;
     --content-margin: 20px;
     --content-top-margin: 35px;
@@ -20,7 +20,6 @@ body
 
 header
 {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -100,7 +99,6 @@ hr
     list-style-type: none;
     padding: 0;
     margin: 0;
-    margin-top: 14px;
 }
 
 #side-panel li
@@ -149,11 +147,9 @@ hr
 .help-topic
 {
     box-sizing: border-box;
-    padding: 30px;
+    padding: 15px;
     background-color: white;
     width: 100%;
-    border-radius: var(--content-border-radius);
-    border: 1px solid lightgray;
 }
 
 .help-topic:first-of-type
@@ -191,9 +187,10 @@ hr
     margin-left: auto;
     margin-right: auto;
     border-radius: 0;
-    border: 1px solid lightgray;
+    border: 10px solid lightgray;
     border-radius: 5px;
     max-width: 100%;
+    box-shadow: 0 0 0 1px dimgrey;
 }
 
 .help-topic img:last-child
@@ -225,6 +222,18 @@ hr
     color: black;
     padding: 0;
     margin: 0;
+}
+
+.help-topic h2
+{
+    font-size: 150%;
+    font-weight: normal;
+}
+
+.help-topic h3
+{
+    font-size: 120%;
+    font-weight: normal;
 }
 
 .help-topic h3:not(:first-child)

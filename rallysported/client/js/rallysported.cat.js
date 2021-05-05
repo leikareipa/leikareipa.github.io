@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (03 May 2021 16:54:36 UTC)
+// VERSION: live (04 May 2021 03:00:44 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -2962,7 +2962,50 @@ else
 // Y, i.e. top-to-bottom in screen space. The top-most vertex and the bottom-most
 // vertex will be shared between the two sides.
 {
+// For rectangular ground tiles.
+if (material.auxiliary.isGroundTile)
+{
+Rngon.assert && (ngon.vertices.length == 4)
+|| Rngon.throw("Expected a rectangle.");
+let leftTop = ngon.vertices[3];
+let leftBottom = ngon.vertices[0];
+let rightTop = ngon.vertices[2];
+let rightBottom = ngon.vertices[1];
+if (leftTop.y > leftBottom.y)
+{
+[leftTop, leftBottom] = [leftBottom, leftTop];
+}
+if (rightTop.y > rightBottom.y)
+{
+[rightTop, rightBottom] = [rightBottom, rightTop];
+}
+if (leftTop.y < rightTop.y)
+{
+leftVerts[numLeftVerts++] = leftTop;
+leftVerts[numLeftVerts++] = leftBottom;
+rightVerts[numRightVerts++] = leftTop;
+rightVerts[numRightVerts++] = rightTop;
+rightVerts[numRightVerts++] = rightBottom;
+}
+else
+{
+leftVerts[numLeftVerts++] = rightTop;
+leftVerts[numLeftVerts++] = leftTop;
+leftVerts[numLeftVerts++] = leftBottom;
+rightVerts[numRightVerts++] = rightTop;
+rightVerts[numRightVerts++] = rightBottom;
+}
+if (leftBottom.y < rightBottom.y)
+{
+leftVerts[numLeftVerts++] = rightBottom;
+}
+else
+{
+rightVerts[numRightVerts++] = leftBottom;
+}
+}
 // Generic algorithm for n-sided convex polygons.
+else
 {
 // Sort the vertices by height from smallest Y to largest Y.
 ngon.vertices.sort(vertexSorters.verticalAscending);
@@ -4280,6 +4323,7 @@ groundTileX: tileX,
 groundTileY: (tileZ - 1),
 }),
 isCorner: isCornerTile,
+isGroundTile: true,
 }
 });
 trackPolygons.push(groundQuad);
