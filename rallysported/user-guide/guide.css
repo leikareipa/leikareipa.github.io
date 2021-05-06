@@ -20,6 +20,8 @@ body
 
 header
 {
+    text-transform: lowercase;
+    font-family: Carrois Gothic SC;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -29,15 +31,15 @@ header
     left: 0;
     z-index: 1;
     box-sizing: border-box;
-    width: 100%;
     background-color: white;
     padding-left: 10%;
     text-align: left;
-    font-family: sans-serif;
-    font-weight: normal;
-    font-size: 150%;
+    font-weight: bold;
+    font-size: 200%;
     color: black;
+    white-space: normal;
     height: var(--header-height);
+    margin-left: 10px;
 }
 
 a
@@ -51,37 +53,14 @@ a:hover
     text-decoration: underline;
 }
 
-hr
-{
-    width: 100%;
-    border: none;
-    border-bottom: 1px dashed lightgray;
-}
-
-#main-container
-{
-    position: absolute;
-    top: var(--header-height);
-    width: 100%;
-    z-index: -1;
-    display: flex;
-}
-
-#help-container
-{
-    position: relative;
-    z-index: 0;
-    display: flex;
-}
-
-#side-panel
+.guide-side-panel
 {
     box-sizing: border-box;
     position: fixed;
     z-index: 0;
     top: var(--header-height);
     left: 10%;
-    background-color: white;
+    background-color: transparent;
     width: var(--side-panel-width);
     text-align: left;
     padding: 10px;
@@ -93,41 +72,41 @@ hr
     height: calc(100% - var(--header-height) - var(--content-top-margin));
 }
 
-#side-panel ul
+.guide-side-panel ul
 {
-    counter-reset: line;
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-#side-panel li
+.guide-side-panel li
 {
     counter-increment: line;
     padding-bottom: 4px;
     padding-top: 4px;
 }
 
-#side-panel li a
+.guide-side-panel li a
 {
     padding-bottom: 4px;
     padding-top: 4px;
 }
 
-#side-panel li::before
+.guide-side-panel li::before
 {
     content: counter(line) ". ";
 }
 
-#side-panel li:first-of-type
+.guide-side-panel li:first-of-type
 {
     padding-top: 0;
 }
 
-#help-topics
+.guide-topics
 {
     margin: var(--content-margin);
     margin-top: var(--content-top-margin);
+    margin-left: 5px;
     width: 100%;
     max-width: 45%;
     min-width: 850px;
@@ -144,7 +123,7 @@ hr
     z-index: 0;
 }
 
-.help-topic
+.guide-topic
 {
     box-sizing: border-box;
     padding: 15px;
@@ -152,33 +131,22 @@ hr
     width: 100%;
 }
 
-.help-topic:first-of-type
+.guide-topic:first-of-type
 {
     margin-top: 0;
 }
 
-.help-topic li
+.guide-topic li
 {
     margin-top: 10px;
 }
 
-.help-topic + .topic-anchor
-{
-    /* Vertically separate help topics from each other.*/
-    margin-top: var(--content-margin);
-}
-
-.topic-anchor:first-child
-{
-    margin-top: calc(var(--content-margin) - var(--content-top-margin));
-}
-
-.help-topic *:last-of-type
+.guide-topic *:not(img):last-of-type
 {
     margin-bottom: 0;
 }
 
-.help-topic img
+.guide-topic img
 {
     display: block;
     margin-top: var(--content-margin);
@@ -186,71 +154,76 @@ hr
     margin: 30px;
     margin-left: auto;
     margin-right: auto;
+    border: 6px solid black;
     border-radius: 0;
-    border: 10px solid lightgray;
-    border-radius: 5px;
     max-width: 100%;
-    box-shadow: 0 0 0 1px dimgrey;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.help-topic img:last-child
-{
-    margin-bottom: calc(var(--content-margin) / 2);
-}
-
-.help-topic > table img
+.guide-topic > table img
 {
     all: initial;
 }
 
-.help-topic > table
+.guide-topic > table
 {
     margin: auto;
     margin-top: var(--content-margin);
     margin-bottom: var(--content-margin);
 }
 
-.help-topic h1,
-.help-topic h2,
-.help-topic h3,
-.help-topic h4,
-#side-panel h2
+.guide-topic h1,
+.guide-topic h2,
+.guide-topic h3,
+.guide-topic h4,
+.guide-side-panel h2
 {
+    text-transform: lowercase;
+    font-family: Carrois Gothic SC;
     font-size: 100%;
     font-weight: bold;
-    font-family: sans-serif;
     color: black;
     padding: 0;
     margin: 0;
 }
 
-.help-topic h2
+.guide-topic h2
 {
     font-size: 150%;
-    font-weight: normal;
 }
 
-.help-topic h3
+.guide-topic h3
 {
     font-size: 120%;
-    font-weight: normal;
 }
 
-.help-topic h3:not(:first-child)
+.guide-topic h3:not(:first-child)
 {
     margin-top: var(--content-margin);
 }
 
-.topic-anchor
+.guide-topic-anchor
 {
     visibility: hidden;
     position: relative;
     top: calc(var(--content-margin) * -1);
 }
 
+.guide-topic + .guide-topic-anchor
+{
+    /* Vertically separate help topics from each other.*/
+    margin-top: var(--content-margin);
+}
+
+.guide-topic-anchor:first-child
+{
+    margin-top: calc(var(--content-margin) - var(--content-top-margin));
+}
+
 @media only screen and (max-width: 1500px)
 {
-    #side-panel
+    .guide-side-panel
     {
         left: var(--content-margin);
     }
@@ -260,7 +233,7 @@ hr
         padding-left: var(--content-margin);
     }
 
-    #help-topics
+    .guide-topics
     {
         left: calc(var(--content-margin) + var(--side-panel-width));
         width: calc(100% - 60px - var(--side-panel-width));
@@ -283,35 +256,32 @@ hr
     {
         justify-content: center;
         padding: 0;
+        padding-left: 0;
         position: relative;
     }
 
-    #side-panel
+    .guide-side-panel
     {
         display: none;
     }
 
-    #help-topics
+    .guide-topics
     {
         left: 0;
         width: 100%;
-    }
-
-    header
-    {
-        padding-left: 0;
+        margin-left: 0;
     }
 }
 
 @media only screen and (max-width: 600px)
 {
-    #help-topics
+    .guide-topics
     {
         margin-left: 0;
         margin-right: 0;
     }
 
-    .help-topic
+    .guide-topic
     {
         padding: 20px;
     }
