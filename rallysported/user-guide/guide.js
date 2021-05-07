@@ -6,7 +6,6 @@
 "use strict";
 
 window.addEventListener("DOMContentLoaded", create_app);
-document.addEventListener("scroll", update_side_panel_scroll);
 
 // Takes in a guide topic title string (e.g. "System requirements") and returns
 // a reduced version of the string such that it can be used e.g. as a DOM element
@@ -16,12 +15,6 @@ function simplified_topic_title(title)
     return title.toLowerCase()
                 .replace(/[^a-zA-Z\d\s]/g, "")
                 .replace(/\s+/g, "-")
-}
-
-function update_side_panel_scroll()
-{
-    const originalOffset = parseFloat(getComputedStyle(document.body).getPropertyValue("--header-height"));
-    document.querySelector(".guide-side-panel").style.top = `${Math.max(0, (originalOffset - window.scrollY))}px`;
 }
 
 function create_app()
@@ -45,7 +38,10 @@ function create_app()
     const app = Vue.createApp({});
 
     app.component("guide-header", {
-        props: ["title"],
+        props: {
+            title: {default: "Untitled guide"},
+            software: {default: undefined},
+        },
         beforeCreate()
         {
             document.title = this.title;
@@ -54,6 +50,11 @@ function create_app()
             <header>
                 <slot/>
                 {{title}}
+
+                <div class="software-tag"
+                     v-if="software !== undefined">
+                    {{software}}
+                </div>
             </header>
         `,
     });
@@ -107,6 +108,14 @@ function create_app()
                     </li>
                 </ul>
             </div>
+        `,
+    });
+
+    app.component("guide-tip", {
+        template: `
+            <p class="guide-tip">
+                <slot/>
+            </p>
         `,
     });
 
