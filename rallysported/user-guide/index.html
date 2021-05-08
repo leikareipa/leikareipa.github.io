@@ -4,31 +4,34 @@
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-        <link rel="stylesheet" type="text/css" href="guide.css">
-        <link href="https://fonts.googleapis.com/css?family=Lato|Noto+Serif|Roboto+Slab|PT+Serif&display=swap" rel="stylesheet"> 
+        <script src="https://cdn.jsdelivr.net/npm/vue@3.0.11/dist/vue.global.prod.js"></script>
+        <script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.prod.js"></script>
+
+        <script src="./dokki.js"></script>
+        <link rel="stylesheet"
+              type="text/css"
+              href="dokki.css">
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Lato|Roboto+Slab&display=swap"> 
         <link rel="stylesheet"
               href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
               integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
               crossorigin="anonymous">
-
-        <script src="https://cdn.jsdelivr.net/npm/vue@3.0.11/dist/vue.global.prod.js"></script>
-        <script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.prod.js"></script>
-        <script src="./guide.js"></script>
     </head>
 
     <body>
-        <guide-header title="User's Manual: RallySportED-js"
+        <dokki-header title="User's Manual: RallySportED-js"
                       software="RallySportED-js 1.1">
 
             <i class="fas fa-book"
                style="margin-right: 10px;">
             </i>
 
-        </guide-header>
+        </dokki-header>
         
-        <div class="guide-topics">
+        <div class="dokki-topics">
 
-            <guide-topic title="Introduction">
+            <dokki-topic title="Introduction">
                 <p>
                     RallySportED is a contemporary asset editor for the classic racing game Rally-Sport.
                 </p>
@@ -41,9 +44,9 @@
                     RallySportED &copy; Tarpeeksi Hyvae Soft. Rally-Sport &copy; Jukka Jäkälä, who is not
                     affiliated with RallySportED. Any rights remain with their respective holders.
                 </p>
-            </guide-topic>
+            </dokki-topic>
 
-            <guide-topic title="System requirements">
+            <dokki-topic title="System requirements">
                 <ul>
                     <li>An up-to-date browser with JavaScript enabled (recommended: Google Chrome)</li>
                     <li>A decent CPU (recommended: at least a mid-range machine bought within the last 4 yrs.)</li>
@@ -55,9 +58,9 @@
                     You might find more problems on Apple's operating systems, since the developer has few
                     or no Apple devices to test on.
                 </p>
-            </guide-topic>
+            </dokki-topic>
 
-            <guide-topic title="Controls">
+            <dokki-topic title="Controls">
                 <h3>
                     Mouse controls
                 </h3>
@@ -98,9 +101,9 @@
                     <li><b>Ctrl + C</b>: Texture editor: Copy the current texture onto the clipboard.</li>
                     <li><b>Ctrl + V</b>: Texture editor: Paste the current texture from the clipboard.</li>
                 </ul>
-            </guide-topic>
+            </dokki-topic>
 
-            <guide-topic title="Saving tracks">
+            <dokki-topic title="Saving tracks">
                 <p>
                     You'll find an option in the top left corner of the RallySportED-js UI's menu bar to
                     download a copy of the current track.
@@ -117,9 +120,9 @@
                     You can reload a saved track file by dragging it onto the RallySportED-js editor view, as
                     described in <a href="#loading-a-track">this topic</a>.
                 </p>
-            </guide-topic>
+            </dokki-topic>
 
-            <guide-topic title="Loading tracks">
+            <dokki-topic title="Loading tracks">
                 <p>
                     There are two ways to load a track for editing or viewing in RallySportED-js: (1) by using a
                     URL parameter, and (2) by dragging a track archive file. The file-dragging method
@@ -144,9 +147,9 @@
                     exporting a track from RallySportED-js as described in <a href="http://localhost:8000/user-guide/#saving-a-track">
                     this topic</a> &ndash; from your system onto the RallySportED-js editor view.
                 </p>
-            </guide-topic>
+            </dokki-topic>
 
-            <guide-topic title="The 'Quick share' feature">
+            <dokki-topic title="The 'Quick share' feature">
                 <p>
                     Want to show a track of yours to a friend, but don't want the hassle of sending
                     them a ZIP file? You can use the Serve feature to produce a temporary sharable URL.
@@ -191,9 +194,9 @@
                     address bar, and the shared URL will no longer work. If you start sharing again,
                     a new URL will be generated.
                 </p>
-            </guide-topic>
+            </dokki-topic>
 
-            <guide-topic title="Tutorial: Creating a track">
+            <dokki-topic title="Tutorial: Creating a track">
                 <p>
                     Here's a runner-downer on how to create a new Rally-Sport track with
                     RallySportED!
@@ -338,18 +341,18 @@
             
                 <img src="img/tut-billboards.png">
 
-                <guide-tip>
+                <dokki-tip>
                     If you're not happy with the default Rally-Sport textures, you can
                     hover the cursor over a texture and press the T key to open the texture editor.
-                </guide-tip>
+                </dokki-tip>
 
-                <guide-tip>
+                <dokki-tip>
                     Any ground tile painted with texture #0 is considered by Rally-Sport a
                     water tile. In-game, water tiles form a smooth surface of a pre-determined height,
                     while the tiles' actual heights determine how deep the water is when driven into. To
                     see water tiles' actual heights in RallySportED-js, use the W key to enable the
                     wireframe mode. To see how the tiles would look in-game, disable the wireframe mode.
-                </guide-tip>
+                </dokki-tip>
 
                 <h3>
                     Testing the track in Rally-Sport
@@ -433,13 +436,13 @@
                     changes. Otherwise, when you save the track again in RallySportED-js, you'd
                     revert back to the original CPU opponent.
                 </p>
-            </guide-topic>
+            </dokki-topic>
 
         </div>
 
-        <div class="guide-side-panel">
-            <guide-navbar>
-            </guide-navbar>
+        <div class="dokki-side-panel">
+            <dokki-navbar>
+            </dokki-navbar>
         </div>
 
     </body>

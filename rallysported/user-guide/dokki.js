@@ -37,7 +37,7 @@ function create_app()
 
     const app = Vue.createApp({});
 
-    app.component("guide-header", {
+    app.component("dokki-header", {
         props: {
             title: {default: "Untitled guide"},
             software: {default: undefined},
@@ -47,7 +47,7 @@ function create_app()
             document.title = this.title;
         },
         template: `
-            <header>
+            <div class="dokki-header">
                 <slot/>
                 {{title}}
 
@@ -55,11 +55,11 @@ function create_app()
                      v-if="software !== undefined">
                     {{software}}
                 </div>
-            </header>
+            </div>
         `,
     });
 
-    app.component("guide-topic", {
+    app.component("dokki-topic", {
         props: ["title"],
         data()
         {
@@ -81,17 +81,33 @@ function create_app()
             this.idx = this.$store.state.topics.length;
         },
         template: `
-            <span class="guide-topic-anchor"
+            <span class="dokki-topic-anchor"
                   :id=simplifiedTitle>
             </span>
-            <div class="guide-topic">
-                <h2>{{this.idx}}. {{this.title}}</h2>
+
+            <div class="dokki-topic"
+                 :id=simplifiedTitle>
+            
+                <h2 class="title">
+                    {{this.idx}}. {{this.title}}
+                </h2>
+
+                <span class="permalink"
+                      title="Permalink to this topic">
+
+                    <a :href="'#'+simplifiedTitle">
+                        <i class="fas fa-link"/>
+                    </a>
+
+                </span>
+
                 <slot/>
+
             </div>
         `,
     });
 
-    app.component("guide-navbar", {
+    app.component("dokki-navbar", {
         computed: {
             topics()
             {
@@ -99,7 +115,7 @@ function create_app()
             },
         },
         template: `
-            <div class="guide-navbar">
+            <div class="dokki-navbar">
                 <ul>
                     <li v-for="topic in topics">
                         <a :href="'#'+topic.simplifiedTitle">
@@ -111,9 +127,25 @@ function create_app()
         `,
     });
 
-    app.component("guide-tip", {
+    app.component("dokki-tip", {
         template: `
-            <p class="guide-tip">
+            <p class="dokki-tip">
+                <div class="header">
+                    <i class="fas fa-info-circle"/>
+                    Tip
+                </div>
+                <slot/>
+            </p>
+        `,
+    });
+
+    app.component("dokki-warning", {
+        template: `
+            <p class="dokki-warning">
+                <div class="header">
+                    <i class="fas fa-exclamation-triangle"/>
+                    Warning
+                </div>
                 <slot/>
             </p>
         `,

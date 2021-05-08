@@ -2,9 +2,14 @@
 {
     --header-height: 80px;
     --side-panel-width: 330px;
+    --topics-width: 850px;
     --content-margin: 20px;
-    --content-top-margin: 35px;
-    --content-border-radius: 10px;
+    --header-bottom-margin: 25px;
+    --topics-top-margin: calc(35px - var(--header-bottom-margin));
+
+    /* Margins on the left and right of the page outside of which no content
+     * is allowed.*/
+    --page-outer-side-margin: 11%;
 }
 
 body
@@ -18,7 +23,7 @@ body
     margin: 0;
 }
 
-header
+.dokki-header
 {
     border-bottom: 1px solid lightgray;
     font-family: "Lato";
@@ -32,18 +37,19 @@ header
     z-index: 1;
     box-sizing: border-box;
     background-color: whitesmoke;
-    padding-left: calc(10px + 10%);
-    padding-right: calc(10px + 10%);
+    padding-left: var(--page-outer-side-margin);
+    padding-right: var(--page-outer-side-margin);
     text-align: left;
     font-weight: bold;
     font-size: 160%;
     color: black;
     white-space: normal;
     height: var(--header-height);
-    position: sticky;
+    position: fixed;
+    width: 100%;
 }
 
-header .software-tag
+.dokki-header .software-tag
 {
     margin-left: auto;
     font-size: 60%;
@@ -61,62 +67,59 @@ a:hover
     text-decoration: underline;
 }
 
-.guide-side-panel
+.dokki-side-panel
 {
     box-sizing: border-box;
     position: fixed;
     z-index: 0;
     top: var(--header-height);
-    left: 10%;
+    left: var(--page-outer-side-margin);
     background-color: transparent;
     width: var(--side-panel-width);
     text-align: left;
-    padding: 10px;
-    padding-top: var(--content-top-margin);
-    margin-right: 0;
+    margin-top: var(--header-bottom-margin);
     height: calc(100% - 100px);
     overflow-y: auto;
-    height: calc(100% - var(--header-height) - var(--content-top-margin));
+    height: calc(100% - var(--header-height) - var(--header-bottom-margin));
 }
 
-.guide-side-panel ul
+.dokki-side-panel ul
 {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.guide-side-panel li
+.dokki-side-panel li
 {
     counter-increment: line;
     padding-bottom: 4px;
     padding-top: 4px;
 }
 
-.guide-side-panel li a
+.dokki-side-panel li a
 {
     padding-bottom: 4px;
     padding-top: 4px;
 }
 
-.guide-side-panel li::before
+.dokki-side-panel li::before
 {
     content: counter(line) ". ";
 }
 
-.guide-side-panel li:first-of-type
+.dokki-side-panel li:first-of-type
 {
     padding-top: 0;
 }
 
-.guide-topics
+.dokki-topics
 {
     margin: var(--content-margin);
-    margin-top: var(--content-top-margin);
+    margin-top: calc(var(--header-height) + var(--header-bottom-margin) - 1px);
     margin-left: 5px;
-    width: 100%;
-    max-width: 45%;
-    min-width: 850px;
+    margin-bottom: 60vh;
+    width: var(--topics-width);
     padding: 0;
     background-color: transparent;
     color: black;
@@ -130,29 +133,34 @@ a:hover
     z-index: 0;
 }
 
-.guide-topic
+.dokki-topic
 {
     box-sizing: border-box;
     padding: 15px;
     width: 100%;
 }
 
-.guide-topic:first-of-type
+.dokki-topic p
+{
+    line-height: 1.5;
+}
+
+.dokki-topic:first-of-type
 {
     margin-top: 0;
 }
 
-.guide-topic li
+.dokki-topic li
 {
     margin-top: 10px;
 }
 
-.guide-topic *:not(img):last-of-type
+.dokki-topic > *:not(img):last-of-type
 {
     margin-bottom: 0;
 }
 
-.guide-topic img
+.dokki-topic img
 {
     display: block;
     margin: var(--content-margin);
@@ -165,23 +173,35 @@ a:hover
     box-sizing: border-box;
 }
 
-.guide-topic > table img
+.dokki-topic > table img
 {
     all: initial;
 }
 
-.guide-topic > table
+.dokki-topic > table
 {
     margin: auto;
     margin-top: var(--content-margin);
     margin-bottom: var(--content-margin);
 }
 
-.guide-topic h1,
-.guide-topic h2,
-.guide-topic h3,
-.guide-topic h4,
-.guide-side-panel h2
+.dokki-topic .permalink
+{
+    visibility: hidden;
+    padding-left: 10px;
+    color: gray;
+}
+
+.dokki-topic:hover .permalink
+{
+    visibility: visible;
+}
+
+.dokki-topic h1,
+.dokki-topic h2,
+.dokki-topic h3,
+.dokki-topic h4,
+.dokki-side-panel h2
 {
     font-family: "Lato";
     font-size: 100%;
@@ -191,76 +211,78 @@ a:hover
     margin: 0;
 }
 
-.guide-topic h2
+.dokki-topic h2
 {
+    display: inline-block; /* To allow permalink icons next to the h2 heading.*/
     font-size: 160%;
 }
 
-.guide-topic h3
+.dokki-topic h3
 {
     font-size: 130%;
 }
 
-.guide-topic h3:not(:first-child)
+.dokki-topic h3:not(:first-child)
 {
     margin-top: var(--content-margin);
 }
 
-.guide-topic-anchor
+.dokki-topic-anchor
 {
     visibility: hidden;
     position: relative;
-    top: calc(var(--header-height) * -1 - var(--content-margin));
+    top: calc(var(--header-height) * -1 - var(--content-margin) + var(--topics-top-margin) + 1px);
 }
 
-.guide-topic + .guide-topic-anchor
+.dokki-topic-anchor:first-child
 {
-    /* Vertically separate help topics from each other.*/
-    margin-top: var(--content-margin);
+    margin-top: calc(var(--content-margin) - var(--header-bottom-margin) - var(--topics-top-margin));
 }
 
-.guide-topic-anchor:first-child
+.dokki-tip,
+.dokki-warning
 {
-    margin-top: calc(var(--content-margin) - var(--content-top-margin));
-}
-
-.guide-tip
-{
+    font-size: 95%;
+    border: 1px solid black;
     padding: 14px;
-    border: 1px solid skyblue;
-    border-left-width: 8px;
-    background-color: #f2f8ff;
-    border-radius: 0;
+    border-top-width: 32px;
+    border-radius: 0 10px 10px;
 }
 
-.guide-tip::before
+.dokki-tip
 {
-    font-family: Lato;
-    margin-bottom: 5px;
-    content: "Tip";
+    border-color: deepskyblue;
+    background-color: #f2f8ff;
+}
+
+.dokki-warning
+{
+    border-color: #ff7838;
+    background-color: #fff2ec;
+}
+
+.dokki-tip .header,
+.dokki-warning .header
+{
+    font-family: "Lato";
+    margin-bottom: 18px;
+    margin-top: -40px;
     font-weight: bold;
     display: block;
+    color: white;
 }
 
 @media only screen and (max-width: 1500px)
 {
-    .guide-side-panel
+    :root
     {
-        left: var(--content-margin);
+        --page-outer-side-margin: 20px;
+        --topics-width: 750px;
     }
 
-    header
-    {
-        padding-left: var(--content-margin);
-        padding-right: var(--content-margin);
-    }
-
-    .guide-topics
+    .dokki-topics
     {
         left: calc(var(--content-margin) + var(--side-panel-width));
-        width: calc(100% - 60px - var(--side-panel-width));
-        min-width: initial;
-        max-width: initial;
     }
 }
 
@@ -269,26 +291,32 @@ a:hover
     :root
     {
         --side-panel-width: 265px;
+        --topics-width: 700px;
     }
 }
 
 @media only screen and (max-width: 1000px)
 {
-    header
+    :root
     {
-        justify-content: center;
-        padding: 0;
-        padding-left: 0;
-        padding-right: 0;
-        position: relative;
+        --topics-width: calc(100% - var(--page-outer-side-margin) - var(--side-panel-width) - 5px);
+    }
+}
+
+
+@media only screen and (max-width: 850px)
+{
+    .dokki-header
+    {
+        position: absolute;
     }
 
-    .guide-side-panel
+    .dokki-side-panel
     {
         display: none;
     }
 
-    .guide-topics
+    .dokki-topics
     {
         left: 0;
         width: 100%;
@@ -298,14 +326,18 @@ a:hover
 
 @media only screen and (max-width: 600px)
 {
-    .guide-topics
+    :root
     {
-        margin-left: 0;
-        margin-right: 0;
+        --page-outer-side-margin: 10px;
     }
 
-    .guide-topic
+    .dokki-header
     {
-        padding: 20px;
+        justify-content: center;
+    }
+
+    .dokki-header .software-tag
+    {
+        display: none;
     }
 }
