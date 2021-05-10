@@ -1,20 +1,31 @@
 :root
 {
-    --header-height: 80px;
-    --side-panel-width: 330px;
-    --topics-width: 850px;
+    --header-height: 65px;
+    --side-panel-width: 270px;
+    --topics-width: 810px;
     --content-margin: 20px;
-    --header-bottom-margin: 25px;
+    --header-bottom-margin: 23px;
     --topics-top-margin: calc(35px - var(--header-bottom-margin));
 
     /* Margins on the left and right of the page outside of which no content
      * is allowed.*/
-    --page-outer-side-margin: 11%;
+    --page-vertical-margin: calc(50% - var(--topics-width)/2 - var(--side-panel-width) - var(--content-margin));
+}
+
+a
+{
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover
+{
+    text-decoration: underline;
 }
 
 body
 {
-    font-family: "Roboto Slab";
+    font-family: sans-serif;
     text-align: center;
     align-content: center;
     background-color: white;
@@ -23,10 +34,16 @@ body
     margin: 0;
 }
 
+.dokki-tag
+{
+    margin-top: var(--content-margin);
+    font-size: 80%;
+    color: gray;
+}
+
 .dokki-header
 {
     border-bottom: 1px solid lightgray;
-    font-family: "Lato";
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -37,10 +54,10 @@ body
     z-index: 1;
     box-sizing: border-box;
     background-color: whitesmoke;
-    padding-left: var(--page-outer-side-margin);
-    padding-right: var(--page-outer-side-margin);
+    padding-left: var(--page-vertical-margin);
+    padding-right: var(--page-vertical-margin);
     text-align: left;
-    font-weight: bold;
+    font-weight: normal;
     font-size: 160%;
     color: black;
     white-space: normal;
@@ -56,24 +73,13 @@ body
     font-weight: normal;
 }
 
-a
-{
-    text-decoration: none;
-    color: inherit;
-}
-
-a:hover
-{
-    text-decoration: underline;
-}
-
 .dokki-side-panel
 {
     box-sizing: border-box;
     position: fixed;
     z-index: 0;
     top: var(--header-height);
-    left: var(--page-outer-side-margin);
+    left: var(--page-vertical-margin);
     background-color: transparent;
     width: var(--side-panel-width);
     text-align: left;
@@ -128,7 +134,7 @@ a:hover
     align-items: center;
     text-align: left;
     position: relative;
-    left: calc(10% + var(--side-panel-width));
+    left: calc(50% - var(--topics-width)/2);
     top: 0;
     z-index: 0;
 }
@@ -136,13 +142,26 @@ a:hover
 .dokki-topic
 {
     box-sizing: border-box;
-    padding: 15px;
+    padding: 0;
+    margin: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
     width: 100%;
+}
+
+.dokki-topic ul
+{
+    padding-inline-start: 20px;
 }
 
 .dokki-topic p
 {
     line-height: 1.5;
+}
+
+.dokki-topic p a
+{
+    color: #00ade6;
 }
 
 .dokki-topic:first-of-type
@@ -155,40 +174,20 @@ a:hover
     margin-top: 10px;
 }
 
-.dokki-topic > *:not(img):last-of-type
+.dokki-topic > *:last-of-type
 {
     margin-bottom: 0;
-}
-
-.dokki-topic img
-{
-    display: block;
-    margin: var(--content-margin);
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid black;
-    border-radius: 0;
-    max-width: 100%;
-    width: 65%;
-    box-sizing: border-box;
-}
-
-.dokki-topic > table img
-{
-    all: initial;
-}
-
-.dokki-topic > table
-{
-    margin: auto;
-    margin-top: var(--content-margin);
-    margin-bottom: var(--content-margin);
 }
 
 .dokki-topic .permalink
 {
     visibility: hidden;
-    padding-left: 10px;
+    padding-left: 5px;
+    color: lightgray;
+}
+
+.dokki-topic .permalink:hover
+{
     color: gray;
 }
 
@@ -203,9 +202,8 @@ a:hover
 .dokki-topic h4,
 .dokki-side-panel h2
 {
-    font-family: "Lato";
     font-size: 100%;
-    font-weight: bold;
+    font-weight: normal;
     color: black;
     padding: 0;
     margin: 0;
@@ -239,73 +237,215 @@ a:hover
     margin-top: calc(var(--content-margin) - var(--header-bottom-margin) - var(--topics-top-margin));
 }
 
-.dokki-tip,
-.dokki-warning
+.dokki-embedded
 {
-    font-size: 95%;
-    border: 1px solid black;
-    padding: 14px;
-    border-top-width: 32px;
-    border-radius: 0 10px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.dokki-tip
+.dokki-embedded header
+{
+    font-weight: normal;
+    padding: 6px;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.dokki-embedded header.clickable
+{
+    display: flex;
+    align-items: baseline;
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+    background-color: #f6f6f6;
+}
+
+.dokki-embedded footer
+{
+    padding: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.dokki-embedded .revealer
+{
+    color: #00ade6;
+    font-weight: normal;
+    display: inline-block;
+    margin-left: auto;
+    font-variant: small-caps;
+    text-transform: lowercase;
+}
+
+.dokki-embedded.dokki-tip
 {
     border-color: deepskyblue;
     background-color: #f2f8ff;
 }
 
-.dokki-warning
+.dokki-embedded.dokki-tip header
+{
+    color: white;
+    background-color: deepskyblue;
+}
+
+.dokki-embedded.dokki-warning
 {
     border-color: #ff7838;
     background-color: #fff2ec;
 }
 
-.dokki-tip .header,
-.dokki-warning .header
+.dokki-embedded.dokki-warning header
 {
-    font-family: "Lato";
-    margin-bottom: 18px;
-    margin-top: -40px;
-    font-weight: bold;
-    display: block;
     color: white;
+    background-color: #ff7838;
+}
+
+.dokki-embedded.dokki-output
+{
+    border-color: lightgray;
+}
+
+.dokki-embedded.dokki-output footer > *:first-child
+{
+    margin-top: 0;
+}
+
+.dokki-embedded.dokki-output footer > *:last-child
+{
+    margin-bottom: 0;
+}
+
+.dokki-embedded.dokki-output footer
+{
+    font-family: monospace;
+    padding: 14px;
+}
+
+.dokki-embedded.dokki-code
+{
+    counter-reset: codeLineNumber;
+    border-color: #ffe318;
+    background-color: #fffce2;
+}
+
+.dokki-embedded.dokki-code code
+{
+    counter-increment: codeLineNumber;
+    white-space: pre;
+}
+
+.dokki-embedded.dokki-code code::before
+{
+    color: gray;
+    content: counter(codeLineNumber) ": ";
+}
+
+.dokki-embedded.dokki-code header
+{
+    color: black;
+    background-color: #ffe318;
+}
+
+.dokki-embedded.dokki-code footer
+{
+    font-size: 110%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    overflow: auto;
+}
+
+.dokki-embedded.dokki-image
+{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+}
+
+.dokki-embedded.dokki-image img
+{
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.dokki-embedded.dokki-image header .fas,
+.dokki-embedded.dokki-image header .far
+{
+    margin-right: 4px;
+}
+
+.dokki-embedded.dokki-image footer
+{
+    font-style: italic;
 }
 
 @media only screen and (max-width: 1500px)
 {
     :root
     {
-        --page-outer-side-margin: 20px;
-        --topics-width: 750px;
+        --topics-width: 710px;
+    }
+}
+
+@media only screen and (max-width: 1350px)
+{
+    :root
+    {
+        --side-panel-width: 240px;
+        --topics-width: 610px;
+    }
+}
+
+@media only screen and (max-width: 1200px)
+{
+    :root
+    {
+        --page-vertical-margin: 30px;
     }
 
     .dokki-topics
     {
-        left: calc(var(--content-margin) + var(--side-panel-width));
+        left: calc(var(--page-vertical-margin) + var(--side-panel-width));
+        width: calc(90% - var(--side-panel-width) - var(--page-vertical-margin));
+        margin-left: 0;
     }
 }
 
-@media only screen and (max-width: 1300px)
+@media only screen and (max-width: 1050px)
 {
     :root
     {
-        --side-panel-width: 265px;
-        --topics-width: 700px;
+        --page-vertical-margin: 25px;
+    }
+
+    .dokki-topics
+    {
+        width: calc(100% - var(--side-panel-width) - var(--page-vertical-margin) - var(--content-margin));
     }
 }
 
-@media only screen and (max-width: 1000px)
+@media only screen and (max-width: 900px)
 {
     :root
     {
-        --topics-width: calc(100% - var(--page-outer-side-margin) - var(--side-panel-width) - 5px);
+        --page-vertical-margin: 20px;
+        --side-panel-width: 220px;
     }
 }
 
-
-@media only screen and (max-width: 850px)
+@media only screen and (max-width: 800px)
 {
+    :root
+    {
+        --page-vertical-margin: 10px;
+        --side-panel-width: 0;
+    }
+
     .dokki-header
     {
         position: absolute;
@@ -316,11 +456,17 @@ a:hover
         display: none;
     }
 
+    .dokki-topic
+    {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
     .dokki-topics
     {
-        left: 0;
-        width: 100%;
+        left: var(--page-vertical-margin);
         margin-left: 0;
+        padding-left: 0;
     }
 }
 
@@ -328,12 +474,8 @@ a:hover
 {
     :root
     {
-        --page-outer-side-margin: 10px;
-    }
-
-    .dokki-header
-    {
-        justify-content: center;
+        --header-height: 80px;
+        --header-bottom-margin: 25px;
     }
 
     .dokki-header .software-tag

@@ -7,16 +7,6 @@
 
 window.addEventListener("DOMContentLoaded", create_app);
 
-// Takes in a guide topic title string (e.g. "System requirements") and returns
-// a reduced version of the string such that it can be used e.g. as a DOM element
-// id (e.g. "System requirements" -> "system-requirements").
-function simplified_topic_title(title)
-{
-    return title.toLowerCase()
-                .replace(/[^a-zA-Z\d\s]/g, "")
-                .replace(/\s+/g, "-")
-}
-
 function create_app()
 {
     const store = new Vuex.Store({
@@ -39,7 +29,8 @@ function create_app()
 
     app.component("dokki-header", {
         props: {
-            title: {default: "Untitled guide"},
+            icon: {default: "fas fa-book"},
+            title: {default: "Untitled"},
             software: {default: undefined},
         },
         beforeCreate()
@@ -47,22 +38,32 @@ function create_app()
             document.title = this.title;
         },
         template: `
-            <div class="dokki-header">
-                <slot/>
+            <header class="dokki-header">
+                <i :class="icon" style="margin-right: 10px;"/>
+
                 {{title}}
 
-                <div class="software-tag"
-                     v-if="software !== undefined">
+                <div v-if="software !== undefined"
+                     class="software-tag">
+
                     {{software}}
+
                 </div>
-            </div>
+            </header>
+        `,
+    });
+
+    app.component("dokki-topics", {
+        template: `
+            <main class="dokki-topics">
+                <slot/>
+            </main>
         `,
     });
 
     app.component("dokki-topic", {
         props: ["title"],
-        data()
-        {
+        data() {
             return {
                 idx: -1,
             }
@@ -85,7 +86,7 @@ function create_app()
                   :id=simplifiedTitle>
             </span>
 
-            <div class="dokki-topic"
+            <section class="dokki-topic"
                  :id=simplifiedTitle>
             
                 <h2 class="title">
@@ -103,11 +104,11 @@ function create_app()
 
                 <slot/>
 
-            </div>
+            </section>
         `,
     });
 
-    app.component("dokki-navbar", {
+    app.component("dokki-side-panel", {
         computed: {
             topics()
             {
@@ -115,42 +116,222 @@ function create_app()
             },
         },
         template: `
-            <div class="dokki-navbar">
-                <ul>
-                    <li v-for="topic in topics">
-                        <a :href="'#'+topic.simplifiedTitle">
-                            {{topic.title}}
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <nav class="dokki-side-panel">
+
+                <div class="dokki-navbar">
+                    <ul>
+                        <li v-for="topic in topics">
+                            <a :href="'#'+topic.simplifiedTitle">
+                                {{topic.title}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="dokki-tag">
+                    Documented with
+
+                    <a href="https://github.com/leikareipa/dokki"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                       
+                        dokki
+                    </a>
+                </div>
+            
+            </nav>
+        `,
+    });
+
+    app.component("dokki-image", {
+        props: {
+            src: {},
+            expanded: {default: undefined},
+        },
+        data() {
+            return {
+                isExpanded: ((this.$props.expanded === undefined)? false : true),
+            }
+        },
+        computed: {
+            hasFooter()
+            {
+                return !!this.$slots.default;
+            }
+        },
+        template: `
+            <p class="dokki-embedded dokki-image"
+               :class="{expanded: isExpanded}">
+
+                <header class="clickable"
+                        @click="isExpanded = !isExpanded">
+
+                    <i class="fas fa-fw fa-image"/>
+                    Image
+
+                    <aside class="revealer">
+                        {{isExpanded? "Hide" : "Show"}}
+                    </aside>
+
+                </header>
+
+                <img v-if=isExpanded
+                     :src="src">
+
+                <footer v-if=hasFooter>
+                    <slot/>
+                </footer>
+            </p>
         `,
     });
 
     app.component("dokki-tip", {
         template: `
-            <p class="dokki-tip">
-                <div class="header">
-                    <i class="fas fa-info-circle"/>
+            <p class="dokki-embedded dokki-tip">
+
+                <header>
+                    <i class="fas fa-fw fa-info-circle"/>
                     Tip
-                </div>
-                <slot/>
+                </header>
+
+                <footer>
+                    <slot/>
+                </footer>
+
             </p>
         `,
     });
 
     app.component("dokki-warning", {
         template: `
-            <p class="dokki-warning">
-                <div class="header">
-                    <i class="fas fa-exclamation-triangle"/>
+            <p class="dokki-embedded dokki-warning">
+
+                <header>
+                    <i class="fas fa-fw fa-exclamation-triangle"/>
                     Warning
-                </div>
-                <slot/>
+                </header>
+
+                <footer>
+                    <slot/>
+                </footer>
+
+            </p>
+        `,
+    });
+
+    // For showcasing the output of something; e.g. of a block of sample code.
+    //
+    // Sample usage:
+    //
+    //   <dokki-output>
+    //       Hello there.
+    //       <div>Hello again</div>
+    //   </dokki-output>
+    //
+    app.component("dokki-output", {
+        data() {
+            return {
+                isExpanded: false,
+            }
+        },
+        template: `
+            <p class="dokki-embedded dokki-output">
+
+                <header class="clickable"
+                        @click="isExpanded = !isExpanded">
+                    <i class="fas fa-fw fa-chevron-right"/>
+                    Output
+
+                    <aside class="revealer">
+                        {{isExpanded? "Hide" : "Show"}}
+                    </aside>
+                </header>
+
+                <footer v-if=isExpanded>
+                    <slot/>
+                </footer>
+
+            </p>
+        `,
+    });
+
+    // For embedding blocks of source code.
+    //
+    // Sample usage:
+    //
+    //   <dokki-code lang="C"
+    //               code="
+    //               int main(void)
+    //               {
+    //                   const char *str = ``Hello there.``;
+    //                   printf(``The string says: '%s'\\n``, str);
+    //                   return 0;
+    //               }
+    //               ">
+    //   </dokki-code>
+    //
+    // NOTE: Two backticks (``) must be used in place of double quotes (").
+    //
+    // NOTE: Escape sequences (e.g. \n) must be doubly escaped (e.g. \\n).
+    //
+    app.component("dokki-code", {
+        props: {
+            lang: {default: "unknown language"},
+            code: {},
+        },
+        computed: {
+            formattedCode()
+            {
+                if (!this.code) {
+                    return "";
+                }
+
+                let lines = this.code.split("\n").filter(s=>s.length);
+                
+                if (!lines.length) {
+                    return "";
+                }
+                
+                const numPreSpaces = Math.max(0, lines[0].search(/\S/));
+
+                for (let i = 0; i < lines.length; i++)
+                {
+                    lines[i] = lines[i].slice(numPreSpaces);
+                    lines[i] = lines[i].replace(/``/g, "\"");
+                    lines[i] = lines[i].replace(/\\\\/g, "\\");
+                }
+
+                return lines.filter(s=>s.length);
+            }
+        },
+        template: `
+            <p class="dokki-embedded dokki-code">
+
+                <header>
+                    <i class="fas fa-code"/>
+                    {{lang}}
+                </header>
+
+                <footer>
+                    <code v-for="line in formattedCode">
+                        {{line}}<br>
+                    </code>
+                </footer>
+
             </p>
         `,
     });
 
     app.use(store);
     app.mount("body");
+
+    // Takes in a guide topic title string (e.g. "System requirements") and returns
+    // a reduced version of the string such that it can be used e.g. as a DOM element
+    // id (e.g. "System requirements" -> "system-requirements").
+    function simplified_topic_title(title)
+    {
+        return title.toLowerCase()
+                    .replace(/[^a-zA-Z\d\s]/g, "")
+                    .replace(/\s+/g, "-")
+    }
 }
