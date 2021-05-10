@@ -166,8 +166,9 @@ function create_app()
                 <header class="clickable"
                         @click="isExpanded = !isExpanded">
 
-                    <i class="fas fa-fw fa-image"/>
-                    Image
+                    <span class="title">
+                        <i class="fas fa-image"/>
+                    </span>
 
                     <aside class="revealer">
                         {{isExpanded? "Hide" : "Show"}}
@@ -190,8 +191,9 @@ function create_app()
             <p class="dokki-embedded dokki-tip">
 
                 <header>
-                    <i class="fas fa-fw fa-info-circle"/>
-                    Tip
+                    <div class="title">
+                        <i class="fas fa-info-circle"/>
+                    </div>
                 </header>
 
                 <footer>
@@ -207,8 +209,9 @@ function create_app()
             <p class="dokki-embedded dokki-warning">
 
                 <header>
-                    <i class="fas fa-fw fa-exclamation-triangle"/>
-                    Warning
+                    <span class="title">
+                        <i class="fas fa-exclamation-triangle"/>
+                    </span>
                 </header>
 
                 <footer>
@@ -239,12 +242,15 @@ function create_app()
 
                 <header class="clickable"
                         @click="isExpanded = !isExpanded">
-                    <i class="fas fa-fw fa-chevron-right"/>
-                    Output
+
+                    <span class="title">
+                        <i class="fas fa-chevron-right"/>
+                    </span>
 
                     <aside class="revealer">
                         {{isExpanded? "Hide" : "Show"}}
                     </aside>
+
                 </header>
 
                 <footer v-if=isExpanded>
@@ -308,8 +314,10 @@ function create_app()
             <p class="dokki-embedded dokki-code">
 
                 <header>
-                    <i class="fas fa-code"/>
-                    {{lang}}
+                    <span class="title">
+                        <i class="fas fa-code"/>
+                        {{lang}}
+                    </span>
                 </header>
 
                 <footer>

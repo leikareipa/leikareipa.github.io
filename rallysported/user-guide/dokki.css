@@ -266,7 +266,7 @@ body
 
 .dokki-embedded footer
 {
-    padding: 10px;
+    padding: 8px;
     padding-left: 14px;
     padding-right: 14px;
 }
@@ -293,6 +293,11 @@ body
     background-color: deepskyblue;
 }
 
+.dokki-embedded.dokki-tip header .title::after
+{
+    content: " Tip";
+}
+
 .dokki-embedded.dokki-warning
 {
     border-color: #ff7838;
@@ -305,9 +310,19 @@ body
     background-color: #ff7838;
 }
 
+.dokki-embedded.dokki-warning header .title::after
+{
+    content: " Warning";
+}
+
 .dokki-embedded.dokki-output
 {
     border-color: lightgray;
+}
+
+.dokki-embedded.dokki-output header .title::after
+{
+    content: " Output";
 }
 
 .dokki-embedded.dokki-output footer > *:first-child
@@ -373,10 +388,9 @@ body
     max-width: 100%;
 }
 
-.dokki-embedded.dokki-image header .fas,
-.dokki-embedded.dokki-image header .far
+.dokki-embedded.dokki-image header .title::after
 {
-    margin-right: 4px;
+    content: " Image";
 }
 
 .dokki-embedded.dokki-image footer
