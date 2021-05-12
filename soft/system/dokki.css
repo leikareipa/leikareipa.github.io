@@ -1,0 +1,524 @@
+:root
+{
+    --header-height: 65px;
+    --side-panel-width: 280px;
+    --topics-width: 810px;
+    --content-margin: 20px;
+    --header-bottom-margin: 23px;
+    --topics-top-margin: calc(35px - var(--header-bottom-margin));
+    --embedded-element-border-radius: 10px;
+
+    /* Margins on the left and right of the page outside of which no content
+     * is allowed.*/
+    --page-vertical-margin: calc(50% - var(--topics-width)/2 - var(--side-panel-width) - var(--content-margin));
+}
+
+a
+{
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover
+{
+    text-decoration: underline;
+}
+
+body
+{
+    font-family: sans-serif;
+    text-align: center;
+    align-content: center;
+    background-color: white;
+    color: black;
+    padding: 0;
+    margin: 0;
+}
+
+.dokki-tag
+{
+    margin-top: var(--content-margin);
+    font-size: 80%;
+    color: gray;
+}
+
+.dokki-header
+{
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    box-sizing: border-box;
+    background-color: whitesmoke;
+    padding-left: var(--page-vertical-margin);
+    padding-right: var(--page-vertical-margin);
+    text-align: left;
+    font-weight: normal;
+    font-size: 160%;
+    color: black;
+    white-space: normal;
+    height: var(--header-height);
+    position: fixed;
+    width: 100%;
+}
+
+.dokki-header .software-tag
+{
+    margin-left: auto;
+    font-size: 60%;
+    font-weight: normal;
+}
+
+.dokki-side-panel
+{
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 0;
+    top: var(--header-height);
+    left: var(--page-vertical-margin);
+    background-color: transparent;
+    width: var(--side-panel-width);
+    text-align: left;
+    padding-top: var(--header-bottom-margin);
+    overflow-y: auto;
+    height: calc(100% - var(--header-height));
+    padding-bottom: var(--content-margin);
+}
+
+.dokki-side-panel.scrollable
+{
+    border-right: 1px solid lightgray;
+}
+
+.dokki-side-panel ul
+{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dokki-side-panel li
+{
+    counter-increment: line;
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+.dokki-side-panel li a
+{
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+.dokki-side-panel li::before
+{
+    content: counter(line) ". ";
+}
+
+.dokki-side-panel li:first-of-type
+{
+    padding-top: 0;
+}
+
+.dokki-topics
+{
+    margin: var(--content-margin);
+    margin-top: calc(var(--header-height) + var(--header-bottom-margin) - 1px);
+    margin-left: 5px;
+    width: var(--topics-width);
+    padding: 0;
+    background-color: transparent;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    position: relative;
+    left: calc(50% - var(--topics-width)/2);
+    top: 0;
+    z-index: 0;
+}
+
+.dokki-topic
+{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.dokki-topic ul
+{
+    padding-inline-start: 20px;
+}
+
+.dokki-topic p
+{
+    line-height: 1.5;
+}
+
+.dokki-topic p a
+{
+    color: #00ade6;
+}
+
+.dokki-topic:last-of-type
+{
+    padding-bottom: 0;
+}
+
+.dokki-topic li
+{
+    margin-top: 10px;
+}
+
+.dokki-topic > *:last-of-type
+{
+    margin-bottom: 0;
+}
+
+.dokki-topic .permalink
+{
+    visibility: hidden;
+    padding-left: 5px;
+    color: lightgray;
+}
+
+.dokki-topic .permalink:hover
+{
+    color: gray;
+}
+
+.dokki-topic:hover .permalink
+{
+    visibility: visible;
+}
+
+.dokki-topic h1,
+.dokki-topic h2,
+.dokki-topic h3,
+.dokki-topic h4,
+.dokki-side-panel h2
+{
+    font-size: 100%;
+    font-weight: normal;
+    color: black;
+    padding: 0;
+    margin: 0;
+}
+
+.dokki-topic h2
+{
+    display: inline-block; /* To allow permalink icons next to the h2 heading.*/
+    font-size: 160%;
+}
+
+.dokki-topic h3
+{
+    font-size: 130%;
+}
+
+.dokki-topic h3:not(:first-child)
+{
+    margin-top: var(--content-margin);
+}
+
+.dokki-topic-anchor
+{
+    visibility: hidden;
+    position: relative;
+    top: calc(var(--header-height) * -1 - var(--content-margin) + var(--topics-top-margin) + 1px);
+}
+
+.dokki-topic-anchor:first-child
+{
+    margin-top: calc(var(--content-margin) - var(--header-bottom-margin) - var(--topics-top-margin));
+}
+
+.dokki-embedded
+{
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+    border-radius: var(--embedded-element-border-radius);
+    overflow: hidden;
+}
+
+.dokki-embedded header
+{
+    font-weight: normal;
+    padding: 6px;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.dokki-embedded header.clickable
+{
+    display: flex;
+    align-items: baseline;
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+    background-color: #f6f6f6;
+}
+
+.dokki-embedded footer
+{
+    padding: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.dokki-embedded .revealer
+{
+    margin-left: 10px;
+    color: #00ade6;
+    font-weight: normal;
+    display: inline-block;
+    margin-left: auto;
+    font-variant: small-caps;
+    text-transform: lowercase;
+}
+
+.dokki-embedded.dokki-tip
+{
+    border-color: deepskyblue;
+    background-color: #f2f8ff;
+}
+
+.dokki-embedded.dokki-tip header
+{
+    color: white;
+    background-color: deepskyblue;
+}
+
+.dokki-embedded.dokki-tip header .title::after
+{
+    content: " Tip";
+}
+
+.dokki-embedded.dokki-warning
+{
+    border-color: #ff7838;
+    background-color: #fff2ec;
+}
+
+.dokki-embedded.dokki-warning header
+{
+    color: white;
+    background-color: #ff7838;
+}
+
+.dokki-embedded.dokki-warning header .title::after
+{
+    content: " Warning";
+}
+
+.dokki-embedded.dokki-output
+{
+    border-color: lightgray;
+}
+
+.dokki-embedded.dokki-code.has-output + .dokki-embedded.dokki-output
+{
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.dokki-embedded.dokki-output footer
+{
+    font-family: monospace;
+    padding: 14px;
+}
+
+.dokki-embedded.dokki-output footer.unpadded
+{
+    padding: 0;
+}
+
+.dokki-embedded.dokki-output footer > *:first-child
+{
+    margin-top: 0;
+}
+
+.dokki-embedded.dokki-output footer > *:last-child
+{
+    margin-bottom: 0;
+}
+
+.dokki-embedded.dokki-output footer > iframe,
+.dokki-embedded.dokki-output footer > canvas
+{
+    margin-bottom: calc(var(--embedded-element-border-radius) / 2 * -1) !important;
+}
+
+.dokki-embedded.dokki-code
+{
+    border-color: #ffe318;
+    background-color: #fffce2;
+}
+
+.dokki-embedded.dokki-code.has-output
+{
+    margin-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+}
+
+.dokki-embedded.dokki-code header
+{
+    color: black;
+    background-color: #ffe318;
+}
+
+.dokki-embedded.dokki-code footer
+{
+    font-size: 110%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    overflow: auto;
+}
+
+.dokki-embedded.dokki-code footer table
+{
+    font-family: monospace;
+    white-space: pre;
+}
+
+.dokki-embedded.dokki-code footer table .line-number
+{
+    color: gray;
+    user-select: none;
+}
+
+.dokki-embedded.dokki-image
+{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgray;
+}
+
+.dokki-embedded.dokki-image img
+{
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.dokki-embedded.dokki-image header .title::after
+{
+    content: " Image";
+}
+
+.dokki-embedded.dokki-image footer
+{
+    font-style: italic;
+}
+
+@media only screen and (max-width: 1500px)
+{
+    :root
+    {
+        --topics-width: 710px;
+    }
+}
+
+@media only screen and (max-width: 1350px)
+{
+    :root
+    {
+        --side-panel-width: 240px;
+        --topics-width: 610px;
+    }
+}
+
+@media only screen and (max-width: 1200px)
+{
+    :root
+    {
+        --page-vertical-margin: 30px;
+    }
+
+    .dokki-topics
+    {
+        left: calc(var(--page-vertical-margin) + var(--side-panel-width) + var(--content-margin));
+        width: calc(90% - var(--side-panel-width) - var(--page-vertical-margin));
+        margin-left: 0;
+    }
+}
+
+@media only screen and (max-width: 1050px)
+{
+    :root
+    {
+        --page-vertical-margin: 25px;
+    }
+
+    .dokki-topics
+    {
+        width: calc(100% - var(--side-panel-width) - var(--page-vertical-margin) - var(--content-margin) * 2);
+    }
+}
+
+@media only screen and (max-width: 900px)
+{
+    :root
+    {
+        --page-vertical-margin: 20px;
+        --side-panel-width: 220px;
+    }
+}
+
+@media only screen and (max-width: 800px)
+{
+    :root
+    {
+        --page-vertical-margin: 10px;
+        --side-panel-width: 0;
+    }
+
+    .dokki-header
+    {
+        position: absolute;
+    }
+
+    .dokki-side-panel
+    {
+        display: none;
+    }
+
+    .dokki-topic
+    {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .dokki-topics
+    {
+        left: var(--page-vertical-margin);
+        margin-left: 0;
+        padding-left: 0;
+    }
+}
+
+@media only screen and (max-width: 600px)
+{
+    :root
+    {
+        --header-height: 80px;
+        --header-bottom-margin: 25px;
+    }
+
+    .dokki-header .software-tag
+    {
+        display: none;
+    }
+}

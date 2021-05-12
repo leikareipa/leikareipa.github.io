@@ -2,240 +2,907 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="index.css">
-        <link href="https://fonts.googleapis.com/css?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" crossorigin="anonymous">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <script src="https://unpkg.com/react@17.0.1/umd/react.production.min.js" crossorigin></script>
-        <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.production.min.js" crossorigin></script>
-        <title>Tarpeeksi Hyvae Soft</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@3.0.11/dist/vue.global.prod.js"></script>
+        <script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.prod.js"></script>
+        <script src="./soft/system/dokki.js"></script>
+        <link rel="stylesheet"
+              type="text/css"
+              href="./soft/system/dokki.css">
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
+              crossorigin="anonymous">
     </head>
     <body>
-        <div id="page-loading-bar-container">
+        <dokki-header icon="fas fa-laptop-code"
+                      title="Tarpeeksi Hyvae Soft">
+        </dokki-header>
 
-            <div id="page-loading-bar"></div>
-
-        </div>
-
-        <div id="doodle-app-container"></div>
-
-        <div id="skipper-of-doodle"
-             title="Skip to content"
-             onclick="activate_doodle_skipper()">
+        <dokki-side-panel>
+        </dokki-side-panel>
         
-            <i class="fas fa-angle-down"></i>
+        <dokki-topics>
 
-        </div>
+            <dokki-topic title="Introduction">
+                <p>
+                    This page provides information about some of the wonderful software that's been made
+                    under the Tarpeeksi Hyvae Soft banner. Binaries are currently not available but much
+                    of the code is open-source.
+                </p>
 
-        <div id="page">
+                <dokki-spoiler title="Contact">
 
-            <div id="header">
+                    <div style="display: inline-block;">
+                        <i class="fas fa-envelope"></i>
+                        Email: sw@tarpeeksihyvaesoft.com
+                    </div>
 
-                <span id="title">
+                    <span style="margin: 0 12px;"></span>
+
+                    <div style="display: inline-block;">
+                        <i class="fab fa-github"></i>
+                        GitHub: <a href="https://github.com/leikareipa">github.com/leikareipa</a>
+                    </div>
+
+                </dokki-spoiler>
+            </dokki-topic>
+
+            <dokki-topic title="VCS">
+                <p>
+                    A useful capture tool for Datapath's VisionRGB range of capture cards. Features anti-tearing, advanced image filtering, video presets with activation by resolution, refresh rate and shortcut, and several other things that enable high-quality analog and digital capture for recreational and professional use.
+                </p>
+        
+                <p>
+                    Made between 2017-2021.
+                </p>
+
+                <p>
+                    Tech used: C++, Qt, OpenCV, RGBEasy, Video4Linux
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/vcs">GitHub</a>
+                </p>
+                
+                <dokki-image src="https://raw.githubusercontent.com/leikareipa/vcs/master/images/screenshots/v2.3.0/output-window.png">
+                    Capturing the Windows 98 desktop via the Datapath VisionRGB-E1S
+                </dokki-image>
+
+                <dokki-image src="https://raw.githubusercontent.com/leikareipa/vcs/master/images/screenshots/v2.4.0/video-presets-dialog.png">
+                    Adjusting video presets
+                </dokki-image>
                     
-                    tarpeeksi hyvae soft
+                <dokki-image src="https://raw.githubusercontent.com/leikareipa/vcs/master/images/screenshots/v2.4.0/filter-graph-dialog.png">
+                    Creating a filter graph
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="PCbi">
+                <p>
+                    A rad 3D frontend for the PC emulator PCem, and a retro PC-building simulation. Assemble a PC in 3D from olden parts and have PCem emulate it on the machine's screen. Uses shared memory to communicate with PCem. The second version number indicates the version of PCem supported.
+                </p>
 
-                </span>
-
-            </div>
-
-            <div id="contact-form"></div>
-
-            <div id="software-listing"></div>
-
-        </div>
-
-        <script>
-            // Keeps track of how much of the page's assets have finished loading. Used
-            // to display to the user a loading bar while the page is loading. Valid
-            // values range from 0 to 100 (0 = nothing loaded, 100 = all loaded).
-            //
-            // To modify this value, call set_percent_page_loaded().
-            let percentPageLoaded = 0;
-
-            const loadingBarContainerElement = document.getElementById("page-loading-bar-container");
-            const loadingBarElement = document.getElementById("page-loading-bar");
-            if (!loadingBarContainerElement || !loadingBarElement)
-            {
-                window.alert("Malformed page.");
-            }
-
-            set_percent_page_loaded(5);
-
-            function set_percent_page_loaded(percent)
-            {
-                if ((percent < 0) || (percent > 100))
-                {
-                    window.alert("Invalid percentage.");
-                }
-
-                percentPageLoaded = Math.max(percentPageLoaded, percent);
-                loadingBarElement.style.width = `${percentPageLoaded}%`;
-
-                if (percentPageLoaded >= 100)
-                {
-                    loadingBarContainerElement.style.opacity = 0;
-                    loadingBarContainerElement.ontransitionend = (event)=>
-                    {
-                        if (event.propertyName == "opacity")
-                        {
-                            loadingBarContainerElement.style.display = "none";
-                        }
-                    }
-                }
-            }
-
-            // To simulate continuous loading, we'll keep incrementing the percent loaded
-            // variable by a small value. (The actual page-loading code will also modify
-            // the variable.)
-            {
-                const maxSyntheticPercentLoaded = 98;
-                const intervalMs = 200;
-                const lerp = (x, y, interval)=>(x + (interval * (y - x)));
-
-                const intervalId = setInterval(()=>
-                {
-                    if (percentPageLoaded >= maxSyntheticPercentLoaded)
-                    {
-                        clearInterval(intervalId);
-                        return;
-                    }
-
-                    const newPercentage = lerp(percentPageLoaded, maxSyntheticPercentLoaded, 0.02);
-
-                    set_percent_page_loaded(Math.min(maxSyntheticPercentLoaded, newPercentage));
-                }, intervalMs);
-            }
-        </script>
-
-        <script>
-            function activate_doodle_skipper()
-            {
-                const skipperElement = document.getElementById("skipper-of-doodle");
-                const pageElement = document.getElementById("page");
-
-                skipperElement.remove();
-                pageElement.scrollIntoView(true);
-            }
-        </script>
-
-        <script type="module" src="./soft/system/contact-form/contact-form.js"></script>
-
-        <script type="module">
-            import {run_doodle} from "./soft/system/doodles/wireframe-textured-rendering/doodle.js";
-
-            run_doodle("./soft/system/doodles/wireframe-textured-rendering", {
-                isTexturingInitiallyEnabled: true,
-            });
-
-            set_percent_page_loaded(70);
-        </script>
-
-        <script type="module">
-            import {SoftwareListItem} from "./soft/system/react-components/SoftwareListItem.js"
-            import {load_software_collection} from "./soft/system/load-software-collection.js";
-
-            const doodleControlsElement = document.body.querySelector(".doodle .controls");
-
-            // Don't allow the user to manipulate the doodle's controls while we're still
-            // unfinished transitioning-in the page. Otherwise, there could be some visual
-            // glitches etc.
-            if (doodleControlsElement)
-            {
-                doodleControlsElement.classList.add("frozen");
-            }
-
-            load_software_collection("./software-collection.json")
-                .then(software=>{
-                    set_percent_page_loaded(80);
-
-                    rerender_software_list(software);
-                    set_percent_page_loaded(90);
-
-                    reveal_page();
-                    set_percent_page_loaded(100);
-            });
-
-            function reveal_page()
-            {
-                window.scrollTo(0, 0);
-                document.documentElement.style.scrollBehavior = "smooth"; // Should be set to smooth AFTER we've scrolled to 0,0.
+                <p>
+                    Made between 2018-2021.
+                </p>
+        
+                <p>
+                    Tech used: C++, Qt, OpenGL, JavaScript, Blender
+                </p>
                 
-                document.getElementById("page").style.visibility = "visible";
-                document.getElementById("page").style.opacity = 1;
-                document.getElementById("skipper-of-doodle").style.visibility = "visible";
-                document.getElementById("skipper-of-doodle").style.opacity = 1;
-                document.querySelector(".doodle").style.visibility = "visible";
-                document.querySelector(".doodle").style.opacity = 1;
+                <p>
+                    Links:
+                    <a href="https://github.com/leikareipa/pcbi-content">Additional content</a>,
+                    <a href="https://www.youtube.com/playlist?list=PLMVzQTDRXhK_CZ3j-Lax7fRICLvbL_7do">Dev playlist on YouTube</a>
+                </p>
+
+                <dokki-image src="./soft/img/pcbi/pcbi-5.png">
+                    Selecting components to install
+                </dokki-image>
                 
-                document.body.style.overflowY = "auto";
-                document.body.style.backgroundColor = "whitesmoke";
+                <dokki-image src="./soft/img/pcbi/pcbi-1.png">
+                    Playing Quake in someone's bedroom
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Lintulista">
+                <p>
+                    A full-stack web app for hobbyist birdwatchers to keep track of their sightings. This is currently closed-access, but the code is open-source and a public sample is provided (see links, below).
+                </p>
 
-                document.getElementById("page").ontransitionend = (event)=>
-                {
-                    if (event.propertyName == "opacity")
-                    {
-                        document.body.style.backgroundImage = "none";
+                <p>
+                    Made in 2019-2021.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript, React, Node.js, PostgreSQL, C++
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://www.tarpeeksihyvaesoft.com/lintulista/#samplelst">View sample</a>,
+                    <a href="https://www.github.com/leikareipa/lintulista-client">GitHub (client)</a>,
+                    <a href="https://www.github.com/leikareipa/lintulista-server">GitHub (server)</a>
+                </p>
+                
+                <dokki-image src="./soft/img/lintulista/lintulista-4.png">
+                    Browsing a list of observations
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="RallySportED">
+                <p>
+                    A multi-platform asset-editing toolset for the 1990s cult DOS game Rally-Sport. RallySportED lets you create and edit tracks, textures, and various other aspects of the game. Currently focused on running in the browser (RallySportED-js), but over the years there have been native versions for DOS, Windows, and Linux. The browser-based track editor almost perfectly reproduces the game's unique software-rendered 3D graphics.
+                </p>
 
-                        // Now that the doodle has finished transitioning in, we can let the user
-                        // manipulate its controls.
-                        if (doodleControlsElement)
-                        {
-                            doodleControlsElement.classList.remove("frozen");
-                        }
+                <p>
+                    Made between 2016-2021.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript, x86 assembly, C, C++
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://www.tarpeeksihyvaesoft.com/rallysported/">Run in browser</a>,
+                    <a href="https://www.github.com/leikareipa/rallysported-frontend/">GitHub (frontend)</a>,
+                    <a href="https://www.github.com/leikareipa/rallysported-backend/">GitHub (backend)</a>
+                </p>
 
-                        window.addEventListener("scroll", ()=>
-                        {
-                            const skipperElement = document.getElementById("skipper-of-doodle");
+                <dokki-output unpadded title="Run RallySportED-js">
+                    <iframe src="https://www.tarpeeksihyvaesoft.com/rallysported"
+                            loading="lazy"
+                            style="width: 100%;
+                                   height: 700px;
+                                   border: none;">
+                    </iframe>
+                </dokki-output>
+                
+                <dokki-image src="./soft/img/rallysported/rallysported-1.png">
+                    RallySportED-js running in Google Chrome
+                </dokki-image>
 
-                            if (skipperElement)
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Rally-Sport Content">
+                <p>
+                    A platform to share user-made content for Rally-Sport. Provides a documented REST API for querying content and implements a custom MVC framework for generating views into the data. Also comes with a handy front-end for accessing with a browser. Due to EU copyright laws etc., new user registration is disabled.
+                </p>
+
+                <p>
+                    Made in 2020.
+                </p>
+        
+                <p>
+                    Tech used: PHP, JavaScript
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://www.tarpeeksihyvaesoft.com/rallysport-content/tracks/">Access in browser</a>,
+                    <a href="https://www.github.com/leikareipa/rallysport-content">GitHub</a>
+                </p>
+                
+                <dokki-image src="./soft/img/rallysport-content/rallysport-content-2.png">
+                    A selection of custom tracks
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Wray">
+                <p>
+                    A vanilla JavaScript path tracer. Features Blender scene import, PFM export, multithreaded rendering, Drago 2003 tonemapping, and BVH tree acceleration.
+                </p>
+
+                <p>
+                    Made between 2019-2020.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720">Run live sample</a>, <a href="https://www.github.com/leikareipa/wray">GitHub</a>
+                </p>
+                
+                <dokki-image src="./soft/img/wray/wray-1.png">
+                </dokki-image>
+
+                <dokki-output unpadded title="Run">
+                    <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=1&resolution=500x350"
+                            loading="lazy"
+                            style="width: 100%;
+                                   height: 420px;
+                                   border: none;">
+                    </iframe>
+                </dokki-output>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Retro n-gon renderer">
+                <p>
+                    A well-featured software 3D renderer for HTML5 Canvas. Rasterizes n-sided polygons onto a canvas or an offscreen buffer. Features genuine retro aesthetics, vertex and pixel shaders, async rendering, an easy-to-use API, docs, cool samples, and more. Very customizable: from simple wireframe rendering to full ray-traced lighting. Easy to integrate into an existing JavaScript project.
+                </p>
+
+                <p>
+                    Made between 2019-2020.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://www.github.com/leikareipa/retro-ngon">GitHub</a>,
+                    <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/">Interactive samples</a>
+                </p>
+            
+                <dokki-output unpadded title="Run (click to capture mouse, ESDF & QA to move)">
+                    <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/tomb-raider-home/"
+                            loading="lazy"
+                            style="width: 100%;
+                                   height: 500px;
+                                   border: none;">
+                    </iframe>
+                </dokki-output>
+
+                <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/tomb-raider-1-texture-lightmap-2.png">
+                    A scene from Tomb Raider
+                </dokki-image>
+
+                <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/teapt.png">
+                    The Utah teapot with Phong shading
+                </dokki-image>
+
+                <dokki-code title="Minimal render sample"
+                            code="
+                            <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
+                            <script src='rngon.cat.js'></script>
+                            <script>
+                                const poly = Rngon.ngon([
+                                    Rngon.vertex(-1, -1, 3),
+                                    Rngon.vertex( 1, -1, 3),
+                                    Rngon.vertex( 1,  1, 3)], {
+                                        color: Rngon.color_rgba(0, 150, 255)
+                                });
+
+                                Rngon.render('canvas', [Rngon.mesh([poly])]);
+                            </script>
+                            ">
+
+                    <dokki-output>
+                        <iframe style="width: 100%;
+                                       height: 200px;
+                                       border: none;"
+                                srcdoc="
+                                <style scoped>
+                                    body {
+                                        height: 100vh;
+                                        padding: 0;
+                                        margin: 0;
+                                    }
+                                </style>
+                                <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
+                                <script src='https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/distributable/rngon.cat.js'></script>
+                                <script>
+                                    const poly = Rngon.ngon([
+                                        Rngon.vertex(-1, -1, 3),
+                                        Rngon.vertex( 1, -1, 3),
+                                        Rngon.vertex( 1,  1, 3)], {
+                                            color: Rngon.color_rgba(0, 150, 255)
+                                    });
+
+                                    Rngon.render('canvas', [Rngon.mesh([poly])]);
+                                </script>"
+                                >
+                        </iframe>
+                    </dokki-output>
+                
+                </dokki-code>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Luujanko">
+                <p>
+                    A minimalist SVG wireframe renderer for HTML5. Has an easy, streamlined API and is simple to integrate into an existing JavaScript project.
+                </p>
+
+                <p>
+                    Made in 2020.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://www.github.com/leikareipa/luujanko">GitHub</a>,
+                    <a href="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/">View interactive samples</a>
+                </p>
+
+                <dokki-output unpadded title="Run (click to capture mouse, ESDF & QA to move)">
+                    <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/quake-e1m1/"
+                            loading="lazy"
+                            style="width: 100%;
+                                   height: 500px;
+                                   border: none;">
+                    </iframe>
+                </dokki-output>
+                
+                <dokki-image src="./soft/img/luujanko/luujanko-1.png">
+                    Looking down a corridor of the E1M1 level in Quake
+                </dokki-image>
+
+                <dokki-code title="Minimal render sample"
+                            code="
+                            <svg id='rendering' width='200' height='200'></svg>
+                            <script type='module'>
+                                import {Luu} from 'luujanko.js';
+                                const rect = Luu.ngon([
+                                    Luu.vertex(-1, -1, 0),
+                                    Luu.vertex( 1, -1, 0),
+                                    Luu.vertex( 1,  1, 0)
+                                ]);
+                                const rectMesh = Luu.mesh([rect]);
+                                const targetSVG = document.getElementById('rendering');
+                                Luu.render([rectMesh], targetSVG, {
+                                    viewRotation: Luu.rotation(0, 0, 0),
+                                    viewPosition: Luu.translation(0, 0, -3),
+                                });
+                            </script>
+                            ">
+
+                    <dokki-output>
+                        <iframe style="width: 100%;
+                                       height: 200px;
+                                       border: none;"
+                                srcdoc="
+                                <style scoped>
+                                    body {
+                                        height: 100vh;
+                                        padding: 0;
+                                        margin: 0;
+                                    }
+                                    svg {
+                                        stroke: gray;
+                                        stroke-width: 1;
+                                        shape-rendering: crispEdges;
+                                    }
+                                </style>
+                                <svg id='rendering' width='200' height='200'></svg>
+                                <script type='module'>
+                                    import {Luu} from 'https://www.tarpeeksihyvaesoft.com/experimental/luujanko/distributable/luujanko.js';
+                                    const rect = Luu.ngon([
+                                         Luu.vertex(-1, -1, 0),
+                                         Luu.vertex( 1, -1, 0),
+                                         Luu.vertex( 1,  1, 0)
+                                    ]);
+                                    const rectMesh = Luu.mesh([rect]);
+                                    const targetSVG = document.getElementById('rendering');
+                                    Luu.render([rectMesh], targetSVG, {
+                                        viewRotation: Luu.rotation(0, 0, 0),
+                                        viewPosition: Luu.translation(0, 0, -3),
+                                    });
+                                </script>
+                                ">
+                        </iframe>
+                    </dokki-output>
+                
+                </dokki-code>
+
+            </dokki-topic>
+
+
+            <dokki-topic title="dokki">
+                <p>
+                    A streamlined documentation framework for creating end-user-oriented single-page docs. This website is made with it.
+                </p>
+
+                <p>
+                    Made in 2021.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript, Vue.js, CSS
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/dokki">GitHub</a>
+                </p>
+            </dokki-topic>
+
+        
+            <dokki-topic title="Serlain">
+                <p>
+                    Looks like an old browser, acts like an old browser - and almost is one. Serlain is a frontend for Internet Archive's Wayback Machine that displays archived web content inside period-correct-looking faux browsers. Pretty cool.
+                </p>
+
+                <p>
+                    Made between 2019-2021.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript, React
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/serlain">GitHub</a>
+                </p>
+                
+                <dokki-image src="./soft/img/serlain/serlain-1.png">
+                    A mock Internet Explorer 4 in a mock Windows 9x environment
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Kelpo">
+                <p>
+                    A minimalist retro-oriented 3D rasterizer API wrapper. The idea is to create an umbrella API that exposes a minimal unifying feature set supported by as many old 1990s 3D cards as reasonably possible. Currently works with Direct3D 5-7, OpenGL 1.2, OpenGL 3.0, and Glide 3. Planned support includes the proprietary 3D APIs of Matrox, S3, and ATi.
+                </p>
+
+                <p>
+                    Made between 2019-2020.
+                </p>
+        
+                <p>
+                    Tech used: C, OpenGL, Direct3D, Glide
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/kelpo">GitHub</a>
+                </p>
+                
+                <dokki-image src="./soft/img/kelpo/kelpo-1.png">
+                    The 3dfx Voodoo rendering a scene from Tomb Raider
+                </dokki-image>
+
+                <dokki-code title="Sample initialization and rendering"
+                            code="
+                            kelpo_create_interface(&kelpo, ``opengl_1_1``);
+                            kelpo->window.open(0, 640, 480, 16);
+                            while (kelpo->window.process_messages(),
+                                   !kelpo->window.is_closing())
                             {
-                                skipperElement.remove();
-                            }
-                        }, {once: true});
-                    }
-                };
+                                kelpo->rasterizer.clear_frame();
+                                kelpo->rasterizer.draw_triangles(&triangle, 1);
+                                kelpo->window.flip_surface();
+                            }">
+                    
+                </dokki-code>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="KAC file format">
+                <p>
+                    A retro-themed binary format for storing 3D models and their textures; a companion format for the Kelpo renderer. Designed with the limitations of 1990s 3D hardware in mind. An importer and exporter are provided.
+                </p>
 
-                // The doodle element is intended to take up the full screen's height. However,
-                // on mobile, this height value depends on whether the browser's toolbar is
-                // visible, and we'd rather not have the doodle suddenly be resized when the
-                // toolbar is scrolled out of view. So we'll just force it into a fixed size
-                // corresponding to the screen's height.
-                {
-                    set_height();
-                    window.addEventListener("resize", set_height);
+                <p>
+                    Made between 2019-2020.
+                </p>
+        
+                <p>
+                    Tech used: C, C++, Qt
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/kac-file-format">GitHub</a>
+                </p>
+                
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Mesh preview">
+                <p>
+                    A wireframe visualizer for 3D meshes. Intended for previewing mesh data e.g. when working on an importer for a mesh file format. Simple, streamlined interface. Allows multiple meshes to be specified and provides an easy-to-use GUI for selecting between them.
+                </p>
 
-                    function set_height()
-                    {
-                        const height = document.documentElement.clientHeight;
-                        
-                        document.querySelector(".doodle").style.height = `${height}px`;
-                        document.getElementById("page").style.top = `${height}px`;
-                    }
-                }
+                <p>
+                    Made between 2020-2021.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript, Vue.js
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://www.github.com/leikareipa/mesh-preview">GitHub</a>,
+                    <a href="https://www.tarpeeksihyvaesoft.com/experimental/mesh-preview/samples/obj-models/">View interactive sample</a>
+                </p>
+                
+                <dokki-image src="./soft/img/mesh-preview/mesh-preview-1.png">
+                    Previewing a large mesh
+                </dokki-image>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Cloud simulation">
+                <p>
+                    Ever wanted a cloud physics simulator and renderer? Maybe not, but Ifu provides. Condensation from moist rising air is simulated and rendered into physically realistic images of clouds. You can view the state of the simulation as it runs and configure the atmospheric properties as you like. Naturally simulates effects like pilei. Requires a beefy computer and some knowledge of cloud-related atmospheric processes.
+                </p>
 
-                return;
-            }
+                <p>
+                    Made between 2013-2014.
+                </p>
+        
+                <p>
+                    Tech used: C++, Qt, OpenCL
+                </p>
+                
+                <dokki-image src="./soft/img/ifu/ifu-1.png">
+                    Fluffy clouds
+                </dokki-image>
 
-            function rerender_software_list(software)
-            {
-                const listItemsContainer = document.getElementById("software-listing");
+                <dokki-image src="./soft/img/ifu/ifu-2.png">
+                    An explosive cloud lifted by an unnaturally high amount of surface heat (simulation grid visible)
+                </dokki-image>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="What">
+                <p>
+                    A HTML5 video player whose seek bar presents a spectrogram of the video's audio.
+                </p>
 
-                const softwareListItems = Object.keys(software).map((softwareName, idx)=>
-                {
-                    return React.createElement(SoftwareListItem,
-                                               {
-                                                   key: softwareName,
-                                                   software: software[softwareName],
-                                                   callbackSelectionToggled: ()=>{},
-                                               });
-                });
+                <p>
+                    Made in 2020.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript, Vue.js
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://www.github.com/leikareipa/what">GitHub</a>,
+                    <a href="https://www.tarpeeksihyvaesoft.com/experimental/what/">Run in browser</a>
+                </p>
+                
+                <dokki-image src="./soft/img/what/what-1.png">
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="NPTO">
+                <p>
+                    Already a pretty fast typist? Get better with NPTO. Provides detailed statistics on your typing: percentage of mis-presses for each key, breakdown of typing time per key, and so on. Not a typing tutor but rather something for more experienced typists.
+                </p>
 
-                ReactDOM.unmountComponentAtNode(listItemsContainer);
-                ReactDOM.render(softwareListItems, listItemsContainer);
+                <p>
+                    Made in 2015.
+                </p>
+        
+                <p>
+                    Tech used: C++, Qt
+                </p>
+                
+                
+                <dokki-image src="./soft/img/npto/npto-1.png">
+                    Inspecting which keys have taken the longest to type
+                </dokki-image>
+                    
+                <dokki-image src="./soft/img/npto/npto-2.png">
+                    Graphing the words per minute measure over time
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="ranssi">
+                <p>
+                    An IDE for transcribers. Minimalist interface, audio controls, highlighting of common typing errors, integration with git to commit saves into a repository, etc. Has been in commercial use.
+                </p>
 
-                return;
-            }
-        </script>
+                <p>
+                    Made in 2018.
+                </p>
+        
+                <p>
+                    Tech used: C++, Qt
+                </p>
+                
+                <p>
+                    Links: <a href="https://github.com/leikareipa/ranssi/">GitHub</a>
+                </p>
+                
+                <dokki-image src="./soft/img/ranssi/ranssi-1.png">
+                    Transcribing lorem ipsum
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="smartti parseri">
+                <p>
+                    Turns hard drive SMART logs into graphs. Implements its own simple scripting language to combine and process various SMART attributes' values into new ones.
+                </p>
+
+                <p>
+                    Made in 2015.
+                </p>
+        
+                <p>
+                    Tech used: C++, Qt
+                </p>
+                
+                
+                <dokki-image src="./soft/img/smartti-parseri/smartti-parseri-2.png">
+                    Monitoring an SSD
+                </dokki-image>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Ultima VII DOS Cache Patch">
+                <p>
+                    Patches a famous bug in Ultima 7, where the game forces the CPU cache on at launch. With this patch, the CPU cache can remain off, leading to improved gameplay speed on post-486 PCs.
+                </p>
+
+                <p>
+                    Made in 2017.
+                </p>
+        
+                <p>
+                    Tech used: x86 assembly
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/u7dcp">GitHub</a>
+                </p>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="DOS Path Tracing Benchmark">
+                <p>
+                    Test your DOS era processor's floating-point performance with this grayscale path tracer that renders a scene of spheres and counts the number of seconds it took. A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so, and the Xeon E3-1230 in less than one second.
+                </p>
+
+                <p>
+                    Made in 2017.
+                </p>
+        
+                <p>
+                    Tech used: C++
+                </p>
+                
+                
+                <dokki-image src="./soft/img/dos-path-bench/dos-path-bench-2.png">
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="DOS video chip compatibility list">
+                <p>
+                    An early web dev effort of mine, whose goal was to redesign Gona's very useful but somewhat hard-to-read DOS video chip compatibility matrix for improved accessibility. I harvested the HTML matrix data into JSON and implemented a front-end for at-a-glance-friendly access to the data.
+                </p>
+
+                <p>
+                    Made in 2018.
+                </p>
+        
+                <p>
+                    Tech used: HTML, CSS, JavaScript, C++, PHP
+                </p>
+                
+                <p>
+                    Links: <a href="https://web.archive.org/web/20180103021524/https://gona.mactar.hu/DOS_TESTS/">Original matrix</a>
+                </p>
+                
+                <dokki-image src="./soft/img/dosvideo/dosvideo-1.png">
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="DOS C Compiler Benchmark">
+                <p>
+                    A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C compilers. Compatible with a variety of legacy C toolchains, such as from Microsoft, Borland, and HI-TECH. The program renders a spinning sphere in VGA mode 13h, then provides characteristics of its runtime performance.
+                </p>
+
+                <p>
+                    Tech used: C
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/dccb">GitHub</a>
+                </p>
+                
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Vond">
+                <p>
+                    A hybrid voxel/polygon 3D renderer that runs on the CPU. Draws inspiration from old voxel-based games, like Delta Force and Outcast.
+                </p>
+
+                <p>
+                    Made between 2018-2020.
+                </p>
+        
+                <p>
+                    Tech used: C++
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/vond">GitHub</a>
+                </p>
+
+                <dokki-image src="https://raw.githubusercontent.com/leikareipa/vond/master/images/screenshots/vond-4.png">
+                    Visualizing heightmap data from the National Land Survey of Finland (orthophoto & elevation 11/2020)
+                </dokki-image>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="gpl-dta">
+                <p>
+                    A set of cross-platform command-line tools for converting the DAT files of Grand Prix Legends into more standard formats. Can selectively extract files from DTAs, export MIPs and SRBs into PNG, and convert 3DOs into OBJ. Written to scratch a personal itch and so isn't 100% accurate, but close enough.
+                </p>
+
+                <p>
+                    Made in 2019.
+                </p>
+        
+                <p>
+                    Tech used: C++, PHP
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/gpl-dta">GitHub</a>
+                </p>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Barefoot BankView">
+                <p>
+                    A utility to visualize NAND cell wear on Indilinx Barefoot SSDs.
+                </p>
+
+                <p>
+                    Made in 2015.
+                </p>
+        
+                <p>
+                    Tech used: C++, Qt
+                </p>
+                
+                
+                <dokki-image src="./soft/img/bbview/bbview-1.png">
+                    Visualizing NAND wear on an SSD
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="slowray">
+                <p>
+                    A simple path tracer that can be compiled to run on the Game Boy Advance. Its code also compiles for desktop platforms.
+                </p>
+
+                <p>
+                    Made in 2016, 2019.
+                </p>
+        
+                <p>
+                    Tech used: C
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/slowray">GitHub</a>
+                </p>
+                
+                <dokki-image src="./soft/img/slowray/slowray-2.png">
+                    Low-resolution spheres in 16-bit color
+                </dokki-image>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="AV Scissors">
+                <p>
+                    A Qt-based video player whose timeline highlights the parts of the video that contain movement or sounds. Useful for pet surveillance and that sort of thing. You may find that the program works well for some videos and less well for others; typically, a suitable recording has good image and audio quality with little background noise.
+                </p>
+
+                <p>
+                    Made in 2018.
+                </p>
+        
+                <p>
+                    Tech used: C++, Qt
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/avscissors">GitHub</a>
+                </p>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="Waterfall plotting">
+                <p>
+                    A tool to generate minimalist waterfall plots from headphone impulse responses.
+                </p>
+
+                <p>
+                    Made in 2013.
+                </p>
+        
+                <p>
+                    Tech used: C++, Qt
+                </p>
+                
+                <dokki-image src="./soft/img/csd/csd-2.png">
+                    Vintage orthodynamic Audio-Technica ATH-2 headphones
+                </dokki-image>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="limpynet">
+                <p>
+                    A feed-forward neural net with customizable layering. Learns the MNIST digits to about 97%, depending on the settings provided. Written from scratch.
+                </p>
+
+                <p>
+                    Made in 2016.
+                </p>
+        
+                <p>
+                    Tech used: C++
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/limpynet">GitHub</a>
+                </p>
+                
+                <dokki-output title="Sample output">
+                    <pre style="white-space: pre-line;">
+                        $ ./limpynet -L 10 -e 3
+                        Initializing for MNIST...
+                        Net:	Topology: N784-L10-S10 
+                                Learning rate: 0.010000
+                                Training epochs: 3
+                        Training on MNIST (60000/10000)...
+                        Epoch 1 of 3: train = 68.947%, validate = 0.000%.
+                        Epoch 2 of 3: train = 90.213%, validate = 90.300%.
+                        Epoch 3 of 3: train = 91.570%, validate = 90.770%.
+                        Training finished.
+                    </pre>
+                </dokki-output>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="VRGB-FPS">
+                <p>
+                    A command-line tool that shows the current output rate (frames per second) of a Datapath VisionRGB capture card. Useful for e.g. estimating the card's maximun capture rate while excluding external factors like host CPU/GPU speed. Works with cards that implement the RGBEasy API.
+                </p>
+
+                <p>
+                    Made in 2017.
+                </p>
+        
+                <p>
+                    Tech used: C++
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/vrgb-fps">GitHub</a>
+                </p>
+                
+            </dokki-topic>        
+    
+        </dokki-topics>
     </body>
 </html>
