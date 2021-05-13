@@ -123,7 +123,7 @@ function create_app()
         mounted()
         {
             window.addEventListener("resize", update_scrollable_status.bind(this)); 
-            Vue.nextTick(update_scrollable_status.bind(this));
+            this.$nextTick(update_scrollable_status);
 
             function update_scrollable_status()
             {

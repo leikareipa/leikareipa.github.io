@@ -1,0 +1,46 @@
+<!-- Tarpeeksi Hyvae Soft 2018-->
+<!-- Cube renderer.-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>Rotating 3d cubes using JavaScript and various methods of rendering.</title>
+        <link rel="stylesheet" type="text/css" href="index.css">
+    </head>
+    <body>
+        <div class="main_column">
+            <div id="main_render_container"
+                 class="render_surface"><!-- The rendering will go here.--></div>
+            
+            <div id="button_renderer"
+                 class="side_button button_renderer"
+                 onclick="page_n.toggle_dropdown_menu(this.getAttribute('id'));">
+                Renderer: SVG
+            </div>
+                <div id="button_renderer_dropdown"
+                     class="dropdown_list">
+                    <!-- Menu items for the renderer dropdown will be generated here.-->
+                </div>
+
+            <div id="button_add_cube"
+                 class="side_button button_add_cube"
+                 onclick="cube_renderer_n.add_random_cube();">
+                Add a cube
+            </div>
+        </div>
+
+        <!-- Cube renderer code.--->
+        <script src="js/color.js" defer></script>
+        <script src="js/geometry.js" defer></script>
+        <script src="js/common.js" defer></script>
+        <script src="js/matrix44.js" defer></script>
+        <script src="js/poly_transform.js" defer></script>
+        <script src="js/render_surface.js" defer></script>
+        <script src="js/poly_fill_svg.js" defer></script>
+        <script src="js/poly_fill_bary.js" defer></script>
+        <script src="js/poly_fill_canvas.js" defer></script>
+        <script src="js/main.js" defer></script>
+        <script src="js/page.js" defer></script>
+    </body>
+</html>

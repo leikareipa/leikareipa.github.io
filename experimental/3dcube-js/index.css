@@ -1,0 +1,94 @@
+/*
+ * Tarpeeksi Hyvae Soft 2018
+ *
+ * Styling for a 3d cube renderer.
+ *
+ */
+
+body
+{
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    color: #1f1f1f;
+    margin: 0;
+    background-color: #535353;
+}
+
+.main_column
+{
+    width: 85%;
+    padding: 2vh;
+    display: inline-block;
+    position: relative;
+}
+
+/* The area where we'll render to.*/
+.render_surface
+{
+    width: 100%;
+    height: 95vh;
+    background-color: #424242;
+    border: 1px solid rgb(63, 63, 63);
+    display: inline-block;
+    position: relative;
+    z-index: 0;
+}
+
+/* User-clickable buttons that appear to the side of the rendering.*/
+.side_button
+{
+    user-select: none;
+    -moz-user-select: none;
+    border: none;
+    cursor: pointer;
+    color: #8f8f8f;
+    background-color: black;
+    padding: 12px;
+    box-shadow: 0px 0px 7px #2e2e2e;
+    position: absolute;
+    right: .25%;
+    z-index: 1;
+}
+.side_button:active
+{
+    box-shadow: 0px 0px 0px #2e2e2e;
+}
+.button_renderer
+{
+    top: 50px;
+}
+.button_add_cube
+{
+    top: 123px;
+    padding: 7px;
+}
+
+/* For dropdown menus. Adapted from https://www.w3schools.com/howto/howto_js_dropdown.asp. */
+.dropdown_list
+{
+    position: absolute;
+    right: 0;
+    top: 97px;
+    font-size: 105%;
+    background-color: #ececec;
+    min-width: 160px;
+    z-index: 2;
+    border: 1px solid black;
+    display: none;
+}
+.dropdown_list a
+{
+    color: black;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown_list a:hover
+{
+    background-color: #e0e0e0;
+}
+.dropdown_list.show
+{
+    display: block;
+}

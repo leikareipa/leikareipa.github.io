@@ -25,9 +25,9 @@
 
             <dokki-topic title="Introduction">
                 <p>
-                    This page provides information about some of the wonderful software that's been made
-                    under the Tarpeeksi Hyvae Soft banner. Binaries are currently not available but much
-                    of the code is open-source.
+                    This page provides information about some of the software associated with the
+                    Tarpeeksi Hyvae Soft banner. Binaries are currently not available, but much of the
+                    code is open-source.
                 </p>
 
                 <dokki-spoiler title="Contact">
@@ -37,7 +37,7 @@
                         Email: sw@tarpeeksihyvaesoft.com
                     </div>
 
-                    <span style="margin: 0 12px;"></span>
+                    <span style="margin: 0 8px;"></span>
 
                     <div style="display: inline-block;">
                         <i class="fab fa-github"></i>
@@ -132,7 +132,26 @@
                 <dokki-image src="./soft/img/lintulista/lintulista-4.png">
                     Browsing a list of observations
                 </dokki-image>
-                    
+
+                <dokki-output unpadded title="Run the client">
+                    <iframe src="https://www.tarpeeksihyvaesoft.com/lintulista/#samplelst"
+                            loading="lazy"
+                            style="width: 100%;
+                                   height: 600px;
+                                   max-height: 100vh;
+                                   border: none;">
+                    </iframe>
+                </dokki-output>
+                
+                <dokki-output unpadded title="Query the server (may need time to wake up)">
+                    <iframe src="https://lintulista-server.herokuapp.com/?list=samplelst"
+                            loading="lazy"
+                            style="width: 100%;
+                                   height: 300px;
+                                   max-height: 100vh;
+                                   border: none;">
+                    </iframe>
+                </dokki-output>
             </dokki-topic>
             
         
@@ -146,12 +165,13 @@
                 </p>
         
                 <p>
-                    Tech used: JavaScript, x86 assembly, C, C++
+                    Tech used: JavaScript, 386 assembly, C, C++
                 </p>
                 
                 <p>
                     Links:
                     <a href="https://www.tarpeeksihyvaesoft.com/rallysported/">Run in browser</a>,
+                    <a href="https://www.github.com/leikareipa/rallysported/">GitHub (umbrella repo)</a>,
                     <a href="https://www.github.com/leikareipa/rallysported-frontend/">GitHub (frontend)</a>,
                     <a href="https://www.github.com/leikareipa/rallysported-backend/">GitHub (backend)</a>
                 </p>
@@ -223,6 +243,7 @@
                             loading="lazy"
                             style="width: 100%;
                                    height: 420px;
+                                   max-height: 100vh;
                                    border: none;">
                     </iframe>
                 </dokki-output>
@@ -253,6 +274,7 @@
                             loading="lazy"
                             style="width: 100%;
                                    height: 500px;
+                                   max-height: 100vh;
                                    border: none;">
                     </iframe>
                 </dokki-output>
@@ -281,7 +303,7 @@
                             </script>
                             ">
 
-                    <dokki-output>
+                    <dokki-output title="Render">
                         <iframe style="width: 100%;
                                        height: 200px;
                                        border: none;"
@@ -364,7 +386,7 @@
                             </script>
                             ">
 
-                    <dokki-output>
+                    <dokki-output title="Render">
                         <iframe style="width: 100%;
                                        height: 200px;
                                        border: none;"
@@ -518,7 +540,7 @@
                 <p>
                     Tech used: JavaScript, Vue.js
                 </p>
-                
+
                 <p>
                     Links:
                     <a href="https://www.github.com/leikareipa/mesh-preview">GitHub</a>,
@@ -528,6 +550,43 @@
                 <dokki-image src="./soft/img/mesh-preview/mesh-preview-1.png">
                     Previewing a large mesh
                 </dokki-image>
+
+                <dokki-code title="Minimal sample"
+                            code="
+                            <script type='module'>
+                                import {start_mesh_preview} from 'mesh-preview.js';
+                            
+                                start_mesh_preview({
+                                    meshesMetadata: [{name: 'Just a triangle'}],
+                                    get_mesh_data: ()=>([
+                                        [{x:-1, y:-1, z:0},
+                                         {x: 0, y: 1, z:0},
+                                         {x: 1, y:-1, z:0}]
+                                    ]),
+                                });
+                            </script>
+                            ">
+
+                    <dokki-output unpadded title="Run">
+                        <iframe style="width: 100%;
+                                       height: 450px;
+                                       border: none;"
+                                srcdoc="
+                                <script type='module'>
+                                    import {start_mesh_preview} from 'https://www.tarpeeksihyvaesoft.com/experimental/mesh-preview/src/mesh-preview.js';
+                                
+                                    start_mesh_preview({
+                                        meshesMetadata: [{name: 'Just a triangle'}],
+                                        get_mesh_data: ()=>([[{x:-1, y:-1, z:0},
+                                                              {x: 0, y: 1, z:0},
+                                                              {x: 1, y:-1, z:0}]]),
+                                        modulePath: 'https://www.tarpeeksihyvaesoft.com/experimental/mesh-preview/src/',
+                                        defaultViewDistance: 4,
+                                    });
+                                </script>
+                                ">
+                        </iframe>
+                    </dokki-output>
             </dokki-topic>
             
         
@@ -550,6 +609,10 @@
 
                 <dokki-image src="./soft/img/ifu/ifu-2.png">
                     An explosive cloud lifted by an unnaturally high amount of surface heat (simulation grid visible)
+                </dokki-image>
+
+                <dokki-image src="./soft/img/ifu/ifu-4.png">
+                    Looking up at a cloud (simulation grid visible)
                 </dokki-image>
             </dokki-topic>
             
@@ -575,7 +638,6 @@
                 
                 <dokki-image src="./soft/img/what/what-1.png">
                 </dokki-image>
-                    
             </dokki-topic>
             
         
@@ -600,7 +662,6 @@
                 <dokki-image src="./soft/img/npto/npto-2.png">
                     Graphing the words per minute measure over time
                 </dokki-image>
-                    
             </dokki-topic>
             
         
@@ -648,84 +709,6 @@
             </dokki-topic>
             
         
-            <dokki-topic title="Ultima VII DOS Cache Patch">
-                <p>
-                    Patches a famous bug in Ultima 7, where the game forces the CPU cache on at launch. With this patch, the CPU cache can remain off, leading to improved gameplay speed on post-486 PCs.
-                </p>
-
-                <p>
-                    Made in 2017.
-                </p>
-        
-                <p>
-                    Tech used: x86 assembly
-                </p>
-                
-                <p>
-                    Links: <a href="https://www.github.com/leikareipa/u7dcp">GitHub</a>
-                </p>
-            </dokki-topic>
-            
-        
-            <dokki-topic title="DOS Path Tracing Benchmark">
-                <p>
-                    Test your DOS era processor's floating-point performance with this grayscale path tracer that renders a scene of spheres and counts the number of seconds it took. A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so, and the Xeon E3-1230 in less than one second.
-                </p>
-
-                <p>
-                    Made in 2017.
-                </p>
-        
-                <p>
-                    Tech used: C++
-                </p>
-                
-                
-                <dokki-image src="./soft/img/dos-path-bench/dos-path-bench-2.png">
-                </dokki-image>
-                    
-            </dokki-topic>
-            
-        
-            <dokki-topic title="DOS video chip compatibility list">
-                <p>
-                    An early web dev effort of mine, whose goal was to redesign Gona's very useful but somewhat hard-to-read DOS video chip compatibility matrix for improved accessibility. I harvested the HTML matrix data into JSON and implemented a front-end for at-a-glance-friendly access to the data.
-                </p>
-
-                <p>
-                    Made in 2018.
-                </p>
-        
-                <p>
-                    Tech used: HTML, CSS, JavaScript, C++, PHP
-                </p>
-                
-                <p>
-                    Links: <a href="https://web.archive.org/web/20180103021524/https://gona.mactar.hu/DOS_TESTS/">Original matrix</a>
-                </p>
-                
-                <dokki-image src="./soft/img/dosvideo/dosvideo-1.png">
-                </dokki-image>
-                    
-            </dokki-topic>
-            
-        
-            <dokki-topic title="DOS C Compiler Benchmark">
-                <p>
-                    A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C compilers. Compatible with a variety of legacy C toolchains, such as from Microsoft, Borland, and HI-TECH. The program renders a spinning sphere in VGA mode 13h, then provides characteristics of its runtime performance.
-                </p>
-
-                <p>
-                    Tech used: C
-                </p>
-                
-                <p>
-                    Links: <a href="https://www.github.com/leikareipa/dccb">GitHub</a>
-                </p>
-                
-            </dokki-topic>
-            
-        
             <dokki-topic title="Vond">
                 <p>
                     A hybrid voxel/polygon 3D renderer that runs on the CPU. Draws inspiration from old voxel-based games, like Delta Force and Outcast.
@@ -747,6 +730,78 @@
                     Visualizing heightmap data from the National Land Survey of Finland (orthophoto & elevation 11/2020)
                 </dokki-image>
             </dokki-topic>
+
+
+            <dokki-topic title="pfm-view">
+                <p>
+                    A learner project in Python; or in other words a PyQt app for viewing high-dynamic-range
+                    PFM images. Includes custom PFM loading and a porting from C to Python of Frédéric Drago's
+                    implementation of his 2003 tone-mapping algorithm.
+                </p>
+
+                <p>
+                    Made in 2020.
+                </p>
+        
+                <p>
+                    Tech used: Python, PyQt
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://www.github.com/leikareipa/pfm-view">GitHub</a>
+                </p>
+                
+                <dokki-image src="https://raw.githubusercontent.com/leikareipa/pfm-view/master/images/screenshots/1.png">
+                    Displaying an image with tone mapping
+                    (image source: <a href="https://hdrihaven.com/hdri/?c=outdoor&h=champagne_castle_1">HDRI Haven / Greg Zaal</a>)
+                </dokki-image>
+            </dokki-topic>
+
+
+            <dokki-topic title="Weather widget">
+                <p>
+                    A little learner project in React. Fetches and displays weather forecasts from the Finnish
+                    Meteorological Institute's open data API.
+                </p>
+
+                <p>
+                    Made in 2019.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript, React
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://www.github.com/leikareipa/weather-widget">GitHub</a>,
+                    <a href="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Helsinki">Run in browser</a>
+                </p>
+
+                <dokki-output unpadded title="Latest forecast for Helsinki">
+                    <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Helsinki"
+                            loading="lazy"
+                            style="width: 100%;
+                                   height: 210px;
+                                   border: none;">
+                    </iframe>
+                </dokki-output>
+
+                <dokki-output unpadded title="Latest forecast for Oulu">
+                    <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Oulu"
+                            loading="lazy"
+                            style="width: 100%;
+                                   height: 210px;
+                                   border: none;">
+                    </iframe>
+                </dokki-output>
+                
+                <dokki-image src="https://raw.githubusercontent.com/leikareipa/weather-widget/master/images/screenshots/app.png">
+                    A vintage weather forecast for Helsinki
+                </dokki-image>
+                    
+            </dokki-topic>
             
         
             <dokki-topic title="gpl-dta">
@@ -765,6 +820,33 @@
                 <p>
                     Links: <a href="https://www.github.com/leikareipa/gpl-dta">GitHub</a>
                 </p>
+
+                <dokki-image src="./soft/img/gpl-dta/gpl-dta-2.png">
+                    Exported assets from the Spa track opened in Blender
+                </dokki-image>
+            </dokki-topic>
+
+
+            <dokki-topic title="dig">
+                <p>
+                    A small tool to extract 3D models (into OBJ) and texture images (into PNG) from Tomb Raider 1's PHD files. Not a feature-complete app, more a quick fix for a personal need.
+                </p>
+
+                <p>
+                    Made between 2019-2020.
+                </p>
+        
+                <p>
+                    Tech used: C, PHP
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/dig">GitHub</a>
+                </p>
+
+                <dokki-image src="./soft/img/dig/dig-1.png">
+                    Exported assets from level #3 opened in Blender (minor UV issues visible)
+                </dokki-image>
             </dokki-topic>
             
         
@@ -781,17 +863,55 @@
                     Tech used: C++, Qt
                 </p>
                 
-                
                 <dokki-image src="./soft/img/bbview/bbview-1.png">
                     Visualizing NAND wear on an SSD
                 </dokki-image>
                     
             </dokki-topic>
+
+
+            <dokki-topic title="Yqr">
+                <p>
+                    The first ray/path tracer I made, serving as a personal testbed in offline rendering. Had naive
+                    implementations of volumetric photon mapping, spectral reflectance, subsurface scattering, environment
+                    mapping, and various other things. Could render volumetric effects like fog, snow, and clouds. Supported
+                    ray&ndash;triangle intersection testing on the GPU with OpenCL using a flat BVH tree (ran multiples
+                    faster on a Radeon HD 5770 GPU compared to an Athlon 5050e CPU).
+                </p>
+
+                <p>
+                    This renderer wasn't highly performant and my hardware at the time was rather slow, so the
+                    screenshots are in fairly low resolutions.
+                </p>
+
+                <p>
+                    Made between 2010-2014.
+                </p>
+        
+                <p>
+                    Tech used: C++, Qt, OpenCL
+                </p>
+
+                <dokki-image src="./soft/img/yqr/yqr-4.png">
+                    Miscellaneous things
+                </dokki-image>
+
+                <dokki-image src="./soft/img/ifu/ifu-1.png">
+                    Volumetric clouds (see also: <a href="#cloud-simulation">Cloud simulation</a>)
+                </dokki-image>
+
+                <dokki-image src="./soft/img/yqr/yqr-1.png">
+                    House with man (minor polygon normal issues visible)
+                </dokki-image>
+            </dokki-topic>
             
         
             <dokki-topic title="slowray">
                 <p>
-                    A simple path tracer that can be compiled to run on the Game Boy Advance. Its code also compiles for desktop platforms.
+                    A simple path tracer that can be compiled to run on the Game Boy Advance. Its code also
+                    compiles for desktop platforms. Since path tracing is very computationally expensive and
+                    slowray contains no optimizations to compensate, it runs extremely slow on the GBA's
+                    hardware. 
                 </p>
 
                 <p>
@@ -882,9 +1002,42 @@
                     </pre>
                 </dokki-output>
             </dokki-topic>
+
+
+            <dokki-topic title="3dcube-js">
+                <p>
+                    My first project in JavaScript. Renders spinning 3D cubes with three different techniques
+                    of rasterization. This project was later developed into the much more advanced
+                    <a href="#retro-ngon-renderer">retro n-gon renderer</a>.
+                </p>
+
+                <p>
+                    Made in 2019.
+                </p>
+        
+                <p>
+                    Tech used: JavaScript
+                </p>
+                
+                <p>
+                    Links:
+                    <a href="https://github.com/leikareipa/3dcube-js">GitHub</a>,
+                    <a href="https://www.tarpeeksihyvaesoft.com/experimental/3dcube-js/">Run in browser</a>
+                </p>
+
+                <dokki-output unpadded title="Run">
+                    <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/3dcube-js/"
+                            loading="lazy"
+                            style="width: 100%;
+                                   height: 600px;
+                                   max-height: 100vh;
+                                   border: none;">
+                    </iframe>
+                </dokki-output>
+            </dokki-topic>
             
         
-            <dokki-topic title="VRGB-FPS">
+            <dokki-topic title="vrgb-fps">
                 <p>
                     A command-line tool that shows the current output rate (frames per second) of a Datapath VisionRGB capture card. Useful for e.g. estimating the card's maximun capture rate while excluding external factors like host CPU/GPU speed. Works with cards that implement the RGBEasy API.
                 </p>
@@ -901,7 +1054,109 @@
                     Links: <a href="https://www.github.com/leikareipa/vrgb-fps">GitHub</a>
                 </p>
                 
-            </dokki-topic>        
+            </dokki-topic>
+
+
+            <dokki-topic title="Ultima VII DOS Cache Patch">
+                <p>
+                    Patches a famous bug in Ultima 7, where the game forces the CPU cache on at launch. With this patch, the CPU cache can remain off, leading to improved gameplay speed on post-486 PCs.
+                </p>
+
+                <p>
+                    Made in 2017.
+                </p>
+        
+                <p>
+                    Tech used: 386 assembly
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/u7dcp">GitHub</a>
+                </p>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="DOS Path Tracing Benchmark">
+                <p>
+                    Test your DOS era processor's floating-point performance with this grayscale path tracer that renders a scene of spheres and counts the number of seconds it took. A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so, and the Xeon E3-1230 in less than one second.
+                </p>
+
+                <p>
+                    Made in 2017.
+                </p>
+        
+                <p>
+                    Tech used: C++
+                </p>
+                
+                
+                <dokki-image src="./soft/img/dos-path-bench/dos-path-bench-2.png">
+                </dokki-image>
+                    
+            </dokki-topic>
+            
+        
+            <dokki-topic title="DOS video chip compatibility list">
+                <p>
+                    An early web dev effort of mine, whose goal was to redesign Gona's very useful but somewhat hard-to-read DOS video chip compatibility matrix for improved accessibility. I harvested the HTML matrix data into JSON and implemented a front-end for at-a-glance-friendly access to the data.
+                </p>
+
+                <p>
+                    Made in 2018.
+                </p>
+        
+                <p>
+                    Tech used: HTML, CSS, JavaScript, C++, PHP
+                </p>
+                
+                <p>
+                    Links: <a href="https://web.archive.org/web/20180103021524/https://gona.mactar.hu/DOS_TESTS/">Original matrix</a>
+                </p>
+                
+                <dokki-image src="./soft/img/dosvideo/dosvideo-1.png">
+                </dokki-image>
+            </dokki-topic>
+            
+        
+            <dokki-topic title="DOS C Compiler Benchmark">
+                <p>
+                    A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C compilers. Compatible with a variety of legacy C toolchains, such as from Microsoft, Borland, and HI-TECH. The program renders a spinning sphere in VGA mode 13h, then provides characteristics of its runtime performance.
+                </p>
+
+                <p>
+                    Tech used: C
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/dccb">GitHub</a>
+                </p>
+                
+            </dokki-topic>
+
+
+            <dokki-topic title="DOS Color Test">
+                <p>
+                    A small utility to aid in adjusting analog monitor settings (geometry, color, etc.)
+                    under DOS. The program displays a test image on the screen with reference to which adjustments
+                    can be attempted on the monitor/capture card.
+                </p>
+
+                <p>
+                    Made in 2017.
+                </p>
+
+                <p>
+                    Tech used: C++
+                </p>
+                
+                <p>
+                    Links: <a href="https://www.github.com/leikareipa/dos-color-test">GitHub</a>
+                </p>
+                
+                <dokki-image src="https://raw.githubusercontent.com/leikareipa/dos-color-test/master/images/screenshots/test1.png">
+                    A test pattern of colors and shapes in VGA mode 13h (320 &times; 200)
+                </dokki-image>
+            </dokki-topic>
     
         </dokki-topics>
     </body>
