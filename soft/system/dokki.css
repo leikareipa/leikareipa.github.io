@@ -415,12 +415,17 @@ body
     border-top-right-radius: 0;
 }
 
-.dokki-embedded.dokki-output footer > *:first-child
+.dokki-embedded.dokki-output > footer
+{
+    padding: 14px;
+}
+
+.dokki-embedded.dokki-output > footer > *:first-child
 {
     margin-top: 0;
 }
 
-.dokki-embedded.dokki-output footer > *:last-child
+.dokki-embedded.dokki-output > footer > *:last-child
 {
     margin-bottom: 0;
 }
