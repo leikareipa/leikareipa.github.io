@@ -26,7 +26,7 @@
             <dokki-topic title="Introduction">
                 <p>
                     This page provides information about some of the software associated with the
-                    Tarpeeksi Hyvae Soft banner. Binaries are currently not available, but much of the
+                    Tarpeeksi Hyvae Soft banner. Binaries are currently unavailable but much of the
                     code is open-source.
                 </p>
 
@@ -105,7 +105,11 @@
                 <dokki-image src="./soft/img/pcbi/pcbi-1.png">
                     Playing Quake in someone's bedroom
                 </dokki-image>
-                    
+
+                <dokki-video platform="youtube"
+                             src="4Xh8L9PbXeM">
+                    Assembling a Cyrix-based Socket 7 machine
+                </dokki-video>    
             </dokki-topic>
             
         
@@ -189,6 +193,20 @@
                     RallySportED-js running in Google Chrome
                 </dokki-image>
 
+                <dokki-video platform="youtube"
+                             src="32QEM7Nc8V8">
+                    RallySportED's Win32-based track editor in Linux with Wine and OpenGL
+                </dokki-video>
+
+                <dokki-video platform="youtube"
+                             src="2h-FnAyijTY">
+                    RallySportED's Win32-based track editor with Glide rendering using the 1996 3dfx Voodoo
+                </dokki-video>
+
+                <dokki-video platform="youtube"
+                             src="KXUgjmiD5DI">
+                    RallySportED's DOS-based track editor in DOS on a 486-class PC
+                </dokki-video>
             </dokki-topic>
             
         
@@ -235,9 +253,6 @@
                     Links: <a href="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720">Run live sample</a>, <a href="https://www.github.com/leikareipa/wray">GitHub</a>
                 </p>
                 
-                <dokki-image src="./soft/img/wray/wray-1.png">
-                </dokki-image>
-
                 <dokki-output unpadded title="Run">
                     <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=1&resolution=500x350"
                             loading="lazy"
@@ -247,6 +262,10 @@
                                    border: none;">
                     </iframe>
                 </dokki-output>
+
+                <dokki-image src="./soft/img/wray/wray-1.png">
+                    A rendering of the Ajax bust (model source: Jotero GbR.)
+                </dokki-image>
             </dokki-topic>
             
         
@@ -303,7 +322,7 @@
                             </script>
                             ">
 
-                    <dokki-output title="Render">
+                    <dokki-output title="Result">
                         <iframe style="width: 100%;
                                        height: 200px;
                                        border: none;"
@@ -372,21 +391,23 @@
                             <svg id='rendering' width='200' height='200'></svg>
                             <script type='module'>
                                 import {Luu} from 'luujanko.js';
+
+                                const targetSVG = document.getElementById('rendering');
+
                                 const rect = Luu.ngon([
                                     Luu.vertex(-1, -1, 0),
                                     Luu.vertex( 1, -1, 0),
                                     Luu.vertex( 1,  1, 0)
                                 ]);
-                                const rectMesh = Luu.mesh([rect]);
-                                const targetSVG = document.getElementById('rendering');
-                                Luu.render([rectMesh], targetSVG, {
+
+                                Luu.render([Luu.mesh([rect])], targetSVG, {
                                     viewRotation: Luu.rotation(0, 0, 0),
-                                    viewPosition: Luu.translation(0, 0, -3),
+                                    viewPosition: Luu.translation(0, 0, -3)
                                 });
                             </script>
                             ">
 
-                    <dokki-output title="Render">
+                    <dokki-output title="Result">
                         <iframe style="width: 100%;
                                        height: 200px;
                                        border: none;"
@@ -406,14 +427,16 @@
                                 <svg id='rendering' width='200' height='200'></svg>
                                 <script type='module'>
                                     import {Luu} from 'https://www.tarpeeksihyvaesoft.com/experimental/luujanko/distributable/luujanko.js';
-                                    const rect = Luu.ngon([
-                                         Luu.vertex(-1, -1, 0),
-                                         Luu.vertex( 1, -1, 0),
-                                         Luu.vertex( 1,  1, 0)
-                                    ]);
-                                    const rectMesh = Luu.mesh([rect]);
+                                    
                                     const targetSVG = document.getElementById('rendering');
-                                    Luu.render([rectMesh], targetSVG, {
+
+                                    const rect = Luu.ngon([
+                                        Luu.vertex(-1, -1, 0),
+                                        Luu.vertex( 1, -1, 0),
+                                        Luu.vertex( 1,  1, 0)
+                                    ]);
+
+                                    Luu.render([Luu.mesh([rect])], targetSVG, {
                                         viewRotation: Luu.rotation(0, 0, 0),
                                         viewPosition: Luu.translation(0, 0, -3),
                                     });
@@ -429,7 +452,7 @@
 
             <dokki-topic title="dokki">
                 <p>
-                    A streamlined documentation framework for creating end-user-oriented single-page docs. This website is made with it.
+                    A documentation framework for creating end-user-oriented single-page docs. This website is made with it.
                 </p>
 
                 <p>
@@ -493,8 +516,11 @@
 
                 <dokki-code title="Sample initialization and rendering"
                             code="
+                            const struct kelpo_interface_s *kelpo = NULL;
                             kelpo_create_interface(&kelpo, ``opengl_1_1``);
+
                             kelpo->window.open(0, 640, 480, 16);
+
                             while (kelpo->window.process_messages(),
                                    !kelpo->window.is_closing())
                             {
@@ -562,12 +588,12 @@
                                         [{x:-1, y:-1, z:0},
                                          {x: 0, y: 1, z:0},
                                          {x: 1, y:-1, z:0}]
-                                    ]),
+                                    ])
                                 });
                             </script>
                             ">
 
-                    <dokki-output unpadded title="Run">
+                    <dokki-output unpadded title="Result">
                         <iframe style="width: 100%;
                                        height: 450px;
                                        border: none;"
@@ -632,8 +658,7 @@
                 
                 <p>
                     Links:
-                    <a href="https://www.github.com/leikareipa/what">GitHub</a>,
-                    <a href="https://www.tarpeeksihyvaesoft.com/experimental/what/">Run in browser</a>
+                    <a href="https://www.github.com/leikareipa/what">GitHub</a>
                 </p>
                 
                 <dokki-image src="./soft/img/what/what-1.png">
@@ -654,7 +679,6 @@
                     Tech used: C++, Qt
                 </p>
                 
-                
                 <dokki-image src="./soft/img/npto/npto-1.png">
                     Inspecting which keys have taken the longest to type
                 </dokki-image>
@@ -662,6 +686,11 @@
                 <dokki-image src="./soft/img/npto/npto-2.png">
                     Graphing the words per minute measure over time
                 </dokki-image>
+
+                 <dokki-video platform="youtube"
+                              src="YgnRp6bsnhk">
+                    Demonstrating the program
+                </dokki-video>    
             </dokki-topic>
             
         
@@ -987,20 +1016,20 @@
                     Links: <a href="https://www.github.com/leikareipa/limpynet">GitHub</a>
                 </p>
                 
-                <dokki-output title="Sample output">
-                    <pre style="white-space: pre-line;">
-                        $ ./limpynet -L 10 -e 3
-                        Initializing for MNIST...
-                        Net:	Topology: N784-L10-S10 
-                                Learning rate: 0.010000
-                                Training epochs: 3
-                        Training on MNIST (60000/10000)...
-                        Epoch 1 of 3: train = 68.947%, validate = 0.000%.
-                        Epoch 2 of 3: train = 90.213%, validate = 90.300%.
-                        Epoch 3 of 3: train = 91.570%, validate = 90.770%.
-                        Training finished.
-                    </pre>
-                </dokki-output>
+                <dokki-console platform="unix"
+                               command="./limpynet -L 10 -e 3"
+                               output="
+                               Initializing for MNIST...
+                               Net: Topology: N784-L10-S10 
+                                    Learning rate: 0.010000
+                                    Training epochs: 3
+                               Training on MNIST (60000/10000)...
+                               Epoch 1 of 3: train = 68.947%, validate = 0.000%.
+                               Epoch 2 of 3: train = 90.213%, validate = 90.300%.
+                               Epoch 3 of 3: train = 91.570%, validate = 90.770%.
+                               Training finished.
+                               ">
+                </dokki-console>
             </dokki-topic>
 
 
@@ -1039,7 +1068,9 @@
         
             <dokki-topic title="vrgb-fps">
                 <p>
-                    A command-line tool that shows the current output rate (frames per second) of a Datapath VisionRGB capture card. Useful for e.g. estimating the card's maximun capture rate while excluding external factors like host CPU/GPU speed. Works with cards that implement the RGBEasy API.
+                    A simple command-line tool that shows the current output rate (frames per second) of a Datapath
+                    VisionRGB capture card. Useful for e.g. estimating the card's maximun capture rate while excluding
+                    external factors like host CPU/GPU speed. Works with cards that implement the RGBEasy API.
                 </p>
 
                 <p>
@@ -1047,13 +1078,29 @@
                 </p>
         
                 <p>
-                    Tech used: C++
+                    Tech used: C++, RGBEasy
                 </p>
                 
                 <p>
                     Links: <a href="https://www.github.com/leikareipa/vrgb-fps">GitHub</a>
                 </p>
                 
+                <dokki-console platform="windows"
+                               command="vrgb-fps.exe"
+                               output="
+                               Usage: vrgb_fps.exe <channel> <color depth>
+                               ">
+                </dokki-console>
+
+                <dokki-console platform="windows"
+                               command="vrgb-fps.exe 0 32"
+                               output="
+                               FPS on channel #0: 70
+                               FPS on channel #0: 70
+                               FPS on channel #0: 70
+                               ...
+                               ">
+                </dokki-console>
             </dokki-topic>
 
 
@@ -1073,6 +1120,18 @@
                 <p>
                     Links: <a href="https://www.github.com/leikareipa/u7dcp">GitHub</a>
                 </p>
+
+                <dokki-console platform="windows"
+                               command="u7dcp.exe"
+                               output="
+                               U7DCP - Ultima VII DOS Cache Patch.
+
+                               Patching MAINMENU.EXE...
+                               Patching ENDGAME.EXE...
+
+                               The patching appears to have gone well.
+                               ">
+                </dokki-console>
             </dokki-topic>
             
         

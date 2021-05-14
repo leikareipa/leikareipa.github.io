@@ -1,5 +1,7 @@
 /*
- * 2021 Tarpeeksi Hyvae Soft.
+ * 2021 Tarpeeksi Hyvae Soft
+ *
+ * Software: dokki
  *
  */
 
@@ -191,7 +193,8 @@ function create_app()
                         @click="isExpanded = !isExpanded">
 
                     <span class="title">
-                        <i class="fas fa-image"/>
+                        <i class="fas fa-image"/
+                           title="Image">
                     </span>
 
                     <aside class="revealer">
@@ -216,7 +219,8 @@ function create_app()
 
                 <header>
                     <div class="title">
-                        <i class="fas fa-info-circle"/>
+                        <i class="fas fa-info-circle"
+                           title="Tip"/>
                     </div>
                 </header>
 
@@ -234,12 +238,138 @@ function create_app()
 
                 <header>
                     <span class="title">
-                        <i class="fas fa-exclamation-triangle"/>
+                        <i class="fas fa-exclamation-triangle"
+                           title="Warning"/>
                     </span>
                 </header>
 
                 <footer>
                     <slot/>
+                </footer>
+
+            </p>
+        `,
+    });
+
+    // Displays a video from a given source.
+    //
+    // Sample usage:
+    //
+    //   <dokki-video platform="youtube"
+    //                src="ZgWGmggi5Xo">
+    //   </dokki-video>
+    //
+    // NOTE: The 'src' prop is a video identifier whose exact meaning depends on the
+    // host platform (identified by the 'platform' prop).
+    //
+    app.component("dokki-video", {
+        props: {
+            src: {},
+            platform: {default: "youtube"}
+        },
+        data() {
+            return {
+                isExpanded: false,
+            }
+        },
+        computed: {
+            hasFooter()
+            {
+                return !!this.$slots.default;
+            },
+            videoUrl()
+            {
+                switch (this.platform)
+                {
+                    // Note: Only YouTube is supported at this time.
+                    default: return `https://www.youtube-nocookie.com/embed/${this.src}?autoplay=1`;
+                }
+            },
+            headerIcon()
+            {
+                switch (this.platform)
+                {
+                    case "youtube": return "fab fa-youtube";
+                    default: return "fas fa-film";
+                }
+            }
+        },
+        template: `
+            <p class="dokki-embedded dokki-video"
+               :class=platform>
+
+               <header class="clickable"
+                       @click="isExpanded = !isExpanded">
+
+                    <span class="title">
+                        <i :class="headerIcon"
+                           title="Video"/>
+                    </span>
+
+                    <aside class="revealer">
+                        {{isExpanded? "Hide" : "Show"}}
+                    </aside>
+
+                </header>
+
+                <iframe v-if=isExpanded
+                        :src=videoUrl
+                        allow="fullscreen; autoplay;">
+                </iframe>
+
+                <footer v-if=hasFooter>
+                    <slot/>
+                </footer>
+
+            </p>
+        `,
+    });
+
+    // For displaying terminal commands and their output.
+    //
+    // Sample usage:
+    //
+    //   <dokki-console platform="unix"
+    //                  command="./run.sh"
+    //                  output="Hello there.">
+    //   </dokki-console>
+    //
+    app.component("dokki-console", {
+        props: {
+            command: {default: "undefined command"},
+            output: {default: ""},
+            platform: {default: "unix"}
+        },
+        computed: {
+            headerIcon()
+            {
+                switch (this.platform)
+                {
+                    case "windows": return "fas fa-terminal";
+                    case "unix": return "fas fa-dollar-sign";
+                    default: return "fas fa-dollar-sign";
+                }
+            }
+        },
+        template: `
+            <p class="dokki-embedded dokki-console">
+
+                <header>
+
+                    <span class="title">
+                        <i :class="headerIcon"
+                           title="Terminal command"/>
+                    </span>
+
+                    <span class="command">
+                        {{command}}
+                    </span>
+
+                </header>
+
+                <footer>
+                    <DOKKI0-text-block-with-line-numbers :text=output>
+                    </DOKKI0-text-block-with-line-numbers>
                 </footer>
 
             </p>
@@ -294,11 +424,90 @@ function create_app()
         `,
     });
 
+    // Internal component, not for the end-user.
+    //
+    // Displays a block of text with each line prefixed by a line number. Suitable
+    // for e.g. presenting source code or terminal output.
+    //
+    // Sample usage:
+    //
+    //   <DOKKI0-text-block-with-line-numbers text="
+    //                                        This is the first line.
+    //                                        This is another line.
+    //                                        ">
+    //   </DOKKI0-text-block-with-line-numbers>
+    //
+    // Sample output:
+    //
+    //   1: This is the first line.
+    //   2: This is another line.
+    //
+    // NOTE for the 'text' prop:
+    //   - Two backticks (``) must be used in place of double quotes (").
+    //   - Escape sequences (e.g. \n) must be doubly escaped (e.g. \\n).
+    //
+    app.component("DOKKI0-text-block-with-line-numbers", {
+        props: {
+            text: {},
+        },
+        computed: {
+            formattedText()
+            {
+                if (!this.text) {
+                    return "";
+                }
+
+                let lines = this.text.split("\n");
+
+                // Remove empty lines off the front.
+                while (lines.length && !lines[0].trim().length) {
+                    lines.shift();
+                }
+
+                if (!lines.length) {
+                    return [];
+                }
+
+                const numPreSpaces = Math.max(0, lines[0].search(/\S/));
+                for (let i = 0; i < lines.length; i++)
+                {
+                    lines[i] = lines[i].slice(numPreSpaces);
+                    lines[i] = lines[i].replace(/``/g, "\"");
+                    lines[i] = lines[i].replace(/\\\\/g, "\\");
+                }
+
+                // Remove empty lines off the back.
+                while (lines.length && !lines[lines.length-1].trim().length) {
+                    lines.pop();
+                }
+
+                return lines;
+            }
+        },
+        template: `
+            <table class="dokki-text-block-with-line-numbers">
+
+                <tr v-for="(line, index) in formattedText">
+
+                    <td class="line-number">
+                        {{index+1}}:
+                    </td>
+                    
+                    <td class="line">
+                        {{line}}
+                    </td>
+                    
+                </tr>
+
+            </table>
+        `,
+    });
+
     // For embedding blocks of source code.
     //
     // Sample usage:
     //
-    //   <dokki-code lang="C"
+    //   <dokki-code title="C"
     //               code="
     //               int main(void)
     //               {
@@ -315,10 +524,6 @@ function create_app()
     //
     //   </dokki-code>
     //
-    // NOTE: In the 'code' prop, two backticks (``) must be used in place of double quotes (").
-    //
-    // NOTE: In the 'code' prop, escape sequences (e.g. \n) must be doubly escaped (e.g. \\n).
-    //
     app.component("dokki-code", {
         props: {
             title: {default: "Untitled"},
@@ -329,29 +534,6 @@ function create_app()
             {
                 return !!this.$slots.default;
             },
-            formattedCode()
-            {
-                if (!this.code) {
-                    return "";
-                }
-
-                let lines = this.code.split("\n").filter(s=>s.length);
-                
-                if (!lines.length) {
-                    return "";
-                }
-                
-                const numPreSpaces = Math.max(0, lines[0].search(/\S/));
-
-                for (let i = 0; i < lines.length; i++)
-                {
-                    lines[i] = lines[i].slice(numPreSpaces);
-                    lines[i] = lines[i].replace(/``/g, "\"");
-                    lines[i] = lines[i].replace(/\\\\/g, "\\");
-                }
-
-                return lines.filter(s=>s.length);
-            }
         },
         template: `
             <p class="dokki-embedded dokki-code"
@@ -359,25 +541,15 @@ function create_app()
 
                 <header>
                     <span class="title">
-                        <i class="fas fa-code"/>
+                        <i class="fas fa-code"
+                           title="Code"/>
                         {{title}}
                     </span>
                 </header>
 
                 <footer>
-                    <table>
-                        <tr v-for="(line, index) in formattedCode">
-
-                            <td class="line-number">
-                                {{index+1}}:
-                            </td>
-                            
-                            <td class="code-line">
-                                {{line}}
-                            </td>
-                            
-                        </tr>
-                    </table>
+                    <DOKKI0-text-block-with-line-numbers :text=code>
+                    </DOKKI0-text-block-with-line-numbers>
                 </footer>
 
             </p>
@@ -386,37 +558,15 @@ function create_app()
         `,
     });
 
+    // A semantic alias of dokki-output.
     app.component("dokki-spoiler", {
         props: {
             title: {default: "Spoiler"},
         },
-        data() {
-            return {
-                isExpanded: false,
-            }
-        },
         template: `
-            <p class="dokki-embedded dokki-spoiler">
-
-                <header class="clickable"
-                        @click="isExpanded = !isExpanded">
-
-                    <span class="title">
-                        <i class="fas fa-chevron-right"/>
-                        {{title}}
-                    </span>
-
-                    <aside class="revealer">
-                        {{isExpanded? "Hide" : "Show"}}
-                    </aside>
-
-                </header>
-
-                <footer v-if=isExpanded>
-                    <slot/>
-                </footer>
-
-            </p>
+            <dokki-output :title=title>
+                <slot/>
+            </dokki-output>
         `,
     });
 
