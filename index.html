@@ -49,7 +49,20 @@
 
             <dokki-topic title="VCS">
                 <p>
-                    A useful capture tool for Datapath's VisionRGB range of capture cards. Features anti-tearing, advanced image filtering, video presets with activation by resolution, refresh rate and shortcut, and several other things that enable high-quality analog and digital capture for recreational and professional use.
+                    A useful capture tool for Datapath's VisionRGB range of capture cards. Features
+                    anti-tearing, advanced image filtering, video presets with activation by resolution,
+                    refresh rate and shortcut, and several other things that enable high-quality
+                    analog and digital capture for recreational and professional use.
+                </p>
+
+                <p>
+                    Implements fully custom-designed GUI styling with Qt/QSS. Subclasses several Qt
+                    components for custom functionality. Manages a multi-threaded context to synchronize
+                    hardware and software. Allows creating complex chains of image filters with a node
+                    graph. Outputs in software and OpenGL (supports variable refresh rate). Leverages
+                    Qt for HTML/CSS-stylable capture overlays. Supports capturing in Windows (XP and up)
+                    and Linux (5.x). Low reliance on GPU features; can run virtualized in QEMU, VMWare,
+                    and VirtualBox.
                 </p>
         
                 <p>
@@ -81,7 +94,14 @@
         
             <dokki-topic title="PCbi">
                 <p>
-                    A rad 3D frontend for the PC emulator PCem, and a retro PC-building simulation. Assemble a PC in 3D from olden parts and have PCem emulate it on the machine's screen. Uses shared memory to communicate with PCem. The second version number indicates the version of PCem supported.
+                    A rad 3D frontend for the PC emulator PCem, and a retro PC-building simulation.
+                    Assemble a PC from olden parts in 3D and have PCem's emulation run on its screen.
+                </p>
+
+                <p>
+                    Implements shared memory communication with PCem in Linux and Windows. Originally
+                    used full software 3D rendering (barycentric rasterization) but now has software
+                    transform + OpenGL rasterization. Custom-styled Qt GUI.
                 </p>
 
                 <p>
@@ -115,11 +135,19 @@
         
             <dokki-topic title="Lintulista">
                 <p>
-                    A full-stack web app for hobbyist birdwatchers to keep track of their sightings. This is currently closed-access, but the code is open-source and a public sample is provided (see links, below).
+                    A full-stack web app for hobbyist birdwatchers to keep track of their sightings.
+                    Used to be publically available but is currently closed-access; the code is
+                    open-source and a public sample is provided (see links, below).
                 </p>
 
                 <p>
-                    Made in 2019-2021.
+                    The JavaScript code enforces type checks and implements a try/catch-wrapping action
+                    system to make debugging easier and less intrusive. The backend is Heroku-compatible
+                    and conserves database rows (useful for those on the limited Heroku Free plan).
+                </p>
+
+                <p>
+                    Made in 2019/2021.
                 </p>
         
                 <p>
@@ -161,7 +189,26 @@
         
             <dokki-topic title="RallySportED">
                 <p>
-                    A multi-platform asset-editing toolset for the 1990s cult DOS game Rally-Sport. RallySportED lets you create and edit tracks, textures, and various other aspects of the game. Currently focused on running in the browser (RallySportED-js), but over the years there have been native versions for DOS, Windows, and Linux. The browser-based track editor almost perfectly reproduces the game's unique software-rendered 3D graphics.
+                    A multi-platform asset-editing toolset for the 1990s cult DOS game Rally-Sport. RallySportED
+                    lets you create and edit tracks, textures, and various other aspects of the game. Currently
+                    focused on running in the browser (RallySportED-js), but over the years there have been native
+                    versions for DOS, Windows, and Linux.
+                </p>
+
+                <p>
+                    The browser version of the toolset fully reproduces the game's unique software-rendered 3D
+                    graphics. It also allows modded content to be played directly in an in-browser DOSBox, and
+                    comes with WebRTC data streaming to easily share your creations with friends.
+                </p>
+
+                <p>
+                    The Windows version (now deprecated) supported Windows 95 and up (Wine-compatible), and
+                    provided 3D rendering via OpenGL, Glide, and software.
+                </p>
+
+                <p>
+                    The 16-bit DOS version (now deprecated, except for the backend) was written in assembly and
+                    C/C++, and could run on 386-class PCs (486 or Pentium recommended).
                 </p>
 
                 <p>
@@ -212,7 +259,13 @@
         
             <dokki-topic title="Rally-Sport Content">
                 <p>
-                    A platform to share user-made content for Rally-Sport. Provides a documented REST API for querying content and implements a custom MVC framework for generating views into the data. Also comes with a handy front-end for accessing with a browser. Due to EU copyright laws etc., new user registration is disabled.
+                    A platform to share user-made content for Rally-Sport. Provides a REST API for client
+                    queries and implements a custom MVC framework to generate views into the data. Also
+                    comes with a handy frontend for accessing with a browser.
+                </p>
+
+                <p>
+                    Currently not available live due to changes in hosting.
                 </p>
 
                 <p>
@@ -225,7 +278,6 @@
                 
                 <p>
                     Links:
-                    <a href="https://www.tarpeeksihyvaesoft.com/rallysport-content/tracks/">Access in browser</a>,
                     <a href="https://www.github.com/leikareipa/rallysport-content">GitHub</a>
                 </p>
                 
@@ -238,7 +290,10 @@
         
             <dokki-topic title="Wray">
                 <p>
-                    A vanilla JavaScript path tracer. Features Blender scene import, PFM export, multithreaded rendering, Drago 2003 tonemapping, and BVH tree acceleration.
+                    A vanilla JavaScript path tracer. Features importing scenes from Blender, exporting
+                    renderings to PFM, continuing previous renderings from PFM, multi-threaded rendering,
+                    tone mapping with the Drago '03 algorithm, and acceleration of ray&ndash;triangle
+                    intersection tests with a BVH tree.
                 </p>
 
                 <p>
@@ -264,14 +319,18 @@
                 </dokki-output>
 
                 <dokki-image src="./soft/img/wray/wray-1.png">
-                    A rendering of the Ajax bust (model source: Jotero GbR.)
+                    The Ajax bust (decimated to about 140,000 triangles; model source: Jotero GbR.)
                 </dokki-image>
             </dokki-topic>
             
         
             <dokki-topic title="Retro n-gon renderer">
                 <p>
-                    A well-featured software 3D renderer for HTML5 Canvas. Rasterizes n-sided polygons onto a canvas or an offscreen buffer. Features genuine retro aesthetics, vertex and pixel shaders, async rendering, an easy-to-use API, docs, cool samples, and more. Very customizable: from simple wireframe rendering to full ray-traced lighting. Easy to integrate into an existing JavaScript project.
+                    A well-featured software 3D renderer for the HTML5 canvas. Rasterizes n-sided
+                    polygons onto either a canvas or an offscreen buffer. Features genuine retro
+                    aesthetics, vertex and pixel shaders, async rendering, a streamlined API, docs,
+                    lots of samples, and more. No external dependencies; easy to integrate into an
+                    existing JavaScript project.
                 </p>
 
                 <p>
@@ -306,7 +365,7 @@
                     The Utah teapot with Phong shading
                 </dokki-image>
 
-                <dokki-code title="Minimal render sample"
+                <dokki-code title="Minimal full render sample"
                             code="
                             <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
                             <script src='rngon.cat.js'></script>
@@ -317,7 +376,6 @@
                                     Rngon.vertex( 1,  1, 3)], {
                                         color: Rngon.color_rgba(0, 150, 255)
                                 });
-
                                 Rngon.render('canvas', [Rngon.mesh([poly])]);
                             </script>
                             ">
@@ -343,7 +401,6 @@
                                         Rngon.vertex( 1,  1, 3)], {
                                             color: Rngon.color_rgba(0, 150, 255)
                                     });
-
                                     Rngon.render('canvas', [Rngon.mesh([poly])]);
                                 </script>"
                                 >
@@ -386,7 +443,7 @@
                     Looking down a corridor of the E1M1 level in Quake
                 </dokki-image>
 
-                <dokki-code title="Minimal render sample"
+                <dokki-code title="Minimal full render sample"
                             code="
                             <svg id='rendering' width='200' height='200'></svg>
                             <script type='module'>
@@ -394,14 +451,13 @@
 
                                 const targetSVG = document.getElementById('rendering');
 
-                                const rect = Luu.ngon([
+                                const poly = Luu.ngon([
                                     Luu.vertex(-1, -1, 0),
                                     Luu.vertex( 1, -1, 0),
                                     Luu.vertex( 1,  1, 0)
                                 ]);
 
-                                Luu.render([Luu.mesh([rect])], targetSVG, {
-                                    viewRotation: Luu.rotation(0, 0, 0),
+                                Luu.render([Luu.mesh([poly])], targetSVG, {
                                     viewPosition: Luu.translation(0, 0, -3)
                                 });
                             </script>
@@ -495,7 +551,15 @@
         
             <dokki-topic title="Kelpo">
                 <p>
-                    A minimalist retro-oriented 3D rasterizer API wrapper. The idea is to create an umbrella API that exposes a minimal unifying feature set supported by as many old 1990s 3D cards as reasonably possible. Currently works with Direct3D 5-7, OpenGL 1.2, OpenGL 3.0, and Glide 3. Planned support includes the proprietary 3D APIs of Matrox, S3, and ATi.
+                    A streamlined retro-oriented 3D rasterizer API wrapper written in C89. The idea is
+                    to create an easy-to-use master API that exposes a minimal unifying feature set
+                    which in other words produces as feature-identical an output as reasonably possible
+                    on as many 1990s 3D cards as reasonably possible.
+                </p>
+                
+                <p>
+                    Currently supports rendering with Direct3D 5 & 7, OpenGL 1.1 & 3.0, and Glide 3.
+                    Planned support includes the proprietary 3D APIs of Matrox, S3, and ATi.
                 </p>
 
                 <p>
@@ -538,7 +602,10 @@
         
             <dokki-topic title="KAC file format">
                 <p>
-                    A retro-themed binary format for storing 3D models and their textures; a companion format for the Kelpo renderer. Designed with the limitations of 1990s 3D hardware in mind. An importer and exporter are provided.
+                    A retro-themed binary format for storing 3D models and their textures; a
+                    companion format for the <a href="#kelpo">Kelpo</a> renderer. Designed with
+                    the limitations of 1990s 3D hardware in mind. An importer and exporter are
+                    provided.
                 </p>
 
                 <p>
