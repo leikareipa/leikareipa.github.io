@@ -14,6 +14,7 @@ function create_app()
     const store = new Vuex.Store({
         state: {
             topics: [],
+            loremCount: 0,
         },
         mutations: {
             add_topic(state, topicTitle)
@@ -23,6 +24,10 @@ function create_app()
                     simplifiedTitle: simplified_topic_title(topicTitle),
                     url: `#${simplified_topic_title(topicTitle)}`
                 });
+            },
+            increment_lorem_count(state)
+            {
+                state.loremCount++;
             },
         }
     });
@@ -91,9 +96,9 @@ function create_app()
             <section class="dokki-topic"
                  :id=simplifiedTitle>
             
-                <h2 class="title">
+                <h1 class="title">
                     {{this.idx}}. {{this.title}}
-                </h2>
+                </h1>
 
                 <span class="permalink"
                       title="Permalink to this topic">
@@ -282,7 +287,7 @@ function create_app()
                 switch (this.platform)
                 {
                     // Note: Only YouTube is supported at this time.
-                    default: return `https://www.youtube-nocookie.com/embed/${this.src}?autoplay=1`;
+                    default: return `https://www.youtube-nocookie.com/embed/${this.src}`;
                 }
             },
             headerIcon()
@@ -349,7 +354,11 @@ function create_app()
                     case "unix": return "fas fa-dollar-sign";
                     default: return "fas fa-dollar-sign";
                 }
-            }
+            },
+            hasFooter()
+            {
+                return !!this.output.length;
+            },
         },
         template: `
             <p class="dokki-embedded dokki-console">
@@ -367,11 +376,10 @@ function create_app()
 
                 </header>
 
-                <footer>
+                <footer v-if=hasFooter>
                     <DOKKI0-text-block-with-line-numbers :text=output>
                     </DOKKI0-text-block-with-line-numbers>
                 </footer>
-
             </p>
         `,
     });
@@ -444,7 +452,6 @@ function create_app()
     //
     // NOTE for the 'text' prop:
     //   - Two backticks (``) must be used in place of double quotes (").
-    //   - Escape sequences (e.g. \n) must be doubly escaped (e.g. \\n).
     //
     app.component("DOKKI0-text-block-with-line-numbers", {
         props: {
@@ -512,7 +519,7 @@ function create_app()
     //               int main(void)
     //               {
     //                   const char *str = ``Hello there.``;
-    //                   printf(``The string says: '%s'\\n``, str);
+    //                   printf(``The string says: '%s'\n``, str);
     //                   return 0;
     //               }
     //               ">
@@ -524,10 +531,44 @@ function create_app()
     //
     //   </dokki-code>
     //
+    //
+    //   <dokki-code title="C">
+    //       <template #code>
+    //           <pre>
+    //               int main(void)
+    //               {
+    //                   const char *str = "Hello there.";
+    //                   printf("The string says: '%s'\n", str);
+    //                   return 0;
+    //               }
+    //           </pre>
+    //       </template>
+    //   </dokki-code>
+    //
     app.component("dokki-code", {
         props: {
-            title: {default: "Untitled"},
-            code: {},
+            title: {default: "Code"},
+            code: {default: undefined},
+        },
+        data() {
+            return {
+                codeFromSlot: undefined,
+            }
+        },
+        mounted()
+        {
+            if (!this.$slots.code ||
+                (typeof this.$slots.code !== "function"))
+            {
+                return;
+            }
+
+            const codeElement = this.$slots.code()[0];
+
+            if (codeElement)
+            {
+                this.codeFromSlot = codeElement.children;
+            }
         },
         computed: {
             hasOutput()
@@ -540,15 +581,19 @@ function create_app()
                :class="{'has-output': hasOutput}">
 
                 <header>
+
                     <span class="title">
+
                         <i class="fas fa-code"
                            title="Code"/>
                         {{title}}
+
                     </span>
+
                 </header>
 
                 <footer>
-                    <DOKKI0-text-block-with-line-numbers :text=code>
+                    <DOKKI0-text-block-with-line-numbers :text="codeFromSlot || code">
                     </DOKKI0-text-block-with-line-numbers>
                 </footer>
 
@@ -567,6 +612,60 @@ function create_app()
             <dokki-output :title=title>
                 <slot/>
             </dokki-output>
+        `,
+    });
+
+    // Displays a paragraph of lorem ipsum.
+    //
+    // Sample usage:
+    //
+    //   <dokki-lorem>
+    //   </dokki-lorem>
+    //
+    //   <dokki-lorem>
+    //   </dokki-lorem>
+    //
+    app.component("dokki-lorem", {
+        mounted() {
+            this.lorem = this.paragraphs[this.$store.state.loremCount % this.paragraphs.length];
+            this.$store.commit("increment_lorem_count");
+        },
+        data() {
+            return {
+                lorem: "",
+                paragraphs: [
+                    `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam faucibus sagittis urna,
+                     non egestas felis. Ut mollis, quam at aliquam sagittis, magna purus consequat mi, vitae
+                     gravida est nunc non neque. Quisque sit amet quam ac est hendrerit sagittis. Curabitur
+                     id volutpat mauris.`,
+
+                    `Vivamus quis fermentum nisi, vitae auctor elit. Suspendisse ut massa scelerisque, efficitur
+                     diam non, convallis nulla. Nunc viverra ex semper, scelerisque enim nec, egestas quam. Ut
+                     vitae porta erat. Vivamus ac dictum odio. Donec magna justo, cursus eu vestibulum consectetur,
+                     fringilla ac magna.`,
+
+                    `Aliquam sodales mi at erat ultrices faucibus. Curabitur non arcu diam. Sed et lacus
+                     risus. Nam risus nisi, fermentum eget sapien lacinia, rhoncus luctus metus. Fusce tincidunt
+                     efficitur ex a rhoncus. Aliquam lobortis lorem augue, at sollicitudin justo pretium vel.
+                     Ut mattis nibh in finibus rhoncus.`,
+
+                    `Maecenas aliquam lorem ac pharetra egestas. Interdum et malesuada fames ac ante ipsum
+                     primis in faucibus. Quisque hendrerit suscipit nibh et accumsan. Integer ipsum tellus,
+                     sollicitudin at est non, pulvinar dapibus erat. Cras rhoncus lobortis nunc vitae bibendum.
+                     Ut dictum nisi quis nibh finibus, euismod vulputate ipsum facilisis. Pellentesque congue,
+                     felis eu consequat molestie, est nibh vehicula eros, ac consectetur tortor nisi ac justo.`,
+
+                    `Suspendisse fringilla, purus non ornare imperdiet, turpis est blandit felis, sit amet
+                     ultricies urna lorem vitae erat. Cras nec ipsum vitae felis scelerisque malesuada id
+                     sollicitudin mauris. Nunc hendrerit laoreet odio. Aliquam facilisis nisi eget aliquam
+                     gravida. Sed ut velit bibendum arcu varius maximus.`,
+                ],
+            }
+        },
+        template: `
+            <p>
+                {{lorem}}
+            </p>
         `,
     });
 

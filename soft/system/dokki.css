@@ -204,7 +204,6 @@ body
 .dokki-topic h1,
 .dokki-topic h2,
 .dokki-topic h3,
-.dokki-topic h4,
 .dokki-side-panel h2
 {
     font-size: 100%;
@@ -214,20 +213,27 @@ body
     margin: 0;
 }
 
-.dokki-topic h2
+.dokki-topic h1
 {
     display: inline-block; /* To allow permalink icons next to the h2 heading.*/
     font-size: 160%;
 }
 
-.dokki-topic h3
+.dokki-topic h2
 {
     font-size: 130%;
 }
 
-.dokki-topic h3:not(:first-child)
+.dokki-topic h2:not(:first-child)
 {
     margin-top: var(--content-margin);
+    margin-bottom: 16px;
+}
+
+.dokki-topic h3
+{
+    display: inline-block;
+    font-weight: bold;
 }
 
 .dokki-topic-anchor
@@ -263,7 +269,7 @@ body
     overflow: hidden;
 }
 
-.dokki-embedded header
+.dokki-embedded > header
 {
     font-weight: normal;
     padding: 6px;
@@ -271,7 +277,7 @@ body
     padding-right: 14px;
 }
 
-.dokki-embedded header.clickable
+.dokki-embedded > header.clickable
 {
     display: flex;
     align-items: baseline;
@@ -281,31 +287,31 @@ body
     background-color: #f6f6f6;
 }
 
-.dokki-embedded footer
+.dokki-embedded > footer
 {
     padding: 8px;
     padding-left: 14px;
     padding-right: 14px;
 }
 
-.dokki-embedded footer > *:only-child
+.dokki-embedded > footer > *:only-child
 {
     margin-top: 0;
     margin-bottom: 0;
 }
 
-.dokki-embedded footer.unpadded
+.dokki-embedded > footer.unpadded
 {
     padding: 0 !important;
 }
 
-.dokki-embedded footer > iframe,
-.dokki-embedded footer > canvas
+.dokki-embedded > footer > iframe,
+.dokki-embedded > footer > canvas
 {
     margin-bottom: calc(var(--embedded-element-border-radius) / 2 * -1) !important;
 }
 
-.dokki-embedded .revealer
+.dokki-embedded > header > .revealer
 {
     margin-left: 10px;
     color: #00ade6;
@@ -331,12 +337,12 @@ body
     border: none;
 }
 
-.dokki-embedded.dokki-video footer
+.dokki-embedded.dokki-video > footer
 {
     font-style: italic;
 }
 
-.dokki-embedded.dokki-video header .title::after
+.dokki-embedded.dokki-video > header .title::after
 {
     content: " Video";
 }
@@ -347,26 +353,27 @@ body
     border-color: black;
 }
 
-.dokki-embedded.dokki-console header
+.dokki-embedded.dokki-console > header
 {
     background-color: black;
     display: flex;
     align-items: center;
 }
 
-.dokki-embedded.dokki-console header .title
+.dokki-embedded.dokki-console > header .title
 {
     margin-right: 7px;
 }
 
-.dokki-embedded.dokki-console header .command
+.dokki-embedded.dokki-console > header .command
 {
     font-family: monospace;
 }
 
-.dokki-embedded.dokki-console footer
+.dokki-embedded.dokki-console > footer
 {
     color: black;
+    padding-left: 10px;
 }
 
 .dokki-embedded.dokki-tip
@@ -375,13 +382,13 @@ body
     background-color: #f2f8ff;
 }
 
-.dokki-embedded.dokki-tip header
+.dokki-embedded.dokki-tip > header
 {
     color: white;
     background-color: deepskyblue;
 }
 
-.dokki-embedded.dokki-tip header .title::after
+.dokki-embedded.dokki-tip > header .title::after
 {
     content: " Tip";
 }
@@ -392,13 +399,13 @@ body
     background-color: #fff2ec;
 }
 
-.dokki-embedded.dokki-warning header
+.dokki-embedded.dokki-warning > header
 {
     color: white;
     background-color: #ff7838;
 }
 
-.dokki-embedded.dokki-warning header .title::after
+.dokki-embedded.dokki-warning > header .title::after
 {
     content: " Warning";
 }
@@ -444,27 +451,28 @@ body
     border-bottom: none;
 }
 
-.dokki-embedded.dokki-code header
+.dokki-embedded.dokki-code > header
 {
     color: black;
     background-color: #ffe318;
 }
 
-.dokki-embedded.dokki-code footer
+.dokki-embedded.dokki-code > footer
 {
     font-size: 110%;
     padding-bottom: 10px;
     padding-top: 10px;
+    padding-left: 10px;
     overflow: auto;
 }
 
-.dokki-embedded.dokki-code footer table
+.dokki-embedded.dokki-code > footer table
 {
     font-family: monospace;
     white-space: pre;
 }
 
-.dokki-embedded.dokki-code footer table .line-number
+.dokki-embedded.dokki-code > footer table .line-number
 {
     color: gray;
     user-select: none;
@@ -483,12 +491,12 @@ body
     max-width: 100%;
 }
 
-.dokki-embedded.dokki-image header .title::after
+.dokki-embedded.dokki-image > header .title::after
 {
     content: " Image";
 }
 
-.dokki-embedded.dokki-image footer
+.dokki-embedded.dokki-image > footer
 {
     font-style: italic;
 }

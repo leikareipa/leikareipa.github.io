@@ -514,8 +514,9 @@
                     The 3dfx Voodoo rendering a scene from Tomb Raider
                 </dokki-image>
 
-                <dokki-code title="Sample initialization and rendering"
-                            code="
+                <dokki-code title="Sample initialization and rendering">
+                    <template #code>
+                        <pre>
                             const struct kelpo_interface_s *kelpo = NULL;
                             kelpo_create_interface(&kelpo, ``opengl_1_1``);
 
@@ -527,8 +528,9 @@
                                 kelpo->rasterizer.clear_frame();
                                 kelpo->rasterizer.draw_triangles(&triangle, 1);
                                 kelpo->window.flip_surface();
-                            }">
-                    
+                            }
+                        </pre>
+                    </template>
                 </dokki-code>
                     
             </dokki-topic>
@@ -576,43 +578,6 @@
                 <dokki-image src="./soft/img/mesh-preview/mesh-preview-1.png">
                     Previewing a large mesh
                 </dokki-image>
-
-                <dokki-code title="Minimal sample"
-                            code="
-                            <script type='module'>
-                                import {start_mesh_preview} from 'mesh-preview.js';
-                            
-                                start_mesh_preview({
-                                    meshesMetadata: [{name: 'Just a triangle'}],
-                                    get_mesh_data: ()=>([
-                                        [{x:-1, y:-1, z:0},
-                                         {x: 0, y: 1, z:0},
-                                         {x: 1, y:-1, z:0}]
-                                    ])
-                                });
-                            </script>
-                            ">
-
-                    <dokki-output unpadded title="Result">
-                        <iframe style="width: 100%;
-                                       height: 450px;
-                                       border: none;"
-                                srcdoc="
-                                <script type='module'>
-                                    import {start_mesh_preview} from 'https://www.tarpeeksihyvaesoft.com/experimental/mesh-preview/src/mesh-preview.js';
-                                
-                                    start_mesh_preview({
-                                        meshesMetadata: [{name: 'Just a triangle'}],
-                                        get_mesh_data: ()=>([[{x:-1, y:-1, z:0},
-                                                              {x: 0, y: 1, z:0},
-                                                              {x: 1, y:-1, z:0}]]),
-                                        modulePath: 'https://www.tarpeeksihyvaesoft.com/experimental/mesh-preview/src/',
-                                        defaultViewDistance: 4,
-                                    });
-                                </script>
-                                ">
-                        </iframe>
-                    </dokki-output>
             </dokki-topic>
             
         
@@ -1104,7 +1069,7 @@
             </dokki-topic>
 
 
-            <dokki-topic title="Ultima VII DOS Cache Patch">
+            <dokki-topic title="u7dcp">
                 <p>
                     Patches a famous bug in Ultima 7, where the game forces the CPU cache on at launch. With this patch, the CPU cache can remain off, leading to improved gameplay speed on post-486 PCs.
                 </p>
@@ -1150,6 +1115,7 @@
                 
                 
                 <dokki-image src="./soft/img/dos-path-bench/dos-path-bench-2.png">
+                    Running in DOSBox
                 </dokki-image>
                     
             </dokki-topic>
