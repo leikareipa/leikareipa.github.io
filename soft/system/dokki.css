@@ -322,6 +322,57 @@ body
     text-transform: lowercase;
 }
 
+.dokki-embedded.dokki-table > header .title::after
+{
+    content: " Table";
+}
+
+.dokki-embedded.dokki-table > .table-container
+{
+    overflow: auto;
+}
+
+.dokki-embedded.dokki-table > .table-container table
+{
+    width: 100%;
+    border-spacing: 0;
+    border-bottom: none;
+    padding: 0;
+}
+
+.dokki-embedded.dokki-table > .table-container table td,
+.dokki-embedded.dokki-table > .table-container table th
+{
+    padding: 8px;
+    border: none;
+    border-bottom: 1px solid lightgray;
+    white-space: nowrap;
+}
+
+.dokki-embedded.dokki-table > .table-container table th
+{
+    border-top: 1px solid lightgray;
+    background-color: #f6f6f6;
+    font-weight: normal;
+}
+
+.dokki-embedded.dokki-table > .table-container table td:not(:last-child),
+.dokki-embedded.dokki-table > .table-container table th:not(:last-child)
+{
+    border-right: 1px solid lightgray;
+}
+
+.dokki-embedded.dokki-table > .table-container table td:last-child,
+.dokki-embedded.dokki-table > .table-container table th:last-child
+{
+    width: 100%;
+}
+
+.dokki-embedded.dokki-table > footer
+{
+    font-style: italic;
+}
+
 .dokki-embedded.dokki-video
 {
     display: flex;

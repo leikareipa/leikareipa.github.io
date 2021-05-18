@@ -78,17 +78,99 @@
                 </p>
                 
                 <dokki-image src="https://raw.githubusercontent.com/leikareipa/vcs/master/images/screenshots/v2.3.0/output-window.png">
-                    Capturing the Windows 98 desktop via the Datapath VisionRGB-E1S
+                    <template #caption>
+                        Capturing the Windows 98 desktop via the Datapath VisionRGB-E1S
+                    </template>
                 </dokki-image>
 
                 <dokki-image src="https://raw.githubusercontent.com/leikareipa/vcs/master/images/screenshots/v2.4.0/video-presets-dialog.png">
-                    Adjusting video presets
+                    <template #caption>
+                        Adjusting video presets
+                    </template>
                 </dokki-image>
                     
                 <dokki-image src="https://raw.githubusercontent.com/leikareipa/vcs/master/images/screenshots/v2.4.0/filter-graph-dialog.png">
-                    Creating a filter graph
+                    <template #caption>
+                        Creating a filter graph
+                    </template>
                 </dokki-image>
-                    
+                
+                <dokki-table>
+                    <template #caption>
+                        Supported capture cards
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Vendor</th>
+                                <th>Model</th>
+                            </tr>
+                            <tr>
+                                <td>Datapath</td>
+                                <td>VisionRGB-PRO1/-PRO2</td>
+                            </tr>
+                            <tr>
+                                <td>Datapath</td>
+                                <td>VisionRGB-E1/-E2</td>
+                            </tr>
+                            <tr>
+                                <td>Datapath</td>
+                                <td>VisionRGB-E1S/-E2S</td>
+                            </tr>
+                            <tr>
+                                <td>Datapath</td>
+                                <td>VisionRGB-X2</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>225</td>
+                                <td>4364</td>
+                                <td>3340</td>
+                                <td>18329</td>
+                            </tr>
+                            <tr>
+                                <td>C++</td>
+                                <td>103</td>
+                                <td>3006</td>
+                                <td>1415</td>
+                                <td>11688</td>
+                            </tr>
+                            <tr>
+                                <td>C/C++ Header</td>
+                                <td>109</td>
+                                <td>1358</td>
+                                <td>1925</td>
+                                <td>3431</td>
+                            </tr>
+                            <tr>
+                                <td>Qt</td>
+                                <td>13</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>3210</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -119,17 +201,68 @@
                 </p>
 
                 <dokki-image src="./soft/img/pcbi/pcbi-5.png">
-                    Selecting components to install
+                    <template #caption>
+                        Selecting components to install
+                    </template>
                 </dokki-image>
                 
                 <dokki-image src="./soft/img/pcbi/pcbi-1.png">
-                    Playing Quake in someone's bedroom
+                    <template #caption>
+                        Playing Quake in someone's bedroom
+                    </template>
                 </dokki-image>
 
-                <dokki-video platform="youtube"
-                             src="4Xh8L9PbXeM">
-                    Assembling a Cyrix-based Socket 7 machine
-                </dokki-video>    
+                <dokki-video platform="youtube" src="4Xh8L9PbXeM">
+                    <template #caption>
+                        Assembling a Cyrix-based Socket 7 machine
+                    </template>
+                </dokki-video>
+                
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>75</td>
+                                <td>2125</td>
+                                <td>1056</td>
+                                <td>9007</td>
+                            </tr>
+                            <tr>
+                                <td>C++</td>
+                                <td>32</td>
+                                <td>1564</td>
+                                <td>859</td>
+                                <td>6317</td>
+                            </tr>
+                            <tr>
+                                <td>Qt</td>
+                                <td>4</td>
+                                <td>14</td>
+                                <td>0</td>
+                                <td>1611</td>
+                            </tr>
+                            <tr>
+                                <td>C/C++ Header</td>
+                                <td>39</td>
+                                <td>547</td>
+                                <td>197</td>
+                                <td>1079</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -142,7 +275,7 @@
 
                 <p>
                     The JavaScript code enforces type checks and implements a try/catch-wrapping action
-                    system to make debugging easier and less intrusive. The backend is Heroku-compatible
+                    system to make debugging and error-reporting easier. The backend is Heroku-compatible
                     and conserves database rows (useful for those on the limited Heroku Free plan).
                 </p>
 
@@ -151,7 +284,7 @@
                 </p>
         
                 <p>
-                    Tech used: JavaScript, React, Node.js, PostgreSQL, C++
+                    Tech used: JavaScript, React, Node.js, PostgreSQL, C++, Qt
                 </p>
                 
                 <p>
@@ -162,7 +295,9 @@
                 </p>
                 
                 <dokki-image src="./soft/img/lintulista/lintulista-4.png">
-                    Browsing a list of observations
+                    <template #caption>
+                        Browsing a list of observations
+                    </template>
                 </dokki-image>
 
                 <dokki-output unpadded title="Run the client">
@@ -184,6 +319,80 @@
                                    border: none;">
                     </iframe>
                 </dokki-output>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>61</td>
+                                <td>1163</td>
+                                <td>860</td>
+                                <td>5617</td>
+                            </tr>
+                            <tr>
+                                <td>JavaScript</td>
+                                <td>29</td>
+                                <td>409</td>
+                                <td>367</td>
+                                <td>1951</td>
+                            </tr>
+                            <tr>
+                                <td>JSX</td>
+                                <td>20</td>
+                                <td>399</td>
+                                <td>423</td>
+                                <td>1557</td>
+                            </tr>
+                            <tr>
+                                <td>CSS</td>
+                                <td>5</td>
+                                <td>237</td>
+                                <td>5</td>
+                                <td>1556</td>
+                            </tr>
+                            <tr>
+                                <td>C++</td>
+                                <td>3</td>
+                                <td>75</td>
+                                <td>30</td>
+                                <td>242</td>
+                            </tr>
+                            <tr>
+                                <td>Qt</td>
+                                <td>1</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>203</td>
+                            </tr>
+                            <tr>
+                                <td>C/C++ Header</td>
+                                <td>2</td>
+                                <td>30</td>
+                                <td>13</td>
+                                <td>59</td>
+                            </tr>
+                            <tr>
+                                <td>PHP</td>
+                                <td>1</td>
+                                <td>13</td>
+                                <td>22</td>
+                                <td>49</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -216,7 +425,7 @@
                 </p>
         
                 <p>
-                    Tech used: JavaScript, 386 assembly, C, C++
+                    Tech used: JavaScript, 386 assembly, C, C++, IDA
                 </p>
                 
                 <p>
@@ -237,23 +446,88 @@
                 </dokki-output>
                 
                 <dokki-image src="./soft/img/rallysported/rallysported-1.png">
-                    RallySportED-js running in Google Chrome
+                    <template #caption>
+                        RallySportED-js running in Google Chrome
+                    </template>
                 </dokki-image>
 
-                <dokki-video platform="youtube"
-                             src="32QEM7Nc8V8">
-                    RallySportED's Win32-based track editor in Linux with Wine and OpenGL
+                <dokki-video platform="youtube" src="32QEM7Nc8V8">
+                    <template #caption>
+                        RallySportED's Win32-based track editor in Linux with Wine and OpenGL
+                    </template>
                 </dokki-video>
 
-                <dokki-video platform="youtube"
-                             src="2h-FnAyijTY">
-                    RallySportED's Win32-based track editor with Glide rendering using the 1996 3dfx Voodoo
+                <dokki-video platform="youtube" src="2h-FnAyijTY">
+                    <template #caption>
+                        RallySportED's Win32-based track editor with Glide rendering using the 1996 3dfx Voodoo
+                    </template>
                 </dokki-video>
 
-                <dokki-video platform="youtube"
-                             src="KXUgjmiD5DI">
-                    RallySportED's DOS-based track editor in DOS on a 486-class PC
+                <dokki-video platform="youtube" src="KXUgjmiD5DI">
+                    <template #caption>
+                        RallySportED's DOS-based track editor in DOS on a 486-class PC
+                    </template>
                 </dokki-video>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>129</td>
+                                <td>4206</td>
+                                <td>3631</td>
+                                <td>16534</td>
+                            </tr>
+                            <tr>
+                                <td>C++</td>
+                                <td>39</td>
+                                <td>1831</td>
+                                <td>1200</td>
+                                <td>7114</td>
+                            </tr>
+                            <tr>
+                                <td>JavaScript</td>
+                                <td>49</td>
+                                <td>1525</td>
+                                <td>1349</td>
+                                <td>6272</td>
+                            </tr>
+                            <tr>
+                                <td>Assembly</td>
+                                <td>10</td>
+                                <td>354</td>
+                                <td>819</td>
+                                <td>1802</td>
+                            </tr>
+                            <tr>
+                                <td>C/C++ Header</td>
+                                <td>30</td>
+                                <td>450</td>
+                                <td>261</td>
+                                <td>982</td>
+                            </tr>
+                            <tr>
+                                <td>CSS</td>
+                                <td>1</td>
+                                <td>46</td>
+                                <td>2</td>
+                                <td>364</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -273,7 +547,7 @@
                 </p>
         
                 <p>
-                    Tech used: PHP, JavaScript
+                    Tech used: PHP
                 </p>
                 
                 <p>
@@ -282,9 +556,56 @@
                 </p>
                 
                 <dokki-image src="./soft/img/rallysport-content/rallysport-content-2.png">
-                    A selection of custom tracks
+                    <template #caption>
+                        A selection of custom tracks
+                    </template>
                 </dokki-image>
-                    
+                
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>103</td>
+                                <td>1327</td>
+                                <td>1610</td>
+                                <td>5941</td>
+                            </tr>
+                            <tr>
+                                <td>PHP</td>
+                                <td>83</td>
+                                <td>1198</td>
+                                <td>1593</td>
+                                <td>5056</td>
+                            </tr>
+                            <tr>
+                                <td>CSS</td>
+                                <td>19</td>
+                                <td>126</td>
+                                <td>8</td>
+                                <td>864</td>
+                            </tr>
+                            <tr>
+                                <td>JavaScript</td>
+                                <td>1</td>
+                                <td>3</td>
+                                <td>9</td>
+                                <td>21</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -308,7 +629,7 @@
                     Links: <a href="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720">Run live sample</a>, <a href="https://www.github.com/leikareipa/wray">GitHub</a>
                 </p>
                 
-                <dokki-output unpadded title="Run">
+                <dokki-output unpadded title="Run sample">
                     <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=1&resolution=500x350"
                             loading="lazy"
                             style="width: 100%;
@@ -319,8 +640,42 @@
                 </dokki-output>
 
                 <dokki-image src="./soft/img/wray/wray-1.png">
-                    The Ajax bust (decimated to about 140,000 triangles; model source: Jotero GbR.)
+                    <template #caption>
+                        The Ajax bust (decimated to about 140,000 triangles; model source: Jotero GbR.)
+                    </template>
                 </dokki-image>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>20</td>
+                                <td>377</td>
+                                <td>489</td>
+                                <td>1659</td>
+                            </tr>
+                            <tr>
+                                <td>JavaScript</td>
+                                <td>20</td>
+                                <td>377</td>
+                                <td>489</td>
+                                <td>1659</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -347,7 +702,7 @@
                     <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/">Interactive samples</a>
                 </p>
             
-                <dokki-output unpadded title="Run (click to capture mouse, ESDF & QA to move)">
+                <dokki-output unpadded title="Run sample (click to capture mouse, ESDF & QA to move)">
                     <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/tomb-raider-home/"
                             loading="lazy"
                             style="width: 100%;
@@ -358,11 +713,15 @@
                 </dokki-output>
 
                 <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/tomb-raider-1-texture-lightmap-2.png">
-                    A scene from Tomb Raider
+                    <template #caption>
+                        A scene from Tomb Raider
+                    </template>
                 </dokki-image>
 
                 <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/teapt.png">
-                    The Utah teapot with Phong shading
+                    <template #caption>
+                        The Utah teapot with Phong shading
+                    </template>
                 </dokki-image>
 
                 <dokki-code title="Minimal full render sample"
@@ -408,6 +767,52 @@
                     </dokki-output>
                 
                 </dokki-code>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>22</td>
+                                <td>508</td>
+                                <td>587</td>
+                                <td>2375</td>
+                            </tr>
+                            <tr>
+                                <td>JavaScript</td>
+                                <td>20</td>
+                                <td>485</td>
+                                <td>527</td>
+                                <td>2202</td>
+                            </tr>
+                            <tr>
+                                <td>PHP</td>
+                                <td>1</td>
+                                <td>13</td>
+                                <td>21</td>
+                                <td>92</td>
+                            </tr>
+                            <tr>
+                                <td>Python</td>
+                                <td>1</td>
+                                <td>10</td>
+                                <td>39</td>
+                                <td>81</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -430,7 +835,7 @@
                     <a href="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/">View interactive samples</a>
                 </p>
 
-                <dokki-output unpadded title="Run (click to capture mouse, ESDF & QA to move)">
+                <dokki-output unpadded title="Run sample (click to capture mouse, ESDF & QA to move)">
                     <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/quake-e1m1/"
                             loading="lazy"
                             style="width: 100%;
@@ -440,7 +845,9 @@
                 </dokki-output>
                 
                 <dokki-image src="./soft/img/luujanko/luujanko-1.png">
-                    Looking down a corridor of the E1M1 level in Quake
+                    <template #caption>
+                        Looking down a corridor of the E1M1 level in Quake
+                    </template>
                 </dokki-image>
 
                 <dokki-code title="Minimal full render sample"
@@ -543,7 +950,9 @@
                 </p>
                 
                 <dokki-image src="./soft/img/serlain/serlain-1.png">
-                    A mock Internet Explorer 4 in a mock Windows 9x environment
+                    <template #caption>
+                        A mock Internet Explorer 4 in a mock Windows 9x environment
+                    </template>
                 </dokki-image>
                     
             </dokki-topic>
@@ -575,7 +984,9 @@
                 </p>
                 
                 <dokki-image src="./soft/img/kelpo/kelpo-1.png">
-                    The 3dfx Voodoo rendering a scene from Tomb Raider
+                    <template #caption>
+                        The 3dfx Voodoo rendering a scene from Tomb Raider
+                    </template>
                 </dokki-image>
 
                 <dokki-code title="Sample initialization and rendering">
@@ -596,7 +1007,45 @@
                         </pre>
                     </template>
                 </dokki-code>
-                    
+                
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>71</td>
+                                <td>1562</td>
+                                <td>1108</td>
+                                <td>5566</td>
+                            </tr>
+                            <tr>
+                                <td>C</td>
+                                <td>34</td>
+                                <td>1217</td>
+                                <td>553</td>
+                                <td>4756</td>
+                            </tr>
+                            <tr>
+                                <td>C/C++ Header</td>
+                                <td>37</td>
+                                <td>345</td>
+                                <td>555</td>
+                                <td>810</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -617,7 +1066,9 @@
                 </p>
                 
                 <p>
-                    Links: <a href="https://www.github.com/leikareipa/kac-file-format">GitHub</a>
+                    Links:
+                    <a href="https://github.com/leikareipa/kac-file-format/blob/master/1.0-draft/kac-1.0-spec-draft.txt">Spec (1.0 draft)</a>,
+                    <a href="https://www.github.com/leikareipa/kac-file-format">GitHub</a>
                 </p>
                 
             </dokki-topic>
@@ -643,7 +1094,9 @@
                 </p>
                 
                 <dokki-image src="./soft/img/mesh-preview/mesh-preview-1.png">
-                    Previewing a large mesh
+                    <template #caption>
+                        Previewing a large mesh
+                    </template>
                 </dokki-image>
             </dokki-topic>
             
@@ -662,16 +1115,75 @@
                 </p>
                 
                 <dokki-image src="./soft/img/ifu/ifu-1.png">
-                    Fluffy clouds
+                    <template #caption>
+                        Fluffy clouds
+                    </template>
                 </dokki-image>
 
                 <dokki-image src="./soft/img/ifu/ifu-2.png">
-                    An explosive cloud lifted by an unnaturally high amount of surface heat (simulation grid visible)
+                    <template #caption>
+                        An explosive cloud lifted by an unnaturally high amount of surface heat (simulation grid visible)
+                    </template>
                 </dokki-image>
 
                 <dokki-image src="./soft/img/ifu/ifu-4.png">
-                    Looking up at a cloud (simulation grid visible)
+                    <template #caption>
+                        Looking up at a cloud (simulation grid visible)
+                    </template>
                 </dokki-image>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>75</td>
+                                <td>6697</td>
+                                <td>8262</td>
+                                <td>24528</td>
+                            </tr>
+                            <tr>
+                                <td>C++</td>
+                                <td>34</td>
+                                <td>5402</td>
+                                <td>7291</td>
+                                <td>19650</td>
+                            </tr>
+                            <tr>
+                                <td>C/C++ Header</td>
+                                <td>34</td>
+                                <td>1158</td>
+                                <td>836</td>
+                                <td>3718</td>
+                            </tr>
+                            <tr>
+                                <td>Qt</td>
+                                <td>4</td>
+                                <td>2</td>
+                                <td>0</td>
+                                <td>777</td>
+                            </tr>
+                            <tr>
+                                <td>OpenCL</td>
+                                <td>3</td>
+                                <td>135</td>
+                                <td>135</td>
+                                <td>383</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -712,17 +1224,68 @@
                 </p>
                 
                 <dokki-image src="./soft/img/npto/npto-1.png">
-                    Inspecting which keys have taken the longest to type
+                    <template #caption>
+                        Inspecting which keys have taken the longest to type
+                    </template>
                 </dokki-image>
                     
                 <dokki-image src="./soft/img/npto/npto-2.png">
-                    Graphing the words per minute measure over time
+                    <template #caption>
+                        Graphing the words per minute measure over time
+                    </template>
                 </dokki-image>
 
-                 <dokki-video platform="youtube"
-                              src="YgnRp6bsnhk">
-                    Demonstrating the program
-                </dokki-video>    
+                 <dokki-video platform="youtube" src="YgnRp6bsnhk">
+                    <template #caption>
+                        Demonstrating the program
+                    </template>
+                </dokki-video>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>21</td>
+                                <td>1009</td>
+                                <td>408</td>
+                                <td>4865</td>
+                            </tr>
+                            <tr>
+                                <td>C++</td>
+                                <td>9</td>
+                                <td>816</td>
+                                <td>383</td>
+                                <td>3107</td>
+                            </tr>
+                            <tr>
+                                <td>Qt</td>
+                                <td>4</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>1296</td>
+                            </tr>
+                            <tr>
+                                <td>C/C++ Header</td>
+                                <td>8</td>
+                                <td>193</td>
+                                <td>25</td>
+                                <td>462</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -744,7 +1307,9 @@
                 </p>
                 
                 <dokki-image src="./soft/img/ranssi/ranssi-1.png">
-                    Transcribing lorem ipsum
+                    <template #caption>
+                        Transcribing lorem ipsum
+                    </template>
                 </dokki-image>
                     
             </dokki-topic>
@@ -765,14 +1330,24 @@
                 
                 
                 <dokki-image src="./soft/img/smartti-parseri/smartti-parseri-2.png">
-                    Monitoring an SSD
+                    <template #caption>
+                        Monitoring an SSD
+                    </template>
                 </dokki-image>
             </dokki-topic>
             
         
             <dokki-topic title="Vond">
                 <p>
-                    A hybrid voxel/polygon 3D renderer that runs on the CPU. Draws inspiration from old voxel-based games, like Delta Force and Outcast.
+                    A hybrid voxel/polygon 3D renderer that runs on the CPU. Draws inspiration from old
+                    voxel-based games like Delta Force and Outcast.
+                </p>
+
+                <p>
+                    The voxel renderer works on 2D heightmaps and has full degrees of freedom, multi-threading,
+                    and bilinear interpolation of height and texture data. The polygon renderer supports
+                    single-threaded scanline and barycentric rasterization. The two renderers operate on
+                    the same depth map, first populated by the voxel renderer and then the polygon one.
                 </p>
 
                 <p>
@@ -788,7 +1363,9 @@
                 </p>
 
                 <dokki-image src="https://raw.githubusercontent.com/leikareipa/vond/master/images/screenshots/vond-4.png">
-                    Visualizing heightmap data from the National Land Survey of Finland (orthophoto & elevation 11/2020)
+                    <template #caption>
+                        Visualizing heightmap data from the National Land Survey of Finland (orthophoto & elevation 11/2020)
+                    </template>
                 </dokki-image>
             </dokki-topic>
 
@@ -814,8 +1391,10 @@
                 </p>
                 
                 <dokki-image src="https://raw.githubusercontent.com/leikareipa/pfm-view/master/images/screenshots/1.png">
-                    Displaying an image with tone mapping
-                    (image source: <a href="https://hdrihaven.com/hdri/?c=outdoor&h=champagne_castle_1">HDRI Haven / Greg Zaal</a>)
+                    <template #caption>
+                        Displaying an image with tone mapping
+                        (image source: <a href="https://hdrihaven.com/hdri/?c=outdoor&h=champagne_castle_1">HDRI Haven / Greg Zaal</a>)
+                    </template>
                 </dokki-image>
             </dokki-topic>
 
@@ -859,7 +1438,9 @@
                 </dokki-output>
                 
                 <dokki-image src="https://raw.githubusercontent.com/leikareipa/weather-widget/master/images/screenshots/app.png">
-                    A vintage weather forecast for Helsinki
+                    <template #caption>
+                        Vintage weather forecast for Helsinki
+                    </template>
                 </dokki-image>
                     
             </dokki-topic>
@@ -867,7 +1448,10 @@
         
             <dokki-topic title="gpl-dta">
                 <p>
-                    A set of cross-platform command-line tools for converting the DAT files of Grand Prix Legends into more standard formats. Can selectively extract files from DTAs, export MIPs and SRBs into PNG, and convert 3DOs into OBJ. Written to scratch a personal itch and so isn't 100% accurate, but close enough.
+                    A set of cross-platform command-line tools for converting the DAT files of
+                    Grand Prix Legends into more standard formats. Can selectively extract files
+                    from DTAs, export MIPs and SRBs into PNG, and convert 3DOs into OBJ. Written
+                    to scratch a personal itch so isn't 100% perfect, but close enough.
                 </p>
 
                 <p>
@@ -883,7 +1467,9 @@
                 </p>
 
                 <dokki-image src="./soft/img/gpl-dta/gpl-dta-2.png">
-                    Exported assets from the Spa track opened in Blender
+                    <template #caption>
+                        Exported assets from the Spa track opened in Blender
+                    </template>
                 </dokki-image>
             </dokki-topic>
 
@@ -906,7 +1492,9 @@
                 </p>
 
                 <dokki-image src="./soft/img/dig/dig-1.png">
-                    Exported assets from level #3 opened in Blender (minor UV issues visible)
+                    <template #caption>
+                        Exported assets from level #3 opened in Blender (minor UV issues visible)
+                    </template>
                 </dokki-image>
             </dokki-topic>
             
@@ -925,7 +1513,9 @@
                 </p>
                 
                 <dokki-image src="./soft/img/bbview/bbview-1.png">
-                    Visualizing NAND wear on an SSD
+                    <template #caption>
+                        Visualizing NAND wear on an SSD
+                    </template>
                 </dokki-image>
                     
             </dokki-topic>
@@ -954,15 +1544,21 @@
                 </p>
 
                 <dokki-image src="./soft/img/yqr/yqr-4.png">
-                    Miscellaneous things
+                    <template #caption>
+                        Miscellaneous things
+                    </template>
                 </dokki-image>
 
                 <dokki-image src="./soft/img/ifu/ifu-1.png">
-                    Volumetric clouds (see also: <a href="#cloud-simulation">Cloud simulation</a>)
+                    <template #caption>
+                        Volumetric clouds (see also: <a href="#cloud-simulation">Cloud simulation</a>)
+                    </template>
                 </dokki-image>
 
                 <dokki-image src="./soft/img/yqr/yqr-1.png">
-                    House with man (minor polygon normal issues visible)
+                    <template #caption>
+                        House with man (minor polygon normal issues visible)
+                    </template>
                 </dokki-image>
             </dokki-topic>
             
@@ -988,8 +1584,42 @@
                 </p>
                 
                 <dokki-image src="./soft/img/slowray/slowray-2.png">
-                    Low-resolution spheres in 16-bit color
+                    <template #caption>
+                        Low-resolution spheres in 16-bit color
+                    </template>
                 </dokki-image>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>1</td>
+                                <td>89</td>
+                                <td>29</td>
+                                <td>339</td>
+                            </tr>
+                            <tr>
+                                <td>C</td>
+                                <td>1</td>
+                                <td>89</td>
+                                <td>29</td>
+                                <td>339</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -1026,7 +1656,9 @@
                 </p>
                 
                 <dokki-image src="./soft/img/csd/csd-2.png">
-                    Vintage orthodynamic Audio-Technica ATH-2 headphones
+                    <template #caption>
+                        Vintage orthodynamic Audio-Technica ATH-2 headphones
+                    </template>
                 </dokki-image>
             </dokki-topic>
             
@@ -1049,19 +1681,60 @@
                 </p>
                 
                 <dokki-console platform="unix"
-                               command="./limpynet -L 10 -e 3"
-                               output="
-                               Initializing for MNIST...
-                               Net: Topology: N784-L10-S10 
-                                    Learning rate: 0.010000
-                                    Training epochs: 3
-                               Training on MNIST (60000/10000)...
-                               Epoch 1 of 3: train = 68.947%, validate = 0.000%.
-                               Epoch 2 of 3: train = 90.213%, validate = 90.300%.
-                               Epoch 3 of 3: train = 91.570%, validate = 90.770%.
-                               Training finished.
-                               ">
+                               command="./limpynet -L 10 -e 3">
+                    <template #output>
+                        <pre>
+                            Initializing for MNIST...
+                            Net: Topology: N784-L10-S10 
+                                Learning rate: 0.010000
+                                Training epochs: 3
+                            Training on MNIST (60000/10000)...
+                            Epoch 1 of 3: train = 68.947%, validate = 0.000%.
+                            Epoch 2 of 3: train = 90.213%, validate = 90.300%.
+                            Epoch 3 of 3: train = 91.570%, validate = 90.770%.
+                            Training finished.
+                        </pre>
+                    </template>
                 </dokki-console>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>13</td>
+                                <td>316</td>
+                                <td>217</td>
+                                <td>1007</td>
+                            </tr>
+                            <tr>
+                                <td>C++</td>
+                                <td>6</td>
+                                <td>200</td>
+                                <td>99</td>
+                                <td>773</td>
+                            </tr>
+                            <tr>
+                                <td>C/C++ Header</td>
+                                <td>7</td>
+                                <td>116</td>
+                                <td>118</td>
+                                <td>234</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
 
 
@@ -1095,6 +1768,38 @@
                                    border: none;">
                     </iframe>
                 </dokki-output>
+
+                <dokki-table>
+                    <template #caption>
+                        Source code CLOC statistics
+                    </template>
+
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Language</th>
+                                <th>Files</th>
+                                <th>Blank</th>
+                                <th>Comment</th>
+                                <th>Code</th>
+                            </tr>
+                            <tr>
+                                <td>Sum</td>
+                                <td>13</td>
+                                <td>290</td>
+                                <td>349</td>
+                                <td>1232</td>
+                            </tr>
+                            <tr>
+                                <td>JavaScript</td>
+                                <td>13</td>
+                                <td>290</td>
+                                <td>349</td>
+                                <td>1232</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -1125,13 +1830,15 @@
                 </dokki-console>
 
                 <dokki-console platform="windows"
-                               command="vrgb-fps.exe 0 32"
-                               output="
-                               FPS on channel #0: 70
-                               FPS on channel #0: 70
-                               FPS on channel #0: 70
-                               ...
-                               ">
+                               command="vrgb-fps.exe 0 32">
+                    <template #output>
+                        <pre>
+                            FPS on channel #0: 70
+                            FPS on channel #0: 70
+                            FPS on channel #0: 70
+                            ...
+                        </pre>
+                    </template>
                 </dokki-console>
             </dokki-topic>
 
@@ -1154,22 +1861,27 @@
                 </p>
 
                 <dokki-console platform="windows"
-                               command="u7dcp.exe"
-                               output="
-                               U7DCP - Ultima VII DOS Cache Patch.
+                               command="u7dcp.exe">
+                    <template #output>
+                        <pre>
+                            U7DCP - Ultima VII DOS Cache Patch.
 
-                               Patching MAINMENU.EXE...
-                               Patching ENDGAME.EXE...
+                            Patching MAINMENU.EXE...
+                            Patching ENDGAME.EXE...
 
-                               The patching appears to have gone well.
-                               ">
+                            The patching appears to have gone well.
+                        </pre>
+                    </template>
                 </dokki-console>
             </dokki-topic>
             
         
             <dokki-topic title="DOS Path Tracing Benchmark">
                 <p>
-                    Test your DOS era processor's floating-point performance with this grayscale path tracer that renders a scene of spheres and counts the number of seconds it took. A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so, and the Xeon E3-1230 in less than one second.
+                    Test your DOS era processor's floating-point performance with this grayscale path
+                    tracer that renders a scene of spheres and counts the number of seconds it took.
+                    A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so,
+                    and the Xeon E3-1230 in less than one second.
                 </p>
 
                 <p>
@@ -1180,11 +1892,58 @@
                     Tech used: C++
                 </p>
                 
-                
                 <dokki-image src="./soft/img/dos-path-bench/dos-path-bench-2.png">
-                    Running in DOSBox
+                    <template #caption>
+                        Running in DOSBox
+                    </template>
                 </dokki-image>
-                    
+
+                <dokki-table>
+                    <template #caption>
+                        Benchmark results on various CPUs
+                    </template>
+                
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Result (seconds)</th>
+                                <th>CPU</th>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>AMD Athlon 64 X2 5050e</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>AMD Athlon XP 2200+</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Intel Celeron 2.4</td>
+                            </tr>
+                            <tr>
+                                <td>37</td>
+                                <td>Intel Atom N270</td>
+                            </tr>
+                            <tr>
+                                <td>47</td>
+                                <td>AMD K6-2 300</td>
+                            </tr>
+                            <tr>
+                                <td>165</td>
+                                <td>Intel Pentium 90</td>
+                            </tr>
+                            <tr>
+                                <td>361</td>
+                                <td>Intel i486DX2 66</td>
+                            </tr>
+                            <tr>
+                                <td>4758</td>
+                                <td>Intel i386DX 40</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
             </dokki-topic>
             
         
@@ -1206,6 +1965,9 @@
                 </p>
                 
                 <dokki-image src="./soft/img/dosvideo/dosvideo-1.png">
+                    <template #caption>
+                        Looking up a video card
+                    </template>
                 </dokki-image>
             </dokki-topic>
             
@@ -1222,6 +1984,57 @@
                 <p>
                     Links: <a href="https://www.github.com/leikareipa/dccb">GitHub</a>
                 </p>
+
+                <dokki-table>
+                    <template #caption>
+                        Benchmark results of various compilers
+                    </template>
+                
+                    <template #table>
+                        <table>
+                            <tr>
+                                <th>Result (FPS)</th>
+                                <th>Compiler</th>
+                            </tr>
+                            <tr>
+                                <td>57</td>
+                                <td>Microsoft C/C++ 8</td>
+                            </tr>
+                            <tr>
+                                <td>41</td>
+                                <td>Digital Mars C/C++ 8</td>
+                            </tr>
+                            <tr>
+                                <td>37</td>
+                                <td>Open Watcom C/C++</td>
+                            </tr>
+                            <tr>
+                                <td>33</td>
+                                <td>Borland Turbo C 2</td>
+                            </tr>
+                            <tr>
+                                <td>32</td>
+                                <td>Borland C++ 2</td>
+                            </tr>
+                            <tr>
+                                <td>32</td>
+                                <td>Microsoft C 5</td>
+                            </tr>
+                            <tr>
+                                <td>31</td>
+                                <td>Microsoft QuickC 1</td>
+                            </tr>
+                            <tr>
+                                <td>30</td>
+                                <td>HI-TECH Pacific C 7</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>Mix Power C 2</td>
+                            </tr>
+                        </table>
+                    </template>
+                </dokki-table>
                 
             </dokki-topic>
 
@@ -1246,7 +2059,9 @@
                 </p>
                 
                 <dokki-image src="https://raw.githubusercontent.com/leikareipa/dos-color-test/master/images/screenshots/test1.png">
-                    A test pattern of colors and shapes in VGA mode 13h (320 &times; 200)
+                    <template #caption>
+                        A test pattern of colors and shapes in VGA mode 13h (320 &times; 200)
+                    </template>
                 </dokki-image>
             </dokki-topic>
     

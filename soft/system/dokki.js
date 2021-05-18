@@ -100,13 +100,10 @@ function create_app()
                     {{this.idx}}. {{this.title}}
                 </h1>
 
-                <span class="permalink"
-                      title="Permalink to this topic">
-
+                <span class="permalink" title="Permalink to this topic">
                     <a :href="'#'+simplifiedTitle">
                         <i class="fas fa-link"/>
                     </a>
-
                 </span>
 
                 <slot/>
@@ -134,7 +131,7 @@ function create_app()
 
             function update_scrollable_status()
             {
-                const margin = parseInt(window.getComputedStyle(document.body).getPropertyValue("--content-margin"));
+                const margin = parseInt(window.getComputedStyle(document.body).getPropertyValue("--content-margin") || 20);
                 const height = (this.$refs.container.clientHeight + (margin * 2));
                 this.isScrollable = (height >= this.$refs.panel.clientHeight);
             };
@@ -187,7 +184,7 @@ function create_app()
         computed: {
             hasFooter()
             {
-                return !!this.$slots.default;
+                return !!this.$slots.caption;
             }
         },
         template: `
@@ -198,8 +195,7 @@ function create_app()
                         @click="isExpanded = !isExpanded">
 
                     <span class="title">
-                        <i class="fas fa-image"/
-                           title="Image">
+                        <i class="fas fa-image" title="Image"/>
                     </span>
 
                     <aside class="revealer">
@@ -212,7 +208,7 @@ function create_app()
                      :src="src">
 
                 <footer v-if=hasFooter>
-                    <slot/>
+                    <slot name="caption"/>
                 </footer>
             </p>
         `,
@@ -224,8 +220,7 @@ function create_app()
 
                 <header>
                     <div class="title">
-                        <i class="fas fa-info-circle"
-                           title="Tip"/>
+                        <i class="fas fa-info-circle"/>
                     </div>
                 </header>
 
@@ -243,8 +238,7 @@ function create_app()
 
                 <header>
                     <span class="title">
-                        <i class="fas fa-exclamation-triangle"
-                           title="Warning"/>
+                        <i class="fas fa-exclamation-triangle"/>
                     </span>
                 </header>
 
@@ -280,7 +274,7 @@ function create_app()
         computed: {
             hasFooter()
             {
-                return !!this.$slots.default;
+                return !!this.$slots.caption;
             },
             videoUrl()
             {
@@ -307,8 +301,7 @@ function create_app()
                        @click="isExpanded = !isExpanded">
 
                     <span class="title">
-                        <i :class="headerIcon"
-                           title="Video"/>
+                        <i :class="headerIcon" title="Video"/>
                     </span>
 
                     <aside class="revealer">
@@ -323,7 +316,7 @@ function create_app()
                 </iframe>
 
                 <footer v-if=hasFooter>
-                    <slot/>
+                    <slot name="caption"/>
                 </footer>
 
             </p>
@@ -335,15 +328,37 @@ function create_app()
     // Sample usage:
     //
     //   <dokki-console platform="unix"
-    //                  command="./run.sh"
-    //                  output="Hello there.">
+    //                  command="./run.sh">
+    //       <template #output>
+    //           Hello there.
+    //       </template #output>
     //   </dokki-console>
     //
     app.component("dokki-console", {
         props: {
             command: {default: "undefined command"},
-            output: {default: ""},
+            output: {default: undefined},
             platform: {default: "unix"}
+        },
+        data() {
+            return {
+                outputFromSlot: undefined,
+            }
+        },
+        mounted()
+        {
+            if (!this.$slots.output ||
+                (typeof this.$slots.output !== "function"))
+            {
+                return;
+            }
+
+            const outputElement = this.$slots.output()[0];
+
+            if (outputElement)
+            {
+                this.outputFromSlot = outputElement.children;
+            }
         },
         computed: {
             headerIcon()
@@ -357,7 +372,8 @@ function create_app()
             },
             hasFooter()
             {
-                return !!this.output.length;
+                return ((this.output !== undefined) ||
+                        (this.outputFromSlot !== undefined));
             },
         },
         template: `
@@ -366,8 +382,7 @@ function create_app()
                 <header>
 
                     <span class="title">
-                        <i :class="headerIcon"
-                           title="Terminal command"/>
+                        <i :class="headerIcon" title="Terminal command"/>
                     </span>
 
                     <span class="command">
@@ -377,7 +392,7 @@ function create_app()
                 </header>
 
                 <footer v-if=hasFooter>
-                    <DOKKI0-text-block-with-line-numbers :text=output>
+                    <DOKKI0-text-block-with-line-numbers :text="outputFromSlot || output">
                     </DOKKI0-text-block-with-line-numbers>
                 </footer>
             </p>
@@ -426,6 +441,46 @@ function create_app()
 
                     <slot/>
                     
+                </footer>
+
+            </p>
+        `,
+    });
+
+    app.component("dokki-table", {
+        data() {
+            return {
+                isExpanded: false,
+            }
+        },
+        computed: {
+            hasFooter()
+            {
+                return !!this.$slots.caption;
+            }
+        },
+        template: `
+            <p class="dokki-embedded dokki-table">
+
+                <header class="clickable"
+                        @click="isExpanded = !isExpanded">
+
+                    <span class="title">
+                        <i class="fas fa-border-all" title="Table"/>
+                    </span>
+
+                    <aside class="revealer">
+                        {{isExpanded? "Hide" : "Show"}}
+                    </aside>
+
+                </header>
+
+                <div v-if=isExpanded class="table-container">
+                    <slot name="table"/>
+                </div>
+
+                <footer v-if=hasFooter>
+                    <slot name="caption">
                 </footer>
 
             </p>
@@ -583,11 +638,8 @@ function create_app()
                 <header>
 
                     <span class="title">
-
-                        <i class="fas fa-code"
-                           title="Code"/>
+                        <i class="fas fa-code" title="Code"/>
                         {{title}}
-
                     </span>
 
                 </header>
@@ -678,7 +730,7 @@ function create_app()
     function simplified_topic_title(title)
     {
         return title.toLowerCase()
-                    .replace(/[^a-zA-Z\d\s]/g, "")
+                    .replace(/[^a-zA-Z\d\s-]/g, "")
                     .replace(/\s+/g, "-")
     }
 }
