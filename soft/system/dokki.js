@@ -34,6 +34,14 @@ function create_app()
 
     const app = Vue.createApp({});
 
+    app.component("dokki-initializing", {
+        template: `
+            <div class="dokki-initializing">
+                <slot/>
+            </div>
+        `,
+    });
+
     app.component("dokki-header", {
         props: {
             icon: {default: "fas fa-book"},
@@ -46,6 +54,7 @@ function create_app()
         },
         template: `
             <header class="dokki-header">
+
                 <i :class="icon" style="margin-right: 10px;"/>
 
                 {{title}}
@@ -56,6 +65,7 @@ function create_app()
                     {{software}}
 
                 </div>
+
             </header>
         `,
     });
@@ -722,7 +732,11 @@ function create_app()
     });
 
     app.use(store);
+
+    const template = document.querySelector("#dokki").content;
+    document.body.appendChild(template)
     app.mount("body");
+    document.querySelector(".dokki-while-initializing").remove();
 
     // Takes in a guide topic title string (e.g. "System requirements") and returns
     // a reduced version of the string such that it can be used e.g. as a DOM element
