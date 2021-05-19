@@ -360,7 +360,7 @@ function create_app()
 
                 </header>
 
-                <hr>
+                <hr v-if=isExpanded>
 
                 <iframe v-if=isExpanded
                         class="dokki-checker-background"
@@ -368,7 +368,7 @@ function create_app()
                         allow="fullscreen; autoplay;">
                 </iframe>
 
-                <hr>
+                <hr v-if=hasFooter>
 
                 <footer v-if=hasFooter>
                     <slot name="caption"/>

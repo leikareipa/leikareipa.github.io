@@ -315,6 +315,13 @@ body
     background-color: #f6f6f6;
 }
 
+.dokki-embedded > header > .title > .fas,
+.dokki-embedded > header > .title > .far,
+.dokki-embedded > header > .title > .fab
+{
+    margin-right: 2px;
+}
+
 .dokki-embedded > footer
 {
     padding: 8px;
