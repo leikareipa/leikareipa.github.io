@@ -34,14 +34,6 @@ function create_app()
 
     const app = Vue.createApp({});
 
-    app.component("dokki-initializing", {
-        template: `
-            <div class="dokki-initializing">
-                <slot/>
-            </div>
-        `,
-    });
-
     app.component("dokki-header", {
         props: {
             icon: {default: "fas fa-book"},
@@ -181,6 +173,49 @@ function create_app()
         `,
     });
 
+    app.component("dokki-iframe", {
+        props: {
+            src: {default: ""},
+            height: {default: "500px"},
+            title: {default: "Inline frame"},
+        },
+        data() {
+            return {
+                isExpanded: false,
+            }
+        },
+        template: `
+            <p class="dokki-embedded dokki-iframe">
+
+                <header class="clickable"
+                        @click="isExpanded = !isExpanded">
+
+                    <span class="title">
+                        <i class="fas fa-expand"/>
+                        {{title}}
+                    </span>
+
+                    <aside class="revealer">
+                        {{isExpanded? "Close frame" : "Expand frame"}}
+                    </aside>
+
+                </header>
+
+                <hr v-if=isExpanded>
+
+                <footer v-if=isExpanded>
+
+                    <iframe class="dokki-iframe"
+                            :style="{height: height}"
+                            :src=src>
+                    </iframe>
+                    
+                </footer>
+
+            </p>
+        `,
+    });
+
     app.component("dokki-image", {
         props: {
             src: {},
@@ -214,8 +249,13 @@ function create_app()
 
                 </header>
 
+                <hr v-if=isExpanded>
+
                 <img v-if=isExpanded
+                     class="dokki-checker-background"
                      :src="src">
+
+                <hr v-if=hasFooter>
 
                 <footer v-if=hasFooter>
                     <slot name="caption"/>
@@ -320,10 +360,15 @@ function create_app()
 
                 </header>
 
+                <hr>
+
                 <iframe v-if=isExpanded
+                        class="dokki-checker-background"
                         :src=videoUrl
                         allow="fullscreen; autoplay;">
                 </iframe>
+
+                <hr>
 
                 <footer v-if=hasFooter>
                     <slot name="caption"/>
@@ -409,8 +454,7 @@ function create_app()
         `,
     });
 
-    // For showcasing the output of something; e.g. of a block of sample code or
-    // another website (via an <iframe> combined with the 'unpadded' prop).
+    // For showcasing the output of something; e.g. of a block of sample code.
     //
     // Sample usage:
     //
@@ -422,7 +466,6 @@ function create_app()
     app.component("dokki-output", {
         props: {
             title: {default: "Output"},
-            unpadded: {default: undefined},
         },
         data() {
             return {
@@ -446,8 +489,7 @@ function create_app()
 
                 </header>
 
-                <footer v-if=isExpanded
-                        :class="{unpadded: (unpadded !== undefined)}">
+                <footer v-if=isExpanded>
 
                     <slot/>
                     
@@ -484,6 +526,8 @@ function create_app()
                     </aside>
 
                 </header>
+
+                <hr>
 
                 <div v-if=isExpanded class="table-container">
                     <slot name="table"/>
@@ -731,12 +775,24 @@ function create_app()
         `,
     });
 
-    app.use(store);
+    // Prepare the DOM for mounting the app.
+    {
+        const documentBodyTemplate = document.querySelector("#dokki-document");
+        const whileInitializingElement = document.querySelector(".dokki-while-initializing");
 
-    const template = document.querySelector("#dokki").content;
-    document.body.appendChild(template)
-    app.mount("body");
-    document.querySelector(".dokki-while-initializing").remove();
+        if (!(documentBodyTemplate instanceof HTMLTemplateElement)) {
+            throw new Error("No document body found.");
+        }
+
+        document.body.appendChild(documentBodyTemplate.content)
+        documentBodyTemplate.remove();
+
+        if (whileInitializingElement) {
+            whileInitializingElement.remove();
+        }
+    }
+
+    app.use(store).mount("body");
 
     // Takes in a guide topic title string (e.g. "System requirements") and returns
     // a reduced version of the string such that it can be used e.g. as a DOM element

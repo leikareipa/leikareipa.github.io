@@ -40,7 +40,7 @@ body
     display: none !important;
 }
 
-[data-v-app] > .dokki-while-initializing
+[data-v-app] > [while-dokki-initializing]
 {
     display: none;
 }
@@ -53,7 +53,7 @@ body
 }
 
 .dokki-header,
-.dokki-while-initializing
+[while-dokki-initializing]
 {
     border-bottom: 1px solid lightgray;
     display: flex;
@@ -78,7 +78,7 @@ body
     width: 100%;
 }
 
-.dokki-while-initializing
+[while-dokki-initializing]
 {
     font-size: unset;
     font-weight: normal;
@@ -278,6 +278,16 @@ body
     user-select: none;
 }
 
+.dokki-checker-background
+{
+    background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.025) 25%, transparent 25%),
+                      linear-gradient(-45deg, rgba(0, 0, 0, 0.025) 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.025) 75%),
+                      linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.025) 75%);
+    background-size: 40px 40px;
+    background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+}
+
 .dokki-embedded
 {
     width: 100%;
@@ -318,11 +328,6 @@ body
     margin-bottom: 0;
 }
 
-.dokki-embedded > footer.unpadded
-{
-    padding: 0 !important;
-}
-
 .dokki-embedded > footer > iframe,
 .dokki-embedded > footer > canvas
 {
@@ -338,6 +343,32 @@ body
     margin-left: auto;
     font-variant: small-caps;
     text-transform: lowercase;
+}
+
+.dokki-embedded > hr
+{
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-top: 1px solid lightgray;
+    width: 100%;
+}
+
+.dokki-embedded > hr + hr
+{
+    display: none;
+}
+
+.dokki-embedded.dokki-iframe > footer
+{
+    padding: 0;
+}
+
+.dokki-embedded.dokki-iframe > footer > iframe
+{
+    max-width: 100%;
+    min-width: 100%;
+    border: none;
 }
 
 .dokki-embedded.dokki-table > header .title::after
@@ -369,7 +400,6 @@ body
 
 .dokki-embedded.dokki-table > .table-container table th
 {
-    border-top: 1px solid lightgray;
     background-color: #f6f6f6;
     font-weight: normal;
 }
@@ -556,6 +586,7 @@ body
 
 .dokki-embedded.dokki-image > img
 {
+    min-height: 20px;
     min-width: 100%;
     max-width: 100%;
 }

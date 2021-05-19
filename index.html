@@ -14,11 +14,11 @@
         <script defer src="./soft/system/dokki.js"></script>
     </head>
     <body>
-        <div class="dokki-while-initializing">
+        <div while-dokki-initializing>
             Preparing the document...
         </div>
 
-        <template id="dokki">
+        <template id="dokki-document">
 
             <dokki-header icon="fas fa-laptop-code"
                         title="leikareipa.github.io &ndash; Software index">
@@ -306,26 +306,6 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-output unpadded title="Run the client">
-                        <iframe src="https://www.tarpeeksihyvaesoft.com/lintulista/#samplelst"
-                                loading="lazy"
-                                style="width: 100%;
-                                    height: 600px;
-                                    max-height: 100vh;
-                                    border: none;">
-                        </iframe>
-                    </dokki-output>
-                    
-                    <dokki-output title="Query the server (may need time to wake up)">
-                        <iframe src="https://lintulista-server.herokuapp.com/?list=samplelst"
-                                loading="lazy"
-                                style="width: 100%;
-                                    height: 300px;
-                                    max-height: 100vh;
-                                    border: none;">
-                        </iframe>
-                    </dokki-output>
-
                     <dokki-table>
                         <template #caption>
                             Source code CLOC statistics
@@ -442,14 +422,10 @@
                         <a href="https://www.github.com/leikareipa/rallysported-backend/">GitHub (backend)</a>
                     </p>
 
-                    <dokki-output unpadded title="Run RallySportED-js">
-                        <iframe src="https://www.tarpeeksihyvaesoft.com/rallysported"
-                                loading="lazy"
-                                style="width: 100%;
-                                    height: 700px;
-                                    border: none;">
-                        </iframe>
-                    </dokki-output>
+                    <dokki-iframe title="Run RallySportED-js"
+                                  src="https://www.tarpeeksihyvaesoft.com/rallysported"
+                                  height="700px">
+                    </dokki-iframe>
                     
                     <dokki-image src="./soft/img/rallysported/rallysported-1.png">
                         <template #caption>
@@ -635,15 +611,10 @@
                         Links: <a href="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720">Run live sample</a>, <a href="https://www.github.com/leikareipa/wray">GitHub</a>
                     </p>
                     
-                    <dokki-output unpadded title="Run sample">
-                        <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=1&resolution=500x350"
-                                loading="lazy"
-                                style="width: 100%;
-                                    height: 420px;
-                                    max-height: 100vh;
-                                    border: none;">
-                        </iframe>
-                    </dokki-output>
+                    <dokki-iframe title="Run sample"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=1&resolution=500x350"
+                                  height="420px">
+                    </dokki-iframe>
 
                     <dokki-image src="./soft/img/wray/wray-1.png">
                         <template #caption>
@@ -708,15 +679,10 @@
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/">Interactive samples</a>
                     </p>
                 
-                    <dokki-output unpadded title="Run sample (click to capture mouse, ESDF & QA to move)">
-                        <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/tomb-raider-home/"
-                                loading="lazy"
-                                style="width: 100%;
-                                    height: 500px;
-                                    max-height: 100vh;
-                                    border: none;">
-                        </iframe>
-                    </dokki-output>
+                    <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/tomb-raider-home/"
+                                  height="500px">
+                    </dokki-iframe>
 
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/tomb-raider-1-texture-lightmap-2.png">
                         <template #caption>
@@ -747,8 +713,8 @@
 
                         <dokki-output title="Result">
                             <iframe style="width: 100%;
-                                        height: 200px;
-                                        border: none;"
+                                           height: 200px;
+                                           border: none;"
                                     srcdoc="
                                     <style scoped>
                                         body {
@@ -841,14 +807,10 @@
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/">View interactive samples</a>
                     </p>
 
-                    <dokki-output unpadded title="Run sample (click to capture mouse, ESDF & QA to move)">
-                        <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/quake-e1m1/"
-                                loading="lazy"
-                                style="width: 100%;
-                                    height: 500px;
-                                    border: none;">
-                        </iframe>
-                    </dokki-output>
+                    <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/quake-e1m1/"
+                                  height="500px">
+                    </dokki-iframe>
                     
                     <dokki-image src="./soft/img/luujanko/luujanko-1.png">
                         <template #caption>
@@ -1657,23 +1619,15 @@
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Helsinki">Run in browser</a>
                     </p>
 
-                    <dokki-output unpadded title="Latest forecast for Helsinki">
-                        <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Helsinki"
-                                loading="lazy"
-                                style="width: 100%;
-                                    height: 210px;
-                                    border: none;">
-                        </iframe>
-                    </dokki-output>
+                    <dokki-iframe title="Latest forecast for Helsinki"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Helsinki"
+                                  height="210px">
+                    </dokki-iframe>
 
-                    <dokki-output unpadded title="Latest forecast for Oulu">
-                        <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Oulu"
-                                loading="lazy"
-                                style="width: 100%;
-                                    height: 210px;
-                                    border: none;">
-                        </iframe>
-                    </dokki-output>
+                    <dokki-iframe title="Latest forecast for Oulu"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Oulu"
+                                  height="210px">
+                    </dokki-iframe>
                     
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/weather-widget/master/images/screenshots/app.png">
                         <template #caption>
@@ -2211,15 +2165,10 @@
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/3dcube-js/">Run in browser</a>
                     </p>
 
-                    <dokki-output unpadded title="Run">
-                        <iframe src="https://www.tarpeeksihyvaesoft.com/experimental/3dcube-js/"
-                                loading="lazy"
-                                style="width: 100%;
-                                    height: 600px;
-                                    max-height: 100vh;
-                                    border: none;">
-                        </iframe>
-                    </dokki-output>
+                    <dokki-iframe title="Run"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/3dcube-js/"
+                                  height="600px">
+                    </dokki-iframe>
 
                     <dokki-table>
                         <template #caption>
