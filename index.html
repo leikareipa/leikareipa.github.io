@@ -20,8 +20,8 @@
 
         <template id="dokki-document">
 
-            <dokki-header icon="fas fa-laptop-code"
-                        title="leikareipa.github.io &ndash; Software index">
+            <dokki-header icon="fas fa-swimming-pool"
+                        title="Software index of leikareipa.github.io">
             </dokki-header>
 
             <dokki-side-panel>
@@ -32,8 +32,8 @@
                 <dokki-topic title="Introduction">
                     <p>
                         This page provides information about some of the software associated with the
-                        Tarpeeksi Hyvae Soft / leikareipa banner. Binaries are currently unavailable but
-                        the code is by and large open-source.
+                        Tarpeeksi Hyvae Soft / leikareipa banner. Binaries are currently unavailable,
+                        but the code is by and large open-source.
                     </p>
 
                     <dokki-spoiler title="Contact">
@@ -51,6 +51,12 @@
                         </div>
 
                     </dokki-spoiler>
+
+                    <dokki-image expanded src="./soft/img/rallysported/rallysported-1.png">
+                        <template #caption>
+                            <a href="#rallysported">RallySportED</a> running in Google Chrome
+                        </template>
+                    </dokki-image>
                 </dokki-topic>
 
                 <dokki-topic title="VCS">
@@ -384,7 +390,7 @@
             
                 <dokki-topic title="RallySportED">
                     <p>
-                        A multi-platform asset-editing toolset for the 1990s cult DOS game Rally-Sport. RallySportED
+                        A multi-platform asset-editing toolset for the cult DOS game Rally-Sport. RallySportED
                         lets you create and edit tracks, textures, and various other aspects of the game. Currently
                         focused on running in the browser (RallySportED-js), but over the years there have been native
                         versions for DOS, Windows, and Linux.
@@ -1019,10 +1025,10 @@
             
                 <dokki-topic title="Kelpo">
                     <p>
-                        A streamlined retro-oriented 3D rasterizer API wrapper written in C89. The idea is
-                        to create an easy-to-use master API that exposes a minimal unifying feature set
-                        which in other words produces as feature-identical an output as reasonably possible
-                        on as many 1990s 3D cards as reasonably possible.
+                        A streamlined retro-oriented Win32 3D rasterizer API wrapper written in C89. The
+                        idea is to create an easy-to-use master API that exposes a minimal unifying feature
+                        set which in other words produces as feature-identical an output as reasonably
+                        possible on as many 1990s 3D cards as reasonably possible.
                     </p>
                     
                     <p>
@@ -1045,6 +1051,12 @@
                     <dokki-image src="./soft/img/kelpo/kelpo-1.png">
                         <template #caption>
                             The 3dfx Voodoo rendering a scene from Tomb Raider
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/kelpo/kelpo-2.png">
+                        <template #caption>
+                            A scene from Tomb Raider rendered with Direct3D in Wine 
                         </template>
                     </dokki-image>
 
@@ -1464,31 +1476,14 @@
                             Monitoring an SSD
                         </template>
                     </dokki-image>
-                </dokki-topic>
 
-
-                <dokki-topic title="smartti parseri Lite">
-                    <p>
-                        A version of <a href="#smartti-parser">smartti parseri</a> without graphing,
-                        outputting instead in minimalist-styled HTML.
-                    </p>
-
-                    <p>
-                        Made in 2015.
-                    </p>
-            
-                    <p>
-                        Tech used: C++
-                    </p>
-                    
-                    
                     <dokki-image src="./soft/img/smartti-parseri/smartti-parseri-lite-1.png">
                         <template #caption>
-                            Monitoring an SSD
+                            Alternate output in minimalist-styled HTML
                         </template>
                     </dokki-image>
                 </dokki-topic>
-                
+
             
                 <dokki-topic title="Vond">
                     <p>
