@@ -52,9 +52,10 @@
 
                     </dokki-spoiler>
 
-                    <dokki-image expanded src="./soft/img/rallysported/rallysported-1.png">
+                    <dokki-image expanded src="./soft/img/yqr/yqr-2.png">
                         <template #caption>
-                            <a href="#rallysported">RallySportED</a> running in Google Chrome
+                            Volumetric lightmap showing spectral diffraction in a beam of light
+                            (see <a href="#yqr">Yqr</a>)
                         </template>
                     </dokki-image>
                 </dokki-topic>
@@ -385,6 +386,48 @@
                             </table>
                         </template>
                     </dokki-table>
+                </dokki-topic>
+
+
+                <dokki-topic title="Yqr">
+                    <p>
+                        The first ray/path tracer I made, serving as a personal testbed in offline rendering. Had naive
+                        implementations of volumetric photon mapping, spectral reflectance, subsurface scattering, environment
+                        mapping, and various other things. Could render volumetric effects like fog, snow, and clouds. Supported
+                        ray&ndash;triangle intersection testing on GPUs with OpenCL.
+                    </p>
+                    
+                    <p>
+                        Made between 2010-2014.
+                    </p>
+            
+                    <p>
+                        Tech used: C++, Qt, OpenCL
+                    </p>
+
+                    <dokki-image src="./soft/img/yqr/yqr-1.png">
+                        <template #caption>
+                            House with man (minor polygon normal issues visible)
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/yqr/yqr-2.png">
+                        <template #caption>
+                            Volumetric lightmap showing spectral diffraction in a beam of light
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/yqr/yqr-5.png">
+                        <template #caption>
+                            Volumetric lightmap showing caustic rays from a sphere
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/ifu/ifu-1.png">
+                        <template #caption>
+                            Fluffy clouds (see also: <a href="#cloud-simulation">Cloud simulation</a>)
+                        </template>
+                    </dokki-image>
                 </dokki-topic>
                 
             
@@ -1907,54 +1950,6 @@
                 </dokki-topic>
 
 
-                <dokki-topic title="Yqr">
-                    <p>
-                        The first ray/path tracer I made, serving as a personal testbed in offline rendering. Had naive
-                        implementations of volumetric photon mapping, spectral reflectance, subsurface scattering, environment
-                        mapping, and various other things. Could render volumetric effects like fog, snow, and clouds. Supported
-                        ray&ndash;triangle intersection testing on the GPU with OpenCL using a flat BVH tree (ran multiples
-                        faster on a Radeon HD 5770 GPU compared to an Athlon 5050e CPU).
-                    </p>
-
-                    <p>
-                        This renderer wasn't highly performant and my hardware at the time was rather slow, so the
-                        screenshots are in fairly low resolutions.
-                    </p>
-
-                    <p>
-                        Made between 2010-2014.
-                    </p>
-            
-                    <p>
-                        Tech used: C++, Qt, OpenCL
-                    </p>
-
-                    <dokki-image src="./soft/img/yqr/yqr-1.png">
-                        <template #caption>
-                            House with man (minor polygon normal issues visible)
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/yqr/yqr-2.png">
-                        <template #caption>
-                            Volumetric lightmap showing spectral diffraction in a beam of light
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/yqr/yqr-5.png">
-                        <template #caption>
-                            Volumetric lightmap showing caustic rays from a sphere
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/ifu/ifu-1.png">
-                        <template #caption>
-                            Fluffy clouds (see also: <a href="#cloud-simulation">Cloud simulation</a>)
-                        </template>
-                    </dokki-image>
-                </dokki-topic>
-                
-            
                 <dokki-topic title="slowray">
                     <p>
                         A simple path tracer that can be compiled to run on the Game Boy Advance. Its code also
@@ -2600,7 +2595,7 @@
                     </dokki-image>
                 </dokki-topic>
 
-                
+
             </dokki-topics>
         </template>
     </body>
