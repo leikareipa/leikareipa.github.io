@@ -3,443 +3,474 @@
     <head>
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <script src="https://cdn.jsdelivr.net/npm/vue@3.0.11/dist/vue.global.prod.js"></script>
-        <script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.prod.js"></script>
-        <script src="./dokki.js"></script>
-        <link rel="stylesheet"
-              type="text/css"
-              href="dokki.css">
         <link rel="stylesheet"
               href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
               crossorigin="anonymous">
+        <script defer src="https://cdn.jsdelivr.net/npm/vue@3.0.11/dist/vue.global.prod.js"></script>
+        <script defer src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.prod.js"></script>
+        
+        <script defer src="./dokki.js"></script>
+        <link rel="stylesheet" type="text/css" href="./dokki.css">
+
+        <style>
+            i
+            {
+                font-style: italic;
+                white-space: nowrap;
+            }
+
+            em
+            {
+                font-style: inherit;
+                background-color: #ffd3d3;
+                padding: 2px 5px;
+                padding-top: 0;
+                border-radius: 5px;
+                white-space: nowrap;
+            }
+        </style>
     </head>
     <body>
-        <dokki-header icon="fas fa-book"
-                      title="User's Manual: RallySportED-js"
-                      software="RallySportED-js 1.1">
-        </dokki-header>
+        <div while-dokki-initializing>
+            Preparing the document...
+        </div>
 
-        <dokki-side-panel>
-        </dokki-side-panel>
-        
-        <dokki-topics>
-            <dokki-topic title="Introduction">
-                <p>
-                    RallySportED is a contemporary asset editor for the classic racing game Rally-Sport.
-                </p>
-                    
-                <p>
-                    RallySportED-js is a JavaScript port of RallySportED.
-                </p>
-            
-                <p>
-                    RallySportED &copy; Tarpeeksi Hyvae Soft. Rally-Sport &copy; Jukka Jäkälä, who is not
-                    affiliated with RallySportED. Any rights remain with their respective holders.
-                </p>
-
-                <dokki-image expanded src="https://raw.githubusercontent.com/leikareipa/rallysported-frontend/master/images/screenshots/post-1.0/yleisoek.png">
-                    RallySportED-js running in Google Chrome
-                </dokki-image>
-            </dokki-topic>
-
-            <dokki-topic title="System requirements">
-                <ul>
-                    <li>An up-to-date browser with JavaScript enabled (recommended: Google Chrome)</li>
-                    <li>A decent CPU (recommended: at least a mid-range machine bought within the last 4 yrs.)</li>
-                    <li>Mouse and keyboard (+ full-sized screen recommended)</li>
-                </ul>
-            
-                <p>
-                    RallySportED-js is tested primarily in Linux, but should work just as well on Windows.
-                    You might find more problems on Apple's operating systems, since the developer has few
-                    or no Apple devices to test on.
-                </p>
-            </dokki-topic>
-
-            <dokki-topic title="Controls">
-                <h3>
-                    Mouse controls
-                </h3>
-            
-                <ul>
-                    <li><b>Left click on ground</b>: 3D view: Move the ground up. Texture & tilemap editors: Draw.</li>
-                    <li><b>Right click on ground</b>: 3D view: Move the ground down. Texture & tilemap editors: Draw.</li>
-                    <li><b>Middle click on ground</b>: 3D view: Paint the ground with the currently-selected ground texture.</li>
-                    <li><b>Right click on prop</b>: 3D view: Change the prop's type.</li>
-                    <li><b>Left click & drag prop</b>: 3D view: Move the prop.</li>
-                    <li><b>Shift + wheel</b>: 3D view: Tilt the camera up/down. Texture editor: Zoom.</li>
-                    <li><b>Shift + left click on ground</b>: 3D view: Add a new prop.</li>
-                    <li><b>Shift + left click on prop</b>: 3D view: Remove the prop.</li>
-                    <li><b>Tab + left click</b>: Eyedropper tool.</li>
-                    <li><b>Tab + hover on ground texture pane</b>: Show the hovered texture's index value.</li>
-                </ul>
-            
-                <h3>
-                    Keyboard controls
-                </h3>
-            
-                <ul>
-                    <li><b>E S D F</b>: 3D view: Move the camera.</li>
-                    <li><b>1 2 3 4 5</b>: 3D view: Set the size of the ground-editing brush.</li>
-                    <li><b>L</b>: 3D view: Level the terrain to a given height.</li>
-                    <li><b>W</b>: 3D view: Toggle wireframe rendering on/off.</li>
-                    <li><b>B</b>: 3D view: Toggle prop visibility.</li>
-                    <li><b>T</b>: 3D view: Open the hovered texture in the texture editor.</li>
-                    <li><b>G</b>: 3D view: Show a preview under the cursor of the currently-selected ground texture.</li>
-                    <li><b>R</b>: Texture editor: Rotate the current texture.</li>
-                    <li><b>A</b>: Open/close the ground texture pane.</li>
-                    <li><b>Q</b>: Open/close the tilemap editor.</li>
-                    <li><b>Space</b>: 3D view: Toggle the ground-smoothing mode on/off (smoothens the ground instead of raising/lowering it).</li>
-                    <li><b>Up/down arrows</b>: 3D view: Raise/lower the ground by one where the mouse cursor is hovering.</li>
-                    <li><b>Ctrl + Z</b>: Undo your latest changes.</li>
-                    <li><b>Ctrl + Y</b>: Redo your latest changes.</li>
-                    <li><b>Ctrl + Shift + Z</b>: Redo your latest changes.</li>
-                    <li><b>Ctrl + C</b>: Texture editor: Copy the current texture onto the clipboard.</li>
-                    <li><b>Ctrl + V</b>: Texture editor: Paste the current texture from the clipboard.</li>
-                </ul>
-            </dokki-topic>
-
-            <dokki-topic title="Saving">
-                <p>
-                    You'll find an option in the top left corner of the RallySportED-js UI's menu bar to
-                    download a copy of the current track. The download will be in the form of a RallySportED
-                    ZIP archive containing the track's assets.
-                </p>
-            
-                <dokki-image src="img/project-zip.png">
-                    A screenshot of a RallySportED track ZIP file
-                </dokki-image>
-            </dokki-topic>
-
-            <dokki-topic title="Loading">
-                <p>
-                    There are two ways to load a track for editing or viewing in RallySportED-js: (1) by using a
-                    URL parameter, and (2) by dragging a track archive file. The file-dragging method
-                    is intended for track files located on your system, while the URL parameter method is
-                    for tracks hosted on RallySportED's servers.
-                </p>
-            
-                <p>
-                    The first way is to use a URL parameter. For a demonstration, check out
-            
-                    <a href="https://www.tarpeeksihyvaesoft.com/rallysported/?track=democ">this link</a>.
-                    
-                    It appends the parameter <em>track</em> to the RallySportED-js URL to indicate that
-                    we want to load track #3 of the Rally-Sport demo ("democ" standing for "Demo C").
-                    You might use these demo tracks e.g. as a basis for your custom tracks &ndash; being
-                    mindful that they're under copyright to someone other than the RallySportED author and
-                    have not been licensed for this purpose.
-                </p>
-            
-                <p>
-                    The second way is to drag a track archive file &ndash; which you got e.g. by
-                    exporting a track from RallySportED-js as described in <a href="#saving">
-                    this topic</a> &ndash; from your system onto the RallySportED-js editor view.
-                </p>
-            </dokki-topic>
-
-            <dokki-topic title="The 'Quick share' feature">
-                <p>
-                    Want to show a track of yours to a friend, but don't want the hassle of sending
-                    them a ZIP file? You can use the Serve feature to produce a temporary sharable URL.
-                </p>
-            
-                <p>
-                    To generate a sharable URL, follow these steps:
-                </p>
+        <template id="dokki-document">
                 
-                <ul>
-                    <li>Press the "Quick share" button at the top left of the RallySportED-js UI. After a
-                    few seconds &ndash; sometimes a bit more &ndash; the button should display the text "Sharing",
-                    and your browser's address bar should now contain a <i>transientServer</i> parameter.</li>
-                    <li>Copy the address bar link and give it to the people you want
-                    to share the track with. When they access this URL, they'll get a copy of the track as
-                    it appears in your browser at that moment.</li>
-                </ul>
-            
-                <p>
-                    A few things to keep in mind about quick share:
-                </p>
-                
-                <ul>
-                    <li>The sharable URL works only for as long as you've got the RallySportED-js browser
-                    tab open and are connected to the internet. If you reload or leave the page, the URL
-                    will be invalidated and you need to generate a new one (by again pressing the "Quick
-                    share" button).</li>
-                    <li>Shared track data is transferred using WebRTC technology directly from your
-                    browser to people accessing the URL. The data doesn't pass through a RallySportED server.</li>
-                    <li>Any changes you make to the track &ndash; including loading a new track via drag
-                    & drop &ndash; will be visible to people when they reload the URL. That is, changes aren't
-                    transmitted in real time.</li>
-                    <li>Changes made to the track by somebody accessing the shared URL will affect only
-                    their local copy, not yours or anybody else's.</li>
-                    <li>While sharing is active, the "Quick share" button will display "Sharing (x)", where
-                    <i>x</i> is the number of times the shared URL has been accessed.</li>
-                </ul>
-            
-                <p>
-                    To stop sharing, press the "Quick share" button (called "Sharing" while sharing is
-                    active) again. The <i>transientServer</i> parameter should disappear from your browser's
-                    address bar, and the shared URL will no longer work. If you start sharing again,
-                    a new URL will be generated.
-                </p>
-            </dokki-topic>
+            <dokki-header icon="fas fa-book"
+                          title="User's Manual: RallySportED-js"
+                          product-name="RallySportED-js"
+                          product-version="1.1">
+            </dokki-header>
 
-            <dokki-topic title="Tutorial: Creating a track">
-                <p>
-                    Here's a runner-downer on how to create a new Rally-Sport track with
-                    RallySportED!
-                </p>
+            <dokki-side-panel>
+            </dokki-side-panel>
             
-                <h3>
-                    Starting out
-                </h3>
-            
-                <p>
-                    Making a new track with RallySportED always starts with loading in an
-                    existing track as a basis. Generally, this will be one of the eight tracks of the
-                    Rally-Sport demo.
-                </p>
-            
-                <p>
-                    So to get started, load in Rally-Sport track #1 by using the <em>track</em> URL
-                    parameter, like shown
-            
-                    <a href="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa">
-                        in this link</a>.
-            
-                <p>
-                    When you direct your browser to that URL, RallySportED-js should load up the
-                    track and greet you with a view similar to this:
-                </p>
-            
-                <dokki-image src="img/tut-start.png">
-                    The initial RallySportED-js view
-                </dokki-image>
-            
-                <p>
-                    When you're ready to start editing, hit the L key on your keyboard to bring up the
-                    terrain-leveling prompt, which asks you to input a height value to level the
-                    terrain to. Enter in "0" and select OK &ndash; you should now be looking at a fully
-                    flat terrain.
-                </p>
-            
-                <p>
-                    Next, press the A key to bring up the texture-selection pane. It'll pop up on the
-                    right-hand side of the screen. In the pane, hover the mouse over the second
-                    thumbnail from the top left (grass) and click on it with the left mouse button. A
-                    solid yellow rectangle should appear around the thumbnail to indicate that this
-                    texture is now selected.
-                </p>
-
-                <dokki-tip>
-                    You can press the Tab key while hovering the mouse over the texture pane to see
-                    the hovered texture's index number. You'll see a corresponding index number in
-                    the bottom left corner of the 3D view ("PALA: xxx") while hovering the mouse over
-                    the 3D terrain.
-                </dokki-tip>
-
-                <dokki-tip>
-                    While in the 3D view, you can press the G key to show the currently-selected
-                    texture on the ground tile over which the mouse is hovering.
-                </dokki-tip>
-
-                <p>
-                    Now, press A again to close the texture pane, then Q to open the top-down tilemap
-                    view. This is a bird's eye view of the track, useful for painting in large-scale
-                    features. In this view, press the 5 key to select the largest brush size (you'll see
-                    a number change in the upper right of the screen to reflect your selection), then
-                    click and hold the left or right mouse button while dragging the cursor across the
-                    2D map. You should see the map fill up with green (i.e. the grass texture you selected
-                    earlier). Fill it up all the way through, then press the Q key to return to the 3D view.
-                </p>
-            
-                <dokki-image src="img/tut-paintview.png">
-                    Painting over the track with grass
-                </dokki-image>
-
-                <dokki-tip>
-                    The top-down tilemap view always contains an unerasable white pixel somewhere over
-                    the track. This pixel indicates the location of the track's checkpoint (a way the game
-                    uses to verify that you've driven a full enough lap). You should always have the road
-                    pass over or very near this checkpoint; otherwise the game may refuse to save your
-                    lap times.
-                </dokki-tip>
-            
-                <p>
-                    Once back in the 3D view, move the camera aound to locate the finish line. When you've
-                    found it, open the texture pane again (A). While holding down the Tab key, hover the
-                    mouse over the textures until you find texture #96 (gravel). Click on it to select it.
-                    Set your brush radius to 1 (hit the 1 key). With the middle mouse button, draw a line
-                    under the finish line, like in the image below. If you mess up, just hit Ctrl+Z to undo
-                    (Ctrl+Shift+Z redoes).
-                </p>
-            
-                <dokki-image src="img/tut-startmark.png">
-                    The finish line, with a line of gravel underneath
-                </dokki-image>
-            
-                <p>
-                    When you now open the tilemap view (Q) again, you'll see a lot of green but also
-                    a brown horizontal line. This will be a visual aid for you while working in the
-                    tilemap view to lay down some road.
-                </p>
-            
-                <h3>
-                    Laying the road
-                </h3>
-                
-                <p>
-                    While you have the gravel texture (index #96) selected and the tilemap view
-                    open, press the 2 key to set a slightly larger brush size. Draw a snaking
-                    line (the road) onto the map, starting at the finish line, winding around the area,
-                    and ending back at the finish line.
-                </p>
-            
-                <dokki-image src="img/tut-roadlay.png">
-                    Having drawn a simple road
-                </dokki-image>
-            
-                <p>
-                    Returning to the 3D view (Q), you can see that there's now a road going about
-                    your scenery.
-                </p>
-
-                <p>
-                    Problem is, the corners of the road don't curve smoothly; they look staircasey.
-                    To fix this, open the texture pane again and look through it. You'll see a
-                    bunch of tiles with variously-angled slabs of gravel (e.g. texture #99). By placing
-                    these angled textures around your road, you can smooth out its curves. It's a bit of
-                    manual labor, but suck it up.
-                </p>
-            
-                <dokki-image src="img/tut-curvesmooth.png">
-                    Adding some angled gravel tiles
-                </dokki-image>
-            
-                <h3>
-                    Decorating the terrain
-                </h3>
-            
-                <p>
-                    Now that there's a road going on, even if you didn't yet smooth out the curves all
-                    the way through, you can start adding some surface decorations to make the scenery
-                    more interesting to drive in.
-                </p>
-            
-                <p>
-                    The first thing you might do is manipulate the height of the terrain to create
-                    hills, dips, and so on. Just use the left and right mouse buttons in the 3D view to
-                    rough up the terrain some.
-                </p>
-                
-                <dokki-image src="img/tut-groundshape.png">
-                    Added some ground height variation
-                </dokki-image>
-
-                <dokki-tip>
-                    You can hit the W key in the 3D view to bring up a wireframe that indicates ground
-                    tile edges. This makes the shape of the terrain more apparent.
-                </dokki-tip>
-            
-                <p>
-                    The next bit of detail you might put in are spectators, people
-                    that stand around waving as you drive past. To add some of them in, open the
-                    texture-selection pane (A) and select texture #240. Press G and hover the mouse
-                    over the terrain. You should see a spectator pop up on the tile the cursor hovers
-                    on. When you apply the texture (middle click), a spectator will be stood there.
-                </p>
-            
-                <dokki-image src="img/tut-billboards.png">
-                    Some spectators and wooden poles
-                </dokki-image>
-
-                <h3>
-                    Testing the track in Rally-Sport
-                </h3>
-            
-                <p>
-                    Having put in a few bits and bobs, you might want to give the track a
-                    test drive. To do that, locate and click the "Download" button at the top left
-                    corner of the RallySportED-js page. Your browser should then serve you a ZIP file
-                    called DEMOA.ZIP, which contains the data files required to play the track in
-                    Rally-Sport.
-                </p>
-            
-                <p>
-                    If you don't already have the Rally-Sport demo on your computer, you'll need to
-                    get it. First, download the desktop version of RallySportED from
-                    
-                    <a href="http://www.tarpeeksihyvaesoft.com/">
-                        Tarpeeksi Hyvae Soft's website</a>,
+            <dokki-topics>
+                <dokki-topic title="Introduction">
+                    <p>
+                        RallySportED is a contemporary asset editor for the classic racing game Rally-Sport.
+                    </p>
                         
-                    then extract the RALLYS.ZIP file that comes with it into a folder called
-                    C:\RALLYS (or some other name, this one is just for convenience). Extract the
-                    RallySportED files into C:\RALLYS, as well.
-                </p>
-            
-                <p>
-                    Now that you have Rally-Sport and RallySportED set up, extract the DEMOA.ZIP file
-                    into C:\RALLYS so that the track's files come to be under C:\RALLYS\DEMOA.
-                    Then browse into C:\RALLYS (in DOS or DOSBox), type "RLOAD DEMOA", and
-                    Rally-Sport should launch itself. From the game's main menu, select to start the
-                    race.
-                </p>
-            
-                <dokki-image src="img/tut-playing.png">
-                    Racing in-game on the half-finished track
-                </dokki-image>
-
-                <p>
-                    From this point on, you'd go back to RallySportED-js to make some changes to the
-                    track, test it again in-game to verify that it's still fun to drive, and rinse
-                    and repeat until you have a track you don't mind calling finished.
-                </p>
-            
-                <h3>
-                    Adding an AI opponent
-                </h3>
-            
-                <p>
-                    One of the things you might notice when you play your new track in Rally-Sport is
-                    that the CPU opponent doesn't seem aware of the changes you've made to the track.
-                    For instance, it might obliviously keep driving off the road or fail to avoid
-                    obstacles you've put in. Well, we can fix this by using the RAI tool that comes
-                    with the desktop version of RallySportED (which we installed earlier as part of
-                    this tutorial).
-                </p>
-            
-                <p>
-                    The RAI tool must be run under DOS (or in DOSbox). If you set up the desktop
-                    version of RallySportED as described above, you'll already have RAI in
-                    C:\RALLYS. So you can navigate there, enter the command "RAI DEMOA", and now
-                    Rally-Sport should pop up in a special "recording" mode.
-                </p>
-            
-                <dokki-image src="img/tut-rai-recording.png">
-                </dokki-image>
-
-                <p>
-                    What you're seeing is the same as when you normally play the track in
-                    Rally-Sport, but now you have "Recording" written across the bottom of the
-                    screen. The gist of this is that RallySportED will record the lap you race
-                    and save it as the track's CPU opponent.
-                </p>
+                    <p>
+                        <product-name/> is a JavaScript port of RallySportED.
+                    </p>
                 
-                <p>
-                    So just drive the lap normally, and once the race finishes, press the space key to
-                    quit back to the command prompt, where RAI should tell you that it succeeded in
-                    creating the new CPU opponent.
-                </p>
+                    <p>
+                        RallySportED &copy; Tarpeeksi Hyvae Soft. Rally-Sport &copy; Jukka Jäkälä, who is not
+                        affiliated with RallySportED. Any rights remain with their respective holders.
+                    </p>
+
+                    <dokki-image expanded src="https://raw.githubusercontent.com/leikareipa/rallysported-frontend/master/images/screenshots/post-1.0/yleisoek.png">
+                        <template #caption>
+                            <product-name/> running in Google Chrome
+                        </template>
+                    </dokki-image>
+                </dokki-topic>
+
+                <dokki-topic title="System requirements">
+                    <ul>
+                        <li>An up-to-date browser with JavaScript enabled (recommended: Google Chrome)</li>
+                        <li>A decent CPU (recommended: at least a mid-range machine bought within the last 4 yrs.)</li>
+                        <li>Mouse and keyboard (+ full-sized screen recommended)</li>
+                    </ul>
                 
-                <p>
-                    The new CPU opponent will have been saved into the track's DTA file under
-                    C:\RALLYS\DEMOA. You'll want to update the track's ZIP file with the new
-                    DTA file, then drag the updated ZIP into RallySportED-js to let it know of the
-                    changes. Otherwise, when you save the track again in RallySportED-js, you'd
-                    revert back to the original CPU opponent.
-                </p>
-            </dokki-topic>
-        </dokki-topics>
+                    <p>
+                        <product-name/> is tested primarily in Linux, but should work just as well on Windows.
+                        You might find more problems on Apple's operating systems, since the developer has few
+                        or no Apple devices to test on.
+                    </p>
+                </dokki-topic>
+
+                <dokki-topic title="Controls">
+                    <h2>
+                        Mouse controls
+                    </h2>
+                
+                    <ul>
+                        <li><b>Left click on ground</b>: 3D view: Move the ground up. Texture & tilemap editors: Draw.</li>
+                        <li><b>Right click on ground</b>: 3D view: Move the ground down. Texture & tilemap editors: Draw.</li>
+                        <li><b>Middle click on ground</b>: 3D view: Paint the ground with the currently-selected ground texture.</li>
+                        <li><b>Right click on prop</b>: 3D view: Change the prop's type.</li>
+                        <li><b>Left click & drag prop</b>: 3D view: Move the prop.</li>
+                        <li><b>Shift + wheel</b>: 3D view: Tilt the camera up/down. Texture editor: Zoom.</li>
+                        <li><b>Shift + left click on ground</b>: 3D view: Add a new prop.</li>
+                        <li><b>Shift + left click on prop</b>: 3D view: Remove the prop.</li>
+                        <li><b>Tab + left click</b>: Eyedropper tool.</li>
+                        <li><b>Tab + hover on ground texture pane</b>: Show the hovered texture's index value.</li>
+                    </ul>
+                
+                    <h2>
+                        Keyboard controls
+                    </h2>
+                
+                    <ul>
+                        <li><b>E S D F</b>: 3D view: Move the camera.</li>
+                        <li><b>1 2 3 4 5</b>: 3D view: Set the size of the ground-editing brush.</li>
+                        <li><b>L</b>: 3D view: Level the terrain to a given height.</li>
+                        <li><b>W</b>: 3D view: Toggle wireframe rendering on/off.</li>
+                        <li><b>B</b>: 3D view: Toggle prop visibility.</li>
+                        <li><b>T</b>: 3D view: Open the hovered texture in the texture editor.</li>
+                        <li><b>G</b>: 3D view: Show a preview under the cursor of the currently-selected ground texture.</li>
+                        <li><b>R</b>: Texture editor: Rotate the current texture.</li>
+                        <li><b>A</b>: Open/close the ground texture pane.</li>
+                        <li><b>Q</b>: Open/close the tilemap editor.</li>
+                        <li><b>Space</b>: 3D view: Toggle the ground-smoothing mode on/off (smoothens the ground instead of raising/lowering it).</li>
+                        <li><b>Up/down arrows</b>: 3D view: Raise/lower the ground by one where the mouse cursor is hovering.</li>
+                        <li><b>Ctrl + Z</b>: Undo your latest changes.</li>
+                        <li><b>Ctrl + Y</b>: Redo your latest changes.</li>
+                        <li><b>Ctrl + Shift + Z</b>: Redo your latest changes.</li>
+                        <li><b>Ctrl + C</b>: Texture editor: Copy the current texture onto the clipboard.</li>
+                        <li><b>Ctrl + V</b>: Texture editor: Paste the current texture from the clipboard.</li>
+                    </ul>
+                </dokki-topic>
+
+                <dokki-topic title="Saving tracks">
+                    <p>
+                        You'll find an option in the top left corner of the <product-name/> UI's menu bar to
+                        download a copy of the current track. The download will be in the form of a RallySportED
+                        ZIP archive containing the track's assets.
+                    </p>
+                
+                    <dokki-image src="img/project-zip.png">
+                        <template #caption>
+                            A screenshot of a RallySportED track ZIP file
+                        </template>
+                    </dokki-image>
+
+                    <p>
+                        The ZIP file can be loaded back into <product-name/> by dragging and dropping
+                        (see <a href="#loading-tracks">Loading tracks</a>).
+                    </p>
+                </dokki-topic>
+
+                <dokki-topic title="Loading tracks">
+                    <p>
+                        You can load a track into <product-name/> in one of two ways: either by entering
+                        a URL parameter to load a server-side track, or by drag/dropping a track file
+                        from your device onto the <product-name/> page.
+                    </p>
+                    
+                    <h2>URL parameter</h2>
+                
+                    <p>
+                        You can ask <product-name/> to start with one of the game's built-in tracks by
+                        appending the <i>track</i> parameter to the <product-name/> page URL.
+                    </p>
+
+                    <p>
+                        If the normal <product-name/> URL is <i>rallysported/</i>, appending this
+                        parameter would make it <i>rallysported/?track=xxxx</i>, where <i>xxxx</i>
+                        identifies the track to be loaded.
+                    </p>
+
+                    <dokki-table>
+                        <template #caption>
+                            Accepted values of the <i>track</i> parameter
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Value</th>
+                                    <th>Corresponding track in Rally-Sport</th>
+                                </tr>
+                                <tr>
+                                    <td>demoa</td>
+                                    <td>"nurtsi cruising"</td>
+                                </tr>
+                                <tr>
+                                    <td>demob</td>
+                                    <td>"vesistö vedätys"</td>
+                                </tr>
+                                <tr>
+                                    <td>democ</td>
+                                    <td>"ralli-cross"</td>
+                                </tr>
+                                <tr>
+                                    <td>demod</td>
+                                    <td>"Yleisö EK"</td>
+                                </tr>
+                                <tr>
+                                    <td>demoe</td>
+                                    <td>"very slippery.."</td>
+                                </tr>
+                                <tr>
+                                    <td>demof</td>
+                                    <td>"YOU asked it..."</td>
+                                </tr>
+                                <tr>
+                                    <td>demog</td>
+                                    <td>"Bumps and Jumps"</td>
+                                </tr>
+                                <tr>
+                                    <td>demoh</td>
+                                    <td>"Short and easy!"</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+
+                    <p>
+                        The two inline frames below demonstrate the effect of this parameter. The
+                        first frame uses <i>track=demoa</i> which loads the track "nurtsi cruising",
+                        while the second frame uses <i>track=democ</i> and loads "ralli-cross".
+                    </p>
+
+                    <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa"
+                                  height="700px"
+                                  title="rallysported/?track=demoa">
+                    </dokki-iframe>
+
+                    <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=democ"
+                                  height="700px"
+                                  title="rallysported/?track=democ">
+                    </dokki-iframe>
+
+                    <dokki-tip>
+                        Appending the <i>#play</i> hash to the URL will tell <product-name/> to
+                        launch Rally-Sport in the browser with the given track.
+                        
+                        Like this: <a href="/rallysported/?track=demoa#play">rallysported/?track=demoa#play</a>.
+                    </dokki-tip>
+
+                    <h2>Drag & drop</h2>
+
+                    <p>
+                        When you want to load a previously-saved track from your device (see
+                        <a href="#saving-tracks">Saving tracks</a>), dragging and dropping it on
+                        the <product-name/> page is the way to go.
+                    </p>
+                        
+                    <p>
+                        Simply drag the track's ZIP file over the <product-name/> page and drop it in.
+                        The file's data will be loaded and the track should pop open for editing.
+                    </p>
+                </dokki-topic>
+
+                <dokki-topic title="The 'Quick share' feature">
+                    <p>
+                        Want to show a track of yours to a friend, but don't want the hassle of sending
+                        them a ZIP file? You can use the Serve feature to produce a temporary sharable URL.
+                    </p>
+                
+                    <p>
+                        To generate a sharable URL, follow these steps:
+                    </p>
+                    
+                    <ul>
+                        <li>Press the "Quick share" button at the top left of the <product-name/> UI. After a
+                        few seconds &ndash; sometimes a bit more &ndash; the button should display the text "Sharing",
+                        and your browser's address bar should now contain a <i>transientServer</i> parameter.</li>
+                        <li>Copy the address bar link and give it to the people you want
+                        to share the track with. When they access this URL, they'll get a copy of the track as
+                        it appears in your browser at that moment.</li>
+                    </ul>
+                
+                    <p>
+                        A few things to keep in mind about quick share:
+                    </p>
+                    
+                    <ul>
+                        <li>The sharable URL works only for as long as you've got the <product-name/> browser
+                        tab open and are connected to the internet. If you reload or leave the page, the URL
+                        will be invalidated and you need to generate a new one (by again pressing the "Quick
+                        share" button).</li>
+                        <li>Shared track data is transferred using WebRTC technology directly from your
+                        browser to people accessing the URL. The data doesn't pass through a RallySportED server.</li>
+                        <li>Any changes you make to the track &ndash; including loading a new track via drag
+                        & drop &ndash; will be visible to people when they reload the URL. That is, changes aren't
+                        transmitted in real time.</li>
+                        <li>Changes made to the track by somebody accessing the shared URL will affect only
+                        their local copy, not yours or anybody else's.</li>
+                        <li>While sharing is active, the "Quick share" button will display "Sharing (x)", where
+                        <i>x</i> is the number of times the shared URL has been accessed.</li>
+                    </ul>
+                
+                    <p>
+                        To stop sharing, press the "Quick share" button (called "Sharing" while sharing is
+                        active) again. The <i>transientServer</i> parameter should disappear from your browser's
+                        address bar, and the shared URL will no longer work. If you start sharing again,
+                        a new URL will be generated.
+                    </p>
+                </dokki-topic>
+
+                <dokki-topic title="Tutorial: Creating a track">
+                    <p>
+                        Here's a runner-downer on how to create a new Rally-Sport track with
+                        RallySportED!
+                    </p>
+                
+                    <h2>
+                        Starting out
+                    </h2>
+                
+                    <p>
+                        Making a new track with <product-name/> always starts with loading an
+                        existing track as a basis.
+                    </p>
+                    
+                    <p>So, to get started, load one of Rally-Sport's
+                        default tracks by using the <i>track</i> URL parameter. Like this:
+                        <a href="/rallysported/?track=demoa">rallysported/?track=demoa</a>.
+                    </p>
+                
+                    <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa"
+                                  height="700px"
+                                  title="rallysported/?track=demoa">
+                    </dokki-iframe>
+                
+                    <p>
+                        When you're ready to start editing, hit the <em>L</em> key on your keyboard to
+                        bring up the terrain-leveling prompt, which asks you to input a height value to
+                        level the terrain to. Enter in "0" and select OK &ndash; you should now be
+                        looking at a fully flat terrain.
+                    </p>
+                
+                    <p>
+                        Next, press the <em>A</em> key to bring up the texture-selection pane. It'll pop
+                        up on the right-hand side of the screen. In the pane, hover the mouse over the second
+                        thumbnail from the top left (grass) and click on it with the left mouse button. A
+                        solid yellow rectangle should appear around the thumbnail to indicate that this
+                        texture is now selected.
+                    </p>
+
+                    <dokki-tip>
+                        Press the <em>G</em> key to show the currently-selected texture on the ground
+                        on mouse hover.
+                    </dokki-tip>
+
+                    <p>
+                        Press <em>Q</em> to open the tilemap view. In this view, press the <em>5</em>
+                        key to select the largest brush size (you'll see a number change in the upper
+                        right of the screen to reflect your selection), then click and hold the left
+                        or right mouse button while dragging the cursor across the tilemap. You should
+                        see the map fill up with green (the grass texture you selected earlier).
+                    </p>
+
+                    <dokki-image src="img/tut-paintview.png">
+                        <template #caption>
+                            Painting the track over with grass
+                        </template>
+                    </dokki-image>
+
+                    <p>
+                        Fill up all of the track with grass, then press the <em>Q</em> key to return
+                        to the 3D view.
+                    </p>
+
+                    <dokki-tip>
+                        The tilemap view always has an un-erasable white pixel somewhere on the track.
+                        This pixel shows the location of the track's checkpoint, which your car needs
+                        to pass over &ndash; or quite close to &ndash; for the lap to be counted as
+                        valid. So you should always have the road pass over or very near this checkpoint.
+                    </dokki-tip>
+                
+                    <p>
+                        Once back in the 3D view, move the camera over to the finish line, then open
+                        the texture pane again. While holding down the <em>Tab</em> key, hover the
+                        mouse over the pane's textures until you find texture #96 (gravel). Click on
+                        that texture to choose it. Set the brush radius to 1 (hit the <em>1</em> key).
+                        With the middle mouse button, draw a line under the finish line.
+                    </p>
+                
+                    <dokki-image src="img/tut-startmark.png">
+                        <template #caption>
+                            The finish line, with a line of gravel underneath
+                        </template>
+                    </dokki-image>
+                
+                    <h2>
+                        Laying the road
+                    </h2>
+                    
+                    <p>
+                        Enter the tilemap view again (<em>Q</em>). You'll see the line of gravel marking
+                        the location of the finish line. With the gravel texture still selected, press
+                        the <em>2</em> key to set a slightly larger brush size. Starting from the finish
+                        line, draw a road around the map, ending back at the finish. Make sure the road
+                        passes over or near the white checkpoint pixel.
+                    </p>
+                
+                    <dokki-image src="img/tut-roadlay.png">
+                        <template #caption>
+                            Having drawn a simple road
+                        </template>
+                    </dokki-image>
+                
+                    <p>
+                        Returning to the 3D view (<em>Q</em>), you can see that there's now a road rambling
+                        about your scenery. You can use the various angled gravel tiles (e.g. #99) to smooth
+                        out its corners.
+                    </p>
+
+                    <dokki-tip>
+                        Hit the <em>W</em> key in the 3D view to bring up a wireframe that indicates ground
+                        tile edges.
+                    </dokki-tip>
+                
+                    <h2>Decorating the terrain</h2>
+                
+                    <p>
+                        Now that there's a road going on, even if you didn't yet smooth out all the curves,
+                        you can start adding some decorations to make the scenery more interesting to drive
+                        in.
+                    </p>
+
+                    <dokki-image src="img/tut-curvesmooth.png">
+                        <template #caption>
+                            Not a very interesting track so far
+                        </template>
+                    </dokki-image>
+                
+                    <p>
+                        The first thing to do is to manipulate the height of the terrain to create hills,
+                        dips, and so on. Click around with the left and right mouse buttons in the 3D view
+                        to move the terrain up and down. Maybe you feel there should be an outcrop
+                        somewhere &ndash; just raise the terrain and paint those tiles with a rocky
+                        texture.
+                    </p>
+                    
+                    <dokki-image src="img/tut-groundshape.png">
+                        <template #caption>
+                            Added some height and texture variation
+                        </template>
+                    </dokki-image>
+                
+                    <p>
+                        Another kind of detail you can put in are spectators. Open the texture pane
+                        (<em>A</em>) and select texture #240. Press <em>G</em> to show the currently-selected
+                        texture on the ground on mouse hover, and hover the mouse over the terrain. You
+                        should see a spectator pop up on the tile the cursor is hovering on. When you
+                        apply the texture, a spectator will be stood there for good.
+                    </p>
+                
+                    <dokki-image src="img/tut-billboards.png">
+                        <template #caption>
+                            Inserted a few spectators
+                        </template>
+                    </dokki-image>
+
+                    <h2>Test-driving the track</h2>
+                
+                    <p>
+                        Having put in a few bits and bobs, you might now give the track a test drive!
+                        Click the "Test" button on the menu bar at the top of the <product-name/> page;
+                        it'll launch the track in Rally-Sport inside DOSBox in the browser.
+                    </p>
+
+                    <dokki-image src="img/tut-playing.png">
+                        <template #caption>
+                            Racing the half-finished track in-game
+                        </template>
+                    </dokki-image>
+
+                    <p>
+                        There's no CPU opponent and no race countdown in the testing mode. If you
+                        want to race against the CPU, select the "Play" button instead.
+                    </p>
+                </dokki-topic>
+            </dokki-topics>
+        </template>
     </body>
 </html>
