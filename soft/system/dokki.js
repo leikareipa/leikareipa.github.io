@@ -15,6 +15,8 @@ function create_app()
         state: {
             topics: [],
             loremCount: 0,
+            productName: "",
+            productVersion: "",
         },
         mutations: {
             add_topic(state, topicTitle)
@@ -29,20 +31,46 @@ function create_app()
             {
                 state.loremCount++;
             },
+            set_product_name(state, name = "")
+            {
+                state.productName = name;
+            },
+            set_product_version(state, version = "")
+            {
+                state.productVersion = version;
+            }
         }
     });
 
     const app = Vue.createApp({});
 
+    app.component("product-name", {
+        computed: {
+            productName()
+            {
+                return this.$store.state.productName;
+            }
+        },
+        template: `
+            <span class="dokki-product-name">
+                {{productName}}
+            </span>
+            <slot/>
+        `,
+    });
+
     app.component("dokki-header", {
         props: {
             icon: {default: "fas fa-book"},
             title: {default: "Untitled"},
-            software: {default: undefined},
+            productName: {default: undefined},
+            productVersion: {default: undefined},
         },
         beforeCreate()
         {
             document.title = this.title;
+            this.$store.commit("set_product_name", this.productName);
+            this.$store.commit("set_product_version", this.productVersion);
         },
         template: `
             <header class="dokki-header">
@@ -51,10 +79,16 @@ function create_app()
 
                 {{title}}
 
-                <div v-if="software !== undefined"
+                <div v-if="productName !== undefined"
                      class="software-tag">
 
-                    {{software}}
+                    {{productName}}
+
+                    <span v-if="productVersion !== undefined">
+
+                        {{productVersion}}
+
+                    </span>
 
                 </div>
 
@@ -115,33 +149,15 @@ function create_app()
     });
 
     app.component("dokki-side-panel", {
-        data() {
-            return {
-                isScrollable: false,
-            }
-        },
         computed: {
             topics()
             {
                 return this.$store.state.topics;
             },
         },
-        mounted()
-        {
-            window.addEventListener("resize", update_scrollable_status.bind(this)); 
-            this.$nextTick(update_scrollable_status);
-
-            function update_scrollable_status()
-            {
-                const margin = parseInt(window.getComputedStyle(document.body).getPropertyValue("--content-margin") || 20);
-                const height = (this.$refs.container.clientHeight + (margin * 2));
-                this.isScrollable = (height >= this.$refs.panel.clientHeight);
-            };
-        },
         template: `
             <nav ref="panel"
-                 class="dokki-side-panel"
-                 :class="{scrollable: isScrollable}">
+                 class="dokki-side-panel">
 
                 <div ref="container"
                      class="container">
@@ -203,10 +219,10 @@ function create_app()
 
                 <hr v-if=isExpanded>
 
-                <footer v-if=isExpanded>
+                <footer v-if=isExpanded
+                        :style="{height: height}">
 
                     <iframe class="dokki-iframe"
-                            :style="{height: height}"
                             :src=src>
                     </iframe>
                     
@@ -257,7 +273,7 @@ function create_app()
 
                 <hr v-if=hasFooter>
 
-                <footer v-if=hasFooter>
+                <footer v-if=hasFooter class="italic">
                     <slot name="caption"/>
                 </footer>
             </p>
@@ -370,7 +386,7 @@ function create_app()
 
                 <hr v-if=hasFooter>
 
-                <footer v-if=hasFooter>
+                <footer v-if=hasFooter class="italic">
                     <slot name="caption"/>
                 </footer>
 
@@ -527,13 +543,13 @@ function create_app()
 
                 </header>
 
-                <hr>
-
                 <div v-if=isExpanded class="table-container">
                     <slot name="table"/>
                 </div>
 
-                <footer v-if=hasFooter>
+                <hr v-if="hasFooter">
+
+                <footer v-if=hasFooter class="italic">
                     <slot name="caption">
                 </footer>
 

@@ -21,7 +21,7 @@
         <template id="dokki-document">
 
             <dokki-header icon="fas fa-swimming-pool"
-                        title="Software index of leikareipa.github.io">
+                          title="Software index of leikareipa.github.io">
             </dokki-header>
 
             <dokki-side-panel>
@@ -287,9 +287,25 @@
                     </p>
 
                     <p>
-                        The JavaScript code enforces type checks and implements a try/catch-wrapping action
-                        system to make debugging and error-reporting easier. The backend is Heroku-compatible
-                        and conserves database rows (useful for those on the limited Heroku Free plan).
+                        The code enforces type checks, implements pseudo-inheritance with underlying typing
+                        for custom objects and uses a try/catch-wrapping action system to make debugging
+                        and end-user error-reporting easier and less verbose to write.
+                    </p>
+                    
+                    <p>
+                        The backend is Heroku-compatible and conserves database rows &ndash; useful
+                        for those on the limited Heroku Free plan.
+                    </p>
+
+                    <p>
+                        Unit tests are implemented for the backend; the frontend implements React component
+                        tests (but see <a href="https://github.com/leikareipa/lintulista-client/releases/tag/beta.2">
+                        beta.2 release notes</a>).
+                    </p>
+
+                    <p>
+                        Comes with tooling to semi-automate the creation of copyright info-preserving
+                        bird thumbnails from Wikimedia Commons images.
                     </p>
 
                     <p>
@@ -645,7 +661,7 @@
                         A vanilla JavaScript path tracer. Features importing scenes from Blender, exporting
                         renderings to PFM, continuing previous renderings from PFM, multi-threaded rendering,
                         tone mapping with the Drago '03 algorithm, and acceleration of ray&ndash;triangle
-                        intersection tests with a BVH tree.
+                        intersection tests with a BVH tree. Comes with automated performance tests.
                     </p>
 
                     <p>
@@ -710,8 +726,12 @@
                         A well-featured software 3D renderer for the HTML5 canvas. Rasterizes n-sided
                         polygons onto either a canvas or an offscreen buffer. Features genuine retro
                         aesthetics, vertex and pixel shaders, async rendering, a streamlined API, docs,
-                        lots of samples, and more. No external dependencies; easy to integrate into an
-                        existing JavaScript project.
+                        lots of samples, a Blender exporter, and more. No external dependencies; easy
+                        to integrate into an existing JavaScript project.
+                    </p>
+
+                    <p>
+                        Implements unit, integration, and performance testing.
                     </p>
 
                     <p>
@@ -2176,6 +2196,10 @@
                         My first project in JavaScript. Renders spinning 3D cubes with three different techniques
                         of rasterization. This project was later developed into the much more advanced
                         <a href="#retro-ngon-renderer">retro n-gon renderer</a>.
+                    </p>
+
+                    <p>
+                        Implements unit tests and a custom framework for running them.
                     </p>
 
                     <p>

@@ -6,7 +6,7 @@
     --content-margin: 20px;
     --header-bottom-margin: 23px;
     --topics-top-margin: calc(35px - var(--header-bottom-margin));
-    --embedded-element-border-radius: 10px;
+    --embedded-element-border-radius: 8px;
 
     /* Margins on the left and right of the page outside of which no content
      * is allowed.*/
@@ -71,7 +71,6 @@ body
     text-align: left;
     font-weight: normal;
     font-size: 160%;
-    color: black;
     white-space: normal;
     height: var(--header-height);
     position: fixed;
@@ -94,6 +93,7 @@ body
 
 .dokki-side-panel
 {
+    border-right: 1px solid lightgray;
     box-sizing: border-box;
     position: fixed;
     z-index: 0;
@@ -106,11 +106,6 @@ body
     overflow-y: auto;
     height: calc(100% - var(--header-height));
     padding-bottom: var(--content-margin);
-}
-
-.dokki-side-panel.scrollable
-{
-    border-right: 1px solid lightgray;
 }
 
 .dokki-side-panel ul
@@ -151,7 +146,6 @@ body
     width: var(--topics-width);
     padding: 0;
     background-color: transparent;
-    color: black;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -170,11 +164,6 @@ body
     padding-top: 15px;
     padding-bottom: 15px;
     width: 100%;
-}
-
-.dokki-topic ul
-{
-    padding-inline-start: 20px;
 }
 
 .dokki-topic p
@@ -226,7 +215,6 @@ body
 {
     font-size: 100%;
     font-weight: normal;
-    color: black;
     padding: 0;
     margin: 0;
 }
@@ -326,19 +314,23 @@ body
 {
     padding: 8px;
     padding-left: 14px;
-    padding-right: 14px;
+    padding-right: 14px; 
+}
+
+.dokki-embedded > footer.italic
+{
+    font-style: italic;
+}
+
+.dokki-embedded > footer.italic > i
+{
+    font-style: normal;
 }
 
 .dokki-embedded > footer > *:only-child
 {
     margin-top: 0;
     margin-bottom: 0;
-}
-
-.dokki-embedded > footer > iframe,
-.dokki-embedded > footer > canvas
-{
-    margin-bottom: calc(var(--embedded-element-border-radius) / 2 * -1) !important;
 }
 
 .dokki-embedded > header > .revealer
@@ -375,6 +367,8 @@ body
 {
     max-width: 100%;
     min-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
     border: none;
 }
 
@@ -386,6 +380,7 @@ body
 .dokki-embedded.dokki-table > .table-container
 {
     overflow: auto;
+    border-top: 1px solid lightgray;
 }
 
 .dokki-embedded.dokki-table > .table-container table
@@ -394,6 +389,7 @@ body
     border-spacing: 0;
     border-bottom: none;
     padding: 0;
+    border-collapse: collapse;
 }
 
 .dokki-embedded.dokki-table > .table-container table td,
@@ -401,8 +397,23 @@ body
 {
     padding: 8px;
     border: none;
-    border-bottom: 1px solid lightgray;
     white-space: nowrap;
+}
+
+.dokki-embedded.dokki-table > .table-container table tr
+{
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+.dokki-embedded.dokki-table > .table-container table tr:first-child
+{
+    border-top: none;
+}
+
+.dokki-embedded.dokki-table > .table-container table tr:last-child
+{
+    border-bottom: none;
 }
 
 .dokki-embedded.dokki-table > .table-container table th
@@ -423,11 +434,6 @@ body
     width: 100%;
 }
 
-.dokki-embedded.dokki-table > footer
-{
-    font-style: italic;
-}
-
 .dokki-embedded.dokki-video
 {
     display: flex;
@@ -443,11 +449,6 @@ body
     border: none;
 }
 
-.dokki-embedded.dokki-video > footer
-{
-    font-style: italic;
-}
-
 .dokki-embedded.dokki-video > header .title::after
 {
     content: " Video";
@@ -455,12 +456,12 @@ body
 
 .dokki-embedded.dokki-console
 {
-    color: white;
     border-color: black;
 }
 
 .dokki-embedded.dokki-console > header
 {
+    color: white;
     background-color: black;
     display: flex;
     align-items: center;
@@ -478,7 +479,6 @@ body
 
 .dokki-embedded.dokki-console > footer
 {
-    color: black;
     padding-left: 10px;
 }
 
@@ -601,11 +601,6 @@ body
 .dokki-embedded.dokki-image > header .title::after
 {
     content: " Image";
-}
-
-.dokki-embedded.dokki-image > footer
-{
-    font-style: italic;
 }
 
 @media only screen and (max-width: 1500px)
