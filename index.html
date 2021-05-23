@@ -20,7 +20,7 @@
 
         <template id="dokki-document">
 
-            <dokki-header icon="fas fa-swimming-pool"
+            <dokki-header icon="fas fa-frog"
                           title="Software index of leikareipa.github.io">
             </dokki-header>
 
@@ -189,14 +189,16 @@
             
                 <dokki-topic title="PCbi">
                     <p>
-                        A rad 3D frontend for the PC emulator PCem, and a retro PC-building simulation.
-                        Assemble a PC from olden parts in 3D and have PCem's emulation run on its screen.
+                        A unique 3D frontend for the PC emulator PCem. Assemble an olden PC
+                        in a 3D environment and have PCem's emulation run on its screen.
                     </p>
 
                     <p>
-                        Implements shared memory communication with PCem in Linux and Windows. Originally
-                        used full software 3D rendering (barycentric rasterization) but now has software
-                        transform + OpenGL rasterization. Custom-styled Qt GUI.
+                        Implements shared memory communication with PCem in Linux and Windows.
+                        Originally used full software 3D rendering (barycentric rasterization)
+                        but now has software transform + OpenGL rasterization. Custom-styled
+                        Qt GUI. Moddable: tooling and documentation is provided for creating
+                        and adding new hardware components.
                     </p>
 
                     <p>
@@ -305,7 +307,7 @@
 
                     <p>
                         Comes with tooling to semi-automate the creation of copyright info-preserving
-                        bird thumbnails from Wikimedia Commons images.
+                        bird thumbnails from images on Wikimedia Commons.
                     </p>
 
                     <p>
@@ -405,47 +407,140 @@
                 </dokki-topic>
 
 
-                <dokki-topic title="Yqr">
+                <dokki-topic title="Retro n-gon renderer">
                     <p>
-                        The first ray/path tracer I made, serving as a personal testbed in offline rendering. Had naive
-                        implementations of volumetric photon mapping, spectral reflectance, subsurface scattering, environment
-                        mapping, and various other things. Could render volumetric effects like fog, snow, and clouds. Supported
-                        ray&ndash;triangle intersection testing on GPUs with OpenCL.
+                        A well-featured software 3D renderer for the HTML5 canvas. Rasterizes n-sided
+                        polygons onto either a canvas or an offscreen buffer. Features genuine retro
+                        aesthetics, vertex and pixel shaders, async rendering, a streamlined API, docs,
+                        lots of samples, a Blender exporter, and more. No external dependencies; easy
+                        to integrate into an existing JavaScript project.
                     </p>
-                    
+
                     <p>
-                        Made between 2010-2014.
+                        Provides unit, integration and performance tests.
+                    </p>
+
+                    <p>
+                        Made between 2019-2021.
                     </p>
             
                     <p>
-                        Tech used: C++, Qt, OpenCL
+                        Tech used: JavaScript
                     </p>
-
-                    <dokki-image src="./soft/img/yqr/yqr-1.png">
-                        <template #caption>
-                            House with man (minor polygon normal issues visible)
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/yqr/yqr-2.png">
-                        <template #caption>
-                            Volumetric lightmap showing spectral diffraction in a beam of light
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/yqr/yqr-5.png">
-                        <template #caption>
-                            Volumetric lightmap showing caustic rays from a sphere
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/ifu/ifu-1.png">
-                        <template #caption>
-                            Fluffy clouds (see also: <a href="#cloud-simulation">Cloud simulation</a>)
-                        </template>
-                    </dokki-image>
-                </dokki-topic>
+                    
+                    <p>
+                        Links:
+                        <a href="https://www.github.com/leikareipa/retro-ngon">GitHub</a>,
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/">Interactive samples</a>
+                    </p>
                 
+                    <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/tomb-raider-home/"
+                                  height="500px">
+                    </dokki-iframe>
+
+                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/tomb-raider-1-texture-lightmap-2.png">
+                        <template #caption>
+                            A scene from Tomb Raider
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/teapt.png">
+                        <template #caption>
+                            The Utah teapot with Phong shading
+                        </template>
+                    </dokki-image>
+
+                    <dokki-code title="Minimal full render sample"
+                                code="
+                                <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
+                                <script src='rngon.cat.js'></script>
+                                <script>
+                                    const poly = Rngon.ngon([
+                                        Rngon.vertex(-1, -1, 3),
+                                        Rngon.vertex( 1, -1, 3),
+                                        Rngon.vertex( 1,  1, 3)], {
+                                            color: Rngon.color_rgba(0, 150, 255)
+                                    });
+                                    Rngon.render('canvas', [Rngon.mesh([poly])]);
+                                </script>
+                                ">
+
+                        <dokki-output title="Result">
+                            <iframe style="width: 100%;
+                                           height: 200px;
+                                           border: none;"
+                                    srcdoc="
+                                    <style scoped>
+                                        body {
+                                            height: 100vh;
+                                            padding: 0;
+                                            margin: 0;
+                                        }
+                                    </style>
+                                    <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
+                                    <script src='https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/distributable/rngon.cat.js'></script>
+                                    <script>
+                                        const poly = Rngon.ngon([
+                                            Rngon.vertex(-1, -1, 3),
+                                            Rngon.vertex( 1, -1, 3),
+                                            Rngon.vertex( 1,  1, 3)], {
+                                                color: Rngon.color_rgba(0, 150, 255)
+                                        });
+                                        Rngon.render('canvas', [Rngon.mesh([poly])]);
+                                    </script>"
+                                    >
+                            </iframe>
+                        </dokki-output>
+                    
+                    </dokki-code>
+
+                    <dokki-table>
+                        <template #caption>
+                            Source code CLOC statistics
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Sum</td>
+                                    <td>22</td>
+                                    <td>508</td>
+                                    <td>587</td>
+                                    <td>2375</td>
+                                </tr>
+                                <tr>
+                                    <td>JavaScript</td>
+                                    <td>20</td>
+                                    <td>485</td>
+                                    <td>527</td>
+                                    <td>2202</td>
+                                </tr>
+                                <tr>
+                                    <td>PHP</td>
+                                    <td>1</td>
+                                    <td>13</td>
+                                    <td>21</td>
+                                    <td>92</td>
+                                </tr>
+                                <tr>
+                                    <td>Python</td>
+                                    <td>1</td>
+                                    <td>10</td>
+                                    <td>39</td>
+                                    <td>81</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                </dokki-topic>
             
                 <dokki-topic title="RallySportED">
                     <p>
@@ -580,13 +675,13 @@
             
                 <dokki-topic title="Rally-Sport Content">
                     <p>
-                        A platform to share user-made content for Rally-Sport. Provides a REST API for client
-                        queries and implements a custom MVC framework to generate views into the data. Also
-                        comes with a handy frontend for accessing with a browser.
+                        A platform for users of <a href="#rallysported">RallySportED</a> to share
+                        their content. Temporarily unavailable live.
                     </p>
-
+                    
                     <p>
-                        Currently not available live due to changes in hosting.
+                        Provides a REST API for client queries. Implements a custom componentized
+                        MVC framework. Interesting-looking frontend.
                     </p>
 
                     <p>
@@ -594,7 +689,7 @@
                     </p>
             
                     <p>
-                        Tech used: PHP
+                        Tech used: PHP, CSS
                     </p>
                     
                     <p>
@@ -654,14 +749,56 @@
                         </template>
                     </dokki-table>
                 </dokki-topic>
+
+
+                <dokki-topic title="Yqr">
+                    <p>
+                        The first ray/path tracer I made, serving as a personal testbed in offline rendering. Had naive
+                        implementations of volumetric photon mapping, spectral reflectance, subsurface scattering, environment
+                        mapping, and various other things. Could render volumetric effects like fog, snow, and clouds. Supported
+                        ray&ndash;triangle intersection testing on GPUs with OpenCL.
+                    </p>
+                    
+                    <p>
+                        Made between 2010-2014.
+                    </p>
+            
+                    <p>
+                        Tech used: C++, Qt, OpenCL
+                    </p>
+
+                    <dokki-image src="./soft/img/yqr/yqr-1.png">
+                        <template #caption>
+                            House with man (minor polygon normal issues visible)
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/yqr/yqr-2.png">
+                        <template #caption>
+                            Volumetric lightmap showing spectral diffraction in a beam of light
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/yqr/yqr-5.png">
+                        <template #caption>
+                            Volumetric lightmap showing caustic rays from a sphere
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/ifu/ifu-1.png">
+                        <template #caption>
+                            Fluffy clouds (see also: <a href="#cloud-simulation">Cloud simulation</a>)
+                        </template>
+                    </dokki-image>
+                </dokki-topic>
                 
             
                 <dokki-topic title="Wray">
                     <p>
                         A vanilla JavaScript path tracer. Features importing scenes from Blender, exporting
-                        renderings to PFM, continuing previous renderings from PFM, multi-threaded rendering,
+                        renderings into PFM, continuing previous renderings from PFM, multi-threaded rendering,
                         tone mapping with the Drago '03 algorithm, and acceleration of ray&ndash;triangle
-                        intersection tests with a BVH tree. Comes with automated performance tests.
+                        intersection tests with BVH trees. Comes with performance tests.
                     </p>
 
                     <p>
@@ -714,142 +851,6 @@
                                     <td>377</td>
                                     <td>489</td>
                                     <td>1659</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
-                </dokki-topic>
-                
-            
-                <dokki-topic title="Retro n-gon renderer">
-                    <p>
-                        A well-featured software 3D renderer for the HTML5 canvas. Rasterizes n-sided
-                        polygons onto either a canvas or an offscreen buffer. Features genuine retro
-                        aesthetics, vertex and pixel shaders, async rendering, a streamlined API, docs,
-                        lots of samples, a Blender exporter, and more. No external dependencies; easy
-                        to integrate into an existing JavaScript project.
-                    </p>
-
-                    <p>
-                        Implements unit, integration, and performance testing.
-                    </p>
-
-                    <p>
-                        Made between 2019-2021.
-                    </p>
-            
-                    <p>
-                        Tech used: JavaScript
-                    </p>
-                    
-                    <p>
-                        Links:
-                        <a href="https://www.github.com/leikareipa/retro-ngon">GitHub</a>,
-                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/">Interactive samples</a>
-                    </p>
-                
-                    <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
-                                  src="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/tomb-raider-home/"
-                                  height="500px">
-                    </dokki-iframe>
-
-                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/tomb-raider-1-texture-lightmap-2.png">
-                        <template #caption>
-                            A scene from Tomb Raider
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/teapt.png">
-                        <template #caption>
-                            The Utah teapot with Phong shading
-                        </template>
-                    </dokki-image>
-
-                    <dokki-code title="Minimal full render sample"
-                                code="
-                                <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
-                                <script src='rngon.cat.js'></script>
-                                <script>
-                                    const poly = Rngon.ngon([
-                                        Rngon.vertex(-1, -1, 3),
-                                        Rngon.vertex( 1, -1, 3),
-                                        Rngon.vertex( 1,  1, 3)], {
-                                            color: Rngon.color_rgba(0, 150, 255)
-                                    });
-                                    Rngon.render('canvas', [Rngon.mesh([poly])]);
-                                </script>
-                                ">
-
-                        <dokki-output title="Result">
-                            <iframe style="width: 100%;
-                                           height: 200px;
-                                           border: none;"
-                                    srcdoc="
-                                    <style scoped>
-                                        body {
-                                            height: 100vh;
-                                            padding: 0;
-                                            margin: 0;
-                                        }
-                                    </style>
-                                    <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
-                                    <script src='https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/distributable/rngon.cat.js'></script>
-                                    <script>
-                                        const poly = Rngon.ngon([
-                                            Rngon.vertex(-1, -1, 3),
-                                            Rngon.vertex( 1, -1, 3),
-                                            Rngon.vertex( 1,  1, 3)], {
-                                                color: Rngon.color_rgba(0, 150, 255)
-                                        });
-                                        Rngon.render('canvas', [Rngon.mesh([poly])]);
-                                    </script>"
-                                    >
-                            </iframe>
-                        </dokki-output>
-                    
-                    </dokki-code>
-
-                    <dokki-table>
-                        <template #caption>
-                            Source code CLOC statistics
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>22</td>
-                                    <td>508</td>
-                                    <td>587</td>
-                                    <td>2375</td>
-                                </tr>
-                                <tr>
-                                    <td>JavaScript</td>
-                                    <td>20</td>
-                                    <td>485</td>
-                                    <td>527</td>
-                                    <td>2202</td>
-                                </tr>
-                                <tr>
-                                    <td>PHP</td>
-                                    <td>1</td>
-                                    <td>13</td>
-                                    <td>21</td>
-                                    <td>92</td>
-                                </tr>
-                                <tr>
-                                    <td>Python</td>
-                                    <td>1</td>
-                                    <td>10</td>
-                                    <td>39</td>
-                                    <td>81</td>
                                 </tr>
                             </table>
                         </template>
@@ -1185,9 +1186,9 @@
             
                 <dokki-topic title="KAC file format">
                     <p>
-                        A retro-themed binary format for storing 3D models and their textures; a
-                        companion format for the <a href="#kelpo">Kelpo</a> renderer. Designed with
-                        the limitations of 1990s 3D hardware in mind. An importer and exporter are
+                        A binary file format for storing 3D models and their textures; a companion
+                        format for the <a href="#kelpo">Kelpo</a> renderer. Designed with the
+                        limitations of 1990s 3D hardware in mind. An importer and exporter are
                         provided.
                     </p>
 
@@ -1205,72 +1206,6 @@
                         <a href="https://www.github.com/leikareipa/kac-file-format">GitHub</a>
                     </p>
                     
-                </dokki-topic>
-                
-            
-                <dokki-topic title="Mesh preview">
-                    <p>
-                        A wireframe visualizer for 3D meshes. Intended for previewing mesh data e.g. when working on an importer for a mesh file format. Simple, streamlined interface. Allows multiple meshes to be specified and provides an easy-to-use GUI for selecting between them.
-                    </p>
-
-                    <p>
-                        Made between 2020-2021.
-                    </p>
-            
-                    <p>
-                        Tech used: JavaScript, Vue.js
-                    </p>
-
-                    <p>
-                        Links:
-                        <a href="https://www.github.com/leikareipa/mesh-preview">GitHub</a>,
-                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/mesh-preview/samples/obj-models/">View interactive sample</a>
-                    </p>
-                    
-                    <dokki-image src="./soft/img/mesh-preview/mesh-preview-1.png">
-                        <template #caption>
-                            Previewing a large mesh
-                        </template>
-                    </dokki-image>
-
-                    <dokki-table>
-                        <template #caption>
-                            Source code CLOC statistics
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>9</td>
-                                    <td>151</td>
-                                    <td>229</td>
-                                    <td>1202</td>
-                                </tr>
-                                <tr>
-                                    <td>JavaScript</td>
-                                    <td>8</td>
-                                    <td>123</td>
-                                    <td>227</td>
-                                    <td>997</td>
-                                </tr>
-                                <tr>
-                                    <td>CSS</td>
-                                    <td>1</td>
-                                    <td>28</td>
-                                    <td>2</td>
-                                    <td>205</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
                 </dokki-topic>
                 
             
@@ -1362,7 +1297,13 @@
             
                 <dokki-topic title="What">
                     <p>
-                        A HTML5 video player whose seek bar presents a spectrogram of the video's audio.
+                        A HTML5 video player whose seek bar shows a spectrogram of the video's audio.
+                    </p>
+
+                    <p>
+                        Samples the output of a &lt;video&gt; element with an AnalyserNode to produce a
+                        time-variant spectrum (audio spectrogram) that's painted onto a &lt;canvas&gt;
+                        on the video's seek bar.
                     </p>
 
                     <p>
@@ -1417,7 +1358,9 @@
             
                 <dokki-topic title="NPTO">
                     <p>
-                        Already a pretty fast typist? Get better with NPTO. Provides detailed statistics on your typing: percentage of mis-presses for each key, breakdown of typing time per key, and so on. Not a typing tutor but rather something for more experienced typists.
+                        A program to measure your typing in detail. Provides statistics like percentage
+                        of mis-presses for each key, breakdown of typing time per key, etc. Also has a
+                        cool custom GUI made with Qt.
                     </p>
 
                     <p>
@@ -1496,7 +1439,8 @@
             
                 <dokki-topic title="ranssi">
                     <p>
-                        An IDE for transcribers. Minimalist interface, audio controls, highlighting of common typing errors, integration with git to commit saves into a repository, etc. Has been in commercial use.
+                        A transcription app/IDE with a streamlined UI, error highlighting, and
+                        playback of raw audio. I used it commercially.
                     </p>
 
                     <p>
@@ -1522,7 +1466,7 @@
             
                 <dokki-topic title="smartti parseri">
                     <p>
-                        Turns hard drive SMART logs into graphs. Implements its own simple scripting language to combine and process various SMART attributes' values into new ones.
+                        Turns hard drive SMART logs into graphs. Has its own simple scripting language to combine and process various SMART attributes' values into new ones.
                     </p>
 
                     <p>
@@ -1720,7 +1664,7 @@
                     
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/weather-widget/master/images/screenshots/app.png">
                         <template #caption>
-                            Vintage weather forecast for Helsinki
+                            A vintage weather forecast for Helsinki
                         </template>
                     </dokki-image>
                     
@@ -1769,8 +1713,7 @@
                     <p>
                         A set of cross-platform command-line tools for converting the DAT files of
                         Grand Prix Legends into more standard formats. Can selectively extract files
-                        from DTAs, export MIPs and SRBs into PNG, and convert 3DOs into OBJ. Written
-                        to scratch a personal itch so isn't 100% perfect, but close enough.
+                        from DTAs, export MIPs and SRBs into PNG, and convert 3DOs into OBJs.
                     </p>
 
                     <p>
@@ -1841,7 +1784,8 @@
 
                 <dokki-topic title="dig">
                     <p>
-                        A small tool to extract 3D models (into OBJ) and texture images (into PNG) from Tomb Raider 1's PHD files. Not a feature-complete app, more a quick fix for a personal need.
+                        A cross-platform command-line tool to extract 3D models (into OBJ)
+                        and textures (into PNG) from Tomb Raider 1's PHD files.
                     </p>
 
                     <p>
@@ -1902,73 +1846,6 @@
                     </dokki-table>
                 </dokki-topic>
                 
-            
-                <dokki-topic title="Barefoot BankView">
-                    <p>
-                        A utility to visualize NAND cell wear on Indilinx Barefoot SSDs.
-                    </p>
-
-                    <p>
-                        Made in 2015.
-                    </p>
-            
-                    <p>
-                        Tech used: C++, Qt
-                    </p>
-                    
-                    <dokki-image src="./soft/img/bbview/bbview-1.png">
-                        <template #caption>
-                            Visualizing NAND wear on an SSD
-                        </template>
-                    </dokki-image>
-                    
-                    <dokki-table>
-                        <template #caption>
-                            Source code CLOC statistics
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>14</td>
-                                    <td>381</td>
-                                    <td>231</td>
-                                    <td>1759</td>
-                                </tr>
-                                <tr>
-                                    <td>C++</td>
-                                    <td>6</td>
-                                    <td>310</td>
-                                    <td>223</td>
-                                    <td>1234</td>
-                                </tr>
-                                <tr>
-                                    <td>Qt</td>
-                                    <td>3</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>341</td>
-                                </tr>
-                                <tr>
-                                    <td>C/C++ Header</td>
-                                    <td>5</td>
-                                    <td>71</td>
-                                    <td>8</td>
-                                    <td>184</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
-                </dokki-topic>
-
 
                 <dokki-topic title="slowray">
                     <p>
@@ -2095,27 +1972,6 @@
                 </dokki-topic>
                 
             
-                <dokki-topic title="Waterfall plotting">
-                    <p>
-                        A tool to generate minimalist waterfall plots from headphone impulse responses.
-                    </p>
-
-                    <p>
-                        Made in 2013.
-                    </p>
-            
-                    <p>
-                        Tech used: C++, Qt
-                    </p>
-                    
-                    <dokki-image src="./soft/img/csd/csd-2.png">
-                        <template #caption>
-                            Vintage orthodynamic Audio-Technica ATH-2 headphones
-                        </template>
-                    </dokki-image>
-                </dokki-topic>
-                
-            
                 <dokki-topic title="limpynet">
                     <p>
                         A feed-forward neural net with customizable layering. Learns the MNIST digits to about 97%, depending on the settings provided. Written from scratch.
@@ -2139,8 +1995,8 @@
                             <pre>
                                 Initializing for MNIST...
                                 Net: Topology: N784-L10-S10 
-                                    Learning rate: 0.010000
-                                    Training epochs: 3
+                                     Learning rate: 0.010000
+                                     Training epochs: 3
                                 Training on MNIST (60000/10000)...
                                 Epoch 1 of 3: train = 68.947%, validate = 0.000%.
                                 Epoch 2 of 3: train = 90.213%, validate = 90.300%.
@@ -2329,7 +2185,18 @@
 
                 <dokki-topic title="u7dcp">
                     <p>
-                        Patches a famous bug in Ultima 7, where the game forces the CPU cache on at launch. With this patch, the CPU cache can remain off, leading to improved gameplay speed on post-486 PCs.
+                        Patches a well-known bug in Ultima 7 that forces the CPU cache on at launch.
+                        With this patch, the CPU cache can remain off, leading to more palatable
+                        gameplay speed on post-486 PCs.
+                    </p>
+
+                    <p>
+                        The game uses the somewhat uncommon unreal memory addressing mode, and
+                        apparently unnecessarily resets all CPU flags while entering this mode
+                        at launch. Since these flags include the 'CPU cache off' bit, the effect
+                        of any previous programmatic disabling of the cache is undone. The patch
+                        modifies the game executables to preserve the value of the CPU cache bit
+                        when entering unreal mode.
                     </p>
 
                     <p>
@@ -2398,6 +2265,10 @@
                         tracer that renders a scene of spheres and counts the number of seconds it took.
                         A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so,
                         and the Xeon E3-1230 in less than one second.
+                    </p>
+
+                    <p>
+                        Requires a math co-processor.
                     </p>
 
                     <p>
