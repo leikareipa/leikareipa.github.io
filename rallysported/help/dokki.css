@@ -7,6 +7,7 @@
     --header-bottom-margin: 23px;
     --topics-top-margin: calc(35px - var(--header-bottom-margin));
     --embedded-element-border-radius: 8px;
+    --link-color: #2264e8;
 
     /* Margins on the left and right of the page outside of which no content
      * is allowed.*/
@@ -171,9 +172,10 @@ body
     line-height: 1.5;
 }
 
-.dokki-topic p a
+.dokki-topic p a,
+.dokki-topic p a:visited
 {
-    color: #00ade6;
+    color: var(--link-color);
 }
 
 .dokki-topic:last-of-type
@@ -191,19 +193,26 @@ body
     margin-bottom: 0;
 }
 
-.dokki-topic .permalink
+.dokki-topic > .title
+{
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+}
+
+.dokki-topic > .title > .permalink
 {
     display: none;
-    padding-left: 5px;
+    padding-left: 6px;
     color: lightgray;
 }
 
-.dokki-topic .permalink:hover
+.dokki-topic > .title > .permalink:hover
 {
     color: gray;
 }
 
-.dokki-topic:hover .permalink
+.dokki-topic:hover > .title > .permalink
 {
     display: inline-block;
 }
@@ -221,8 +230,8 @@ body
 
 .dokki-topic h1
 {
-    display: inline-block; /* To allow permalink icons next to the h2 heading.*/
     font-size: 160%;
+    white-space: nowrap;
 }
 
 .dokki-topic h2
@@ -296,7 +305,7 @@ body
 .dokki-embedded > header.clickable
 {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     box-sizing: border-box;
     cursor: pointer;
     user-select: none;
@@ -336,12 +345,12 @@ body
 .dokki-embedded > header > .revealer
 {
     margin-left: 10px;
-    color: #00ade6;
-    font-weight: normal;
+    color: var(--link-color);
     display: inline-block;
     margin-left: auto;
     font-variant: small-caps;
     text-transform: lowercase;
+    white-space: nowrap;
 }
 
 .dokki-embedded > hr

@@ -132,14 +132,18 @@ function create_app()
             <section class="dokki-topic"
                  :id=simplifiedTitle>
             
-                <h1 class="title">
-                    {{this.idx}}. {{this.title}}
-                </h1>
+                <span class="title">
 
-                <span class="permalink" title="Permalink to this topic">
-                    <a :href="'#'+simplifiedTitle">
-                        <i class="fas fa-link"/>
-                    </a>
+                    <h1>{{this.idx}}. {{this.title}}</h1>
+
+                    <span class="permalink" title="Permalink to this topic">
+                    
+                        <a :href="'#'+simplifiedTitle">
+                            <i class="fas fa-link"/>
+                        </a>
+                        
+                    </span>
+
                 </span>
 
                 <slot/>

@@ -55,7 +55,7 @@
                     <dokki-image expanded src="./soft/img/yqr/yqr-2.png">
                         <template #caption>
                             Volumetric lightmap showing spectral diffraction in a beam of light
-                            (see <a href="#yqr">Yqr</a>)
+                            (see: <a href="#yqr">Yqr</a>)
                         </template>
                     </dokki-image>
                 </dokki-topic>
@@ -411,13 +411,13 @@
                     <p>
                         A well-featured software 3D renderer for the HTML5 canvas. Rasterizes n-sided
                         polygons onto either a canvas or an offscreen buffer. Features genuine retro
-                        aesthetics, vertex and pixel shaders, async rendering, a streamlined API, docs,
-                        lots of samples, a Blender exporter, and more. No external dependencies; easy
+                        aesthetics, vertex and pixel shaders, async rendering, streamlined API, docs,
+                        lots of samples, Blender export, and more. No external dependencies; easy
                         to integrate into an existing JavaScript project.
                     </p>
 
                     <p>
-                        Provides unit, integration and performance tests.
+                        Provides unit and integration tests and performance benchmarks.
                     </p>
 
                     <p>
@@ -451,7 +451,7 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Minimal full render sample"
+                    <dokki-code title="Minimal code to render a triangle"
                                 code="
                                 <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
                                 <script src='rngon.cat.js'></script>
@@ -577,6 +577,7 @@
                     <p>
                         Links:
                         <a href="https://www.tarpeeksihyvaesoft.com/rallysported/">Run in browser</a>,
+                        <a href="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play">Play Rally-Sport in browser</a>,
                         <a href="https://www.github.com/leikareipa/rallysported/">GitHub (umbrella repo)</a>,
                         <a href="https://www.github.com/leikareipa/rallysported-frontend/">GitHub (frontend)</a>,
                         <a href="https://www.github.com/leikareipa/rallysported-backend/">GitHub (backend)</a>
@@ -586,7 +587,7 @@
                                   src="https://www.tarpeeksihyvaesoft.com/rallysported"
                                   height="700px">
                     </dokki-iframe>
-                    
+
                     <dokki-image src="./soft/img/rallysported/rallysported-1.png">
                         <template #caption>
                             RallySportED-js running in Google Chrome
@@ -675,13 +676,20 @@
             
                 <dokki-topic title="Rally-Sport Content">
                     <p>
-                        A platform for users of <a href="#rallysported">RallySportED</a> to share
-                        their content. Temporarily unavailable live.
+                        A platform for users of <a href="#rallysported">RallySportED</a> to
+                        share content they've made.
                     </p>
                     
                     <p>
-                        Provides a REST API for client queries. Implements a custom componentized
-                        MVC framework. Interesting-looking frontend.
+                        Provides a REST API for client queries, implements a componentized
+                        MVC framework to create views into the backend data, and comes with
+                        a handy frontend view. Has user accounts with registration, login, and
+                        password reset. Smart auto-generation of track minimaps in SVG based
+                        on the track's CPU opponent's driving line.
+                    </p>
+
+                    <p>
+                        Temporarily unavailable live.
                     </p>
 
                     <p>
@@ -753,10 +761,11 @@
 
                 <dokki-topic title="Yqr">
                     <p>
-                        The first ray/path tracer I made, serving as a personal testbed in offline rendering. Had naive
-                        implementations of volumetric photon mapping, spectral reflectance, subsurface scattering, environment
-                        mapping, and various other things. Could render volumetric effects like fog, snow, and clouds. Supported
-                        ray&ndash;triangle intersection testing on GPUs with OpenCL.
+                        The first ray/path tracer I made, serving as a personal testbed in offline
+                        rendering. Had naive implementations of volumetric photon mapping, spectral
+                        reflectance, subsurface scattering, environment mapping, and various other
+                        things. Could render volumetric effects like fog, snow, and clouds. Supported
+                        running ray&ndash;triangle intersection tests on the GPU with OpenCL.
                     </p>
                     
                     <p>
@@ -795,10 +804,15 @@
             
                 <dokki-topic title="Wray">
                     <p>
-                        A vanilla JavaScript path tracer. Features importing scenes from Blender, exporting
-                        renderings into PFM, continuing previous renderings from PFM, multi-threaded rendering,
-                        tone mapping with the Drago '03 algorithm, and acceleration of ray&ndash;triangle
-                        intersection tests with BVH trees. Comes with performance tests.
+                        A vanilla JavaScript path tracer.
+                    </p>
+                    
+                    <p>
+                        Features basic cosine-weighted Lambertian diffuse reflection, importing
+                        scenes from Blender, exporting renderings into PFM, continuing previous
+                        renderings from PFM, multi-threaded tracing, tone mapping, a BVH tree to
+                        accelerate ray&ndash;triangle intersection testing, and a JSON scene
+                        file format.
                     </p>
 
                     <p>
@@ -823,6 +837,39 @@
                             The Ajax bust (decimated to about 140,000 triangles; model source: Jotero GbR.)
                         </template>
                     </dokki-image>
+
+                    <dokki-code title="A sample scene file">
+                        <template #code>
+                            <pre>
+                                {
+                                    "camera":{
+                                        "position":{"x":0,"y":0,"z":1.745841},
+                                        "axisAngle":{"x":0,"y":1,"z":0,"w":0}
+                                    },
+                                    "sky":{
+                                        "model":"cie-overcast",
+                                        "zenithDirection":{"x":0,"y":1,"z":0}
+                                    },
+                                    "materials":{
+                                        "default":{
+                                            "type":"lambertian",
+                                            "color":{"r":0.1,"g":1,"b":0.1}
+                                        }
+                                    },
+                                    "triangles":[
+                                        {
+                                            "material":"default",
+                                            "vertices":[
+                                                {"position":{"x":-2.653676,"y":-2.627338,"z":-8.797296},"normal":null},
+                                                {"position":{"x":2.666877,"y":-2.627337,"z":-8.797296},"normal":null},
+                                                {"position":{"x":2.666877,"y":-2.627338,"z":-14.179447},"normal":null}
+                                            ]
+                                        }
+                                    ]
+                                }
+                            </pre>
+                        </template>
+                    </dokki-code>
 
                     <dokki-table>
                         <template #caption>
@@ -860,7 +907,10 @@
             
                 <dokki-topic title="Luujanko">
                     <p>
-                        A minimalist SVG wireframe renderer for HTML5. Has an easy, streamlined API and is simple to integrate into an existing JavaScript project.
+                        A streamlined SVG wireframe renderer of arbitrary polygons for the HTML5
+                        canvas. No external dependencies; easy to integrate into an existing
+                        JavaScript project. Includes polygon clipping and rotation, and comes
+                        with a sample implementation of a first-person camera.
                     </p>
 
                     <p>
@@ -888,21 +938,20 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Minimal full render sample"
+                    <dokki-code title="Minimum code to render a triangle"
                                 code="
                                 <svg id='rendering' width='200' height='200'></svg>
                                 <script type='module'>
                                     import {Luu} from 'luujanko.js';
-
                                     const targetSVG = document.getElementById('rendering');
 
-                                    const poly = Luu.ngon([
+                                    const triangle = Luu.ngon([
                                         Luu.vertex(-1, -1, 0),
                                         Luu.vertex( 1, -1, 0),
                                         Luu.vertex( 1,  1, 0)
                                     ]);
 
-                                    Luu.render([Luu.mesh([poly])], targetSVG, {
+                                    Luu.render([Luu.mesh([triangle])], targetSVG, {
                                         viewPosition: Luu.translation(0, 0, -3)
                                     });
                                 </script>
@@ -1003,7 +1052,9 @@
             
                 <dokki-topic title="Serlain">
                     <p>
-                        Looks like an old browser, acts like an old browser - and almost is one. Serlain is a frontend for Internet Archive's Wayback Machine that displays archived web content inside period-correct-looking faux browsers. Pretty cool.
+                        Looks like an old browser, acts like an old browser - and almost is one. Serlain
+                        is a frontend for Internet Archive's Wayback Machine that displays archived web
+                        content inside period-correct-looking faux browsers.
                     </p>
 
                     <p>
@@ -1211,7 +1262,23 @@
             
                 <dokki-topic title="Cloud simulation">
                     <p>
-                        Ever wanted a cloud physics simulator and renderer? Maybe not, but Ifu provides. Condensation from moist rising air is simulated and rendered into physically realistic images of clouds. You can view the state of the simulation as it runs and configure the atmospheric properties as you like. Naturally simulates effects like pilei. Requires a beefy computer and some knowledge of cloud-related atmospheric processes.
+                        Ever wanted a cloud physics simulator and renderer? Maybe not, but Ifu
+                        provides. Condensation from moist rising air is simulated and rendered
+                        into realistic images of clouds. You can configure the atmospheric
+                        properties as you like and view the state of the simulation as it runs.
+                        Naturally simulates various cloud effects like pilei.
+                    </p>
+                    
+                    <p>
+                        Empirically approximates spectral Mie scattering. Adopts the
+                        Hosek&ndash;Wilkie 2012 sky model to approximate Rayleigh scattering.
+                        Uses volumetric photon mapping to speed up the rendering of in-cloud
+                        sunlight.
+                    </p>
+
+                    <p>
+                        Requires a beefy computer and some knowledge of cloud-related
+                        atmospheric processes.
                     </p>
 
                     <p>
@@ -1358,9 +1425,9 @@
             
                 <dokki-topic title="NPTO">
                     <p>
-                        A program to measure your typing in detail. Provides statistics like percentage
-                        of mis-presses for each key, breakdown of typing time per key, etc. Also has a
-                        cool custom GUI made with Qt.
+                        A program to measure your typing speed in detail. Provides statistics like
+                        percentage of mis-presses for each key, breakdown of typing time per key,
+                        etc. Also has a cool custom GUI made with Qt.
                     </p>
 
                     <p>
@@ -1379,7 +1446,7 @@
                         
                     <dokki-image src="./soft/img/npto/npto-2.png">
                         <template #caption>
-                            Graphing the words per minute measure over time
+                            Graphing the <i>words per minute</i> measure over time
                         </template>
                     </dokki-image>
 
@@ -1439,8 +1506,8 @@
             
                 <dokki-topic title="ranssi">
                     <p>
-                        A transcription app/IDE with a streamlined UI, error highlighting, and
-                        playback of raw audio. I used it commercially.
+                        A transcription app/IDE with a streamlined UI, error highlighting,
+                        and playback of raw audio. I used it commercially at some point.
                     </p>
 
                     <p>
@@ -1466,7 +1533,8 @@
             
                 <dokki-topic title="smartti parseri">
                     <p>
-                        Turns hard drive SMART logs into graphs. Has its own simple scripting language to combine and process various SMART attributes' values into new ones.
+                        Turns hard drive SMART logs into graphs. Has its own simple scripting
+                        language to combine and process various SMART attributes' values.
                     </p>
 
                     <p>
@@ -1587,7 +1655,7 @@
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/pfm-view/master/images/screenshots/1.png">
                         <template #caption>
                             Displaying an image with tone mapping
-                            (image source: <a href="https://hdrihaven.com/hdri/?c=outdoor&h=champagne_castle_1">HDRI Haven / Greg Zaal</a>)
+                            (image source: <a href="https://hdrihaven.com/hdri/?c=outdoor&h=champagne_castle_1">HDRI Haven [Greg Zaal]</a>)
                         </template>
                     </dokki-image>
 
@@ -1711,9 +1779,10 @@
             
                 <dokki-topic title="gpl-dta">
                     <p>
-                        A set of cross-platform command-line tools for converting the DAT files of
-                        Grand Prix Legends into more standard formats. Can selectively extract files
-                        from DTAs, export MIPs and SRBs into PNG, and convert 3DOs into OBJs.
+                        A set of cross-platform command-line tools for converting data from the DAT
+                        files of Grand Prix Legends into more standard formats. Can selectively
+                        extract files from DATs, export MIPs and SRBs into PNG, and convert 3DOs
+                        into OBJs.
                     </p>
 
                     <p>
@@ -1784,8 +1853,8 @@
 
                 <dokki-topic title="dig">
                     <p>
-                        A cross-platform command-line tool to extract 3D models (into OBJ)
-                        and textures (into PNG) from Tomb Raider 1's PHD files.
+                        A cross-platform command-line tool to extract 3D models (into OBJ) and
+                        paletted textures (into PNG) from Tomb Raider 1's PHD files.
                     </p>
 
                     <p>
@@ -2461,33 +2530,6 @@
                             </table>
                         </template>
                     </dokki-table>
-                </dokki-topic>
-
-
-                <dokki-topic title="DOS Color Test">
-                    <p>
-                        A small utility to aid in adjusting analog monitor settings (geometry, color, etc.)
-                        under DOS. The program displays a test image on the screen with reference to which adjustments
-                        can be attempted on the monitor/capture card.
-                    </p>
-
-                    <p>
-                        Made in 2017.
-                    </p>
-
-                    <p>
-                        Tech used: C++
-                    </p>
-                    
-                    <p>
-                        Links: <a href="https://www.github.com/leikareipa/dos-color-test">GitHub</a>
-                    </p>
-                    
-                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/dos-color-test/master/images/screenshots/test1.png">
-                        <template #caption>
-                            A test pattern of colors and shapes in VGA mode 13h (320 &times; 200)
-                        </template>
-                    </dokki-image>
                 </dokki-topic>
 
 
