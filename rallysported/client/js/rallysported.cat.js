@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (04 May 2021 03:00:44 UTC)
+// VERSION: live (25 May 2021 23:32:21 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -6479,7 +6479,7 @@ const charset = {
 [X,_,_],
 [X,_,_],
 [_,X,X]]),
-"M": c([[X,X,_,X,_],
+"M": c([[_,X,_,X,_],
 [X,_,X,_,X],
 [X,_,X,_,X],
 [X,_,X,_,X],
@@ -6525,7 +6525,12 @@ const charset = {
 [X,_,X],
 [X,_,X],
 [_,X,X]]),
-"W": c([[_,_,_,_,X],
+"V": c([[X,_,X],
+[X,_,X],
+[X,_,X],
+[X,_,X],
+[_,X,_]]),
+"W": c([[X,_,_,_,X],
 [X,_,X,_,X],
 [X,_,X,_,X],
 [X,_,X,_,X],
@@ -6797,16 +6802,16 @@ pixelSurface = null;
 mousePickBuffer = null;
 return;
 },
-pixel: function(x = 0, y = 0, r = 255, g = 255, b = 255, m = undefined)
+pixel: function(x = 0, y = 0, r = 255, g = 255, b = 255, mousePick = undefined)
 {
 const idx = ((x + y * Rsed.visual.canvas.width) * 4);
 pixelSurface.data[idx + 0] = r;
 pixelSurface.data[idx + 1] = g;
 pixelSurface.data[idx + 2] = b;
 pixelSurface.data[idx + 3] = 255;
-if (m != undefined)
+if (mousePick != undefined)
 {
-mousePickBuffer[(x + y * Rsed.visual.canvas.width)] = m;
+put_mouse_pick_value(x, y, mousePick);
 }
 return;
 },
@@ -6854,7 +6859,7 @@ return;
 // Draws the given string onto the screen at the given coordinates.
 // NOTE: If a coordinate's value is less than 0, its absolute value is interpreted as a percentage
 // of the screen's resolution in the range 0..1.
-string: function(string = "", x = 0, y = 0)
+string: function(string = "", x = 0, y = 0, mousePick = undefined)
 {
 string = String(string).toUpperCase();
 Rsed.assert && (pixelSurface != null)
@@ -6876,7 +6881,7 @@ if ((x >= 0) && (x < Rsed.visual.canvas.width))
 {
 for (let i = 0; i < (Rsed.ui.font.nativeHeight + 2); i++)
 {
-this.pixel(x, y + i, 255, 255, 0);
+this.pixel(x, y + i, 255, 255, 0, mousePick);
 }
 x++;
 }
@@ -6895,7 +6900,7 @@ if ((x + cx) >= pixelSurface.width) break;
 const color = character.pixel_at(cx, cy-1)
 ? Rsed.visual.palette.color_at_idx(character.pixel_at(cx, cy-1))
 : Rsed.visual.palette.color_at_idx("background");
-this.pixel((x + cx), (y + cy), color.red, color.green, color.blue);
+this.pixel((x + cx), (y + cy), color.red, color.green, color.blue, mousePick);
 }
 }
 x += (character.width + 1);
@@ -6903,7 +6908,7 @@ x += (character.width + 1);
 return;
 },
 };
-function put_mouse_pick_value(x = 0, y = 0, value = 0)
+function put_mouse_pick_value(x = 0, y = 0, value)
 {
 mousePickBuffer[(x + y * pixelSurface.width)] = value;
 return;
@@ -6954,6 +6959,11 @@ if (Rsed.unitTestRun) return;
 const rsedStartupArgs = Rsed.core.default_startup_args();
 // Parse the user-supplied URL parameters.
 {
+if (window.location.hash == "#play")
+{
+history.replaceState(null, null, " "); // Remove the hash.
+Rsed.core.playOnStartup = true;
+}
 const params = new URLSearchParams(window.location.search);
 // If the user requests to view a stream, we just need to start the stream.
 // Once the user joins the stream as a viewer, they'll receive the track's
@@ -6997,11 +7007,6 @@ else
 rsedStartupArgs.project.dataLocality = "server-rsc";
 }
 rsedStartupArgs.project.contentId = contentId;
-}
-if (window.location.hash == "#play")
-{
-history.replaceState(null, null, " "); // Remove the hash.
-rsedStartupArgs.playOnStartup = true;
 }
 }
 Rsed.core.start(rsedStartupArgs);
@@ -7787,7 +7792,7 @@ component.draw = function(offsetX = 0, offsetY = 0)
 Rsed.throw_if_not_type("number", offsetX, offsetY);
 const mouseHover = Rsed.ui.inputState.current_mouse_hover();
 const mouseGrab = Rsed.ui.inputState.current_mouse_grab();
-let str = "HEIGHT:+000   PALA:000   X,Y:000,000";
+let str = "HEIGHT:+--- / PALA:--- / X,Y:---,---";
 if ((mouseHover && (mouseHover.type === "prop")) ||
 (mouseGrab && (mouseGrab.type === "prop")))
 {
@@ -7807,7 +7812,7 @@ const yStr = String(y).padStart(3, "0");
 const heightStr = (Rsed.core.current_project().maasto.tile_at(x, y) < 0? "-" : "+") +
 String(Math.abs(Rsed.core.current_project().maasto.tile_at(x, y))).padStart(3, "0");
 const palaStr = String(Rsed.core.current_project().varimaa.tile_at(x, y)).padStart(3, "0");
-str = `HEIGHT:${heightStr}   PALA:${palaStr}   X,Y:${xStr},${yStr}`;
+str = `HEIGHT:${heightStr} / PALA:${palaStr} / X,Y:${xStr},${yStr}`;
 }
 Rsed.ui.draw.string(str, offsetX, offsetY);
 };
@@ -7904,20 +7909,23 @@ frameWidth, frameHeight,
 palatPaneOffsetX + x * 8, palatPaneOffsetY + y * 8,
 true);
 }
-const mouseHover = component.is_hovered()
+const mouseHover = component.is_hovered();
 // Draw a frame around the PALA over which the mouse cursor is hovering.
-if (mouseHover && options.indicateHover)
+if (mouseHover &&
+(options.indicateHover ||
+options.alwaysShowIdxTag ||
+Rsed.ui.inputState.key_down("tab")))
 {
 const frame = [
-X,X,X,_,_,_,X,X,X,
-X,_,_,_,_,_,_,_,X,
+X,X,_,_,_,_,_,X,X,
 X,_,_,_,_,_,_,_,X,
 _,_,_,_,_,_,_,_,_,
-_,_,_,_,X,_,_,_,_,
+_,_,_,_,_,_,_,_,_,
+_,_,_,_,_,_,_,_,_,
+_,_,_,_,_,_,_,_,_,
 _,_,_,_,_,_,_,_,_,
 X,_,_,_,_,_,_,_,X,
-X,_,_,_,_,_,_,_,X,
-X,X,X,_,_,_,X,X,X,
+X,X,_,_,_,_,_,X,X,
 ];
 Rsed.ui.draw.image(frame, null,
 frameWidth, frameHeight,
@@ -8222,19 +8230,37 @@ return component;
 "use strict";
 Rsed.ui.component.label =
 {
-instance: function()
+instance: function(options = {})
 {
-const component = Rsed.ui.component();
+options = {
+// Default options.
+...{
+// A function called when the label is clicked on, or
+// undefined to disable the on-click event handler.
+onClick: undefined,
+},
+...options,
+};
 let labelString = "Hello";
+const component = Rsed.ui.component();
 component.draw = function(screenX = 0, screenY = 0)
 {
 Rsed.throw_if_not_type("number", screenX, screenY);
-Rsed.ui.draw.string(labelString, screenX, screenY);
+const mousePick = {
+type: "ui-component",
+componentId: component.id,
+};
+Rsed.ui.draw.string(labelString, screenX, screenY, (options.onClick? mousePick : undefined));
 };
 component.update = function(string)
 {
 Rsed.throw_if_not_type("string", string);
 labelString = string;
+const grab = component.is_grabbed();
+if (grab && (typeof options.onClick === "function"))
+{
+options.onClick();
+}
 }
 return component;
 }
@@ -8327,6 +8353,7 @@ footerInfo:   Rsed.ui.component.groundHoverInfo.instance(),
 minimap:      Rsed.ui.component.tilemapMinimap.instance(),
 palatPane:    Rsed.ui.component.palatPane.instance(),
 fpsIndicator: Rsed.ui.component.fpsIndicator.instance(),
+viewLabel:    Rsed.ui.component.label.instance(),
 };
 })();
 return Rsed.scene(
@@ -8483,6 +8510,8 @@ return;
 Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
 if (uiComponents) // Once the UI components have finished async loading.
 {
+uiComponents.viewLabel.update("Terrain");
+uiComponents.viewLabel.draw(3, 11);
 if (Rsed.visual.canvas.domElement.clientWidth > 650)
 {
 if (!Rsed.browserMetadata.isMobile)
@@ -8490,7 +8519,7 @@ if (!Rsed.browserMetadata.isMobile)
 uiComponents.activePala.update(sceneSettings);
 uiComponents.activePala.draw((Rsed.visual.canvas.width - 88), 11);
 uiComponents.footerInfo.update(sceneSettings);
-uiComponents.footerInfo.draw(0, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 2));
+uiComponents.footerInfo.draw(3, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
 }
 uiComponents.minimap.update(sceneSettings);
 uiComponents.minimap.draw((Rsed.visual.canvas.width - 4), 11);
@@ -8825,6 +8854,7 @@ let uiComponents = null;
 uiComponents = {
 activePala:   Rsed.ui.component.activePala.instance(),
 palatPane:    Rsed.ui.component.palatPane.instance(),
+viewLabel:    Rsed.ui.component.label.instance(),
 fpsIndicator: Rsed.ui.component.fpsIndicator.instance(),
 footer: Rsed.ui.component.label.instance(),
 };
@@ -8944,10 +8974,12 @@ draw_ui: function()
 Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
 if (uiComponents) // Once the UI components have finished async loading...
 {
+uiComponents.viewLabel.update(`Tilemap`);
+uiComponents.viewLabel.draw(3, 11);
 uiComponents.activePala.update(sceneSettings);
 uiComponents.activePala.draw((Rsed.visual.canvas.width - 20), 11);
-uiComponents.footer.update(`Tilemap size: ${Rsed.core.current_project().maasto.width} * ${Rsed.core.current_project().maasto.width}`);
-uiComponents.footer.draw(0, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 2));
+uiComponents.footer.update(`Size: ${Rsed.core.current_project().maasto.width} * ${Rsed.core.current_project().maasto.width}`);
+uiComponents.footer.draw(3, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
 if (sceneSettings.showPalatPane)
 {
 uiComponents.palatPane.update(sceneSettings);
@@ -9075,7 +9107,7 @@ const sceneSettings = {
 penColorIdx: false,
 // Whether to show the PALAT pane; i.e. a side panel that displays all the available
 // PALA textures.
-showPalatPane: true,
+showPalatPane: false,
 };
 // In which direction(s) the camera is currently moving. This is affected
 // by e.g. user input.
@@ -9092,8 +9124,9 @@ let uiComponents = null;
 uiComponents = {
 fpsIndicator: Rsed.ui.component.fpsIndicator.instance(),
 colorSelector: Rsed.ui.component.colorSelector.instance(),
-textureLabel: Rsed.ui.component.label.instance(),
+resolutionLabel: Rsed.ui.component.label.instance(),
 zoomLabel: Rsed.ui.component.label.instance(),
+viewLabel: Rsed.ui.component.label.instance(),
 clipboardLabel: Rsed.ui.component.label.instance(),
 palatPane: Rsed.ui.component.palatPane.instance({
 selectionCallback: (palaIdx)=>scene.set_texture(Rsed.core.current_project().palat.texture[palaIdx]),
@@ -9218,19 +9251,19 @@ this.set_texture(Rsed.core.current_project().palat.texture[3]);
 Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
 if (uiComponents) // Once the UI components have finished async loading...
 {
+uiComponents.viewLabel.update(`Texture`);
+uiComponents.viewLabel.draw(3, 11);
 uiComponents.colorSelector.update(sceneSettings);
 uiComponents.colorSelector.draw((Rsed.visual.canvas.width - 101), 11);
-uiComponents.textureLabel.update(`Texture: ${texture.width} * ${texture.height}`);
-uiComponents.textureLabel.draw(0, (Rsed.visual.canvas.height - (Rsed.ui.font.nativeHeight * 2) - 5));
+const truncatedZoomValue = (1 / textureZoom).toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
+uiComponents.zoomLabel.update(`Zoom: ${truncatedZoomValue}*`);
+uiComponents.zoomLabel.draw(3, (Rsed.visual.canvas.height - (Rsed.ui.font.nativeHeight * 3) - 9));
+uiComponents.resolutionLabel.update(`Size: ${texture.width} * ${texture.height}`);
+uiComponents.resolutionLabel.draw(3, (Rsed.visual.canvas.height - (Rsed.ui.font.nativeHeight * 2) - 7));
 uiComponents.clipboardLabel.update(clipboard
 ? `Clipboard: ${clipboard.width} * ${clipboard.height}${(clipboard.source == texture)? " (this)" : ""}`
 : "Clipboard: empty");
-uiComponents.clipboardLabel.draw(0, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 2));
-{
-const truncatedZoomValue = (1 / textureZoom).toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
-uiComponents.zoomLabel.update(`Zoom: ${truncatedZoomValue}*`);
-uiComponents.zoomLabel.draw(0, (Rsed.visual.canvas.height - (Rsed.ui.font.nativeHeight * 3) - 8));
-}
+uiComponents.clipboardLabel.draw(3, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
 if (Rsed.core.fps_counter_enabled())
 {
 uiComponents.fpsIndicator.draw(3, 10);
@@ -10112,6 +10145,10 @@ return (params.has("showFramerate") && (Number(params.get("showFramerate")) === 
 const publicInterface =
 {
 appName: "RallySportED",
+// If true when Rsed.core.start() is called, the current track will be
+// loaded into an instance of Rally-Sport running in the browser, allowing
+// the user to play the track.
+playOnStartup: false,
 tick_time_delta_ms: ()=>tickTimeDeltaMs,
 is_running: ()=>coreIsRunning,
 renderer_fps: ()=>programFPS,
@@ -10132,8 +10169,6 @@ contentId: "demod",
 },
 // If the user is viewing a stream, its id will be set here.
 stream: null,
-// Whether to run the DOSBox player immediately on load.
-playOnStartup: false,
 }
 },
 // Starts up RallySportED with the given project to edit.
@@ -10151,7 +10186,7 @@ verify_browser_compatibility();
 await load_project(args.project);
 Rsed.ui.htmlUI.refresh();
 Rsed.ui.htmlUI.set_visible(true);
-if (args.playOnStartup)
+if (this.playOnStartup)
 {
 Rsed.player.play(true);
 }

@@ -136,7 +136,9 @@ body
 #html-ui .menu-bar
 {
     display: flex;
+    width: 100%;
     height: 100%;
+    margin: 0 2px;
 }
 
 #html-ui .menu-bar > .button-bar
@@ -150,9 +152,9 @@ body
     border-right: none;
 }
 
-#html-ui .menu-bar .button
+#html-ui .menu-bar .button,
+#html-ui .menu-bar .label
 {
-    cursor: pointer;
     color: black;
     display: flex;
     vertical-align: text-bottom;
@@ -163,6 +165,11 @@ body
     padding: 0 10px 0 10px;
     align-items: center;
     height: 100%;
+}
+
+#html-ui .menu-bar .button
+{
+    cursor: pointer;
 }
 
 #html-ui .menu-bar .button:hover
@@ -215,6 +222,7 @@ body
 
 .dropdown-menu
 {
+    border: 1px solid lightgray;
     cursor: url("./client/assets/cursors/rsed-cursor-arrow.png"), auto;
     font-family: sans-serif;
     text-align: left;
@@ -222,11 +230,9 @@ body
     left: 0;
     top: 0;
     background-color: white;
-    border: none;
     z-index: 3;
     display: none;
     padding: 10px;
-    box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     overflow-y: auto;
     box-sizing: border-box;
@@ -237,8 +243,7 @@ body
     cursor: url("./client/assets/cursors/rsed-cursor-fingerhand.png"), auto;
     text-transform: capitalize;
     color: black;
-    padding: 3px 18px;
-    border-radius: 2px;
+    padding: 6px 15px;
     white-space: nowrap;
 }
 
@@ -246,9 +251,9 @@ body
 {
     background-color: black;
     color: white;
-    box-shadow: 0 7px 8px -5px rgba(0, 0, 0, 0.3);
     border-radius: 6px;
-    transform: scale(1.05);
+    transform: scale(1.1);
+    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.3);
 }
 
 .dropdown-menu.show
@@ -395,7 +400,15 @@ body
     }
 }
 
-@media only screen and (max-width: 600px)
+@media only screen and (max-width: 830px)
+{
+    #html-ui .button-bar.scenes
+    {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 550px)
 {
     #html-ui .button-bar:not(.main)
     {

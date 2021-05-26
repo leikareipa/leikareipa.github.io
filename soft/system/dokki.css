@@ -56,6 +56,8 @@ body
 .dokki-header,
 [while-dokki-initializing]
 {
+    overflow-x: auto;
+    white-space: nowrap;
     border-bottom: 1px solid lightgray;
     display: flex;
     flex-direction: row;
@@ -72,7 +74,6 @@ body
     text-align: left;
     font-weight: normal;
     font-size: 160%;
-    white-space: normal;
     height: var(--header-height);
     position: fixed;
     width: 100%;

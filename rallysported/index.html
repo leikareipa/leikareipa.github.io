@@ -44,7 +44,7 @@
                          class="button right stream"
                          :class="streamStatus"
                          :title="((streamStatus == 'disabled' || streamStatus == 'viewer')
-                                 ? `Host this track's data from your browser`
+                                 ? `Host this track from your browser to people online`
                                  : (streamStatus == 'initializing')
                                    ? `Setting up...`
                                    : `Downloads: ${streamViewerCount}`)"
@@ -58,34 +58,16 @@
                                     : 'fa-fw fa-project-diagram')"></i>
 
                         {{(streamStatus == "server")
-                          ? `Sharing (${streamViewerCount})`
+                          ? `Streaming (${streamViewerCount})`
                           : (streamStatus == "initializing")
                             ? "Initializing..."
-                            : "Quick share"}}
+                            : "Stream"}}
 
                     </div>
 
                 </div>
 
                 <div class="button-bar">
-
-                    <div class="button"
-                         title="View tracks made by others"
-                         onclick="window.open('/rallysport-content/tracks/', '_blank', 'noopener');">
-
-                        <i class="fas fa-fw fa-search"></i>
-                        More tracks
-
-                    </div>
-
-                    <div class="button"
-                         title="View RallySportED-js on GitHub"
-                         onclick="window.open('https://www.github.com/leikareipa/rallysported-js/', '_blank', 'noopener');">
-
-                        <i class="fab fa-fw fa-github"></i>
-                        GitHub
-
-                    </div>
 
                     <div class="button"
                          title="Open the user's manual"
@@ -115,6 +97,39 @@
 
                         <i class="fas fa-fw fa-play"></i>
                         Play
+
+                    </div>
+
+                </div>
+
+                <div class="button-bar scenes"
+                     style="margin-left: auto;">
+
+                     <div class="label">
+                         Editor:
+                     </div>
+
+                    <div class="button"
+                         onclick="Rsed.core.set_scene('3d');">
+
+                        <i class="fas fa-fw fa-mountain"></i>
+                        Terrain
+
+                    </div>
+
+                     <div class="button"
+                         onclick="Rsed.core.set_scene('tilemap');">
+
+                        <i class="fas fa-fw fa-paint-roller"></i>
+                        Tilemap
+
+                    </div>
+
+                     <div class="button"
+                         onclick="Rsed.core.set_scene('texture');">
+
+                        <i class="fas fa-fw fa-image"></i>
+                        Texture
 
                     </div>
 
