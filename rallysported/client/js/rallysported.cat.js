@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (27 May 2021 01:51:22 UTC)
+// VERSION: live (27 May 2021 18:08:04 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -51,7 +51,7 @@
 //	./src/client/js/rallysported-js/ui/components/color-selector.js
 //	./src/client/js/rallysported-js/ui/components/label.js
 //	./src/client/js/rallysported-js/scene/scene.js
-//	./src/client/js/rallysported-js/scene/scene-3d.js
+//	./src/client/js/rallysported-js/scene/scene-terrain.js
 //	./src/client/js/rallysported-js/scene/scene-tilemap.js
 //	./src/client/js/rallysported-js/scene/scene-texture.js
 //	./src/client/js/rallysported-js/stream/stream.js
@@ -8300,15 +8300,16 @@ return publicInterface;
 /*
 * Most recent known filename: js/scenes/scene-3d.js
 *
-* 2019 Tarpeeksi Hyvae Soft /
-* RallySportED-js
+* 2019-2021 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
 *
 */
 "use strict";
 Rsed.scenes = Rsed.scenes || {};
-// RallySportED's main scene. Displays the project as a textured 3d mesh; and allows
-// the user to edit the heightmap and tilemap via mouse and keyboard interaction.
-Rsed.scenes["3d"] = (function()
+// A 3D view displaying the track's MAASTO and VARIMAA data. Lets the user edit
+// these data.
+Rsed.scenes["terrain"] = (function()
 {
 // Lets us keep track of mouse position delta between frames; e.g. for dragging props.
 let prevMousePos = {x:0, y:0};
@@ -8511,10 +8512,10 @@ Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
 if (uiComponents) // Once the UI components have finished async loading.
 {
 const margin = 4;
-uiComponents.viewLabel.update("Editor: Terrain");
-uiComponents.viewLabel.draw(margin, margin);
 if (!Rsed.browserMetadata.isMobile)
 {
+uiComponents.viewLabel.update("Editor: Terrain");
+uiComponents.viewLabel.draw(margin, margin);
 uiComponents.activePala.update(sceneSettings);
 uiComponents.activePala.draw((Rsed.visual.canvas.width - 88), margin);
 uiComponents.footerInfo.update(sceneSettings);
@@ -8817,26 +8818,34 @@ return;
 /*
 * Most recent known filename: js/scenes/scene-tilemap.js
 *
-* 2019 Tarpeeksi Hyvae Soft /
-* RallySportED-js
+* 2019-2021 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
 *
 */
 "use strict";
 Rsed.scenes = Rsed.scenes || {};
-// A top-down view of the project's tilemap. The user can edit the tilemap via mouse
-// interaction.
+// A top-down view of the project's VARIMAA data as a tilemap. Lets the user paint
+// onto the tilemap.
 Rsed.scenes["tilemap"] = (function()
 {
 /// Temp hack. Lets the renderer know that we want it to update mouse hover information
 /// once the next frame has finished rendering. This is used e.g. to keep proper track
 /// mouse hover when various UI elements are toggled on/off.
 let updateMouseHoverOnFrameFinish = false;
-let tilemap = []; // The tilemap view's pixels, in consecutive RGBA (0-255) values.
-let tilemapMesh = null; // A retro n-gon renderer mesh.
-let tilemapWidth = 0;
-let tilemapHeight = 0;
-let tilemapOffsetX = 0;
-let tilemapOffsetY = 0;
+// A representation of the track's VARIMAA data.
+const tilemap = {
+texture: {
+pixels: [],
+width: 0,
+height: 0,
+},
+mesh: Rngon.mesh([]),
+width: 0,
+height: 0,
+offsetX: 0,
+offsetY: 0,
+};
 // The latest known size of the canvas we're rendering to.
 let knownCanvasSizeX = 0;
 let knownCanvasSizeY = 0;
@@ -8854,69 +8863,65 @@ activePala:   Rsed.ui.component.activePala.instance(),
 palatPane:    Rsed.ui.component.palatPane.instance(),
 viewLabel:    Rsed.ui.component.label.instance(),
 fpsIndicator: Rsed.ui.component.fpsIndicator.instance(),
-footer: Rsed.ui.component.label.instance(),
+footer:       Rsed.ui.component.label.instance(),
 };
 })();
 const scene = Rsed.scene(
 {
-// Refreshes the tilemap view with any new changes to the track's tilemap.
-// Optionally, you can provide the extent of a dirty rectangle: its top
-// left corner is at startX,startY, and it's of the given width and height.
-// Unless a dirty rectangle is given, the entire tilemap view will be
-// refreshed.
-refresh_tilemap_view: function(startX = 0, startY = 0, width = -1, height = -1)
+// Updates the tilemap's texture within the given dirty rectangle.
+refresh_tilemap_texture: function(startX = 0, startY = 0, width = -1, height = -1)
 {
 const project = Rsed.core.current_project();
-const checkpoint = project.track_checkpoint();
-if (Rsed.visual.canvas.width != knownCanvasSizeX ||
-Rsed.visual.canvas.height != knownCanvasSizeY)
-{
-tilemapWidth = Math.round(Rsed.visual.canvas.width * 0.7);
-tilemapHeight = Math.round(Rsed.visual.canvas.height * 0.7);
-tilemapOffsetX = Math.floor((Rsed.visual.canvas.width / 2) - (tilemapWidth / 2));
-tilemapOffsetY = Math.floor((Rsed.visual.canvas.height / 2) - (tilemapHeight / 2));
-tilemap = new Array(project.varimaa.width * project.varimaa.height);
-knownCanvasSizeX = Rsed.visual.canvas.width;
-knownCanvasSizeY = Rsed.visual.canvas.height;
-}
-const maxX = ((width == -1)? project.varimaa.width : Math.min(project.varimaa.width, (width + startX)));
-const maxY = ((height == -1)? project.varimaa.height : Math.min(project.varimaa.height, (height + startY)));
-// Refresh the tilemap texture.
+const maxX = ((width == -1)? tilemap.texture.width : Math.min(tilemap.texture.width, (width + startX)));
+const maxY = ((height == -1)? tilemap.texture.height : Math.min(tilemap.texture.height, (height + startY)));
 for (let y = startY; y < maxY; y++)
 {
 for (let x = startX; x < maxX; x++)
 {
 const pala = project.palat.texture[project.varimaa.tile_at(x, y)];
 let colorIdx = ((pala == null)? 0 : pala.indices[1]);
-if ((x == checkpoint.x) &&
-(y == checkpoint.y))
+if ((x == project.track_checkpoint().x) &&
+(y == project.track_checkpoint().y))
 {
 colorIdx = "white";
 }
 const color = Rsed.visual.palette.color_at_idx(colorIdx);
-tilemap[(x + y * project.varimaa.width) * 4 + 0] = color.red;
-tilemap[(x + y * project.varimaa.width) * 4 + 1] = color.green;
-tilemap[(x + y * project.varimaa.width) * 4 + 2] = color.blue;
-tilemap[(x + y * project.varimaa.width) * 4 + 3] = 255;
+tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 0] = color.red;
+tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 1] = color.green;
+tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 2] = color.blue;
+tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 3] = 255;
 }
 }
-// The tilemap n-gon is a rectangle drawn with the tilemap texture.
-const tilemapNgon = Rngon.ngon([Rngon.vertex(tilemapOffsetX, tilemapOffsetY),
-Rngon.vertex((tilemapOffsetX + tilemapWidth), tilemapOffsetY),
-Rngon.vertex((tilemapOffsetX + tilemapWidth), (tilemapOffsetY + tilemapHeight)),
-Rngon.vertex(tilemapOffsetX, (tilemapOffsetY + tilemapHeight))],
+// The tilemap n-gon is a rectangle textured with the tilemap's pixels.
+const tilemapNgon = Rngon.ngon([
+Rngon.vertex( tilemap.offsetX,                   tilemap.offsetY),
+Rngon.vertex((tilemap.offsetX + tilemap.width),  tilemap.offsetY),
+Rngon.vertex((tilemap.offsetX + tilemap.width), (tilemap.offsetY + tilemap.height)),
+Rngon.vertex( tilemap.offsetX,                  (tilemap.offsetY + tilemap.height))],
 {
 color: Rngon.color_rgba(255, 255, 255),
 allowTransform: false, // The vertices are already in screen space.
-texture: Rngon.texture_rgba({
-width: project.varimaa.width,
-height: project.varimaa.height,
-pixels: tilemap,
-}),
+texture: Rngon.texture_rgba(tilemap.texture),
 hasWireframe: true,
 wireframeColor: Rngon.color_rgba(255, 255, 0),
-});
-tilemapMesh = Rngon.mesh([tilemapNgon]);
+}
+);
+tilemap.mesh = Rngon.mesh([tilemapNgon]);
+return;
+},
+regenerate_tilemap: function()
+{
+const project = Rsed.core.current_project();
+tilemap.texture.width = project.varimaa.width;
+tilemap.texture.height = project.varimaa.height;
+tilemap.texture.pixels = new Array(tilemap.texture.width * tilemap.texture.height * 4);
+tilemap.width = Math.round(Rsed.visual.canvas.width * 0.7);
+tilemap.height = Math.round(Rsed.visual.canvas.height * 0.7);
+tilemap.offsetX = Math.floor((Rsed.visual.canvas.width / 2) - (tilemap.width / 2));
+tilemap.offsetY = Math.floor((Rsed.visual.canvas.height / 2) - (tilemap.height / 2));
+knownCanvasSizeX = Rsed.visual.canvas.width;
+knownCanvasSizeY = Rsed.visual.canvas.height;
+scene.refresh_tilemap_texture();
 return;
 },
 on_key_fire: function(key, repeat = false)
@@ -8931,12 +8936,12 @@ if (Rsed.ui.inputState.key_down("control") &&
 Rsed.ui.inputState.key_down("shift"))
 {
 Rsed.ui.undoStack.redo();
-scene.refresh_tilemap_view();
+scene.regenerate_tilemap();
 }
 else if (Rsed.ui.inputState.key_down("control"))
 {
 Rsed.ui.undoStack.undo();
-scene.refresh_tilemap_view();
+scene.regenerate_tilemap();
 }
 }
 else if (key_is("y") &&
@@ -8946,7 +8951,7 @@ Rsed.ui.undoStack.redo();
 }
 else if (key_is("q"))
 {
-Rsed.core.set_scene("3d");
+Rsed.core.set_scene("terrain");
 }
 else if (key_is("a") && !repeat)
 {
@@ -9003,13 +9008,15 @@ return;
 },
 draw_mesh: function()
 {
-if ((Rsed.visual.canvas.width != knownCanvasSizeX ||
-Rsed.visual.canvas.height != knownCanvasSizeY))
+if ((Rsed.visual.canvas.width != knownCanvasSizeX) ||
+(Rsed.visual.canvas.height != knownCanvasSizeY) ||
+(Rsed.core.current_project().varimaa.width != tilemap.texture.width) ||
+(Rsed.core.current_project().varimaa.height != tilemap.texture.height))
 {
-this.refresh_tilemap_view();
+scene.regenerate_tilemap();
 }
-const renderInfo = Rngon.render(Rsed.visual.canvas.domElement.getAttribute("id"), [tilemapMesh],
-{
+const renderInfo = Rngon.render(Rsed.visual.canvas.domElement,
+[tilemap.mesh], {
 scale: Rsed.visual.canvas.scalingFactor,
 fov: 45,
 nearPlane: 0,
@@ -9039,8 +9046,8 @@ function update_cursor_graphic()
 {
 const cursors = Rsed.ui.cursorHandler.cursors;
 const mousePos = Rsed.ui.inputState.mouse_pos_scaled_to_render_resolution();
-const mouseTilemapPosX = Math.round((mousePos.x - tilemapOffsetX) * (Rsed.core.current_project().maasto.width / tilemapWidth));
-const mouseTilemapPosY = Math.round((mousePos.y - tilemapOffsetY) * (Rsed.core.current_project().maasto.height / tilemapHeight));
+const mouseTilemapPosX = Math.round((mousePos.x - tilemap.offsetX) * (Rsed.core.current_project().maasto.width / tilemap.width));
+const mouseTilemapPosY = Math.round((mousePos.y - tilemap.offsetY) * (Rsed.core.current_project().maasto.height / tilemap.height));
 const isCursorOnTilemap = ((mouseTilemapPosX >= 0) &&
 (mouseTilemapPosY >= 0) &&
 (mouseTilemapPosX < Rsed.core.current_project().maasto.width) &&
@@ -9061,15 +9068,14 @@ const mousePos = Rsed.ui.inputState.mouse_pos_scaled_to_render_resolution();
 // Handle painting the tilemap.
 if (Rsed.ui.inputState.mouse_button_down())
 {
-const mouseTilemapPosX = Math.round((mousePos.x - tilemapOffsetX) * (Rsed.core.current_project().maasto.width / tilemapWidth));
-const mouseTilemapPosY = Math.round((mousePos.y - tilemapOffsetY) * (Rsed.core.current_project().maasto.height / tilemapHeight));
+const mouseTilemapPosX = Math.round((mousePos.x - tilemap.offsetX) * (Rsed.core.current_project().maasto.width / tilemap.width));
+const mouseTilemapPosY = Math.round((mousePos.y - tilemap.offsetY) * (Rsed.core.current_project().maasto.height / tilemap.height));
 const brushSize = (Rsed.ui.groundBrush.brush_size() + 1);
 Rsed.ui.groundBrush.apply_brush_to_terrain(Rsed.ui.groundBrush.brushAction.changePala,
 Rsed.ui.groundBrush.brush_pala_idx(),
 mouseTilemapPosX,
 mouseTilemapPosY);
-// Update the region of the tilemap that we painted over.
-scene.refresh_tilemap_view((mouseTilemapPosX - brushSize),
+scene.refresh_tilemap_texture((mouseTilemapPosX - brushSize),
 (mouseTilemapPosY - brushSize),
 (brushSize * 2),
 (brushSize * 2));
@@ -9080,8 +9086,9 @@ return;
 /*
 * Most recent known filename: js/scenes/scene-texture.js
 *
-* 2019 Tarpeeksi Hyvae Soft /
-* RallySportED-js
+* 2019-2021 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
 *
 */
 "use strict";
@@ -9224,7 +9231,7 @@ Rsed.ui.undoStack.redo();
 }
 else if (key_is("q"))
 {
-Rsed.core.set_scene("3d");
+Rsed.core.set_scene("terrain");
 Rsed.ui.inputState.set_key_down("q", false);
 }
 else
@@ -10132,7 +10139,7 @@ let programFPS = 0;
 // this is the target project.
 let project = Rsed.project.placeholder;
 // The scene we're currently displaying to the user.
-let currentScene = Rsed.scenes["3d"];
+let currentScene = Rsed.scenes["terrain"];
 // The number of milliseconds elapsed between the most recent tick and the one
 // preceding it. E.g. at 60 FPS this would be about 16.
 let tickTimeDeltaMs = 0;
@@ -10219,10 +10226,10 @@ Rsed.assert && (Rsed.scenes[sceneName])
 || Rsed.throw("Attempting to set an unknown scene.");
 currentScene = Rsed.scenes[sceneName];
 // If we've switched to the tilemap scene, make sure it's reflecting
-// any changes we may have made to the track's tilemap in other scenes.
+// any changes we may have made to the track in the previous scene.
 if (currentScene == Rsed.scenes["tilemap"])
 {
-currentScene.refresh_tilemap_view();
+currentScene.regenerate_tilemap();
 }
 return;
 },
