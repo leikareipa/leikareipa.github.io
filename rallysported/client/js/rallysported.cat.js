@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (25 May 2021 23:32:21 UTC)
+// VERSION: live (27 May 2021 01:51:22 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -7792,7 +7792,7 @@ component.draw = function(offsetX = 0, offsetY = 0)
 Rsed.throw_if_not_type("number", offsetX, offsetY);
 const mouseHover = Rsed.ui.inputState.current_mouse_hover();
 const mouseGrab = Rsed.ui.inputState.current_mouse_grab();
-let str = "HEIGHT:+--- / PALA:--- / X,Y:---,---";
+let str = "HEIGHT ---- / PALA --- / X,Y ---,---";
 if ((mouseHover && (mouseHover.type === "prop")) ||
 (mouseGrab && (mouseGrab.type === "prop")))
 {
@@ -7801,7 +7801,7 @@ if ((mouseHover && (mouseHover.type === "prop")) ||
 const mouse = (mouseGrab && (mouseGrab.type === "prop"))
 ? mouseGrab
 : mouseHover;
-str = `PROP: "${Rsed.core.current_project().props.name(mouse.propId)}"`;
+str = `PROP "${Rsed.core.current_project().props.name(mouse.propId)}"`;
 }
 else if (mouseHover && (mouseHover.type === "ground"))
 {
@@ -7812,7 +7812,7 @@ const yStr = String(y).padStart(3, "0");
 const heightStr = (Rsed.core.current_project().maasto.tile_at(x, y) < 0? "-" : "+") +
 String(Math.abs(Rsed.core.current_project().maasto.tile_at(x, y))).padStart(3, "0");
 const palaStr = String(Rsed.core.current_project().varimaa.tile_at(x, y)).padStart(3, "0");
-str = `HEIGHT:${heightStr} / PALA:${palaStr} / X,Y:${xStr},${yStr}`;
+str = `HEIGHT ${heightStr} / PALA ${palaStr} / X,Y ${xStr},${yStr}`;
 }
 Rsed.ui.draw.string(str, offsetX, offsetY);
 };
@@ -8510,29 +8510,27 @@ return;
 Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
 if (uiComponents) // Once the UI components have finished async loading.
 {
-uiComponents.viewLabel.update("Terrain");
-uiComponents.viewLabel.draw(3, 11);
-if (Rsed.visual.canvas.domElement.clientWidth > 650)
-{
+const margin = 4;
+uiComponents.viewLabel.update("Editor: Terrain");
+uiComponents.viewLabel.draw(margin, margin);
 if (!Rsed.browserMetadata.isMobile)
 {
 uiComponents.activePala.update(sceneSettings);
-uiComponents.activePala.draw((Rsed.visual.canvas.width - 88), 11);
+uiComponents.activePala.draw((Rsed.visual.canvas.width - 88), margin);
 uiComponents.footerInfo.update(sceneSettings);
-uiComponents.footerInfo.draw(3, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
+uiComponents.footerInfo.draw(margin, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
 }
 uiComponents.minimap.update(sceneSettings);
-uiComponents.minimap.draw((Rsed.visual.canvas.width - 4), 11);
+uiComponents.minimap.draw((Rsed.visual.canvas.width - margin), margin);
 if (sceneSettings.showPalatPane)
 {
 uiComponents.palatPane.update(sceneSettings);
-uiComponents.palatPane.draw((Rsed.visual.canvas.width - 4), 47);
-}
+uiComponents.palatPane.draw((Rsed.visual.canvas.width - margin), 47);
 }
 if (Rsed.core.fps_counter_enabled())
 {
 uiComponents.fpsIndicator.update(sceneSettings);
-uiComponents.fpsIndicator.draw(3, 10);
+uiComponents.fpsIndicator.draw(margin, 10);
 }
 }
 Rsed.ui.draw.finish_drawing(Rsed.visual.canvas);
@@ -8974,21 +8972,22 @@ draw_ui: function()
 Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
 if (uiComponents) // Once the UI components have finished async loading...
 {
-uiComponents.viewLabel.update(`Tilemap`);
-uiComponents.viewLabel.draw(3, 11);
+const margin = 4;
+uiComponents.viewLabel.update("Editor: Tilemap");
+uiComponents.viewLabel.draw(margin, margin);
 uiComponents.activePala.update(sceneSettings);
-uiComponents.activePala.draw((Rsed.visual.canvas.width - 20), 11);
+uiComponents.activePala.draw((Rsed.visual.canvas.width - 20), margin);
 uiComponents.footer.update(`Size: ${Rsed.core.current_project().maasto.width} * ${Rsed.core.current_project().maasto.width}`);
-uiComponents.footer.draw(3, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
+uiComponents.footer.draw(margin, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
 if (sceneSettings.showPalatPane)
 {
 uiComponents.palatPane.update(sceneSettings);
-uiComponents.palatPane.draw((Rsed.visual.canvas.width - 4), 31);
+uiComponents.palatPane.draw((Rsed.visual.canvas.width - margin), 31);
 }
 if (Rsed.core.fps_counter_enabled())
 {
 uiComponents.fpsIndicator.update(sceneSettings);
-uiComponents.fpsIndicator.draw(3, 10);
+uiComponents.fpsIndicator.draw(margin, 10);
 }
 }
 Rsed.ui.draw.finish_drawing(Rsed.visual.canvas);
@@ -9251,22 +9250,23 @@ this.set_texture(Rsed.core.current_project().palat.texture[3]);
 Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
 if (uiComponents) // Once the UI components have finished async loading...
 {
-uiComponents.viewLabel.update(`Texture`);
-uiComponents.viewLabel.draw(3, 11);
+const margin = 4;
+uiComponents.viewLabel.update("Editor: Texture");
+uiComponents.viewLabel.draw(margin, margin);
 uiComponents.colorSelector.update(sceneSettings);
-uiComponents.colorSelector.draw((Rsed.visual.canvas.width - 101), 11);
+uiComponents.colorSelector.draw((Rsed.visual.canvas.width - 101), margin);
 const truncatedZoomValue = (1 / textureZoom).toString().match(/^-?\d+(?:\.\d{0,1})?/)[0];
 uiComponents.zoomLabel.update(`Zoom: ${truncatedZoomValue}*`);
-uiComponents.zoomLabel.draw(3, (Rsed.visual.canvas.height - (Rsed.ui.font.nativeHeight * 3) - 9));
+uiComponents.zoomLabel.draw(margin, (Rsed.visual.canvas.height - (Rsed.ui.font.nativeHeight * 3) - 9));
 uiComponents.resolutionLabel.update(`Size: ${texture.width} * ${texture.height}`);
-uiComponents.resolutionLabel.draw(3, (Rsed.visual.canvas.height - (Rsed.ui.font.nativeHeight * 2) - 7));
+uiComponents.resolutionLabel.draw(margin, (Rsed.visual.canvas.height - (Rsed.ui.font.nativeHeight * 2) - 7));
 uiComponents.clipboardLabel.update(clipboard
 ? `Clipboard: ${clipboard.width} * ${clipboard.height}${(clipboard.source == texture)? " (this)" : ""}`
 : "Clipboard: empty");
-uiComponents.clipboardLabel.draw(3, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
+uiComponents.clipboardLabel.draw(margin, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
 if (Rsed.core.fps_counter_enabled())
 {
-uiComponents.fpsIndicator.draw(3, 10);
+uiComponents.fpsIndicator.draw(margin, 10);
 }
 if (sceneSettings.showPalatPane)
 {
@@ -10271,6 +10271,8 @@ window.requestAnimationFrame(()=>render_loop(frameCount + 1));
 // Called once per frame to orchestrate program flow.
 function tick(timestamp = 0, timeDeltaMs = 0)
 {
+const realScreenWidth = document.getElementById("render-canvas-container").clientWidth;
+Rsed.visual.canvas.scalingFactor = Math.min(1, Math.max(0.05, ((1920 / realScreenWidth) * 0.25)));
 if (coreIsRunning &&
 !Rsed.player.is_playing())
 {
