@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (28 May 2021 03:20:48 UTC)
+// VERSION: live (28 May 2021 07:23:13 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -6849,7 +6849,7 @@ if ((x + cx) >= pixelSurface.width) break;
 const pixel = pixels[cx + (flipped? (height - cy - 1) : cy) * width];
 if (alpha && (pixel === 0)) continue;
 const color = ((typeof pixel === "object")? pixel : Rsed.visual.palette.color_at_idx(pixel));
-this.pixel((x + cx), (y + cy), color.red, color.green, color.blue);
+Rsed.ui.draw.pixel((x + cx), (y + cy), color.red, color.green, color.blue);
 if (mousePick != null)
 {
 put_mouse_pick_value((x + cx), (y + cy), mousePick[cx + cy * width]);
@@ -6883,7 +6883,7 @@ if ((x >= 0) && (x < Rsed.visual.canvas.width))
 {
 for (let i = 0; i < (Rsed.ui.font.nativeHeight + 2); i++)
 {
-this.pixel(x, y + i, 255, 255, 0, mousePick);
+Rsed.ui.draw.pixel(x, y + i, 255, 255, 0, mousePick);
 }
 x++;
 }
@@ -6902,7 +6902,7 @@ if ((x + cx) >= pixelSurface.width) break;
 const color = character.pixel_at(cx, cy-1)
 ? Rsed.visual.palette.color_at_idx(character.pixel_at(cx, cy-1))
 : Rsed.visual.palette.color_at_idx("background");
-this.pixel((x + cx), (y + cy), color.red, color.green, color.blue, mousePick);
+Rsed.ui.draw.pixel((x + cx), (y + cy), color.red, color.green, color.blue, mousePick);
 }
 }
 x += (character.width + 1);
@@ -8319,10 +8319,6 @@ Rsed.scenes["terrain"] = (function()
 {
 // Lets us keep track of mouse position delta between frames; e.g. for dragging props.
 let prevMousePos = {x:0, y:0};
-/// Temp hack. Lets the renderer know that we want it to update mouse hover information
-/// once the next frame has finished rendering. This is used e.g. to keep proper track
-/// mouse hover when various UI elements are toggled on/off.
-let updateMouseHoverOnFrameFinish = false;
 const sceneSettings = {
 // Whether to draw a wireframe around the scene's polygons. Note that we default to
 // not showing the wireframe on mobile devices, since we assume that they have small
@@ -8416,7 +8412,7 @@ else if (key_is("a") && !repeat)
 sceneSettings.showPalatPane = !sceneSettings.showPalatPane;
 // Prevent a mouse click from acting on the ground behind the pane when the pane
 // is brought up, and on the pane when the pane has been removed.
-updateMouseHoverOnFrameFinish = true;
+Rsed.core.resetMouseHover = true;
 }
 else if (key_is("z"))
 {
@@ -8541,14 +8537,6 @@ uiComponents.fpsIndicator.draw(margin, 10);
 }
 }
 Rsed.ui.draw.finish_drawing(Rsed.visual.canvas);
-// Note: We assume that UI drawing is the last step in rendering the current
-// frame; and thus that once the UI rendering has finished, the frame is finished
-// also.
-if (updateMouseHoverOnFrameFinish)
-{
-Rsed.ui.inputState.update_mouse_hover();
-updateMouseHoverOnFrameFinish = false;
-}
 return;
 },
 draw_mesh: function()
@@ -8839,10 +8827,6 @@ Rsed.scenes = Rsed.scenes || {};
 // onto the tilemap.
 Rsed.scenes["tilemap"] = (function()
 {
-/// Temp hack. Lets the renderer know that we want it to update mouse hover information
-/// once the next frame has finished rendering. This is used e.g. to keep proper track
-/// mouse hover when various UI elements are toggled on/off.
-let updateMouseHoverOnFrameFinish = false;
 // A representation of the track's VARIMAA data.
 const tilemap = {
 texture: {
@@ -8968,7 +8952,7 @@ else if (key_is("a") && !repeat)
 sceneSettings.showPalatPane = !sceneSettings.showPalatPane;
 // Prevent a mouse click from acting on the ground behind the pane when the pane
 // is brought up, and on the pane when the pane has been removed.
-updateMouseHoverOnFrameFinish = true;
+Rsed.core.resetMouseHover = true;
 }
 else
 {
@@ -9006,14 +8990,6 @@ uiComponents.fpsIndicator.draw(margin, 10);
 }
 }
 Rsed.ui.draw.finish_drawing(Rsed.visual.canvas);
-// Note: We assume that UI drawing is the last step in rendering the current
-// frame; and thus that once the UI rendering has finished, the frame is finished
-// also.
-if (updateMouseHoverOnFrameFinish)
-{
-Rsed.ui.inputState.update_mouse_hover();
-updateMouseHoverOnFrameFinish = false;
-}
 return;
 },
 draw_mesh: function()
