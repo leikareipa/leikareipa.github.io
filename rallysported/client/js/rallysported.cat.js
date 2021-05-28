@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (27 May 2021 18:08:04 UTC)
+// VERSION: live (28 May 2021 03:20:48 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -3288,6 +3288,7 @@ isPlayerStarting = false;
 isPlaying = false;
 playerCanvas.getContext("2d").clearRect(0, 0, playerCanvas.width, playerCanvas.height);
 playerContainer.style.display = "none";
+document.body.classList.remove("playing");
 Rsed.ui.htmlUI.refresh();
 return;
 }
@@ -3302,6 +3303,7 @@ return;
 isPlayerStarting = true;
 stopButton.style.display = "none";
 playerContainer.style.display = "initial";
+document.body.classList.add("playing");
 const gameZip = await create_zip_for_jsbox();
 if (!gameZip)
 {
@@ -4543,7 +4545,7 @@ if (posDelta.x || posDelta.y || posDelta.z)
 window.close_dropdowns(false);
 // Force mouse hover to update, since there might now be a different tile under
 // the cursor.
-Rsed.ui.inputState.update_mouse_hover();
+Rsed.core.resetMouseHover = true;
 // If the user is grabbing onto a prop while the camera moves, move the prop as well.
 {
 const grab = Rsed.ui.inputState.current_mouse_grab();
@@ -6734,7 +6736,7 @@ pencil: "./client/assets/cursors/rsed-cursor-pencil.png",
 default: undefined,
 };
 cursors.default = cursors.arrow;
-// Pre-load the cursor images' data so they'll be immediately available for display
+// Pre-load the cursor images' data so they'll be available immediately
 // when required.
 const cursorImages = Object.keys(cursors).map(c=>{
 const image = new Image();
@@ -7732,6 +7734,7 @@ const billboardTexture = (billboardIdx == null)
 const mousePick = new Array(palaTexture.indices.length).fill({
 type: "ui-component",
 componentId: component.id,
+cursor: Rsed.ui.cursorHandler.cursors.fingerHand,
 });
 if (palaTexture)
 {
@@ -7995,6 +7998,7 @@ palatPaneBuffer[bufferTexel] = Rsed.visual.palette.color_at_idx(pala.indices[pal
 palatPaneMousePick[bufferTexel] = {
 type: "ui-component",
 componentId: component.id,
+cursor: Rsed.ui.cursorHandler.cursors.fingerHand,
 palaIdx: palaIdx,
 cornerX: ((x * palaThumbnailWidth) + palatPaneOffsetX),
 cornerY: ((y * palaThumbnailHeight) + palatPaneOffsetY),
@@ -8072,6 +8076,7 @@ image.push(color);
 mousePick.push({
 type: "ui-component",
 componentId: component.id,
+cursor: Rsed.ui.cursorHandler.cursors.fingerHand,
 tileX: tileX,
 tileZ: tileZ
 });
@@ -8171,6 +8176,7 @@ swatch.fill(Rsed.visual.palette.color_at_idx(i));
 swatchMousePick.fill({
 type: "ui-component",
 componentId: component.id,
+cursor: Rsed.ui.cursorHandler.cursors.fingerHand,
 colorIdx: i,
 });
 Rsed.ui.draw.image(swatch, swatchMousePick,
@@ -8657,6 +8663,10 @@ const currentCursor = (()=>
 {
 const mouseHover = Rsed.ui.inputState.current_mouse_hover();
 const mouseGrab = Rsed.ui.inputState.current_mouse_grab();
+if (mouseHover && mouseHover.cursor)
+{
+return mouseHover.cursor;
+}
 if (mouseGrab && (mouseGrab.type == "prop"))
 {
 if (Rsed.ui.inputState.right_mouse_button_down())
@@ -9048,11 +9058,16 @@ const cursors = Rsed.ui.cursorHandler.cursors;
 const mousePos = Rsed.ui.inputState.mouse_pos_scaled_to_render_resolution();
 const mouseTilemapPosX = Math.round((mousePos.x - tilemap.offsetX) * (Rsed.core.current_project().maasto.width / tilemap.width));
 const mouseTilemapPosY = Math.round((mousePos.y - tilemap.offsetY) * (Rsed.core.current_project().maasto.height / tilemap.height));
+const mouseHover = Rsed.ui.inputState.current_mouse_hover();
 const isCursorOnTilemap = ((mouseTilemapPosX >= 0) &&
 (mouseTilemapPosY >= 0) &&
 (mouseTilemapPosX < Rsed.core.current_project().maasto.width) &&
 (mouseTilemapPosY < Rsed.core.current_project().maasto.height));
-if (isCursorOnTilemap)
+if (mouseHover && mouseHover.cursor)
+{
+Rsed.ui.cursorHandler.set_cursor(mouseHover.cursor);
+}
+else if (isCursorOnTilemap)
 {
 Rsed.ui.cursorHandler.set_cursor(cursors.pencil);
 }
@@ -9465,6 +9480,11 @@ const pickElement = textureMousePickBuffer[mousePos.x + mousePos.y * Rsed.visual
 const isCursorOnTexture = (pickElement && (pickElement.u !== null) && (pickElement.v !== null));
 const newCursor = (()=>
 {
+const mouseHover = Rsed.ui.inputState.current_mouse_hover();
+if (mouseHover && mouseHover.cursor)
+{
+return mouseHover.cursor;
+}
 if (isCursorOnTexture)
 {
 if (Rsed.ui.inputState.key_down("tab"))
@@ -10156,6 +10176,7 @@ appName: "RallySportED",
 // loaded into an instance of Rally-Sport running in the browser, allowing
 // the user to play the track.
 playOnStartup: false,
+resetMouseHover: false,
 tick_time_delta_ms: ()=>tickTimeDeltaMs,
 is_running: ()=>coreIsRunning,
 renderer_fps: ()=>programFPS,
@@ -10288,6 +10309,11 @@ programFPS = Math.round(1000 / (timeDeltaMs || 1));
 currentScene.handle_user_interaction();
 currentScene.draw_mesh();
 currentScene.draw_ui();
+if (publicInterface.resetMouseHover)
+{
+Rsed.ui.inputState.update_mouse_hover();
+publicInterface.resetMouseHover = false;
+}
 }
 // Keep ticking.
 window.requestAnimationFrame((newTimestamp)=>tick(newTimestamp, (newTimestamp - timestamp)));
