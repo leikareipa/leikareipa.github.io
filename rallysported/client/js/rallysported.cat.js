@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (28 May 2021 07:23:13 UTC)
+// VERSION: live (29 May 2021 05:21:33 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -51,9 +51,10 @@
 //	./src/client/js/rallysported-js/ui/components/color-selector.js
 //	./src/client/js/rallysported-js/ui/components/label.js
 //	./src/client/js/rallysported-js/scene/scene.js
-//	./src/client/js/rallysported-js/scene/scene-terrain.js
-//	./src/client/js/rallysported-js/scene/scene-tilemap.js
-//	./src/client/js/rallysported-js/scene/scene-texture.js
+//	./src/client/js/rallysported-js/scene/terrain-editor/terrain-editor.js
+//	./src/client/js/rallysported-js/scene/texture-editor/texture-editor.js
+//	./src/client/js/rallysported-js/scene/tilemap-editor/tilemap-editor.js
+//	./src/client/js/rallysported-js/scene/loading-spinner/loading-spinner.js
 //	./src/client/js/rallysported-js/stream/stream.js
 //	./src/client/js/rallysported-js/stream/server.js
 //	./src/client/js/rallysported-js/stream/streamer.js
@@ -2660,32 +2661,39 @@ return;
 /*
 * Most recent known filename: js/rallysported.js
 *
-* Tarpeeksi Hyvae Soft 2018 /
-* RallySportED-js
+* 2018-2021 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
 *
 */
 "use strict";
-// Top-level namespace for RallySportED.
-const Rsed = {};
-// Various small utility functions and the like.
+// RallySportED-js's top-level namespace.
+//
+// Note that this object will be extended by the other source files of
+// RallySportED-js, as well.
+const Rsed = {
+productName: "RallySportED",
+productVersion: "1.1",
+get $currentProject()
 {
-// For inline assertions, e.g.:
-//
-//   Rsed.assert && (x === 1)
-//               || Rsed.throw("X wasn't 1.").
-//
-// Note that setting this to 'false' won't disable assertions - for that,
-// you'll want to search/replace "Rsed.assert &&" with "Rsed.assert ||"
-// and keep this set to 'true'.
-Object.defineProperty(Rsed, "assert", {value:true, writable:false});
-// Generates a version 4 UUID and returns it as a string. Adapted with
-// superficial modifications from https://stackoverflow.com/a/2117523,
-// which is based on https://gist.github.com/jed/982883.
-Rsed.generate_uuid4_string = ()=>
+return Rsed.core.current_project();
+},
+get $currentScene()
+{
+return Rsed.core.current_scene();
+},
+set $currentScene(sceneName)
+{
+return Rsed.core.set_scene(sceneName);
+},
+// Generates a v4 UUID and returns it as a string. Adapted with superficial
+// modifications from https://stackoverflow.com/a/2117523, which in turn is
+// based on https://gist.github.com/jed/982883.
+generate_uuid4: function()
 {
 return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c=>(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
-}
-Rsed.throw = (fatalErrorMessage = "")=>
+},
+throw: function(fatalErrorMessage = "")
 {
 if (Rsed && Rsed.core)
 {
@@ -2699,24 +2707,24 @@ timeoutMs: 0,
 });
 }
 throw new Error("RallySportED error: " + fatalErrorMessage);
-}
-Rsed.alert = (message = "")=>
+},
+alert: function(message = "")
 {
 console.warn("RallySportED: " + message);
 Rsed.ui.popup_notification(message);
-}
-Rsed.log = (message = "")=>
+},
+log: function(message = "")
 {
 console.log("RallySportED: " + message);
-}
-Rsed.throw_if = (condition, messageIfTrue)=>
+},
+throw_if: function(condition, messageIfTrue)
 {
 if (condition)
 {
 Rsed.throw(messageIfTrue)
 }
-}
-Rsed.throw_if_undefined = (...properties)=>
+},
+throw_if_undefined: function(...properties)
 {
 for (const property of properties)
 {
@@ -2726,8 +2734,8 @@ Rsed.throw("A required property is undefined.");
 }
 }
 return;
-}
-Rsed.throw_if_not_type = (typeName, ...properties)=>
+},
+throw_if_not_type: function(typeName, ...properties)
 {
 for (const property of properties)
 {
@@ -2745,10 +2753,25 @@ Rsed.throw(`A property is of the wrong type; expected "${typeName}".`);
 }
 }
 return;
-}
-Rsed.lerp = (x = 0, y = 0, interval = 0)=>(x + (interval * (y - x)));
-Rsed.clamp = (value = 0, min = 0, max = 1)=>Math.min(Math.max(value, min), max);
-}
+},
+lerp: function(x = 0, y = 0, interval = 0)
+{
+return (x + (interval * (y - x)));
+},
+clamp: function(value = 0, min = 0, max = 1)
+{
+return Math.min(Math.max(value, min), max);
+},
+};
+// For inline assertions, e.g.:
+//
+//   Rsed.assert && (x === 1)
+//               || Rsed.throw("X wasn't 1.").
+//
+// Note that setting this to 'false' won't disable assertions - for that,
+// you'll want to search/replace "Rsed.assert &&" with "Rsed.assert ||"
+// and keep this set to 'true'.
+Object.defineProperty(Rsed, "assert", {value:true, writable:false});
 /*
 * Most recent known filename: js/ui/ui.js
 *
@@ -2787,7 +2810,7 @@ const meta = "fa-fw";
 switch (args.notificationType)
 {
 case "info": return `${meta} fas fa-info`;
-case "warning": return `${meta} fas fa-toilet-paper-slash`;
+case "warning": return `${meta} fas fa-frog`;
 case "error": return `${meta} fas fa-spider`;
 case "fatal": return `${meta} fas fa-otter`;
 default: return `${meta} fas far fa-comment`;
@@ -2877,6 +2900,32 @@ browserName: (/Chrome/i.test(navigator.userAgent)? "Chrome" :
 /Firefox/i.test(navigator.userAgent)? "Firefox" :
 /Safari/i.test(navigator.userAgent)? "Safari" :
 null),
+has_url_param: function(paramName = "")
+{
+const params = new URLSearchParams(window.location.search);
+return params.has(paramName);
+},
+warn_of_incompatibilities: function()
+{
+// RallySportED-js projects are exported (saved) via JSZip using Blobs.
+if (!JSZip.support.blob)
+{
+Rsed.ui.popup_notification("This browser doesn't support saving projects to disk!",
+{
+notificationType: "warning",
+});
+}
+// A crude test for whether the user's device might not have the required input
+// devices available.
+if (Rsed.browserMetadata.isMobile)
+{
+Rsed.ui.popup_notification("This app has limited support for mobile devices.",
+{
+timeoutMs: 7000,
+});
+}
+return;
+}
 };
 return publicInterface;
 })();
@@ -3263,6 +3312,9 @@ playerContainer &&
 stopButton)
 || Rsed.throw("Malformed DOM for the player elements.");
 const publicInterface = {
+// Whether to run the player automatically when Rsed.core.start()
+// is called.
+runOnStartup: false,
 is_playing: function()
 {
 return isPlaying;
@@ -3327,7 +3379,7 @@ main(["-conf", "rsed.conf",
 "-c", "mixer master 17:17",
 "-c", `bitset game.dta 35 ${playWithAI? 0 : 32}`, // Refer to https://github.com/leikareipa/rallysported/blob/master/docs/rs-formats.txt on GAME.DTA's bytes.
 "-c", `bitset rallye.exe 82253 ${playWithAI? 224 : 69}`, // Make the starting lights go out faster if not playing with AI.
-"-c", `rload ${Rsed.core.current_project().name}`])
+"-c", `rload ${Rsed.$currentProject.name}`])
 .then((interface)=>{
 jsDosController = interface;
 isPlaying = true;
@@ -3359,7 +3411,7 @@ if (!baseArchive.ok)
 return false;
 }
 await zip.loadAsync(baseArchive.blob());
-await Rsed.core.current_project().insert_project_data_into_zip(zip);
+await Rsed.$currentProject.insert_project_data_into_zip(zip);
 return await zip.generateAsync({
 type: "blob",
 compression: "DEFLATE",
@@ -4184,8 +4236,8 @@ args.cameraPosFloat = args.cameraPos;
 // Returns true if the given XY coordinates are out of track bounds.
 function out_of_bounds(x, y)
 {
-return Boolean((x < 0) || (x >= Rsed.core.current_project().maasto.width) ||
-(y < 1) || (y > Rsed.core.current_project().maasto.height));
+return Boolean((x < 0) || (x >= Rsed.$currentProject.maasto.width) ||
+(y < 1) || (y > Rsed.$currentProject.maasto.height));
 }
 // The polygons that make up the track mesh.
 const trackPolygons = [];
@@ -4198,7 +4250,7 @@ const mouseHover = Rsed.ui.inputState.current_mouse_hover();
 const mouseGrab = Rsed.ui.inputState.current_mouse_grab();
 const fractionX = (args.cameraPosFloat.x - args.cameraPos.x);
 const fractionZ = (args.cameraPosFloat.z - args.cameraPos.z);
-const project = Rsed.core.current_project();
+const project = Rsed.$currentProject;
 for (let z = 0; z < Rsed.world.camera.view_height; z++)
 {
 // Add the ground tiles.
@@ -4446,7 +4498,7 @@ includeWireframe: false,
 },
 ...args
 };
-const project = Rsed.core.current_project();
+const project = Rsed.$currentProject;
 const srcMesh = project.props.mesh[propId];
 const dstMesh = [];
 srcMesh.ngons.forEach(ngon=>
@@ -4527,8 +4579,8 @@ if (enforceBounds)
 {
 const marginX = 8;
 const marginY = 9;
-const maxX = (Rsed.core.current_project().maasto.width - this.view_width);
-const maxY = (Rsed.core.current_project().maasto.width - this.view_height + 1);
+const maxX = (Rsed.$currentProject.maasto.width - this.view_width);
+const maxY = (Rsed.$currentProject.maasto.width - this.view_height + 1);
 position.x = Math.max(-marginX, Math.min(position.x, (maxX + marginX)));
 position.z = Math.max(-marginY, Math.min(position.z, (maxY + marginY)));
 }
@@ -4545,7 +4597,7 @@ if (posDelta.x || posDelta.y || posDelta.z)
 window.close_dropdowns(false);
 // Force mouse hover to update, since there might now be a different tile under
 // the cursor.
-Rsed.core.resetMouseHover = true;
+Rsed.core.forceUpdateMouseHoverOnTickEnd = true;
 // If the user is grabbing onto a prop while the camera moves, move the prop as well.
 {
 const grab = Rsed.ui.inputState.current_mouse_grab();
@@ -4555,7 +4607,7 @@ Rsed.ui.inputState.left_mouse_button_down())
 // Note: the starting line (always prop #0) is not user-editable.
 if (grab.propTrackIdx !== 0)
 {
-Rsed.core.current_project().props.move(Rsed.core.current_project().track_id(),
+Rsed.$currentProject.props.move(Rsed.$currentProject.track_id(),
 grab.propTrackIdx,
 {
 x: (posDelta.x * Rsed.constants.groundTileSize),
@@ -5291,7 +5343,7 @@ spectator_pala_idx_at: function(tileX = 0, tileY = 0)
 {
 const firstSpectatorTexIdx = 236; // Index of the first PALA representing a (standing) spectator. Assumes consecutive arrangement.
 const numSkins = 4;
-const sameRows = ((Rsed.core.current_project().maasto.width === 128)? 16 : 32); // The game will repeat the same pattern of variants on the x axis this many times.
+const sameRows = ((Rsed.$currentProject.maasto.width === 128)? 16 : 32); // The game will repeat the same pattern of variants on the x axis this many times.
 const yOffs = (Math.floor(tileY / sameRows)) % numSkins;
 const texOffs = ((tileX + (numSkins - 1)) + (yOffs * (numSkins - 1))) % numSkins;
 const palaId = (firstSpectatorTexIdx + texOffs);
@@ -5737,7 +5789,7 @@ return prebakedPropTextures[idx];
 function clamped_to_prop_margins(value)
 {
 const min = (Rsed.constants.propTileMargin * Rsed.constants.groundTileSize);
-const max = ((Rsed.core.current_project().maasto.width - Rsed.constants.propTileMargin) * Rsed.constants.groundTileSize);
+const max = ((Rsed.$currentProject.maasto.width - Rsed.constants.propTileMargin) * Rsed.constants.groundTileSize);
 return Rsed.clamp(value, min, max);
 }
 // Prop metadata includes vertex data, texture UV coordinates, display names, etc. of
@@ -5802,7 +5854,7 @@ if (!Object.keys(applicators).includes(assetType))
 {
 Rsed.throw("Unknown asset type.");
 }
-const result = applicators[assetType](Rsed.core.current_project(), editAction);
+const result = applicators[assetType](Rsed.$currentProject, editAction);
 return result;
 }
 }
@@ -5976,12 +6028,12 @@ const y = dirtyGround[tile].y;
 groundAfter[tile] = {
 x,
 y,
-height: Rsed.core.current_project().maasto.tile_at(x, y),
-palaIdx: Rsed.core.current_project().varimaa.tile_at(x, y),
+height: Rsed.$currentProject.maasto.tile_at(x, y),
+palaIdx: Rsed.$currentProject.varimaa.tile_at(x, y),
 };
 }
 // Prop data after this undo level's changes are made.
-const propsAfter = Rsed.core.current_project().props.locations_of_props_on_track(Rsed.core.current_project().trackId);
+const propsAfter = Rsed.$currentProject.props.locations_of_props_on_track(Rsed.$currentProject.trackId);
 // Texture data after this undo level's changes are made.
 const texturesAfter = [];
 for (textureId of Object.keys(dirtyTextures))
@@ -5989,7 +6041,7 @@ for (textureId of Object.keys(dirtyTextures))
 // We expect the texture id to be of the form "<type> <value>", e.g.
 // "palat 97" for PALA texture #97.
 const [textureType, textureIndex] = textureId.split(" ");
-texturesAfter[textureId] = Rsed.core.current_project()[textureType].texture[textureIndex];
+texturesAfter[textureId] = Rsed.$currentProject[textureType].texture[textureIndex];
 }
 undoLevels[undoLevelHead] = {
 id: Rsed.uuid.generate_v4(),
@@ -6015,6 +6067,7 @@ Rsed.ui.htmlUI.refresh();
 // the current undo level's changes if when == "after".
 function apply_undo_level(undoLevel, when = "before")
 {
+const targetProject = Rsed.$currentProject;
 if (!undoLevel)
 {
 return;
@@ -6028,26 +6081,26 @@ frozen = true;
 // Undo on ground tiles.
 for (tile of Object.keys(undoLevel[when].ground))
 {
-Rsed.core.current_project().maasto.set_tile_value_at(undoLevel[when].ground[tile].x,
+targetProject.maasto.set_tile_value_at(undoLevel[when].ground[tile].x,
 undoLevel[when].ground[tile].y,
 undoLevel[when].ground[tile].height);
-Rsed.core.current_project().varimaa.set_tile_value_at(undoLevel[when].ground[tile].x,
+targetProject.varimaa.set_tile_value_at(undoLevel[when].ground[tile].x,
 undoLevel[when].ground[tile].y,
 undoLevel[when].ground[tile].palaIdx);
 }
 // Undo on props.
 if (undoLevel[when].props.length)
 {
-const trackId = Rsed.core.current_project().trackId;
-Rsed.core.current_project().props.set_count__loader_v5(trackId, undoLevel[when].props.length);
+const trackId = targetProject.trackId;
+targetProject.props.set_count__loader_v5(trackId, undoLevel[when].props.length);
 for (let i = 0; i < undoLevel[when].props.length; i++)
 {
-Rsed.core.current_project().props.set_prop_location(trackId, i, {
+targetProject.props.set_prop_location(trackId, i, {
 x: undoLevel[when].props[i].x,
 y: undoLevel[when].props[i].y,
 z: undoLevel[when].props[i].z,
 });
-Rsed.core.current_project().props.change_prop_type(trackId, i, undoLevel[when].props[i].propId);
+targetProject.props.change_prop_type(trackId, i, undoLevel[when].props[i].propId);
 }
 }
 // Undo on textures.
@@ -6058,14 +6111,14 @@ for (textureId of Object.keys(undoLevel[when].textures))
 const [textureType, textureIndex] = textureId.split(" ");
 // Update the texture's data. We'll get back a reference to the updated
 // texture object.
-const updatedTexture = Rsed.core.current_project()[textureType]
+const updatedTexture = targetProject[textureType]
 .copy_texture_data(Number(textureIndex),
 undoLevel[when].textures[textureId]);
 // The texture-editing view doesn't automatically update its texture
 // reference, so we'll need to let it known the texture has changed.
-if (Rsed.core.current_scene() == Rsed.scenes["texture"])
+if (Rsed.$currentScene == Rsed.scenes["texture-editor"])
 {
-Rsed.scenes["texture"].set_texture(updatedTexture);
+Rsed.scenes["texture-editor"].set_texture(updatedTexture);
 }
 }
 frozen = false;
@@ -6133,7 +6186,7 @@ Rsed.ui.htmlUI.refresh();
 mark_dirty_ground_tile: function(x = 0, y = 0)
 {
 Rsed.throw_if_not_type("number", x, y);
-if (frozen || Rsed.core.current_project().isPlaceholder)
+if (frozen || Rsed.$currentProject.isPlaceholder)
 {
 return;
 }
@@ -6143,8 +6196,8 @@ if (typeof dirtyGround[`${x} ${y}`] === "undefined")
 dirtyGround[`${x} ${y}`] = {
 x,
 y,
-height: Rsed.core.current_project().maasto.tile_at(x, y),
-palaIdx: Rsed.core.current_project().varimaa.tile_at(x, y),
+height: Rsed.$currentProject.maasto.tile_at(x, y),
+palaIdx: Rsed.$currentProject.varimaa.tile_at(x, y),
 };
 }
 },
@@ -6152,7 +6205,7 @@ palaIdx: Rsed.core.current_project().varimaa.tile_at(x, y),
 // current undo level.
 mark_dirty_props: function()
 {
-if (frozen || Rsed.core.current_project().isPlaceholder)
+if (frozen || Rsed.$currentProject.isPlaceholder)
 {
 return;
 }
@@ -6162,13 +6215,13 @@ if (dirtyProps.length)
 return;
 }
 create_undo_level();
-dirtyProps = Rsed.core.current_project().props.locations_of_props_on_track(Rsed.core.current_project().trackId);
+dirtyProps = Rsed.$currentProject.props.locations_of_props_on_track(Rsed.$currentProject.trackId);
 },
 // Stores the data of the given texture at the beginning of the current undo
 // level.
 mark_dirty_texture: function(textureType = "", palaIdx = 0)
 {
-if (frozen || Rsed.core.current_project().isPlaceholder)
+if (frozen || Rsed.$currentProject.isPlaceholder)
 {
 return;
 }
@@ -6180,7 +6233,7 @@ Rsed.throw("Unknown texture type.");
 create_undo_level();
 if (typeof dirtyTextures[`${textureType} ${palaIdx}`] === "undefined")
 {
-dirtyTextures[`${textureType} ${palaIdx}`] = Rsed.core.current_project()[textureType].texture[palaIdx];
+dirtyTextures[`${textureType} ${palaIdx}`] = Rsed.$currentProject[textureType].texture[palaIdx];
 }
 },
 };
@@ -6230,21 +6283,21 @@ return;
 Rsed.ui.assetMutator.user_edit("prop", {
 command: "set-type",
 target: Rsed.ui.inputState.current_mouse_hover().propTrackIdx,
-data: Rsed.core.current_project().props.id_for_name(name),
+data: Rsed.$currentProject.props.id_for_name(name),
 });
 window.close_dropdowns();
 return;
 },
 refresh_prop_list: function(forFinishLines = false)
 {
-this.propList = Rsed.core.current_project().props.names()
+this.propList = Rsed.$currentProject.props.names()
 .filter(propName=>(forFinishLines? propName.startsWith("finish") : !propName.startsWith("finish")))
 .map(propName=>({propName}));
 return;
 },
 refresh_track_name: function()
 {
-this.trackName = Rsed.core.current_project().name;
+this.trackName = Rsed.$currentProject.name;
 return;
 },
 }
@@ -6257,16 +6310,16 @@ uiContainer.refresh_prop_list(forFinishLines)
 refresh: function()
 {
 uiContainer.refresh_track_name();
-if ((typeof Rsed.core.current_project().name == "string") &&
-Rsed.core.current_project().name.length)
+if ((typeof Rsed.$currentProject.name == "string") &&
+Rsed.$currentProject.name.length)
 {
-document.title = `${Rsed.core.current_project().areAllChangesSaved? "" : "* "}
-${Rsed.core.current_project().name} -
-${Rsed.core.appName}`;
+document.title = `${Rsed.$currentProject.areAllChangesSaved? "" : "* "}
+${Rsed.$currentProject.name} -
+${Rsed.productName}`;
 }
 else
 {
-document.title = Rsed.core.appName;
+document.title = Rsed.productName;
 }
 },
 set_visible: function(isVisible)
@@ -6631,7 +6684,7 @@ publicInterface.brushAction = Object.freeze({void:0, changeHeight:1, changePala:
 // Modify the terrain at the given x,y coordinates with the given brush action.
 publicInterface.apply_brush_to_terrain = function(brushAction = 0, value = 0, x = 0, y = 0)
 {
-const targetProject = Rsed.core.current_project();
+const targetProject = Rsed.$currentProject;
 for (let by = -brushSize; by <= brushSize; by++)
 {
 const tileZ = (y + by);
@@ -6943,7 +6996,7 @@ return;
 };
 window.onbeforeunload = function(event)
 {
-if (!Rsed.core.current_project().areAllChangesSaved)
+if (!Rsed.$currentProject.areAllChangesSaved)
 {
 event.preventDefault();
 // Note: We just need to return a string, any string - modern browsers won't display it
@@ -6964,7 +7017,7 @@ const rsedStartupArgs = Rsed.core.default_startup_args();
 if (window.location.hash == "#play")
 {
 history.replaceState(null, null, " "); // Remove the hash.
-Rsed.core.playOnStartup = true;
+Rsed.player.runOnStartup = true;
 }
 const params = new URLSearchParams(window.location.search);
 // If the user requests to view a stream, we just need to start the stream.
@@ -7071,7 +7124,7 @@ event.preventDefault();
 if ( Rsed.ui.inputState.current_mouse_hover() &&
 (Rsed.ui.inputState.current_mouse_hover().type === "prop"))
 {
-const isFinishLine = Rsed.core.current_project().props.name(Rsed.ui.inputState.current_mouse_hover().propId).toLowerCase().startsWith("finish");
+const isFinishLine = Rsed.$currentProject.props.name(Rsed.ui.inputState.current_mouse_hover().propId).toLowerCase().startsWith("finish");
 Rsed.ui.htmlUI.refresh_prop_list(isFinishLine);
 const mousePos = Rsed.ui.inputState.mouse_pos();
 const propDropdown = document.getElementById("prop-dropdown");
@@ -7506,9 +7559,9 @@ keyboardState[keyIdx].repeat = setInterval(fire_key, 75);
 fire_key(false);
 function fire_key(isRepeat = true)
 {
-if (Rsed.core.current_scene())
+if (Rsed.$currentScene)
 {
-Rsed.core.current_scene()[(isDown? "on_key_fire" : "on_key_release")](keyIdx, isRepeat);
+Rsed.$currentScene[(isDown? "on_key_fire" : "on_key_release")](keyIdx, isRepeat);
 }
 }
 },
@@ -7654,7 +7707,7 @@ Rsed.ui.component = function()
 const publicInterface =
 {
 // A string that uniquely identifies this component from other components.
-id: Object.freeze(Rsed.generate_uuid4_string()),
+id: Object.freeze(Rsed.generate_uuid4()),
 // If the mouse cursor is currently grabbing this component, returns the grab
 // information; otherwise null is returned.
 is_grabbed: function()
@@ -7726,11 +7779,11 @@ component.draw = function(offsetX = 0, offsetY = 0)
 {
 Rsed.throw_if_not_type("number", offsetX, offsetY);
 const currentPalaIdx = Rsed.ui.groundBrush.brush_pala_idx();
-const billboardIdx = Rsed.core.current_project().palat.billboard_idx(currentPalaIdx);
-const palaTexture = Rsed.core.current_project().palat.texture[currentPalaIdx];
+const billboardIdx = Rsed.$currentProject.palat.billboard_idx(currentPalaIdx);
+const palaTexture = Rsed.$currentProject.palat.texture[currentPalaIdx];
 const billboardTexture = (billboardIdx == null)
 ? null
-: Rsed.core.current_project().palat.texture[billboardIdx];
+: Rsed.$currentProject.palat.texture[billboardIdx];
 const mousePick = new Array(palaTexture.indices.length).fill({
 type: "ui-component",
 componentId: component.id,
@@ -7769,7 +7822,7 @@ const component = Rsed.ui.component();
 component.draw = function(offsetX = 0, offsetY = 0)
 {
 Rsed.throw_if_not_type("number", offsetX, offsetY);
-Rsed.ui.draw.string(`FPS: ${Rsed.core.renderer_fps()}`, offsetX, offsetY);
+Rsed.ui.draw.string(`FPS: ${Rsed.core.ticksPerSecond}`, offsetX, offsetY);
 };
 return component;
 }
@@ -7804,7 +7857,7 @@ if ((mouseHover && (mouseHover.type === "prop")) ||
 const mouse = (mouseGrab && (mouseGrab.type === "prop"))
 ? mouseGrab
 : mouseHover;
-str = `PROP "${Rsed.core.current_project().props.name(mouse.propId)}"`;
+str = `PROP "${Rsed.$currentProject.props.name(mouse.propId)}"`;
 }
 else if (mouseHover && (mouseHover.type === "ground"))
 {
@@ -7812,9 +7865,9 @@ const x = mouseHover.groundTileX;
 const y = mouseHover.groundTileY;
 const xStr = String(x).padStart(3, "0");
 const yStr = String(y).padStart(3, "0");
-const heightStr = (Rsed.core.current_project().maasto.tile_at(x, y) < 0? "-" : "+") +
-String(Math.abs(Rsed.core.current_project().maasto.tile_at(x, y))).padStart(3, "0");
-const palaStr = String(Rsed.core.current_project().varimaa.tile_at(x, y)).padStart(3, "0");
+const heightStr = (Rsed.$currentProject.maasto.tile_at(x, y) < 0? "-" : "+") +
+String(Math.abs(Rsed.$currentProject.maasto.tile_at(x, y))).padStart(3, "0");
+const palaStr = String(Rsed.$currentProject.varimaa.tile_at(x, y)).padStart(3, "0");
 str = `HEIGHT ${heightStr} / PALA ${palaStr} / X,Y ${xStr},${yStr}`;
 }
 Rsed.ui.draw.string(str, offsetX, offsetY);
@@ -7986,7 +8039,7 @@ for (let y = 0; y < numPalatPaneRows; y++)
 for (let x = 0; x < numPalatPaneCols; (x++, palaIdx++))
 {
 if (palaIdx > maxNumPalas) break;
-const pala = Rsed.core.current_project().palat.texture[palaIdx];
+const pala = Rsed.$currentProject.palat.texture[palaIdx];
 for (let py = 0; py < palaHeight; py++)
 {
 for (let px = 0; px < palaWidth; px++)
@@ -8060,8 +8113,8 @@ Rsed.throw_if_not_type("number", offsetX, offsetY);
 /// TODO: You can pre-generate the image rather than re-generating it each frame.
 const width = 64;
 const height = 32;
-const xMul = (Rsed.core.current_project().maasto.width / width);
-const yMul = (Rsed.core.current_project().maasto.width / height);
+const xMul = (Rsed.$currentProject.maasto.width / width);
+const yMul = (Rsed.$currentProject.maasto.width / height);
 const image = []; // An array of palette indices that forms the minimap image.
 const mousePick = [];
 for (let y = 0; y < height; y++)
@@ -8070,7 +8123,8 @@ for (let x = 0; x < width; x++)
 {
 const tileX = (x * xMul);
 const tileZ = (y * yMul);
-const pala = Rsed.core.current_project().palat.texture[Rsed.core.current_project().varimaa.tile_at(tileX, tileZ)];
+const tile = Rsed.$currentProject.varimaa.tile_at(tileX, tileZ);
+const pala = Rsed.$currentProject.palat.texture[tile];
 let color = ((pala == null)? 0 : pala.indices[1]);
 image.push(color);
 mousePick.push({
@@ -8100,8 +8154,8 @@ frame.push(color);
 }
 }
 const cameraPos = Rsed.world.camera.position_floored();
-const maxX = (Rsed.core.current_project().maasto.width - Rsed.world.camera.view_width);
-const maxZ = (Rsed.core.current_project().maasto.height - Rsed.world.camera.view_height);
+const maxX = (Rsed.$currentProject.maasto.width - Rsed.world.camera.view_width);
+const maxZ = (Rsed.$currentProject.maasto.height - Rsed.world.camera.view_height);
 const camX = Math.max(0, (Math.min(maxX, cameraPos.x) / xMul));
 const camZ = Math.max(0, (Math.min(maxZ, cameraPos.z) / yMul));
 Rsed.ui.draw.image(frame, null, frameWidth, frameHeight, (offsetX - width + camX), (offsetY + camZ), true);
@@ -8279,6 +8333,7 @@ return component;
 *
 */
 "use strict";
+Rsed.scenes = {};
 // A scene consists of a UI, a 3d mesh, and an input handler for one view to the current
 // project. For instance, you might have a 3d scene, which shows the project's track as a
 // textured 3d mesh; and a tilemap scene, which displays the project's tilemap for the
@@ -8304,7 +8359,7 @@ const publicInterface =
 return publicInterface;
 }
 /*
-* Most recent known filename: js/scenes/scene-3d.js
+* Most recent known filename: js/scene/terrain-editor/terrain-editor.js
 *
 * 2019-2021 Tarpeeksi Hyvae Soft
 *
@@ -8312,10 +8367,9 @@ return publicInterface;
 *
 */
 "use strict";
-Rsed.scenes = Rsed.scenes || {};
 // A 3D view displaying the track's MAASTO and VARIMAA data. Lets the user edit
 // these data.
-Rsed.scenes["terrain"] = (function()
+Rsed.scenes["terrain-editor"] = (function()
 {
 // Lets us keep track of mouse position delta between frames; e.g. for dragging props.
 let prevMousePos = {x:0, y:0};
@@ -8412,7 +8466,7 @@ else if (key_is("a") && !repeat)
 sceneSettings.showPalatPane = !sceneSettings.showPalatPane;
 // Prevent a mouse click from acting on the ground behind the pane when the pane
 // is brought up, and on the pane when the pane has been removed.
-Rsed.core.resetMouseHover = true;
+Rsed.core.forceUpdateMouseHoverOnTickEnd = true;
 }
 else if (key_is("z"))
 {
@@ -8433,16 +8487,16 @@ Rsed.ui.undoStack.redo();
 }
 else if (key_is("q"))
 {
-Rsed.core.set_scene("tilemap");
+Rsed.$currentScene = "tilemap-editor";
 }
 else if (key_is("t"))
 {
 const mouseHover = Rsed.ui.inputState.current_mouse_hover();
 if (mouseHover && mouseHover.texture)
 {
-Rsed.scenes["texture"].set_texture(mouseHover.texture);
+Rsed.scenes["texture-editor"].set_texture(mouseHover.texture);
 }
-Rsed.core.set_scene("texture");
+Rsed.$currentScene = "texture-editor";
 }
 else if (key_is("arrowup") ||
 key_is("arrowdown"))
@@ -8470,9 +8524,9 @@ else if (key_is("l") && !repeat)
 const newHeight = parseInt(window.prompt("Level the terrain to a height of..."), 10);
 if (!isNaN(newHeight))
 {
-for (let y = 0; y < Rsed.core.current_project().maasto.height; y++)
+for (let y = 0; y < Rsed.$currentProject.maasto.height; y++)
 {
-for (let x = 0; x < Rsed.core.current_project().maasto.width; x++)
+for (let x = 0; x < Rsed.$currentProject.maasto.width; x++)
 {
 Rsed.ui.assetMutator.user_edit("maasto", {
 command: "set-height",
@@ -8528,12 +8582,12 @@ uiComponents.minimap.draw((Rsed.visual.canvas.width - margin), margin);
 if (sceneSettings.showPalatPane)
 {
 uiComponents.palatPane.update(sceneSettings);
-uiComponents.palatPane.draw((Rsed.visual.canvas.width - margin), 47);
+uiComponents.palatPane.draw((Rsed.visual.canvas.width - margin), 43);
 }
-if (Rsed.core.fps_counter_enabled())
+if (Rsed.browserMetadata.has_url_param("showFPS"))
 {
 uiComponents.fpsIndicator.update(sceneSettings);
-uiComponents.fpsIndicator.draw(margin, 10);
+uiComponents.fpsIndicator.draw(margin, 11);
 }
 }
 Rsed.ui.draw.finish_drawing(Rsed.visual.canvas);
@@ -8575,7 +8629,7 @@ vertex.y = (vanishY + ((vertex.y - vanishY) / z));
 }
 }
 }
-const renderInfo = Rngon.render(Rsed.visual.canvas.domElement.getAttribute("id"), [trackMesh],
+const renderInfo = Rngon.render(Rsed.visual.canvas.domElement, [trackMesh],
 {
 cameraPosition: Rngon.translation_vector(0, 0, 0),
 cameraDirection: Rsed.world.camera.rotation(),
@@ -8615,10 +8669,10 @@ Rsed.visual.canvas.mousePickingBuffer.fill(null);
 function move_camera()
 {
 cameraMovement.isMobileControls = Rsed.browserMetadata.isMobile;
-cameraMovement.msSinceLastUpdate += Rsed.core.tick_time_delta_ms();
+cameraMovement.msSinceLastUpdate += Rsed.core.tickDeltaMs;
 if (cameraMovement.isMobileControls)
 {
-const movementSpeed = (0.03 * Rsed.core.tick_time_delta_ms());
+const movementSpeed = (0.03 * Rsed.core.tickDeltaMs);
 const cameraMoveVector = Rngon.vector3((cameraMovement.up? -1 : cameraMovement.down? 1 : 0),
 0,
 (cameraMovement.left? -1 : cameraMovement.right? 1 : 0));
@@ -8715,7 +8769,7 @@ if (hover.type !== "ground") break;
 if (Rsed.ui.inputState.left_mouse_button_down() &&
 Rsed.ui.inputState.left_mouse_click_modifiers().includes("tab"))
 {
-const palaIdx = Rsed.core.current_project().varimaa.tile_at(hover.groundTileX, hover.groundTileY);
+const palaIdx = Rsed.$currentProject.varimaa.tile_at(hover.groundTileX, hover.groundTileY);
 Rsed.ui.groundBrush.set_brush_pala_idx(palaIdx);
 break;
 }
@@ -8725,7 +8779,7 @@ Rsed.ui.inputState.left_mouse_click_modifiers().includes("shift"))
 {
 Rsed.ui.assetMutator.user_edit("prop", {
 command: "add",
-target: Rsed.core.current_project().props.id_for_name("tree"),
+target: Rsed.$currentProject.props.id_for_name("tree"),
 data: {
 x: (hover.groundTileX * Rsed.constants.groundTileSize),
 z: (hover.groundTileY * Rsed.constants.groundTileSize),
@@ -8814,7 +8868,7 @@ return;
 }
 })();
 /*
-* Most recent known filename: js/scenes/scene-tilemap.js
+* Most recent known filename: js/scene/texture-editor/texture-editor.js
 *
 * 2019-2021 Tarpeeksi Hyvae Soft
 *
@@ -8822,270 +8876,8 @@ return;
 *
 */
 "use strict";
-Rsed.scenes = Rsed.scenes || {};
-// A top-down view of the project's VARIMAA data as a tilemap. Lets the user paint
-// onto the tilemap.
-Rsed.scenes["tilemap"] = (function()
-{
-// A representation of the track's VARIMAA data.
-const tilemap = {
-texture: {
-pixels: [],
-width: 0,
-height: 0,
-},
-mesh: Rngon.mesh([]),
-width: 0,
-height: 0,
-offsetX: 0,
-offsetY: 0,
-};
-// The latest known size of the canvas we're rendering to.
-let knownCanvasSizeX = 0;
-let knownCanvasSizeY = 0;
-const sceneSettings = {
-// Whether to show the PALAT pane; i.e. a side panel that displays all the available
-// PALA textures.
-showPalatPane: false,
-};
-// Load UI components.
-let uiComponents = null;
-(async()=>
-{
-uiComponents = {
-activePala:   Rsed.ui.component.activePala.instance(),
-palatPane:    Rsed.ui.component.palatPane.instance(),
-viewLabel:    Rsed.ui.component.label.instance(),
-fpsIndicator: Rsed.ui.component.fpsIndicator.instance(),
-footer:       Rsed.ui.component.label.instance(),
-};
-})();
-const scene = Rsed.scene(
-{
-// Updates the tilemap's texture within the given dirty rectangle.
-refresh_tilemap_texture: function(startX = 0, startY = 0, width = -1, height = -1)
-{
-const project = Rsed.core.current_project();
-const maxX = ((width == -1)? tilemap.texture.width : Math.min(tilemap.texture.width, (width + startX)));
-const maxY = ((height == -1)? tilemap.texture.height : Math.min(tilemap.texture.height, (height + startY)));
-for (let y = startY; y < maxY; y++)
-{
-for (let x = startX; x < maxX; x++)
-{
-const pala = project.palat.texture[project.varimaa.tile_at(x, y)];
-let colorIdx = ((pala == null)? 0 : pala.indices[1]);
-if ((x == project.track_checkpoint().x) &&
-(y == project.track_checkpoint().y))
-{
-colorIdx = "white";
-}
-const color = Rsed.visual.palette.color_at_idx(colorIdx);
-tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 0] = color.red;
-tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 1] = color.green;
-tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 2] = color.blue;
-tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 3] = 255;
-}
-}
-// The tilemap n-gon is a rectangle textured with the tilemap's pixels.
-const tilemapNgon = Rngon.ngon([
-Rngon.vertex( tilemap.offsetX,                   tilemap.offsetY),
-Rngon.vertex((tilemap.offsetX + tilemap.width),  tilemap.offsetY),
-Rngon.vertex((tilemap.offsetX + tilemap.width), (tilemap.offsetY + tilemap.height)),
-Rngon.vertex( tilemap.offsetX,                  (tilemap.offsetY + tilemap.height))],
-{
-color: Rngon.color_rgba(255, 255, 255),
-allowTransform: false, // The vertices are already in screen space.
-texture: Rngon.texture_rgba(tilemap.texture),
-hasWireframe: true,
-wireframeColor: Rngon.color_rgba(255, 255, 0),
-}
-);
-tilemap.mesh = Rngon.mesh([tilemapNgon]);
-return;
-},
-regenerate_tilemap: function()
-{
-const project = Rsed.core.current_project();
-tilemap.texture.width = project.varimaa.width;
-tilemap.texture.height = project.varimaa.height;
-tilemap.texture.pixels = new Array(tilemap.texture.width * tilemap.texture.height * 4);
-tilemap.width = Math.round(Rsed.visual.canvas.width * 0.7);
-tilemap.height = Math.round(Rsed.visual.canvas.height * 0.7);
-tilemap.offsetX = Math.floor((Rsed.visual.canvas.width / 2) - (tilemap.width / 2));
-tilemap.offsetY = Math.floor((Rsed.visual.canvas.height / 2) - (tilemap.height / 2));
-knownCanvasSizeX = Rsed.visual.canvas.width;
-knownCanvasSizeY = Rsed.visual.canvas.height;
-scene.refresh_tilemap_texture();
-return;
-},
-on_key_fire: function(key, repeat = false)
-{
-function key_is(compared)
-{
-return (key.localeCompare(compared, undefined, {sensitivity: "accent"}) == 0);
-}
-if (key_is("z"))
-{
-if (Rsed.ui.inputState.key_down("control") &&
-Rsed.ui.inputState.key_down("shift"))
-{
-Rsed.ui.undoStack.redo();
-scene.regenerate_tilemap();
-}
-else if (Rsed.ui.inputState.key_down("control"))
-{
-Rsed.ui.undoStack.undo();
-scene.regenerate_tilemap();
-}
-}
-else if (key_is("y") &&
-Rsed.ui.inputState.key_down("control") )
-{
-Rsed.ui.undoStack.redo();
-}
-else if (key_is("q"))
-{
-Rsed.core.set_scene("terrain");
-}
-else if (key_is("a") && !repeat)
-{
-sceneSettings.showPalatPane = !sceneSettings.showPalatPane;
-// Prevent a mouse click from acting on the ground behind the pane when the pane
-// is brought up, and on the pane when the pane has been removed.
-Rsed.core.resetMouseHover = true;
-}
-else
-{
-for (const brushSizeKey of ["1", "2", "3", "4", "5"])
-{
-if (key_is(brushSizeKey))
-{
-Rsed.ui.groundBrush.set_brush_size((brushSizeKey == 5)? 8 : (brushSizeKey - 1));
-}
-}
-}
-return;
-},
-draw_ui: function()
-{
-Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
-if (uiComponents) // Once the UI components have finished async loading...
-{
-const margin = 4;
-uiComponents.viewLabel.update("Editor: Tilemap");
-uiComponents.viewLabel.draw(margin, margin);
-uiComponents.activePala.update(sceneSettings);
-uiComponents.activePala.draw((Rsed.visual.canvas.width - 20), margin);
-uiComponents.footer.update(`Size: ${Rsed.core.current_project().maasto.width} * ${Rsed.core.current_project().maasto.width}`);
-uiComponents.footer.draw(margin, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
-if (sceneSettings.showPalatPane)
-{
-uiComponents.palatPane.update(sceneSettings);
-uiComponents.palatPane.draw((Rsed.visual.canvas.width - margin), 31);
-}
-if (Rsed.core.fps_counter_enabled())
-{
-uiComponents.fpsIndicator.update(sceneSettings);
-uiComponents.fpsIndicator.draw(margin, 10);
-}
-}
-Rsed.ui.draw.finish_drawing(Rsed.visual.canvas);
-return;
-},
-draw_mesh: function()
-{
-if ((Rsed.visual.canvas.width != knownCanvasSizeX) ||
-(Rsed.visual.canvas.height != knownCanvasSizeY) ||
-(Rsed.core.current_project().varimaa.width != tilemap.texture.width) ||
-(Rsed.core.current_project().varimaa.height != tilemap.texture.height))
-{
-scene.regenerate_tilemap();
-}
-const renderInfo = Rngon.render(Rsed.visual.canvas.domElement,
-[tilemap.mesh], {
-scale: Rsed.visual.canvas.scalingFactor,
-fov: 45,
-nearPlane: 0,
-farPlane: 10,
-depthSort: "painter",
-useDepthBuffer: false,
-});
-// If the rendering was resized since the previous frame...
-if ((renderInfo.renderWidth !== Rsed.visual.canvas.width ||
-(renderInfo.renderHeight !== Rsed.visual.canvas.height)))
-{
-Rsed.visual.canvas.width = renderInfo.renderWidth;
-Rsed.visual.canvas.height = renderInfo.renderHeight;
-window.close_dropdowns();
-}
-return;
-},
-handle_user_interaction: function()
-{
-handle_mouse_input();
-update_cursor_graphic();
-Rsed.visual.canvas.mousePickingBuffer.fill(null);
-},
-});
-return scene;
-function update_cursor_graphic()
-{
-const cursors = Rsed.ui.cursorHandler.cursors;
-const mousePos = Rsed.ui.inputState.mouse_pos_scaled_to_render_resolution();
-const mouseTilemapPosX = Math.round((mousePos.x - tilemap.offsetX) * (Rsed.core.current_project().maasto.width / tilemap.width));
-const mouseTilemapPosY = Math.round((mousePos.y - tilemap.offsetY) * (Rsed.core.current_project().maasto.height / tilemap.height));
-const mouseHover = Rsed.ui.inputState.current_mouse_hover();
-const isCursorOnTilemap = ((mouseTilemapPosX >= 0) &&
-(mouseTilemapPosY >= 0) &&
-(mouseTilemapPosX < Rsed.core.current_project().maasto.width) &&
-(mouseTilemapPosY < Rsed.core.current_project().maasto.height));
-if (mouseHover && mouseHover.cursor)
-{
-Rsed.ui.cursorHandler.set_cursor(mouseHover.cursor);
-}
-else if (isCursorOnTilemap)
-{
-Rsed.ui.cursorHandler.set_cursor(cursors.pencil);
-}
-else
-{
-Rsed.ui.cursorHandler.set_cursor(cursors.default);
-}
-return;
-}
-function handle_mouse_input()
-{
-const mousePos = Rsed.ui.inputState.mouse_pos_scaled_to_render_resolution();
-// Handle painting the tilemap.
-if (Rsed.ui.inputState.mouse_button_down())
-{
-const mouseTilemapPosX = Math.round((mousePos.x - tilemap.offsetX) * (Rsed.core.current_project().maasto.width / tilemap.width));
-const mouseTilemapPosY = Math.round((mousePos.y - tilemap.offsetY) * (Rsed.core.current_project().maasto.height / tilemap.height));
-const brushSize = (Rsed.ui.groundBrush.brush_size() + 1);
-Rsed.ui.groundBrush.apply_brush_to_terrain(Rsed.ui.groundBrush.brushAction.changePala,
-Rsed.ui.groundBrush.brush_pala_idx(),
-mouseTilemapPosX,
-mouseTilemapPosY);
-scene.refresh_tilemap_texture((mouseTilemapPosX - brushSize),
-(mouseTilemapPosY - brushSize),
-(brushSize * 2),
-(brushSize * 2));
-}
-return;
-}
-})();
-/*
-* Most recent known filename: js/scenes/scene-texture.js
-*
-* 2019-2021 Tarpeeksi Hyvae Soft
-*
-* Software: RallySportED-js
-*
-*/
-"use strict";
-Rsed.scenes = Rsed.scenes || {};
 // A view of a given texture, allowing the user to modify the texture's pixels.
-Rsed.scenes["texture"] = (function()
+Rsed.scenes["texture-editor"] = (function()
 {
 // A reference to the Rsed.visual.texture() object that we're to edit.
 let texture = null;
@@ -9126,7 +8918,7 @@ zoomLabel: Rsed.ui.component.label.instance(),
 viewLabel: Rsed.ui.component.label.instance(),
 clipboardLabel: Rsed.ui.component.label.instance(),
 palatPane: Rsed.ui.component.palatPane.instance({
-selectionCallback: (palaIdx)=>scene.set_texture(Rsed.core.current_project().palat.texture[palaIdx]),
+selectionCallback: (palaIdx)=>scene.set_texture(Rsed.$currentProject.palat.texture[palaIdx]),
 indicateSelection: false,
 }),
 };
@@ -9222,7 +9014,7 @@ Rsed.ui.undoStack.redo();
 }
 else if (key_is("q"))
 {
-Rsed.core.set_scene("terrain");
+Rsed.$currentScene = "terrain-editor";
 Rsed.ui.inputState.set_key_down("q", false);
 }
 else
@@ -9239,11 +9031,16 @@ return;
 },
 draw_ui: function()
 {
+if ((Rsed.visual.canvas.width <= 0) ||
+(Rsed.visual.canvas.height <= 0))
+{
+return;
+}
 if (!texture)
 {
-Rsed.throw_if(Rsed.core.current_project().isPlaceholder,
+Rsed.throw_if(Rsed.$currentProject.isPlaceholder,
 "Expected project data to have been loaded already.");
-this.set_texture(Rsed.core.current_project().palat.texture[3]);
+this.set_texture(Rsed.$currentProject.palat.texture[3]);
 }
 Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
 if (uiComponents) // Once the UI components have finished async loading...
@@ -9262,14 +9059,14 @@ uiComponents.clipboardLabel.update(clipboard
 ? `Clipboard: ${clipboard.width} * ${clipboard.height}${(clipboard.source == texture)? " (this)" : ""}`
 : "Clipboard: empty");
 uiComponents.clipboardLabel.draw(margin, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
-if (Rsed.core.fps_counter_enabled())
+if (Rsed.browserMetadata.has_url_param("showFPS"))
 {
-uiComponents.fpsIndicator.draw(margin, 10);
+uiComponents.fpsIndicator.draw(margin, 11);
 }
 if (sceneSettings.showPalatPane)
 {
 uiComponents.palatPane.update(sceneSettings);
-uiComponents.palatPane.draw((Rsed.visual.canvas.width - 4), 47);
+uiComponents.palatPane.draw((Rsed.visual.canvas.width - 4), 43);
 }
 }
 Rsed.ui.draw.finish_drawing(Rsed.visual.canvas);
@@ -9279,9 +9076,9 @@ draw_mesh: function()
 {
 if (!texture)
 {
-Rsed.throw_if(Rsed.core.current_project().isPlaceholder,
+Rsed.throw_if(Rsed.$currentProject.isPlaceholder,
 "Expected project data to have been loaded already.");
-this.set_texture(Rsed.core.current_project().palat.texture[3]);
+this.set_texture(Rsed.$currentProject.palat.texture[3]);
 }
 // Update the camera's position.
 {
@@ -9309,7 +9106,7 @@ textureMapping: "affine",
 uvWrapping: "clamp",
 allowAlphaReject: false,
 });
-const renderInfo = Rngon.render(Rsed.visual.canvas.domElement.getAttribute("id"), [Rngon.mesh([textureNgon])],
+const renderInfo = Rngon.render(Rsed.visual.canvas.domElement, [Rngon.mesh([textureNgon])],
 {
 cameraPosition: Rngon.translation_vector(-textureUserOffsetX, textureUserOffsetY, 0),
 scale: Rsed.visual.canvas.scalingFactor,
@@ -9530,6 +9327,403 @@ Rsed.ui.inputState.reset_wheel_scroll();
 }
 return;
 }
+})();
+/*
+* Most recent known filename: js/scene/tilemap-editor/tilemap-editor.js
+*
+* 2019-2021 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
+*
+*/
+"use strict";
+// A top-down view of the project's VARIMAA data as a tilemap. Lets the user paint
+// onto the tilemap.
+Rsed.scenes["tilemap-editor"] = (function()
+{
+// A representation of the track's VARIMAA data.
+const tilemap = {
+texture: {
+pixels: [],
+width: 0,
+height: 0,
+},
+mesh: Rngon.mesh([]),
+width: 0,
+height: 0,
+offsetX: 0,
+offsetY: 0,
+};
+// The latest known size of the canvas we're rendering to.
+let knownCanvasSizeX = 0;
+let knownCanvasSizeY = 0;
+const sceneSettings = {
+// Whether to show the PALAT pane; i.e. a side panel that displays all the available
+// PALA textures.
+showPalatPane: false,
+};
+// Load UI components.
+let uiComponents = null;
+(async()=>
+{
+uiComponents = {
+activePala:   Rsed.ui.component.activePala.instance(),
+palatPane:    Rsed.ui.component.palatPane.instance(),
+viewLabel:    Rsed.ui.component.label.instance(),
+fpsIndicator: Rsed.ui.component.fpsIndicator.instance(),
+footer:       Rsed.ui.component.label.instance(),
+};
+})();
+const scene = Rsed.scene(
+{
+// Updates the tilemap's texture within the given dirty rectangle.
+refresh_tilemap_texture: function(startX = 0, startY = 0, width = -1, height = -1)
+{
+const project = Rsed.$currentProject;
+const maxX = ((width == -1)? tilemap.texture.width : Math.min(tilemap.texture.width, (width + startX)));
+const maxY = ((height == -1)? tilemap.texture.height : Math.min(tilemap.texture.height, (height + startY)));
+for (let y = startY; y < maxY; y++)
+{
+for (let x = startX; x < maxX; x++)
+{
+const pala = project.palat.texture[project.varimaa.tile_at(x, y)];
+let colorIdx = ((pala == null)? 0 : pala.indices[1]);
+if ((x == project.track_checkpoint().x) &&
+(y == project.track_checkpoint().y))
+{
+colorIdx = "white";
+}
+const color = Rsed.visual.palette.color_at_idx(colorIdx);
+tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 0] = color.red;
+tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 1] = color.green;
+tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 2] = color.blue;
+tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 3] = 255;
+}
+}
+// The tilemap n-gon is a rectangle textured with the tilemap's pixels.
+const tilemapNgon = Rngon.ngon([
+Rngon.vertex( tilemap.offsetX,                   tilemap.offsetY),
+Rngon.vertex((tilemap.offsetX + tilemap.width),  tilemap.offsetY),
+Rngon.vertex((tilemap.offsetX + tilemap.width), (tilemap.offsetY + tilemap.height)),
+Rngon.vertex( tilemap.offsetX,                  (tilemap.offsetY + tilemap.height))],
+{
+color: Rngon.color_rgba(255, 255, 255),
+allowTransform: false, // The vertices are already in screen space.
+texture: Rngon.texture_rgba(tilemap.texture),
+hasWireframe: true,
+wireframeColor: Rngon.color_rgba(255, 255, 0),
+}
+);
+tilemap.mesh = Rngon.mesh([tilemapNgon]);
+return;
+},
+regenerate_tilemap: function()
+{
+const project = Rsed.$currentProject;
+tilemap.texture.width = project.varimaa.width;
+tilemap.texture.height = project.varimaa.height;
+tilemap.texture.pixels = new Array(tilemap.texture.width * tilemap.texture.height * 4);
+tilemap.width = Math.round(Rsed.visual.canvas.width * 0.7);
+tilemap.height = Math.round(Rsed.visual.canvas.height * 0.7);
+tilemap.offsetX = Math.floor((Rsed.visual.canvas.width / 2) - (tilemap.width / 2));
+tilemap.offsetY = Math.floor((Rsed.visual.canvas.height / 2) - (tilemap.height / 2));
+knownCanvasSizeX = Rsed.visual.canvas.width;
+knownCanvasSizeY = Rsed.visual.canvas.height;
+scene.refresh_tilemap_texture();
+return;
+},
+on_key_fire: function(key, repeat = false)
+{
+function key_is(compared)
+{
+return (key.localeCompare(compared, undefined, {sensitivity: "accent"}) == 0);
+}
+if (key_is("z"))
+{
+if (Rsed.ui.inputState.key_down("control") &&
+Rsed.ui.inputState.key_down("shift"))
+{
+Rsed.ui.undoStack.redo();
+scene.regenerate_tilemap();
+}
+else if (Rsed.ui.inputState.key_down("control"))
+{
+Rsed.ui.undoStack.undo();
+scene.regenerate_tilemap();
+}
+}
+else if (key_is("y") && Rsed.ui.inputState.key_down("control") )
+{
+Rsed.ui.undoStack.redo();
+}
+else if (key_is("q"))
+{
+Rsed.$currentScene = "terrain-editor";
+}
+else if (key_is("a") && !repeat)
+{
+sceneSettings.showPalatPane = !sceneSettings.showPalatPane;
+// Prevent a mouse click from acting on the ground behind the pane when the pane
+// is brought up, and on the pane when the pane has been removed.
+Rsed.core.forceUpdateMouseHoverOnTickEnd = true;
+}
+else
+{
+for (const brushSizeKey of ["1", "2", "3", "4", "5"])
+{
+if (key_is(brushSizeKey))
+{
+Rsed.ui.groundBrush.set_brush_size((brushSizeKey == 5)? 8 : (brushSizeKey - 1));
+}
+}
+}
+return;
+},
+draw_ui: function()
+{
+if ((Rsed.visual.canvas.width <= 0) ||
+(Rsed.visual.canvas.height <= 0))
+{
+return;
+}
+Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
+if (uiComponents) // Once the UI components have finished async loading...
+{
+const margin = 4;
+uiComponents.viewLabel.update("Editor: Tilemap");
+uiComponents.viewLabel.draw(margin, margin);
+uiComponents.activePala.update(sceneSettings);
+uiComponents.activePala.draw((Rsed.visual.canvas.width - 20), margin);
+uiComponents.footer.update(`Size: ${Rsed.$currentProject.maasto.width} * ${Rsed.$currentProject.maasto.width}`);
+uiComponents.footer.draw(margin, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
+if (sceneSettings.showPalatPane)
+{
+uiComponents.palatPane.update(sceneSettings);
+uiComponents.palatPane.draw((Rsed.visual.canvas.width - margin), 27);
+}
+if (Rsed.browserMetadata.has_url_param("showFPS"))
+{
+uiComponents.fpsIndicator.update(sceneSettings);
+uiComponents.fpsIndicator.draw(margin, 11);
+}
+}
+Rsed.ui.draw.finish_drawing(Rsed.visual.canvas);
+return;
+},
+draw_mesh: function()
+{
+if ((Rsed.visual.canvas.width != knownCanvasSizeX) ||
+(Rsed.visual.canvas.height != knownCanvasSizeY) ||
+(Rsed.$currentProject.varimaa.width != tilemap.texture.width) ||
+(Rsed.$currentProject.varimaa.height != tilemap.texture.height))
+{
+scene.regenerate_tilemap();
+}
+const renderInfo = Rngon.render(Rsed.visual.canvas.domElement,
+[tilemap.mesh], {
+scale: Rsed.visual.canvas.scalingFactor,
+fov: 45,
+nearPlane: 0,
+farPlane: 10,
+depthSort: "painter",
+useDepthBuffer: false,
+});
+// If the rendering was resized since the previous frame...
+if ((renderInfo.renderWidth !== Rsed.visual.canvas.width ||
+(renderInfo.renderHeight !== Rsed.visual.canvas.height)))
+{
+Rsed.visual.canvas.width = renderInfo.renderWidth;
+Rsed.visual.canvas.height = renderInfo.renderHeight;
+window.close_dropdowns();
+}
+return;
+},
+handle_user_interaction: function()
+{
+handle_mouse_input();
+update_cursor_graphic();
+Rsed.visual.canvas.mousePickingBuffer.fill(null);
+},
+});
+return scene;
+function update_cursor_graphic()
+{
+const cursors = Rsed.ui.cursorHandler.cursors;
+const mousePos = Rsed.ui.inputState.mouse_pos_scaled_to_render_resolution();
+const mouseTilemapPosX = Math.round((mousePos.x - tilemap.offsetX) * (Rsed.$currentProject.maasto.width / tilemap.width));
+const mouseTilemapPosY = Math.round((mousePos.y - tilemap.offsetY) * (Rsed.$currentProject.maasto.height / tilemap.height));
+const mouseHover = Rsed.ui.inputState.current_mouse_hover();
+const isCursorOnTilemap = ((mouseTilemapPosX >= 0) &&
+(mouseTilemapPosY >= 0) &&
+(mouseTilemapPosX < Rsed.$currentProject.maasto.width) &&
+(mouseTilemapPosY < Rsed.$currentProject.maasto.height));
+if (mouseHover && mouseHover.cursor)
+{
+Rsed.ui.cursorHandler.set_cursor(mouseHover.cursor);
+}
+else if (isCursorOnTilemap)
+{
+Rsed.ui.cursorHandler.set_cursor(cursors.pencil);
+}
+else
+{
+Rsed.ui.cursorHandler.set_cursor(cursors.default);
+}
+return;
+}
+function handle_mouse_input()
+{
+const mousePos = Rsed.ui.inputState.mouse_pos_scaled_to_render_resolution();
+// Handle painting the tilemap.
+if (Rsed.ui.inputState.mouse_button_down())
+{
+const mouseTilemapPosX = Math.round((mousePos.x - tilemap.offsetX) * (Rsed.$currentProject.maasto.width / tilemap.width));
+const mouseTilemapPosY = Math.round((mousePos.y - tilemap.offsetY) * (Rsed.$currentProject.maasto.height / tilemap.height));
+const brushSize = (Rsed.ui.groundBrush.brush_size() + 1);
+Rsed.ui.groundBrush.apply_brush_to_terrain(Rsed.ui.groundBrush.brushAction.changePala,
+Rsed.ui.groundBrush.brush_pala_idx(),
+mouseTilemapPosX,
+mouseTilemapPosY);
+scene.refresh_tilemap_texture((mouseTilemapPosX - brushSize),
+(mouseTilemapPosY - brushSize),
+(brushSize * 2),
+(brushSize * 2));
+}
+return;
+}
+})();
+/*
+* Most recent known filename: js/scene/loading-spinner/loading-spinner.js
+*
+* 2021 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
+*
+*/
+"use strict";
+// Displays an infinite loading animation.
+Rsed.scenes["loading-spinner"] = (function()
+{
+let rotation = 0;
+// Rally-Sport's grassy texture.
+const texture = Rngon.texture_rgba({
+width: 16,
+height: 16,
+pixels: [
+8,64,16,255,	16,96,36,255,	24,128,48,255,	8,64,16,255,
+16,96,36,255,	24,128,48,255,	24,128,48,255,	16,96,36,255,
+8,64,16,255,	24,128,48,255,	24,128,48,255,	16,96,36,255,
+24,128,48,255,	16,96,36,255,	24,128,48,255,	16,96,36,255,
+24,128,48,255,	16,96,36,255,	8,64,16,255,	8,64,16,255,
+24,128,48,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
+16,96,36,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
+16,96,36,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
+8,64,16,255,	24,128,48,255,	16,96,36,255,	16,96,36,255,
+8,64,16,255,	24,128,48,255,	16,96,36,255,	24,128,48,255,
+24,128,48,255,	16,96,36,255,	8,64,16,255,	16,96,36,255,
+24,128,48,255,	16,96,36,255,	8,64,16,255,	24,128,48,255,
+24,128,48,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
+24,128,48,255,	16,96,36,255,	16,96,36,255,	16,96,36,255,
+16,96,36,255,	16,96,36,255,	24,128,48,255,	24,128,48,255,
+16,96,36,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
+8,64,16,255,	16,96,36,255,	8,64,16,255,	16,96,36,255,
+24,128,48,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
+16,96,36,255,	8,64,16,255,	16,96,36,255,	24,128,48,255,
+24,128,48,255,	24,128,48,255,	8,64,16,255,	24,128,48,255,
+16,96,36,255,	16,96,36,255,	16,96,36,255,	8,64,16,255,
+24,128,48,255,	24,128,48,255,	8,64,16,255,	24,128,48,255,
+8,64,16,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
+24,128,48,255,	24,128,48,255,	24,128,48,255,	8,64,16,255,
+8,64,16,255,	24,128,48,255,	24,128,48,255,	24,128,48,255,
+8,64,16,255,	24,128,48,255,	16,96,36,255,	24,128,48,255,
+8,64,16,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
+8,64,16,255,	24,128,48,255,	16,96,36,255,	24,128,48,255,
+24,128,48,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
+24,128,48,255,	16,96,36,255,	16,96,36,255,	16,96,36,255,
+8,64,16,255,	8,64,16,255,	8,64,16,255,	16,96,36,255,
+8,64,16,255,	8,64,16,255,	24,128,48,255,	24,128,48,255,
+8,64,16,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
+16,96,36,255,	16,96,36,255,	24,128,48,255,	16,96,36,255,
+24,128,48,255,	24,128,48,255,	24,128,48,255,	8,64,16,255,
+8,64,16,255,	16,96,36,255,	8,64,16,255,	16,96,36,255,
+16,96,36,255,	8,64,16,255,	16,96,36,255,	24,128,48,255,
+8,64,16,255,	24,128,48,255,	24,128,48,255,	8,64,16,255,
+8,64,16,255,	8,64,16,255,	16,96,36,255,	24,128,48,255,
+24,128,48,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
+8,64,16,255,	16,96,36,255,	8,64,16,255,	24,128,48,255,
+16,96,36,255,	8,64,16,255,	16,96,36,255,	16,96,36,255,
+16,96,36,255,	16,96,36,255,	24,128,48,255,	16,96,36,255,
+8,64,16,255,	16,96,36,255,	24,128,48,255,	24,128,48,255,
+8,64,16,255,	16,96,36,255,	16,96,36,255,	8,64,16,255,
+16,96,36,255,	16,96,36,255,	8,64,16,255,	24,128,48,255,
+8,64,16,255,	16,96,36,255,	24,128,48,255,	24,128,48,255,
+24,128,48,255,	16,96,36,255,	24,128,48,255,	8,64,16,255,
+16,96,36,255,	8,64,16,255,	16,96,36,255,	24,128,48,255,
+24,128,48,255,	24,128,48,255,	24,128,48,255,	24,128,48,255,
+24,128,48,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
+16,96,36,255,	16,96,36,255,	24,128,48,255,	8,64,16,255,
+24,128,48,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
+24,128,48,255,	24,128,48,255,	24,128,48,255,	8,64,16,255,
+24,128,48,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
+16,96,36,255,	16,96,36,255,	24,128,48,255,	24,128,48,255,
+24,128,48,255,	8,64,16,255,	24,128,48,255,	24,128,48,255,
+24,128,48,255,	16,96,36,255,	8,64,16,255,	16,96,36,255,
+8,64,16,255,	16,96,36,255,	24,128,48,255,	16,96,36,255,
+24,128,48,255,	16,96,36,255,	24,128,48,255,	8,64,16,255,
+8,64,16,255,	16,96,36,255,	8,64,16,255,	24,128,48,255,
+8,64,16,255,	8,64,16,255,	16,96,36,255,	16,96,36,255,
+16,96,36,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
+24,128,48,255,	24,128,48,255,	16,96,36,255,	16,96,36,255],
+});
+const scene = Rsed.scene(
+{
+draw_mesh: function()
+{
+rotation += 1;
+const point = Rngon.ngon([
+Rngon.vertex(-1, -1, 0, 0, 0),
+Rngon.vertex( 1, -1, 0, 1, 0),
+Rngon.vertex( 1,  1, 0, 1, 1),
+Rngon.vertex(-1,  1, 0, 0, 1)], {
+texture,
+textureMapping: "affine",
+hasWireframe: true,
+wireframeColor: Rngon.color_rgba(255, 255, 0),
+});
+const mesh = Rngon.mesh([point], {
+rotation: Rngon.rotation_vector(0, rotation, rotation),
+});
+const renderInfo = Rngon.render(Rsed.visual.canvas.domElement, [mesh],
+{
+cameraPosition: Rngon.translation_vector(0, 0, -18),
+scale: 0.5,
+});
+// If the rendering was resized since the previous frame...
+if ((renderInfo.renderWidth !== Rsed.visual.canvas.width ||
+(renderInfo.renderHeight !== Rsed.visual.canvas.height)))
+{
+Rsed.visual.canvas.width = renderInfo.renderWidth;
+Rsed.visual.canvas.height = renderInfo.renderHeight;
+}
+return;
+},
+draw_ui: function()
+{
+const width = Rsed.visual.canvas.width;
+const height = Rsed.visual.canvas.height;
+if ((width <= 0) || (height <= 0))
+{
+return;
+}
+Rsed.ui.draw.begin_drawing(Rsed.visual.canvas);
+const text = "Loading...";
+const textWidth = Rsed.ui.font.width_in_pixels(text);
+Rsed.ui.draw.string(text, ((width / 2) - (textWidth / 2)), ((height / 2) + 60));
+Rsed.ui.draw.finish_drawing(Rsed.visual.canvas);
+return;
+},
+});
+return scene;
 })();
 /*
 * Most recent known filename: js/stream/stream.js
@@ -9808,7 +10002,7 @@ if (newViewer.open)
 {
 clearInterval(timer);
 Rsed.stream.send_packet("project-data",
-Rsed.core.current_project().json(),
+Rsed.$currentProject.json(),
 newViewer,
 {
 keepAlive: false,
@@ -9965,7 +10159,7 @@ if (newViewer.open)
 {
 clearInterval(timer);
 Rsed.stream.send_packet("project-data",
-Rsed.core.current_project().json(),
+Rsed.$currentProject.json(),
 newViewer);
 viewers.push(newViewer);
 }
@@ -10117,7 +10311,7 @@ return publicInterface;
 /*
 * Most recent known filename: js/core/core.js
 *
-* 2018-2020 Tarpeeksi Hyvae Soft
+* 2018-2021 Tarpeeksi Hyvae Soft
 *
 * Software: RallySportED-js
 *
@@ -10128,35 +10322,27 @@ Rsed.core = (function()
 // Set to true while the core is running (e.g. as a result of calling start()).
 let coreIsRunning = false;
 // Set to true when core.panic() is called.
-let corePanicked = false;
-// The number of frames per second being generated.
-let programFPS = 0;
+let coreIsInPanic = false;
+let ticksPerSecond = 0;
 // The project we've currently got loaded. When the user makes edits or requests a save,
 // this is the target project.
 let project = Rsed.project.placeholder;
 // The scene we're currently displaying to the user.
-let currentScene = Rsed.scenes["terrain"];
+let scene = Rsed.scenes["loading-spinner"];
 // The number of milliseconds elapsed between the most recent tick and the one
 // preceding it. E.g. at 60 FPS this would be about 16.
-let tickTimeDeltaMs = 0;
-// Whether to display an FPS counter to the user.
-const fpsCounterEnabled = (()=>
-{
-const params = new URLSearchParams(window.location.search);
-return (params.has("showFramerate") && (Number(params.get("showFramerate")) === 1));
-})();
+let tickDeltaMs = 0;
 const publicInterface =
 {
-appName: "RallySportED",
-// If true when Rsed.core.start() is called, the current track will be
-// loaded into an instance of Rally-Sport running in the browser, allowing
-// the user to play the track.
-playOnStartup: false,
-resetMouseHover: false,
-tick_time_delta_ms: ()=>tickTimeDeltaMs,
-is_running: ()=>coreIsRunning,
-renderer_fps: ()=>programFPS,
-fps_counter_enabled: ()=>fpsCounterEnabled,
+forceUpdateMouseHoverOnTickEnd: false,
+get ticksPerSecond()
+{
+return ticksPerSecond;
+},
+get tickDeltaMs()
+{
+return tickDeltaMs;
+},
 default_startup_args: function()
 {
 return {
@@ -10180,21 +10366,24 @@ start: async function(args = {})
 {
 Rsed.throw_if_not_type("object", args);
 args = {
-...this.default_startup_args(),
+...Rsed.core.default_startup_args(),
 ...args,
 };
 coreIsRunning = false;
+Rsed.$currentScene = "loading-spinner";
 // Hide the UI while we load up the project's data etc.
 Rsed.ui.htmlUI.set_visible(false);
-verify_browser_compatibility();
 await load_project(args.project);
 Rsed.ui.htmlUI.refresh();
 Rsed.ui.htmlUI.set_visible(true);
-if (this.playOnStartup)
+if (Rsed.player.runOnStartup)
 {
 Rsed.player.play(true);
 }
 coreIsRunning = true;
+Rsed.$currentScene = "terrain-editor";
+Rsed.browserMetadata.warn_of_incompatibilities();
+return;
 },
 // Something went fatally wrong and the app can't recover from it. All that's
 // left to do is to shut everything down and ask the user to reload.
@@ -10202,7 +10391,7 @@ panic: function(errorMessage)
 {
 Rsed.ui.htmlUI.display_blue_screen(errorMessage);
 coreIsRunning = false;
-corePanicked = true;
+coreIsInPanic = true;
 publicInterface.start = ()=>{}; // Prevent restarting from code.
 },
 current_project: function()
@@ -10213,107 +10402,46 @@ return project;
 },
 current_scene: function()
 {
-Rsed.assert && (currentScene !== null)
+Rsed.assert && (scene !== null)
 || Rsed.throw("Attempting to access an uninitialized scene.");
-return currentScene;
+return scene;
 },
 set_scene: function(sceneName)
 {
 Rsed.assert && (Rsed.scenes[sceneName])
 || Rsed.throw("Attempting to set an unknown scene.");
-currentScene = Rsed.scenes[sceneName];
+scene = Rsed.scenes[sceneName];
 // If we've switched to the tilemap scene, make sure it's reflecting
 // any changes we may have made to the track in the previous scene.
-if (currentScene == Rsed.scenes["tilemap"])
+if (scene == Rsed.scenes["tilemap-editor"])
 {
-currentScene.regenerate_tilemap();
+scene.regenerate_tilemap();
 }
 return;
 },
 }
 tick();
-render_loading_animation();
 return publicInterface;
-// Renders a spinner until the core starts up.
-function render_loading_animation()
-{
-const targetScale = 2000;
-let currentScale = 25;
-(function render_loop(frameCount = 170)
-{
-if (coreIsRunning ||
-corePanicked)
-{
-return;
-}
-if (frameCount >= 180)
-{
-const shade = 168;
-currentScale = Rsed.lerp(currentScale, targetScale, 0.0001);
-const meshes = new Array(100).fill().map((p, idx)=>
-{
-const point = Rngon.ngon([Rngon.vertex((idx / 5000), 0, 0)],
-{
-color: Rngon.color_rgba(shade, shade, shade),
-});
-const mesh = Rngon.mesh([point],
-{
-rotation: Rngon.rotation_vector(70, 0, ((500 + frameCount * idx) / 30)),
-scaling: Rngon.scaling_vector(currentScale, currentScale, currentScale)
-});
-return mesh;
-});
-Rngon.render(Rsed.visual.canvas.domElement.getAttribute("id"), meshes,
-{
-cameraPosition: Rngon.translation_vector(0, 0, -14),
-scale: 0.25,
-});
-}
-window.requestAnimationFrame(()=>render_loop(frameCount + 1));
-})();
-}
 // Called once per frame to orchestrate program flow.
 function tick(timestamp = 0, timeDeltaMs = 0)
 {
 const realScreenWidth = document.getElementById("render-canvas-container").clientWidth;
 Rsed.visual.canvas.scalingFactor = Math.min(1, Math.max(0.05, ((1920 / realScreenWidth) * 0.25)));
-if (coreIsRunning &&
-!Rsed.player.is_playing())
+if (!Rsed.player.is_playing())
 {
-tickTimeDeltaMs = timeDeltaMs;
-programFPS = Math.round(1000 / (timeDeltaMs || 1));
-currentScene.handle_user_interaction();
-currentScene.draw_mesh();
-currentScene.draw_ui();
-if (publicInterface.resetMouseHover)
+tickDeltaMs = timeDeltaMs;
+ticksPerSecond = Math.round(1000 / (timeDeltaMs || 1));
+scene.handle_user_interaction();
+scene.draw_mesh();
+scene.draw_ui();
+if (publicInterface.forceUpdateMouseHoverOnTickEnd)
 {
 Rsed.ui.inputState.update_mouse_hover();
-publicInterface.resetMouseHover = false;
+publicInterface.forceUpdateMouseHoverOnTickEnd = false;
 }
 }
 // Keep ticking.
 window.requestAnimationFrame((newTimestamp)=>tick(newTimestamp, (newTimestamp - timestamp)));
-}
-// Test various browser compatibility factors, and give the user messages of warning where appropriate.
-function verify_browser_compatibility()
-{
-// RallySportED-js projects are exported (saved) via JSZip using Blobs.
-if (!JSZip.support.blob)
-{
-Rsed.ui.popup_notification("This browser doesn't support saving projects to disk!",
-{
-notificationType: "warning",
-});
-}
-// A crude test for whether the user's device might not have the required input
-// devices available.
-if (Rsed.browserMetadata.isMobile)
-{
-Rsed.ui.popup_notification("Note: This app has limited support for mobile devices.",
-{
-timeoutMs: 7000,
-});
-}
 }
 async function load_project(projectMeta)
 {

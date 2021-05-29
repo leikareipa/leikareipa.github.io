@@ -1184,7 +1184,7 @@
                                 kelpo->window.open(0, 640, 480, 16);
 
                                 while (kelpo->window.process_messages(),
-                                    !kelpo->window.is_closing())
+                                       !kelpo->window.is_closing())
                                 {
                                     kelpo->rasterizer.clear_frame();
                                     kelpo->rasterizer.draw_triangles(&triangle, 1);

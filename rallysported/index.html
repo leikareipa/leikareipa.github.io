@@ -24,7 +24,7 @@
 
                     <div class="button"
                          title="Download this track as a ZIP file"
-                         onclick="Rsed.core.current_project().download_as_zip();">
+                         onclick="Rsed.$currentProject.download_as_zip();">
 
                         <i class="fas fa-fw fa-download"></i>
                         Download
@@ -33,7 +33,7 @@
 
                     <div class="button"
                          title="Rename this track"
-                         onclick="Rsed.core.current_project().rename();">
+                         onclick="Rsed.$currentProject.rename();">
 
                         <i class="fas fa-fw fa-tag"></i>
                         Rename
@@ -110,7 +110,7 @@
                      </div>
 
                     <div class="button"
-                         onclick="Rsed.core.set_scene('terrain');">
+                         onclick="Rsed.$currentScene = 'terrain-editor';">
 
                         <i class="fas fa-fw fa-mountain"></i>
                         Terrain
@@ -118,7 +118,7 @@
                     </div>
 
                      <div class="button"
-                         onclick="Rsed.core.set_scene('tilemap');">
+                         onclick="Rsed.$currentScene = 'tilemap-editor';">
 
                         <i class="fas fa-fw fa-paint-roller"></i>
                         Tilemap
@@ -126,7 +126,7 @@
                     </div>
 
                      <div class="button"
-                         onclick="Rsed.core.set_scene('texture');">
+                         onclick="Rsed.$currentScene = 'texture-editor';">
 
                         <i class="fas fa-fw fa-image"></i>
                         Texture
