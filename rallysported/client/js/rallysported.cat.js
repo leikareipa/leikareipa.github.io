@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (30 May 2021 03:21:26 UTC)
+// VERSION: live (02 June 2021 22:16:41 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -6172,11 +6172,6 @@ if (Rsed.unitTestRun) return;
 const rsedStartupArgs = Rsed.core.default_startup_args();
 // Parse the user-supplied URL parameters.
 {
-if (window.location.hash == "#play")
-{
-history.replaceState(null, null, " "); // Remove the hash.
-Rsed.player.runOnStartup = true;
-}
 const params = new URLSearchParams(window.location.search);
 // If the user requests to view a stream, we just need to start the stream.
 // Once the user joins the stream as a viewer, they'll receive the track's
@@ -6221,6 +6216,20 @@ rsedStartupArgs.project.dataLocality = "server-rsc";
 }
 rsedStartupArgs.project.contentId = contentId;
 }
+}
+// Parse the URL hash, if any.
+{
+if (["#terrain", "#texture", "#tilemap"].includes(window.location.hash))
+{
+const scene = `${window.location.hash.substring(1)}-editor`;
+rsedStartupArgs.editor = scene;
+}
+if (window.location.hash == "#play")
+{
+Rsed.player.runOnStartup = true;
+}
+// Remove the hash.
+history.replaceState(null, null, " ");
 }
 Rsed.core.start(rsedStartupArgs);
 return;
@@ -10337,6 +10346,8 @@ dataLocality: "server-rsed", // | "server-rsc" | "client"
 // reference.
 contentId: "demod",
 },
+// Which asset editor (from Rsed.scenes.xxxx) to show by default.
+editor: "terrain-editor",
 // If the user is viewing a stream, its id will be set here.
 stream: null,
 }
@@ -10361,7 +10372,7 @@ if (Rsed.player.runOnStartup)
 Rsed.player.play(true);
 }
 coreIsRunning = true;
-Rsed.$currentScene = "terrain-editor";
+Rsed.$currentScene = (args.editor || "terrain-editor");
 Rsed.browserMetadata.warn_of_incompatibilities();
 return;
 },
