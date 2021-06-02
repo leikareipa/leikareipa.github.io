@@ -83,46 +83,259 @@
                 </dokki-topic>
 
                 <dokki-topic title="Controls">
-                    <h2>
-                        Mouse controls
-                    </h2>
-                
-                    <ul>
-                        <li><b>Left click on ground</b>: 3D view: Move the ground up. Texture & tilemap editors: Draw.</li>
-                        <li><b>Right click on ground</b>: 3D view: Move the ground down. Texture & tilemap editors: Draw.</li>
-                        <li><b>Middle click on ground</b>: 3D view: Paint the ground with the currently-selected ground texture.</li>
-                        <li><b>Right click on prop</b>: 3D view: Change the prop's type.</li>
-                        <li><b>Left click & drag prop</b>: 3D view: Move the prop.</li>
-                        <li><b>Shift + wheel</b>: 3D view: Tilt the camera up/down. Texture editor: Zoom.</li>
-                        <li><b>Shift + left click on ground</b>: 3D view: Add a new prop.</li>
-                        <li><b>Shift + left click on prop</b>: 3D view: Remove the prop.</li>
-                        <li><b>Tab + left click</b>: Eyedropper tool.</li>
-                        <li><b>Tab + hover on ground texture pane</b>: Show the hovered texture's index value.</li>
-                    </ul>
-                
-                    <h2>
-                        Keyboard controls
-                    </h2>
-                
-                    <ul>
-                        <li><b>E S D F</b>: 3D view: Move the camera.</li>
-                        <li><b>1 2 3 4 5</b>: 3D view: Set the size of the ground-editing brush.</li>
-                        <li><b>L</b>: 3D view: Level the terrain to a given height.</li>
-                        <li><b>W</b>: 3D view: Toggle wireframe rendering on/off.</li>
-                        <li><b>B</b>: 3D view: Toggle prop visibility.</li>
-                        <li><b>T</b>: 3D view: Open the hovered texture in the texture editor.</li>
-                        <li><b>G</b>: 3D view: Show a preview under the cursor of the currently-selected ground texture.</li>
-                        <li><b>R</b>: Texture editor: Rotate the current texture.</li>
-                        <li><b>A</b>: Open/close the ground texture pane.</li>
-                        <li><b>Q</b>: Open/close the tilemap editor.</li>
-                        <li><b>Space</b>: 3D view: Toggle the ground-smoothing mode on/off (smoothens the ground instead of raising/lowering it).</li>
-                        <li><b>Up/down arrows</b>: 3D view: Raise/lower the ground by one where the mouse cursor is hovering.</li>
-                        <li><b>Ctrl + Z</b>: Undo your latest changes.</li>
-                        <li><b>Ctrl + Y</b>: Redo your latest changes.</li>
-                        <li><b>Ctrl + Shift + Z</b>: Redo your latest changes.</li>
-                        <li><b>Ctrl + C</b>: Texture editor: Copy the current texture onto the clipboard.</li>
-                        <li><b>Ctrl + V</b>: Texture editor: Paste the current texture from the clipboard.</li>
-                    </ul>
+                    <dokki-table>
+                        <template #caption>
+                            Mouse & keyboard controls for the terrain editor
+                        </template>
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Input</th>
+                                    <th>Target</th>
+                                    <th>Result</th>
+                                </tr>
+                                <tr>
+                                    <td><em>E</em> <em>S</em> <em>D</em> <em>F</em></td>
+                                    <td></td>
+                                    <td>Move the camera</td>
+                                </tr>
+                                <tr>
+                                    <td><em>1</em> <em>2</em> <em>3</em> <em>4</em></td>
+                                    <td></td>
+                                    <td>Set the size of the paint brush</td>
+                                </tr>
+                                <tr>
+                                    <td><em>L</em></td>
+                                    <td></td>
+                                    <td>Bulldoze the ground to a given height</td>
+                                </tr>
+                                <tr>
+                                    <td><em>W</em></td>
+                                    <td></td>
+                                    <td>Toggle wireframe rendering on/off</td>
+                                </tr>
+                                <tr>
+                                    <td><em>B</em></td>
+                                    <td></td>
+                                    <td>Toggle prop transparency on/off</td>
+                                </tr>
+                                <tr>
+                                    <td><em>T</em></td>
+                                    <td></td>
+                                    <td>Open in the texture editor the texture on which the mouse hovers</td>
+                                </tr>
+                                <tr>
+                                    <td><em>G</em></td>
+                                    <td></td>
+                                    <td>Toggle mouse hover PALA preview on/off</td>
+                                </tr>
+                                <tr>
+                                    <td><em>A</em></td>
+                                    <td></td>
+                                    <td>Toggle the PALA texture pane on/off</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Q</em></td>
+                                    <td></td>
+                                    <td>Open the tilemap editor</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Space</em></td>
+                                    <td></td>
+                                    <td>Toggle ground smoothing on/off</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Up</em></td>
+                                    <td></td>
+                                    <td>Raise the ground by one unit where the mouse is hovering</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Down</em></td>
+                                    <td></td>
+                                    <td>Lower the ground by one unit where the mouse is hovering</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Ctrl+Z</em></td>
+                                    <td></td>
+                                    <td>Undo changes (across all editors)</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Ctrl+Shift+Z</em></td>
+                                    <td></td>
+                                    <td>Redo changes (across all editors)</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Shift+wheel</em></td>
+                                    <td></td>
+                                    <td>Tilt the camera</td>
+                                </tr>
+                                <tr>
+                                    <td><em>LClick</em></td>
+                                    <td>ground</td>
+                                    <td>Move the ground up</td>
+                                </tr>
+                                <tr>
+                                    <td><em>RClick</em></td>
+                                    <td>ground</td>
+                                    <td>Move the ground down</td>
+                                </tr>
+                                <tr>
+                                    <td><em>MClick</em></td>
+                                    <td>ground</td>
+                                    <td>Paint the ground with the currently-selected PALA texture</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Tab+LClick</em></td>
+                                    <td>ground</td>
+                                    <td>Eyedropper tool: select the PALA on which the cursor hovers</td>
+                                </tr>
+                                <tr>
+                                    <td><em>RClick</em></td>
+                                    <td>prop</td>
+                                    <td>Change the prop's type</td>
+                                </tr>
+                                <tr>
+                                    <td><em>LDrag</em></td>
+                                    <td>prop</td>
+                                    <td>Move the prop</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Shift+LClick</em></td>
+                                    <td>prop</td>
+                                    <td>Remove the prop</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Shift+LClick</em></td>
+                                    <td>ground</td>
+                                    <td>Add a prop</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        Legend:
+                                        <em>LClick</em> = left click,
+                                        <em>RClick</em> = right click,
+                                        <em>MClick</em> = middle click,
+                                        <em>LDrag</em> = left click & drag
+                                    </td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+
+                    <dokki-table>
+                        <template #caption>
+                            Mouse & keyboard controls for the texture editor
+                        </template>
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Input</th>
+                                    <th>Target</th>
+                                    <th>Result</th>
+                                </tr>
+                                <tr>
+                                    <td><em>LClick</em> <em>RClick</em></td>
+                                    <td>texture</td>
+                                    <td>Paint the texture with the currently-selected color</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Tab+LClick</em></td>
+                                    <td>texture</td>
+                                    <td>Eyedropper tool: select the color on which the cursor hovers</td>
+                                </tr>
+                                <tr>
+                                    <td><em>E</em> <em>S</em> <em>D</em> <em>F</em></td>
+                                    <td></td>
+                                    <td>Move the camera</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Shift+wheel</em></td>
+                                    <td></td>
+                                    <td>Zoom the camera</td>
+                                </tr>
+                                <tr>
+                                    <td><em>R</em></td>
+                                    <td></td>
+                                    <td>Rotate the texture</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Ctrl+C</em></td>
+                                    <td></td>
+                                    <td>Copy the texture onto the clipboard</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Ctrl+V</em></td>
+                                    <td></td>
+                                    <td>Paste the clipboard over the texture</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Ctrl+Z</em></td>
+                                    <td></td>
+                                    <td>Undo changes (across all editors)</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Ctrl+Shift+Z</em></td>
+                                    <td></td>
+                                    <td>Redo changes (across all editors)</td>
+                                </tr>
+                                <tr>
+                                    <td><em>A</em></td>
+                                    <td></td>
+                                    <td>Toggle the PALA texture pane on/off</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        Legend:
+                                        <em>LClick</em> = left click,
+                                        <em>RClick</em> = right click
+                                    </td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+
+                    <dokki-table>
+                        <template #caption>
+                            Mouse & keyboard controls for the tilemap editor
+                        </template>
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Input</th>
+                                    <th>Target</th>
+                                    <th>Result</th>
+                                </tr>
+                                <tr>
+                                    <td><em>LClick</em> <em>RClick</em></td>
+                                    <td>tilemap</td>
+                                    <td>Paint the tilemap with the currently-selected PALA texture</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Ctrl+Z</em></td>
+                                    <td></td>
+                                    <td>Undo changes (across all editors)</td>
+                                </tr>
+                                <tr>
+                                    <td><em>Ctrl+Shift+Z</em></td>
+                                    <td></td>
+                                    <td>Redo changes (across all editors)</td>
+                                </tr>
+                                <tr>
+                                    <td><em>A</em></td>
+                                    <td></td>
+                                    <td>Toggle the PALA texture pane on/off</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        Legend:
+                                        <em>LClick</em> = left click,
+                                        <em>RClick</em> = right click
+                                    </td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+
                 </dokki-topic>
 
                 <dokki-topic title="Saving tracks">
@@ -218,21 +431,28 @@
                     </p>
 
                     <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa"
-                                  height="700px"
+                                  height="400px"
                                   title="rallysported/?track=demoa">
                     </dokki-iframe>
 
                     <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=democ"
-                                  height="700px"
+                                  height="400px"
                                   title="rallysported/?track=democ">
                     </dokki-iframe>
 
-                    <dokki-tip>
-                        Appending the <i>#play</i> hash to the URL tells <product-name/> to open
-                        the track in Rally-Sport inside a browser-based DOSBox.
+                    <p>
+                        Appending the <i>#play</i> hash to the URL will have <product-name/> open
+                        the track in Rally-Sport in an in-browser DOSBox.
                         
-                        Like this: <a href="/rallysported/?track=demod#play">rallysported/?track=demod#play</a>.
-                    </dokki-tip>
+                        Like this: <a href="/rallysported/?track=demod#play">rallysported/?track=demod#play</a>,
+                        and as demonstrated in the inline frame below.
+
+                        <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play"
+                                      height="500px"
+                                      title="rallysported/?track=demod#play"
+                                      autofocus>
+                        </dokki-iframe>
+                    </p>
 
                     <h2>Drag & drop</h2>
 

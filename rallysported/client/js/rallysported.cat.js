@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (29 May 2021 05:21:33 UTC)
+// VERSION: live (30 May 2021 03:21:26 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -15,23 +15,19 @@
 //	./src/client/js/rallysported-js/ui/popup-notification.js
 //	./src/client/js/rallysported-js/misc/browser-metadata.js
 //	./src/client/js/rallysported-js/misc/uuidgen.js
-//	./src/client/js/rallysported-js/misc/rngon-minimal-fill.js
-//	./src/client/js/rallysported-js/misc/rngon-minimal-tcl.js
 //	./src/client/js/rallysported-js/player/player.js
 //	./src/client/js/rallysported-js/project/project.js
 //	./src/client/js/rallysported-js/project/hitable.js
 //	./src/client/js/rallysported-js/misc/constants.js
-//	./src/client/js/rallysported-js/world/world.js
-//	./src/client/js/rallysported-js/world/mesh-builder.js
-//	./src/client/js/rallysported-js/world/camera.js
 //	./src/client/js/rallysported-js/visual/texture.js
 //	./src/client/js/rallysported-js/visual/palette.js
 //	./src/client/js/rallysported-js/visual/canvas.js
-//	./src/client/js/rallysported-js/track/varimaa.js
-//	./src/client/js/rallysported-js/track/maasto.js
-//	./src/client/js/rallysported-js/track/kierros.js
-//	./src/client/js/rallysported-js/track/palat.js
-//	./src/client/js/rallysported-js/track/props.js
+//	./src/client/js/rallysported-js/game-content/game-content.js
+//	./src/client/js/rallysported-js/game-content/varimaa.js
+//	./src/client/js/rallysported-js/game-content/maasto.js
+//	./src/client/js/rallysported-js/game-content/kierros.js
+//	./src/client/js/rallysported-js/game-content/palat.js
+//	./src/client/js/rallysported-js/game-content/props.js
 //	./src/client/js/rallysported-js/ui/asset-mutator.js
 //	./src/client/js/rallysported-js/ui/undo-stack.js
 //	./src/client/js/rallysported-js/ui/html.js
@@ -52,6 +48,10 @@
 //	./src/client/js/rallysported-js/ui/components/label.js
 //	./src/client/js/rallysported-js/scene/scene.js
 //	./src/client/js/rallysported-js/scene/terrain-editor/terrain-editor.js
+//	./src/client/js/rallysported-js/scene/terrain-editor/camera.js
+//	./src/client/js/rallysported-js/scene/terrain-editor/mesh-builder.js
+//	./src/client/js/rallysported-js/scene/terrain-editor/rngon-minimal-fill.js
+//	./src/client/js/rallysported-js/scene/terrain-editor/rngon-minimal-tcl.js
 //	./src/client/js/rallysported-js/scene/texture-editor/texture-editor.js
 //	./src/client/js/rallysported-js/scene/tilemap-editor/tilemap-editor.js
 //	./src/client/js/rallysported-js/scene/loading-spinner/loading-spinner.js
@@ -2939,358 +2939,6 @@ Rsed.uuid.generate_v4 = function()
 return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c=>(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
 }
 /*
-* 2019, 2020 Tarpeeksi Hyvae Soft
-*
-* Software: RallySportED-js
-*
-*/
-"use strict";
-{ // A block to limit the scope of the unit-global variables we set up, below.
-// We'll sort the n-gon's vertices into those on its left side and those on its
-// right side.
-const leftVerts = new Array(500);
-const rightVerts = new Array(500);
-// Then we'll organize the sorted vertices into edges (lines between given two
-// vertices). Once we've got the edges figured out, we can render the n-gon by filling
-// in the spans between its edges.
-const leftEdges = new Array(500).fill().map(e=>({}));
-const rightEdges = new Array(500).fill().map(e=>({}));
-let numLeftVerts = 0;
-let numRightVerts = 0;
-let numLeftEdges = 0;
-let numRightEdges = 0;
-// A stripped-down version of the retro n-gon renderer's polygon filler. Includes
-// only the features required by RallySportED-js, helping to boost FPS.
-//
-// For the original function, see Rngon.ngon_filler().
-//
-// Note: Consider this the inner render loop; it may contain ugly things like
-// code repetition for the benefit of performance. If you'd like to refactor the
-// code, please benchmark its effects on performance first - maintaining or
-// improving performance would be great, losing performance would be bad.
-//
-Rsed.minimal_rngon_filler = function(auxiliaryBuffers = [])
-{
-const pixelBuffer = Rngon.internalState.pixelBuffer.data;
-const renderWidth = Rngon.internalState.pixelBuffer.width;
-const renderHeight = Rngon.internalState.pixelBuffer.height;
-const vertexSorters =
-{
-verticalAscending: (vertA, vertB)=>((vertA.y === vertB.y)? 0 : ((vertA.y < vertB.y)? -1 : 1)),
-verticalDescending: (vertA, vertB)=>((vertA.y === vertB.y)? 0 : ((vertA.y > vertB.y)? -1 : 1))
-}
-// Rasterize the n-gons.
-for (let n = 0; n < Rngon.internalState.ngonCache.count; n++)
-{
-const ngon = Rngon.internalState.ngonCache.ngons[n];
-const material = ngon.material;
-const texture = ngon.material.texture;
-Rngon.assert && (ngon.vertices.length < leftVerts.length)
-|| Rngon.throw("Overflowing the vertex buffer");
-numLeftVerts = 0;
-numRightVerts = 0;
-numLeftEdges = 0;
-numRightEdges = 0;
-// In theory, we should never receive n-gons that have no vertices, but let's check
-// to make sure.
-if (ngon.vertices.length <= 0)
-{
-continue;
-}
-// Rasterize a line.
-if (ngon.vertices.length === 2)
-{
-Rngon.line_draw(ngon.vertices[0], ngon.vertices[1], material.color, n, false);
-continue;
-}
-// Rasterize a polygon with 3 or more vertices.
-else
-{
-// Figure out which of the n-gon's vertices are on its left side and which on the
-// right. The vertices on both sides will be arranged from smallest Y to largest
-// Y, i.e. top-to-bottom in screen space. The top-most vertex and the bottom-most
-// vertex will be shared between the two sides.
-{
-// For rectangular ground tiles.
-if (material.auxiliary.isGroundTile)
-{
-Rngon.assert && (ngon.vertices.length == 4)
-|| Rngon.throw("Expected a rectangle.");
-let leftTop = ngon.vertices[3];
-let leftBottom = ngon.vertices[0];
-let rightTop = ngon.vertices[2];
-let rightBottom = ngon.vertices[1];
-if (leftTop.y > leftBottom.y)
-{
-[leftTop, leftBottom] = [leftBottom, leftTop];
-}
-if (rightTop.y > rightBottom.y)
-{
-[rightTop, rightBottom] = [rightBottom, rightTop];
-}
-if (leftTop.y < rightTop.y)
-{
-leftVerts[numLeftVerts++] = leftTop;
-leftVerts[numLeftVerts++] = leftBottom;
-rightVerts[numRightVerts++] = leftTop;
-rightVerts[numRightVerts++] = rightTop;
-rightVerts[numRightVerts++] = rightBottom;
-}
-else
-{
-leftVerts[numLeftVerts++] = rightTop;
-leftVerts[numLeftVerts++] = leftTop;
-leftVerts[numLeftVerts++] = leftBottom;
-rightVerts[numRightVerts++] = rightTop;
-rightVerts[numRightVerts++] = rightBottom;
-}
-if (leftBottom.y < rightBottom.y)
-{
-leftVerts[numLeftVerts++] = rightBottom;
-}
-else
-{
-rightVerts[numRightVerts++] = leftBottom;
-}
-}
-// Generic algorithm for n-sided convex polygons.
-else
-{
-// Sort the vertices by height from smallest Y to largest Y.
-ngon.vertices.sort(vertexSorters.verticalAscending);
-const topVert = ngon.vertices[0];
-const bottomVert = ngon.vertices[ngon.vertices.length-1];
-leftVerts[numLeftVerts++] = topVert;
-rightVerts[numRightVerts++] = topVert;
-// Trace a line along XY between the top-most vertex and the bottom-most vertex;
-// and for the intervening vertices, find whether they're to the left or right of
-// that line on X. Being on the left means the vertex is on the n-gon's left side,
-// otherwise it's on the right side.
-for (let i = 1; i < (ngon.vertices.length - 1); i++)
-{
-const lr = Rngon.lerp(topVert.x, bottomVert.x, ((ngon.vertices[i].y - topVert.y) / (bottomVert.y - topVert.y)));
-if (ngon.vertices[i].x >= lr)
-{
-rightVerts[numRightVerts++] = ngon.vertices[i];
-}
-else
-{
-leftVerts[numLeftVerts++] = ngon.vertices[i];
-}
-}
-leftVerts[numLeftVerts++] = bottomVert;
-rightVerts[numRightVerts++] = bottomVert;
-}
-}
-// Create edges out of the vertices.
-{
-for (let l = 1; l < numLeftVerts; l++) add_edge(leftVerts[l-1], leftVerts[l], true);
-for (let r = 1; r < numRightVerts; r++) add_edge(rightVerts[r-1], rightVerts[r], false);
-function add_edge(vert1, vert2, isLeftEdge)
-{
-const startY = Math.round(vert1.y);
-const endY = Math.round(vert2.y);
-const edgeHeight = (endY - startY);
-// Ignore horizontal edges.
-if (edgeHeight === 0) return;
-const startX = Math.round(vert1.x);
-const endX = Math.ceil(vert2.x);
-const deltaX = ((endX - startX) / edgeHeight);
-const edge = (isLeftEdge? leftEdges[numLeftEdges++] : rightEdges[numRightEdges++]);
-edge.startY = startY;
-edge.endY = endY;
-edge.startX = startX;
-edge.deltaX = deltaX;
-}
-}
-// Draw the n-gon. On each horizontal raster line, there will be two edges: left and right.
-// We'll render into the pixel buffer each horizontal span that runs between the two edges.
-if (material.hasFill)
-{
-let curLeftEdgeIdx = 0;
-let curRightEdgeIdx = 0;
-let leftEdge = leftEdges[curLeftEdgeIdx];
-let rightEdge = rightEdges[curRightEdgeIdx];
-if (!numLeftEdges || !numRightEdges) continue;
-// Note: We assume the n-gon's vertices to be sorted by increasing Y.
-const ngonStartY = leftEdges[0].startY;
-const ngonEndY = leftEdges[numLeftEdges-1].endY;
-const ngonHeight = (ngonEndY - ngonStartY);
-// Rasterize the n-gon in horizontal pixel spans over its height.
-for (let y = ngonStartY; y < ngonEndY; y++)
-{
-const spanStartX = Math.round(leftEdge.startX);
-const spanEndX = Math.round(rightEdge.startX);
-const spanWidth = ((spanEndX - spanStartX) + 1);
-if ((spanWidth > 0) &&
-(y >= 0) &&
-(y < renderHeight))
-{
-// Assumes the pixel buffer consists of 4 elements per pixel (e.g. RGBA).
-let pixelBufferIdx = (((spanStartX + y * renderWidth) * 4) - 4);
-// Draw a solid-filled span.
-if (!texture)
-{
-for (let x = spanStartX; x < spanEndX; x++)
-{
-pixelBufferIdx += 4;
-// Bounds-check, since we don't clip vertices to the viewport.
-if (x < 0) continue;
-if (x >= renderWidth) break;
-pixelBuffer[pixelBufferIdx + 0] = material.color.red;
-pixelBuffer[pixelBufferIdx + 1] = material.color.green;
-pixelBuffer[pixelBufferIdx + 2] = material.color.blue;
-pixelBuffer[pixelBufferIdx + 3] = (material.auxiliary.isCorner? 100 : 255);
-for (let b = 0; b < auxiliaryBuffers.length; b++)
-{
-if (material.auxiliary[auxiliaryBuffers[b].property] !== null)
-{
-// Buffers are expected to consist of one element per pixel.
-auxiliaryBuffers[b].buffer[pixelBufferIdx/4] = material.auxiliary[auxiliaryBuffers[b].property];
-}
-}
-}
-}
-// Draw a textured span.
-else
-{
-const wDiv = (texture.width / spanWidth);
-const hDiv = (texture.height / ngonHeight);
-for (let x = spanStartX; x < spanEndX; x++)
-{
-// Update values that're interpolated horizontally along the span.
-pixelBufferIdx += 4;
-// Bounds-check, since we don't clip vertices to the viewport.
-if (x < 0) continue;
-if (x >= renderWidth) break;
-// Will hold the texture coordinates used if we end up drawing
-// a textured pixel at the current x,y screen location.
-let u = 0.0, v = 0.0;
-// Screen-space UV mapping, as used e.g. in the DOS game Rally-Sport.
-{
-// Pixel coordinates relative to the polygon.
-const ngonX = (x - spanStartX + 1);
-const ngonY = (y - ngonStartY + 1);
-u = (ngonX * wDiv);
-v = (ngonY * hDiv);
-// The texture image is flipped, so we need to flip V as well.
-v = (texture.height - v);
-}
-const texel = texture.pixels[(~~u) + (~~v) * texture.width];
-// Make sure we gracefully exit if accessing the texture out of bounds.
-if (!texel) continue;
-// Alpha-test the texture. If the texel isn't fully opaque, skip it.
-if (texel.alpha !== 255) continue;
-// The pixel passed its alpha test, depth test, etc., and should be drawn
-// on screen.
-{
-pixelBuffer[pixelBufferIdx + 0] = (texel.red   * material.color.unitRange.red);
-pixelBuffer[pixelBufferIdx + 1] = (texel.green * material.color.unitRange.green);
-pixelBuffer[pixelBufferIdx + 2] = (texel.blue  * material.color.unitRange.blue);
-pixelBuffer[pixelBufferIdx + 3] = (material.auxiliary.isCorner? 100 : 255);
-for (let b = 0; b < auxiliaryBuffers.length; b++)
-{
-if (material.auxiliary[auxiliaryBuffers[b].property] !== null)
-{
-// Buffers are expected to consist of one element per pixel.
-auxiliaryBuffers[b].buffer[pixelBufferIdx/4] = material.auxiliary[auxiliaryBuffers[b].property];
-}
-}
-}
-}
-}
-}
-// Update values that're interpolated vertically along the edges.
-leftEdge.startX  += leftEdge.deltaX;
-rightEdge.startX += rightEdge.deltaX;
-// We can move onto the next edge when we're at the end of the current one.
-if (y === (leftEdge.endY - 1)) leftEdge = leftEdges[++curLeftEdgeIdx];
-if (y === (rightEdge.endY - 1)) rightEdge = rightEdges[++curRightEdgeIdx];
-}
-}
-// Draw a wireframe around any n-gons that wish for one.
-if (Rngon.internalState.showGlobalWireframe ||
-material.hasWireframe)
-{
-for (let l = 1; l < numLeftVerts; l++)
-{
-Rngon.line_draw(leftVerts[l-1], leftVerts[l], material.wireframeColor, n);
-}
-for (let r = 1; r < numRightVerts; r++)
-{
-Rngon.line_draw(rightVerts[r-1], rightVerts[r], material.wireframeColor, n);
-}
-}
-}
-}
-return;
-}
-}
-/*
-* 2019, 2020 Tarpeeksi Hyvae Soft
-*
-* Software: RallySportED-js
-*
-*/
-"use strict";
-// A stripped-down version of the retro n-gon renderer's polygon transformer. Includes
-// only the features required by RallySportED-js, helping to boost FPS.
-//
-// Expects vertices to already be in screen space.
-//
-// For the original function, see Rngon.ngon_transform_and_light().
-Rsed.minimal_rngon_tcl = function(ngons = [])
-{
-const ngonCache = Rngon.internalState.ngonCache;
-const renderWidth = Rngon.internalState.pixelBuffer.width;
-const renderHeight = Rngon.internalState.pixelBuffer.height;
-for (const ngon of ngons)
-{
-// Ignore n-gons that would be fully outside of the screen.
-{
-const boundingBox = ngon.vertices.reduce((bounds, v)=>{
-if (bounds.xMin > v.x) bounds.xMin = v.x;
-if (bounds.xMax < v.x) bounds.xMax = v.x;
-if (bounds.yMin > v.y) bounds.yMin = v.y;
-if (bounds.yMax < v.y) bounds.yMax = v.y;
-return bounds;
-}, {xMin: Infinity, xMax: -Infinity, yMin: Infinity, yMax: -Infinity});
-if ((boundingBox.xMin >= renderWidth) || (boundingBox.xMax < 0) ||
-(boundingBox.yMin >= renderHeight) || (boundingBox.yMax < 0))
-{
-continue;
-}
-}
-// Ignore fully transparent n-gons.
-if (!ngon.material.color.alpha &&
-!ngon.material.hasWireframe)
-{
-continue;
-}
-// Copy the ngon into the internal n-gon cache, so we can operate on it without
-// mutating the original n-gon's data.
-const cachedNgon = ngonCache.ngons[ngonCache.count++];
-{
-cachedNgon.vertices.length = 0;
-for (let v = 0; v < ngon.vertices.length; v++)
-{
-cachedNgon.vertices[v] = Rngon.vertex(ngon.vertices[v].x,
-ngon.vertices[v].y,
-ngon.vertices[v].z);
-}
-cachedNgon.material = ngon.material;
-cachedNgon.isActive = true;
-}
-};
-// Mark as inactive any cached n-gons that we didn't touch, so the renderer knows
-// to ignore them for the current frame.
-for (let i = ngonCache.count; i < ngonCache.ngons.length; i++)
-{
-ngonCache.ngons[i].isActive = false;
-}
-return;
-}
-/*
 * Most recent known filename: js/player/player.js
 *
 * 2021 Tarpeeksi Hyvae Soft
@@ -3522,22 +3170,22 @@ return Object.freeze({maasto, varimaa, palat, anims, text, kierros});
 // Pass relevant segments of the container's data into objects responsible for managing
 // the corresponding individual assets. Note that the data are passed by reference, so
 // modifications made by the objects to the data will be reflected in the container.
-const maasto = Rsed.track.maasto(projectData.meta.width, projectData.meta.height,
+const maasto = Rsed.gameContent.maasto(projectData.meta.width, projectData.meta.height,
 new Uint8Array(projectDataContainer.dataBuffer,
 projectDataContainer.byteOffset().maasto,
 projectDataContainer.byteSize().maasto));
-const varimaa = Rsed.track.varimaa(projectData.meta.width, projectData.meta.height,
+const varimaa = Rsed.gameContent.varimaa(projectData.meta.width, projectData.meta.height,
 new Uint8Array(projectDataContainer.dataBuffer,
 projectDataContainer.byteOffset().varimaa,
 projectDataContainer.byteSize().varimaa));
-const palat = Rsed.track.palat(Rsed.constants.palaWidth, Rsed.constants.palaHeight,
+const palat = Rsed.gameContent.palat(Rsed.constants.palaWidth, Rsed.constants.palaHeight,
 new Uint8Array(projectDataContainer.dataBuffer,
 projectDataContainer.byteOffset().palat,
 projectDataContainer.byteSize().palat));
-const props = await Rsed.track.props(new Uint8Array(projectDataContainer.dataBuffer,
+const props = await Rsed.gameContent.props(new Uint8Array(projectDataContainer.dataBuffer,
 projectDataContainer.byteOffset().text,
 projectDataContainer.byteSize().text));
-const kierros = await Rsed.track.kierros(new Uint8Array(projectDataContainer.dataBuffer,
+const kierros = await Rsed.gameContent.kierros(new Uint8Array(projectDataContainer.dataBuffer,
 projectDataContainer.byteOffset().kierros,
 projectDataContainer.byteSize().kierros));
 const manifesto = projectData.manifesto;
@@ -4180,501 +3828,6 @@ paletteSize: 32,
 rallySportContentURL: `${window.location.origin}/rallysport-content`,
 });
 /*
-* Most recent known filename: js/world/world.js
-*
-* Tarpeeksi Hyvae Soft 2019 /
-* RallySportED-js
-*
-*/
-"use strict";
-Rsed.world = {};
-/*
-* Most recent known filename: js/world/mesh-builder.js
-*
-* 2019 Tarpeeksi Hyvae Soft /
-* RallySportED-js
-*
-*/
-"use strict";
-// Provides functions returning renderable 3d meshes of various world items - like the track and
-// its props - accounting for user-specified arguments such as camera position.
-Rsed.world.meshBuilder = (function()
-{
-const publicInterface =
-{
-// Returns a renderable 3d mesh of the current project's track from the given viewing position
-// (in tile units). The mesh will be assigned such world coordinates that it'll be located
-// roughly in the middle of the canvas when rendered.
-track_mesh: function(args = {})
-{
-Rsed.throw_if_not_type("object", args);
-args =
-{
-// Default args.
-...{
-// The camera's tile position in integer values.
-cameraPos: {
-x: 0,
-y: 0,
-z: 0,
-},
-// The camera's world position in floating-point values - e.g. the same as
-// 'cameraPos' but without having rounded to integer values. If this is given,
-// camera movement will be pixel-based (smooth) instead of tile-based (jagged).
-cameraPosFloat: undefined,
-// Whether to draw props with solid colors(/textures) or with just a wireframe.
-solidProps: true,
-includeWireframe: false,
-paintHoverPala: false,
-},
-...args,
-};
-if (!args.cameraPosFloat)
-{
-args.cameraPosFloat = args.cameraPos;
-}
-// Returns true if the given XY coordinates are out of track bounds.
-function out_of_bounds(x, y)
-{
-return Boolean((x < 0) || (x >= Rsed.$currentProject.maasto.width) ||
-(y < 1) || (y > Rsed.$currentProject.maasto.height));
-}
-// The polygons that make up the track mesh.
-const trackPolygons = [];
-// We'll shift the track mesh by these values (world units) to center the mesh on screen.
-// Note that we adjust Z to account for vertical camera zooming.
-const centerView = {x: -((Rsed.world.camera.view_width / 2) * Rsed.constants.groundTileSize),
-y: (-650 + args.cameraPos.y),
-z: (3628 - (Rsed.world.camera.rotation().x / 7.5) + (Rsed.constants.groundTileSize * 3.5))};
-const mouseHover = Rsed.ui.inputState.current_mouse_hover();
-const mouseGrab = Rsed.ui.inputState.current_mouse_grab();
-const fractionX = (args.cameraPosFloat.x - args.cameraPos.x);
-const fractionZ = (args.cameraPosFloat.z - args.cameraPos.z);
-const project = Rsed.$currentProject;
-for (let z = 0; z < Rsed.world.camera.view_height; z++)
-{
-// Add the ground tiles.
-for (let x = 0; x < Rsed.world.camera.view_width; x++)
-{
-// Coordinates of the current ground tile.
-const tileX = (x + args.cameraPos.x);
-const tileZ = (z + args.cameraPos.z);
-if (out_of_bounds(tileX, tileZ))
-{
-continue;
-}
-const isCornerTile = ((x == 0) ||
-(z == 0) ||
-(x == (Rsed.world.camera.view_width - 1)));
-// Coordinates in world units of the ground tile's top left vertex.
-const vertX = (((x * Rsed.constants.groundTileSize) + centerView.x) - (fractionX * Rsed.constants.groundTileSize));
-const vertZ = ((centerView.z - (z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
-const tilePalaIdx = (()=>
-{
-let idx = project.varimaa.tile_at(tileX, (tileZ - 1));
-if (args.paintHoverPala &&
-!mouseGrab &&
-(mouseHover && (mouseHover.type === "ground")) &&
-(Math.abs(mouseHover.groundTileX - tileX) <= Rsed.ui.groundBrush.brush_size()) &&
-(Math.abs(mouseHover.groundTileY - (tileZ - 1)) <= Rsed.ui.groundBrush.brush_size()))
-{
-idx = Rsed.ui.groundBrush.brush_pala_idx();
-}
-return idx;
-})();
-// Construct the ground quad polygon.
-{
-// The heights of the ground quad's corner points.
-let height1 = project.maasto.tile_at( tileX,       tileZ);
-let height2 = project.maasto.tile_at((tileX + 1),  tileZ);
-let height3 = project.maasto.tile_at((tileX + 1), (tileZ - 1));
-let height4 = project.maasto.tile_at( tileX,      (tileZ - 1));
-// We'll do rudimentary shading of the polygon based on its orientation.
-// Ideally, the shading would replicate that of Rally-Sport, but this
-// particular implementation doesn't.
-const heightDiff = Math.max(150, Math.min(255, (255 - ((height1 - height3) * 2))));
-// Each track in Rally-Sport has a water level, i.e. a height to which all water
-// tiles' corners will be set. The tiles' actual height can be lower, in which case
-// driving onto them will cause the car to become submerged under the apparent water
-// level. In other words, the game will render all water tiles flush with the water
-// level, but also keeps track of the tiles' actual height for car-ground collisions.
-//
-// In wireframe mode, we'll draw the ground tile heights as they are, but in non-
-// wireframe mode, we'll make them flush with the track's water level.
-if (!args.includeWireframe)
-{
-if (tilePalaIdx == 0) // Water tiles are those whose PALA index is 0.
-{
-height1 = project.waterLevel;
-height2 = project.waterLevel;
-height3 = project.waterLevel;
-height4 = project.waterLevel;
-}
-// This tile is not a water tile but is adjacent to one. In that case, we'll
-// adjust the heights of such neighboring corners.
-else
-{
-if (project.varimaa.tile_at(tileX, (tileZ - 1) + 1) == 0)
-{
-height2 = project.waterLevel;
-height1 = project.waterLevel;
-}
-if (project.varimaa.tile_at(tileX, (tileZ - 1) - 1) == 0)
-{
-height3 = project.waterLevel;
-height4 = project.waterLevel;
-}
-if (project.varimaa.tile_at(tileX - 1, (tileZ - 1)) == 0)
-{
-height1 = project.waterLevel;
-height4 = project.waterLevel;
-}
-if (project.varimaa.tile_at(tileX + 1, (tileZ - 1)) == 0)
-{
-height2 = project.waterLevel;
-height3 = project.waterLevel;
-}
-if (project.varimaa.tile_at(tileX + 1, (tileZ - 1) + 1) == 0)
-{
-height2 = project.waterLevel;
-}
-if (project.varimaa.tile_at(tileX - 1, (tileZ - 1) + 1) == 0)
-{
-height1 = project.waterLevel;
-}
-if (project.varimaa.tile_at(tileX + 1, (tileZ - 1) - 1) == 0)
-{
-height3 = project.waterLevel;
-}
-if (project.varimaa.tile_at(tileX - 1, (tileZ - 1) - 1) == 0)
-{
-height4 = project.waterLevel;
-}
-}
-}
-height1 += centerView.y;
-height2 += centerView.y;
-height3 += centerView.y;
-height4 += centerView.y;
-const texture = project.palat.texture[tilePalaIdx];
-const groundQuad = Rngon.ngon([Rngon.vertex(vertX, height1, vertZ, 0, 0),
-Rngon.vertex((vertX + Rsed.constants.groundTileSize), height2, vertZ, 1, 0),
-Rngon.vertex((vertX + Rsed.constants.groundTileSize), height3, (vertZ + Rsed.constants.groundTileSize), 1, 1),
-Rngon.vertex(vertX, height4, (vertZ + Rsed.constants.groundTileSize), 0, 1)],
-{
-color: Rngon.color_rgba(heightDiff, heightDiff, heightDiff),
-texture: texture,
-hasWireframe: (!isCornerTile && args.includeWireframe),
-auxiliary:
-{
-// We'll encode this ground quad's tile coordinates into a 32-bit id value, which during
-// rasterization we'll write into the mouse-picking buffer, so we can later determine which
-// quad the mouse cursor is hovering over.
-mousePickId: Rsed.ui.mouse_picking_element("ground",
-{
-texture: texture,
-groundTileX: tileX,
-groundTileY: (tileZ - 1),
-}),
-isCorner: isCornerTile,
-isGroundTile: true,
-}
-});
-trackPolygons.push(groundQuad);
-}
-}
-// Add the billboard and bridge tiles. We do this as a separate loop from adding
-// the ground tiles so that the n-gons are properly sorted by depth for rendering.
-// Otherwise, billboard/bridge tiles can become obscured by ground tiles behind
-// them.
-for (let x = 0; x < Rsed.world.camera.view_width; x++)
-{
-const tileX = (x + args.cameraPos.x);
-const tileZ = (z + args.cameraPos.z);
-if (out_of_bounds(tileX, tileZ))
-{
-continue;
-}
-const isCornerTile = ((x == 0) ||
-(z == 0) ||
-(x == (Rsed.world.camera.view_width - 1)));
-const vertX = (((x * Rsed.constants.groundTileSize) + centerView.x) - (fractionX * Rsed.constants.groundTileSize));
-const vertZ = ((centerView.z - (z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
-const tilePalaIdx = (()=>
-{
-let idx = project.varimaa.tile_at(tileX, (tileZ - 1));
-if ( args.paintHoverPala &&
-!mouseGrab &&
-(mouseHover && (mouseHover.type === "ground")) &&
-(Math.abs(mouseHover.groundTileX - tileX) <= Rsed.ui.groundBrush.brush_size()) &&
-(Math.abs(mouseHover.groundTileY - (tileZ - 1)) <= Rsed.ui.groundBrush.brush_size()))
-{
-idx = Rsed.ui.groundBrush.brush_pala_idx();
-}
-return idx;
-})();
-// If this tile has a billboard, add it.
-const billboardPalaIdx = project.palat.billboard_idx(tilePalaIdx, tileX, (tileZ - 1));
-if (billboardPalaIdx != null)
-{
-const baseHeight = centerView.y + project.maasto.tile_at(tileX, (tileZ - 1));
-const billboardTexture = project.palat.texture[billboardPalaIdx];
-const billboardVertices = (()=>
-{
-// Bridges (lay horizontally).
-if (billboardPalaIdx == 177)
-{
-return [Rngon.vertex( vertX,  centerView.y, vertZ, 0, 0),
-Rngon.vertex((vertX + Rsed.constants.groundTileSize), centerView.y, vertZ, 1, 0),
-Rngon.vertex((vertX + Rsed.constants.groundTileSize), centerView.y, (vertZ+Rsed.constants.groundTileSize), 1, 1),
-Rngon.vertex( vertX, centerView.y, (vertZ+Rsed.constants.groundTileSize), 0, 1)];
-}
-// Other billboards (lay vertically).
-else
-{
-return [Rngon.vertex( vertX, baseHeight, vertZ, 0, 0),
-Rngon.vertex((vertX + Rsed.constants.groundTileSize), baseHeight, vertZ, 1, 0),
-Rngon.vertex((vertX + Rsed.constants.groundTileSize), baseHeight+Rsed.constants.groundTileSize, vertZ, 1, 1),
-Rngon.vertex( vertX, baseHeight+Rsed.constants.groundTileSize, vertZ, 0, 1)];
-}
-})();
-const billboardQuad = Rngon.ngon(billboardVertices,
-{
-texture: billboardTexture,
-hasFill: true,
-auxiliary:
-{
-mousePickId: null,
-isCorner: isCornerTile,
-}
-});
-trackPolygons.push(billboardQuad);
-}
-}
-}
-// Add any track prop meshes that should be visible on the currently-drawn track.
-const propLocations = project.props.locations_of_props_on_track(project.track_id());
-propLocations.forEach((pos, idx)=>
-{
-if ((pos.x >= (args.cameraPos.x * Rsed.constants.groundTileSize)) &&
-(pos.x <= ((args.cameraPos.x + Rsed.world.camera.view_width) * Rsed.constants.groundTileSize)) &&
-(pos.z >= (args.cameraPos.z * Rsed.constants.groundTileSize)) &&
-(pos.z <= ((args.cameraPos.z + Rsed.world.camera.view_height) * Rsed.constants.groundTileSize)))
-{
-const x = ((pos.x + centerView.x - (args.cameraPos.x * Rsed.constants.groundTileSize)) - (fractionX * Rsed.constants.groundTileSize));
-const z = ((centerView.z - pos.z + (args.cameraPos.z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
-const groundHeight = centerView.y + project.maasto.tile_at((pos.x / Rsed.constants.groundTileSize), (pos.z / Rsed.constants.groundTileSize));
-const y = (groundHeight + pos.y);
-trackPolygons.push(...this.prop_mesh(pos.propId, idx,
-{
-position:
-{
-x,
-y,
-z,
-},
-...args,
-}));
-}
-});
-return Rngon.mesh(trackPolygons);
-},
-// Returns a renderable 3d mesh of the given prop at the given position (in world units).
-prop_mesh: (propId = 0, idxOnTrack = 0, args = {})=>
-{
-Rsed.throw_if_not_type("object", args);
-args =
-{
-...// Default args.
-{
-position:
-{
-x: 0,
-y: 0,
-z: 0,
-},
-solidProps: true,
-includeWireframe: false,
-},
-...args
-};
-const project = Rsed.$currentProject;
-const srcMesh = project.props.mesh[propId];
-const dstMesh = [];
-srcMesh.ngons.forEach(ngon=>
-{
-const texture = (args.solidProps? (ngon.fill.type === "texture"? project.props.texture[ngon.fill.idx]
-: null)
-: null);
-const propNgon = Rngon.ngon(ngon.vertices.map(v=>Rngon.vertex((v.x + args.position.x),
-(v.y + args.position.y),
-(v.z + args.position.z))),
-{
-color: (args.solidProps? (ngon.fill.type === "texture"? Rsed.visual.palette.color_at_idx(0)
-: Rsed.visual.palette.color_at_idx(ngon.fill.idx))
-: Rsed.visual.palette.color_at_idx(0, true)),
-texture: texture,
-textureMapping: "ortho",
-wireframeColor: Rsed.visual.palette.color_at_idx(args.solidProps? "black" : "lightgray"),
-hasWireframe: (args.solidProps? args.includeWireframe : true),
-hasFill: args.solidProps,
-auxiliary:
-{
-mousePickId: Rsed.ui.mouse_picking_element("prop",
-{
-texture: texture,
-propId: propId,
-propTrackIdx: idxOnTrack
-}),
-}
-});
-dstMesh.push(propNgon);
-});
-return dstMesh;
-},
-};
-return publicInterface;
-})();
-/*
-* Most recent known filename: js/world/camera.js
-*
-* Tarpeeksi Hyvae Soft 2018 /
-* RallySportED-js
-*
-*/
-"use strict";
-Rsed.world.camera = (function()
-{
-// The camera's starting position, in tile units.
-const defaultPosition = {x:15.0, y:0.0, z:13.0};
-// The camera's current position, in tile units.
-const position = {...defaultPosition};
-// The camera's rotation, in degrees.
-const rotation = {x:16, y:0, z:0};
-let verticalZoom = 0;
-const publicInterface =
-{
-// Restore the camera's default position.
-reset_camera_position: function()
-{
-position.x = defaultPosition.x;
-position.y = defaultPosition.y;
-position.z = defaultPosition.z;
-},
-set_camera_position: function(x, y, z)
-{
-position.x = 0;
-position.y = 0;
-position.z = 0;
-this.move_camera(x, y, z);
-},
-move_camera: function(deltaX, deltaY, deltaZ, enforceBounds = true)
-{
-const prevPos = this.position_floored();
-position.x += deltaX;
-position.y += deltaY;
-position.z += deltaZ;
-// Prevent the camera from moving past the track boundaries.
-if (enforceBounds)
-{
-const marginX = 8;
-const marginY = 9;
-const maxX = (Rsed.$currentProject.maasto.width - this.view_width);
-const maxY = (Rsed.$currentProject.maasto.width - this.view_height + 1);
-position.x = Math.max(-marginX, Math.min(position.x, (maxX + marginX)));
-position.z = Math.max(-marginY, Math.min(position.z, (maxY + marginY)));
-}
-const newPos = this.position_floored();
-const posDelta =
-{
-x: (newPos.x - prevPos.x),
-y: (newPos.y - prevPos.y),
-z: (newPos.z - prevPos.z),
-}
-// If the camera moved...
-if (posDelta.x || posDelta.y || posDelta.z)
-{
-window.close_dropdowns(false);
-// Force mouse hover to update, since there might now be a different tile under
-// the cursor.
-Rsed.core.forceUpdateMouseHoverOnTickEnd = true;
-// If the user is grabbing onto a prop while the camera moves, move the prop as well.
-{
-const grab = Rsed.ui.inputState.current_mouse_grab();
-if (grab && (grab.type === "prop") &&
-Rsed.ui.inputState.left_mouse_button_down())
-{
-// Note: the starting line (always prop #0) is not user-editable.
-if (grab.propTrackIdx !== 0)
-{
-Rsed.$currentProject.props.move(Rsed.$currentProject.track_id(),
-grab.propTrackIdx,
-{
-x: (posDelta.x * Rsed.constants.groundTileSize),
-z: (posDelta.z * Rsed.constants.groundTileSize),
-});
-}
-}
-}
-}
-return;
-},
-rotate_camera: function(xDelta, yDelta, zDelta)
-{
-Rsed.throw_if_not_type("number", xDelta, yDelta, zDelta);
-rotation.x += xDelta;
-rotation.y += yDelta;
-rotation.z += zDelta;
-return;
-},
-// Moves the camera up/down while tilting it up/down, so that at its highest
-// point, the camera is pointed directly down, and at its lowest point toward
-// the horizon.
-zoom_vertically: function(delta)
-{
-Rsed.throw_if_not_type("number", delta);
-verticalZoom = Math.max(0, Math.min(296, (verticalZoom + delta)));
-position.y = (-verticalZoom * 7);
-rotation.x = (16 + (verticalZoom / 4));
-return;
-},
-vertical_zoom: function()
-{
-return verticalZoom;
-},
-rotation: function()
-{
-return Rngon.rotation_vector(rotation.x, rotation.y, rotation.z);
-},
-position_floored: function()
-{
-return {
-x: Math.floor(position.x),
-y: Math.floor(position.y),
-z: Math.floor(position.z),
-};
-},
-position: function()
-{
-return {...position};
-},
-world_position: function()
-{
-return {
-x: (position.x * Rsed.constants.groundTileSize),
-y: (position.y * Rsed.constants.groundTileSize),
-z: (position.z * Rsed.constants.groundTileSize),
-};
-},
-// How many track ground tiles, horizontally and vertically, should be
-// visible on screen when using this camera.
-view_width: 28,
-view_height: 31,
-};
-publicInterface.reset_camera_position();
-return publicInterface;
-})();
-/*
 * Most recent known filename: js/visual/texture.js
 *
 * Tarpeeksi Hyvae Soft 2018 /
@@ -5082,6 +4235,16 @@ return;
 };
 }
 /*
+* Most recent known filename: js/game-content/game-content.js
+*
+* 2021 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
+*
+*/
+"use strict";
+Rsed.gameContent = {};
+/*
 * Most recent known filename: js/track/varimaa.js
 *
 * 2019 Tarpeeksi Hyvae Soft /
@@ -5089,11 +4252,10 @@ return;
 *
 */
 "use strict";
-Rsed.track = Rsed.track || {};
 // Provides information about and the means to modify a track's tilemap (which Rally-Sport
 // calls "VARIMAA"). For more information about the track tilemap format used in Rally-Sport,
 // check out https://github.com/leikareipa/rallysported/tree/master/docs.
-Rsed.track.varimaa = function(varimaaWidth = 0, varimaaHeight = 0, data = Uint8Array)
+Rsed.gameContent.varimaa = function(varimaaWidth = 0, varimaaHeight = 0, data = Uint8Array)
 {
 Rsed.assert && (varimaaWidth === varimaaHeight)
 || Rsed.throw("Expected VARIMAA width and height to be equal.");
@@ -5141,11 +4303,10 @@ return publicInterface;
 *
 */
 "use strict";
-Rsed.track = Rsed.track || {};
 // Provides information about and the means to modify a track's heightmap (which are called
 // "MAASTO" in Rally-Sport). For more information about the heightmap format used in Rally-
 // Sport, check out https://github.com/leikareipa/rallysported/tree/master/docs.
-Rsed.track.maasto = function(maastoWidth = 0, maastoHeight = 0, data = Uint8Array)
+Rsed.gameContent.maasto = function(maastoWidth = 0, maastoHeight = 0, data = Uint8Array)
 {
 Rsed.assert && (maastoWidth === maastoHeight)
 || Rsed.throw("Expected MAASTO width and height to be equal.");
@@ -5253,10 +4414,9 @@ return [byte1, byte2];
 *
 */
 "use strict";
-Rsed.track = Rsed.track || {};
 // Provides information about a track's KIERROS data (the AI driver's checkpoints).
 // You can learn more about the KIERROS format at https://github.com/leikareipa/rallysported/tree/master/docs.
-Rsed.track.kierros = function(data = Uint8Array)
+Rsed.gameContent.kierros = function(data = Uint8Array)
 {
 const checkpoints = [];
 const bytesPerCheckpoint = 8;
@@ -5285,7 +4445,6 @@ return publicInterface;
 *
 */
 "use strict";
-Rsed.track = Rsed.track || {};
 // Provides information about and the means to modify a track's textures (which are called
 // "PALA" in Rally-Sport). For more information about the track texture format used in Rally-
 // Sport, check out https://github.com/leikareipa/rallysported/tree/master/docs.
@@ -5296,7 +4455,7 @@ Rsed.track = Rsed.track || {};
 // are the pixels of the first texture, the next (width * height) bytes those of the second
 // texture, etc. Each byte in the array gives the corresponding pixel's RGB color as a palette
 // index.
-Rsed.track.palat = function(palaWidth = 0, palaHeight = 0, data = Uint8Array)
+Rsed.gameContent.palat = function(palaWidth = 0, palaHeight = 0, data = Uint8Array)
 {
 Rsed.assert && (palaWidth === palaHeight)
 || Rsed.throw("Expected PALA width and height to be equal.");
@@ -5448,7 +4607,6 @@ return publicInterface;
 *
 */
 "use strict";
-Rsed.track = Rsed.track || {};
 // Provides information about and the means to modify a track's props (track-side 3d objects,
 // like trees and the finish line). For more information about track props, check out the
 // documentation at https://github.com/leikareipa/rallysported/tree/master/docs; and the
@@ -5456,7 +4614,7 @@ Rsed.track = Rsed.track || {};
 //
 // The textureAtlas parameter provides as an array the pixels of the prop texture atlas, with
 // each byte in it giving the corresponding pixel's RGB color as a palette index.
-Rsed.track.props = async function(textureAtlas = Uint8Array)
+Rsed.gameContent.props = async function(textureAtlas = Uint8Array)
 {
 const data = await fetch_prop_metadata_from_server();
 Rsed.assert && ((typeof data.propMeshes !== "undefined") &&
@@ -8094,20 +7252,24 @@ Rsed.ui.component.tilemapMinimap =
 instance: function()
 {
 const component = Rsed.ui.component();
-component.update = function()
+let camera = undefined;
+component.update = function(options = {})
 {
+Rsed.throw_if_not_type("object", options, options.camera);
+camera = options.camera;
 const grab = component.is_grabbed();
 if (grab)
 {
-const x = Math.round((grab.tileX - (Rsed.world.camera.view_width / 2)) + 1);
-const z = Math.round((grab.tileZ - (Rsed.world.camera.view_height / 2)) + 1);
-const y = Rsed.world.camera.position().y;
-Rsed.world.camera.set_camera_position(x, y, z)
+const x = Math.round((grab.tileX - (camera.viewportWidth / 2)) + 1);
+const z = Math.round((grab.tileZ - (camera.viewportHeight / 2)) + 1);
+const y = camera.position().y;
+camera.move_to(x, y, z)
 }
 };
 component.draw = function(offsetX = 0, offsetY = 0)
 {
 Rsed.throw_if_not_type("number", offsetX, offsetY);
+Rsed.throw_if_undefined(camera);
 // Generate the minimap image by iterating over the tilemap and grabbing a pixel off each
 // corresponding PALA texture.
 /// TODO: You can pre-generate the image rather than re-generating it each frame.
@@ -8141,8 +7303,8 @@ Rsed.ui.draw.image(image, mousePick, width, height, (offsetX - width), offsetY, 
 if (image && xMul && yMul)
 {
 const frame = [];
-const frameWidth = Math.round((Rsed.world.camera.view_width / xMul));
-const frameHeight = Math.round((Rsed.world.camera.view_height / yMul));
+const frameWidth = Math.round((camera.viewportWidth / xMul));
+const frameHeight = Math.round((camera.viewportHeight / yMul));
 for (let y = 0; y < frameHeight; y++)
 {
 for (let x = 0; x < frameWidth; x++)
@@ -8153,9 +7315,9 @@ if (x % (frameWidth - 1) === 0) color = "yellow";
 frame.push(color);
 }
 }
-const cameraPos = Rsed.world.camera.position_floored();
-const maxX = (Rsed.$currentProject.maasto.width - Rsed.world.camera.view_width);
-const maxZ = (Rsed.$currentProject.maasto.height - Rsed.world.camera.view_height);
+const cameraPos = camera.position_floored();
+const maxX = (Rsed.$currentProject.maasto.width - camera.viewportWidth);
+const maxZ = (Rsed.$currentProject.maasto.height - camera.viewportHeight);
 const camX = Math.max(0, (Math.min(maxX, cameraPos.x) / xMul));
 const camZ = Math.max(0, (Math.min(maxZ, cameraPos.z) / yMul));
 Rsed.ui.draw.image(frame, null, frameWidth, frameHeight, (offsetX - width + camX), (offsetY + camZ), true);
@@ -8413,7 +7575,7 @@ fpsIndicator: Rsed.ui.component.fpsIndicator.instance(),
 viewLabel:    Rsed.ui.component.label.instance(),
 };
 })();
-return Rsed.scene(
+const scene = Rsed.scene(
 {
 on_key_release: function(key)
 {
@@ -8577,7 +7739,7 @@ uiComponents.activePala.draw((Rsed.visual.canvas.width - 88), margin);
 uiComponents.footerInfo.update(sceneSettings);
 uiComponents.footerInfo.draw(margin, (Rsed.visual.canvas.height - Rsed.ui.font.nativeHeight - 5));
 }
-uiComponents.minimap.update(sceneSettings);
+uiComponents.minimap.update({camera: scene.camera});
 uiComponents.minimap.draw((Rsed.visual.canvas.width - margin), margin);
 if (sceneSettings.showPalatPane)
 {
@@ -8596,10 +7758,10 @@ return;
 draw_mesh: function()
 {
 move_camera();
-const trackMesh = Rsed.world.meshBuilder.track_mesh(
+const trackMesh = scene.meshBuilder.track_mesh(
 {
-cameraPos: Rsed.world.camera.position_floored(),
-cameraPosFloat: (cameraMovement.isMobileControls? Rsed.world.camera.position() : Rsed.world.camera.position_floored()), // Smooth scrolling on mobile, tile-based otherwise.
+camera: scene.camera,
+jaggedCameraMovement: (cameraMovement.isMobileControls? false : true),
 solidProps: sceneSettings.showProps,
 includeWireframe: sceneSettings.showWireframe,
 paintHoverPala: sceneSettings.showHoverPala,
@@ -8609,7 +7771,7 @@ paintHoverPala: sceneSettings.showHoverPala,
 // The vanishing point. Defaults to the top middle of the screen, like in
 // the game.
 const vanishX = (Rngon.renderable_width_of(Rsed.visual.canvas.domElement, Rsed.visual.canvas.scalingFactor) / 2);
-const vanishY = (4 - (Rsed.world.camera.vertical_zoom() * 2));
+const vanishY = (4 - (scene.camera.tilt * 2));
 for (const ngon of trackMesh.ngons)
 {
 // We don't want the renderer applying proper perspective projection.
@@ -8632,7 +7794,7 @@ vertex.y = (vanishY + ((vertex.y - vanishY) / z));
 const renderInfo = Rngon.render(Rsed.visual.canvas.domElement, [trackMesh],
 {
 cameraPosition: Rngon.translation_vector(0, 0, 0),
-cameraDirection: Rsed.world.camera.rotation(),
+cameraDirection: scene.camera.rotation(),
 scale: Rsed.visual.canvas.scalingFactor,
 fov: 30,
 nearPlane: 300,
@@ -8662,7 +7824,7 @@ handle_mouse_input();
 update_cursor_graphic();
 /// EXPERIMENTAL. Temporary testing of mobile controls.
 const touchDelta = Rsed.ui.inputState.get_touch_move_delta();
-Rsed.world.camera.move_camera(-touchDelta.x, 0, -touchDelta.y);
+scene.camera.move_by(-touchDelta.x, 0, -touchDelta.y);
 Rsed.visual.canvas.mousePickingBuffer.fill(null);
 },
 });
@@ -8681,7 +7843,7 @@ Rngon.vector3.normalize(cameraMoveVector);
 cameraMoveVector.x *= (movementSpeed * 0.5);
 cameraMoveVector.y *= movementSpeed;
 cameraMoveVector.z *= movementSpeed;
-Rsed.world.camera.move_camera(cameraMoveVector.x, cameraMoveVector.y, cameraMoveVector.z);
+scene.camera.move_by(cameraMoveVector.x, cameraMoveVector.y, cameraMoveVector.z);
 }
 else
 {
@@ -8692,7 +7854,7 @@ const movementMult = Math.round(cameraMovement.msSinceLastUpdate / msIntervalToM
 const cameraMoveVector = Rngon.vector3((movementMult * (cameraMovement.up? -1 : cameraMovement.down? 1 : 0)),
 0,
 (movementMult * (cameraMovement.left? -1 : cameraMovement.right? 1 : 0)));
-Rsed.world.camera.move_camera(cameraMoveVector.x, cameraMoveVector.y, cameraMoveVector.z);
+scene.camera.move_by(cameraMoveVector.x, cameraMoveVector.y, cameraMoveVector.z);
 cameraMovement.msSinceLastUpdate = 0;
 }
 }
@@ -8744,7 +7906,7 @@ function handle_mouse_input()
 {
 if (Rsed.ui.inputState.mouse_wheel_scroll())
 {
-Rsed.world.camera.zoom_vertically(-Rsed.ui.inputState.mouse_wheel_scroll() / 2);
+scene.camera.tilt_by(-Rsed.ui.inputState.mouse_wheel_scroll() / 2);
 Rsed.ui.inputState.reset_wheel_scroll();
 }
 if (Rsed.ui.inputState.mouse_button_down())
@@ -8866,7 +8028,825 @@ default: break;
 prevMousePos = Rsed.ui.inputState.mouse_pos();
 return;
 }
+return scene;
 })();
+/*
+* Most recent known filename: js/scene/terrain-editor/camera.js
+*
+* 2018 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
+*
+*/
+"use strict";
+Rsed.scenes["terrain-editor"].camera = (function()
+{
+const defaultPosition = {x:15.0, y:0.0, z:13.0};
+const position = {...defaultPosition};
+const rotation = {x:16, y:0, z:0};
+// Tilting combines vertical rotation and movement to shift the camera's
+// view down and toward the middle tile row on the screen.
+let tilt = 0;
+const publicInterface =
+{
+// How many track ground tiles, horizontally and vertically, should be
+// visible on screen when using this camera.
+viewportWidth: 28,
+viewportHeight: 34,
+get tilt()
+{
+return tilt;
+},
+reset_position: function()
+{
+position.x = defaultPosition.x;
+position.y = defaultPosition.y;
+position.z = defaultPosition.z;
+},
+move_to: function(x, y, z)
+{
+position.x = 0;
+position.y = 0;
+position.z = 0;
+this.move_by(x, y, z);
+},
+move_by: function(deltaX, deltaY, deltaZ, enforceBounds = true)
+{
+const prevPos = this.position_floored();
+position.x += deltaX;
+position.y += deltaY;
+position.z += deltaZ;
+// Prevent the camera from moving past the track boundaries.
+if (enforceBounds)
+{
+const marginX = 8;
+const marginY = 14;
+const maxX = (Rsed.$currentProject.maasto.width - this.viewportWidth);
+const maxY = (Rsed.$currentProject.maasto.width - this.viewportHeight + 1);
+position.x = Math.max(-marginX, Math.min(position.x, (maxX + marginX)));
+position.z = Math.max(-marginY, Math.min(position.z, (maxY + marginY)));
+}
+const newPos = this.position_floored();
+const posDelta =
+{
+x: (newPos.x - prevPos.x),
+y: (newPos.y - prevPos.y),
+z: (newPos.z - prevPos.z),
+}
+// If the camera moved...
+if (posDelta.x || posDelta.y || posDelta.z)
+{
+window.close_dropdowns(false);
+// Force mouse hover to update, since there might now be a different tile under
+// the cursor.
+Rsed.core.forceUpdateMouseHoverOnTickEnd = true;
+// If the user is grabbing onto a prop while the camera moves, move the prop as well.
+if (Rsed.ui.inputState.left_mouse_button_down())
+{
+const grab = Rsed.ui.inputState.current_mouse_grab();
+if (grab && (grab.type == "prop"))
+{
+// Note: the starting line (always prop #0) is not user-editable.
+if (grab.propTrackIdx !== 0)
+{
+Rsed.$currentProject.props.move(Rsed.$currentProject.track_id(),
+grab.propTrackIdx, {
+x: (posDelta.x * Rsed.constants.groundTileSize),
+z: (posDelta.z * Rsed.constants.groundTileSize),
+});
+}
+}
+}
+}
+return;
+},
+rotate_by: function(xDelta, yDelta, zDelta)
+{
+Rsed.throw_if_not_type("number", xDelta, yDelta, zDelta);
+rotation.x += xDelta;
+rotation.y += yDelta;
+rotation.z += zDelta;
+return;
+},
+tilt_by: function(delta)
+{
+Rsed.throw_if_not_type("number", delta);
+tilt = Math.max(0, Math.min(296, (tilt + delta)));
+position.y = (-tilt * 7);
+rotation.x = (16 + (tilt / 10));
+return;
+},
+rotation: function()
+{
+return Rngon.rotation_vector(rotation.x, rotation.y, rotation.z);
+},
+position_floored: function()
+{
+return {
+x: Math.floor(position.x),
+y: Math.floor(position.y),
+z: Math.floor(position.z),
+};
+},
+position: function()
+{
+return {...position};
+},
+};
+return publicInterface;
+})();
+/*
+* Most recent known filename: js/scene/terrain-editor/mesh-builder.js
+*
+* 2019 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
+*
+*/
+"use strict";
+// Provides functions returning renderable 3d meshes of various world items - like the track and
+// its props - accounting for user-specified arguments such as camera position.
+Rsed.scenes["terrain-editor"].meshBuilder = (function()
+{
+const publicInterface =
+{
+// Returns a renderable 3d mesh of the current project's track from the given viewing position
+// (in tile units). The mesh will be assigned such world coordinates that it'll be located
+// roughly in the middle of the canvas when rendered.
+track_mesh: function(args = {})
+{
+Rsed.throw_if_not_type("object", args);
+Rsed.throw_if_not_type("object", args.camera);
+args =
+{
+// Default args.
+...{
+jaggedCameraMovement: true,
+// Whether to draw props with solid colors(/textures) or with just a wireframe.
+solidProps: true,
+includeWireframe: false,
+paintHoverPala: false,
+},
+...args,
+};
+const cameraPosFloored = args.camera.position_floored();
+const cameraPos = args.jaggedCameraMovement
+? cameraPosFloored
+: args.camera.position();
+// Returns true if the given XY coordinates are out of track bounds.
+function out_of_bounds(x, y)
+{
+return Boolean((x < 0) || (x >= Rsed.$currentProject.maasto.width) ||
+(y < 1) || (y > Rsed.$currentProject.maasto.height));
+}
+// The polygons that make up the track mesh.
+const trackPolygons = [];
+// We'll shift the track mesh by these values (world units) to center the mesh on screen.
+// Note that we adjust Z to account for vertical camera zooming.
+const centerView = {x: -((args.camera.viewportWidth / 2) * Rsed.constants.groundTileSize),
+y: (-650 + cameraPosFloored.y),
+z: (3628 - (args.camera.rotation().x / 7.5) + (Rsed.constants.groundTileSize * 3.5))};
+const mouseHover = Rsed.ui.inputState.current_mouse_hover();
+const mouseGrab = Rsed.ui.inputState.current_mouse_grab();
+const fractionX = (cameraPos.x - cameraPosFloored.x);
+const fractionZ = (cameraPos.z - cameraPosFloored.z);
+const project = Rsed.$currentProject;
+for (let z = 0; z < args.camera.viewportHeight; z++)
+{
+// Add the ground tiles.
+for (let x = 0; x < args.camera.viewportWidth; x++)
+{
+// Coordinates of the current ground tile.
+const tileX = (x + cameraPosFloored.x);
+const tileZ = (z + cameraPosFloored.z);
+if (out_of_bounds(tileX, tileZ))
+{
+continue;
+}
+const isCornerTile = ((x == 0) ||
+(z == 0) ||
+(x == (args.camera.viewportWidth - 1)));
+// Coordinates in world units of the ground tile's top left vertex.
+const vertX = (((x * Rsed.constants.groundTileSize) + centerView.x) - (fractionX * Rsed.constants.groundTileSize));
+const vertZ = ((centerView.z - (z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
+const tilePalaIdx = (()=>
+{
+let idx = project.varimaa.tile_at(tileX, (tileZ - 1));
+if (args.paintHoverPala &&
+!mouseGrab &&
+(mouseHover && (mouseHover.type === "ground")) &&
+(Math.abs(mouseHover.groundTileX - tileX) <= Rsed.ui.groundBrush.brush_size()) &&
+(Math.abs(mouseHover.groundTileY - (tileZ - 1)) <= Rsed.ui.groundBrush.brush_size()))
+{
+idx = Rsed.ui.groundBrush.brush_pala_idx();
+}
+return idx;
+})();
+// Construct the ground quad polygon.
+{
+// The heights of the ground quad's corner points.
+let height1 = project.maasto.tile_at( tileX,       tileZ);
+let height2 = project.maasto.tile_at((tileX + 1),  tileZ);
+let height3 = project.maasto.tile_at((tileX + 1), (tileZ - 1));
+let height4 = project.maasto.tile_at( tileX,      (tileZ - 1));
+// We'll do rudimentary shading of the polygon based on its orientation.
+// Ideally, the shading would replicate that of Rally-Sport, but this
+// particular implementation doesn't.
+const heightDiff = Math.max(150, Math.min(255, (255 - ((height1 - height3) * 2))));
+// Each track in Rally-Sport has a water level, i.e. a height to which all water
+// tiles' corners will be set. The tiles' actual height can be lower, in which case
+// driving onto them will cause the car to become submerged under the apparent water
+// level. In other words, the game will render all water tiles flush with the water
+// level, but also keeps track of the tiles' actual height for car-ground collisions.
+//
+// In wireframe mode, we'll draw the ground tile heights as they are, but in non-
+// wireframe mode, we'll make them flush with the track's water level.
+if (!args.includeWireframe)
+{
+if (tilePalaIdx == 0) // Water tiles are those whose PALA index is 0.
+{
+height1 = project.waterLevel;
+height2 = project.waterLevel;
+height3 = project.waterLevel;
+height4 = project.waterLevel;
+}
+// This tile is not a water tile but is adjacent to one. In that case, we'll
+// adjust the heights of such neighboring corners.
+else
+{
+if (project.varimaa.tile_at(tileX, (tileZ - 1) + 1) == 0)
+{
+height2 = project.waterLevel;
+height1 = project.waterLevel;
+}
+if (project.varimaa.tile_at(tileX, (tileZ - 1) - 1) == 0)
+{
+height3 = project.waterLevel;
+height4 = project.waterLevel;
+}
+if (project.varimaa.tile_at(tileX - 1, (tileZ - 1)) == 0)
+{
+height1 = project.waterLevel;
+height4 = project.waterLevel;
+}
+if (project.varimaa.tile_at(tileX + 1, (tileZ - 1)) == 0)
+{
+height2 = project.waterLevel;
+height3 = project.waterLevel;
+}
+if (project.varimaa.tile_at(tileX + 1, (tileZ - 1) + 1) == 0)
+{
+height2 = project.waterLevel;
+}
+if (project.varimaa.tile_at(tileX - 1, (tileZ - 1) + 1) == 0)
+{
+height1 = project.waterLevel;
+}
+if (project.varimaa.tile_at(tileX + 1, (tileZ - 1) - 1) == 0)
+{
+height3 = project.waterLevel;
+}
+if (project.varimaa.tile_at(tileX - 1, (tileZ - 1) - 1) == 0)
+{
+height4 = project.waterLevel;
+}
+}
+}
+height1 += centerView.y;
+height2 += centerView.y;
+height3 += centerView.y;
+height4 += centerView.y;
+const texture = project.palat.texture[tilePalaIdx];
+const groundQuad = Rngon.ngon([Rngon.vertex(vertX, height1, vertZ, 0, 0),
+Rngon.vertex((vertX + Rsed.constants.groundTileSize), height2, vertZ, 1, 0),
+Rngon.vertex((vertX + Rsed.constants.groundTileSize), height3, (vertZ + Rsed.constants.groundTileSize), 1, 1),
+Rngon.vertex(vertX, height4, (vertZ + Rsed.constants.groundTileSize), 0, 1)],
+{
+color: Rngon.color_rgba(heightDiff, heightDiff, heightDiff),
+texture: texture,
+hasWireframe: (!isCornerTile && args.includeWireframe),
+auxiliary:
+{
+// We'll encode this ground quad's tile coordinates into a 32-bit id value, which during
+// rasterization we'll write into the mouse-picking buffer, so we can later determine which
+// quad the mouse cursor is hovering over.
+mousePickId: Rsed.ui.mouse_picking_element("ground",
+{
+texture: texture,
+groundTileX: tileX,
+groundTileY: (tileZ - 1),
+}),
+isCorner: isCornerTile,
+isGroundTile: true,
+}
+});
+trackPolygons.push(groundQuad);
+}
+}
+// Add the billboard and bridge tiles. We do this as a separate loop from adding
+// the ground tiles so that the n-gons are properly sorted by depth for rendering.
+// Otherwise, billboard/bridge tiles can become obscured by ground tiles behind
+// them.
+for (let x = 0; x < args.camera.viewportWidth; x++)
+{
+const tileX = (x + cameraPosFloored.x);
+const tileZ = (z + cameraPosFloored.z);
+if (out_of_bounds(tileX, tileZ))
+{
+continue;
+}
+const isCornerTile = ((x == 0) ||
+(z == 0) ||
+(x == (args.camera.viewportWidth - 1)));
+const vertX = (((x * Rsed.constants.groundTileSize) + centerView.x) - (fractionX * Rsed.constants.groundTileSize));
+const vertZ = ((centerView.z - (z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
+const tilePalaIdx = (()=>
+{
+let idx = project.varimaa.tile_at(tileX, (tileZ - 1));
+if ( args.paintHoverPala &&
+!mouseGrab &&
+(mouseHover && (mouseHover.type === "ground")) &&
+(Math.abs(mouseHover.groundTileX - tileX) <= Rsed.ui.groundBrush.brush_size()) &&
+(Math.abs(mouseHover.groundTileY - (tileZ - 1)) <= Rsed.ui.groundBrush.brush_size()))
+{
+idx = Rsed.ui.groundBrush.brush_pala_idx();
+}
+return idx;
+})();
+// If this tile has a billboard, add it.
+const billboardPalaIdx = project.palat.billboard_idx(tilePalaIdx, tileX, (tileZ - 1));
+if (billboardPalaIdx != null)
+{
+const baseHeight = centerView.y + project.maasto.tile_at(tileX, (tileZ - 1));
+const billboardTexture = project.palat.texture[billboardPalaIdx];
+const billboardVertices = (()=>
+{
+// Bridges (lay horizontally).
+if (billboardPalaIdx == 177)
+{
+return [Rngon.vertex( vertX,  centerView.y, vertZ, 0, 0),
+Rngon.vertex((vertX + Rsed.constants.groundTileSize), centerView.y, vertZ, 1, 0),
+Rngon.vertex((vertX + Rsed.constants.groundTileSize), centerView.y, (vertZ+Rsed.constants.groundTileSize), 1, 1),
+Rngon.vertex( vertX, centerView.y, (vertZ+Rsed.constants.groundTileSize), 0, 1)];
+}
+// Other billboards (lay vertically).
+else
+{
+return [Rngon.vertex( vertX, baseHeight, vertZ, 0, 0),
+Rngon.vertex((vertX + Rsed.constants.groundTileSize), baseHeight, vertZ, 1, 0),
+Rngon.vertex((vertX + Rsed.constants.groundTileSize), baseHeight+Rsed.constants.groundTileSize, vertZ, 1, 1),
+Rngon.vertex( vertX, baseHeight+Rsed.constants.groundTileSize, vertZ, 0, 1)];
+}
+})();
+const billboardQuad = Rngon.ngon(billboardVertices,
+{
+texture: billboardTexture,
+hasFill: true,
+auxiliary:
+{
+mousePickId: null,
+isCorner: isCornerTile,
+}
+});
+trackPolygons.push(billboardQuad);
+}
+}
+}
+// Add any track prop meshes that should be visible on the currently-drawn track.
+const propLocations = project.props.locations_of_props_on_track(project.track_id());
+propLocations.forEach((pos, idx)=>
+{
+if ((pos.x >= (cameraPosFloored.x * Rsed.constants.groundTileSize)) &&
+(pos.x <= ((cameraPosFloored.x + args.camera.viewportWidth) * Rsed.constants.groundTileSize)) &&
+(pos.z >= (cameraPosFloored.z * Rsed.constants.groundTileSize)) &&
+(pos.z <= ((cameraPosFloored.z + args.camera.viewportHeight) * Rsed.constants.groundTileSize)))
+{
+const x = ((pos.x + centerView.x - (cameraPosFloored.x * Rsed.constants.groundTileSize)) - (fractionX * Rsed.constants.groundTileSize));
+const z = ((centerView.z - pos.z + (cameraPosFloored.z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
+const groundHeight = centerView.y + project.maasto.tile_at((pos.x / Rsed.constants.groundTileSize), (pos.z / Rsed.constants.groundTileSize));
+const y = (groundHeight + pos.y);
+trackPolygons.push(...this.prop_mesh(pos.propId, idx,
+{
+position:
+{
+x,
+y,
+z,
+},
+...args,
+}));
+}
+});
+return Rngon.mesh(trackPolygons);
+},
+// Returns a renderable 3d mesh of the given prop at the given position (in world units).
+prop_mesh: (propId = 0, idxOnTrack = 0, args = {})=>
+{
+Rsed.throw_if_not_type("object", args);
+args =
+{
+...// Default args.
+{
+position:
+{
+x: 0,
+y: 0,
+z: 0,
+},
+solidProps: true,
+includeWireframe: false,
+},
+...args
+};
+const project = Rsed.$currentProject;
+const srcMesh = project.props.mesh[propId];
+const dstMesh = [];
+srcMesh.ngons.forEach(ngon=>
+{
+const texture = (args.solidProps? (ngon.fill.type === "texture"? project.props.texture[ngon.fill.idx]
+: null)
+: null);
+const propNgon = Rngon.ngon(ngon.vertices.map(v=>Rngon.vertex((v.x + args.position.x),
+(v.y + args.position.y),
+(v.z + args.position.z))),
+{
+color: (args.solidProps? (ngon.fill.type === "texture"? Rsed.visual.palette.color_at_idx(0)
+: Rsed.visual.palette.color_at_idx(ngon.fill.idx))
+: Rsed.visual.palette.color_at_idx(0, true)),
+texture: texture,
+textureMapping: "ortho",
+wireframeColor: Rsed.visual.palette.color_at_idx(args.solidProps? "black" : "lightgray"),
+hasWireframe: (args.solidProps? args.includeWireframe : true),
+hasFill: args.solidProps,
+auxiliary:
+{
+mousePickId: Rsed.ui.mouse_picking_element("prop",
+{
+texture: texture,
+propId: propId,
+propTrackIdx: idxOnTrack
+}),
+}
+});
+dstMesh.push(propNgon);
+});
+return dstMesh;
+},
+};
+return publicInterface;
+})();
+/*
+* 2019, 2020 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
+*
+*/
+"use strict";
+{ // A block to limit the scope of the unit-global variables we set up, below.
+// We'll sort the n-gon's vertices into those on its left side and those on its
+// right side.
+const leftVerts = new Array(500);
+const rightVerts = new Array(500);
+// Then we'll organize the sorted vertices into edges (lines between given two
+// vertices). Once we've got the edges figured out, we can render the n-gon by filling
+// in the spans between its edges.
+const leftEdges = new Array(500).fill().map(e=>({}));
+const rightEdges = new Array(500).fill().map(e=>({}));
+let numLeftVerts = 0;
+let numRightVerts = 0;
+let numLeftEdges = 0;
+let numRightEdges = 0;
+// A stripped-down version of the retro n-gon renderer's polygon filler. Includes
+// only the features required by RallySportED-js, helping to boost FPS.
+//
+// For the original function, see Rngon.ngon_filler().
+//
+// Note: Consider this the inner render loop; it may contain ugly things like
+// code repetition for the benefit of performance. If you'd like to refactor the
+// code, please benchmark its effects on performance first - maintaining or
+// improving performance would be great, losing performance would be bad.
+//
+Rsed.scenes["terrain-editor"].minimal_rngon_filler = function(auxiliaryBuffers = [])
+{
+const pixelBuffer = Rngon.internalState.pixelBuffer.data;
+const renderWidth = Rngon.internalState.pixelBuffer.width;
+const renderHeight = Rngon.internalState.pixelBuffer.height;
+const vertexSorters =
+{
+verticalAscending: (vertA, vertB)=>((vertA.y === vertB.y)? 0 : ((vertA.y < vertB.y)? -1 : 1)),
+verticalDescending: (vertA, vertB)=>((vertA.y === vertB.y)? 0 : ((vertA.y > vertB.y)? -1 : 1))
+}
+// Rasterize the n-gons.
+for (let n = 0; n < Rngon.internalState.ngonCache.count; n++)
+{
+const ngon = Rngon.internalState.ngonCache.ngons[n];
+const material = ngon.material;
+const texture = ngon.material.texture;
+Rngon.assert && (ngon.vertices.length < leftVerts.length)
+|| Rngon.throw("Overflowing the vertex buffer");
+numLeftVerts = 0;
+numRightVerts = 0;
+numLeftEdges = 0;
+numRightEdges = 0;
+// In theory, we should never receive n-gons that have no vertices, but let's check
+// to make sure.
+if (ngon.vertices.length <= 0)
+{
+continue;
+}
+// Rasterize a line.
+if (ngon.vertices.length === 2)
+{
+Rngon.line_draw(ngon.vertices[0], ngon.vertices[1], material.color, n, false);
+continue;
+}
+// Rasterize a polygon with 3 or more vertices.
+else
+{
+// Figure out which of the n-gon's vertices are on its left side and which on the
+// right. The vertices on both sides will be arranged from smallest Y to largest
+// Y, i.e. top-to-bottom in screen space. The top-most vertex and the bottom-most
+// vertex will be shared between the two sides.
+{
+// For rectangular ground tiles.
+if (material.auxiliary.isGroundTile)
+{
+Rngon.assert && (ngon.vertices.length == 4)
+|| Rngon.throw("Expected a rectangle.");
+let leftTop = ngon.vertices[3];
+let leftBottom = ngon.vertices[0];
+let rightTop = ngon.vertices[2];
+let rightBottom = ngon.vertices[1];
+if (leftTop.y > leftBottom.y)
+{
+[leftTop, leftBottom] = [leftBottom, leftTop];
+}
+if (rightTop.y > rightBottom.y)
+{
+[rightTop, rightBottom] = [rightBottom, rightTop];
+}
+if (leftTop.y < rightTop.y)
+{
+leftVerts[numLeftVerts++] = leftTop;
+leftVerts[numLeftVerts++] = leftBottom;
+rightVerts[numRightVerts++] = leftTop;
+rightVerts[numRightVerts++] = rightTop;
+rightVerts[numRightVerts++] = rightBottom;
+}
+else
+{
+leftVerts[numLeftVerts++] = rightTop;
+leftVerts[numLeftVerts++] = leftTop;
+leftVerts[numLeftVerts++] = leftBottom;
+rightVerts[numRightVerts++] = rightTop;
+rightVerts[numRightVerts++] = rightBottom;
+}
+if (leftBottom.y < rightBottom.y)
+{
+leftVerts[numLeftVerts++] = rightBottom;
+}
+else
+{
+rightVerts[numRightVerts++] = leftBottom;
+}
+}
+// Generic algorithm for n-sided convex polygons.
+else
+{
+// Sort the vertices by height from smallest Y to largest Y.
+ngon.vertices.sort(vertexSorters.verticalAscending);
+const topVert = ngon.vertices[0];
+const bottomVert = ngon.vertices[ngon.vertices.length-1];
+leftVerts[numLeftVerts++] = topVert;
+rightVerts[numRightVerts++] = topVert;
+// Trace a line along XY between the top-most vertex and the bottom-most vertex;
+// and for the intervening vertices, find whether they're to the left or right of
+// that line on X. Being on the left means the vertex is on the n-gon's left side,
+// otherwise it's on the right side.
+for (let i = 1; i < (ngon.vertices.length - 1); i++)
+{
+const lr = Rngon.lerp(topVert.x, bottomVert.x, ((ngon.vertices[i].y - topVert.y) / (bottomVert.y - topVert.y)));
+if (ngon.vertices[i].x >= lr)
+{
+rightVerts[numRightVerts++] = ngon.vertices[i];
+}
+else
+{
+leftVerts[numLeftVerts++] = ngon.vertices[i];
+}
+}
+leftVerts[numLeftVerts++] = bottomVert;
+rightVerts[numRightVerts++] = bottomVert;
+}
+}
+// Create edges out of the vertices.
+{
+for (let l = 1; l < numLeftVerts; l++) add_edge(leftVerts[l-1], leftVerts[l], true);
+for (let r = 1; r < numRightVerts; r++) add_edge(rightVerts[r-1], rightVerts[r], false);
+function add_edge(vert1, vert2, isLeftEdge)
+{
+const startY = Math.round(vert1.y);
+const endY = Math.round(vert2.y);
+const edgeHeight = (endY - startY);
+// Ignore horizontal edges.
+if (edgeHeight === 0) return;
+const startX = Math.round(vert1.x);
+const endX = Math.ceil(vert2.x);
+const deltaX = ((endX - startX) / edgeHeight);
+const edge = (isLeftEdge? leftEdges[numLeftEdges++] : rightEdges[numRightEdges++]);
+edge.startY = startY;
+edge.endY = endY;
+edge.startX = startX;
+edge.deltaX = deltaX;
+}
+}
+// Draw the n-gon. On each horizontal raster line, there will be two edges: left and right.
+// We'll render into the pixel buffer each horizontal span that runs between the two edges.
+if (material.hasFill)
+{
+let curLeftEdgeIdx = 0;
+let curRightEdgeIdx = 0;
+let leftEdge = leftEdges[curLeftEdgeIdx];
+let rightEdge = rightEdges[curRightEdgeIdx];
+if (!numLeftEdges || !numRightEdges) continue;
+// Note: We assume the n-gon's vertices to be sorted by increasing Y.
+const ngonStartY = leftEdges[0].startY;
+const ngonEndY = leftEdges[numLeftEdges-1].endY;
+const ngonHeight = (ngonEndY - ngonStartY);
+// Rasterize the n-gon in horizontal pixel spans over its height.
+for (let y = ngonStartY; y < ngonEndY; y++)
+{
+const spanStartX = Math.round(leftEdge.startX);
+const spanEndX = Math.round(rightEdge.startX);
+const spanWidth = ((spanEndX - spanStartX) + 1);
+if ((spanWidth > 0) &&
+(y >= 0) &&
+(y < renderHeight))
+{
+// Assumes the pixel buffer consists of 4 elements per pixel (e.g. RGBA).
+let pixelBufferIdx = (((spanStartX + y * renderWidth) * 4) - 4);
+// Draw a solid-filled span.
+if (!texture)
+{
+for (let x = spanStartX; x < spanEndX; x++)
+{
+pixelBufferIdx += 4;
+// Bounds-check, since we don't clip vertices to the viewport.
+if (x < 0) continue;
+if (x >= renderWidth) break;
+pixelBuffer[pixelBufferIdx + 0] = material.color.red;
+pixelBuffer[pixelBufferIdx + 1] = material.color.green;
+pixelBuffer[pixelBufferIdx + 2] = material.color.blue;
+pixelBuffer[pixelBufferIdx + 3] = (material.auxiliary.isCorner? 100 : 255);
+for (let b = 0; b < auxiliaryBuffers.length; b++)
+{
+if (material.auxiliary[auxiliaryBuffers[b].property] !== null)
+{
+// Buffers are expected to consist of one element per pixel.
+auxiliaryBuffers[b].buffer[pixelBufferIdx/4] = material.auxiliary[auxiliaryBuffers[b].property];
+}
+}
+}
+}
+// Draw a textured span.
+else
+{
+const wDiv = (texture.width / spanWidth);
+const hDiv = (texture.height / ngonHeight);
+for (let x = spanStartX; x < spanEndX; x++)
+{
+// Update values that're interpolated horizontally along the span.
+pixelBufferIdx += 4;
+// Bounds-check, since we don't clip vertices to the viewport.
+if (x < 0) continue;
+if (x >= renderWidth) break;
+// Will hold the texture coordinates used if we end up drawing
+// a textured pixel at the current x,y screen location.
+let u = 0.0, v = 0.0;
+// Screen-space UV mapping, as used e.g. in the DOS game Rally-Sport.
+{
+// Pixel coordinates relative to the polygon.
+const ngonX = (x - spanStartX + 1);
+const ngonY = (y - ngonStartY + 1);
+u = (ngonX * wDiv);
+v = (ngonY * hDiv);
+// The texture image is flipped, so we need to flip V as well.
+v = (texture.height - v);
+}
+const texel = texture.pixels[(~~u) + (~~v) * texture.width];
+// Make sure we gracefully exit if accessing the texture out of bounds.
+if (!texel) continue;
+// Alpha-test the texture. If the texel isn't fully opaque, skip it.
+if (texel.alpha !== 255) continue;
+// The pixel passed its alpha test, depth test, etc., and should be drawn
+// on screen.
+{
+pixelBuffer[pixelBufferIdx + 0] = (texel.red   * material.color.unitRange.red);
+pixelBuffer[pixelBufferIdx + 1] = (texel.green * material.color.unitRange.green);
+pixelBuffer[pixelBufferIdx + 2] = (texel.blue  * material.color.unitRange.blue);
+pixelBuffer[pixelBufferIdx + 3] = (material.auxiliary.isCorner? 100 : 255);
+for (let b = 0; b < auxiliaryBuffers.length; b++)
+{
+if (material.auxiliary[auxiliaryBuffers[b].property] !== null)
+{
+// Buffers are expected to consist of one element per pixel.
+auxiliaryBuffers[b].buffer[pixelBufferIdx/4] = material.auxiliary[auxiliaryBuffers[b].property];
+}
+}
+}
+}
+}
+}
+// Update values that're interpolated vertically along the edges.
+leftEdge.startX  += leftEdge.deltaX;
+rightEdge.startX += rightEdge.deltaX;
+// We can move onto the next edge when we're at the end of the current one.
+if (y === (leftEdge.endY - 1)) leftEdge = leftEdges[++curLeftEdgeIdx];
+if (y === (rightEdge.endY - 1)) rightEdge = rightEdges[++curRightEdgeIdx];
+}
+}
+// Draw a wireframe around any n-gons that wish for one.
+if (Rngon.internalState.showGlobalWireframe ||
+material.hasWireframe)
+{
+for (let l = 1; l < numLeftVerts; l++)
+{
+Rngon.line_draw(leftVerts[l-1], leftVerts[l], material.wireframeColor, n);
+}
+for (let r = 1; r < numRightVerts; r++)
+{
+Rngon.line_draw(rightVerts[r-1], rightVerts[r], material.wireframeColor, n);
+}
+}
+}
+}
+return;
+}
+}
+/*
+* 2019, 2020 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
+*
+*/
+"use strict";
+// A stripped-down version of the retro n-gon renderer's polygon transformer. Includes
+// only the features required by RallySportED-js, helping to boost FPS.
+//
+// Expects vertices to already be in screen space.
+//
+// For the original function, see Rngon.ngon_transform_and_light().
+Rsed.scenes["terrain-editor"].minimal_rngon_tcl = function(ngons = [])
+{
+const ngonCache = Rngon.internalState.ngonCache;
+const renderWidth = Rngon.internalState.pixelBuffer.width;
+const renderHeight = Rngon.internalState.pixelBuffer.height;
+for (const ngon of ngons)
+{
+// Ignore n-gons that would be fully outside of the screen.
+{
+const boundingBox = ngon.vertices.reduce((bounds, v)=>{
+if (bounds.xMin > v.x) bounds.xMin = v.x;
+if (bounds.xMax < v.x) bounds.xMax = v.x;
+if (bounds.yMin > v.y) bounds.yMin = v.y;
+if (bounds.yMax < v.y) bounds.yMax = v.y;
+return bounds;
+}, {xMin: Infinity, xMax: -Infinity, yMin: Infinity, yMax: -Infinity});
+if ((boundingBox.xMin >= renderWidth) || (boundingBox.xMax < 0) ||
+(boundingBox.yMin >= renderHeight) || (boundingBox.yMax < 0))
+{
+continue;
+}
+}
+// Ignore fully transparent n-gons.
+if (!ngon.material.color.alpha &&
+!ngon.material.hasWireframe)
+{
+continue;
+}
+// Copy the ngon into the internal n-gon cache, so we can operate on it without
+// mutating the original n-gon's data.
+const cachedNgon = ngonCache.ngons[ngonCache.count++];
+{
+cachedNgon.vertices.length = 0;
+for (let v = 0; v < ngon.vertices.length; v++)
+{
+cachedNgon.vertices[v] = Rngon.vertex(ngon.vertices[v].x,
+ngon.vertices[v].y,
+ngon.vertices[v].z);
+}
+cachedNgon.material = ngon.material;
+cachedNgon.isActive = true;
+}
+};
+// Mark as inactive any cached n-gons that we didn't touch, so the renderer knows
+// to ignore them for the current frame.
+for (let i = ngonCache.count; i < ngonCache.ngons.length; i++)
+{
+ngonCache.ngons[i].isActive = false;
+}
+return;
+}
 /*
 * Most recent known filename: js/scene/texture-editor/texture-editor.js
 *
@@ -10445,9 +10425,8 @@ window.requestAnimationFrame((newTimestamp)=>tick(newTimestamp, (newTimestamp - 
 }
 async function load_project(projectMeta)
 {
-project = Rsed.project.placeholder;
 /// TODO: Disable undo/redo while the project loads.
-Rsed.world.camera.reset_camera_position();
+project = Rsed.project.placeholder;
 project = await Rsed.project(projectMeta);
 Rsed.ui.undoStack.reset();
 }

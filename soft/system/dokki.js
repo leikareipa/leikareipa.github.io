@@ -141,7 +141,7 @@ function create_app()
                         <a :href="'#'+simplifiedTitle">
                             <i class="fas fa-link"/>
                         </a>
-                        
+
                     </span>
 
                 </span>
@@ -198,10 +198,25 @@ function create_app()
             src: {default: ""},
             height: {default: "500px"},
             title: {default: "Inline frame"},
+            autofocus: {default: undefined},
         },
         data() {
             return {
                 isExpanded: false,
+            }
+        },
+        watch: {
+            isExpanded()
+            {
+                if (this.isExpanded && (this.$props.autofocus !== undefined))
+                {
+                    this.$nextTick(()=>
+                    {
+                        this.$refs["iframe"].onload = ()=>{
+                            this.$refs["iframe"].focus();
+                        };
+                    });
+                }
             }
         },
         template: `
@@ -227,7 +242,8 @@ function create_app()
                         :style="{height: height}">
 
                     <iframe class="dokki-iframe"
-                            :src=src>
+                            :src=src
+                            ref="iframe">
                     </iframe>
                     
                 </footer>
