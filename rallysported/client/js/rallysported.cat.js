@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (02 June 2021 22:16:41 UTC)
+// VERSION: live (04 June 2021 03:23:32 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -2882,7 +2882,7 @@ popup.style.bottom = `${totalHeight -= (popup.offsetHeight + popupVerticalSpacin
 /*
 * Most recent known filename: js/misc/browser-metadata.js
 *
-* 2020 Tarpeeksi Hyvae Soft
+* 2020-2021 Tarpeeksi Hyvae Soft
 *
 * Software: RallySportED-js
 *
@@ -2892,6 +2892,12 @@ popup.style.bottom = `${totalHeight -= (popup.offsetHeight + popupVerticalSpacin
 // the app is running.
 Rsed.browserMetadata = (function()
 {
+// The most recent URL hash parsed with parse_url_hash(); used as a cache
+// to avoid re-parsing the hash when it hasn't changed between calls.
+const latestUrlHash = {
+string: "",
+params: [],
+};
 const publicInterface = {
 isMobile: Boolean(/android|mobi|(crios\/)/i.test(navigator.userAgent)),
 browserName: (/Chrome/i.test(navigator.userAgent)? "Chrome" :
@@ -2904,6 +2910,43 @@ has_url_param: function(paramName = "")
 {
 const params = new URLSearchParams(window.location.search);
 return params.has(paramName);
+},
+has_hash_param: function(paramName = "")
+{
+const params = parse_url_hash();
+return (params[paramName] !== undefined);
+},
+hash_param: function(paramName = "")
+{
+const params = parse_url_hash();
+const param = params[paramName];
+return {
+isDefined: (param !== undefined),
+value: function()
+{
+if (!Array.isArray(param))
+{
+return false;
+}
+return this.value_at(0);
+},
+value_at: function(idx = 0)
+{
+if (!Array.isArray(param))
+{
+return false;
+}
+return param[idx];
+},
+has: function(value = "")
+{
+if (!Array.isArray(param))
+{
+return false;
+}
+return param.includes(value);
+},
+}
 },
 warn_of_incompatibilities: function()
 {
@@ -2928,6 +2971,51 @@ return;
 }
 };
 return publicInterface;
+function parse_url_hash()
+{
+// We expect a hash to be something like "#gui:-menubar/play:true/scene:texture-editor".
+const hashString = window.location.hash.substring(1);
+// Don't re-parse if the params don't seem to have changed.
+if (latestUrlHash.string == hashString)
+{
+return latestUrlHash.params;
+}
+const keyValuePairs = hashString.split("/").filter(s=>s.length);
+const params = {};
+for (const pair of keyValuePairs)
+{
+let key, values;
+// We support key/value pairs of type "xxxx:yyyy" and "xxxx" (the latter
+// behaves as if it were "xxxx:true"). The first-from-left ":" character
+// marks the boundary between the key and value; subsequent ":" characters
+// are part of the value. "|" characters mark the boundaries between
+// multiple values, e.g. "key:value1|value2|value3".
+[key, ...values] = pair.split(":");
+values = values.join(":").split("|").filter(s=>s.length);
+if (!values.length)
+{
+values = [true];
+}
+else
+{
+// The value is always given as a string by the browser, but for
+// proper boolean logic we want to convert certain strings into
+// their logical representations; so e.g. "false" == true but we
+// instead want ("false" <- false) != true.
+for (let i = 0; i < values.length; i++)
+{
+if (!values[i].length) values[i] = true;
+else if (values[i] == "false") values[i] = false;
+else if (values[i] == "true") values[i] = true;
+else if (!isNaN(values[i])) values[i] = Number(values[i]);
+}
+}
+params[key] = values;
+}
+latestUrlHash.string = hashString;
+latestUrlHash.params = params;
+return params;
+}
 })();
 "use strict";
 Rsed.uuid = {};
@@ -6142,6 +6230,11 @@ return publicInterface;
 /// receiving mouse events in the meantime, so there won't be accidental terrain edits etc. that
 /// might otherwise fall through the dropdown menu.
 let RSED_DROPDOWN_ACTIVATED = false;
+window.onhashchange = function()
+{
+window.location.reload();
+return;
+}
 window.onblur = function()
 {
 Rsed.ui.inputState.reset_keys();
@@ -6217,19 +6310,25 @@ rsedStartupArgs.project.dataLocality = "server-rsc";
 rsedStartupArgs.project.contentId = contentId;
 }
 }
-// Parse the URL hash, if any.
+// Parse the URL hash.
 {
-if (["#terrain", "#texture", "#tilemap"].includes(window.location.hash))
+if (Rsed.browserMetadata.has_hash_param("ui"))
 {
-const scene = `${window.location.hash.substring(1)}-editor`;
-rsedStartupArgs.editor = scene;
+rsedStartupArgs.ui.showMenubar = !Rsed.browserMetadata.hash_param("ui").has("-menubar");
+rsedStartupArgs.ui.showInCanvas = !Rsed.browserMetadata.hash_param("ui").has("-canvas");
 }
-if (window.location.hash == "#play")
+if (Rsed.browserMetadata.has_hash_param("renderer"))
 {
-Rsed.player.runOnStartup = true;
+rsedStartupArgs.renderer.pixelated = !Rsed.browserMetadata.hash_param("renderer").has("-pixelated");
 }
-// Remove the hash.
-history.replaceState(null, null, " ");
+if (Rsed.browserMetadata.has_hash_param("scene"))
+{
+rsedStartupArgs.scene = Rsed.browserMetadata.hash_param("scene").value();
+}
+if (Rsed.browserMetadata.has_hash_param("play"))
+{
+Rsed.player.runOnStartup = Rsed.browserMetadata.hash_param("play").value();
+}
 }
 Rsed.core.start(rsedStartupArgs);
 return;
@@ -7813,8 +7912,8 @@ depthSort: "painter",
 useDepthBuffer: false,
 auxiliaryBuffers: [{buffer:Rsed.visual.canvas.mousePickingBuffer, property:"mousePickId"}],
 modules: {
-ngonFill: Rsed.minimal_rngon_filler,
-transformClipLight: Rsed.minimal_rngon_tcl,
+ngonFill: Rsed.scenes["terrain-editor"].minimal_rngon_filler,
+transformClipLight: Rsed.scenes["terrain-editor"].minimal_rngon_tcl,
 },
 });
 // If the rendering was resized since the previous frame...
@@ -10313,6 +10412,8 @@ let coreIsRunning = false;
 // Set to true when core.panic() is called.
 let coreIsInPanic = false;
 let ticksPerSecond = 0;
+// The arguments passed to the most recent call to .start().
+let startupArgs = {};
 // The project we've currently got loaded. When the user makes edits or requests a save,
 // this is the target project.
 let project = Rsed.project.placeholder;
@@ -10346,8 +10447,17 @@ dataLocality: "server-rsed", // | "server-rsc" | "client"
 // reference.
 contentId: "demod",
 },
-// Which asset editor (from Rsed.scenes.xxxx) to show by default.
-editor: "terrain-editor",
+ui:
+{
+showMenubar: true,
+showInCanvas: true,
+},
+renderer:
+{
+pixelated: true,
+},
+// Which scene (of Rsed.scenes.xxxx) to show by default.
+scene: "terrain-editor",
 // If the user is viewing a stream, its id will be set here.
 stream: null,
 }
@@ -10360,19 +10470,28 @@ args = {
 ...Rsed.core.default_startup_args(),
 ...args,
 };
+startupArgs = args;
 coreIsRunning = false;
 Rsed.$currentScene = "loading-spinner";
 // Hide the UI while we load up the project's data etc.
 Rsed.ui.htmlUI.set_visible(false);
 await load_project(args.project);
 Rsed.ui.htmlUI.refresh();
-Rsed.ui.htmlUI.set_visible(true);
+Rsed.ui.htmlUI.set_visible(args.ui.showMenubar);
+if (args.renderer.pixelated)
+{
+document.getElementById("render-canvas").classList.add("pixelated");
+}
+else
+{
+document.getElementById("render-canvas").classList.remove("pixelated");
+}
 if (Rsed.player.runOnStartup)
 {
 Rsed.player.play(true);
 }
 coreIsRunning = true;
-Rsed.$currentScene = (args.editor || "terrain-editor");
+Rsed.$currentScene = (args.scene || "terrain-editor");
 Rsed.browserMetadata.warn_of_incompatibilities();
 return;
 },
@@ -10411,6 +10530,7 @@ scene.regenerate_tilemap();
 return;
 },
 }
+startupArgs = publicInterface.default_startup_args();
 tick();
 return publicInterface;
 // Called once per frame to orchestrate program flow.
@@ -10424,7 +10544,7 @@ tickDeltaMs = timeDeltaMs;
 ticksPerSecond = Math.round(1000 / (timeDeltaMs || 1));
 scene.handle_user_interaction();
 scene.draw_mesh();
-scene.draw_ui();
+if (startupArgs.ui.showInCanvas) scene.draw_ui();
 if (publicInterface.forceUpdateMouseHoverOnTickEnd)
 {
 Rsed.ui.inputState.update_mouse_hover();
