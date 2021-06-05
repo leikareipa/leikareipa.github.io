@@ -15,8 +15,8 @@ function create_app()
         state: {
             topics: [],
             loremCount: 0,
-            productName: "",
-            productVersion: "",
+            productName: undefined,
+            productVersion: undefined,
         },
         mutations: {
             add_topic(state, topicTitle)
@@ -31,11 +31,11 @@ function create_app()
             {
                 state.loremCount++;
             },
-            set_product_name(state, name = "")
+            set_product_name(state, name)
             {
                 state.productName = name;
             },
-            set_product_version(state, version = "")
+            set_product_version(state, version)
             {
                 state.productVersion = version;
             }
@@ -79,19 +79,6 @@ function create_app()
 
                 {{title}}
 
-                <div v-if="productName !== undefined"
-                     class="software-tag">
-
-                    {{productName}}
-
-                    <span v-if="productVersion !== undefined">
-
-                        {{productVersion}}
-
-                    </span>
-
-                </div>
-
             </header>
         `,
     });
@@ -99,7 +86,23 @@ function create_app()
     app.component("dokki-topics", {
         template: `
             <main class="dokki-topics">
+
                 <slot/>
+
+                <div class="dokki-tag">
+                    <p>
+                        Documented with
+
+                        <a href="https://github.com/leikareipa/dokki"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                        
+                            dokki
+                            
+                        </a>
+                    </p>
+                </div>
+
             </main>
         `,
     });
@@ -134,7 +137,7 @@ function create_app()
             
                 <span class="title">
 
-                    <h1>{{this.idx}}. {{this.title}}</h1>
+                    <h1>{{this.title}}</h1>
 
                     <span class="permalink" title="Permalink to this topic">
                     
@@ -158,6 +161,14 @@ function create_app()
             {
                 return this.$store.state.topics;
             },
+            productName()
+            {
+                return this.$store.state.productName;
+            },
+            productVersion()
+            {
+                return this.$store.state.productVersion;
+            },
         },
         template: `
             <nav ref="panel"
@@ -167,24 +178,30 @@ function create_app()
                      class="container">
 
                     <div class="dokki-navbar">
+
+                        <div v-if="productName !== undefined" class="software-tag">
+
+                            <i class="fas fa-fw fa-list"/>
+                            {{productName}}
+                            {{productVersion}}
+
+                        </div>
+                        <div v-else class="software-tag">
+
+                            <i class="fas fa-fw fa-list"/>
+                            Topics
+
+                        </div>
+
                         <ul>
                             <li v-for="topic in topics">
                                 <a :href="'#'+topic.simplifiedTitle">
+                                    <i class="fas fa-fw fa-angle-right" style="color: lightgray;"/>
                                     {{topic.title}}
                                 </a>
                             </li>
                         </ul>
-                    </div>
 
-                    <div class="dokki-tag">
-                        Documented with
-
-                        <a href="https://github.com/leikareipa/dokki"
-                        target="_blank"
-                        rel="noopener noreferrer">
-                        
-                            dokki
-                        </a>
                     </div>
 
                 </div>

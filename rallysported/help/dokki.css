@@ -1,11 +1,13 @@
 :root
 {
-    --header-height: 65px;
-    --side-panel-width: 280px;
-    --topics-width: 810px;
+    --header-height: 60px;
+    --side-panel-width: 300px;
+    --topics-width: 820px;
     --content-margin: 20px;
     --header-bottom-margin: 23px;
+    --topic-bottom-margin: 25px;
     --topics-container-top-margin: calc(35px - var(--header-bottom-margin));
+    --topics-container-vertical-margin: calc(5px + var(--content-margin));
     --embedded-element-border-radius: 8px;
     --link-color: #2264e8;
 
@@ -30,7 +32,7 @@ body
     font-family: sans-serif;
     text-align: center;
     align-content: center;
-    background-color: white;
+    background-color: #f6f6f6;
     color: black;
     padding: 0;
     margin: 0;
@@ -48,9 +50,13 @@ body
 
 .dokki-tag
 {
-    margin-top: var(--content-margin);
-    font-size: 80%;
+    margin-top: calc(2 * var(--topic-bottom-margin));
+    font-size: 90%;
     color: gray;
+    width: 100%;
+    box-sizing: border-box;
+    border-top: 1px solid lightgray;
+    text-align: center;
 }
 
 .dokki-header,
@@ -66,9 +72,9 @@ body
     white-space: nowrap;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
     box-sizing: border-box;
-    background-color: whitesmoke;
+    background-color: #f6f6f6;
     padding-left: var(--page-vertical-margin);
     padding-right: var(--page-vertical-margin);
     text-align: left;
@@ -86,28 +92,32 @@ body
     color: gray;
 }
 
-.dokki-header .software-tag
+.software-tag
 {
-    margin-left: auto;
-    font-size: 60%;
-    font-weight: normal;
+    margin: 0;
+    padding: 10px;
+    background-color: #f6f6f6;
+    text-align: left;
+    border-bottom: 1px solid lightgray;
+    position: sticky;
+    top: 0;
 }
 
 .dokki-side-panel
 {
-    border-right: 1px solid lightgray;
     box-sizing: border-box;
     position: fixed;
     z-index: 0;
     top: var(--header-height);
     left: var(--page-vertical-margin);
-    background-color: transparent;
+    background-color: #fdfdfd;
     width: var(--side-panel-width);
     text-align: left;
-    padding-top: var(--header-bottom-margin);
     overflow-y: auto;
     height: calc(100% - var(--header-height));
-    padding-bottom: var(--content-margin);
+    padding-bottom: calc(3 * var(--content-margin));
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
 }
 
 .dokki-side-panel ul
@@ -119,43 +129,41 @@ body
 
 .dokki-side-panel li
 {
-    counter-increment: line;
-    padding-bottom: 4px;
-    padding-top: 4px;
+    padding: 0;
+}
+
+.dokki-side-panel li:hover
+{
+    background-color: #f6f6f6;
 }
 
 .dokki-side-panel li a
 {
-    padding-bottom: 4px;
-    padding-top: 4px;
+    display: block;
+    padding: 10px 10px;
 }
-
-.dokki-side-panel li::before
+.dokki-side-panel li a:hover
 {
-    content: counter(line) ". ";
-}
-
-.dokki-side-panel li:first-of-type
-{
-    padding-top: 0;
+    text-decoration: none;
 }
 
 .dokki-topics
 {
-    margin: var(--content-margin);
-    margin-top: calc(var(--header-height) + var(--header-bottom-margin) - 1px);
-    margin-left: 5px;
+    padding: var(--content-margin);
+    padding-top: calc(var(--header-height) + var(--header-bottom-margin) - 1px);
+    padding-left: var(--topics-container-vertical-margin);
+    padding-right: var(--topics-container-vertical-margin);
     width: var(--topics-width);
-    padding: 0;
-    background-color: transparent;
+    background-color: #fdfdfd;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: left;
     position: relative;
-    left: calc(50% - var(--topics-width) / 2);
+    left: calc(var(--page-vertical-margin) + var(--side-panel-width));
     top: 0;
-    z-index: 0;
+    z-index: 1;
+    border-right: 1px solid lightgray;
 }
 
 .dokki-topic
@@ -164,7 +172,7 @@ body
     padding: 0;
     margin: 0;
     padding-top: 15px;
-    margin-bottom: 25px;
+    margin-bottom: var(--topic-bottom-margin);
     width: 100%;
 }
 
@@ -617,16 +625,26 @@ body
 {
     :root
     {
-        --topics-width: 710px;
+        --page-vertical-margin: 20px;
+    }
+
+    .dokki-topics
+    {
+        border-right: none;
+        width: calc(85% - var(--side-panel-width) - var(--page-vertical-margin) - var(--content-margin) * 2);
     }
 }
 
-@media only screen and (max-width: 1350px)
+@media only screen and (max-width: 1300px)
 {
     :root
     {
-        --side-panel-width: 240px;
-        --topics-width: 610px;
+        --side-panel-width: 280px;
+    }
+
+    .dokki-topics
+    {
+        width: calc(90% - var(--side-panel-width) - var(--page-vertical-margin) - var(--content-margin) * 2);
     }
 }
 
@@ -634,26 +652,25 @@ body
 {
     :root
     {
-        --page-vertical-margin: 30px;
+        --side-panel-width: 260px;
+        --page-vertical-margin: 0px;
+        --topics-container-vertical-margin: var(--content-margin);
+    }
+
+    .dokki-header
+    {
+        padding-left: var(--content-margin);
+        padding-right: var(--content-margin);
+    }
+
+    .dokki-side-panel
+    {
+        border-left: none;
     }
 
     .dokki-topics
     {
-        left: calc(var(--page-vertical-margin) + var(--side-panel-width) + var(--content-margin));
-        width: calc(90% - var(--side-panel-width) - var(--page-vertical-margin));
-        margin-left: 0;
-    }
-}
-
-@media only screen and (max-width: 1050px)
-{
-    :root
-    {
-        --page-vertical-margin: 25px;
-    }
-
-    .dokki-topics
-    {
+        border-right: none;
         width: calc(100% - var(--side-panel-width) - var(--page-vertical-margin) - var(--content-margin) * 2);
     }
 }
@@ -662,8 +679,7 @@ body
 {
     :root
     {
-        --page-vertical-margin: 20px;
-        --side-panel-width: 220px;
+        --side-panel-width: 240px;
     }
 }
 
@@ -671,7 +687,6 @@ body
 {
     :root
     {
-        --page-vertical-margin: 10px;
         --side-panel-width: 0;
     }
 
@@ -694,8 +709,6 @@ body
     .dokki-topics
     {
         left: var(--page-vertical-margin);
-        margin-left: 0;
-        padding-left: 0;
     }
 }
 
@@ -705,10 +718,5 @@ body
     {
         --header-height: 80px;
         --header-bottom-margin: 25px;
-    }
-
-    .dokki-header .software-tag
-    {
-        display: none;
     }
 }
