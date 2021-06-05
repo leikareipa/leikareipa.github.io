@@ -75,7 +75,7 @@ function create_app()
         template: `
             <header class="dokki-header">
 
-                <i :class="icon" style="margin-right: 10px;"/>
+                <i :class="icon" style="margin: 0 10px;"/>
 
                 {{title}}
 
@@ -189,7 +189,7 @@ function create_app()
                         <div v-else class="software-tag">
 
                             <i class="fas fa-fw fa-list"/>
-                            Topics
+                            Contents
 
                         </div>
 
