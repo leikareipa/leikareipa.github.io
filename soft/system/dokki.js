@@ -19,13 +19,21 @@ function create_app()
             productVersion: undefined,
         },
         mutations: {
-            add_topic(state, topicTitle)
+            add_topic(state, topicTitle = "")
             {
                 state.topics.push({
                     title: topicTitle,
+                    subtopics: [],
                     simplifiedTitle: simplified_topic_title(topicTitle),
                     url: `#${simplified_topic_title(topicTitle)}`
                 });
+            },
+            add_subtopic(state, subtopic = {})
+            {
+                if (subtopic.parentTopic)
+                {
+                    subtopic.parentTopic.subtopics.push(subtopic);
+                }
             },
             increment_lorem_count(state)
             {
@@ -84,23 +92,25 @@ function create_app()
     });
 
     app.component("dokki-topics", {
+        mounted()
+        {
+            console.log(this.$store.state.topics)
+        },
         template: `
             <main class="dokki-topics">
 
                 <slot/>
 
                 <div class="dokki-tag">
-                    <p>
-                        Documented with
+                    Documented with
 
-                        <a href="https://github.com/leikareipa/dokki"
-                           target="_blank"
-                           rel="noopener noreferrer">
+                    <a href="https://github.com/leikareipa/dokki"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                    
+                        <b>dokki</b>
                         
-                            dokki
-                            
-                        </a>
-                    </p>
+                    </a>
                 </div>
 
             </main>
@@ -122,36 +132,67 @@ function create_app()
                        : this.$store.state.topics[this.idx-1].simplifiedTitle;
             },
         },
-        mounted()
+        created()
         {
             this.$store.commit("add_topic", this.title);
             this.idx = this.$store.state.topics.length;
         },
         template: `
-            <span class="dokki-topic-anchor"
+            <span class="dokki-anchor topic"
                   :id=simplifiedTitle>
             </span>
 
-            <section class="dokki-topic"
-                 :id=simplifiedTitle>
+            <section class="dokki-topic">
             
-                <span class="title">
-
-                    <h1>{{this.title}}</h1>
-
-                    <span class="permalink" title="Permalink to this topic">
-                    
-                        <a :href="'#'+simplifiedTitle">
-                            <i class="fas fa-link"/>
-                        </a>
-
-                    </span>
-
-                </span>
+                <h1>{{this.title}}</h1>
 
                 <slot/>
 
             </section>
+        `,
+    });
+
+    app.component("dokki-subtopic", {
+        props: ["title"],
+        data() {
+            return {
+                selfMeta: undefined,
+            }
+        },
+        created()
+        {
+            // We assume that this subtopic belongs to the most recently created topic;
+            // and as such that topics are appended to the store's list of topics in the
+            // order - and at the time - of their creation.
+            const parentTopic = this.$store.state.topics[this.$store.state.topics.length - 1];
+            console.assert(parentTopic, "Detected an orphaned subtopic.");
+
+            const combinedTitle = `${parentTopic.title} ${this.title}`;
+
+            this.selfMeta = {
+                title: this.title,
+                parentTopic: parentTopic,
+                simplifiedTitle: simplified_topic_title(combinedTitle),
+                url: `#${simplified_topic_title(combinedTitle)}`,
+            };
+
+            this.$store.commit("add_subtopic", this.selfMeta);
+        },
+        template: `
+            <span class="dokki-anchor subtopic"
+                  :id=this.selfMeta.simplifiedTitle>
+            </span>
+
+            <h2>{{this.title}}</h2>
+            <slot/>
+        `,
+    });
+
+    app.component("dokki-item", {
+        props: ["title"],
+        template: `
+            <h3>{{this.title}}</h3>
+            <slot/>
         `,
     });
 
@@ -171,40 +212,50 @@ function create_app()
             },
         },
         template: `
-            <nav ref="panel"
-                 class="dokki-side-panel">
+            <nav class="dokki-side-panel">
 
-                <div ref="container"
-                     class="container">
+                <div v-if="productName !== undefined"
+                     class="dokki0-product-tag">
 
-                    <div class="dokki-navbar">
-
-                        <div v-if="productName !== undefined" class="software-tag">
-
-                            <i class="fas fa-fw fa-list"/>
-                            {{productName}}
-                            {{productVersion}}
-
-                        </div>
-                        <div v-else class="software-tag">
-
-                            <i class="fas fa-fw fa-list"/>
-                            Contents
-
-                        </div>
-
-                        <ul>
-                            <li v-for="topic in topics">
-                                <a :href="'#'+topic.simplifiedTitle">
-                                    <i class="fas fa-fw fa-angle-right" style="color: lightgray;"/>
-                                    {{topic.title}}
-                                </a>
-                            </li>
-                        </ul>
-
-                    </div>
+                    <i class="fas fa-fw fa-caret-down"
+                       style="color: dimgray;"/>
+                    {{productName}}
+                    {{productVersion}}
 
                 </div>
+                <div v-else
+                     class="dokki0-product-tag">
+
+                    <i class="fas fa-fw fa-caret-down"
+                       style="color: dimgray;"/>
+                    Contents
+
+                </div>
+
+                <ul class="dokki0-vertical-navi">
+
+                    <li v-for="topic in topics">
+
+                        <a :href="topic.url"
+                           class="dokki0-navi-link topic">
+
+                            <i class="dokki0-navi-link-icon fas fa-sm fa-fw fa-hashtag"/>
+                            {{topic.title}}
+
+                        </a>
+
+                        <a v-for="subtopic in topic.subtopics"
+                           :href="subtopic.url"
+                           class="dokki0-navi-link subtopic">
+
+                            <i class="dokki0-navi-link-icon fas fa-sm fa-fw fa-hashtag"/>
+                            {{subtopic.title}}
+                            
+                        </a>
+
+                    </li>
+
+                </ul>
             
             </nav>
         `,
@@ -587,7 +638,7 @@ function create_app()
                 <hr v-if="hasFooter">
 
                 <footer v-if=hasFooter class="italic">
-                    <slot name="caption">
+                    <slot name="caption"/>
                 </footer>
 
             </p>

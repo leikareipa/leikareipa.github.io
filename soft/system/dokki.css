@@ -1,8 +1,8 @@
 :root
 {
-    --header-height: 60px;
+    --header-height: 59px;
     --side-panel-width: 290px;
-    --topics-width: 870px;
+    --topics-width: 47%;
     --content-margin: 20px;
     --header-bottom-margin: 23px;
     --topic-bottom-margin: 25px;
@@ -50,14 +50,15 @@ body
 
 .dokki-tag
 {
-    margin-top: calc(2 * var(--topic-bottom-margin));
+    margin-top: calc(2.5 * var(--topic-bottom-margin));
     font-size: 90%;
     color: gray;
     width: 100%;
     box-sizing: border-box;
     border-top: 1px solid lightgray;
     text-align: center;
-    background-color: #f6f6f6;
+    background-image: linear-gradient( #f2f2f2, white);
+    padding: 10px;
 }
 
 .dokki-header,
@@ -80,7 +81,7 @@ body
     padding-right: var(--page-vertical-margin);
     text-align: left;
     font-weight: normal;
-    font-size: 160%;
+    font-size: 150%;
     height: var(--header-height);
     position: fixed;
     width: 100%;
@@ -93,11 +94,13 @@ body
     color: gray;
 }
 
-.software-tag
+.dokki0-product-tag
 {
     align-items: center;
     margin: 0;
-    padding: 20px 10px;
+    height: var(--header-height);
+    line-height: var(--header-height);
+    padding: 0 10px;
     background-color: #f6f6f6;
     text-align: left;
     border-bottom: 1px solid lightgray;
@@ -134,18 +137,33 @@ body
     padding: 0;
 }
 
-.dokki-side-panel li:hover
+.dokki0-vertical-navi .dokki0-navi-link-icon
 {
-    background-color: #f6f6f6;
+    color: lightgray;
 }
 
-.dokki-side-panel li a
+.dokki0-vertical-navi .dokki0-navi-link:hover .dokki0-navi-link-icon
+{
+    color: gray;
+}
+
+.dokki0-vertical-navi .dokki0-navi-link
 {
     display: block;
-    padding: 10px 10px;
+    padding: 9px 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
-.dokki-side-panel li a:hover
+
+.dokki0-vertical-navi .dokki0-navi-link.subtopic
 {
+    padding-left: 30px;
+}
+
+.dokki0-vertical-navi .dokki0-navi-link:hover
+{
+    background-color: #f6f6f6;
     text-decoration: none;
 }
 
@@ -189,7 +207,8 @@ body
     color: var(--link-color);
 }
 
-.dokki-topic:last-of-type
+.dokki-topic:last-of-type,
+.dokki-topic > *:last-child
 {
     margin-bottom: 0;
 }
@@ -199,50 +218,23 @@ body
     margin-top: 10px;
 }
 
-.dokki-topic > *:last-of-type
-{
-    margin-bottom: 0;
-}
-
-.dokki-topic > .title
-{
-    overflow-x: auto;
-    display: flex;
-    align-items: center;
-}
-
-.dokki-topic > .title > .permalink
-{
-    display: none;
-    padding-left: 6px;
-    color: lightgray;
-}
-
-.dokki-topic > .title > .permalink:hover
-{
-    color: gray;
-}
-
-.dokki-topic:hover > .title > .permalink
-{
-    display: inline-block;
-}
-
 .dokki-topic h1,
 .dokki-topic h2,
 .dokki-topic h3,
+.dokki-topic h4,
 .dokki-side-panel h2
 {
     font-size: 100%;
     font-weight: normal;
     padding: 0;
     margin: 0;
+    margin-bottom: 16px;
 }
 
 .dokki-topic h1
 {
-    font-size: 160%;
-    white-space: nowrap;
+    font-size: 150%;
+    font-weight: bold;
 }
 
 .dokki-topic h2
@@ -250,26 +242,29 @@ body
     font-size: 125%;
 }
 
-.dokki-topic h2:not(:first-child)
-{
-    margin-top: var(--content-margin);
-    margin-bottom: 16px;
-}
-
 .dokki-topic h3
 {
-    display: inline-block;
+    font-size: 100%;
+    display: inline;
     font-weight: bold;
 }
 
-.dokki-topic-anchor
+.dokki-topic h4
+{
+    font-size: 100%;
+    display: inline;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.dokki-anchor
 {
     visibility: hidden;
     position: relative;
     top: calc(var(--header-height) * -1 - var(--content-margin) + var(--topics-container-top-margin) + 1px);
 }
 
-.dokki-topic-anchor:first-child
+.dokki-anchor:first-child
 {
     margin-top: calc(var(--content-margin) - var(--header-bottom-margin) - var(--topics-container-top-margin));
 }
@@ -623,33 +618,20 @@ body
     content: " Image";
 }
 
-@media only screen and (max-width: 1500px)
+@media only screen and (max-width: 1600px)
 {
     :root
     {
-        --page-vertical-margin: 20px;
+        --page-vertical-margin: 60px;
     }
 
     .dokki-topics
     {
-        width: calc(85% - var(--side-panel-width) - var(--page-vertical-margin) - var(--content-margin) * 2);
+        width: calc(80% - var(--side-panel-width) - var(--page-vertical-margin) - var(--content-margin) * 2);
     }
 }
 
 @media only screen and (max-width: 1300px)
-{
-    :root
-    {
-        --side-panel-width: 280px;
-    }
-
-    .dokki-topics
-    {
-        width: calc(90% - var(--side-panel-width) - var(--page-vertical-margin) - var(--content-margin) * 2);
-    }
-}
-
-@media only screen and (max-width: 1200px)
 {
     :root
     {
