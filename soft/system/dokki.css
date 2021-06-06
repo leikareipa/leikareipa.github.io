@@ -560,7 +560,7 @@ body
 
 .dokki-embedded.dokki-code
 {
-    border-color: #ffe318;
+    border-color: #ffe83e;
     background-color: #fffce2;
 }
 
@@ -575,7 +575,7 @@ body
 .dokki-embedded.dokki-code > header
 {
     color: black;
-    background-color: #ffe318;
+    background-color: #ffe83e;
 }
 
 .dokki-embedded.dokki-code > footer

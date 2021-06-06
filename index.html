@@ -20,7 +20,7 @@
 
         <template id="dokki-document">
 
-            <dokki-header icon="fas fa-atlas"
+            <dokki-header icon="fas fa-book"
                           title="Software index of leikareipa">
             </dokki-header>
 
@@ -451,7 +451,7 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Minimum code to render a triangle"
+                    <dokki-code title="Minimal code to render a triangle"
                                 code="
                                 <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
                                 <script src='rngon.cat.js'></script>
@@ -462,11 +462,16 @@
                                         Rngon.vertex( 1,  1, 3)], {
                                             color: Rngon.color_rgba(0, 150, 255)
                                     });
-                                    Rngon.render('canvas', [Rngon.mesh([triangle])]);
+
+                                    const mesh = Rngon.mesh([triangle], {
+                                        rotation: Rngon.rotation(0, 0, 0)
+                                    });
+
+                                    Rngon.render('canvas', [mesh]);
                                 </script>
                                 ">
 
-                        <dokki-output title="Result">
+                        <dokki-output title="Run">
                             <iframe style="width: 100%;
                                            height: 200px;
                                            border: none;"
@@ -481,13 +486,65 @@
                                     <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
                                     <script src='https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/distributable/rngon.cat.js'></script>
                                     <script>
+                                        const triangle = Rngon.ngon([
+                                            Rngon.vertex(-1, -1, 3),
+                                            Rngon.vertex( 1, -1, 3),
+                                            Rngon.vertex( 1,  1, 3)], {
+                                                color: Rngon.color_rgba(0, 150, 255)
+                                        });
+                                        
+                                        const mesh = Rngon.mesh([triangle], {
+                                            rotation: Rngon.rotation_vector(0, 0, 0)
+                                        });
+    
+                                        Rngon.render('canvas', [mesh]);
+                                    </script>"
+                                    >
+                            </iframe>
+                        </dokki-output>
+                    
+                    </dokki-code>
+
+                    <dokki-code title="Straightforward async rendering"
+                                code="
+                                Rngon.render_async([mesh]).then(result=>{
+                                    canvas.getContext('2d').putImageData(result.image, 0, 0);
+                                });
+                                ">
+
+                        <dokki-output title="Run in web worker">
+                            <iframe style="width: 100%;
+                                           height: 200px;
+                                           border: none;"
+                                    srcdoc="
+                                    <style scoped>
+                                        body {
+                                            height: 100vh;
+                                            padding: 0;
+                                            margin: 0;
+                                        }
+                                    </style>
+                                    <canvas id='canvas'></canvas>
+                                    <script src='https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/distributable/rngon.cat.js'></script>
+                                    <script>
                                         const poly = Rngon.ngon([
                                             Rngon.vertex(-1, -1, 3),
                                             Rngon.vertex( 1, -1, 3),
                                             Rngon.vertex( 1,  1, 3)], {
                                                 color: Rngon.color_rgba(0, 150, 255)
                                         });
-                                        Rngon.render('canvas', [Rngon.mesh([poly])]);
+
+                                        Rngon.render_async([Rngon.mesh([poly])], {
+                                            width: 200,
+                                            height: 200
+                                        })
+                                        .then((result)=>
+                                        {
+                                            const canvas = document.getElementById('canvas');
+                                            canvas.width = result.image.width;
+                                            canvas.height = result.image.height;
+                                            canvas.getContext('2d').putImageData(result.image, 0, 0);
+                                        });
                                     </script>"
                                     >
                             </iframe>
@@ -541,6 +598,95 @@
                         </template>
                     </dokki-table>
                 </dokki-topic>
+
+
+                <dokki-topic title="Serlain">
+                    <p>
+                        Looks like an old browser, acts like an old browser - and almost is one. Serlain
+                        is a frontend for Internet Archive's Wayback Machine that displays archived web
+                        content inside period-correct-looking faux browsers.
+                    </p>
+
+                    <p>
+                        Made between 2019-2021.
+                    </p>
+            
+                    <p>
+                        Tech used: JavaScript, React
+                    </p>
+                    
+                    <p>
+                        Links:
+                        <a href="https://serlain.herokuapp.com/distributable/">Run in browser</a>,
+                        <a href="https://www.github.com/leikareipa/serlain">GitHub</a>
+                    </p>
+                    
+                    <dokki-image src="./soft/img/serlain/serlain-1.png">
+                        <template #caption>
+                            A mock Internet Explorer in a mock 1999 Windows environment
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/serlain/serlain-2.png">
+                        <template #caption>
+                            A mock Chrome in a mock 2009 Windows environment
+                        </template>
+                    </dokki-image>
+                    
+                    <dokki-table>
+                        <template #caption>
+                            Source code CLOC statistics
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Sum</td>
+                                    <td>33</td>
+                                    <td>494</td>
+                                    <td>312</td>
+                                    <td>2277</td>
+                                </tr>
+                                <tr>
+                                    <td>CSS</td>
+                                    <td>14</td>
+                                    <td>170</td>
+                                    <td>0</td>
+                                    <td>1248</td>
+                                </tr>
+                                <tr>
+                                    <td>JSX</td>
+                                    <td>13</td>
+                                    <td>180</td>
+                                    <td>184</td>
+                                    <td>535</td>
+                                </tr>
+                                <tr>
+                                    <td>JavaScript</td>
+                                    <td>5</td>
+                                    <td>121</td>
+                                    <td>79</td>
+                                    <td>408</td>
+                                </tr>
+                                <tr>
+                                    <td>PHP</td>
+                                    <td>1</td>
+                                    <td>23</td>
+                                    <td>49</td>
+                                    <td>86</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                </dokki-topic>
+
             
                 <dokki-topic title="RallySportED">
                     <p>
@@ -759,6 +905,205 @@
                 </dokki-topic>
 
 
+                <dokki-topic title="Cloud simulation">
+                    <p>
+                        Ever wanted a cloud physics simulator and renderer? Maybe not, but Ifu
+                        provides. Condensation from moist rising air is simulated and rendered
+                        into realistic images of clouds. You can configure the atmospheric
+                        properties as you like and view the state of the simulation as it runs.
+                        Naturally simulates various cloud effects like pilei.
+                    </p>
+                    
+                    <p>
+                        Empirically approximates spectral Mie scattering. Adopts the
+                        Hosek&ndash;Wilkie 2012 sky model to approximate Rayleigh scattering.
+                        Uses volumetric photon mapping to speed up the rendering of in-cloud
+                        sunlight.
+                    </p>
+
+                    <p>
+                        Requires a beefy computer and some knowledge of cloud-related
+                        atmospheric processes.
+                    </p>
+
+                    <p>
+                        Made between 2013-2014.
+                    </p>
+            
+                    <p>
+                        Tech used: C++, Qt, OpenCL
+                    </p>
+                    
+                    <dokki-image src="./soft/img/ifu/ifu-1.png">
+                        <template #caption>
+                            Fluffy clouds
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/ifu/ifu-2.png">
+                        <template #caption>
+                            An explosive cloud lifted by an unnaturally high amount of surface heat (simulation grid visible)
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/ifu/ifu-4.png">
+                        <template #caption>
+                            Looking up at a cloud (simulation grid visible)
+                        </template>
+                    </dokki-image>
+
+                    <dokki-table>
+                        <template #caption>
+                            Source code CLOC statistics
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Sum</td>
+                                    <td>75</td>
+                                    <td>6697</td>
+                                    <td>8262</td>
+                                    <td>24528</td>
+                                </tr>
+                                <tr>
+                                    <td>C++</td>
+                                    <td>34</td>
+                                    <td>5402</td>
+                                    <td>7291</td>
+                                    <td>19650</td>
+                                </tr>
+                                <tr>
+                                    <td>C/C++ Header</td>
+                                    <td>34</td>
+                                    <td>1158</td>
+                                    <td>836</td>
+                                    <td>3718</td>
+                                </tr>
+                                <tr>
+                                    <td>Qt</td>
+                                    <td>4</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>777</td>
+                                </tr>
+                                <tr>
+                                    <td>OpenCL</td>
+                                    <td>3</td>
+                                    <td>135</td>
+                                    <td>135</td>
+                                    <td>383</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                </dokki-topic>
+
+
+                <dokki-topic title="U7DCP">
+                    <p>
+                        Patches a bug/feature in Ultima 7 that forces the CPU cache on at launch.
+                    </p>
+
+                    <p>
+                        Ultima 7 &ndash; like many programs of the time &ndash; will run too fast
+                        on PCs that are much newer than what the game was originally made for. One
+                        way around this is to disable the CPU's cache, heavily reducing its
+                        performance and thus making it more compatible with the game.
+                    </p>
+
+                    <p>
+                        Unfortunately, Ultima 7 also uses the somewhat uncommon unreal memory addressing
+                        mode, and apparently unnecessarily resets all CPU flags while entering this
+                        mode. Since the flags include the 'CPU cache off' bit, resetting them will
+                        (re-)enable the CPU cache, making it impossible to actually run the game
+                        with the CPU cache off.
+                    </p>
+
+                    <p>
+                        This patch modifies the game's executables so that they preserve the value
+                        of the CPU cache bit. The CPU cache can then remain off and the game will
+                        run quite well even on modern CPUs &ndash; provided that the PC also has a
+                        compatible sound card.
+                    </p>
+
+                    <p>
+                        Thanks to a member (name forgotten) of the VOGONS forum for discovering
+                        that the bug had to do with the game resetting CPU flags.
+                    </p>
+
+                    <p>
+                        This app is written against the multi-platform fasm assembler and should
+                        be fairly straightforward to build from source.
+                    </p>
+
+                    <p>
+                        Made in 2017.
+                    </p>
+            
+                    <p>
+                        Tech used: 386 assembly, IDA
+                    </p>
+                    
+                    <p>
+                        Links: <a href="https://www.github.com/leikareipa/u7dcp">GitHub</a>
+                    </p>
+
+                    <dokki-console platform="windows"
+                                command="u7dcp.exe">
+                        <template #output>
+                            <pre>
+                                U7DCP - Ultima VII DOS Cache Patch.
+
+                                Patching MAINMENU.EXE...
+                                Patching ENDGAME.EXE...
+
+                                The patching appears to have gone well.
+                            </pre>
+                        </template>
+                    </dokki-console>
+
+                    <dokki-table>
+                        <template #caption>
+                            Source code CLOC statistics
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Sum</td>
+                                    <td>3</td>
+                                    <td>54</td>
+                                    <td>147</td>
+                                    <td>321</td>
+                                </tr>
+                                <tr>
+                                    <td>Assembly</td>
+                                    <td>3</td>
+                                    <td>54</td>
+                                    <td>147</td>
+                                    <td>321</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                </dokki-topic>
+
+
                 <dokki-topic title="Yqr">
                     <p>
                         The first ray/path tracer I made, serving as a personal testbed in offline
@@ -938,7 +1283,7 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Minimum code to render a triangle"
+                    <dokki-code title="Minimal code to render a triangle"
                                 code="
                                 <svg id='rendering' width='200' height='200'></svg>
                                 <script type='module'>
@@ -957,7 +1302,7 @@
                                 </script>
                                 ">
 
-                        <dokki-output title="Result">
+                        <dokki-output title="Run">
                             <iframe style="width: 100%;
                                         height: 200px;
                                         border: none;"
@@ -1047,94 +1392,6 @@
                     <p>
                         Links: <a href="https://www.github.com/leikareipa/dokki">GitHub</a>
                     </p>
-                </dokki-topic>
-
-            
-                <dokki-topic title="Serlain">
-                    <p>
-                        Looks like an old browser, acts like an old browser - and almost is one. Serlain
-                        is a frontend for Internet Archive's Wayback Machine that displays archived web
-                        content inside period-correct-looking faux browsers.
-                    </p>
-
-                    <p>
-                        Made between 2019-2021.
-                    </p>
-            
-                    <p>
-                        Tech used: JavaScript, React
-                    </p>
-                    
-                    <p>
-                        Links:
-                        <a href="https://serlain.herokuapp.com/distributable/">Run in browser</a>,
-                        <a href="https://www.github.com/leikareipa/serlain">GitHub</a>
-                    </p>
-                    
-                    <dokki-image src="./soft/img/serlain/serlain-1.png">
-                        <template #caption>
-                            A mock Internet Explorer in a mock 1999 Windows environment
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/serlain/serlain-2.png">
-                        <template #caption>
-                            A mock Chrome in a mock 2009 Windows environment
-                        </template>
-                    </dokki-image>
-                    
-                    <dokki-table>
-                        <template #caption>
-                            Source code CLOC statistics
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>33</td>
-                                    <td>494</td>
-                                    <td>312</td>
-                                    <td>2277</td>
-                                </tr>
-                                <tr>
-                                    <td>CSS</td>
-                                    <td>14</td>
-                                    <td>170</td>
-                                    <td>0</td>
-                                    <td>1248</td>
-                                </tr>
-                                <tr>
-                                    <td>JSX</td>
-                                    <td>13</td>
-                                    <td>180</td>
-                                    <td>184</td>
-                                    <td>535</td>
-                                </tr>
-                                <tr>
-                                    <td>JavaScript</td>
-                                    <td>5</td>
-                                    <td>121</td>
-                                    <td>79</td>
-                                    <td>408</td>
-                                </tr>
-                                <tr>
-                                    <td>PHP</td>
-                                    <td>1</td>
-                                    <td>23</td>
-                                    <td>49</td>
-                                    <td>86</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
                 </dokki-topic>
                 
             
@@ -1258,108 +1515,7 @@
                     </p>
                     
                 </dokki-topic>
-                
-            
-                <dokki-topic title="Cloud simulation">
-                    <p>
-                        Ever wanted a cloud physics simulator and renderer? Maybe not, but Ifu
-                        provides. Condensation from moist rising air is simulated and rendered
-                        into realistic images of clouds. You can configure the atmospheric
-                        properties as you like and view the state of the simulation as it runs.
-                        Naturally simulates various cloud effects like pilei.
-                    </p>
-                    
-                    <p>
-                        Empirically approximates spectral Mie scattering. Adopts the
-                        Hosek&ndash;Wilkie 2012 sky model to approximate Rayleigh scattering.
-                        Uses volumetric photon mapping to speed up the rendering of in-cloud
-                        sunlight.
-                    </p>
 
-                    <p>
-                        Requires a beefy computer and some knowledge of cloud-related
-                        atmospheric processes.
-                    </p>
-
-                    <p>
-                        Made between 2013-2014.
-                    </p>
-            
-                    <p>
-                        Tech used: C++, Qt, OpenCL
-                    </p>
-                    
-                    <dokki-image src="./soft/img/ifu/ifu-1.png">
-                        <template #caption>
-                            Fluffy clouds
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/ifu/ifu-2.png">
-                        <template #caption>
-                            An explosive cloud lifted by an unnaturally high amount of surface heat (simulation grid visible)
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/ifu/ifu-4.png">
-                        <template #caption>
-                            Looking up at a cloud (simulation grid visible)
-                        </template>
-                    </dokki-image>
-
-                    <dokki-table>
-                        <template #caption>
-                            Source code CLOC statistics
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>75</td>
-                                    <td>6697</td>
-                                    <td>8262</td>
-                                    <td>24528</td>
-                                </tr>
-                                <tr>
-                                    <td>C++</td>
-                                    <td>34</td>
-                                    <td>5402</td>
-                                    <td>7291</td>
-                                    <td>19650</td>
-                                </tr>
-                                <tr>
-                                    <td>C/C++ Header</td>
-                                    <td>34</td>
-                                    <td>1158</td>
-                                    <td>836</td>
-                                    <td>3718</td>
-                                </tr>
-                                <tr>
-                                    <td>Qt</td>
-                                    <td>4</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>777</td>
-                                </tr>
-                                <tr>
-                                    <td>OpenCL</td>
-                                    <td>3</td>
-                                    <td>135</td>
-                                    <td>135</td>
-                                    <td>383</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
-                </dokki-topic>
                 
             
                 <dokki-topic title="What">
@@ -2252,82 +2408,6 @@
                 </dokki-topic>
 
 
-                <dokki-topic title="u7dcp">
-                    <p>
-                        Patches a well-known bug in Ultima 7 that forces the CPU cache on at launch.
-                        With this patch, the CPU cache can remain off, leading to more palatable
-                        gameplay speed on post-486 PCs.
-                    </p>
-
-                    <p>
-                        The game uses the somewhat uncommon unreal memory addressing mode, and
-                        apparently unnecessarily resets all CPU flags while entering this mode
-                        at launch. Since these flags include the 'CPU cache off' bit, the effect
-                        of any previous programmatic disabling of the cache is undone. The patch
-                        modifies the game executables to preserve the value of the CPU cache bit
-                        when entering unreal mode.
-                    </p>
-
-                    <p>
-                        Made in 2017.
-                    </p>
-            
-                    <p>
-                        Tech used: 386 assembly, IDA
-                    </p>
-                    
-                    <p>
-                        Links: <a href="https://www.github.com/leikareipa/u7dcp">GitHub</a>
-                    </p>
-
-                    <dokki-console platform="windows"
-                                command="u7dcp.exe">
-                        <template #output>
-                            <pre>
-                                U7DCP - Ultima VII DOS Cache Patch.
-
-                                Patching MAINMENU.EXE...
-                                Patching ENDGAME.EXE...
-
-                                The patching appears to have gone well.
-                            </pre>
-                        </template>
-                    </dokki-console>
-
-                    <dokki-table>
-                        <template #caption>
-                            Source code CLOC statistics
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>3</td>
-                                    <td>54</td>
-                                    <td>147</td>
-                                    <td>321</td>
-                                </tr>
-                                <tr>
-                                    <td>Assembly</td>
-                                    <td>3</td>
-                                    <td>54</td>
-                                    <td>147</td>
-                                    <td>321</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
-                </dokki-topic>
-                
-            
                 <dokki-topic title="DOS Path Tracing Benchmark">
                     <p>
                         Test your DOS era processor's floating-point performance with this grayscale path

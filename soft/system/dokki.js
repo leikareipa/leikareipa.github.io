@@ -92,10 +92,6 @@ function create_app()
     });
 
     app.component("dokki-topics", {
-        mounted()
-        {
-            console.log(this.$store.state.topics)
-        },
         template: `
             <main class="dokki-topics">
 
