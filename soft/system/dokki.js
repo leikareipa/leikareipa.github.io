@@ -82,6 +82,46 @@ function create_app()
         `,
     });
 
+    app.component("dokki-theme-selector", {
+        data()
+        {
+            return {
+                currentThemeIdx: 0,
+                themes: [
+                    {name: "light", icon: "fas fa-sun"},
+                    {name: "dark", icon: "fas fa-moon"},
+                ],
+            }
+        },
+        created()
+        {
+            console.assert(this.themes.length, "Encountered an empty theme list.");
+            this.update_theme();
+        },
+        methods:
+        {
+            update_theme()
+            {
+                document.body.dataset.theme = this.themes[this.currentThemeIdx].name;
+            }
+        },
+        watch:
+        {
+            currentThemeIdx()
+            {
+                this.update_theme();
+            }
+        },
+        template: `
+            <span class="dokki-theme-selector"
+                  @click="currentThemeIdx = (currentThemeIdx + 1) % themes.length">
+
+                <i :class="'fa-lg fa-fw ' + themes[currentThemeIdx].icon"/>
+
+            </span>
+        `,
+    });
+
     app.component("dokki-header", {
         props: {
             icon: {default: "fas fa-book"},
@@ -98,9 +138,12 @@ function create_app()
         template: `
             <header class="dokki-header">
 
-                <i :class="icon" style="margin: 0 10px;"/>
+                <span class="title">
+                    <i :class="icon" style="margin-right: 10px;"/>
+                    {{title}}
+                </span>
 
-                {{title}}
+                <dokki-theme-selector/>
 
             </header>
         `,
