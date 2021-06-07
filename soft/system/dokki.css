@@ -9,11 +9,39 @@
     --topics-container-top-margin: calc(35px - var(--header-bottom-margin));
     --topics-container-vertical-margin: calc(5px + var(--content-margin));
     --embedded-element-border-radius: 8px;
+    --navibar-item-padding: 9px 10px;
+    --document-bottom-margin: calc(2 * var(--topic-bottom-margin));
     --link-color: #2264e8;
 
     /* Margins on the left and right of the page outside of which no content
      * is allowed.*/
     --page-vertical-margin: calc(50% - var(--topics-width)/2 - var(--side-panel-width) - var(--content-margin));
+
+    /* Light theme.*/
+    --page-link-color: #2264e8;
+    --page-primary-bg-color: white;
+    --page-secondary-bg-color: #fdfdfd;
+    --page-inert-bg-color: #f6f6f6;
+    --page-primary-fg-color: black;
+    --page-secondary-fg-color: gray;
+    --page-inert-fg-color: lightgray;
+    --page-primary-line-color: lightgray;
+    --page-secondary-line-color: lightgray;
+    --dokki-embedded-header-bg-color: #f6f6f6;
+    --dokki-embedded-footer-bg-color: var(--document-bg-color);
+
+    /* Dark theme.
+    --page-link-color: #ffe210;
+    --page-primary-bg-color: #202020;
+    --page-secondary-bg-color: #282828;
+    --page-inert-bg-color: #363636;
+    --page-primary-fg-color: #e6e6e6;
+    --page-secondary-fg-color: #999999;
+    --page-inert-fg-color: gray;
+    --page-primary-line-color: #4c4c4c;
+    --page-secondary-line-color: black;
+    --dokki-embedded-header-bg-color: var(--page-primary-line-color);
+    --dokki-embedded-footer-bg-color: var(--document-bg-color);*/
 }
 
 a
@@ -32,8 +60,8 @@ body
     font-family: sans-serif;
     text-align: center;
     align-content: center;
-    background-color: #f6f6f6;
-    color: black;
+    background-color: var(--page-inert-bg-color);
+    color: var(--page-primary-fg-color);
     padding: 0;
     margin: 0;
 }
@@ -50,7 +78,7 @@ body
 
 .dokki-tag
 {
-    margin-top: calc(2.5 * var(--topic-bottom-margin));
+    margin-top: var(--document-bottom-margin);
     font-size: 90%;
     color: gray;
     width: 100%;
@@ -66,7 +94,7 @@ body
 {
     overflow-x: auto;
     white-space: nowrap;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid var(--page-secondary-line-color);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -76,7 +104,7 @@ body
     left: 0;
     z-index: 2;
     box-sizing: border-box;
-    background-color: #f6f6f6;
+    background-color: var(--page-inert-bg-color);
     padding-left: var(--page-vertical-margin);
     padding-right: var(--page-vertical-margin);
     text-align: left;
@@ -98,14 +126,20 @@ body
 {
     align-items: center;
     margin: 0;
-    height: var(--header-height);
-    line-height: var(--header-height);
-    padding: 0 10px;
-    background-color: #f6f6f6;
+    padding: var(--navibar-item-padding);
+    background-color: var(--page-inert-bg-color);
     text-align: left;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid var(--page-secondary-line-color);
     position: sticky;
     top: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.dokki0-product-tag > i
+{
+    color: var(--page-secondary-fg-color);
 }
 
 .dokki-side-panel
@@ -115,14 +149,14 @@ body
     z-index: 0;
     top: var(--header-height);
     left: var(--page-vertical-margin);
-    background-color: #fdfdfd;
+    background-color: var(--page-secondary-bg-color);
     width: var(--side-panel-width);
     text-align: left;
     overflow-y: auto;
     height: calc(100% - var(--header-height));
     padding-bottom: calc(2 * var(--content-margin));
-    border-left: 1px solid lightgray;
-    border-right: 1px solid lightgray;
+    border-left: 1px solid var(--page-secondary-line-color);
+    border-right: 1px solid var(--page-secondary-line-color);
 }
 
 .dokki-side-panel ul
@@ -139,18 +173,18 @@ body
 
 .dokki0-vertical-navi .dokki0-navi-link-icon
 {
-    color: lightgray;
+    color: var(--page-inert-fg-color);
 }
 
 .dokki0-vertical-navi .dokki0-navi-link:hover .dokki0-navi-link-icon
 {
-    color: gray;
+    color: var(--page-link-color);
 }
 
 .dokki0-vertical-navi .dokki0-navi-link
 {
     display: block;
-    padding: 9px 10px;
+    padding: var(--navibar-item-padding);
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -163,7 +197,7 @@ body
 
 .dokki0-vertical-navi .dokki0-navi-link:hover
 {
-    background-color: #f6f6f6;
+    background-color: var(--page-inert-bg-color);
     text-decoration: none;
 }
 
@@ -173,8 +207,9 @@ body
     padding-top: calc(var(--header-height) + var(--header-bottom-margin) - 1px);
     padding-left: var(--topics-container-vertical-margin);
     padding-right: var(--topics-container-vertical-margin);
+    padding-bottom: var(--document-bottom-margin);
     width: var(--topics-width);
-    background-color: white;
+    background-color: var(--page-primary-bg-color);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -183,7 +218,7 @@ body
     left: calc(var(--page-vertical-margin) + var(--side-panel-width));
     top: 0;
     z-index: 1;
-    border-right: 1px solid lightgray;
+    border-right: 1px solid var(--page-secondary-line-color);
 }
 
 .dokki-topic
@@ -204,7 +239,7 @@ body
 .dokki-topic p a,
 .dokki-topic p a:visited
 {
-    color: var(--link-color);
+    color: var(--page-link-color);
 }
 
 .dokki-topic:last-of-type,
@@ -277,7 +312,7 @@ body
 
 .dokki-text-block-with-line-numbers .line-number
 {
-    color: gray;
+    color: var(--page-secondary-fg-color);
     user-select: none;
 }
 
@@ -291,11 +326,16 @@ body
     background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
 }
 
+.dokki-embedded.casts-shadow
+{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
 .dokki-embedded
 {
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid lightgray;
+    border: 1px solid var(--page-primary-line-color);
     border-radius: var(--embedded-element-border-radius);
     overflow: hidden;
 }
@@ -306,16 +346,16 @@ body
     padding: 6px;
     padding-left: 14px;
     padding-right: 14px;
+    background-color: var(--dokki-embedded-header-bg-color);
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
 }
 
 .dokki-embedded > header.clickable
 {
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
     cursor: pointer;
     user-select: none;
-    background-color: #f6f6f6;
 }
 
 .dokki-embedded > header > .title > .fas,
@@ -329,7 +369,8 @@ body
 {
     padding: 8px;
     padding-left: 14px;
-    padding-right: 14px; 
+    padding-right: 14px;
+    background-color: var(--dokki-embedded-footer-bg-color);
 }
 
 .dokki-embedded > footer.italic
@@ -351,7 +392,7 @@ body
 .dokki-embedded > header > .revealer
 {
     margin-left: 10px;
-    color: var(--link-color);
+    color: var(--page-link-color);
     display: inline-block;
     margin-left: auto;
     font-variant: small-caps;
@@ -364,7 +405,7 @@ body
     padding: 0;
     margin: 0;
     border: none;
-    border-top: 1px solid lightgray;
+    border-top: 1px solid var(--page-primary-line-color);
     width: 100%;
 }
 
@@ -395,7 +436,7 @@ body
 .dokki-embedded.dokki-table > .table-container
 {
     overflow: auto;
-    border-top: 1px solid lightgray;
+    border-top: 1px solid var(--page-primary-line-color);
 }
 
 .dokki-embedded.dokki-table > .table-container table
@@ -417,8 +458,8 @@ body
 
 .dokki-embedded.dokki-table > .table-container table tr
 {
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
+    border-top: 1px solid var(--page-primary-line-color);
+    border-bottom: 1px solid var(--page-primary-line-color);
 }
 
 .dokki-embedded.dokki-table > .table-container table tr:first-child
@@ -433,14 +474,14 @@ body
 
 .dokki-embedded.dokki-table > .table-container table th
 {
-    background-color: #f6f6f6;
+    background-color: var(--dokki-embedded-header-bg-color);
     font-weight: normal;
 }
 
 .dokki-embedded.dokki-table > .table-container table td:not(:last-child),
 .dokki-embedded.dokki-table > .table-container table th:not(:last-child)
 {
-    border-right: 1px solid lightgray;
+    border-right: 1px solid var(--page-primary-line-color);
 }
 
 .dokki-embedded.dokki-table > .table-container table td:last-child,
@@ -453,7 +494,6 @@ body
 {
     display: flex;
     flex-direction: column;
-    border: 1px solid lightgray;
 }
 
 .dokki-embedded.dokki-video.youtube > iframe
@@ -469,15 +509,8 @@ body
     content: " Video";
 }
 
-.dokki-embedded.dokki-console
-{
-    border-color: black;
-}
-
 .dokki-embedded.dokki-console > header
 {
-    color: white;
-    background-color: black;
     display: flex;
     align-items: center;
 }
@@ -497,43 +530,14 @@ body
     padding-left: 10px;
 }
 
-.dokki-embedded.dokki-tip
-{
-    border-color: deepskyblue;
-    background-color: #f2f8ff;
-}
-
-.dokki-embedded.dokki-tip > header
-{
-    color: white;
-    background-color: deepskyblue;
-}
-
 .dokki-embedded.dokki-tip > header .title::after
 {
     content: " Tip";
 }
 
-.dokki-embedded.dokki-warning
-{
-    border-color: #ff7838;
-    background-color: #fff2ec;
-}
-
-.dokki-embedded.dokki-warning > header
-{
-    color: white;
-    background-color: #ff7838;
-}
-
 .dokki-embedded.dokki-warning > header .title::after
 {
     content: " Warning";
-}
-
-.dokki-embedded.dokki-output
-{
-    border-color: lightgray;
 }
 
 .dokki-embedded.dokki-code.has-output + .dokki-embedded.dokki-output
@@ -558,24 +562,12 @@ body
     margin-bottom: 0;
 }
 
-.dokki-embedded.dokki-code
-{
-    border-color: #ffe83e;
-    background-color: #fffce2;
-}
-
 .dokki-embedded.dokki-code.has-output
 {
     margin-bottom: 0;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom: none;
-}
-
-.dokki-embedded.dokki-code > header
-{
-    color: black;
-    background-color: #ffe83e;
 }
 
 .dokki-embedded.dokki-code > footer
@@ -595,7 +587,7 @@ body
 
 .dokki-embedded.dokki-code > footer table .line-number
 {
-    color: gray;
+    color: var(--page-secondary-fg-color);
     user-select: none;
 }
 
@@ -603,7 +595,6 @@ body
 {
     display: flex;
     flex-direction: column;
-    border: 1px solid lightgray;
 }
 
 .dokki-embedded.dokki-image > img

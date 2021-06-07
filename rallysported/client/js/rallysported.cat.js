@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (04 June 2021 03:23:32 UTC)
+// VERSION: live (04 June 2021 06:58:12 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -6319,7 +6319,7 @@ rsedStartupArgs.ui.showInCanvas = !Rsed.browserMetadata.hash_param("ui").has("-c
 }
 if (Rsed.browserMetadata.has_hash_param("renderer"))
 {
-rsedStartupArgs.renderer.pixelated = !Rsed.browserMetadata.hash_param("renderer").has("-pixelated");
+rsedStartupArgs.renderer.pixelatedUpscale = !Rsed.browserMetadata.hash_param("renderer").has("-pixelated");
 }
 if (Rsed.browserMetadata.has_hash_param("scene"))
 {
@@ -10454,7 +10454,7 @@ showInCanvas: true,
 },
 renderer:
 {
-pixelated: true,
+pixelatedUpscale: true,
 },
 // Which scene (of Rsed.scenes.xxxx) to show by default.
 scene: "terrain-editor",
@@ -10478,7 +10478,7 @@ Rsed.ui.htmlUI.set_visible(false);
 await load_project(args.project);
 Rsed.ui.htmlUI.refresh();
 Rsed.ui.htmlUI.set_visible(args.ui.showMenubar);
-if (args.renderer.pixelated)
+if (args.renderer.pixelatedUpscale)
 {
 document.getElementById("render-canvas").classList.add("pixelated");
 }

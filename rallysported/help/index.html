@@ -38,7 +38,7 @@
         <template id="dokki-document">
                 
             <dokki-header icon="fas fa-book"
-                          title="User's Manual: RallySportED-js"
+                          title="User's manual for RallySportED-js"
                           product-name="RallySportED-js"
                           product-version="1.1">
             </dokki-header>
@@ -69,16 +69,48 @@
                 </dokki-topic>
 
                 <dokki-topic title="System requirements">
-                    <ul>
-                        <li>An up-to-date browser with JavaScript enabled (recommended: Google Chrome)</li>
-                        <li>A decent CPU (recommended: at least a mid-range machine bought within the last 4 yrs.)</li>
-                        <li>Mouse and keyboard (+ full-sized screen recommended)</li>
-                    </ul>
-                
+                    <dokki-table>
+                        <template #caption>
+                            System requirements of <product-name/>
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th></th>
+                                    <th>Minimum supported</th>
+                                    <th>Recommended</th>
+                                </tr>
+                                <tr>
+                                    <th>System</th>
+                                    <td>Desktop, mobile</td>
+                                    <td>Desktop</td>
+                                </tr>   
+                                <tr>
+                                    <th>Browser</th>
+                                    <td>Chrome, Firefox<sup>*</sup></td>
+                                    <td>Chrome 90 or later</td>
+                                </tr>
+                                <tr>
+                                    <th>Input</th>
+                                    <td>Mouse/keyboard, touch<sup>&dagger;</sup></td>
+                                    <td>Mouse/keyboard</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <sup>*</sup> Low render performance is expected in Firefox.
+                                        <br>
+                                        <sup>&dagger;</sup> Touch controls are quite limited in functionality.
+                                    </td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+
                     <p>
-                        <product-name/> is tested primarily in Linux, but should work just as well on Windows.
-                        You might find more problems on Apple's operating systems, since the developer has few
-                        or no Apple devices to test on.
+                        <product-name/> is tested primarily in Linux, but should work equally well on Windows.
+                        You might find more problems on Apple's operating systems, since due to circumstances
+                        little testing is done on them.
                     </p>
                 </dokki-topic>
 
@@ -364,115 +396,119 @@
                         from your device onto the <product-name/> page.
                     </p>
                     
-                    <h2>URL parameter</h2>
-                
-                    <p>
-                        You can ask <product-name/> to start with one of the game's built-in tracks by
-                        appending the <i>track</i> parameter to the <product-name/> page URL.
-                    </p>
+                    <dokki-subtopic title="URL parameter">
+                        <p>
+                            You can ask <product-name/> to start with one of the game's built-in tracks by
+                            appending the <i>track</i> parameter to the <product-name/> page URL.
+                        </p>
 
-                    <p>
-                        If the normal <product-name/> URL is <i>rallysported/</i>, appending this
-                        parameter would make it <i>rallysported/?track=xxxx</i>, where <i>xxxx</i>
-                        identifies the track to be loaded.
-                    </p>
+                        <p>
+                            If the normal <product-name/> URL is <i>rallysported/</i>, appending this
+                            parameter would make it <i>rallysported/?track=xxxx</i>, where <i>xxxx</i>
+                            identifies the track to be loaded.
+                        </p>
 
-                    <dokki-table>
-                        <template #caption>
-                            Accepted values of the <i>track</i> parameter
-                        </template>
+                        <dokki-table>
+                            <template #caption>
+                                Accepted values of the <i>track</i> parameter
+                            </template>
 
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Value</th>
-                                    <th>Corresponding track in Rally-Sport</th>
-                                </tr>
-                                <tr>
-                                    <td>demoa</td>
-                                    <td>"nurtsi cruising"</td>
-                                </tr>
-                                <tr>
-                                    <td>demob</td>
-                                    <td>"vesistö vedätys"</td>
-                                </tr>
-                                <tr>
-                                    <td>democ</td>
-                                    <td>"ralli-cross"</td>
-                                </tr>
-                                <tr>
-                                    <td>demod</td>
-                                    <td>"Yleisö EK"</td>
-                                </tr>
-                                <tr>
-                                    <td>demoe</td>
-                                    <td>"very slippery.."</td>
-                                </tr>
-                                <tr>
-                                    <td>demof</td>
-                                    <td>"YOU asked it..."</td>
-                                </tr>
-                                <tr>
-                                    <td>demog</td>
-                                    <td>"Bumps and Jumps"</td>
-                                </tr>
-                                <tr>
-                                    <td>demoh</td>
-                                    <td>"Short and easy!"</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
+                            <template #table>
+                                <table>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Corresponding track in Rally-Sport</th>
+                                    </tr>
+                                    <tr>
+                                        <td>demoa</td>
+                                        <td>"nurtsi cruising"</td>
+                                    </tr>
+                                    <tr>
+                                        <td>demob</td>
+                                        <td>"vesistö vedätys"</td>
+                                    </tr>
+                                    <tr>
+                                        <td>democ</td>
+                                        <td>"ralli-cross"</td>
+                                    </tr>
+                                    <tr>
+                                        <td>demod</td>
+                                        <td>"Yleisö EK"</td>
+                                    </tr>
+                                    <tr>
+                                        <td>demoe</td>
+                                        <td>"very slippery.."</td>
+                                    </tr>
+                                    <tr>
+                                        <td>demof</td>
+                                        <td>"YOU asked it..."</td>
+                                    </tr>
+                                    <tr>
+                                        <td>demog</td>
+                                        <td>"Bumps and Jumps"</td>
+                                    </tr>
+                                    <tr>
+                                        <td>demoh</td>
+                                        <td>"Short and easy!"</td>
+                                    </tr>
+                                </table>
+                            </template>
+                        </dokki-table>
 
-                    <p>
-                        The two inline frames below demonstrate the effect of this parameter. The
-                        first frame uses <i>track=demoa</i> which loads the track "nurtsi cruising",
-                        while the second frame uses <i>track=democ</i> and loads "ralli-cross".
-                    </p>
+                        <p>
+                            The two inline frames below demonstrate the effect of this parameter. The
+                            first frame uses <i>track=demoa</i> which loads the track "nurtsi cruising",
+                            while the second frame uses <i>track=democ</i> and loads "ralli-cross".
+                        </p>
 
-                    <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa"
-                                  height="400px"
-                                  title="rallysported/?track=demoa">
-                    </dokki-iframe>
-
-                    <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=democ"
-                                  height="400px"
-                                  title="rallysported/?track=democ">
-                    </dokki-iframe>
-
-                    <p>
-                        Appending the <i>#play</i> hash to the URL will have <product-name/> open
-                        the track in Rally-Sport in an in-browser DOSBox.
-                        
-                        Like this: <a href="/rallysported/?track=demod#play">rallysported/?track=demod#play</a>,
-                        and as demonstrated in the inline frame below.
-
-                        <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play"
-                                      height="500px"
-                                      title="rallysported/?track=demod#play"
-                                      autofocus>
+                        <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa"
+                                    height="400px"
+                                    title="rallysported/?track=demoa"
+                                    autofocus>
                         </dokki-iframe>
-                    </p>
 
-                    <h2>Drag & drop</h2>
+                        <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=democ"
+                                    height="400px"
+                                    title="rallysported/?track=democ"
+                                    autofocus>
+                        </dokki-iframe>
 
-                    <p>
-                        When you want to load a previously-saved track from your device (see
-                        <a href="#saving-tracks">Saving tracks</a>), dragging and dropping it on
-                        the <product-name/> page is the way to go.
-                    </p>
-                        
-                    <p>
-                        Simply drag the track's ZIP file over the <product-name/> page and drop it in.
-                        The file's data will be loaded and the track should pop open for editing. (Keep
-                        in mind that you'll need to <a href="#saving-tracks">save</a> any changes you make.)
-                    </p>
+                        <p>
+                            Appending the <i>#play</i> hash to the URL will have <product-name/> open
+                            the track in Rally-Sport in an in-browser DOSBox.
+                            
+                            Like this: <a href="/rallysported/?track=demod#play">rallysported/?track=demod#play</a>,
+                            and as demonstrated in the inline frame below.
+
+                            <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play"
+                                        height="500px"
+                                        title="rallysported/?track=demod#play"
+                                        autofocus>
+                            </dokki-iframe>
+                        </p>
+                    </dokki-subtopic>
+
+                    <dokki-subtopic title="Drag & drop">
+                        <p>
+                            When you want to load a previously-saved track from your device (see
+                            <a href="#saving-tracks">Saving tracks</a>), dragging and dropping it on
+                            the <product-name/> page is the way to go.
+                        </p>
+                            
+                        <p>
+                            Simply drag the track's ZIP file over the <product-name/> page and drop it in.
+                            The file's data will be loaded and the track should pop open for editing. (Keep
+                            in mind that you'll need to <a href="#saving-tracks">save</a> any changes you make.)
+                        </p>
+                    </dokki-subtopic>
                 </dokki-topic>
 
                 <dokki-topic title="Playing tracks">
-                    <h2>Inside <product-name/></h2>
+                    <dokki-subtopic title="In the browser">
+                    </dokki-subtopic>
 
-                    <h2>In DOS (or DOSBox)</h2>
+                    <dokki-subtopic title="In DOS (or DOSBox)">
+                    </dokki-subtopic>
                 </dokki-topic>
 
                 <dokki-topic title="The 'Stream' feature">
@@ -522,181 +558,216 @@
                     </p>
                 </dokki-topic>
 
+                <dokki-topic title="The editors">
+
+                    <p>
+                        You can find the editors' keyboard and mouse controls in the
+                        <a href="#controls">Controls</a> section.
+                    </p>
+
+                    <dokki-subtopic title="The terrain editor">
+                        <p>
+                            The terrain editor lets you edit the track's heightmap and tilemap as well as the
+                            placement of track-side props (trees, signs, etc.), operating in a 3D view that
+                            almost perfectly matches the way Rally-Sport itself looks.
+                        </p>
+                        
+                        <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#scene:terrain-editor/ui:-menubar"
+                                      title="The terrain editor"
+                                      height="450px"
+                                      autofocus>
+                        </dokki-iframe>
+                    </dokki-subtopic>
+
+                    <dokki-subtopic title="The texture editor">
+                        <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#scene:texture-editor/ui:-menubar"
+                                      title="The texture editor"
+                                      height="450px"
+                                      autofocus>
+                        </dokki-iframe>
+                    </dokki-subtopic>
+
+                    <dokki-subtopic title="The tilemap editor">
+                        <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#scene:tilemap-editor/ui:-menubar"
+                                      title="The tilemap editor"
+                                      height="450px"
+                                      autofocus>
+                        </dokki-iframe>
+                    </dokki-subtopic>
+
+                </dokki-topic>
+
                 <dokki-topic title="Tutorial: Creating a track">
                     <p>
                         Here's a runner-downer on how to create a new Rally-Sport track with
                         RallySportED!
                     </p>
                 
-                    <h2>
-                        Starting out
-                    </h2>
-                
-                    <p>
-                        Making a new track with <product-name/> always starts with loading an
-                        existing track as a basis.
-                    </p>
+                    <dokki-subtopic title="Starting out">
+                        <p>
+                            Making a new track with <product-name/> always starts with loading an
+                            existing track as a basis.
+                        </p>
+                        
+                        <p>
+                            So, to get started, load one of Rally-Sport's default tracks by using the
+                            <i>track</i> URL parameter. Like this:
+                            <a href="/rallysported/?track=demoa">rallysported/?track=demoa</a>.
+                        </p>
                     
-                    <p>
-                        So, to get started, load one of Rally-Sport's default tracks by using the
-                        <i>track</i> URL parameter. Like this:
-                        <a href="/rallysported/?track=demoa">rallysported/?track=demoa</a>.
-                    </p>
-                
-                    <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa"
-                                  height="700px"
-                                  title="rallysported/?track=demoa">
-                    </dokki-iframe>
-                
-                    <p>
-                        When you're ready to start editing, hit the <em>L</em> key on your keyboard to
-                        bring up the terrain-leveling prompt, which asks you to input a height value to
-                        level the terrain to. Enter in "0" and select OK &ndash; you should now be
-                        looking at a fully flat terrain.
-                    </p>
-                
-                    <p>
-                        Next, press the <em>A</em> key to bring up the texture-selection pane. It'll pop
-                        up on the right-hand side of the screen. In the pane, hover the mouse over the second
-                        thumbnail from the top left (grass) and click on it with the left mouse button. A
-                        solid yellow rectangle should appear around the thumbnail to indicate that this
-                        texture is now selected.
-                    </p>
-
-                    <dokki-tip>
-                        Press the <em>G</em> key to show the currently-selected texture on the ground
-                        on mouse hover.
-                    </dokki-tip>
-
-                    <p>
-                        Press <em>Q</em> to open the tilemap view. In this view, press the <em>5</em>
-                        key to select the largest brush size (you'll see a number change in the upper
-                        right of the screen to reflect your selection), then click and hold the left
-                        or right mouse button while dragging the cursor across the tilemap. You should
-                        see the map fill up with green (the grass texture you selected earlier).
-                    </p>
-
-                    <dokki-image src="img/tut-paintview.png">
-                        <template #caption>
-                            Painting the track over with grass
-                        </template>
-                    </dokki-image>
-
-                    <p>
-                        Fill up all of the track with grass, then press the <em>Q</em> key to return
-                        to the 3D view.
-                    </p>
-
-                    <dokki-tip>
-                        The tilemap view always has an un-erasable white pixel somewhere on the track.
-                        This pixel shows the location of the track's checkpoint, which your car needs
-                        to pass over &ndash; or quite close to &ndash; for the lap to be counted as
-                        valid. So you should always have the road pass over or very near this checkpoint.
-                    </dokki-tip>
-                
-                    <p>
-                        Once back in the 3D view, move the camera over to the finish line, then open
-                        the texture pane again. While holding down the <em>Tab</em> key, hover the
-                        mouse over the pane's textures until you find texture #96 (gravel). Click on
-                        that texture to choose it. Set the brush radius to 1 (hit the <em>1</em> key).
-                        With the middle mouse button, draw a line under the finish line.
-                    </p>
-                
-                    <dokki-image src="img/tut-startmark.png">
-                        <template #caption>
-                            The finish line, with a line of gravel underneath
-                        </template>
-                    </dokki-image>
-                
-                    <h2>
-                        Laying the road
-                    </h2>
+                        <dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa"
+                                      height="500px"
+                                      title="rallysported/?track=demoa">
+                        </dokki-iframe>
                     
-                    <p>
-                        Enter the tilemap view again (<em>Q</em>). You'll see the line of gravel marking
-                        the location of the finish line. With the gravel texture still selected, press
-                        the <em>2</em> key to set a slightly larger brush size. Starting from the finish
-                        line, draw a road around the map, ending back at the finish. Make sure the road
-                        passes over or near the white checkpoint pixel.
-                    </p>
-                
-                    <dokki-image src="img/tut-roadlay.png">
-                        <template #caption>
-                            Having drawn a simple road
-                        </template>
-                    </dokki-image>
-                
-                    <p>
-                        Returning to the 3D view (<em>Q</em>), you can see that there's now a road rambling
-                        about your scenery. You can use the various angled gravel tiles (e.g. #99) to smooth
-                        out its corners.
-                    </p>
-
-                    <dokki-tip>
-                        Hit the <em>W</em> key in the 3D view to bring up a wireframe that indicates ground
-                        tile edges.
-                    </dokki-tip>
-                
-                    <h2>Decorating the terrain</h2>
-                
-                    <p>
-                        Now that there's a road going on, even if you didn't yet smooth out all the curves,
-                        you can start adding some decorations to make the scenery more interesting to drive
-                        in.
-                    </p>
-
-                    <dokki-image src="img/tut-curvesmooth.png">
-                        <template #caption>
-                            Not a very interesting track so far
-                        </template>
-                    </dokki-image>
-                
-                    <p>
-                        The first thing to do is to manipulate the height of the terrain to create hills,
-                        dips, and so on. Click around with the left and right mouse buttons in the 3D view
-                        to move the terrain up and down. Maybe you feel there should be an outcrop
-                        somewhere &ndash; just raise the terrain and paint those tiles with a rocky
-                        texture.
-                    </p>
+                        <p>
+                            When you're ready to start editing, hit the <em>L</em> key on your keyboard to
+                            bring up the terrain-leveling prompt, which asks you to input a height value to
+                            level the terrain to. Enter in "0" and select OK &ndash; you should now be
+                            looking at a fully flat terrain.
+                        </p>
                     
-                    <dokki-image src="img/tut-groundshape.png">
-                        <template #caption>
-                            Added some height and texture variation
-                        </template>
-                    </dokki-image>
-                
-                    <p>
-                        Another kind of detail you can put in are spectators. Open the texture pane
-                        (<em>A</em>) and select texture #240. Press <em>G</em> to show the currently-selected
-                        texture on the ground on mouse hover, and hover the mouse over the terrain. You
-                        should see a spectator pop up on the tile the cursor is hovering on. When you
-                        apply the texture, a spectator will be stood there for good.
-                    </p>
-                
-                    <dokki-image src="img/tut-billboards.png">
-                        <template #caption>
-                            Inserted a few spectators
-                        </template>
-                    </dokki-image>
+                        <p>
+                            Next, press the <em>A</em> key to bring up the texture-selection pane. It'll pop
+                            up on the right-hand side of the screen. In the pane, hover the mouse over the second
+                            thumbnail from the top left (grass) and click on it with the left mouse button. A
+                            solid yellow rectangle should appear around the thumbnail to indicate that this
+                            texture is now selected.
+                        </p>
 
-                    <h2>Test-driving the track</h2>
+                        <dokki-tip>
+                            Press the <em>G</em> key to show the currently-selected texture on the ground
+                            on mouse hover.
+                        </dokki-tip>
+
+                        <p>
+                            Press <em>Q</em> to open the tilemap view. In this view, press the <em>5</em>
+                            key to select the largest brush size (you'll see a number change in the upper
+                            right of the screen to reflect your selection), then click and hold the left
+                            or right mouse button while dragging the cursor across the tilemap. You should
+                            see the map fill up with green (the grass texture you selected earlier).
+                        </p>
+
+                        <dokki-image src="img/tut-paintview.png">
+                            <template #caption>
+                                Painting the track over with grass
+                            </template>
+                        </dokki-image>
+
+                        <p>
+                            Fill up all of the track with grass, then press the <em>Q</em> key to return
+                            to the 3D view.
+                        </p>
+
+                        <dokki-tip>
+                            The tilemap view always has an un-erasable white pixel somewhere on the track.
+                            This pixel shows the location of the track's checkpoint, which your car needs
+                            to pass over &ndash; or quite close to &ndash; for the lap to be counted as
+                            valid. So you should always have the road pass over or very near this checkpoint.
+                        </dokki-tip>
+                    
+                        <p>
+                            Once back in the 3D view, move the camera over to the finish line, then open
+                            the texture pane again. While holding down the <em>Tab</em> key, hover the
+                            mouse over the pane's textures until you find texture #96 (gravel). Click on
+                            that texture to choose it. Set the brush radius to 1 (hit the <em>1</em> key).
+                            With the middle mouse button, draw a line under the finish line.
+                        </p>
+                    
+                        <dokki-image src="img/tut-startmark.png">
+                            <template #caption>
+                                The finish line, with a line of gravel underneath
+                            </template>
+                        </dokki-image>
+                    </dokki-subtopic>
                 
-                    <p>
-                        Having put in a few bits and bobs, you might now give the track a test drive!
-                        Click the "Test" button on the menu bar at the top of the <product-name/> page;
-                        it'll launch the track in Rally-Sport inside DOSBox in the browser.
-                    </p>
+                    <dokki-subtopic title="Laying the road">
+                        <p>
+                            Enter the tilemap view again (<em>Q</em>). You'll see the line of gravel marking
+                            the location of the finish line. With the gravel texture still selected, press
+                            the <em>2</em> key to set a slightly larger brush size. Starting from the finish
+                            line, draw a road around the map, ending back at the finish. Make sure the road
+                            passes over or near the white checkpoint pixel.
+                        </p>
+                    
+                        <dokki-image src="img/tut-roadlay.png">
+                            <template #caption>
+                                Having drawn a simple road
+                            </template>
+                        </dokki-image>
+                    
+                        <p>
+                            Returning to the 3D view (<em>Q</em>), you can see that there's now a road rambling
+                            about your scenery. You can use the various angled gravel tiles (e.g. #99) to smooth
+                            out its corners.
+                        </p>
 
-                    <dokki-image src="img/tut-playing.png">
-                        <template #caption>
-                            Racing the half-finished track in-game
-                        </template>
-                    </dokki-image>
+                        <dokki-tip>
+                            Hit the <em>W</em> key in the 3D view to bring up a wireframe that indicates ground
+                            tile edges.
+                        </dokki-tip>
+                    </dokki-subtopic>
+                
+                    <dokki-subtopic title="Decorating the terrain">
+                        <p>
+                            Now that there's a road going on, even if you didn't yet smooth out all the curves,
+                            you can start adding some decorations to make the scenery more interesting to drive
+                            in.
+                        </p>
 
-                    <p>
-                        There's no CPU opponent and no race countdown in the testing mode. If you
-                        want to race against the CPU, select the "Play" button instead.
-                    </p>
+                        <dokki-image src="img/tut-curvesmooth.png">
+                            <template #caption>
+                                Not a very interesting track so far
+                            </template>
+                        </dokki-image>
+                    
+                        <p>
+                            The first thing to do is to manipulate the height of the terrain to create hills,
+                            dips, and so on. Click around with the left and right mouse buttons in the 3D view
+                            to move the terrain up and down. Maybe you feel there should be an outcrop
+                            somewhere &ndash; just raise the terrain and paint those tiles with a rocky
+                            texture.
+                        </p>
+                        
+                        <dokki-image src="img/tut-groundshape.png">
+                            <template #caption>
+                                Added some height and texture variation
+                            </template>
+                        </dokki-image>
+                    
+                        <p>
+                            Another kind of detail you can put in are spectators. Open the texture pane
+                            (<em>A</em>) and select texture #240. Press <em>G</em> to show the currently-selected
+                            texture on the ground on mouse hover, and hover the mouse over the terrain. You
+                            should see a spectator pop up on the tile the cursor is hovering on. When you
+                            apply the texture, a spectator will be stood there for good.
+                        </p>
+                    
+                        <dokki-image src="img/tut-billboards.png">
+                            <template #caption>
+                                Inserted a few spectators
+                            </template>
+                        </dokki-image>
+                    </dokki-subtopic>
+
+                    <dokki-subtopic title="Test-driving the track">
+                        <p>
+                            Having put in a few bits and bobs, you might now give the track a test drive!
+                            Click the "Test" button on the menu bar at the top of the <product-name/> page;
+                            it'll launch the track in Rally-Sport inside DOSBox in the browser.
+                        </p>
+
+                        <dokki-image src="img/tut-playing.png">
+                            <template #caption>
+                                Racing the half-finished track in-game
+                            </template>
+                        </dokki-image>
+
+                        <p>
+                            There's no CPU opponent and no race countdown in the testing mode. If you
+                            want to race against the CPU, select the "Play" button instead.
+                        </p>
+                    </dokki-subtopic>
                 </dokki-topic>
             </dokki-topics>
         </template>

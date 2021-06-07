@@ -11,6 +11,21 @@ window.addEventListener("DOMContentLoaded", create_app);
 
 function create_app()
 {
+    // For embedded components whose contents can be expanded/shrunk by the user.
+    // This mixin adds the 'expanded' prop, which when appended to the component,
+    // will hava the component's contents start in an expanded state.
+    const expandedPropMixin = {
+        props: {
+            expanded: {default: undefined},
+        },
+        data()
+        {
+            return {
+                isExpanded: ((this.expanded === undefined)? false : true),
+            }
+        },
+    };
+
     const store = new Vuex.Store({
         state: {
             topics: [],
@@ -94,21 +109,7 @@ function create_app()
     app.component("dokki-topics", {
         template: `
             <main class="dokki-topics">
-
                 <slot/>
-
-                <div class="dokki-tag">
-                    Documented with
-
-                    <a href="https://github.com/leikareipa/dokki"
-                        target="_blank"
-                        rel="noopener noreferrer">
-                    
-                        <b>dokki</b>
-                        
-                    </a>
-                </div>
-
             </main>
         `,
     });
@@ -200,30 +201,38 @@ function create_app()
             },
             productName()
             {
-                return this.$store.state.productName;
-            },
-            productVersion()
-            {
-                return this.$store.state.productVersion;
-            },
+                const name = (this.$store.state.productName !== undefined)
+                             ? this.$store.state.productName
+                             : "";
+
+                const version = (this.$store.state.productVersion !== undefined)
+                                ? this.$store.state.productVersion
+                                : "";
+
+                if (!name.length || !version.length)
+                {
+                    return undefined;
+                }
+
+                return `${name} ${version}`;
+            }
         },
         template: `
             <nav class="dokki-side-panel">
 
                 <div v-if="productName !== undefined"
+                     :title=productName
                      class="dokki0-product-tag">
 
-                    <i class="fas fa-fw fa-caret-down"
-                       style="color: dimgray;"/>
+                    <i class="fas fa-fw fa-caret-down"/>
                     {{productName}}
-                    {{productVersion}}
 
                 </div>
                 <div v-else
                      class="dokki0-product-tag">
 
                     <i class="fas fa-fw fa-caret-down"
-                       style="color: dimgray;"/>
+                       style="color: gray;"/>
                     Contents
 
                 </div>
@@ -264,11 +273,7 @@ function create_app()
             title: {default: "Inline frame"},
             autofocus: {default: undefined},
         },
-        data() {
-            return {
-                isExpanded: false,
-            }
-        },
+        mixins: [expandedPropMixin],
         watch: {
             isExpanded()
             {
@@ -319,13 +324,8 @@ function create_app()
     app.component("dokki-image", {
         props: {
             src: {},
-            expanded: {default: undefined},
         },
-        data() {
-            return {
-                isExpanded: ((this.$props.expanded === undefined)? false : true),
-            }
-        },
+        mixins: [expandedPropMixin],
         computed: {
             hasFooter()
             {
@@ -366,11 +366,11 @@ function create_app()
 
     app.component("dokki-tip", {
         template: `
-            <p class="dokki-embedded dokki-tip">
+            <p class="dokki-embedded dokki-tip casts-shadow">
 
                 <header>
                     <div class="title">
-                        <i class="fas fa-info-circle"/>
+                        <i class="fas fa-asterisk"/>
                     </div>
                 </header>
 
@@ -384,7 +384,7 @@ function create_app()
 
     app.component("dokki-warning", {
         template: `
-            <p class="dokki-embedded dokki-warning">
+            <p class="dokki-embedded dokki-warning casts-shadow">
 
                 <header>
                     <span class="title">
@@ -414,13 +414,9 @@ function create_app()
     app.component("dokki-video", {
         props: {
             src: {},
-            platform: {default: "youtube"}
+            platform: {default: "youtube"},
         },
-        data() {
-            return {
-                isExpanded: false,
-            }
-        },
+        mixins: [expandedPropMixin],
         computed: {
             hasFooter()
             {
@@ -546,6 +542,8 @@ function create_app()
 
                 </header>
 
+                <hr>
+
                 <footer v-if=hasFooter>
                     <DOKKI0-text-block-with-line-numbers :text="outputFromSlot || output">
                     </DOKKI0-text-block-with-line-numbers>
@@ -567,11 +565,7 @@ function create_app()
         props: {
             title: {default: "Output"},
         },
-        data() {
-            return {
-                isExpanded: false,
-            }
-        },
+        mixins: [expandedPropMixin],
         template: `
             <p class="dokki-embedded dokki-output">
 
@@ -600,11 +594,7 @@ function create_app()
     });
 
     app.component("dokki-table", {
-        data() {
-            return {
-                isExpanded: false,
-            }
-        },
+        mixins: [expandedPropMixin],
         computed: {
             hasFooter()
             {
@@ -797,6 +787,8 @@ function create_app()
                     </span>
 
                 </header>
+
+                <hr>
 
                 <footer>
                     <DOKKI0-text-block-with-line-numbers :text="codeFromSlot || code">
