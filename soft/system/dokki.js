@@ -21,7 +21,22 @@ function create_app()
         data()
         {
             return {
-                isExpanded: ((this.expanded === undefined)? false : true),
+                isExpanded: ((this.$props.expanded === undefined)? false : true),
+            }
+        },
+    };
+
+    // For embedded components. This mixin adds the 'headerless' prop, which when
+    // appended to the component, will prevent the embedded component's header
+    // element from being displayed.
+    const headerlessPropMixin = {
+        props: {
+            headerless: {default: undefined},
+        },
+        data()
+        {
+            return {
+                isHeaderless: ((this.$props.headerless === undefined)? false : true),
             }
         },
     };
@@ -243,6 +258,14 @@ function create_app()
         `,
     });
 
+    app.component("dokki-area", {
+        template: `
+            <p class="dokki-area">
+                <slot/>
+            </p>
+        `,
+    });
+
     app.component("dokki-side-panel", {
         computed: {
             topics()
@@ -450,17 +473,6 @@ function create_app()
         `,
     });
 
-    // Displays a video from a given source.
-    //
-    // Sample usage:
-    //
-    //   <dokki-video platform="youtube"
-    //                src="ZgWGmggi5Xo">
-    //   </dokki-video>
-    //
-    // NOTE: The 'src' prop is a video identifier whose exact meaning depends on the
-    // host platform (identified by the 'platform' prop).
-    //
     app.component("dokki-video", {
         props: {
             src: {},
@@ -524,18 +536,8 @@ function create_app()
         `,
     });
 
-    // For displaying terminal commands and their output.
-    //
-    // Sample usage:
-    //
-    //   <dokki-console platform="unix"
-    //                  command="./run.sh">
-    //       <template #output>
-    //           Hello there.
-    //       </template #output>
-    //   </dokki-console>
-    //
     app.component("dokki-console", {
+        mixins: [headerlessPropMixin],
         props: {
             command: {default: "undefined command"},
             output: {default: undefined},
@@ -578,9 +580,10 @@ function create_app()
             },
         },
         template: `
-            <p class="dokki-embedded dokki-console">
+            <p class="dokki-embedded dokki-console"
+               v-if="hasFooter || !isHeaderless">
 
-                <header>
+                <header v-if="!isHeaderless">
 
                     <span class="title">
                         <i :class="headerIcon" title="Terminal command"/>
@@ -592,7 +595,7 @@ function create_app()
 
                 </header>
 
-                <hr>
+                <hr v-if="!isHeaderless">
 
                 <footer v-if=hasFooter>
                     <DOKKI0-text-block-with-line-numbers :text="outputFromSlot || output">
@@ -602,15 +605,6 @@ function create_app()
         `,
     });
 
-    // For showcasing the output of something; e.g. of a block of sample code.
-    //
-    // Sample usage:
-    //
-    //   <dokki-output title="Expected output">
-    //       Hello there.
-    //       <div>Hello again</div>
-    //   </dokki-output>
-    //
     app.component("dokki-output", {
         props: {
             title: {default: "Output"},
@@ -759,42 +753,8 @@ function create_app()
         `,
     });
 
-    // For embedding blocks of source code.
-    //
-    // Sample usage:
-    //
-    //   <dokki-code title="C"
-    //               code="
-    //               int main(void)
-    //               {
-    //                   const char *str = ``Hello there.``;
-    //                   printf(``The string says: '%s'\n``, str);
-    //                   return 0;
-    //               }
-    //               ">
-    //
-    //       <!-- Optional. -->
-    //       <dokki-output>
-    //           The string says: 'Hello there.'
-    //       </dokki-output>
-    //
-    //   </dokki-code>
-    //
-    //
-    //   <dokki-code title="C">
-    //       <template #code>
-    //           <pre>
-    //               int main(void)
-    //               {
-    //                   const char *str = "Hello there.";
-    //                   printf("The string says: '%s'\n", str);
-    //                   return 0;
-    //               }
-    //           </pre>
-    //       </template>
-    //   </dokki-code>
-    //
     app.component("dokki-code", {
+        mixins: [headerlessPropMixin],
         props: {
             title: {default: "Code"},
             code: {default: undefined},
@@ -829,7 +789,7 @@ function create_app()
             <p class="dokki-embedded dokki-code"
                :class="{'has-output': hasOutput}">
 
-                <header>
+                <header v-if="!isHeaderless">
 
                     <span class="title">
                         <i class="fas fa-code" title="Code"/>
@@ -838,7 +798,7 @@ function create_app()
 
                 </header>
 
-                <hr>
+                <hr v-if="!isHeaderless">
 
                 <footer>
                     <DOKKI0-text-block-with-line-numbers :text="codeFromSlot || code">
@@ -851,7 +811,6 @@ function create_app()
         `,
     });
 
-    // A semantic alias of dokki-output.
     app.component("dokki-spoiler", {
         props: {
             title: {default: "Spoiler"},
@@ -863,16 +822,6 @@ function create_app()
         `,
     });
 
-    // Displays a paragraph of lorem ipsum.
-    //
-    // Sample usage:
-    //
-    //   <dokki-lorem>
-    //   </dokki-lorem>
-    //
-    //   <dokki-lorem>
-    //   </dokki-lorem>
-    //
     app.component("dokki-lorem", {
         mounted() {
             this.lorem = this.paragraphs[this.$store.state.loremCount % this.paragraphs.length];

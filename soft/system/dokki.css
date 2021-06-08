@@ -46,7 +46,9 @@ body
     margin: 0;
 }
 
-body[data-dokki-theme="light"]
+body,
+body[data-dokki-theme="light"],
+body[data-dokki-theme="integration-test"]
 {
     --page-link-color: #2264e8;
     --page-primary-bg-color: white;
@@ -64,13 +66,13 @@ body[data-dokki-theme="light"]
 body[data-dokki-theme="dark"]
 {
     --page-link-color: #ffe210;
-    --page-primary-bg-color: #202020;
-    --page-secondary-bg-color: #282828;
-    --page-inert-bg-color: #323232;
-    --page-primary-fg-color: #e6e6e6;
+    --page-primary-bg-color: #191919;
+    --page-secondary-bg-color: #1d1d1d;
+    --page-inert-bg-color: #272727;
+    --page-primary-fg-color: #e4e4e4;
     --page-secondary-fg-color: #999999;
     --page-inert-fg-color: gray;
-    --page-primary-line-color: #4c4c4c;
+    --page-primary-line-color: #3d3d3d;
     --page-secondary-line-color: black;
     --dokki-embedded-header-bg-color: var(--page-primary-line-color);
     --dokki-embedded-footer-bg-color: var(--document-bg-color);
@@ -78,17 +80,8 @@ body[data-dokki-theme="dark"]
 
 body[data-dokki-theme="integration-test"]
 {
-    --page-link-color: #2264e8;
-    --page-primary-bg-color: white;
     --page-secondary-bg-color:var(--page-primary-bg-color);
     --page-inert-bg-color:var(--page-primary-bg-color);
-    --page-primary-fg-color: black;
-    --page-secondary-fg-color: gray;
-    --page-inert-fg-color: lightgray;
-    --page-primary-line-color: lightgray;
-    --page-secondary-line-color: lightgray;
-    --dokki-embedded-header-bg-color: #f6f6f6;
-    --dokki-embedded-footer-bg-color: var(--document-bg-color);
 }
 
 .dokki0-hidden
@@ -399,6 +392,15 @@ body[data-dokki-theme="integration-test"]
     background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
 }
 
+.dokki-area
+{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    background-color: var(--page-inert-bg-color);
+    border-left: 5px solid var(--page-inert-fg-color);
+}
+
 .dokki-embedded.casts-shadow
 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -456,7 +458,8 @@ body[data-dokki-theme="integration-test"]
     font-style: normal;
 }
 
-.dokki-embedded > footer > *:only-child
+.dokki-embedded > footer > *:only-child,
+.dokki-area > *:only-child
 {
     margin-top: 0;
     margin-bottom: 0;
@@ -769,7 +772,7 @@ body[data-dokki-theme="integration-test"]
 {
     :root
     {
-        --topic-horizontal-padding: 7px;
+        --topic-horizontal-padding: 15px;
     }
 
     .dokki-theme-selector
