@@ -102,7 +102,7 @@ function create_app()
         {
             update_theme()
             {
-                document.body.dataset.theme = this.themes[this.currentThemeIdx].name;
+                document.body.dataset.dokkiTheme = this.themes[this.currentThemeIdx].name;
             }
         },
         watch:
@@ -138,12 +138,19 @@ function create_app()
         template: `
             <header class="dokki-header">
 
-                <span class="title">
-                    <i :class="icon" style="margin-right: 10px;"/>
-                    {{title}}
-                </span>
+                <div class="dokki0-header-container">
 
-                <dokki-theme-selector/>
+                    <span class="dokki0-header-title"
+                          :title=title>
+
+                        <i :class="icon"/>
+                        {{title}}
+
+                    </span>
+
+                    <dokki-theme-selector/>
+
+                </div>
 
             </header>
         `,
