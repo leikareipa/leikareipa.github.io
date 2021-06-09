@@ -47,6 +47,7 @@ function create_app()
             loremCount: 0,
             productName: undefined,
             productVersion: undefined,
+            numListings: 0,
         },
         mutations: {
             add_topic(state, topicTitle = "")
@@ -64,6 +65,10 @@ function create_app()
                 {
                     subtopic.parentTopic.subtopics.push(subtopic);
                 }
+            },
+            increment_listings_count(state)
+            {
+                state.numListings++;
             },
             increment_lorem_count(state)
             {
@@ -700,6 +705,56 @@ function create_app()
         props: {
             text: {},
         },
+        data()
+        {
+            return {
+                blockIdx: 0,
+                highlightLineNum: -1,
+            }
+        },
+        created()
+        {
+            this.$store.commit("increment_listings_count");
+            this.blockIdx = this.$store.state.numListings;
+
+            update_line_highlight.call(this);
+            window.addEventListener("hashchange", update_line_highlight.bind(this));
+
+            function update_line_highlight()
+            {
+                // -1 means no line is highlighted.
+                this.highlightLineNum = -1;
+
+                if (window.location.hash.startsWith("#-listing:"))
+                {
+                    /// TODO: Add syntax validation.
+                    
+                    const hash = window.location.hash.substring(2).split(",");
+                    const [listingIdx, lineNum] = [hash[0].split(":")[1], hash[1].split(":")[1]];
+
+                    if (listingIdx == this.blockIdx)
+                    {
+                        this.highlightLineNum = (lineNum - 1);
+                    }
+                }
+            }
+        },
+        mounted()
+        {
+            this.$nextTick(()=>
+            {
+                if (window.location.hash.startsWith("#-listing:"))
+                {
+                    const lineNaviName = window.location.hash.substring(1);
+                    const elem = this.$refs[lineNaviName];
+
+                    if (elem)
+                    {
+                        window.scrollTo(0, elem.offsetTop);
+                    }
+                }
+            });
+        },
         computed: {
             formattedText()
             {
@@ -734,13 +789,51 @@ function create_app()
                 return lines;
             }
         },
+        methods: {
+            reset_line_highlight()
+            {
+                this.highlightLineNum = -1;
+                history.replaceState(null, null, " ");
+            },
+            highlight_line(lineNum)
+            {
+                if (lineNum == this.highlightLineNum)
+                {
+                    this.reset_line_highlight();
+                }
+                else
+                {
+                    window.location.hash = this.line_ref(lineNum);
+                }
+            },
+            test(odx)
+            {
+                console.log(odx);
+            },
+            line_ref(lineNum)
+            {
+                return `-listing:${this.blockIdx},ln:${lineNum+1}`;
+            },
+        },
         template: `
             <table class="dokki-text-block-with-line-numbers">
 
-                <tr v-for="(line, index) in formattedText">
+                <tr v-for="(line, lineNum) in formattedText"
+                    :class="{highlighted: highlightLineNum == lineNum}">
 
-                    <td class="line-number">
-                        {{index+1}}:
+                    <span class="dokki-anchor listing-line"
+                          :ref="line_ref(lineNum)">
+                    </span>
+
+                    <td class="line-number"
+                        @click="highlight_line(lineNum)">
+
+                        <span v-if="lineNum !== highlightLineNum">
+                            {{lineNum+1}}&nbsp;
+                        </span>
+
+                        <span v-else>&rarr;</span>
+
                     </td>
                     
                     <td class="line">
