@@ -15,6 +15,8 @@
     </head>
     <body>
         <div while-dokki-initializing>
+            <i class="fas fa-comment-dots"
+               style="margin-right: 6px"></i>
             Preparing the document...
         </div>
 
@@ -662,8 +664,7 @@
                                             Rngon.vertex(-1+0.1, -1, 3.2),
                                             Rngon.vertex( 1+0.1, -1, 3.2),
                                             Rngon.vertex( 1+0.1,  1, 3.2)], {
-                                                hasFill: false,
-                                                hasWireframe: true,
+                                                color: Rngon.color_rgba(0, 150, 255),
                                                 isWavy: true,
                                         });
 
@@ -671,8 +672,7 @@
                                             Rngon.vertex( 1-0.1,  1, 3.2),
                                             Rngon.vertex(-1-0.1,  1, 3.2),
                                             Rngon.vertex(-1-0.1, -1, 3.2)], {
-                                                hasFill: false,
-                                                hasWireframe: true,
+                                                color: Rngon.color_rgba(0, 150, 255)
                                         });
 
                                         const background = Rngon.ngon([

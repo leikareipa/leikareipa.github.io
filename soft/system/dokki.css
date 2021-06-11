@@ -156,8 +156,7 @@ body[data-dokki-theme="integration-test"]
 
 [while-dokki-initializing]
 {
-    padding-left: var(--dokkiCSS-document-horizontal-left-start);
-    margin-left: 10px;
+    padding-left: calc(10px + var(--dokkiCSS-document-horizontal-left-start));
     font-size: initial;
     font-weight: normal;
     color: gray;
