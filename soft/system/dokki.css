@@ -209,6 +209,15 @@ body[data-dokki-theme="integration-test"]
     color: var(--dokkiCSS-page-secondary-fg-color);
 }
 
+.dokki-area
+{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    background-color: var(--dokkiCSS-page-inert-bg-color);
+    border-left: 5px solid var(--dokkiCSS-page-inert-fg-color);
+}
+
 .dokki-side-panel
 {
     box-sizing: border-box;
@@ -436,18 +445,9 @@ body[data-dokki-theme="integration-test"]
     background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
 }
 
-.dokki-area
-{
-    width: 100%;
-    box-sizing: border-box;
-    padding: 14px;
-    background-color: var(--dokkiCSS-page-inert-bg-color);
-    border-left: 5px solid var(--dokkiCSS-page-inert-fg-color);
-}
-
 .dokkiCSS-embedded.casts-shadow
 {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .dokkiCSS-embedded
@@ -492,10 +492,15 @@ body[data-dokki-theme="integration-test"]
     background-color: var(--dokkiCSS-embedded-footer-bg-color);
 }
 
-.dokkiCSS-embedded > footer > *:only-child,
-.dokki-area > *:only-child
+.dokkiCSS-embedded > footer > *:first-child,
+.dokki-area > *:first-child
 {
     margin-top: 0;
+}
+
+.dokkiCSS-embedded > footer > *:last-child,
+.dokki-area > *:last-child
+{
     margin-bottom: 0;
 }
 
@@ -655,16 +660,6 @@ body[data-dokki-theme="integration-test"]
 .dokkiCSS-embedded.dokki-output > footer
 {
     padding: 14px;
-}
-
-.dokkiCSS-embedded.dokki-output > footer > *:first-child
-{
-    margin-top: 0;
-}
-
-.dokkiCSS-embedded.dokki-output > footer > *:last-child
-{
-    margin-bottom: 0;
 }
 
 .dokkiCSS-embedded.dokki-code.has-output

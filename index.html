@@ -445,7 +445,7 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Minimal code to render a triangle"
+                    <dokki-code title="Minimal HTML/JS to render and display a triangle"
                                 code="
                                 <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
                                 <script src='rngon.cat.js'></script>
@@ -457,9 +457,7 @@
                                             color: Rngon.color_rgba(0, 150, 255)
                                     });
 
-                                    const mesh = Rngon.mesh([triangle], {
-                                        rotation: Rngon.rotation(0, 0, 0)
-                                    });
+                                    const mesh = Rngon.mesh([triangle]);
 
                                     Rngon.render('canvas', [mesh]);
                                 </script>
@@ -487,9 +485,7 @@
                                                 color: Rngon.color_rgba(0, 150, 255)
                                         });
                                         
-                                        const mesh = Rngon.mesh([triangle], {
-                                            rotation: Rngon.rotation_vector(0, 0, 0)
-                                        });
+                                        const mesh = Rngon.mesh([triangle]);
     
                                         Rngon.render('canvas', [mesh]);
                                     </script>"
@@ -499,12 +495,15 @@
                     
                     </dokki-code>
 
-                    <dokki-code title="Async rendering"
-                                code="
+                    <dokki-code title="Async rendering">
+
+                        <template #code>
+                            <pre>
                                 Rngon.render_async([mesh]).then(result=>{
                                     canvas.getContext('2d').putImageData(result.image, 0, 0);
                                 });
-                                ">
+                            </pre>
+                        </template>
 
                         <dokki-output title="Run in web worker">
                             <iframe style="width: 100%;
@@ -539,6 +538,191 @@
                                             canvas.height = result.image.height;
                                             canvas.getContext('2d').putImageData(result.image, 0, 0);
                                         });
+                                    </script>"
+                                    >
+                            </iframe>
+                        </dokki-output>
+                    
+                    </dokki-code>
+
+                    <dokki-code title="Simple animated vertex shader">
+
+                        <template #code>
+                            <pre>
+                                function pulsing_vertex_shader(ngon)
+                                {
+                                    const timer = (performance.now() / 900);
+                                    const pulseMult = Math.abs(Math.sin(timer));
+
+                                    for (let v = 0; v < ngon.vertices.length; v++) {
+                                        ngon.vertices[v].shade = Math.max(0.5, (pulseMult * v));
+                                    }
+                                }
+                            </pre>
+                        </template>
+
+                        <dokki-output title="Run">
+                            <iframe style="width: 100%;
+                                           height: 200px;
+                                           border: none;"
+                                    srcdoc="
+                                    <style scoped>
+                                        body {
+                                            height: 100vh;
+                                            padding: 0;
+                                            margin: 0;
+                                        }
+                                    </style>
+                                    <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
+                                    <script src='https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/distributable/rngon.cat.js'></script>
+                                    <script>
+                                        const triangle = Rngon.ngon([
+                                            Rngon.vertex(-1, -1, 3),
+                                            Rngon.vertex( 1, -1, 3),
+                                            Rngon.vertex( 1,  1, 3)], {
+                                                color: Rngon.color_rgba(0, 150, 255)
+                                        });
+                                        
+                                        const mesh = Rngon.mesh([triangle]);
+    
+                                        (function render()
+                                        {
+                                            Rngon.render('canvas', [mesh], {
+                                                vertexShader: (ngon)=>
+                                                {
+                                                    const timer = (performance.now() / 900);
+                                                    const pulseMult = Math.abs(Math.sin(timer));
+
+                                                    for (let v = 0; v < ngon.vertices.length; v++) {
+                                                        ngon.vertices[v].shade = Math.max(0.5, (pulseMult * v));
+                                                    }
+                                                }
+                                            });
+
+                                            window.requestAnimationFrame(render);
+                                        })();
+                                    </script>"
+                                    >
+                            </iframe>
+                        </dokki-output>
+                    
+                    </dokki-code>
+
+                    <dokki-code title="Selective pixel shader">
+
+                        <template #code>
+                            <pre>
+                                function wavy_pixel_shader({renderWidth, renderHeight, fragmentBuffer, ngonCache, pixelBuffer})
+                                {
+                                    const timer = (performance.now() / 300);
+
+                                    for (let y = 0; y < renderHeight; y++) {
+                                        const horMagnitude = 7;
+                                        const verMagnitude = ((y / renderWidth) * 10);
+                                        const cos = (horMagnitude * Math.cos(timer + verMagnitude));
+
+                                        for (let x = 0; x < renderWidth; x++) {
+                                            const dstIdx = (4 * (x + y * renderWidth));
+                                            const srcIdx = (4 * (Math.min((renderWidth - 1), (x + horMagnitude + ~~cos)) + y * renderWidth));
+                                            const fragment = fragmentBuffer[srcIdx / 4];
+
+                                            if (!ngonCache[fragment.ngonIdx].material.isWavy) {
+                                                continue;
+                                            }
+                                            
+                                            pixelBuffer[dstIdx + 0] = pixelBuffer[srcIdx + 0];
+                                            pixelBuffer[dstIdx + 1] = pixelBuffer[srcIdx + 1];
+                                            pixelBuffer[dstIdx + 2] = pixelBuffer[srcIdx + 2];
+
+                                            pixelBuffer[srcIdx + 0] = 255;
+                                            pixelBuffer[srcIdx + 1] = 255;
+                                            pixelBuffer[srcIdx + 2] = 255;
+                                        }
+                                    }
+                                }
+                            </pre>
+                        </template>
+
+                        <dokki-output title="Run">
+                            <iframe style="width: 100%;
+                                           height: 200px;
+                                           border: none;"
+                                    srcdoc="
+                                    <style scoped>
+                                        body {
+                                            height: 100vh;
+                                            padding: 0;
+                                            margin: 0;
+                                        }
+                                    </style>
+                                    <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
+                                    <script src='https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/distributable/rngon.cat.js'></script>
+                                    <script>
+                                        const triangle1 = Rngon.ngon([
+                                            Rngon.vertex(-1+0.1, -1, 3.2),
+                                            Rngon.vertex( 1+0.1, -1, 3.2),
+                                            Rngon.vertex( 1+0.1,  1, 3.2)], {
+                                                hasFill: false,
+                                                hasWireframe: true,
+                                                isWavy: true,
+                                        });
+
+                                        const triangle2 = Rngon.ngon([
+                                            Rngon.vertex( 1-0.1,  1, 3.2),
+                                            Rngon.vertex(-1-0.1,  1, 3.2),
+                                            Rngon.vertex(-1-0.1, -1, 3.2)], {
+                                                hasFill: false,
+                                                hasWireframe: true,
+                                        });
+
+                                        const background = Rngon.ngon([
+                                            Rngon.vertex(0, 0),
+                                            Rngon.vertex(200, 0),
+                                            Rngon.vertex(200,  200),
+                                            Rngon.vertex(0,  200)], {
+                                                allowTransform: false,
+                                                color: Rngon.color_rgba(255, 255, 255)
+                                        });
+                                        
+                                        const mesh = Rngon.mesh([background, triangle1, triangle2]);
+    
+                                        (function render()
+                                        {
+                                            Rngon.render('canvas', [mesh], {
+                                                depthSort: 'none',
+                                                useDepthBuffer: false,
+                                                pixelShader: ({renderWidth, renderHeight, fragmentBuffer, ngonCache, pixelBuffer})=>
+                                                {
+                                                    const timer = (performance.now() / 300);
+
+                                                    for (let y = 0; y < renderHeight; y++) {
+                                                        const horMagnitude = 7;
+                                                        const verMagnitude = ((y / renderWidth) * 10);
+                                                        const cos = (horMagnitude * Math.cos(timer + verMagnitude));
+
+                                                        for (let x = 0; x < renderWidth; x++) {
+                                                            const dstIdx = (4 * (x + y * renderWidth));
+                                                            const srcIdx = (4 * (Math.min((renderWidth - 1), (x + horMagnitude + ~~cos)) + y * renderWidth));
+                                                            const fragment = fragmentBuffer[srcIdx / 4];
+
+                                                            if (!ngonCache[fragment.ngonIdx].material.isWavy) {
+                                                                continue;
+                                                            }
+
+                                                            pixelBuffer[dstIdx + 0] = pixelBuffer[srcIdx + 0];
+                                                            pixelBuffer[dstIdx + 1] = pixelBuffer[srcIdx + 1];
+                                                            pixelBuffer[dstIdx + 2] = pixelBuffer[srcIdx + 2];
+
+                                                            pixelBuffer[srcIdx + 0] = 255;
+                                                            pixelBuffer[srcIdx + 1] = 255;
+                                                            pixelBuffer[srcIdx + 2] = 255;
+                                                        }
+                                                    }
+                                                }
+                                            });
+
+                                            window.requestAnimationFrame(render);
+                                        })();
                                     </script>"
                                     >
                             </iframe>
@@ -1277,7 +1461,7 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Minimal code to render a triangle"
+                    <dokki-code title="Minimal HTML/JS to render and display a triangle"
                                 code="
                                 <svg id='rendering' width='200' height='200'></svg>
                                 <script type='module'>
@@ -1291,6 +1475,7 @@
                                     ]);
 
                                     Luu.render([Luu.mesh([triangle])], targetSVG, {
+                                        viewRotation: Luu.rotation(0, 0, 0),
                                         viewPosition: Luu.translation(0, 0, -3)
                                     });
                                 </script>
@@ -1316,18 +1501,17 @@
                                     <svg id='rendering' width='200' height='200'></svg>
                                     <script type='module'>
                                         import {Luu} from 'https://www.tarpeeksihyvaesoft.com/experimental/luujanko/distributable/luujanko.js';
-                                        
                                         const targetSVG = document.getElementById('rendering');
 
-                                        const rect = Luu.ngon([
+                                        const triangle = Luu.ngon([
                                             Luu.vertex(-1, -1, 0),
                                             Luu.vertex( 1, -1, 0),
                                             Luu.vertex( 1,  1, 0)
                                         ]);
 
-                                        Luu.render([Luu.mesh([rect])], targetSVG, {
+                                        Luu.render([Luu.mesh([triangle])], targetSVG, {
                                             viewRotation: Luu.rotation(0, 0, 0),
-                                            viewPosition: Luu.translation(0, 0, -3),
+                                            viewPosition: Luu.translation(0, 0, -3)
                                         });
                                     </script>
                                     ">
@@ -1669,7 +1853,7 @@
                     </p>
                     
                     <p>
-                        Links: <a href="https://github.com/leikareipa/ranssi/">GitHub</a>
+                        Links: <a href="https://github.com/leikareipa/ranssi/">GitHub (rewrite)</a>
                     </p>
                     
                     <dokki-image src="./soft/img/ranssi/ranssi-1.png">
