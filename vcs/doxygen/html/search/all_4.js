@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['get_5fapi_5fname',['get_api_name',['../structcapture__api__s.html#af093bf1364fd94c8b5934adbeaca3905',1,'capture_api_s']]],
+  ['get_5fcolor_5fdepth',['get_color_depth',['../structcapture__api__s.html#ae7e43dcb7443312bf1c0bf822a0a3e1f',1,'capture_api_s']]],
+  ['get_5fdefault_5fvideo_5fsignal_5fparameters',['get_default_video_signal_parameters',['../structcapture__api__s.html#a19e3a506608b26802ebfbccc50c0eb41',1,'capture_api_s']]],
+  ['get_5fdevice_5fdriver_5fversion',['get_device_driver_version',['../structcapture__api__s.html#a94db73c0857fa3030bbaaf070dd35f41',1,'capture_api_s']]],
+  ['get_5fdevice_5ffirmware_5fversion',['get_device_firmware_version',['../structcapture__api__s.html#a9f720e418393f223c1848d01dcb0c78b',1,'capture_api_s']]],
+  ['get_5fdevice_5fmaximum_5finput_5fcount',['get_device_maximum_input_count',['../structcapture__api__s.html#a8a09f2370821d3753f1230a0d9bc290e',1,'capture_api_s']]],
+  ['get_5fdevice_5fname',['get_device_name',['../structcapture__api__s.html#a16d62a967bab53919eac73edd0982fea',1,'capture_api_s']]],
+  ['get_5fframe_5fbuffer',['get_frame_buffer',['../structcapture__api__s.html#a82f7b57c2898e3ab00f854e624f8b062',1,'capture_api_s']]],
+  ['get_5finput_5fchannel_5fidx',['get_input_channel_idx',['../structcapture__api__s.html#a87626601c414f0b649aaafd5be40144f',1,'capture_api_s']]],
+  ['get_5fmaximum_5fresolution',['get_maximum_resolution',['../structcapture__api__s.html#acc75f49c86cfb3b7b684317cb00499c6',1,'capture_api_s']]],
+  ['get_5fmaximum_5fvideo_5fsignal_5fparameters',['get_maximum_video_signal_parameters',['../structcapture__api__s.html#abc576988654e133ab76f9f5ce4a43375',1,'capture_api_s']]],
+  ['get_5fminimum_5fresolution',['get_minimum_resolution',['../structcapture__api__s.html#aa794ce3a2ff4348f7ad51628e0e4c47b',1,'capture_api_s']]],
+  ['get_5fminimum_5fvideo_5fsignal_5fparameters',['get_minimum_video_signal_parameters',['../structcapture__api__s.html#a73181cf82f2909e2314ee275a7c0e122',1,'capture_api_s']]],
+  ['get_5fmissed_5fframes_5fcount',['get_missed_frames_count',['../structcapture__api__s.html#aae808d8f4a44b290682b7dfbf33ddffb',1,'capture_api_s']]],
+  ['get_5fpixel_5fformat',['get_pixel_format',['../structcapture__api__s.html#ab50777795bba5119e54cbcf5098dcc94',1,'capture_api_s']]],
+  ['get_5frefresh_5frate',['get_refresh_rate',['../structcapture__api__s.html#aa0b99266df9691b0bc5ab54310d0181c',1,'capture_api_s']]],
+  ['get_5fresolution',['get_resolution',['../structcapture__api__s.html#ab7f7e64d926f745767619e7cd2d96916',1,'capture_api_s']]],
+  ['get_5fvideo_5fsignal_5fparameters',['get_video_signal_parameters',['../structcapture__api__s.html#a93bdb8c67b73678652fe402c7bd1f1e8',1,'capture_api_s']]],
+  ['guiwidget',['guiWidget',['../classfilter__c.html#a87fe442761505cbdb67dade1f6ba4914',1,'filter_c']]]
+];

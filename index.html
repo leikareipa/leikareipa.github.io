@@ -42,22 +42,29 @@
 
                         <div style="display: inline-block;">
                             <i class="fas fa-envelope"></i>
-                            Email: sw@tarpeeksihyvaesoft.com
+                            Email <a href="mailto:sw@tarpeeksihyvaesoft.com">sw@tarpeeksihyvaesoft.com</a>
                         </div>
 
                         <span style="margin: 0 8px;"></span>
 
                         <div style="display: inline-block;">
                             <i class="fab fa-github"></i>
-                            GitHub: <a href="https://github.com/leikareipa">github.com/leikareipa</a>
+                            GitHub <a href="https://github.com/leikareipa" target="_blank" rel="noopener">github.com/leikareipa</a>
+                        </div>
+
+                        <span style="margin: 0 8px;"></span>
+
+                        <div style="display: inline-block;">
+                            <i class="fab fa-youtube"></i>
+                            YouTube <a href="https://www.youtube.com/user/vvbee" target="_blank" rel="noopener">youtube.com/user/vvbee</a>
                         </div>
 
                     </dokki-spoiler>
 
-                    <dokki-image expanded src="./soft/img/yqr/yqr-2.png">
+                    <dokki-image expanded src="./soft/img/lintulista/lintulista-4.png">
                         <template #caption>
-                            Volumetric lightmap showing spectral diffraction in a beam of light
-                            (see: <a href="#yqr">Yqr</a>)
+                            Browsing a list of observations
+                            (see: <a href="#lintulista">Lintulista</a>)
                         </template>
                     </dokki-image>
                 </dokki-topic>
@@ -79,13 +86,21 @@
                         and Linux (5.x). Low reliance on GPU features; can run virtualized in QEMU, VMWare,
                         and VirtualBox.
                     </p>
+
+                    <p>
+                        Although made for Datapath's capture cards, VCS's code provides an abstract capture
+                        interface through which support for other manufacturers' hardware (or other image
+                        sources) can be added. Find out more in the
+                        <a href="//www.tarpeeksihyvaesoft.com/vcs/doxygen/html/capture__api_8h.html">
+                        developer documentation</a>.
+                    </p>
             
                     <p>
                         Made between 2017-2021.
                     </p>
 
                     <p>
-                        Tech used: C++, Qt, OpenCV, RGBEasy, Video4Linux
+                        Tech used: C++, Qt, OpenCV, RGBEasy, Video4Linux, Doxygen
                     </p>
                     
                     <p>
@@ -130,6 +145,33 @@
                                 <tr>
                                     <td>Datapath</td>
                                     <td>VisionRGB-X2</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+
+                    <dokki-table>
+                        <template #caption>
+                            Version milestones
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Version</th>
+                                </tr>
+                                <tr>
+                                    <td>April 2020</td>
+                                    <td>2.0.0</td>
+                                </tr>
+                                <tr>
+                                    <td>March 2018</td>
+                                    <td>1.0.0</td>
+                                </tr>
+                                <tr>
+                                    <td>April 2017</td>
+                                    <td>beta.1 (first release)</td>
                                 </tr>
                             </table>
                         </template>
@@ -207,7 +249,7 @@
                     
                     <p>
                         Links:
-                        <a href="https://github.com/leikareipa/pcbi-content">Additional content</a>,
+                        <a href="https://github.com/leikareipa/pcbi-content">Additional content</a> &bull;
                         <a href="https://www.youtube.com/playlist?list=PLMVzQTDRXhK_CZ3j-Lax7fRICLvbL_7do">Dev playlist on YouTube</a>
                     </p>
 
@@ -316,8 +358,8 @@
                     
                     <p>
                         Links:
-                        <a href="https://www.tarpeeksihyvaesoft.com/lintulista/#samplelst">View sample</a>,
-                        <a href="https://www.github.com/leikareipa/lintulista-client">GitHub (client)</a>,
+                        <a href="https://www.tarpeeksihyvaesoft.com/lintulista/#samplelst">View sample</a> &bull;
+                        <a href="https://www.github.com/leikareipa/lintulista-client">GitHub (client)</a> &bull;
                         <a href="https://www.github.com/leikareipa/lintulista-server">GitHub (server)</a>
                     </p>
                     
@@ -426,8 +468,11 @@
                     
                     <p>
                         Links:
-                        <a href="https://www.github.com/leikareipa/retro-ngon">GitHub</a>,
-                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/">Interactive samples</a>
+                        <a href="https://www.github.com/leikareipa/retro-ngon">GitHub</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/">Interactive samples</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_heavy.html">Benchmark (heavy)</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1.html">Benchmark (light)</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_wireframe.html">Benchmark (wireframe)</a>
                     </p>
                 
                     <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
@@ -497,11 +542,12 @@
                     
                     </dokki-code>
 
-                    <dokki-code title="Async rendering">
+                    <dokki-code title="Simple async rendering">
 
                         <template #code>
                             <pre>
-                                Rngon.render_async([mesh]).then(result=>{
+                                Rngon.render_async([mesh]).then(result=>
+                                {
                                     canvas.getContext('2d').putImageData(result.image, 0, 0);
                                 });
                             </pre>
@@ -547,7 +593,7 @@
                     
                     </dokki-code>
 
-                    <dokki-code title="Simple animated vertex shader">
+                    <dokki-code title="Sample vertex shader">
 
                         <template #code>
                             <pre>
@@ -732,6 +778,29 @@
 
                     <dokki-table>
                         <template #caption>
+                            Version milestones
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Version</th>
+                                </tr>
+                                <tr>
+                                    <td>December 2019</td>
+                                    <td>First beta release</td>
+                                </tr>
+                                <tr>
+                                    <td>January 2019</td>
+                                    <td>First alpha release</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+
+                    <dokki-table>
+                        <template #caption>
                             Source code CLOC statistics
                         </template>
 
@@ -782,7 +851,8 @@
                     <p>
                         Looks like an old browser, acts like an old browser - and almost is one. Serlain
                         is a frontend for Internet Archive's Wayback Machine that displays archived web
-                        content inside period-correct-looking faux browsers.
+                        content inside period-correct-looking faux browsers. Set on a faux period-themed
+                        desktop.
                     </p>
 
                     <p>
@@ -790,12 +860,12 @@
                     </p>
             
                     <p>
-                        Tech used: JavaScript, React
+                        Tech used: JavaScript, React, CSS
                     </p>
                     
                     <p>
                         Links:
-                        <a href="https://serlain.herokuapp.com/distributable/">Run in browser</a>,
+                        <a href="https://serlain.herokuapp.com/distributable/">Run in browser</a> &bull;
                         <a href="https://www.github.com/leikareipa/serlain">GitHub</a>
                     </p>
                     
@@ -900,10 +970,10 @@
                     
                     <p>
                         Links:
-                        <a href="https://www.tarpeeksihyvaesoft.com/rallysported/">Run in browser</a>,
-                        <a href="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play">Play Rally-Sport in browser</a>,
-                        <a href="https://www.github.com/leikareipa/rallysported/">GitHub (umbrella repo)</a>,
-                        <a href="https://www.github.com/leikareipa/rallysported-frontend/">GitHub (frontend)</a>,
+                        <a href="https://www.tarpeeksihyvaesoft.com/rallysported/">Run in browser</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play">Play Rally-Sport in browser</a> &bull;
+                        <a href="https://www.github.com/leikareipa/rallysported/">GitHub (umbrella repo)</a> &bull;
+                        <a href="https://www.github.com/leikareipa/rallysported-frontend/">GitHub (frontend)</a> &bull;
                         <a href="https://www.github.com/leikareipa/rallysported-backend/">GitHub (backend)</a>
                     </p>
 
@@ -935,6 +1005,41 @@
                             RallySportED's DOS-based track editor in DOS on a 486-class PC
                         </template>
                     </dokki-video>
+
+                    <dokki-table>
+                        <template #caption>
+                            Version milestones
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Version</th>
+                                </tr>
+                                <tr>
+                                    <td>December 2020</td>
+                                    <td>1.0 for browsers</td>
+                                </tr>
+                                <tr>
+                                    <td>November 2018</td>
+                                    <td>First release for browsers</td>
+                                </tr>
+                                <tr>
+                                    <td>August 2018</td>
+                                    <td>First release for Windows 95</td>
+                                </tr>
+                                <tr>
+                                    <td>April 2017</td>
+                                    <td>First release for 16-bit DOS</td>
+                                </tr>
+                                <tr>
+                                    <td>November 2016</td>
+                                    <td>First public release (Linux/Windows)</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
 
                     <dokki-table>
                         <template #caption>
@@ -1347,7 +1452,7 @@
                     </p>
                     
                     <p>
-                        Links: <a href="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720">Run live sample</a>, <a href="https://www.github.com/leikareipa/wray">GitHub</a>
+                        Links: <a href="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720">Run live sample</a> &bull; <a href="https://www.github.com/leikareipa/wray">GitHub</a>
                     </p>
                     
                     <dokki-iframe title="Run sample"
@@ -1393,6 +1498,47 @@
                             </pre>
                         </template>
                     </dokki-code>
+
+                    <dokki-table>
+                        <template #caption>
+                            Multithreaded performance scaling
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Number of workers<sup>*</sup></th>
+                                    <th>Render performance (1000 samples/second)</th>
+                                    <th>Performance delta</th>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>41</td>
+                                    <td>&ndash;</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>78</td>
+                                    <td>+90%</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>100</td>
+                                    <td>+28%</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>109</td>
+                                    <td>+9%</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <sup>*</sup> In Google Chrome 91 on a quad-core Intel Haswell CPU.
+                                    </td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
 
                     <dokki-table>
                         <template #caption>
@@ -1446,7 +1592,7 @@
                     
                     <p>
                         Links:
-                        <a href="https://www.github.com/leikareipa/luujanko">GitHub</a>,
+                        <a href="https://www.github.com/leikareipa/luujanko">GitHub</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/">View interactive samples</a>
                     </p>
 
@@ -1560,6 +1706,10 @@
                     </p>
 
                     <p>
+                        Dokki is currently work in progress.
+                    </p>
+
+                    <p>
                         Made in 2021.
                     </p>
             
@@ -1568,7 +1718,10 @@
                     </p>
                     
                     <p>
-                        Links: <a href="https://www.github.com/leikareipa/dokki">GitHub</a>
+                        Links:
+                        <a href="https://www.github.com/leikareipa/dokki">GitHub</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/dokki/tests/render-ab/">Run render test</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/dokki/docs/api-reference.html">View API reference</a>
                     </p>
                 </dokki-topic>
                 
@@ -1673,9 +1826,23 @@
                 <dokki-topic title="KAC file format">
                     <p>
                         A binary file format for storing 3D models and their textures; a companion
-                        format for the <a href="#kelpo">Kelpo</a> renderer. Designed with the
-                        limitations of 1990s 3D hardware in mind. An importer and exporter are
-                        provided.
+                        format for the <a href="#kelpo">Kelpo</a> renderer. Designed with limitations
+                        of 1990s 3D hardware in mind.
+                    </p>
+
+                    <p>
+                        A KAC file stores vertices, normals and UV coordinates in 32-bit floats. Texture
+                        data are stored in 16-bit color with transparency (RGBA4444); polygon colors are
+                        stored in 16 bits with alpha (RGBA5551). Textures are stored with mipmapping down
+                        to 1&times;1. Because a KAC file includes the model's entire set of textures, each
+                        texture is associated with a 128-bit SHA-256 pixel data hash to allow duplicate
+                        textures to be discarded when loading multiple KAC files.
+                    </p>
+                    
+                    <p>
+                        An importer (for loading KAC meshes into C/C++ programs) and exporter (for
+                        converting OBJ models into KAC meshes) are provided. The exporter automatically
+                        generates texture mipmaps and converts pixel colors into 16-bit.
                     </p>
 
                     <p>
@@ -1688,7 +1855,7 @@
                     
                     <p>
                         Links:
-                        <a href="https://github.com/leikareipa/kac-file-format/blob/master/1.0-draft/kac-1.0-spec-draft.txt">Spec (1.0 draft)</a>,
+                        <a href="https://github.com/leikareipa/kac-file-format/blob/master/1.0-draft/kac-1.0-spec-draft.txt">Spec (1.0 draft)</a> &bull;
                         <a href="https://www.github.com/leikareipa/kac-file-format">GitHub</a>
                     </p>
                     
@@ -1901,10 +2068,10 @@
                     </p>
 
                     <p>
-                        The voxel renderer works on 2D heightmaps and has full degrees of freedom, multi-threading,
-                        and bilinear interpolation of height and texture data. The polygon renderer supports
-                        single-threaded scanline and barycentric rasterization. The two renderers operate on
-                        the same depth map, first populated by the voxel renderer and then the polygon one.
+                        The voxel renderer works on 2D heightmaps and has full degrees of freedom, multi-threading
+                        with OpenMP, and bilinear interpolation of height and texture data. The polygon renderer
+                        supports single-threaded scanline and barycentric rasterization. The two renderers operate
+                        on the same depth map, first populated by the voxel renderer and then the polygon one.
                     </p>
 
                     <p>
@@ -2050,7 +2217,7 @@
                     
                     <p>
                         Links:
-                        <a href="https://www.github.com/leikareipa/weather-widget">GitHub</a>,
+                        <a href="https://www.github.com/leikareipa/weather-widget">GitHub</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Helsinki">Run in browser</a>
                     </p>
 
@@ -2134,17 +2301,6 @@
                     <dokki-image src="./soft/img/gpl-dta/gpl-dta-2.png">
                         <template #caption>
                             Exported assets from the Spa track opened in Blender
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="http://www.vanwall.eclipse.co.uk/gplediting/hay5.gif">
-                        <template #caption>
-                            Diagram of a simple 3D model's data in a 3DO file
-
-                            (image source:
-                            <a href="http://www.vanwall.eclipse.co.uk/gplediting/">
-                                GPL File Formats [Phil Flack]
-                            </a>)
                         </template>
                     </dokki-image>
 
@@ -2482,7 +2638,7 @@
                     
                     <p>
                         Links:
-                        <a href="https://github.com/leikareipa/3dcube-js">GitHub</a>,
+                        <a href="https://github.com/leikareipa/3dcube-js">GitHub</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/3dcube-js/">Run in browser</a>
                     </p>
 
@@ -2795,6 +2951,136 @@
                                     <td>69</td>
                                     <td>50</td>
                                     <td>133</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                </dokki-topic>
+
+
+                <dokki-topic title="Vond Jr.">
+                    <p>
+                        A simplified port of <a href="#vond">Vond</a> and a learner project in Java. Provides
+                        a heightmap-based software voxel renderer with full degrees of camera rotation. Comes
+                        with a relatively extendable OOP codebase and basic unit tests.
+                    </p>
+
+                    <p>
+                        Made in 2019.
+                    </p>
+            
+                    <p>
+                        Tech used: Java
+                    </p>
+                    
+                    <p>
+                        Links:
+                        <a href="https://www.github.com/leikareipa/vond-jr">GitHub</a>
+                    </p>
+                    
+                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/vond-jr/master/images/screenshots/vond-jr-dev.png">
+                        <template #caption>
+                            Blocky voxel greenery
+                        </template>
+                    </dokki-image>
+
+                    <dokki-console platform="unix"
+                                   command="./run.sh">
+                        <template #output>
+                            <pre>
+                                Heightmap passed its unit test.
+                                Texture passed its unit test.
+                                Vector3 passed its unit test.
+                                Screen passed its unit test.
+                                TerrainRenderer.render(): Time to render: 94 ms (11 FPS).
+                                TerrainRenderer.render(): Time to render: 29 ms (35 FPS).
+                                TerrainRenderer.render(): Time to render: 20 ms (50 FPS).
+                            </pre>
+                        </template>
+                    </dokki-console>
+
+                    <dokki-table>
+                        <template #caption>
+                            Source code CLOC statistics
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Java</td>
+                                    <td>13</td>
+                                    <td>139</td>
+                                    <td>139</td>
+                                    <td>579</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                </dokki-topic>
+
+
+                <dokki-topic title="tryffeli">
+                    <p>
+                        A learner project in Python by way of a simple ray tracer. Comes with a fairly clean,
+                        extendable OOP codebase. Uses PyQt to export the rendering into a PNG image.
+                    </p>
+
+                    <p>
+                        Made in 2020.
+                    </p>
+            
+                    <p>
+                        Tech used: Python, PyQt
+                    </p>
+                    
+                    <p>
+                        Links:
+                        <a href="https://www.github.com/leikareipa/tryffeli">GitHub</a>
+                    </p>
+                    
+                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/tryffeli/master/images/screenshots/tryffeli-pre-alpha.png">
+                        <template #caption>
+                            Your typical shadow-casting lambertian spheres
+                        </template>
+                    </dokki-image>
+
+                    <dokki-console platform="unix"
+                                command="./render.py">
+                        <template #output>
+                            <pre>
+                                Exposing film: 100%
+                                Exporting to PNG...
+                            </pre>
+                        </template>
+                    </dokki-console>
+
+                    <dokki-table>
+                        <template #caption>
+                            Source code CLOC statistics
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Python</td>
+                                    <td>10</td>
+                                    <td>148</td>
+                                    <td>51</td>
+                                    <td>394</td>
                                 </tr>
                             </table>
                         </template>

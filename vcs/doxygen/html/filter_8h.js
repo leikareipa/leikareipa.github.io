@@ -1,0 +1,37 @@
+var filter_8h =
+[
+    [ "filter_c", "classfilter__c.html", "classfilter__c" ],
+    [ "filter_metadata_s", "structfilter__c_1_1filter__metadata__s.html", "structfilter__c_1_1filter__metadata__s" ],
+    [ "filter_type_enum_e", "filter_8h.html#ac17096e1797e0d50054397fcb964980e", [
+      [ "blur", "filter_8h.html#ac17096e1797e0d50054397fcb964980eaaefcd320422617869da103b5eed7041c", null ],
+      [ "delta_histogram", "filter_8h.html#ac17096e1797e0d50054397fcb964980eaab0dd3c5ca31caf3856ed81c7660c8ac", null ],
+      [ "unique_count", "filter_8h.html#ac17096e1797e0d50054397fcb964980eade7d00ade551982f8d0f8b1e8c218547", null ],
+      [ "unsharp_mask", "filter_8h.html#ac17096e1797e0d50054397fcb964980eac89085d097c3c8f98d7fb750573eb932", null ],
+      [ "decimate", "filter_8h.html#ac17096e1797e0d50054397fcb964980eab3f4f7204171fc55fa3156286cc78711", null ],
+      [ "denoise_temporal", "filter_8h.html#ac17096e1797e0d50054397fcb964980ea3393b9e0ed3c383c22e17159a98d679c", null ],
+      [ "denoise_nonlocal_means", "filter_8h.html#ac17096e1797e0d50054397fcb964980ea7a3409134ae38396c2f50bde06dc792d", null ],
+      [ "sharpen", "filter_8h.html#ac17096e1797e0d50054397fcb964980ea69d4bb17f27c77514f91f524ecae24d0", null ],
+      [ "median", "filter_8h.html#ac17096e1797e0d50054397fcb964980eae90a5c14304f1574c80cb5007ae8f705", null ],
+      [ "crop", "filter_8h.html#ac17096e1797e0d50054397fcb964980eaa634e7960e04b1633c103382004fe526", null ],
+      [ "flip", "filter_8h.html#ac17096e1797e0d50054397fcb964980eae6e5fd26daa9bca985675f67015fd882", null ],
+      [ "rotate", "filter_8h.html#ac17096e1797e0d50054397fcb964980ea6f8c8a49f740bca52653317a42933f8c", null ],
+      [ "input_gate", "filter_8h.html#ac17096e1797e0d50054397fcb964980ea5478ef56bffa882946d90f3c50eb16a6", null ],
+      [ "output_gate", "filter_8h.html#ac17096e1797e0d50054397fcb964980eaea80631857656227295aadfbfa32a118", null ]
+    ] ],
+    [ "kf_add_filter_chain", "filter_8h.html#a0b0e3e117cdf6cb3428f801627600820", null ],
+    [ "kf_apply_filter_chain", "filter_8h.html#a2ff9d1bdb2eb49010ca088ee955b0c8f", null ],
+    [ "kf_create_new_filter_instance", "filter_8h.html#a2480b2dd9cb505674cb9a4728fc5143c", null ],
+    [ "kf_create_new_filter_instance", "filter_8h.html#a4ff01163680ec3683080eb5efb16e444", null ],
+    [ "kf_delete_filter_instance", "filter_8h.html#a0eb72071e4a5802e8c092fda1310ceba", null ],
+    [ "kf_filter_id_for_type", "filter_8h.html#aa99aa6e25f78b43906c92424e8f85997", null ],
+    [ "kf_filter_name_for_id", "filter_8h.html#ae156b9bca959c87cec98e923f7536df6", null ],
+    [ "kf_filter_name_for_type", "filter_8h.html#a0ffc2bf026b129381247bf04166cc448", null ],
+    [ "kf_filter_type_for_id", "filter_8h.html#a86cd6d05e3daabd9933b9ececa3c4971", null ],
+    [ "kf_find_capture_alignment", "filter_8h.html#a8928d8cec12bc3fcac672020139d5143", null ],
+    [ "kf_initialize_filters", "filter_8h.html#a865c376e81c67825f112a23323283bba", null ],
+    [ "kf_is_filtering_enabled", "filter_8h.html#a4098a43be305cd3b69b15d00f5439ad8", null ],
+    [ "kf_known_filter_types", "filter_8h.html#af239dda4cb030ec91b18db389b3d0271", null ],
+    [ "kf_release_filters", "filter_8h.html#aa876a3199988d7114447986c74cdbaa5", null ],
+    [ "kf_remove_all_filter_chains", "filter_8h.html#a11b9c784da541acaa0dbbaf2d42def73", null ],
+    [ "kf_set_filtering_enabled", "filter_8h.html#aba0612d0e4e7096779d449e8ab200070", null ]
+];

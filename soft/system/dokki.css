@@ -30,11 +30,10 @@ a.dokkiCSS-unstyled
     color: inherit !important;
 }
 
-body
+body,
+.dokkiCSS-document-container
 {
     font-family: sans-serif;
-    text-align: center;
-    align-content: center;
     background-color: var(--dokkiCSS-page-inert-bg-color);
     color: var(--dokkiCSS-page-primary-fg-color);
     padding: 0;
@@ -42,8 +41,7 @@ body
 }
 
 body,
-body[data-dokki-theme="light"],
-body[data-dokki-theme="integration-test"]
+[data-dokki-theme="light"]
 {
     --dokkiCSS-page-link-color: #2264e8;
     --dokkiCSS-page-primary-bg-color: white;
@@ -58,7 +56,7 @@ body[data-dokki-theme="integration-test"]
     --dokkiCSS-embedded-footer-bg-color: var(--document-bg-color);
 }
 
-body[data-dokki-theme="dark"]
+[data-dokki-theme="dark"]
 {
     --dokkiCSS-page-link-color: #ffe210;
     --dokkiCSS-page-primary-bg-color: #191919;
@@ -568,6 +566,7 @@ body[data-dokki-theme="integration-test"]
     padding: 8px;
     border: none;
     white-space: nowrap;
+    text-align: left;
 }
 
 .dokkiCSS-embedded.dokki-table > .table-container table tr
@@ -629,8 +628,14 @@ body[data-dokki-theme="integration-test"]
     align-items: center;
 }
 
+.dokkiCSS-embedded.dokki-console > header > code
+{
+    font-size: 110%;
+}
+
 .dokkiCSS-embedded.dokki-console > footer
 {
+    font-size: 110%;
     padding: 14px;
 }
 
