@@ -91,10 +91,10 @@
                         Although made for Datapath's capture cards, VCS's code provides an abstract capture
                         interface through which support for other manufacturers' hardware (or other image
                         sources) can be added. Find out more in the
-                        <a href="//www.tarpeeksihyvaesoft.com/vcs/doxygen/html/capture__api_8h.html">
+                        <a href="https//www.tarpeeksihyvaesoft.com/vcs/doxygen/html/capture__api_8h.html">
                         developer documentation</a>.
                     </p>
-            
+
                     <p>
                         Made between 2017-2021.
                     </p>
@@ -449,13 +449,18 @@
                     <p>
                         A well-featured software 3D renderer for the HTML5 canvas. Rasterizes n-sided
                         polygons onto either a canvas or an offscreen buffer. Features genuine retro
-                        aesthetics, vertex and pixel shaders, async rendering, streamlined API, docs,
-                        lots of samples, Blender export, and more. No external dependencies; easy
-                        to integrate into an existing JavaScript project.
+                        aesthetics, vertex and pixel shaders, async rendering, modular design,
+                        streamlined API, docs, lots of samples, a Blender exporter, and more.
+                    </p>
+                    
+                    <p>
+                        The project depends on no extra packages or package managers, and uses a plain
+                        Bash script to bundle the source files into a single-file distributable that
+                        can be imported either globally or as an ES6 module.
                     </p>
 
                     <p>
-                        Provides unit and integration tests and performance benchmarks.
+                        Unit, integration and performance tests are provided.
                     </p>
 
                     <p>
@@ -470,9 +475,9 @@
                         Links:
                         <a href="https://www.github.com/leikareipa/retro-ngon">GitHub</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/">Interactive samples</a> &bull;
-                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_heavy.html">Benchmark (heavy)</a> &bull;
-                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1.html">Benchmark (light)</a> &bull;
-                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_wireframe.html">Benchmark (wireframe)</a>
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_heavy.html">Run benchmark (heavy)</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1.html">Run benchmark (light)</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_wireframe.html">Run benchmark (wireframe)</a>
                     </p>
                 
                     <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
@@ -492,7 +497,7 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Minimal HTML/JS to render and display a triangle"
+                    <dokki-code title="Full code to render a triangle"
                                 code="
                                 <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
                                 <script src='rngon.cat.js'></script>
@@ -597,12 +602,15 @@
 
                         <template #code>
                             <pre>
+                                // The renderer will call this function for each n-gon following the lighting
+                                // and world-space transformation steps but prior to rasterization.
                                 function pulsing_vertex_shader(ngon)
                                 {
                                     const timer = (performance.now() / 900);
                                     const pulseMult = Math.abs(Math.sin(timer));
 
-                                    for (let v = 0; v < ngon.vertices.length; v++) {
+                                    for (let v = 0; v < ngon.vertices.length; v++)
+                                    {
                                         ngon.vertices[v].shade = Math.max(0.5, (pulseMult * v));
                                     }
                                 }
@@ -660,21 +668,27 @@
 
                         <template #code>
                             <pre>
+                                // The renderer will call this function once the current frame has been rasterized.
+                                // The 'fragmentBuffer' property contains metadata about each pixel, like world-
+                                // space coordinates and n-gon material properties.
                                 function wavy_pixel_shader({renderWidth, renderHeight, fragmentBuffer, ngonCache, pixelBuffer})
                                 {
                                     const timer = (performance.now() / 300);
 
-                                    for (let y = 0; y < renderHeight; y++) {
+                                    for (let y = 0; y < renderHeight; y++)
+                                    {
                                         const horMagnitude = 7;
                                         const verMagnitude = ((y / renderWidth) * 10);
                                         const cos = (horMagnitude * Math.cos(timer + verMagnitude));
 
-                                        for (let x = 0; x < renderWidth; x++) {
+                                        for (let x = 0; x < renderWidth; x++)
+                                        {
                                             const dstIdx = (4 * (x + y * renderWidth));
                                             const srcIdx = (4 * (Math.min((renderWidth - 1), (x + horMagnitude + ~~cos)) + y * renderWidth));
                                             const fragment = fragmentBuffer[srcIdx / 4];
 
-                                            if (!ngonCache[fragment.ngonIdx].material.isWavy) {
+                                            if (!ngonCache[fragment.ngonIdx].material.isWavy)
+                                            {
                                                 continue;
                                             }
                                             
@@ -971,14 +985,19 @@
                     <p>
                         Links:
                         <a href="https://www.tarpeeksihyvaesoft.com/rallysported/">Run in browser</a> &bull;
-                        <a href="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play">Play Rally-Sport in browser</a> &bull;
-                        <a href="https://www.github.com/leikareipa/rallysported/">GitHub (umbrella repo)</a> &bull;
                         <a href="https://www.github.com/leikareipa/rallysported-frontend/">GitHub (frontend)</a> &bull;
                         <a href="https://www.github.com/leikareipa/rallysported-backend/">GitHub (backend)</a>
                     </p>
 
-                    <dokki-iframe title="Run RallySportED-js"
-                                  src="https://www.tarpeeksihyvaesoft.com/rallysported"
+                    <dokki-iframe autofocus
+                                  title="Run RallySportED-js"
+                                  src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#renderer:-pixelated/ui:-menubar"
+                                  height="500px">
+                    </dokki-iframe>
+
+                    <dokki-iframe autofocus
+                                  title="Play Rally-Sport"
+                                  src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play"
                                   height="500px">
                     </dokki-iframe>
 
@@ -1507,8 +1526,8 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <th>Number of workers<sup>*</sup></th>
-                                    <th>Render performance (1000 samples/second)</th>
+                                    <th>Worker count<sup>*</sup></th>
+                                    <th>Render performance (1000 samples/sec.)</th>
                                     <th>Performance delta</th>
                                 </tr>
                                 <tr>
@@ -1607,7 +1626,7 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Minimal HTML/JS to render and display a triangle"
+                    <dokki-code title="Full code to render a triangle"
                                 code="
                                 <svg id='rendering' width='200' height='200'></svg>
                                 <script type='module'>
@@ -1721,7 +1740,8 @@
                         Links:
                         <a href="https://www.github.com/leikareipa/dokki">GitHub</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/dokki/tests/render-ab/">Run render test</a> &bull;
-                        <a href="https://www.tarpeeksihyvaesoft.com/dokki/docs/api-reference.html">View API reference</a>
+                        <a href="https://www.tarpeeksihyvaesoft.com/dokki/docs/api-reference.html">API reference</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/dokki/docs/sample.html">Sample document</a>
                     </p>
                 </dokki-topic>
                 
@@ -2978,7 +2998,7 @@
                         <a href="https://www.github.com/leikareipa/vond-jr">GitHub</a>
                     </p>
                     
-                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/vond-jr/master/images/screenshots/vond-jr-dev.png">
+                    <dokki-image src="./soft/img/vond-jr/vond-jr-1.png">
                         <template #caption>
                             Blocky voxel greenery
                         </template>

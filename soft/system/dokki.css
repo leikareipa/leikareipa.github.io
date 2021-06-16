@@ -71,12 +71,6 @@ body,
     --dokkiCSS-embedded-footer-bg-color: var(--document-bg-color);
 }
 
-body[data-dokki-theme="integration-test"]
-{
-    --dokkiCSS-page-secondary-bg-color:var(--dokkiCSS-page-primary-bg-color);
-    --dokkiCSS-page-inert-bg-color:var(--dokkiCSS-page-primary-bg-color);
-}
-
 .dokkiCSS-italic
 {
     font-style: italic;
@@ -293,6 +287,7 @@ body[data-dokki-theme="integration-test"]
     z-index: 1;
     border-right: 1px solid var(--dokkiCSS-page-secondary-line-color);
     box-sizing: border-box;
+    min-height: 100vh;
 }
 
 .dokki-topic
@@ -407,6 +402,11 @@ body[data-dokki-theme="integration-test"]
     border-collapse: collapse;
 }
 
+.dokkiCSS-text-block-line > .dokkiCSS-text-block-line-content > .keyword
+{
+    font-weight: bold;
+}
+
 .dokkiCSS-text-block-line.dokkiCSS-highlighted
 {
     background-color: var(--dokkiCSS-page-inert-bg-color);
@@ -427,9 +427,11 @@ body[data-dokki-theme="integration-test"]
 {
     color: var(--dokkiCSS-page-inert-fg-color);
     user-select: none;
-    width: 0; /* Shrink to minimum required width.*/
+    width: 1%; /* Shrink to minimum required width.*/
     padding: 0;
     cursor: pointer;
+    white-space: normal;
+    padding-right: 2ch;
 }
 
 .dokkiCSS-checker-background
