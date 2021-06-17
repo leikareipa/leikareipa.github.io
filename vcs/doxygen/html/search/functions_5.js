@@ -1,4 +1,31 @@
 var searchData=
 [
-  ['mark_5fframe_5fbuffer_5fas_5fprocessed',['mark_frame_buffer_as_processed',['../structcapture__api__s.html#a74483ef08806fd7179b3b3ac1d65e011',1,'capture_api_s']]]
+  ['kd_5facquire_5foutput_5fwindow_124',['kd_acquire_output_window',['../display_8h.html#ae624633776327f21294e1c5df8179446',1,'display.h']]],
+  ['kd_5fadd_5ffilter_5fgraph_5fnode_125',['kd_add_filter_graph_node',['../display_8h.html#ab70ef16802820ec345547f13e0b30bb0',1,'display.h']]],
+  ['kd_5fadd_5flog_5fentry_126',['kd_add_log_entry',['../display_8h.html#aae1a2bd7a28edcc105f3fc015a54367c',1,'display.h']]],
+  ['kd_5fclear_5ffilter_5fgraph_127',['kd_clear_filter_graph',['../display_8h.html#a4b271579a1a0664aff02251d973a2761',1,'display.h']]],
+  ['kd_5fis_5ffullscreen_128',['kd_is_fullscreen',['../display_8h.html#a25832af9e1209ed08627095a1a9bc99a',1,'display.h']]],
+  ['kd_5fload_5faliases_129',['kd_load_aliases',['../display_8h.html#a5b2ee4388f04582f5377d505f4fa04e5',1,'display.h']]],
+  ['kd_5fload_5ffilter_5fgraph_130',['kd_load_filter_graph',['../display_8h.html#a3c9fe0b0e3f07f23551abd8bca970a1d',1,'display.h']]],
+  ['kd_5fload_5fvideo_5fpresets_131',['kd_load_video_presets',['../display_8h.html#afa4222d4bf3a546a16427670c8630c2a',1,'display.h']]],
+  ['kd_5frecalculate_5ffilter_5fgraph_5fchains_132',['kd_recalculate_filter_graph_chains',['../display_8h.html#a1f1cabf69ab1a0d8301730045576ee65',1,'display.h']]],
+  ['kd_5frelease_5foutput_5fwindow_133',['kd_release_output_window',['../display_8h.html#a57d5c5d487906d9af9ab12e7f2155d19',1,'display.h']]],
+  ['kd_5fshow_5fheadless_5fassert_5ferror_5fmessage_134',['kd_show_headless_assert_error_message',['../display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5',1,'display.h']]],
+  ['kd_5fshow_5fheadless_5ferror_5fmessage_135',['kd_show_headless_error_message',['../display_8h.html#a7ea5703c9f856d9d999428fdee356f74',1,'display.h']]],
+  ['kd_5fshow_5fheadless_5finfo_5fmessage_136',['kd_show_headless_info_message',['../display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f',1,'display.h']]],
+  ['kd_5fspin_5fevent_5floop_137',['kd_spin_event_loop',['../display_8h.html#ab03382911b280df2a7f796094ba1c1af',1,'display.h']]],
+  ['kd_5fupdate_5foutput_5fwindow_5fsize_138',['kd_update_output_window_size',['../display_8h.html#a0fdc2b0606b2d14c4c275ed5a0bc221d',1,'display.h']]],
+  ['kd_5fupdate_5foutput_5fwindow_5ftitle_139',['kd_update_output_window_title',['../display_8h.html#a5622698adab1106e3c6affb4652b9f88',1,'display.h']]],
+  ['kf_5fadd_5ffilter_5fchain_140',['kf_add_filter_chain',['../filter_8h.html#aa05b659a2521cf25ed37b67d07919d49',1,'filter.h']]],
+  ['kf_5fapply_5ffilter_5fchain_141',['kf_apply_filter_chain',['../filter_8h.html#a2ff9d1bdb2eb49010ca088ee955b0c8f',1,'filter.h']]],
+  ['kf_5fcreate_5fnew_5ffilter_5finstance_142',['kf_create_new_filter_instance',['../filter_8h.html#a61e71c615eb43c1686e23ff96a00a5ef',1,'filter.h']]],
+  ['kf_5fdelete_5ffilter_5finstance_143',['kf_delete_filter_instance',['../filter_8h.html#a0eb72071e4a5802e8c092fda1310ceba',1,'filter.h']]],
+  ['kf_5ffind_5fcapture_5falignment_144',['kf_find_capture_alignment',['../filter_8h.html#a8928d8cec12bc3fcac672020139d5143',1,'filter.h']]],
+  ['kf_5finitialize_5ffilters_145',['kf_initialize_filters',['../filter_8h.html#a865c376e81c67825f112a23323283bba',1,'filter.h']]],
+  ['kf_5fis_5ffiltering_5fenabled_146',['kf_is_filtering_enabled',['../filter_8h.html#a4098a43be305cd3b69b15d00f5439ad8',1,'filter.h']]],
+  ['kf_5fis_5fknown_5ffilter_5ftype_147',['kf_is_known_filter_type',['../filter_8h.html#af88416f6e23ca77921627b49ac3543ae',1,'filter.h']]],
+  ['kf_5fknown_5ffilter_5ftypes_148',['kf_known_filter_types',['../filter_8h.html#a6a36ed54363311edc000d683ac805eb9',1,'filter.h']]],
+  ['kf_5frelease_5ffilters_149',['kf_release_filters',['../filter_8h.html#aa876a3199988d7114447986c74cdbaa5',1,'filter.h']]],
+  ['kf_5fremove_5fall_5ffilter_5fchains_150',['kf_remove_all_filter_chains',['../filter_8h.html#a11b9c784da541acaa0dbbaf2d42def73',1,'filter.h']]],
+  ['kf_5fset_5ffiltering_5fenabled_151',['kf_set_filtering_enabled',['../filter_8h.html#aba0612d0e4e7096779d449e8ab200070',1,'filter.h']]]
 ];

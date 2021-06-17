@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['initialize',['initialize',['../structcapture__api__s.html#a6f38e42e4c870a29dd6ed5a03f1eadd5',1,'capture_api_s']]],
-  ['is_5fcapturing',['is_capturing',['../structcapture__api__s.html#a714255a3c50daf4ee8884d70d6f4f99d',1,'capture_api_s']]]
+  ['initialize_42',['initialize',['../structcapture__device__s.html#ac447475f113d133e5c6d65d6d842fd66',1,'capture_device_s']]],
+  ['is_5fcapturing_43',['is_capturing',['../structcapture__device__s.html#a903389a3c70f2294fefab6269f553779',1,'capture_device_s']]]
 ];

@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['release',['release',['../structcapture__api__s.html#a6f7cec777b04e85056667458e65ebc40',1,'capture_api_s']]],
-  ['reset_5fmissed_5fframes_5fcount',['reset_missed_frames_count',['../structcapture__api__s.html#af5b8e1d3fea777a8d958da7632e6f24a',1,'capture_api_s']]],
-  ['resolution_5fs',['resolution_s',['../structresolution__s.html',1,'']]]
+  ['set_5fdeinterlacing_5fmode_77',['set_deinterlacing_mode',['../structcapture__device__s.html#a64922c955e822c47623162a4de7a98bd',1,'capture_device_s']]],
+  ['set_5finput_5fchannel_78',['set_input_channel',['../structcapture__device__s.html#a8f78b128645c60074832d2c412357dae',1,'capture_device_s']]],
+  ['set_5fpixel_5fformat_79',['set_pixel_format',['../structcapture__device__s.html#add1dde394209a1d9c12da325a3722775',1,'capture_device_s']]],
+  ['set_5fresolution_80',['set_resolution',['../structcapture__device__s.html#a05ec7fc0835719479075814d2497d10d',1,'capture_device_s']]],
+  ['set_5fvideo_5fsignal_5fparameters_81',['set_video_signal_parameters',['../structcapture__device__s.html#a4b28984ba938c69ed4a7c48c71b23dae',1,'capture_device_s']]]
 ];

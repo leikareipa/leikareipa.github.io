@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['filter_2eh',['filter.h',['../filter_8h.html',1,'']]],
-  ['filter_5fc',['filter_c',['../classfilter__c.html',1,'']]],
-  ['filter_5fgraph_5foption_5fs',['filter_graph_option_s',['../structfilter__graph__option__s.html',1,'']]],
-  ['filter_5fmetadata_5fs',['filter_metadata_s',['../structfilter__c_1_1filter__metadata__s.html',1,'filter_c']]],
-  ['filter_5ftype_5fenum_5fe',['filter_type_enum_e',['../filter_8h.html#ac17096e1797e0d50054397fcb964980e',1,'filter.h']]]
+  ['filter_2eh_13',['filter.h',['../filter_8h.html',1,'']]],
+  ['filter_5fc_14',['filter_c',['../classfilter__c.html',1,'']]],
+  ['filter_5fcategory_5fe_15',['filter_category_e',['../filter_8h.html#a93af5badb962d0ff38cfadd629c074f7',1,'filter.h']]],
+  ['filter_5fgraph_5foption_5fs_16',['filter_graph_option_s',['../structfilter__graph__option__s.html',1,'']]]
 ];

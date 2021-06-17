@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filter_5ftype_5fenum_5fe',['filter_type_enum_e',['../filter_8h.html#ac17096e1797e0d50054397fcb964980e',1,'filter.h']]]
+  ['filter_5fcategory_5fe_162',['filter_category_e',['../filter_8h.html#a93af5badb962d0ff38cfadd629c074f7',1,'filter.h']]]
 ];

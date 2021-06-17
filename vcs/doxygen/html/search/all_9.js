@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['name',['name',['../structfilter__c_1_1filter__metadata__s.html#aaa846639fc55f01161f8c4aa6fc75eae',1,'filter_c::filter_metadata_s']]]
+  ['pop_5fcapture_5fevent_5fqueue_74',['pop_capture_event_queue',['../structcapture__device__s.html#ac297e54d20863b36e9ed8832f04f3f98',1,'capture_device_s']]]
 ];

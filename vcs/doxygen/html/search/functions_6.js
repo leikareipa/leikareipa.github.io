@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pop_5fcapture_5fevent_5fqueue',['pop_capture_event_queue',['../structcapture__api__s.html#a965aaed3ab0b1a70c6184d98b2b001b2',1,'capture_api_s']]]
+  ['mark_5fframe_5fbuffer_5fas_5fprocessed_152',['mark_frame_buffer_as_processed',['../structcapture__device__s.html#a6ae190e11a6c83dda3b1f173b13ccca6',1,'capture_device_s']]]
 ];
