@@ -486,23 +486,29 @@ table.memname tr
 table.memberdecls td[class*="memItem"],
 table.memberdecls td[class*="mdesc"]
 {
-	border-top: 1px solid var(--page-background-color) !important;
+	border-top: 1px solid var(--separating-border-color) !important;
 	padding: 3px !important;
 }
 
 table.memberdecls td.memItemLeft,
 table.memberdecls td.mdescLeft
 {
-	border-left: 1px solid var(--page-background-color) !important;
-	border-right: 1px solid var(--page-background-color) !important;
+	border-left: 1px solid var(--separating-border-color) !important;
+	border-right: 1px solid var(--separating-border-color) !important;
 }
 
 table.memberdecls td.memItemRight,
 table.memberdecls td.mdescRight
 {
 	color: inherit !important;
-	border-right: 1px solid var(--page-background-color) !important;
+	border-right: 1px solid var(--separating-border-color) !important;
 	padding-left: 10px !important;
+}
+
+table.memberdecls td.mdescLeft,
+table.memberdecls td.mdescRight
+{
+	background-color: var(--secondary-background-color) !important;
 }
 
 table.memberdecls [class*="memitem:"]:nth-last-of-type(2) .memItemLeft,
@@ -510,7 +516,7 @@ table.memberdecls [class*="memitem:"]:nth-last-of-type(2) .memItemRight,
 table.memberdecls [class*="memdesc:"]:nth-last-of-type(2) .mdescLeft,
 table.memberdecls [class*="memdesc:"]:nth-last-of-type(2) .mdescRight
 {
-	border-bottom: 1px solid var(--page-background-color) !important;
+	border-bottom: 1px solid var(--separating-border-color) !important;
 }
 
 .paramtype

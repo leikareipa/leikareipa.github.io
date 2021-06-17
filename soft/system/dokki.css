@@ -402,11 +402,6 @@ body,
     border-collapse: collapse;
 }
 
-.dokkiCSS-text-block-line > .dokkiCSS-text-block-line-content > .keyword
-{
-    font-weight: bold;
-}
-
 .dokkiCSS-text-block-line.dokkiCSS-highlighted
 {
     background-color: var(--dokkiCSS-page-inert-bg-color);
@@ -794,7 +789,7 @@ body,
 {
     :root
     {
-        --dokkiCSS-topic-horizontal-padding: 15px;
+        --dokkiCSS-topic-horizontal-padding: 10px;
     }
 
     .dokki-theme-selector
