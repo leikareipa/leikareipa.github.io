@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['release_75',['release',['../structcapture__device__s.html#afe7de9c1b826313530d55c07ce226ff7',1,'capture_device_s']]],
-  ['resolution_5fs_76',['resolution_s',['../structresolution__s.html',1,'']]]
+  ['pop_5fcapture_5fevent_5fqueue_89',['pop_capture_event_queue',['../structcapture__device__s.html#ac297e54d20863b36e9ed8832f04f3f98',1,'capture_device_s']]]
 ];

@@ -1,0 +1,791 @@
+/*
+ * 2020 Tarpeeksi Hyvae Soft
+ *
+ * Software: VCS
+ *
+ * A custom CSS styling for Doxygen 1.8.13.
+ *
+ */
+
+:root
+{
+	--page-background-color: rgb(238, 238, 238);
+	--secondary-background-color: #fafafa;
+	--content-padding: 27px;
+	--section-vertical-margin: 16px;
+	--link-color: #0c64ee;
+	--separating-border-color: #ececec;
+	--contents-heading-vertical-margin: 50px;
+	--contents-container-horizontal-padding: 20px;
+	--contents-container-vertical-padding: calc(0.5 * var(--contents-heading-vertical-margin));
+	--navi-indent: 1.5ch;
+}
+
+*
+{
+	line-height: initial !important;
+	font-family: sans-serif !important;
+	font-size: 100% !important;
+	box-shadow: none !important;
+	text-shadow: none !important;
+	transition: none !important;
+	-webkit-transition:  none !important;
+	-moz-transition:  none !important;
+	-ms-transition:  none !important;
+	-o-transition:  none !important;
+}
+
+body
+{
+	background-color: white !important;
+	width: 100% !important;
+	margin: 0 auto !important;
+}
+
+.contents a,
+a.el,
+a:visited.el
+{
+	font-weight: bold !important;
+	color: var(--link-color) !important;
+}
+
+.contents a[id]
+{
+	position: relative;
+	top: -10px;
+}
+
+.contents a[name="details"]
+{
+	position: relative !important;
+	top: calc(var(--contents-heading-vertical-margin) - 5px) !important;
+}
+
+table
+{
+	border-spacing: 0 !important;
+}
+
+table [class*="separator:"]
+{
+	display: none !important;
+}
+
+hr
+{
+	visibility: hidden !important;
+}
+
+.arrow
+{
+    visibility: hidden !important;
+	padding-left: 0 !important;
+	color: transparent !important;
+	width: 1.5ch !important;
+}
+
+.arrow::before
+{
+	color: black !important;
+	content: "\2022" !important;
+    visibility: visible;
+    width: 1.5ch !important;
+    text-align: center !important;
+    display: inline-block !important;
+}
+
+.textblock > ol
+{
+	padding-inline-start: 30px;
+}
+
+.textblock > ol > li
+{
+	padding-top: 5px !important;
+	padding-bottom: 5px !important;
+}
+
+#nav-tree
+{
+	background-image: none !important;
+	background-color: var(--page-background-color) !important;
+	padding: 8px !important;
+	padding-top: 5px !important;
+	box-sizing: border-box !important;
+}
+
+#nav-tree .selected
+{
+	background-image: none !important;
+}
+
+#nav-tree .item
+{
+	padding-top: 2px !important;
+	padding-bottom: 2px !important;
+}
+
+#nav-tree .item > .label > a
+{
+	color: black !important;
+	padding-top: 2px !important;
+	padding-bottom: 2px !important;
+}
+
+#nav-tree .item.selected > .label > a
+{
+	color: black !important;
+	font-weight: bold !important;
+}
+
+#nav-tree .item > .label > a:hover
+{
+	color: black !important;
+}
+
+#nav-tree-contents > ul,
+#nav-tree-contents > ul > li
+{
+	padding-left: 0 !important;
+}
+
+/* Indent each successive branch in the navi tree.*/
+#nav-tree-contents li > ul
+{
+	padding-left: var(--navi-indent) !important;
+}
+#nav-tree-contents li > ul > li,
+#nav-tree-contents li > ul > li .item
+{
+	padding-left: 0 !important;
+}
+
+#nav-path ul
+{
+	background-image: none !important;
+	background-color: var(--secondary-background-color) !important;
+	border: solid 1px transparent;
+	border-top: 1px solid var(--separating-border-color) !important;
+}
+
+#nav-path .footer
+{
+	color: dimgray !important;
+	height: 100%;
+}
+
+/* Replace the Doxygen image logo with plain text.*/
+#nav-path .footer > a::before
+{
+	content: "Doxygen";
+	margin-right: -0.5ch;
+}
+#nav-path .footer > a > img
+{
+	visibility: hidden;
+	max-width: 0;
+}
+
+#MSearchBox
+{
+	display: none !important;
+}
+
+.fieldtable
+{
+	margin-top: 16px !important;
+	border-radius: 0 !important;
+	border-color: var(--separating-border-color) !important;
+}
+
+.fieldtable th
+{
+	font-weight: bold !important;
+	background-image: none !important;
+	background-color: var(--secondary-background-color) !important;
+}
+
+.fieldtable td,
+.fieldtable th
+{
+	padding: 4px !important;
+    padding-left: 1ch !important;
+	border-color: var(--separating-border-color) !important;
+}
+
+.contents
+{
+	background-color: white !important;
+	padding: var(--contents-container-vertical-padding) var(--contents-container-horizontal-padding) !important;
+	padding-bottom: 0 !important;
+	margin: 0 !important;
+}
+
+.PageDoc > .contents
+{
+	padding: var(--contents-container-horizontal-padding) !important;
+}
+
+.contents > hr
+{
+	margin-top: 40px;
+}
+
+.contents > p:first-of-type
+{
+	margin: 0 !important;
+}
+
+.contents > .textblock > h1,
+.contents > .textblock > h2,
+.contents > .textblock > h3,
+.contents > .textblock > h4,
+.contents > .textblock > h5
+{
+	margin-top: var(--content-padding) !important;
+	margin-bottom: var(--section-vertical-margin) !important;
+}
+
+.contents > .textblock > h1:first-child,
+.contents > .textblock > h2:first-child,
+.contents > .textblock > h3:first-child,
+.contents > .textblock > h4:first-child,
+.contents > .textblock > h5:first-child
+{
+	margin-top: 0 !important;
+}
+
+.directory
+{
+	border: none !important;
+	margin: var(--contents-heading-vertical-margin) 0 !important;
+	margin-top: var(--contents-container-horizontal-padding) !important;
+}
+
+.directory .levels
+{
+	display: none !important;
+}
+
+.directory tr
+{
+	border: 1px solid var(--page-background-color) !important;
+}
+
+.directory tr.even
+{
+	background-color: var(--secondary-background-color) !important;
+}
+
+/* Hide icons (and negate their horizontal spacing) in the list of data structures.*/
+.directory .icona
+{
+	visibility: hidden !important;
+    margin-right: -34px !important;
+}
+
+.header
+{
+	padding: 10px var(--contents-container-horizontal-padding) !important;
+	background-image: none !important;
+	background-color: var(--secondary-background-color) !important;
+	border-bottom: 1px solid var(--separating-border-color) !important;
+}
+
+.header .summary
+{
+	display: none !important;
+}
+
+.header .headertitle
+{
+	font-weight: normal !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+.header .title
+{
+	font-weight: normal !important;
+	display: flex !important;
+	align-items: center !important;
+}
+
+.ui-resizable-handle
+{
+	max-width: 6px !important;
+	background-image: none !important;
+	background-color: var(--page-background-color) !important;
+	box-shadow: inset 0 0 0px 1px rgba(0, 0, 0, 0.4) !important;
+	background: repeating-linear-gradient( 
+		0deg,
+		#f0f0f0,
+		#f0f0f0 1px,
+		#d0d0d0 1px,
+		#d0d0d0 2px
+	) !important;
+}
+
+#titlearea
+{
+	border: none !important;
+	font-size: 150% !important;
+	display: none !important;
+}
+
+#nav-sync
+{
+	display: none !important;
+}
+
+.sm-dox a
+{
+	background-image: none !important;
+	color: whitesmoke !important;
+}
+
+.sm-dox a:hover
+{
+	background-color: black !important;
+	color: white !important;
+	border-radius: 6px !important;
+}
+
+#main-menu
+{
+	padding-left: 0 !important;
+    background-image: none !important;
+    background-color: #3c3c3c !important;
+	height: 45px;
+    display: flex;
+    align-items: center;
+    padding-left: 5px !important;
+}
+
+#main-menu a
+{
+	font-weight: bold !important;
+	padding: 8px !important;
+	font-size: 15px !important;
+}
+
+#main-menu .sub-arrow
+{
+	display: none !important;
+}
+
+/* Hide the main menu's dropdown mouse hover menus.*/
+#main-menu [class*="sm-"]
+{
+	display: none !important;
+}
+
+.memitem
+{
+	margin-bottom: var(--contents-heading-vertical-margin);
+	margin-top: 0 !important;
+}
+
+.memitem .memdoc *:last-of-type
+{
+	margin-bottom: 0 !important;
+}
+
+.memItemLeft,
+.memItemRight
+{
+	background-color: transparent !important;
+	vertical-align: middle;
+}
+
+.memItemLeft
+{
+	min-width: 5ch !important;
+}
+
+.memItemRight b
+{
+	font-weight: normal !important;
+}
+
+/* Undo the two non-breaking spaces that occur after every n elements in
+ * enum value listings.*/
+.memItemRight br + b
+{
+	margin-left: -0.5em !important;
+}
+
+.memItemRight br
+{
+	display: none !important;
+}
+
+.memtitle
+{
+	visibility: hidden !important;
+	height: 0 !important;
+	border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#projectname
+{
+	font-size: 150% !important;
+}
+
+#projectnumber
+{
+	font-size: 70% !important;
+}
+
+.memname
+{
+	font: initial !important;
+	font-family: sans-serif !important;
+	padding-left: 0 !important;
+	margin: 0 !important;
+	color: black !important;
+}
+
+.memname td
+{
+	font-size: 140% !important;
+	padding: 0 !important;	
+	display: inline !important;
+	vertical-align: inherit !important;
+	letter-spacing: -1px !important;
+}
+
+table.memname tr
+{
+	line-height: 100% !important;
+	float: left !important;
+}
+
+table.memberdecls td[class*="memItem"],
+table.memberdecls td[class*="mdesc"]
+{
+	border-top: 1px solid var(--separating-border-color) !important;
+	padding: 3px !important;
+}
+
+table.memberdecls td.memItemLeft,
+table.memberdecls td.mdescLeft
+{
+	border-left: 1px solid var(--separating-border-color) !important;
+	border-right: 1px solid var(--separating-border-color) !important;
+}
+
+table.memberdecls td.memItemRight,
+table.memberdecls td.mdescRight
+{
+	color: inherit !important;
+	border-right: 1px solid var(--separating-border-color) !important;
+	padding-left: 10px !important;
+}
+
+table.memberdecls td.mdescLeft,
+table.memberdecls td.mdescRight
+{
+	background-color: var(--secondary-background-color) !important;
+}
+
+table.memberdecls [class*="memitem:"]:nth-last-of-type(2) .memItemLeft,
+table.memberdecls [class*="memitem:"]:nth-last-of-type(2) .memItemRight,
+table.memberdecls [class*="memdesc:"]:nth-last-of-type(2) .mdescLeft,
+table.memberdecls [class*="memdesc:"]:nth-last-of-type(2) .mdescRight
+{
+	border-bottom: 1px solid var(--separating-border-color) !important;
+}
+
+.paramtype
+{
+	margin-left: 0 !important;
+}
+
+.paramname
+{
+	color: black !important;
+}
+
+.paramname em
+{
+	font-style: italic !important;
+	margin-right: 0 !important;
+}
+
+/* When the parameter type is void, Doxygen nonetheless inserts a non-breaking
+ * space after "void". This isn't a problem for types that are followed by the
+ * parameter name, but since void has no name, a dangling space results.*/
+.paramname:empty
+{
+	margin-left: -0.25em !important;
+}
+
+/* Separate parameter names with non-breaking spaces.*/
+table.memname tr:not(:nth-last-child(-n+2))::after
+{
+	content: "\a0" !important;
+}
+
+.footer
+{
+	font-size: 90% !important;
+}
+
+.memproto
+{
+	box-shadow: none !important;
+	background-color: transparent !important;
+	font-weight: bold !important;
+	border: none !important;
+	border-bottom: 2px solid var(--separating-border-color) !important;
+	padding-top: 0 !important;
+	padding-bottom: 16px !important;
+}
+
+.memdoc
+{
+	margin-top: -3px !important;
+	box-shadow: none !important;
+	border: none !important;
+	padding: 0 !important;
+	background: none !important;
+}
+
+.memdoc p
+{
+	font: initial !important;
+	font-family: sans-serif !important;
+	padding-left: 0 !important;
+}
+
+/* For function parameter names.*/
+.memdoc code
+{
+	font-style: italic !important;
+}
+
+.memdoc > .fragment
+{
+	counter-reset: line;
+	background-color: rgba(166, 166, 166, 0.09) !important;
+	border: none !important;
+	border-left: 8px solid rgb(142, 142, 142) !important;
+	border-radius: 0 !important;
+	margin: 0px !important;
+	margin-top: var(--section-vertical-margin) !important;
+	margin-bottom: var(--section-vertical-margin) !important;
+	padding: 15px !important;
+}
+
+.memdoc > .fragment > .line
+{
+	font-family: monospace !important;
+	font-size: 15px !important;
+	padding-top: 2px !important;
+	padding-bottom: 2px !important;
+}
+
+.memdoc > .fragment > .line:not(:last-child)
+{
+	margin-bottom: 5px !important;
+}
+
+.memdoc > .fragment > .line::before
+{
+	color: rgb(142, 142, 142) !important;
+	counter-increment: line !important;
+	content: counter(line) ": " !important;
+}
+
+.memdoc > .fragment > .line > span
+{
+	color: inherit !important;
+	font-family: monospace !important;
+}
+
+.memdoc > .fragment > .line > a.code,
+.memdoc > .fragment > .line > a.code:visited
+{
+	font-family: monospace !important;
+	color: var(--link-color) !important;
+}
+
+.section.note,
+.section.warning
+{
+	border: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.section.note dt::after,
+.section.warning dt::after
+{
+	content: ": " !important;
+}
+
+.section.note dd,
+.section.warning dd,
+.section.see dd
+{
+	margin: 0 !important;
+}
+
+.section.note dt,
+.section.warning dt,
+.section.see dd .el
+{
+	font-weight: normal !important;
+}
+
+.section.see,
+.section.note,
+.section.warning
+{
+	margin-bottom: var(--section-vertical-margin) !important;
+	margin-top: var(--section-vertical-margin) !important;
+}
+
+.section.see dd,
+.section.see dt,
+.section.note dd,
+.section.note dt,
+.section.warning dd,
+.section.warning dt
+{
+	display: inline !important;
+}
+
+.section.warning dt,
+.section.note dt
+{
+	font-weight: bold !important;
+}
+
+.section.see dt,
+.section.see dd a
+{
+	font-weight: normal !important;
+	font-style: italic !important;
+}
+
+.section.warning,
+.section.note
+{
+	border: none !important;
+    padding: 10px !important;
+    border-radius: 0 !important;
+}
+
+.section.warning
+{
+    background-color: rgba(255, 94, 0, 0.14) !important;
+    border-left: 6px solid rgb(255, 106, 0) !important;
+}
+
+.section.note
+{
+	background-color: rgba(166, 166, 166, 0.09) !important;
+	border-left: 6px solid rgb(170, 170, 170) !important;
+}
+
+.section.see dt::after
+{
+	content: " " !important;
+}
+
+.mlabels-left
+{
+	width: auto !important;
+}
+
+.mlabels > tbody > tr
+{
+	display: flex;
+	align-items: center;
+}
+
+span .mlabel
+{
+	background-color: var(--page-background-color) !important;
+    color: black !important;
+    padding: 5px !important;
+	border: none !important;
+	border-left: 5px solid lightgray !important;
+    border-radius: 0 !important;
+    font-weight: normal !important;
+    vertical-align: bottom !important;
+	font-size: 80% !important;
+}
+
+.groupheader
+{
+	font-weight: bold !important;
+	color: black !important;
+	font-size: 160% !important;
+	border: none !important;
+	margin: 0 !important;
+	margin-top: var(--contents-heading-vertical-margin) !important;
+	margin-bottom: calc(0.5 * var(--contents-heading-vertical-margin)) !important;
+	padding: 0 !important;
+}
+
+.contents .memberdecls:first-child .groupheader
+{
+	margin-top: 0 !important;
+}
+
+.iconfopen,
+.iconfclosed
+{
+	vertical-align: sub !important;
+}
+
+.icondoc
+{
+	vertical-align: middle !important;
+}
+
+.navpath > ul
+{
+	padding-left: 5px !important;
+}
+
+.navpath .navelem
+{
+	padding: 0 4px !important;
+	background-image: none !important;
+	display: flex;
+    align-items: baseline;
+}
+
+.navpath .navelem + .navelem::before
+{
+	content: "/" !important;
+	padding-right: 8px !important;
+	color: gray !important;
+}
+
+.navpath .navelem .el
+{
+	line-height: 170% !important;
+	font-size: 16px !important;
+	font-weight: bold !important;
+	color: dimgray !important;
+}
+
+.navpath .navelem .el:hover
+{
+	text-decoration: underline !important;
+	color: var(--link-color) !important;
+}
+
+.icon
+{
+	width: 85% !important;
+	height: 95% !important;
+}

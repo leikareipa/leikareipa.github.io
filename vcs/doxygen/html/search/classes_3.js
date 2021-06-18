@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scaling_5ffilter_5fs',['scaling_filter_s',['../structscaling__filter__s.html',1,'']]]
+  ['signal_5finfo_5fs_110',['signal_info_s',['../structsignal__info__s.html',1,'']]]
 ];

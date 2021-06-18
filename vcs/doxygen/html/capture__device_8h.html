@@ -17,7 +17,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="vcs-doxygen-1_8_13.css" rel="stylesheet" type="text/css"/>
+<link href="vcs-doxygen-1_8_17.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -104,8 +104,8 @@ Data Structures</h2></td></tr>
 <ol type="1">
 <li>Subclass <a class="el" href="structcapture__device__s.html" title="The base capture device interface class. Subclass this to add support for new capture devices in VCS.">capture_device_s</a> for your capture device. You can find examples in VCS's existing implementations: e.g. <em>capture_device_virtual.h</em> (generates a test pattern without interacting with any capture device) or <em>capture_device_rgbeasy.h</em> (interfaces with Datapath VisionRGB cards under Windows).</li>
 <li>The subclass must implement at least the pure virtual functions of <a class="el" href="structcapture__device__s.html" title="The base capture device interface class. Subclass this to add support for new capture devices in VCS.">capture_device_s</a>.</li>
-<li>Inside kc_initialize_capture() in <em>capture.cpp</em>, instance the subclass, and have kc_capture_device() return a reference to that instance.</li>
-<li>VCS will now interact with the new capture device though the interface; e.g. by periodically calling kc_capture_device().pop_capture_event_queue() to see if there are new captured frames to be displayed. </li>
+<li>Inside <a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> in <em>capture.cpp</em>, instance the subclass, and have <a class="el" href="capture_8h.html#a07cd34ac6e051b509c6a1426f0d7d56d">kc_capture_device()</a> return a reference to that instance.</li>
+<li>VCS will now interact with the new capture device though the interface; e.g. by periodically calling <a class="el" href="capture_8h.html#a07cd34ac6e051b509c6a1426f0d7d56d">kc_capture_device()</a>.pop_capture_event_queue() to see if there are new captured frames to be displayed. </li>
 </ol>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
@@ -113,7 +113,7 @@ Data Structures</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_33eff72d368e09fa9f58259b8a9511dc.html">capture</a></li><li class="navelem"><a class="el" href="capture__device_8h.html">capture_device.h</a></li>
-    <li class="footer">Generated on Thu Jun 17 2021 08:57:46 for VCS 2.4.0 by
+    <li class="footer">Generated on Fri Jun 18 2021 09:20:01 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
