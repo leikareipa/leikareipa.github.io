@@ -103,15 +103,17 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a9aa46bd0f77982902aedfb22d420f843"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLONABLE_FILTER_TYPE</b>(filter_child_class)</td></tr>
+<tr class="memitem:a9aa46bd0f77982902aedfb22d420f843"><td class="memItemLeft" align="right" valign="top"><a id="a9aa46bd0f77982902aedfb22d420f843"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLONABLE_FILTER_TYPE</b>(filter_child_class)</td></tr>
 <tr class="separator:a9aa46bd0f77982902aedfb22d420f843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a7dd450acc221159608fd21eae7e0c9"><td class="memItemLeft" align="right" valign="top"><a id="a8a7dd450acc221159608fd21eae7e0c9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FILTER_APPLY_FUNCTION_PARAMS</b>&#160;&#160;&#160;u8 *const pixels /*32-bit BGRA*/, const <a class="el" href="structresolution__s.html">resolution_s</a> &amp;r</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FILTER_APPLY_FUNCTION_PARAMS</b></td></tr>
 <tr class="separator:a8a7dd450acc221159608fd21eae7e0c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe79562c7ce6afe09ab2d3b1fbdb34d6"><td class="memItemLeft" align="right" valign="top"><a id="abe79562c7ce6afe09ab2d3b1fbdb34d6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FILTER_CTOR_FUNCTION_PARAMS</b>&#160;&#160;&#160;const std::vector&lt;std::pair&lt;unsigned, double&gt;&gt; &amp;initialParameterValues = {}</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FILTER_CTOR_FUNCTION_PARAMS</b></td></tr>
 <tr class="separator:abe79562c7ce6afe09ab2d3b1fbdb34d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60193e23e3c528502e55c1d4860ffd2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>VALIDATE_FILTER_INPUT</b></td></tr>
+<tr class="memitem:a60193e23e3c528502e55c1d4860ffd2d"><td class="memItemLeft" align="right" valign="top"><a id="a60193e23e3c528502e55c1d4860ffd2d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>VALIDATE_FILTER_INPUT</b></td></tr>
 <tr class="separator:a60193e23e3c528502e55c1d4860ffd2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -172,52 +174,7 @@ Functions</h2></td></tr>
 <li>Pass captured frames to <a class="el" href="filter_8h.html#a2ff9d1bdb2eb49010ca088ee955b0c8f">kf_apply_filter_chain()</a> to have the relevant filter chain's filters be applied to the frames' pixels.</li>
 <li>Call <a class="el" href="filter_8h.html#aa876a3199988d7114447986c74cdbaa5">kf_release_filters()</a> on program exit to free allocated memory. </li>
 </ol>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a9aa46bd0f77982902aedfb22d420f843"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9aa46bd0f77982902aedfb22d420f843">&#9670;&nbsp;</a></span>CLONABLE_FILTER_TYPE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CLONABLE_FILTER_TYPE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">filter_child_class</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <a class="code" href="classfilter__c.html">filter_c</a>* create_clone(<span class="keywordtype">void</span>) <span class="keyword">const</span> <span class="keyword">override</span>\</div>
-<div class="line">    {\</div>
-<div class="line">        k_assert((<span class="keyword">typeid</span>(filter_child_class) == <span class="keyword">typeid</span>(*<span class="keyword">this</span>)), <span class="stringliteral">&quot;Type mismatch in duplicator.&quot;</span>);\</div>
-<div class="line">        return <span class="keyword">new</span> filter_child_class(this-&gt;parameters());\</div>
-<div class="line">    }\</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a60193e23e3c528502e55c1d4860ffd2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60193e23e3c528502e55c1d4860ffd2d">&#9670;&nbsp;</a></span>VALIDATE_FILTER_INPUT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define VALIDATE_FILTER_INPUT</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">{\</div>
-<div class="line">    k_assert(((r.bpp == 32) &amp;&amp;\</div>
-<div class="line">              (r.w &lt;= MAX_CAPTURE_WIDTH) &amp;&amp;\</div>
-<div class="line">              (r.h &lt;= MAX_CAPTURE_HEIGHT)),\</div>
-<div class="line">             <span class="stringliteral">&quot;Unsupported frame format.&quot;</span>);\</div>
-<div class="line">    if (!pixels) <span class="keywordflow">return</span>;\</div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
+</div><h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a93af5badb962d0ff38cfadd629c074f7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a93af5badb962d0ff38cfadd629c074f7">&#9670;&nbsp;</a></span>filter_category_e</h2>
 
@@ -528,13 +485,12 @@ Functions</h2></td></tr>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclassfilter__c_html"><div class="ttname"><a href="classfilter__c.html">filter_c</a></div><div class="ttdoc">An image filter.</div><div class="ttdef"><b>Definition:</b> filter.h:141</div></div>
 <div class="ttc" id="afilter_8h_html_a6a36ed54363311edc000d683ac805eb9"><div class="ttname"><a href="filter_8h.html#a6a36ed54363311edc000d683ac805eb9">kf_known_filter_types</a></div><div class="ttdeci">const std::vector&lt; const filter_c * &gt; &amp; kf_known_filter_types(void)</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_8681a82a265081a91d191144ff606af9.html">filter</a></li><li class="navelem"><a class="el" href="filter_8h.html">filter.h</a></li>
-    <li class="footer">Generated on Sat Jun 19 2021 11:28:43 for VCS 2.4.0 by
+    <li class="footer">Generated on Sat Jun 19 2021 20:40:00 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

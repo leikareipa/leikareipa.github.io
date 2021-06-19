@@ -422,11 +422,11 @@ body,
 {
     color: var(--dokkiCSS-page-inert-fg-color);
     user-select: none;
-    width: 1%; /* Shrink to minimum required width.*/
+    width: 1ch; /* Shrink to minimum width required by the widest line number <td>.*/
     padding: 0;
     cursor: pointer;
     white-space: normal;
-    padding-right: 2ch;
+    padding-right: 1.5ch;
 }
 
 .dokkiCSS-checker-background
