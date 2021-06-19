@@ -1,12 +1,11 @@
 var searchData=
 [
-  ['device_5fsupports_5fcomponent_5fcapture_9',['device_supports_component_capture',['../structcapture__device__s.html#a4fb62f791f1d99876243fd3cfc2a20c6',1,'capture_device_s']]],
-  ['device_5fsupports_5fcomposite_5fcapture_10',['device_supports_composite_capture',['../structcapture__device__s.html#a9f15bee7ea6ae86de1cc5f1a4b8e8c34',1,'capture_device_s']]],
-  ['device_5fsupports_5fdeinterlacing_11',['device_supports_deinterlacing',['../structcapture__device__s.html#a2a6420572bfb12c52a86d4c9255a5c34',1,'capture_device_s']]],
-  ['device_5fsupports_5fdma_12',['device_supports_dma',['../structcapture__device__s.html#a1a8b3bc25941377383ed2b372b36e5d1',1,'capture_device_s']]],
-  ['device_5fsupports_5fdvi_13',['device_supports_dvi',['../structcapture__device__s.html#ad31aecb8140399b0b26292a2e9bac5f9',1,'capture_device_s']]],
-  ['device_5fsupports_5fsvideo_14',['device_supports_svideo',['../structcapture__device__s.html#adb38154ba46a42e6091fbd03ac0aa766',1,'capture_device_s']]],
-  ['device_5fsupports_5fvga_15',['device_supports_vga',['../structcapture__device__s.html#ac32d05579b47c1ebf0f91c5663d9fc89',1,'capture_device_s']]],
-  ['device_5fsupports_5fyuv_16',['device_supports_yuv',['../structcapture__device__s.html#a033699c5c2e4eecdb4a3d56a153046f4',1,'capture_device_s']]],
-  ['display_2eh_17',['display.h',['../display_8h.html',1,'']]]
+  ['capture_2eh_5',['capture.h',['../capture_8h.html',1,'']]],
+  ['capture_5fdeinterlacing_5fmode_5fe_6',['capture_deinterlacing_mode_e',['../capture_8h.html#a3929ac220fc0ded2a877b1e0616a4896',1,'capture.h']]],
+  ['capture_5fdevice_2eh_7',['capture_device.h',['../capture__device_8h.html',1,'']]],
+  ['capture_5fdevice_5fs_8',['capture_device_s',['../structcapture__device__s.html',1,'']]],
+  ['capture_5fevent_5fe_9',['capture_event_e',['../capture_8h.html#a01259dd4659e237afca37701f0940985',1,'capture.h']]],
+  ['capture_5fpixel_5fformat_5fe_10',['capture_pixel_format_e',['../capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31',1,'capture.h']]],
+  ['captured_5fframe_5fs_11',['captured_frame_s',['../structcaptured__frame__s.html',1,'']]],
+  ['capturemutex_12',['captureMutex',['../structcapture__device__s.html#a44ed2a19494a01bc767b0de92ca095b6',1,'capture_device_s']]]
 ];

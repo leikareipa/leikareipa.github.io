@@ -103,14 +103,14 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a9aa46bd0f77982902aedfb22d420f843"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLONABLE_FILTER_TYPE</b>(filter_child_class)</td></tr>
+<tr class="separator:a9aa46bd0f77982902aedfb22d420f843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a7dd450acc221159608fd21eae7e0c9"><td class="memItemLeft" align="right" valign="top"><a id="a8a7dd450acc221159608fd21eae7e0c9"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FILTER_APPLY_FUNCTION_PARAMS</b>&#160;&#160;&#160;u8 *const pixels /*32-bit BGRA*/, const <a class="el" href="structresolution__s.html">resolution_s</a> &amp;r</td></tr>
 <tr class="separator:a8a7dd450acc221159608fd21eae7e0c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe79562c7ce6afe09ab2d3b1fbdb34d6"><td class="memItemLeft" align="right" valign="top"><a id="abe79562c7ce6afe09ab2d3b1fbdb34d6"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FILTER_CTOR_FUNCTION_PARAMS</b>&#160;&#160;&#160;const std::vector&lt;std::pair&lt;unsigned, double&gt;&gt; &amp;initialParameterValues = {}</td></tr>
 <tr class="separator:abe79562c7ce6afe09ab2d3b1fbdb34d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9aa46bd0f77982902aedfb22d420f843"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>CLONABLE_FILTER_TYPE</b>(filter_child_class)</td></tr>
-<tr class="separator:a9aa46bd0f77982902aedfb22d420f843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60193e23e3c528502e55c1d4860ffd2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>VALIDATE_FILTER_INPUT</b></td></tr>
 <tr class="separator:a60193e23e3c528502e55c1d4860ffd2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -131,30 +131,30 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a865c376e81c67825f112a23323283bba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a865c376e81c67825f112a23323283bba">kf_initialize_filters</a> (void)</td></tr>
-<tr class="separator:a865c376e81c67825f112a23323283bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa876a3199988d7114447986c74cdbaa5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#aa876a3199988d7114447986c74cdbaa5">kf_release_filters</a> (void)</td></tr>
-<tr class="separator:aa876a3199988d7114447986c74cdbaa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa05b659a2521cf25ed37b67d07919d49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#aa05b659a2521cf25ed37b67d07919d49">kf_add_filter_chain</a> (std::vector&lt; <a class="el" href="classfilter__c.html">filter_c</a> * &gt; newChain)</td></tr>
 <tr class="separator:aa05b659a2521cf25ed37b67d07919d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11b9c784da541acaa0dbbaf2d42def73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a11b9c784da541acaa0dbbaf2d42def73">kf_remove_all_filter_chains</a> (void)</td></tr>
-<tr class="separator:a11b9c784da541acaa0dbbaf2d42def73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ff9d1bdb2eb49010ca088ee955b0c8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a2ff9d1bdb2eb49010ca088ee955b0c8f">kf_apply_filter_chain</a> (u8 *const pixels, const <a class="el" href="structresolution__s.html">resolution_s</a> &amp;r)</td></tr>
 <tr class="separator:a2ff9d1bdb2eb49010ca088ee955b0c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a36ed54363311edc000d683ac805eb9"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; const <a class="el" href="classfilter__c.html">filter_c</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a6a36ed54363311edc000d683ac805eb9">kf_known_filter_types</a> (void)</td></tr>
-<tr class="separator:a6a36ed54363311edc000d683ac805eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61e71c615eb43c1686e23ff96a00a5ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfilter__c.html">filter_c</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a61e71c615eb43c1686e23ff96a00a5ef">kf_create_new_filter_instance</a> (const std::string &amp;filterTypeUuid, const std::vector&lt; std::pair&lt; unsigned, double &gt;&gt; &amp;initialParameterValues={})</td></tr>
 <tr class="separator:a61e71c615eb43c1686e23ff96a00a5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eb72071e4a5802e8c092fda1310ceba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a0eb72071e4a5802e8c092fda1310ceba">kf_delete_filter_instance</a> (const <a class="el" href="classfilter__c.html">filter_c</a> *const filter)</td></tr>
 <tr class="separator:a0eb72071e4a5802e8c092fda1310ceba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af88416f6e23ca77921627b49ac3543ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#af88416f6e23ca77921627b49ac3543ae">kf_is_known_filter_type</a> (const std::string &amp;filterTypeUuid)</td></tr>
-<tr class="separator:af88416f6e23ca77921627b49ac3543ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba0612d0e4e7096779d449e8ab200070"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#aba0612d0e4e7096779d449e8ab200070">kf_set_filtering_enabled</a> (const bool enabled)</td></tr>
-<tr class="separator:aba0612d0e4e7096779d449e8ab200070"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4098a43be305cd3b69b15d00f5439ad8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a4098a43be305cd3b69b15d00f5439ad8">kf_is_filtering_enabled</a> (void)</td></tr>
-<tr class="separator:a4098a43be305cd3b69b15d00f5439ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8928d8cec12bc3fcac672020139d5143"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a8928d8cec12bc3fcac672020139d5143">kf_find_capture_alignment</a> (u8 *const pixels, const <a class="el" href="structresolution__s.html">resolution_s</a> &amp;r)</td></tr>
 <tr class="separator:a8928d8cec12bc3fcac672020139d5143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a865c376e81c67825f112a23323283bba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a865c376e81c67825f112a23323283bba">kf_initialize_filters</a> (void)</td></tr>
+<tr class="separator:a865c376e81c67825f112a23323283bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4098a43be305cd3b69b15d00f5439ad8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a4098a43be305cd3b69b15d00f5439ad8">kf_is_filtering_enabled</a> (void)</td></tr>
+<tr class="separator:a4098a43be305cd3b69b15d00f5439ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af88416f6e23ca77921627b49ac3543ae"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#af88416f6e23ca77921627b49ac3543ae">kf_is_known_filter_type</a> (const std::string &amp;filterTypeUuid)</td></tr>
+<tr class="separator:af88416f6e23ca77921627b49ac3543ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a36ed54363311edc000d683ac805eb9"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; const <a class="el" href="classfilter__c.html">filter_c</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a6a36ed54363311edc000d683ac805eb9">kf_known_filter_types</a> (void)</td></tr>
+<tr class="separator:a6a36ed54363311edc000d683ac805eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa876a3199988d7114447986c74cdbaa5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#aa876a3199988d7114447986c74cdbaa5">kf_release_filters</a> (void)</td></tr>
+<tr class="separator:aa876a3199988d7114447986c74cdbaa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11b9c784da541acaa0dbbaf2d42def73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#a11b9c784da541acaa0dbbaf2d42def73">kf_remove_all_filter_chains</a> (void)</td></tr>
+<tr class="separator:a11b9c784da541acaa0dbbaf2d42def73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba0612d0e4e7096779d449e8ab200070"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="filter_8h.html#aba0612d0e4e7096779d449e8ab200070">kf_set_filtering_enabled</a> (const bool enabled)</td></tr>
+<tr class="separator:aba0612d0e4e7096779d449e8ab200070"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The filter interface provides image manipulation of captured frames. </p>
@@ -534,7 +534,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_8681a82a265081a91d191144ff606af9.html">filter</a></li><li class="navelem"><a class="el" href="filter_8h.html">filter.h</a></li>
-    <li class="footer">Generated on Fri Jun 18 2021 09:20:01 for VCS 2.4.0 by
+    <li class="footer">Generated on Sat Jun 19 2021 11:28:43 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -1,7 +1,7 @@
 var display_8h =
 [
-    [ "resolution_s", "structresolution__s.html", "structresolution__s" ],
     [ "filter_graph_option_s", "structfilter__graph__option__s.html", "structfilter__graph__option__s" ],
+    [ "resolution_s", "structresolution__s.html", "structresolution__s" ],
     [ "kd_acquire_output_window", "display_8h.html#ae624633776327f21294e1c5df8179446", null ],
     [ "kd_add_filter_graph_node", "display_8h.html#ab70ef16802820ec345547f13e0b30bb0", null ],
     [ "kd_add_log_entry", "display_8h.html#aae1a2bd7a28edcc105f3fc015a54367c", null ],

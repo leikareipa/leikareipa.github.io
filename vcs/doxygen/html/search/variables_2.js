@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['guiwidget',['guiWidget',['../classfilter__c.html#a87fe442761505cbdb67dade1f6ba4914',1,'filter_c']]]
+  ['guidescription_228',['guiDescription',['../classfilter__c.html#a440e71d36d6c1c7340beb396843dab66',1,'filter_c']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['capturemutex_191',['captureMutex',['../structcapture__device__s.html#a44ed2a19494a01bc767b0de92ca095b6',1,'capture_device_s']]]
+  ['bpp_226',['bpp',['../structresolution__s.html#a6564ceeff94043562ee6f76a15c01d09',1,'resolution_s']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['guidescription_192',['guiDescription',['../classfilter__c.html#a440e71d36d6c1c7340beb396843dab66',1,'filter_c']]]
+  ['capturemutex_227',['captureMutex',['../structcapture__device__s.html#a44ed2a19494a01bc767b0de92ca095b6',1,'capture_device_s']]]
 ];
