@@ -1,11 +1,21 @@
 var searchData=
 [
-  ['device_5fsupports_5fcomponent_5fcapture_140',['device_supports_component_capture',['../structcapture__device__s.html#a4fb62f791f1d99876243fd3cfc2a20c6',1,'capture_device_s']]],
-  ['device_5fsupports_5fcomposite_5fcapture_141',['device_supports_composite_capture',['../structcapture__device__s.html#a9f15bee7ea6ae86de1cc5f1a4b8e8c34',1,'capture_device_s']]],
-  ['device_5fsupports_5fdeinterlacing_142',['device_supports_deinterlacing',['../structcapture__device__s.html#a2a6420572bfb12c52a86d4c9255a5c34',1,'capture_device_s']]],
-  ['device_5fsupports_5fdma_143',['device_supports_dma',['../structcapture__device__s.html#a1a8b3bc25941377383ed2b372b36e5d1',1,'capture_device_s']]],
-  ['device_5fsupports_5fdvi_144',['device_supports_dvi',['../structcapture__device__s.html#ad31aecb8140399b0b26292a2e9bac5f9',1,'capture_device_s']]],
-  ['device_5fsupports_5fsvideo_145',['device_supports_svideo',['../structcapture__device__s.html#adb38154ba46a42e6091fbd03ac0aa766',1,'capture_device_s']]],
-  ['device_5fsupports_5fvga_146',['device_supports_vga',['../structcapture__device__s.html#ac32d05579b47c1ebf0f91c5663d9fc89',1,'capture_device_s']]],
-  ['device_5fsupports_5fyuv_147',['device_supports_yuv',['../structcapture__device__s.html#a033699c5c2e4eecdb4a3d56a153046f4',1,'capture_device_s']]]
+  ['get_5fapi_5fname_133',['get_api_name',['../structcapture__device__s.html#aabefc6ae97591c874f06e0532a7a9b23',1,'capture_device_s']]],
+  ['get_5fcolor_5fdepth_134',['get_color_depth',['../structcapture__device__s.html#a553ab40d2bbbf635c06398aa61beea28',1,'capture_device_s']]],
+  ['get_5fdefault_5fvideo_5fsignal_5fparameters_135',['get_default_video_signal_parameters',['../structcapture__device__s.html#ab05d0042d4c0f04ba4462226be174f66',1,'capture_device_s']]],
+  ['get_5fdevice_5fdriver_5fversion_136',['get_device_driver_version',['../structcapture__device__s.html#af4a9cc77919418fc3bcc21ad4aed904e',1,'capture_device_s']]],
+  ['get_5fdevice_5ffirmware_5fversion_137',['get_device_firmware_version',['../structcapture__device__s.html#abddd616e6711d544d3e48789debcffed',1,'capture_device_s']]],
+  ['get_5fdevice_5fmaximum_5finput_5fcount_138',['get_device_maximum_input_count',['../structcapture__device__s.html#a68f6fffb1b7e872c67532583d207648a',1,'capture_device_s']]],
+  ['get_5fdevice_5fname_139',['get_device_name',['../structcapture__device__s.html#a38c843ae2bc615fbcee60f0c1bbe1996',1,'capture_device_s']]],
+  ['get_5fframe_5fbuffer_140',['get_frame_buffer',['../structcapture__device__s.html#aa7e2e6d137c0bf5cffa5d88da502df47',1,'capture_device_s']]],
+  ['get_5finput_5fchannel_5fidx_141',['get_input_channel_idx',['../structcapture__device__s.html#aac0cfe20924ecdee45f498e6b78ad49e',1,'capture_device_s']]],
+  ['get_5fmaximum_5fresolution_142',['get_maximum_resolution',['../structcapture__device__s.html#a61762a267f24dcc0877420dc4f7cf3c1',1,'capture_device_s']]],
+  ['get_5fmaximum_5fvideo_5fsignal_5fparameters_143',['get_maximum_video_signal_parameters',['../structcapture__device__s.html#a5bc3bd0fbd5038ddfbc553cda6f29bf6',1,'capture_device_s']]],
+  ['get_5fminimum_5fresolution_144',['get_minimum_resolution',['../structcapture__device__s.html#a42fe7ce94c69480838116a614daf2f17',1,'capture_device_s']]],
+  ['get_5fminimum_5fvideo_5fsignal_5fparameters_145',['get_minimum_video_signal_parameters',['../structcapture__device__s.html#a9b806a95257a4bfff4f902ea97d25de0',1,'capture_device_s']]],
+  ['get_5fmissed_5fframes_5fcount_146',['get_missed_frames_count',['../structcapture__device__s.html#abaec9576ff8c01f6db90101f77f3a88c',1,'capture_device_s']]],
+  ['get_5fpixel_5fformat_147',['get_pixel_format',['../structcapture__device__s.html#a19dcee1b2e53798562798b8c346ded6f',1,'capture_device_s']]],
+  ['get_5frefresh_5frate_148',['get_refresh_rate',['../structcapture__device__s.html#a4927b5a200c337be33ee0947106c285e',1,'capture_device_s']]],
+  ['get_5fresolution_149',['get_resolution',['../structcapture__device__s.html#a5b3b2f57b8e440d3032f376f111cee9e',1,'capture_device_s']]],
+  ['get_5fvideo_5fsignal_5fparameters_150',['get_video_signal_parameters',['../structcapture__device__s.html#a5b91db90569f2c64b425fcd721a963f5',1,'capture_device_s']]]
 ];

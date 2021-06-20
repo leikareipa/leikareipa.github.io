@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['h_229',['h',['../structresolution__s.html#a820d69aaad874195f93866b539fcdeb6',1,'resolution_s']]]
+  ['w_205',['w',['../structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d',1,'resolution_s']]]
 ];

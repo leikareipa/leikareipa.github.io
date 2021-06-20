@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VCS 2.4.0: src/display/display.h File Reference</title>
+<title>VCS 2.4: src/display/display.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,7 +26,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">VCS 2.4.0
+   <div id="projectname">VCS 2.4
    </div>
   </td>
  </tr>
@@ -331,15 +331,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Asks the GUI to inform the filter interface, <a class="el" href="filter_8h.html">src/filter/filter.h</a>, of all filter chains currently configured in the GUI.</p>
+<p>Asks the GUI to inform the filter interface, src/filter/filter.h, of all filter chains currently configured in the GUI.</p>
 <p>This assumes that the GUI provides a dialog of some sort in which the user can create and modify filter chains. When this function is called, the GUI is expected to enumerate those filter chains into a format consumed by the filter interface and then to submit them to the filter interface.</p>
 <p>In pseudocode, the GUI would do something like the following:</p>
-<div class="fragment"><div class="line"><a class="code" href="filter_8h.html#a11b9c784da541acaa0dbbaf2d42def73">kf_remove_all_filter_chains</a>();</div>
+<div class="fragment"><div class="line">kf_remove_all_filter_chains();</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordflow">for</span> (chain: guiFilterChains)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keyword">const</span> standardFilterChain = ...convert chain into standard format...</div>
-<div class="line">    <a class="code" href="filter_8h.html#aa05b659a2521cf25ed37b67d07919d49">kf_add_filter_chain</a>(standardFilterChain);</div>
+<div class="line">    kf_add_filter_chain(standardFilterChain);</div>
 <div class="line">}</div>
 </div><!-- fragment --> 
 </div>
@@ -549,15 +549,13 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructresolution__s_html_a820d69aaad874195f93866b539fcdeb6"><div class="ttname"><a href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">resolution_s::h</a></div><div class="ttdeci">unsigned long h</div><div class="ttdoc">Height (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:51</div></div>
-<div class="ttc" id="afilter_8h_html_aa05b659a2521cf25ed37b67d07919d49"><div class="ttname"><a href="filter_8h.html#aa05b659a2521cf25ed37b67d07919d49">kf_add_filter_chain</a></div><div class="ttdeci">void kf_add_filter_chain(std::vector&lt; filter_c * &gt; newChain)</div></div>
-<div class="ttc" id="afilter_8h_html_a11b9c784da541acaa0dbbaf2d42def73"><div class="ttname"><a href="filter_8h.html#a11b9c784da541acaa0dbbaf2d42def73">kf_remove_all_filter_chains</a></div><div class="ttdeci">void kf_remove_all_filter_chains(void)</div></div>
 <div class="ttc" id="astructresolution__s_html"><div class="ttname"><a href="structresolution__s.html">resolution_s</a></div><div class="ttdoc">Describes the resolution of a pixel surface – e.g. a program window or an image buffer.</div><div class="ttdef"><b>Definition:</b> display.h:45</div></div>
 <div class="ttc" id="astructresolution__s_html_ae01e8bac378ef94734144849e8d62d1d"><div class="ttname"><a href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">resolution_s::w</a></div><div class="ttdeci">unsigned long w</div><div class="ttdoc">Width (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:48</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_25685f9c6d837c57f295dee081495707.html">display</a></li><li class="navelem"><a class="el" href="display_8h.html">display.h</a></li>
-    <li class="footer">Generated on Sat Jun 19 2021 20:40:00 for VCS 2.4.0 by
+    <li class="footer">Generated on Sun Jun 20 2021 10:00:16 for VCS 2.4 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
