@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['set_5fdeinterlacing_5fmode_102',['set_deinterlacing_mode',['../structcapture__device__s.html#a64922c955e822c47623162a4de7a98bd',1,'capture_device_s']]],
-  ['set_5finput_5fchannel_103',['set_input_channel',['../structcapture__device__s.html#a8f78b128645c60074832d2c412357dae',1,'capture_device_s']]],
-  ['set_5fpixel_5fformat_104',['set_pixel_format',['../structcapture__device__s.html#add1dde394209a1d9c12da325a3722775',1,'capture_device_s']]],
-  ['set_5fresolution_105',['set_resolution',['../structcapture__device__s.html#a05ec7fc0835719479075814d2497d10d',1,'capture_device_s']]],
-  ['set_5fvideo_5fsignal_5fparameters_106',['set_video_signal_parameters',['../structcapture__device__s.html#a4b28984ba938c69ed4a7c48c71b23dae',1,'capture_device_s']]],
-  ['signal_5finfo_5fs_107',['signal_info_s',['../structsignal__info__s.html',1,'']]],
-  ['signal_5flost_108',['signal_lost',['../capture_8h.html#a01259dd4659e237afca37701f0940985a719c2aaea2c4550792dce98960861744',1,'capture.h']]],
-  ['sleep_109',['sleep',['../capture_8h.html#a01259dd4659e237afca37701f0940985ac9fab33e9458412c527c3fe8a13ee37d',1,'capture.h']]]
+  ['recording_5fbuffer_2eh_100',['recording_buffer.h',['../recording__buffer_8h.html',1,'']]],
+  ['recording_5fbuffer_5fs_101',['recording_buffer_s',['../structrecording__buffer__s.html',1,'']]],
+  ['release_102',['release',['../structcapture__device__s.html#afe7de9c1b826313530d55c07ce226ff7',1,'capture_device_s::release()'],['../structrecording__buffer__s.html#af129d953b27086a21a95c5152d171687',1,'recording_buffer_s::release()']]],
+  ['reset_103',['reset',['../structrecording__buffer__s.html#a6c43229f0e5ca6d00a4b8f48a6b129da',1,'recording_buffer_s']]],
+  ['resolution_5fs_104',['resolution_s',['../structresolution__s.html',1,'']]],
+  ['rgb_5f555_105',['rgb_555',['../capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31a83542aeef98998adcf59900e4a59ad8b',1,'capture.h']]],
+  ['rgb_5f565_106',['rgb_565',['../capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31aad637190c0fbd90844a8bb3201837da8',1,'capture.h']]],
+  ['rgb_5f888_107',['rgb_888',['../capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31a15c17bc94e115748f995df18482e5266',1,'capture.h']]]
 ];

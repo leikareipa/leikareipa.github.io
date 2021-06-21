@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filter_5fgraph_5foption_5fs_22',['filter_graph_option_s',['../structfilter__graph__option__s.html',1,'']]]
+  ['empty_22',['empty',['../structrecording__buffer__s.html#a01195b4db9e7c0e448bca2e6f678a954',1,'recording_buffer_s']]]
 ];

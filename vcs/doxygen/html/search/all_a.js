@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['main_20page_86',['Main Page',['../index.html',1,'']]],
-  ['mark_5fframe_5fbuffer_5fas_5fprocessed_87',['mark_frame_buffer_as_processed',['../structcapture__device__s.html#a6ae190e11a6c83dda3b1f173b13ccca6',1,'capture_device_s']]]
+  ['look_5ffor_5fmultiple_5ftears_86',['look_for_multiple_tears',['../anti__tear_8h.html#a531c77870bb1832df944426a16165754a823c5205ddf6719c11708474567ec5a7',1,'anti_tear.h']]],
+  ['look_5ffor_5fone_5ftear_87',['look_for_one_tear',['../anti__tear_8h.html#a531c77870bb1832df944426a16165754ad9a207971fe85de5e90a5954171b4b8f',1,'anti_tear.h']]]
 ];

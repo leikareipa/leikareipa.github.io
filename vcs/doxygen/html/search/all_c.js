@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['pop_92',['pop',['../structrecording__buffer__s.html#aa918844b647dc32b45f50d407ea88ea2',1,'recording_buffer_s']]],
-  ['pop_5fcapture_5fevent_5fqueue_93',['pop_capture_event_queue',['../structcapture__device__s.html#ac297e54d20863b36e9ed8832f04f3f98',1,'capture_device_s']]],
-  ['push_94',['push',['../structrecording__buffer__s.html#acb8c560823e5578bc7f892bc80189c8d',1,'recording_buffer_s']]]
+  ['new_5fframe_93',['new_frame',['../capture_8h.html#a01259dd4659e237afca37701f0940985a5eb99afb68073fc56637c382332e5f69',1,'capture.h']]],
+  ['new_5fvideo_5fmode_94',['new_video_mode',['../capture_8h.html#a01259dd4659e237afca37701f0940985a250667c59a3e473341aa5103a0fe4d54',1,'capture.h']]],
+  ['none_95',['none',['../capture_8h.html#a01259dd4659e237afca37701f0940985a334c4a4c42fdb79d7ebc3e73b517e6f8',1,'capture.h']]],
+  ['num_5fenumerators_96',['num_enumerators',['../capture_8h.html#a01259dd4659e237afca37701f0940985a0066744d9940c76a147b12ec9804e6ba',1,'capture.h']]]
 ];

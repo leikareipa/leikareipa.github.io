@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['release_195',['release',['../structcapture__device__s.html#afe7de9c1b826313530d55c07ce226ff7',1,'capture_device_s::release()'],['../structrecording__buffer__s.html#af129d953b27086a21a95c5152d171687',1,'recording_buffer_s::release()']]],
-  ['reset_196',['reset',['../structrecording__buffer__s.html#a6c43229f0e5ca6d00a4b8f48a6b129da',1,'recording_buffer_s']]]
+  ['mark_5fframe_5fbuffer_5fas_5fprocessed_202',['mark_frame_buffer_as_processed',['../structcapture__device__s.html#a6ae190e11a6c83dda3b1f173b13ccca6',1,'capture_device_s']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VCS 2.4: src/capture/capture_device.h File Reference</title>
+<title>VCS 2.4.0: src/capture/capture_device.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,7 +26,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">VCS 2.4
+   <div id="projectname">VCS 2.4.0
    </div>
   </td>
  </tr>
@@ -89,21 +89,21 @@ $(document).ready(function(){initNavTree('capture__device_8h.html',''); initResi
 </div><!--header-->
 <div class="contents">
 
-<p>The capture device interface (<a class="el" href="structcapture__device__s.html" title="The base capture device interface class. Subclass this to add support for new capture devices in VCS.">capture_device_s</a>) provides an abstract interface for exposing a capture device - or other such source of image data - to VCS.  
+<p>An interface for exposing capture devices to VCS's capture subsystem.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcapture__device__s.html">capture_device_s</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base capture device interface class. Subclass this to add support for new capture devices in VCS.  <a href="structcapture__device__s.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct  </td><td class="memItemRight" valign="bottom"><a class="el" href="structcapture__device__s.html">capture_device_s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft"> </td><td class="mdescRight">The base capture device interface. Subclass this to add support for new capture devices in VCS.  <a href="structcapture__device__s.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2"> </td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The capture device interface (<a class="el" href="structcapture__device__s.html" title="The base capture device interface class. Subclass this to add support for new capture devices in VCS.">capture_device_s</a>) provides an abstract interface for exposing a capture device - or other such source of image data - to VCS. </p>
+<div class="textblock"><p>An interface for exposing capture devices to VCS's capture subsystem. </p>
 <p>Usage:</p>
 <ol type="1">
-<li>Subclass <a class="el" href="structcapture__device__s.html" title="The base capture device interface class. Subclass this to add support for new capture devices in VCS.">capture_device_s</a> for your capture device. You can find examples in VCS's existing implementations: e.g. <em>capture_device_virtual.h</em> (generates a test pattern without interacting with any capture device) or <em>capture_device_rgbeasy.h</em> (interfaces with Datapath VisionRGB cards under Windows).</li>
-<li>The subclass must implement at least the pure virtual functions of <a class="el" href="structcapture__device__s.html" title="The base capture device interface class. Subclass this to add support for new capture devices in VCS.">capture_device_s</a>.</li>
+<li>Subclass <a class="el" href="structcapture__device__s.html" title="The base capture device interface. Subclass this to add support for new capture devices in VCS.">capture_device_s</a> for your capture device. You can find examples in VCS's existing implementations: e.g. <em>capture_device_virtual.h</em> (generates a test pattern without interacting with any capture device) or <em>capture_device_rgbeasy.h</em> (interfaces with Datapath VisionRGB cards under Windows).</li>
+<li>The subclass must implement at least the pure virtual functions of <a class="el" href="structcapture__device__s.html" title="The base capture device interface. Subclass this to add support for new capture devices in VCS.">capture_device_s</a>.</li>
 <li>Inside <a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> in <em>capture.cpp</em>, instance the subclass, and have <a class="el" href="capture_8h.html#a07cd34ac6e051b509c6a1426f0d7d56d">kc_capture_device()</a> return a reference to that instance.</li>
 <li>VCS will now interact with the new capture device though the interface; e.g. by periodically calling <a class="el" href="capture_8h.html#a07cd34ac6e051b509c6a1426f0d7d56d">kc_capture_device()</a>.pop_capture_event_queue() to see if there are new captured frames to be displayed. </li>
 </ol>
@@ -113,7 +113,7 @@ Data Structures</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_33eff72d368e09fa9f58259b8a9511dc.html">capture</a></li><li class="navelem"><a class="el" href="capture__device_8h.html">capture_device.h</a></li>
-    <li class="footer">Generated on Sun Jun 20 2021 10:00:16 for VCS 2.4 by
+    <li class="footer">Generated on Mon Jun 21 2021 09:49:26 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
