@@ -518,13 +518,8 @@ hr
 
 .memitem
 {
-	margin-bottom: 21px !important;
+	margin-bottom: 30px !important;
 	margin-top: -12px !important;
-}
-
-.memitem .memdoc:last-child
-{
-	margin-bottom: 0 !important;
 }
 
 .memItemLeft,
@@ -957,6 +952,16 @@ span .mlabel
 td.vcs-unnecessary-element
 {
 	display: none !important;
+}
+
+.memitem :last-child
+{
+    margin-bottom: 0 !important;
+}
+
+.contents > .memberdecls:first-child .groupheader
+{
+	margin-top: 0 !important;
 }
 
 @media only screen and (max-width: 1100px)
