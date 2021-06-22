@@ -690,11 +690,24 @@ body,
     flex-direction: column;
 }
 
-.dokkiCSS-embedded.dokki-image > img
+.dokkiCSS-embedded.dokki-image > .dokkiCSS-container
 {
     min-height: 20px;
-    min-width: 100%;
+    display: flex;
+    overflow: auto;
+}
+
+.dokkiCSS-embedded.dokki-image > .dokkiCSS-container > img
+{
     max-width: 100%;
+    width: auto;
+    height: auto;
+}
+
+.dokkiCSS-embedded.dokki-image > .dokkiCSS-container > img.dokkiCSS-upscale-to-fit
+{
+    width: 100%;
+    height: 100%;
 }
 
 .dokkiCSS-embedded.dokki-image > header > .dokkiCSS-title::after

@@ -17,7 +17,7 @@
 	--content-padding: 27px;
 	--section-vertical-margin: 16px;
 	--theme-color: #ffa400;
-	--theme-glow-color: #ff00bc19;
+	--theme-glow-color: #ffa40024;
 	--link-color: #0c64ee;
 	--separating-border-color: #e6e6e6;
 	--group-heading-vertical-margin: 21px;
@@ -28,6 +28,7 @@
 	--primary-body-text-color: #404040;
 	--primary-heading-text-color: #202020;
 	--secondary-body-text-color: gray;
+	--side-nav-resize-bar-width: 6px;
 }
 
 .iconfopen,
@@ -160,14 +161,18 @@ hr
 
 #nav-tree .item.selected > .label > a
 {
-	color: black !important;
+	color: var(--link-color) !important;
 	font-weight: bold !important;
 }
 
 #nav-tree .item > .label > a:hover
 {
-	color: black !important;
 	text-decoration: underline !important;
+}
+
+#nav-tree .item:not(.selected) > .label > a:hover
+{
+	color: black !important;
 }
 
 #nav-tree-contents > ul,
@@ -414,6 +419,9 @@ hr
 	background-image: none !important;
 	background-color: white !important;
 	box-shadow: inset 0 0 0px 1px rgba(0, 0, 0, 0.4) !important;
+	width: var(--side-nav-resize-bar-width) !important;
+	min-width: var(--side-nav-resize-bar-width) !important;
+	max-width: var(--side-nav-resize-bar-width) !important;
 }
 
 #titlearea
@@ -431,6 +439,7 @@ hr
 #side-nav
 {
 	overflow: hidden !important;
+	padding-right: var(--side-nav-resize-bar-width) !important;
 }
 
 #main-menu
@@ -509,7 +518,7 @@ hr
 
 .memitem
 {
-	margin-bottom: 25px !important;
+	margin-bottom: 21px !important;
 	margin-top: -12px !important;
 }
 
@@ -857,8 +866,8 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 span .mlabel
 {
 	background-color: var(--page-background-color) !important;
-    padding: 5px !important;
-	border: none !important;
+    padding: 4px !important;
+    border: 1px solid var(--separating-border-color) !important;
     border-radius: 0 !important;
     font-weight: normal !important;
     vertical-align: bottom !important;
@@ -948,4 +957,38 @@ span .mlabel
 td.vcs-unnecessary-element
 {
 	display: none !important;
+}
+
+@media only screen and (max-width: 1100px)
+{
+	:root
+	{
+		--contents-container-horizontal-padding: 15px;
+	}
+	
+	#nav-path
+	{
+		display: none !important;
+	}
+}
+
+@media only screen and (max-width: 900px)
+{
+	:root
+	{
+		--contents-container-horizontal-padding: 10px;
+	}
+}
+
+@media only screen and (max-width: 768px)
+{
+	#side-nav
+	{
+		display: none !important;
+	}
+
+	#doc-content
+	{
+		margin-left: 0 !important;
+	}
 }
