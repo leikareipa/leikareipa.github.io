@@ -35,7 +35,7 @@ body,
 {
     font-family: sans-serif;
     background-color: var(--dokkiCSS-page-inert-bg-color);
-    color: var(--dokkiCSS-page-primary-fg-color);
+    color: var(--dokkiCSS-page-secondary-fg-color);
     padding: 0;
     margin: 0;
 }
@@ -47,8 +47,8 @@ body,
     --dokkiCSS-page-primary-bg-color: white;
     --dokkiCSS-page-secondary-bg-color: #fdfdfd;
     --dokkiCSS-page-inert-bg-color: #f6f6f6;
-    --dokkiCSS-page-primary-fg-color: black;
-    --dokkiCSS-page-secondary-fg-color: gray;
+    --dokkiCSS-page-primary-fg-color: #151515;
+    --dokkiCSS-page-secondary-fg-color: #404040;
     --dokkiCSS-page-inert-fg-color: lightgray;
     --dokkiCSS-page-primary-line-color: lightgray;
     --dokkiCSS-page-secondary-line-color: lightgray;
@@ -63,7 +63,7 @@ body,
     --dokkiCSS-page-secondary-bg-color: #1d1d1d;
     --dokkiCSS-page-inert-bg-color: #272727;
     --dokkiCSS-page-primary-fg-color: #e4e4e4;
-    --dokkiCSS-page-secondary-fg-color: #999999;
+    --dokkiCSS-page-secondary-fg-color: #a0a0a0;
     --dokkiCSS-page-inert-fg-color: gray;
     --dokkiCSS-page-primary-line-color: #3d3d3d;
     --dokkiCSS-page-secondary-line-color: black;
@@ -113,19 +113,6 @@ body,
     color: var(--dokkiCSS-page-primary-fg-color);
 }
 
-.dokki-tag
-{
-    margin-top: var(--dokkiCSS-topics-container-bottom-margin);
-    font-size: 90%;
-    color: gray;
-    width: 100%;
-    box-sizing: border-box;
-    border-top: 1px solid lightgray;
-    text-align: center;
-    background-image: linear-gradient( #f2f2f2, white);
-    padding: 10px;
-}
-
 .dokki-header,
 [while-dokki-initializing]
 {
@@ -148,6 +135,7 @@ body,
     height: var(--dokkiCSS-header-height);
     position: fixed;
     width: 100%;
+    color: var(--dokkiCSS-page-primary-fg-color);
 }
 
 [while-dokki-initializing]
@@ -155,7 +143,7 @@ body,
     padding-left: calc(10px + var(--dokkiCSS-document-horizontal-left-start));
     font-size: initial;
     font-weight: normal;
-    color: gray;
+    color: var(--dokkiCSS-page-secondary-fg-color);
 }
 
 .dokkiCSS-header-container
@@ -198,6 +186,7 @@ body,
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    color: var(--dokkiCSS-page-primary-fg-color);
 }
 
 .dokkiCSS-product-tag > i
@@ -345,6 +334,7 @@ body,
     padding: 0;
     margin: 0;
     margin-bottom: 16px;
+    color: var(--dokkiCSS-page-primary-fg-color);
 }
 
 .dokki-topic h1
@@ -468,6 +458,7 @@ body,
     display: flex;
     align-items: center;
     box-sizing: border-box;
+    color: var(--dokkiCSS-page-primary-fg-color);
 }
 
 .dokkiCSS-embedded.dokkiCSS-expandable > header
@@ -488,7 +479,7 @@ body,
     padding: 8px;
     padding-left: 14px;
     padding-right: 14px;
-    background-color: var(--dokkiCSS-embedded-footer-bg-color);
+    background-color: var(--dokkiCSS-embedded-footer-bg-color); 
 }
 
 .dokkiCSS-embedded > footer > *:first-child,
