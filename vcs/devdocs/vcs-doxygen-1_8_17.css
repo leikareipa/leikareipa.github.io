@@ -8,7 +8,7 @@
  */
 
 @import url("https://use.fontawesome.com/releases/v5.12.0/css/all.css");
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital@0;1&family=Source+Code+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital@0;1&family=JetBrains+Mono&display=swap');
 
 :root
 {
@@ -28,8 +28,10 @@
 	--primary-body-text-color: #404040;
 	--primary-heading-text-color: #202020;
 	--secondary-body-text-color: gray;
-	--code-block-text-color: dimgray;
+	--code-text-color: dimgray;
 	--side-nav-resize-bar-width: 6px;
+	--text-font-family: "Lato", sans-serif;
+	--code-font-family: "JetBrains Mono", monospace;
 }
 
 .iconfopen,
@@ -43,7 +45,7 @@
 {
 	color: var(--primary-body-text-color) !important;
 	line-height: initial !important;
-	font-family: "Lato", sans-serif !important;
+	font-family: var(--text-font-family) !important;
 	font-size: 100% !important;
 	box-shadow: none !important;
 	text-shadow: none !important;
@@ -729,7 +731,7 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 {
 	counter-reset: line;
 	background-color: var(--secondary-background-color) !important;
-	border: 1px solid var(--separating-border-color) !important;
+	border: none !important;
 	border-radius: 0 !important;
 	margin: 0 !important;
 	margin-top: var(--section-vertical-margin) !important;
@@ -739,9 +741,9 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 
 .memdoc > .fragment > .line
 {
-	font-family: "Source Code Pro", monospace !important;
-	font-size: 85% !important;
-	color: var(--code-block-text-color) !important;
+	font-family: var(--code-font-family) !important;
+	font-size: 88% !important;
+	color: var(--code-text-color) !important;
 }
 
 .memdoc > .fragment > .line:not(:last-child)
@@ -752,13 +754,13 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 .memdoc > .fragment > .line > span
 {
 	color: inherit !important;
-	font-family: "Source Code Pro", monospace !important;
+	font-family: var(--code-font-family) !important;
 }
 
 .memdoc > .fragment > .line > a.code,
 .memdoc > .fragment > .line > a.code:visited
 {
-	font-family: "Source Code Pro", monospace !important;
+	font-family: var(--code-font-family) !important;
 	color: var(--link-color) !important;
 	font-weight: normal !important;
 }
