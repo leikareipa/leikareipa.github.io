@@ -99,9 +99,13 @@ body,
     color: var(--dokkiCSS-page-inert-fg-color);
     font-variant: small-caps;
     text-transform: lowercase;
-    padding: 9px 15px;
-    border-radius: 100px;
-    border: 1px solid var(--dokkiCSS-page-primary-line-color);
+    padding: 0 15px;
+    border: 1px solid var(--dokkiCSS-page-secondary-line-color);
+    border-bottom: none;
+    border-top: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .dokki-theme-selector:hover > i
@@ -161,6 +165,7 @@ body,
     width: var(--dokkiCSS-document-width);
     position: relative;
     left: var(--dokkiCSS-document-horizontal-left-start);
+    height: 100%;
 }
 
 .dokkiCSS-header-container > * + *
@@ -755,7 +760,12 @@ body,
     .dokkiCSS-header-container
     {
         margin-left: 10px;
-        margin-right: 10px;
+        margin-right: 0;
+    }
+
+    .dokki-theme-selector
+    {
+        border-right: none;
     }
 }
 
