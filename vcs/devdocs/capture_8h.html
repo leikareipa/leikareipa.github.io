@@ -135,24 +135,116 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a07cd34ac6e051b509c6a1426f0d7d56d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcapture__device__s.html">capture_device_s</a> &amp; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a07cd34ac6e051b509c6a1426f0d7d56d">kc_capture_device</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
-<tr class="separator:a07cd34ac6e051b509c6a1426f0d7d56d"><td class="memSeparator" colspan="2"> </td></tr>
-<tr class="memitem:ab21531ba614d17f4625374242743ec01"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#ab21531ba614d17f4625374242743ec01">kc_force_input_resolution</a> (const <a class="el" href="structresolution__s.html">resolution_s</a> &amp;r)</td></tr>
-<tr class="separator:ab21531ba614d17f4625374242743ec01"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:adb8b80446b127b6553db60e53092baac"><td class="memItemLeft" align="right" valign="top">std::mutex &amp; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:adb8b80446b127b6553db60e53092baac"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:aac1757fd484c7df6ef0d5d3a4f9c96ff"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#aac1757fd484c7df6ef0d5d3a4f9c96ff">kc_device_supports_component_capture</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:aac1757fd484c7df6ef0d5d3a4f9c96ff"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:ab19c095f8cc6d1613c979dc0c52b6015"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#ab19c095f8cc6d1613c979dc0c52b6015">kc_device_supports_composite_capture</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:ab19c095f8cc6d1613c979dc0c52b6015"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a7ec042ca6d2e50717b3d209d64077a50"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a7ec042ca6d2e50717b3d209d64077a50">kc_device_supports_deinterlacing</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a7ec042ca6d2e50717b3d209d64077a50"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:ab1e12e1f3ea486feb7585db284f225b5"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#ab1e12e1f3ea486feb7585db284f225b5">kc_device_supports_dma</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:ab1e12e1f3ea486feb7585db284f225b5"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a09d26d63c916658f2c95f1cd1c06e7a1"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a09d26d63c916658f2c95f1cd1c06e7a1">kc_device_supports_dvi</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a09d26d63c916658f2c95f1cd1c06e7a1"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a7beced8aa80ccbd72052db4c7be4163e"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a7beced8aa80ccbd72052db4c7be4163e">kc_device_supports_svideo</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a7beced8aa80ccbd72052db4c7be4163e"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a89f8741a35919d702b8deb42721d5420"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a89f8741a35919d702b8deb42721d5420">kc_device_supports_vga</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a89f8741a35919d702b8deb42721d5420"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a48b351f765d776f295683620704f438b"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a48b351f765d776f295683620704f438b">kc_device_supports_yuv</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a48b351f765d776f295683620704f438b"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a5a4b4e4a065c5e01e9261bbca3c49fac"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution</a> (const <a class="el" href="structresolution__s.html">resolution_s</a> &amp;r)</td></tr>
+<tr class="separator:a5a4b4e4a065c5e01e9261bbca3c49fac"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a56f68304c5dd1817c304630bf482adfa"><td class="memItemLeft" align="right" valign="top">unsigned </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a56f68304c5dd1817c304630bf482adfa">kc_get_capture_color_depth</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a56f68304c5dd1817c304630bf482adfa"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a8deeb65610bc4e70638f354c9d8258a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31">capture_pixel_format_e</a> </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a8deeb65610bc4e70638f354c9d8258a5">kc_get_capture_pixel_format</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a8deeb65610bc4e70638f354c9d8258a5"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a2173d3c9f085a1a7476353e656a49075"><td class="memItemLeft" align="right" valign="top">refresh_rate_s </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a2173d3c9f085a1a7476353e656a49075">kc_get_capture_refresh_rate</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a2173d3c9f085a1a7476353e656a49075"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a9ae89f490ed737b94d5e91f03b24bddc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structresolution__s.html">resolution_s</a> </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a9ae89f490ed737b94d5e91f03b24bddc"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a4893687cb205b317fa3be2c9eaa5cef0"><td class="memItemLeft" align="right" valign="top">std::string </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a4893687cb205b317fa3be2c9eaa5cef0">kc_get_device_api_name</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a4893687cb205b317fa3be2c9eaa5cef0"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:abe82b8bc0e9aad8c4b9ffa835302f5cb"><td class="memItemLeft" align="right" valign="top">std::string </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#abe82b8bc0e9aad8c4b9ffa835302f5cb">kc_get_device_driver_version</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:abe82b8bc0e9aad8c4b9ffa835302f5cb"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:aa3a32c010a31c956aa2de4e87a642e2e"><td class="memItemLeft" align="right" valign="top">std::string </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#aa3a32c010a31c956aa2de4e87a642e2e">kc_get_device_firmware_version</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:aa3a32c010a31c956aa2de4e87a642e2e"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:aa82129076a792668a1da52aea243294e"><td class="memItemLeft" align="right" valign="top">unsigned </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:aa82129076a792668a1da52aea243294e"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a9605cca11c5b1559383b773dc0d67af1"><td class="memItemLeft" align="right" valign="top">int </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a9605cca11c5b1559383b773dc0d67af1"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a8cc822ab84bb916d4afa59e95f144c1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structresolution__s.html">resolution_s</a> </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a8cc822ab84bb916d4afa59e95f144c1e"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:aef9e55bdfc6885fced7fa787a937c128"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structresolution__s.html">resolution_s</a> </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:aef9e55bdfc6885fced7fa787a937c128"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a7211579132596d6b2c41990d751dd6e9"><td class="memItemLeft" align="right" valign="top">std::string </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a7211579132596d6b2c41990d751dd6e9">kc_get_device_name</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a7211579132596d6b2c41990d751dd6e9"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a6e4d453de8c170f5b4763ad91670e4d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a6e4d453de8c170f5b4763ad91670e4d1"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a8ccd158b6f2ceed31f5836d1ecb1e124"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a8ccd158b6f2ceed31f5836d1ecb1e124"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:abad7b023845886a56a92363448a62d74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:abad7b023845886a56a92363448a62d74"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:acc9addf5be34bea48a9bf16acaaacfc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:acc9addf5be34bea48a9bf16acaaacfc3"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:ace498676712ab27536873d4ccf186ae1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a> &amp; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:ace498676712ab27536873d4ccf186ae1"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:aabfe0198ffaaff02971c887d179a5bf9"><td class="memItemLeft" align="right" valign="top">unsigned </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#aabfe0198ffaaff02971c887d179a5bf9">kc_get_missed_frames_count</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:aabfe0198ffaaff02971c887d179a5bf9"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a1027cc932e05138f426b0b574f1d16e4"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a1027cc932e05138f426b0b574f1d16e4">kc_has_invalid_device</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a1027cc932e05138f426b0b574f1d16e4"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a04aea549d02b61711cad789545d04ce5"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a04aea549d02b61711cad789545d04ce5">kc_has_invalid_signal</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a04aea549d02b61711cad789545d04ce5"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a0819e9e06e550ebb8cac1acf5ac18265"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a0819e9e06e550ebb8cac1acf5ac18265">kc_has_no_signal</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a0819e9e06e550ebb8cac1acf5ac18265"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:adbc418ad49a7eb0080558f9732537fa2"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#adbc418ad49a7eb0080558f9732537fa2">kc_has_signal</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:adbc418ad49a7eb0080558f9732537fa2"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a0d3922607ac3bf3efa915ae5411270fe"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a0d3922607ac3bf3efa915ae5411270fe">kc_has_valid_device</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a0d3922607ac3bf3efa915ae5411270fe"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a2a3757912e3038c3766ade310f43c94c"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a2a3757912e3038c3766ade310f43c94c">kc_has_valid_signal</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a2a3757912e3038c3766ade310f43c94c"><td class="memSeparator" colspan="2"> </td></tr>
 <tr class="memitem:a66ea9368c0a2ce32e4609e159fc4a476"><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
 <tr class="separator:a66ea9368c0a2ce32e4609e159fc4a476"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a2e1945229a8b6d4e039bcf808c38d995"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a2e1945229a8b6d4e039bcf808c38d995">kc_initialize_device</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a2e1945229a8b6d4e039bcf808c38d995"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a233a3e12be84273ab60581be6e542294"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a233a3e12be84273ab60581be6e542294">kc_is_capturing</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a233a3e12be84273ab60581be6e542294"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a9d8938a91f890c5ff8612255c56add9e"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a9d8938a91f890c5ff8612255c56add9e">kc_mark_frame_buffer_as_processed</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a9d8938a91f890c5ff8612255c56add9e"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a5ccdba141d21cfa16b59aeb9d1f17d7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="capture_8h.html#a01259dd4659e237afca37701f0940985">capture_event_e</a> </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a5ccdba141d21cfa16b59aeb9d1f17d7c"><td class="memSeparator" colspan="2"> </td></tr>
 <tr class="memitem:a265903d7b5e899ffc9e38245735407ac"><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
 <tr class="separator:a265903d7b5e899ffc9e38245735407ac"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a6b0e4d27a4f2053f1fb6367bb10af4ea"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a6b0e4d27a4f2053f1fb6367bb10af4ea">kc_release_device</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
+<tr class="separator:a6b0e4d27a4f2053f1fb6367bb10af4ea"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:af7429f44115159f37a2dbe8816fba256"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel</a> (const unsigned idx)</td></tr>
+<tr class="separator:af7429f44115159f37a2dbe8816fba256"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:aa4eea05780910ea03cd81b9ca0a1dbe7"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#aa4eea05780910ea03cd81b9ca0a1dbe7">kc_set_capture_pixel_format</a> (const <a class="el" href="capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31">capture_pixel_format_e</a> pf)</td></tr>
+<tr class="separator:aa4eea05780910ea03cd81b9ca0a1dbe7"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a5922629d625e283e75518802fcba07f0"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution</a> (const <a class="el" href="structresolution__s.html">resolution_s</a> &amp;r)</td></tr>
+<tr class="separator:a5922629d625e283e75518802fcba07f0"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a917d7e71681fb7b566fd7dad70440fcb"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a917d7e71681fb7b566fd7dad70440fcb">kc_set_deinterlacing_mode</a> (const <a class="el" href="capture_8h.html#a3929ac220fc0ded2a877b1e0616a4896">capture_deinterlacing_mode_e</a> mode)</td></tr>
+<tr class="separator:a917d7e71681fb7b566fd7dad70440fcb"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a322a89993af31a067107227b69d7dd5d"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters</a> (const <a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> &amp;p)</td></tr>
+<tr class="separator:a322a89993af31a067107227b69d7dd5d"><td class="memSeparator" colspan="2"> </td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The interface to VCS's capture subsystem. </p>
-<p>The capture subsystem is responsible for mediating exchanges between VCS and the capture device; including initializing the capture device and providing VCS with access to the frame buffer(s) associated with the device.</p>
+<p>The capture subsystem is responsible for mediating exchange between VCS and the capture device; including initializing the device and providing VCS with access to the frame buffer(s) associated with the device.</p>
+<p>The capture subsystem is an exceptional subsystem in that it's allowed to run outside of the main VCS thread. This freedom &ndash; in what is otherwise a single-threaded application &ndash; is granted because some capture devices require out-of-thread callbacks or the like.</p>
+<p>The multithreaded capture subsystem will typically have an idle monitoring thread that waits for the capture device to send in data. When data comes in, the thread will copy it to a local memory buffer to be operated on in the main VCS thread when it's ready to do so.</p>
+<p>Because of the out-of-thread nature of this subsystem, it's important that accesses to its memory buffers are synchronized using the capture mutex (see <a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a>).</p>
 <p>Usage:</p>
 <ol type="1">
 <li>Call <a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> to initialize the subsystem. This is VCS's default startup behavior.</li>
-<li>Use the interface returned by <a class="el" href="capture_8h.html#a07cd34ac6e051b509c6a1426f0d7d56d">kc_capture_device()</a> to interact with the capture device.</li>
-<li>Call <a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a> to release the subsystem. This is VCS's default exit behavior. </li>
+<li>Use the interface functions to interact with the subsyste. For instance, <a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a> returns the most recent captured frame's data.</li>
+<li>Call <a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a> to release the subsystem. This is VCS's default exit behavior.</li>
 </ol>
+<h2>Implementing support for new capture devices</h2>
+<p>The capture subsystem interface (this file, <a class="el" href="capture_8h.html" title="The interface to VCS&#39;s capture subsystem.">capture.h</a>) provides a declaration of the functions used by VCS to interact with the capture subsystem. Some of the functions &ndash; e.g. <a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> &ndash; are agnostic to the capture device being used, while others &ndash; e.g. <a class="el" href="capture_8h.html#a2e1945229a8b6d4e039bcf808c38d995">kc_initialize_device()</a> &ndash; are specific to a particular type of capture device.</p>
+<p>The universal functions like <a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> are defined in the base interface source file (<em>capture.cpp</em>), whereas the device-specific functions like <a class="el" href="capture_8h.html#a2e1945229a8b6d4e039bcf808c38d995">kc_initialize_device()</a> are implemented in a separate, device-specific source file. For instance, the device source file <em>capture_rgbeasy.cpp</em> implements support for RGBEasy capture devices under Windows, while <em>capture_vision_v4l.cpp</em> adds support for Vision Linux devices. Both files simply implement the device-specific functions of the interface for the corresponding device, and depending on which device is to be supported by VCS, only one of the files gets included in the compiled executable (see <em>vcs.pro</em> for the logic that decides which implementation is included in the build).</p>
+<p>You can add support for a new capture device by creating implementations for the device of all of the device-specific interface functions, namely those declared in <a class="el" href="capture_8h.html" title="The interface to VCS&#39;s capture subsystem.">capture.h</a> prefixed with <em>kc_</em> but which aren't already defined in <em>capture.cpp</em>. You can look at the existing device source files for hands-on examples.</p>
+<p>As you'll see from <em>capture_virtual.cpp</em>, the capture device doesn't need to be an actual device. It can be any source of image data &ndash; something that reads images from <em>stdin</em>, for example. It only needs to implement the interface functions and output its data in the form dictated by the interface. </p>
 </div><h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a3929ac220fc0ded2a877b1e0616a4896"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3929ac220fc0ded2a877b1e0616a4896">&#9670; </a></span>capture_deinterlacing_mode_e</h2>
@@ -240,9 +332,10 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Enumerates the color formats recognized by the capture subsystem. Frames output by the subsystem will have their pixel data in one of these formats.</p>
+<p>Enumerates the color formats recognized by the capture subsystem.</p>
+<p>Frames output by the subsystem will have their pixel data in one of these formats.</p>
 <p>The capture device may support some, none, or all of these formats. Any capability queries should be made via the capture device interface.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structcaptured__frame__s.html" title="Stores the data of an image received from a capture device.">captured_frame_s</a>, <a class="el" href="structcapture__device__s.html" title="The base capture device interface. Subclass this to add support for new capture devices in VCS.">capture_device_s</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structcaptured__frame__s.html" title="Stores the data of an image received from a capture device.">captured_frame_s</a>, capture_device_s </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad99ae6bee14419e8625fdfc0cce62b31a83542aeef98998adcf59900e4a59ad8b"></a>rgb_555 </td><td class="fielddoc"><p>16 bits per pixel: 5 bits for red, 5 bits for green, 5 bits for blue, and 1 bit of padding. No alpha. </p>
 </td></tr>
@@ -255,14 +348,14 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a07cd34ac6e051b509c6a1426f0d7d56d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07cd34ac6e051b509c6a1426f0d7d56d">&#9670; </a></span>kc_capture_device()</h2>
+<a id="adb8b80446b127b6553db60e53092baac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb8b80446b127b6553db60e53092baac">&#9670; </a></span>kc_capture_mutex()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structcapture__device__s.html">capture_device_s</a>&amp; kc_capture_device</td>
+          <td class="memname">std::mutex&amp; kc_capture_mutex</td>
           <td>(</td>
           <td class="paramtype vcs-unnecessary-element">void</td>
           <td class="paramname"></td><td>)</td>
@@ -270,21 +363,181 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a reference to the currently-active capture device interface. This interface allows the caller to communicate with the capture device.</p>
-<dl class="section note"><dt>Note</dt><dd>Calling this function will trigger an assertion failure if the device interface isn't available (e.g. because <a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> hasn't been called).</dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Calling this function before having called <a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> will trigger an assertion failure.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a> </dd></dl>
+<p>Returns a reference to a mutex which should be locked by the capture subsystem while it's accessing data shared with VCS (e.g. capture event flags or the capture frame buffer), and which VCS should lock while accessing that data.</p>
+<p>Failure to observe this mutex when accessing shared capture data may result in a race condition, as the capture subsystem is allowed to run outside of the main VCS thread.</p>
+<div class="fragment"><div class="line"><span class="comment">// Block until the mutex allows us to access the capture data.</span></div>
+<div class="line">std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex</a>());</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Handle the most recent capture event (having locked the mutex prevents</span></div>
+<div class="line"><span class="comment">// the capture subsystem from pushing new events while we do this).</span></div>
+<div class="line"><span class="keywordflow">switch</span> (<a class="code" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue</a>())</div>
+<div class="line">{</div>
+<div class="line">    <span class="comment">// ...</span></div>
+<div class="line">}</div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>If the capture subsystem finds the mutex locked when the capture device sends a new frame, the frame will be dropped without waiting for the lock to be released. </dd></dl>
 
 </div>
 </div>
-<a id="ab21531ba614d17f4625374242743ec01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab21531ba614d17f4625374242743ec01">&#9670; </a></span>kc_force_input_resolution()</h2>
+<a id="aac1757fd484c7df6ef0d5d3a4f9c96ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac1757fd484c7df6ef0d5d3a4f9c96ff">&#9670; </a></span>kc_device_supports_component_capture()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool kc_force_input_resolution</td>
+          <td class="memname">bool kc_device_supports_component_capture</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the capture device is capable of capturing from a component video source; false otherwise. </p>
+
+</div>
+</div>
+<a id="ab19c095f8cc6d1613c979dc0c52b6015"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab19c095f8cc6d1613c979dc0c52b6015">&#9670; </a></span>kc_device_supports_composite_capture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_device_supports_composite_capture</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the capture device is capable of capturing from a composite video source; false otherwise. </p>
+
+</div>
+</div>
+<a id="a7ec042ca6d2e50717b3d209d64077a50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ec042ca6d2e50717b3d209d64077a50">&#9670; </a></span>kc_device_supports_deinterlacing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_device_supports_deinterlacing</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the capture device supports hardware de-interlacing; false otherwise. </p>
+
+</div>
+</div>
+<a id="ab1e12e1f3ea486feb7585db284f225b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1e12e1f3ea486feb7585db284f225b5">&#9670; </a></span>kc_device_supports_dma()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_device_supports_dma</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the capture device is capable of streaming frames via direct memory access (DMA); false otherwise. </p>
+
+</div>
+</div>
+<a id="a09d26d63c916658f2c95f1cd1c06e7a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09d26d63c916658f2c95f1cd1c06e7a1">&#9670; </a></span>kc_device_supports_dvi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_device_supports_dvi</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the capture device is capable of capturing from a digital (DVI) source; false otherwise. </p>
+
+</div>
+</div>
+<a id="a7beced8aa80ccbd72052db4c7be4163e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7beced8aa80ccbd72052db4c7be4163e">&#9670; </a></span>kc_device_supports_svideo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_device_supports_svideo</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the capture device is capable of capturing from an S-Video source; false otherwise. </p>
+
+</div>
+</div>
+<a id="a89f8741a35919d702b8deb42721d5420"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89f8741a35919d702b8deb42721d5420">&#9670; </a></span>kc_device_supports_vga()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_device_supports_vga</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the capture device is capable of capturing from an analog (VGA) source; false otherwise. </p>
+
+</div>
+</div>
+<a id="a48b351f765d776f295683620704f438b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48b351f765d776f295683620704f438b">&#9670; </a></span>kc_device_supports_yuv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_device_supports_yuv</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the capture device is capable of capturing in YUV color; false otherwise. </p>
+
+</div>
+</div>
+<a id="a5a4b4e4a065c5e01e9261bbca3c49fac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a4b4e4a065c5e01e9261bbca3c49fac">&#9670; </a></span>kc_force_capture_resolution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_force_capture_resolution</td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structresolution__s.html">resolution_s</a> &amp; </td>
           <td class="paramname"><em>r</em></td><td>)</td>
@@ -294,7 +547,501 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Asks the capture device to set its input resolution to the one given, overriding the current input resolution.</p>
 <dl class="section note"><dt>Note</dt><dd>If the resolution of the captured signal doesn't match this resolution, the captured image may become corrupted until the proper resolution is set.</dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>This function may become obsolete in a future version of VCS, in which case its functionality will likely be merged into the capture device interface (see <a class="el" href="capture_8h.html#a07cd34ac6e051b509c6a1426f0d7d56d">kc_capture_device()</a>). </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This function may become obsolete in a future version of VCS, in which case its functionality will likely be merged into the capture device interface (see kc_capture_device()). </dd></dl>
+
+</div>
+</div>
+<a id="a56f68304c5dd1817c304630bf482adfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56f68304c5dd1817c304630bf482adfa">&#9670; </a></span>kc_get_capture_color_depth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned kc_get_capture_color_depth</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the color depth, in bits, that the interface currently expects the capture device to send captured frames in.</p>
+<p>For RGB888 frames the color depth would be 32; 16 for RGB565 frames; etc.</p>
+<p>The color depth of a given frame as returned from <a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a> may be different from this value e.g. if the capture color depth was changed just after the frame was captured. </p>
+
+</div>
+</div>
+<a id="a8deeb65610bc4e70638f354c9d8258a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8deeb65610bc4e70638f354c9d8258a5">&#9670; </a></span>kc_get_capture_pixel_format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31">capture_pixel_format_e</a> kc_get_capture_pixel_format</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the pixel format that the capture device is currently storing its captured frames in.</p>
+<p>The pixel format of a given frame as returned from <a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a> may be different from this value e.g. if the capture pixel format was changed just after the frame was captured. </p>
+
+</div>
+</div>
+<a id="a2173d3c9f085a1a7476353e656a49075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2173d3c9f085a1a7476353e656a49075">&#9670; </a></span>kc_get_capture_refresh_rate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">refresh_rate_s kc_get_capture_refresh_rate</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the refresh rate of the current capture signal. </p>
+
+</div>
+</div>
+<a id="a9ae89f490ed737b94d5e91f03b24bddc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ae89f490ed737b94d5e91f03b24bddc">&#9670; </a></span>kc_get_capture_resolution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structresolution__s.html">resolution_s</a> kc_get_capture_resolution</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the capture device's current input/output resolution.</p>
+<dl class="section note"><dt>Note</dt><dd>The capture device's input and output resolutions are expected to always be equal; any scaling of captured frames is expected to be done by VCS and not the capture device.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Don't take this to be the resolution of the latest captured frame (returned from <a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a>), as the capture device's resolution may have changed since that frame was captured.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4893687cb205b317fa3be2c9eaa5cef0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4893687cb205b317fa3be2c9eaa5cef0">&#9670; </a></span>kc_get_device_api_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string kc_get_device_api_name</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a string that identifies the interface; e.g. "RGBEasy". </p>
+
+</div>
+</div>
+<a id="abe82b8bc0e9aad8c4b9ffa835302f5cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe82b8bc0e9aad8c4b9ffa835302f5cb">&#9670; </a></span>kc_get_device_driver_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string kc_get_device_driver_version</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a string that identifies the capture device's driver version; e.g. "14.12.3".</p>
+<p>Will return "Unknown" if the firmware version is not known.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa3a32c010a31c956aa2de4e87a642e2e">kc_get_device_firmware_version()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa3a32c010a31c956aa2de4e87a642e2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3a32c010a31c956aa2de4e87a642e2e">&#9670; </a></span>kc_get_device_firmware_version()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string kc_get_device_firmware_version</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a string that identifies the capture device's firmware version; e.g. "14.12.3".</p>
+<p>Will return "Unknown" if the firmware version is not known.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#abe82b8bc0e9aad8c4b9ffa835302f5cb">kc_get_device_driver_version()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa82129076a792668a1da52aea243294e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa82129076a792668a1da52aea243294e">&#9670; </a></span>kc_get_device_input_channel_idx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned kc_get_device_input_channel_idx</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the index value of the capture device's input channel on which the device is currently listening for signals. The value is in the range [0,n-1], where n = <a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a>.</p>
+<p>If the capture device has more input channels than are supported by the interface, the interface is expected to map the index to a consecutive range. For example, if channels #1, #5, and #6 on the capture device are available to the interface, capturing on channel #5 would correspond to an index value of 1, with index 0 being channel #1 and index 2 channel #6.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9605cca11c5b1559383b773dc0d67af1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9605cca11c5b1559383b773dc0d67af1">&#9670; </a></span>kc_get_device_maximum_input_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kc_get_device_maximum_input_count</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the number of input channels on the capture device that're available to the interface.</p>
+<p>The value returned is an integer in the range [1,n] such that if the capture device has, for instance, 16 input channels and the interface can use two of them, 2 is returned.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8cc822ab84bb916d4afa59e95f144c1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cc822ab84bb916d4afa59e95f144c1e">&#9670; </a></span>kc_get_device_maximum_resolution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structresolution__s.html">resolution_s</a> kc_get_device_maximum_resolution</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the maximum capture resolution supported by the interface.</p>
+<dl class="section note"><dt>Note</dt><dd>This resolution may be smaller - but not larger - than the maximum capture resolution supported by the capture device.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aef9e55bdfc6885fced7fa787a937c128"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef9e55bdfc6885fced7fa787a937c128">&#9670; </a></span>kc_get_device_minimum_resolution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structresolution__s.html">resolution_s</a> kc_get_device_minimum_resolution</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the minimum capture resolution supported by the interface.</p>
+<dl class="section note"><dt>Note</dt><dd>This resolution may be larger - but not smaller - than the minimum capture resolution supported by the capture device.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7211579132596d6b2c41990d751dd6e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7211579132596d6b2c41990d751dd6e9">&#9670; </a></span>kc_get_device_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string kc_get_device_name</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a string that identifies the capture device; e.g. "Datapath
+VisionRGB-PRO2".</p>
+<p>Will return "Unknown" if no name is available. </p>
+
+</div>
+</div>
+<a id="a6e4d453de8c170f5b4763ad91670e4d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e4d453de8c170f5b4763ad91670e4d1">&#9670; </a></span>kc_get_device_video_parameter_defaults()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> kc_get_device_video_parameter_defaults</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the capture device's default video signal parameters.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8ccd158b6f2ceed31f5836d1ecb1e124"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ccd158b6f2ceed31f5836d1ecb1e124">&#9670; </a></span>kc_get_device_video_parameter_maximums()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> kc_get_device_video_parameter_maximums</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the maximum value supported by the capture device for each video signal parameter.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl>
+
+</div>
+</div>
+<a id="abad7b023845886a56a92363448a62d74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abad7b023845886a56a92363448a62d74">&#9670; </a></span>kc_get_device_video_parameter_minimums()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> kc_get_device_video_parameter_minimums</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the minimum value supported by the capture device for each video signal parameter.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl>
+
+</div>
+</div>
+<a id="acc9addf5be34bea48a9bf16acaaacfc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc9addf5be34bea48a9bf16acaaacfc3">&#9670; </a></span>kc_get_device_video_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> kc_get_device_video_parameters</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the capture device's current video signal parameters.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ace498676712ab27536873d4ccf186ae1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace498676712ab27536873d4ccf186ae1">&#9670; </a></span>kc_get_frame_buffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp; kc_get_frame_buffer</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a reference to the most recently captured frame.</p>
+<div class="fragment"><div class="line">std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex</a>());</div>
+<div class="line"> </div>
+<div class="line"><a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame = <a class="code" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer</a>();</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// We can now access the frame&#39;s pixel data without the capture subsystem</span></div>
+<div class="line"><span class="comment">// modifying it from another thread, until the mutex lock is released.</span></div>
+</div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>The caller should lock <a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a> while accessing the returned data. Failure to do so may result in a race condition, since the capture subsystem is otherwise permitted to operate on these data from outside of the caller's thread.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aabfe0198ffaaff02971c887d179a5bf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabfe0198ffaaff02971c887d179a5bf9">&#9670; </a></span>kc_get_missed_frames_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned kc_get_missed_frames_count</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns number of frames the interface has received from the capture device which VCS was too busy to process and display. These are, in effect, dropped frames.</p>
+<p>If this value is above 0, it indicates that VCS is failing to process and display captured frames as fast as the capture device is producing them. This could be a symptom of e.g. an inadequately performant host CPU.</p>
+<dl class="section note"><dt>Note</dt><dd>This value must be cumulative over the lifetime of the program's execution and must not decrease during that time. </dd></dl>
+
+</div>
+</div>
+<a id="a1027cc932e05138f426b0b574f1d16e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1027cc932e05138f426b0b574f1d16e4">&#9670; </a></span>kc_has_invalid_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_has_invalid_device</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the current capture device is invalid; false otherwise. This could happen e.g. if the user (on Linux) opens a /dev/videoX that doesn't provide a compatible capture device. </p>
+
+</div>
+</div>
+<a id="a04aea549d02b61711cad789545d04ce5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04aea549d02b61711cad789545d04ce5">&#9670; </a></span>kc_has_invalid_signal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_has_invalid_signal</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the current capture signal is invalid; false otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd>has_no_signal() </dd></dl>
+
+</div>
+</div>
+<a id="a0819e9e06e550ebb8cac1acf5ac18265"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0819e9e06e550ebb8cac1acf5ac18265">&#9670; </a></span>kc_has_no_signal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_has_no_signal</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if there's currently no capture signal on the capture device's active input channel; false otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd>has_signal(), <a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a> </dd></dl>
+
+</div>
+</div>
+<a id="adbc418ad49a7eb0080558f9732537fa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbc418ad49a7eb0080558f9732537fa2">&#9670; </a></span>kc_has_signal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_has_signal</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the capture device's active input channel is currently receiving a signal; false otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd>has_no_signal(), <a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0d3922607ac3bf3efa915ae5411270fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d3922607ac3bf3efa915ae5411270fe">&#9670; </a></span>kc_has_valid_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_has_valid_device</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the current capture device is valid; false otherwise. </p>
+
+</div>
+</div>
+<a id="a2a3757912e3038c3766ade310f43c94c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a3757912e3038c3766ade310f43c94c">&#9670; </a></span>kc_has_valid_signal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_has_valid_signal</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the current capture signal is valid; false otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd>has_invalid_signal(), has_no_signal() </dd></dl>
 
 </div>
 </div>
@@ -313,10 +1060,90 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initializes the capture subsystem, including the capture hardware.</p>
+<p>Initializes the capture subsystem.</p>
 <p>By default, VCS will call this function on program startup.</p>
 <dl class="section note"><dt>Note</dt><dd>Will trigger an assertion failure if the initialization fails.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2e1945229a8b6d4e039bcf808c38d995"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e1945229a8b6d4e039bcf808c38d995">&#9670; </a></span>kc_initialize_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_initialize_device</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Initializes the capture device.</p>
+<p>Returns true on success; false otherwise.</p>
+<dl class="section warning"><dt>Warning</dt><dd>Don't call this function directly. Instead, call <a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, which will initialize both the capture device and the capture subsystem (they are interlinked).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a6b0e4d27a4f2053f1fb6367bb10af4ea">kc_release_device()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a233a3e12be84273ab60581be6e542294"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a233a3e12be84273ab60581be6e542294">&#9670; </a></span>kc_is_capturing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_is_capturing</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if the device is currently capturing; false otherwise. </p>
+
+</div>
+</div>
+<a id="a9d8938a91f890c5ff8612255c56add9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d8938a91f890c5ff8612255c56add9e">&#9670; </a></span>kc_mark_frame_buffer_as_processed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_mark_frame_buffer_as_processed</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Called by VCS to notify the interface that VCS has finished processing the latest frame obtained via <a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a>. The inteface is then free to e.g. overwrite the frame's data.</p>
+<p>Returns true on success; false otherwise. </p>
+
+</div>
+</div>
+<a id="a5ccdba141d21cfa16b59aeb9d1f17d7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ccdba141d21cfa16b59aeb9d1f17d7c">&#9670; </a></span>kc_pop_capture_event_queue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="capture_8h.html#a01259dd4659e237afca37701f0940985">capture_event_e</a> kc_pop_capture_event_queue</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the latest capture event and removes it from the interface's event queue. The caller can then respond to the event; e.g. by calling <a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a> if the event is a new frame. </p>
 
 </div>
 </div>
@@ -335,21 +1162,152 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Releases the capture subsystem, including the capture hardware.</p>
+<p>Releases the capture subsystem.</p>
 <p>By default, VCS will call this function on program exit.</p>
-<p>Returns true on success; false otherwise.</p>
-<dl class="section warning"><dt>Warning</dt><dd>Calling this function &ndash; regardless of its return value &ndash; will invalidate the capture device interface reference returned by <a class="el" href="capture_8h.html#a07cd34ac6e051b509c6a1426f0d7d56d">kc_capture_device()</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6b0e4d27a4f2053f1fb6367bb10af4ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b0e4d27a4f2053f1fb6367bb10af4ea">&#9670; </a></span>kc_release_device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_release_device</td>
+          <td>(</td>
+          <td class="paramtype vcs-unnecessary-element">void</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Releases the capture device.</p>
+<p>By default, this function will be called by <a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a>, which you should call if you want to release the capture device.</p>
+<p>Returns true on success; false otherwise.</p>
+<dl class="section warning"><dt>Warning</dt><dd>Don't call this function directly. Instead, call <a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a>, which will release both the capture device and the capture subsystem (they are interlinked).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a2e1945229a8b6d4e039bcf808c38d995">kc_initialize_device()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af7429f44115159f37a2dbe8816fba256"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7429f44115159f37a2dbe8816fba256">&#9670; </a></span>kc_set_capture_input_channel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_set_capture_input_channel</td>
+          <td>(</td>
+          <td class="paramtype">const unsigned </td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Tells the capture device to start listening for signals on the given input channel.</p>
+<p>Returns true on success; false otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa4eea05780910ea03cd81b9ca0a1dbe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4eea05780910ea03cd81b9ca0a1dbe7">&#9670; </a></span>kc_set_capture_pixel_format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_set_capture_pixel_format</td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31">capture_pixel_format_e</a> </td>
+          <td class="paramname"><em>pf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Tells the capture device to store its captured frames using the given pixel format.</p>
+<p>Returns true on success; false otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a8deeb65610bc4e70638f354c9d8258a5">kc_get_capture_pixel_format()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5922629d625e283e75518802fcba07f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5922629d625e283e75518802fcba07f0">&#9670; </a></span>kc_set_capture_resolution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_set_capture_resolution</td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structresolution__s.html">resolution_s</a> &amp; </td>
+          <td class="paramname"><em>r</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Tells the capture device to adopt the given resolution as its input and output resolution.</p>
+<dl class="section note"><dt>Note</dt><dd>The capture device must adopt this as both its input and output resolution. For example, if this resolution is 800 x 600, the capture device should interpret the video signal as if it were 800 x 600, rather than scaling the frame to 800 x 600 after capturing.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Since this will be set as the capture device's input resolution, captured frames may exhibit artefacting if the resolution doesn't match the video signal's true resolution.</dd></dl>
+<p>Returns true on success; false otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a917d7e71681fb7b566fd7dad70440fcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a917d7e71681fb7b566fd7dad70440fcb">&#9670; </a></span>kc_set_deinterlacing_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_set_deinterlacing_mode</td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="capture_8h.html#a3929ac220fc0ded2a877b1e0616a4896">capture_deinterlacing_mode_e</a> </td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the capture device's deinterlacing mode.</p>
+<p>Returns true on success; false otherwise. </p>
+
+</div>
+</div>
+<a id="a322a89993af31a067107227b69d7dd5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a322a89993af31a067107227b69d7dd5d">&#9670; </a></span>kc_set_video_signal_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool kc_set_video_signal_parameters</td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> &amp; </td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Assigns to the capture device the given video signal parameters.</p>
+<p>Returns true on success; false otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="astructcaptured__frame__s_html"><div class="ttname"><a href="structcaptured__frame__s.html">captured_frame_s</a></div><div class="ttdoc">Stores the data of an image received from a capture device.</div><div class="ttdef"><b>Definition:</b> capture.h:176</div></div>
+<div class="ttc" id="acapture_8h_html_adb8b80446b127b6553db60e53092baac"><div class="ttname"><a href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex</a></div><div class="ttdeci">std::mutex &amp; kc_capture_mutex(void)</div></div>
+<div class="ttc" id="acapture_8h_html_ace498676712ab27536873d4ccf186ae1"><div class="ttname"><a href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer</a></div><div class="ttdeci">const captured_frame_s &amp; kc_get_frame_buffer(void)</div></div>
+<div class="ttc" id="acapture_8h_html_a5ccdba141d21cfa16b59aeb9d1f17d7c"><div class="ttname"><a href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue</a></div><div class="ttdeci">capture_event_e kc_pop_capture_event_queue(void)</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_33eff72d368e09fa9f58259b8a9511dc.html">capture</a></li><li class="navelem"><a class="el" href="capture_8h.html">capture.h</a></li>
-    <li class="footer">Generated on Tue Jun 22 2021 09:31:46 for VCS 2.4.0 by
+    <li class="footer">Generated on Wed Jun 23 2021 07:25:10 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

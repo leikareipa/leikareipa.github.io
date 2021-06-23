@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['mark_5fframe_5fbuffer_5fas_5fprocessed_88',['mark_frame_buffer_as_processed',['../structcapture__device__s.html#a6ae190e11a6c83dda3b1f173b13ccca6',1,'capture_device_s']]],
-  ['maxheight_89',['maxHeight',['../structrecording__buffer__s.html#a865edaa1a8a19188ec481ce02fe39177',1,'recording_buffer_s']]],
-  ['maxwidth_90',['maxWidth',['../structrecording__buffer__s.html#ae2cccfc01720e2a79dd982c8f08fd776',1,'recording_buffer_s']]],
-  ['mutex_91',['mutex',['../structrecording__buffer__s.html#a4d6e0341bf31fa92e3fcf3d359817528',1,'recording_buffer_s']]]
+  ['new_5fframe_97',['new_frame',['../capture_8h.html#a01259dd4659e237afca37701f0940985a5eb99afb68073fc56637c382332e5f69',1,'capture.h']]],
+  ['new_5fvideo_5fmode_98',['new_video_mode',['../capture_8h.html#a01259dd4659e237afca37701f0940985a250667c59a3e473341aa5103a0fe4d54',1,'capture.h']]],
+  ['none_99',['none',['../capture_8h.html#a01259dd4659e237afca37701f0940985a334c4a4c42fdb79d7ebc3e73b517e6f8',1,'capture.h']]],
+  ['num_5fenumerators_100',['num_enumerators',['../capture_8h.html#a01259dd4659e237afca37701f0940985a0066744d9940c76a147b12ec9804e6ba',1,'capture.h']]]
 ];

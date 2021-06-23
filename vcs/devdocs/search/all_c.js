@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['new_5fframe_92',['new_frame',['../capture_8h.html#a01259dd4659e237afca37701f0940985a5eb99afb68073fc56637c382332e5f69',1,'capture.h']]],
-  ['new_5fvideo_5fmode_93',['new_video_mode',['../capture_8h.html#a01259dd4659e237afca37701f0940985a250667c59a3e473341aa5103a0fe4d54',1,'capture.h']]],
-  ['none_94',['none',['../capture_8h.html#a01259dd4659e237afca37701f0940985a334c4a4c42fdb79d7ebc3e73b517e6f8',1,'capture.h']]],
-  ['num_5fenumerators_95',['num_enumerators',['../capture_8h.html#a01259dd4659e237afca37701f0940985a0066744d9940c76a147b12ec9804e6ba',1,'capture.h']]]
+  ['pop_101',['pop',['../structrecording__buffer__s.html#aa918844b647dc32b45f50d407ea88ea2',1,'recording_buffer_s']]],
+  ['push_102',['push',['../structrecording__buffer__s.html#acb8c560823e5578bc7f892bc80189c8d',1,'recording_buffer_s']]]
 ];

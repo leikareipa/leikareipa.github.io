@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['full_143',['full',['../structrecording__buffer__s.html#acf36504a4e0de87e981872c76526de70',1,'recording_buffer_s']]]
+  ['initialize_133',['initialize',['../structrecording__buffer__s.html#a13d0db149a8ffdbfd7a54101fc28ec6c',1,'recording_buffer_s']]]
 ];

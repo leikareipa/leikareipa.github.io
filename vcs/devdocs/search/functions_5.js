@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['initialize_168',['initialize',['../structcapture__device__s.html#ac447475f113d133e5c6d65d6d842fd66',1,'capture_device_s::initialize()'],['../structrecording__buffer__s.html#a13d0db149a8ffdbfd7a54101fc28ec6c',1,'recording_buffer_s::initialize()']]],
-  ['is_5fcapturing_169',['is_capturing',['../structcapture__device__s.html#a903389a3c70f2294fefab6269f553779',1,'capture_device_s']]]
+  ['release_210',['release',['../structrecording__buffer__s.html#af129d953b27086a21a95c5152d171687',1,'recording_buffer_s']]],
+  ['reset_211',['reset',['../structrecording__buffer__s.html#a6c43229f0e5ca6d00a4b8f48a6b129da',1,'recording_buffer_s']]]
 ];

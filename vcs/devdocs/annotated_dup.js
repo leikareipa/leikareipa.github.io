@@ -1,6 +1,5 @@
 var annotated_dup =
 [
-    [ "capture_device_s", "structcapture__device__s.html", "structcapture__device__s" ],
     [ "captured_frame_s", "structcaptured__frame__s.html", "structcaptured__frame__s" ],
     [ "filter_graph_option_s", "structfilter__graph__option__s.html", "structfilter__graph__option__s" ],
     [ "recording_buffer_s", "structrecording__buffer__s.html", "structrecording__buffer__s" ],
