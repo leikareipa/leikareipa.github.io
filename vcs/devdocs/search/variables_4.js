@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['w_219',['w',['../structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d',1,'resolution_s']]]
+  ['scratchbuffer_240',['scratchBuffer',['../structrecording__buffer__s.html#acb52dfca8e25e9541104fd0871fec4b0',1,'recording_buffer_s']]]
 ];

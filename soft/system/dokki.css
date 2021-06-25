@@ -65,9 +65,9 @@ body,
     --dokkiCSS-page-primary-fg-color: #e4e4e4;
     --dokkiCSS-page-secondary-fg-color: #a0a0a0;
     --dokkiCSS-page-inert-fg-color: gray;
-    --dokkiCSS-page-primary-line-color: #3d3d3d;
+    --dokkiCSS-page-primary-line-color: black;
     --dokkiCSS-page-secondary-line-color: black;
-    --dokkiCSS-embedded-header-bg-color: var(--dokkiCSS-page-primary-line-color);
+    --dokkiCSS-embedded-header-bg-color: #323232;
     --dokkiCSS-embedded-footer-bg-color: var(--document-bg-color);
 }
 

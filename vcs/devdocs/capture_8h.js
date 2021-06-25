@@ -1,5 +1,6 @@
 var capture_8h =
 [
+    [ "capture_video_mode_s", "structcapture__video__mode__s.html", "structcapture__video__mode__s" ],
     [ "captured_frame_s", "structcaptured__frame__s.html", "structcaptured__frame__s" ],
     [ "signal_info_s", "structsignal__info__s.html", "structsignal__info__s" ],
     [ "video_signal_parameters_s", "structvideo__signal__parameters__s.html", "structvideo__signal__parameters__s" ],
@@ -39,6 +40,7 @@ var capture_8h =
     [ "kc_get_capture_pixel_format", "capture_8h.html#a8deeb65610bc4e70638f354c9d8258a5", null ],
     [ "kc_get_capture_refresh_rate", "capture_8h.html#a2173d3c9f085a1a7476353e656a49075", null ],
     [ "kc_get_capture_resolution", "capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc", null ],
+    [ "kc_get_capture_video_mode", "capture_8h.html#ad0535a338fd91b79b6b6de0b3e290c47", null ],
     [ "kc_get_device_api_name", "capture_8h.html#a4893687cb205b317fa3be2c9eaa5cef0", null ],
     [ "kc_get_device_driver_version", "capture_8h.html#abe82b8bc0e9aad8c4b9ffa835302f5cb", null ],
     [ "kc_get_device_firmware_version", "capture_8h.html#aa3a32c010a31c956aa2de4e87a642e2e", null ],
@@ -70,5 +72,15 @@ var capture_8h =
     [ "kc_set_capture_pixel_format", "capture_8h.html#aa4eea05780910ea03cd81b9ca0a1dbe7", null ],
     [ "kc_set_capture_resolution", "capture_8h.html#a5922629d625e283e75518802fcba07f0", null ],
     [ "kc_set_deinterlacing_mode", "capture_8h.html#a917d7e71681fb7b566fd7dad70440fcb", null ],
-    [ "kc_set_video_signal_parameters", "capture_8h.html#a322a89993af31a067107227b69d7dd5d", null ]
+    [ "kc_set_video_signal_parameters", "capture_8h.html#a322a89993af31a067107227b69d7dd5d", null ],
+    [ "kc_evInvalidDevice", "capture_8h.html#a27e2ca2dfafb694d6097fa0cde3f4499", null ],
+    [ "kc_evInvalidSignal", "capture_8h.html#a7a7d72a76f6bed79ef3ae6979bd3fe26", null ],
+    [ "kc_evMissedFramesCount", "capture_8h.html#a67758b8e2c262987fb9ba0f33de3aa99", null ],
+    [ "kc_evNewCapturedFrame", "capture_8h.html#a657a68d9d5bcd78729fdff851d094704", null ],
+    [ "kc_evNewProposedVideoMode", "capture_8h.html#aa0593fc70717d8dc65faca306055e049", null ],
+    [ "kc_evNewVideoMode", "capture_8h.html#a8f91a0ff6da74dea2b22a6673de5588e", null ],
+    [ "kc_evSignalGained", "capture_8h.html#a484060c8a561673fcd05014380cddcd1", null ],
+    [ "kc_evSignalLost", "capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62", null ],
+    [ "kc_evUnrecoverableError", "capture_8h.html#af2cd8911b4e676b08c22dbbf52d35822", null ],
+    [ "ks_evInputChannelChanged", "capture_8h.html#ab4cb30efd18b923be9c73280fce4dce2", null ]
 ];

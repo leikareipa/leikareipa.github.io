@@ -17,5 +17,6 @@ var display_8h =
     [ "kd_show_headless_info_message", "display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f", null ],
     [ "kd_spin_event_loop", "display_8h.html#ab03382911b280df2a7f796094ba1c1af", null ],
     [ "kd_update_output_window_size", "display_8h.html#a0fdc2b0606b2d14c4c275ed5a0bc221d", null ],
-    [ "kd_update_output_window_title", "display_8h.html#a5622698adab1106e3c6affb4652b9f88", null ]
+    [ "kd_update_output_window_title", "display_8h.html#a5622698adab1106e3c6affb4652b9f88", null ],
+    [ "kd_evDirty", "display_8h.html#ad65798c1e89524a4b1ec7818f1b4f042", null ]
 ];

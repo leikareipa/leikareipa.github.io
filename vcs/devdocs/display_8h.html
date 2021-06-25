@@ -84,7 +84,8 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">display.h File Reference</div>  </div>
 </div><!--header-->
@@ -106,7 +107,7 @@ Data Structures</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ae624633776327f21294e1c5df8179446"><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><a class="el" href="display_8h.html#ae624633776327f21294e1c5df8179446">kd_acquire_output_window</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
 <tr class="separator:ae624633776327f21294e1c5df8179446"><td class="memSeparator" colspan="2"> </td></tr>
-<tr class="memitem:ab70ef16802820ec345547f13e0b30bb0"><td class="memItemLeft" align="right" valign="top">FilterGraphNode * </td><td class="memItemRight" valign="bottom"><a class="el" href="display_8h.html#ab70ef16802820ec345547f13e0b30bb0">kd_add_filter_graph_node</a> (const std::string &amp;filterTypeUuid, const std::vector&lt; std::pair&lt; unsigned, double &gt;&gt; &amp;initialParameterValues)</td></tr>
+<tr class="memitem:ab70ef16802820ec345547f13e0b30bb0"><td class="memItemLeft" align="right" valign="top">FilterGraphNode * </td><td class="memItemRight" valign="bottom"><a class="el" href="display_8h.html#ab70ef16802820ec345547f13e0b30bb0">kd_add_filter_graph_node</a> (const std::string &amp;filterTypeUuid, const std::vector&lt;std::pair&lt;unsigned, double&gt;&gt; &amp;initialParameterValues)</td></tr>
 <tr class="separator:ab70ef16802820ec345547f13e0b30bb0"><td class="memSeparator" colspan="2"> </td></tr>
 <tr class="memitem:aae1a2bd7a28edcc105f3fc015a54367c"><td class="memItemLeft" align="right" valign="top">bool </td><td class="memItemRight" valign="bottom"><a class="el" href="display_8h.html#aae1a2bd7a28edcc105f3fc015a54367c">kd_add_log_entry</a> (const log_entry_s e)</td></tr>
 <tr class="separator:aae1a2bd7a28edcc105f3fc015a54367c"><td class="memSeparator" colspan="2"> </td></tr>
@@ -136,6 +137,12 @@ Functions</h2></td></tr>
 <tr class="separator:a0fdc2b0606b2d14c4c275ed5a0bc221d"><td class="memSeparator" colspan="2"> </td></tr>
 <tr class="memitem:a5622698adab1106e3c6affb4652b9f88"><td class="memItemLeft" align="right" valign="top">void </td><td class="memItemRight" valign="bottom"><a class="el" href="display_8h.html#a5622698adab1106e3c6affb4652b9f88">kd_update_output_window_title</a> (<span class="vcs-unnecessary-element">void</span>)</td></tr>
 <tr class="separator:a5622698adab1106e3c6affb4652b9f88"><td class="memSeparator" colspan="2"> </td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ad65798c1e89524a4b1ec7818f1b4f042"><td class="memItemLeft" align="right" valign="top"><a id="ad65798c1e89524a4b1ec7818f1b4f042"></a>
+vcs_event_c&lt;void&gt; </td><td class="memItemRight" valign="bottom"><b>kd_evDirty</b></td></tr>
+<tr class="separator:ad65798c1e89524a4b1ec7818f1b4f042"><td class="memSeparator" colspan="2"> </td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The interface to VCS's display subsystem. </p>
@@ -181,7 +188,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; std::pair&lt; unsigned, double &gt;&gt; &amp; </td>
+          <td class="paramtype">const std::vector&lt;std::pair&lt;unsigned, double&gt;&gt; &amp; </td>
           <td class="paramname"><em>initialParameterValues</em> </td>
         </tr>
         <tr>
@@ -334,14 +341,14 @@ Functions</h2></td></tr>
 <p>Asks the GUI to inform the filter interface, src/filter/filter.h, of all filter chains currently configured in the GUI.</p>
 <p>This assumes that the GUI provides a dialog of some sort in which the user can create and modify filter chains. When this function is called, the GUI is expected to enumerate those filter chains into a format consumed by the filter interface and then to submit them to the filter interface.</p>
 <p>In pseudocode, the GUI would do something like the following:</p>
-<div class="fragment"><div class="line">kf_remove_all_filter_chains();</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordflow">for</span> (chain: guiFilterChains)</div>
-<div class="line">{</div>
-<div class="line">    <span class="keyword">const</span> standardFilterChain = ...convert chain into standard format...</div>
-<div class="line">    kf_add_filter_chain(standardFilterChain);</div>
-<div class="line">}</div>
-</div><!-- fragment --> 
+<pre class="fragment"><code class="line">kf_remove_all_filter_chains();</code>
+<code class="line"> </code>
+<code class="line"><span class="keywordflow">for</span> (chain: guiFilterChains)</code>
+<code class="line">{</code>
+<code class="line">    <span class="keyword">const</span> standardFilterChain = ...convert chain into standard format...</code>
+<code class="line">    kf_add_filter_chain(standardFilterChain);</code>
+<code class="line">}</code>
+</pre><!-- fragment --> 
 </div>
 </div>
 <a id="a57d5c5d487906d9af9ab12e7f2155d19"></a>
@@ -461,16 +468,16 @@ Functions</h2></td></tr>
 <p>Asks the GUI to display an info message to the user.</p>
 <p>The message should be deliverable with a headless GUI, i.e. requiring minimal prior GUI initialization.</p>
 <p>The following sample Qt 5 code creates a conforming message box:</p>
-<div class="fragment"><div class="line">QMessageBox mb;</div>
-<div class="line"> </div>
-<div class="line">mb.setWindowTitle(strlen(title)? title : <span class="stringliteral">&quot;VCS has this to say&quot;</span>);</div>
-<div class="line">mb.setText(msg);</div>
-<div class="line">mb.setStandardButtons(QMessageBox::Ok);</div>
-<div class="line">mb.setIcon(QMessageBox::Information);</div>
-<div class="line">mb.setDefaultButton(QMessageBox::Ok);</div>
-<div class="line"> </div>
-<div class="line">mb.exec();</div>
-</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl>
+<pre class="fragment"><code class="line">QMessageBox mb;</code>
+<code class="line"> </code>
+<code class="line">mb.setWindowTitle(strlen(title)? title : <span class="stringliteral">&quot;VCS has this to say&quot;</span>);</code>
+<code class="line">mb.setText(msg);</code>
+<code class="line">mb.setStandardButtons(QMessageBox::Ok);</code>
+<code class="line">mb.setIcon(QMessageBox::Information);</code>
+<code class="line">mb.setDefaultButton(QMessageBox::Ok);</code>
+<code class="line"> </code>
+<code class="line">mb.exec();</code>
+</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl>
 
 </div>
 </div>
@@ -492,9 +499,9 @@ Functions</h2></td></tr>
 <p>Asks the GUI to execute one spin of its event loop.</p>
 <p>Spinning the event loop would involve e.g. repainting the output window, processing any user input, etc.</p>
 <p>The following sample Qt 5 code executes one spin of the event loop:</p>
-<div class="fragment"><div class="line">QCoreApplication::sendPostedEvents();</div>
-<div class="line">QCoreApplication::processEvents();</div>
-</div><!-- fragment --><p>VCS will generally call this function at the capture's refresh rate, e.g. 70 times per second when capturing VGA mode 13h.</p>
+<pre class="fragment"><code class="line">QCoreApplication::sendPostedEvents();</code>
+<code class="line">QCoreApplication::processEvents();</code>
+</pre><!-- fragment --><p>VCS will generally call this function at the capture's refresh rate, e.g. 70 times per second when capturing VGA mode 13h.</p>
 <dl class="section note"><dt>Note</dt><dd>If the GUI wants to match the capture's refresh rate, it should repaint its output only when VCS calls this function. </dd></dl>
 
 </div>
@@ -518,9 +525,9 @@ Functions</h2></td></tr>
 <p>VCS expects the size of the output window to match the size of output frames; although the GUI may choose not to honor this.</p>
 <p>The current size of output frames can be obtained via the scaler interface, src/scaler/scaler.h, by calling ks_output_resolution().</p>
 <p>The following sample Qt 5 code sizes the output window to match the size of VCS's output frames (<em>this</em> is the output window's instance):</p>
-<div class="fragment"><div class="line"><a class="code" href="structresolution__s.html">resolution_s</a> r = ks_output_resolution();</div>
-<div class="line">this-&gt;setFixedSize(r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</div>
-</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a5622698adab1106e3c6affb4652b9f88">kd_update_output_window_title()</a> </dd></dl>
+<pre class="fragment"><code class="line"><a class="code" href="structresolution__s.html">resolution_s</a> r = ks_output_resolution();</code>
+<code class="line">this-&gt;setFixedSize(r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
+</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a5622698adab1106e3c6affb4652b9f88">kd_update_output_window_title()</a> </dd></dl>
 
 </div>
 </div>
@@ -548,14 +555,14 @@ Functions</h2></td></tr>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructresolution__s_html_a820d69aaad874195f93866b539fcdeb6"><div class="ttname"><a href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">resolution_s::h</a></div><div class="ttdeci">unsigned long h</div><div class="ttdoc">Height (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:51</div></div>
-<div class="ttc" id="astructresolution__s_html"><div class="ttname"><a href="structresolution__s.html">resolution_s</a></div><div class="ttdoc">Describes the resolution of a pixel surface – e.g. a program window or an image buffer.</div><div class="ttdef"><b>Definition:</b> display.h:45</div></div>
-<div class="ttc" id="astructresolution__s_html_ae01e8bac378ef94734144849e8d62d1d"><div class="ttname"><a href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">resolution_s::w</a></div><div class="ttdeci">unsigned long w</div><div class="ttdoc">Width (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:48</div></div>
+<div class="ttc" id="astructresolution__s_html_a820d69aaad874195f93866b539fcdeb6"><div class="ttname"><a href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">resolution_s::h</a></div><div class="ttdeci">unsigned long h</div><div class="ttdoc">Height (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:55</div></div>
+<div class="ttc" id="astructresolution__s_html"><div class="ttname"><a href="structresolution__s.html">resolution_s</a></div><div class="ttdoc">Describes the resolution of a pixel surface – e.g. a program window or an image buffer.</div><div class="ttdef"><b>Definition:</b> display.h:49</div></div>
+<div class="ttc" id="astructresolution__s_html_ae01e8bac378ef94734144849e8d62d1d"><div class="ttname"><a href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">resolution_s::w</a></div><div class="ttdeci">unsigned long w</div><div class="ttdoc">Width (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:52</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_25685f9c6d837c57f295dee081495707.html">display</a></li><li class="navelem"><a class="el" href="display_8h.html">display.h</a></li>
-    <li class="footer">Generated on Wed Jun 23 2021 20:06:20 for VCS 2.4.0 by
+    <li class="footer">Generated on Fri Jun 25 2021 09:42:44 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
