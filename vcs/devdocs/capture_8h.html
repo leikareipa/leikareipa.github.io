@@ -245,10 +245,10 @@ vcs_event_c&lt;unsigned&gt; </td><td class="memItemRight" valign="bottom"><b>kc_
 <tr class="separator:a67758b8e2c262987fb9ba0f33de3aa99"><td class="memSeparator" colspan="2"> </td></tr>
 <tr class="memitem:a657a68d9d5bcd78729fdff851d094704"><td class="memItemLeft" align="right" valign="top">vcs_event_c&lt;const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;&gt; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a></td></tr>
 <tr class="separator:a657a68d9d5bcd78729fdff851d094704"><td class="memSeparator" colspan="2"> </td></tr>
-<tr class="memitem:aa0593fc70717d8dc65faca306055e049"><td class="memItemLeft" align="right" valign="top">vcs_event_c&lt;<a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&gt; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#aa0593fc70717d8dc65faca306055e049">kc_evNewProposedVideoMode</a></td></tr>
-<tr class="separator:aa0593fc70717d8dc65faca306055e049"><td class="memSeparator" colspan="2"> </td></tr>
-<tr class="memitem:a8f91a0ff6da74dea2b22a6673de5588e"><td class="memItemLeft" align="right" valign="top">vcs_event_c&lt;<a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&gt; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a8f91a0ff6da74dea2b22a6673de5588e">kc_evNewVideoMode</a></td></tr>
-<tr class="separator:a8f91a0ff6da74dea2b22a6673de5588e"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:ab2467dc85f9af11473597f5e5f9c0295"><td class="memItemLeft" align="right" valign="top">vcs_event_c&lt;const <a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a> &amp;&gt; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#ab2467dc85f9af11473597f5e5f9c0295">kc_evNewProposedVideoMode</a></td></tr>
+<tr class="separator:ab2467dc85f9af11473597f5e5f9c0295"><td class="memSeparator" colspan="2"> </td></tr>
+<tr class="memitem:a72c5b3c9569aca6c7dbe4a82286143c3"><td class="memItemLeft" align="right" valign="top">vcs_event_c&lt;const <a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a> &amp;&gt; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a></td></tr>
+<tr class="separator:a72c5b3c9569aca6c7dbe4a82286143c3"><td class="memSeparator" colspan="2"> </td></tr>
 <tr class="memitem:a484060c8a561673fcd05014380cddcd1"><td class="memItemLeft" align="right" valign="top">vcs_event_c&lt;void&gt; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a></td></tr>
 <tr class="separator:a484060c8a561673fcd05014380cddcd1"><td class="memSeparator" colspan="2"> </td></tr>
 <tr class="memitem:ae3d3e0f99b7227139f91b50e05164b62"><td class="memItemLeft" align="right" valign="top">vcs_event_c&lt;void&gt; </td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a></td></tr>
@@ -335,7 +335,7 @@ vcs_event_c&lt;unsigned&gt; </td><td class="memItemRight" valign="bottom"><b>kc_
 </td></tr>
 <tr><td class="fieldname"><a id="a01259dd4659e237afca37701f0940985ac6aa929cb02a1ac84eccbf8254f2c92e"></a>invalid_device </td><td class="fielddoc"><p>The capture device isn't available for use. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a01259dd4659e237afca37701f0940985aa25f609922590b36354b5c18c860821a"></a>unrecoverable_error </td><td class="fielddoc"><p>An error has occurred within the capture subsystem from which the subsystem can't recover. </p>
+<tr><td class="fieldname"><a id="a01259dd4659e237afca37701f0940985aa25f609922590b36354b5c18c860821a"></a>unrecoverable_error </td><td class="fielddoc"><p>An error has occurred with the capture device from which the capture subsystem can't recover. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a01259dd4659e237afca37701f0940985a0066744d9940c76a147b12ec9804e6ba"></a>num_enumerators </td><td class="fielddoc"><p>Total enumerator count. Should remain the last item in the list. </p>
 </td></tr>
@@ -402,7 +402,7 @@ vcs_event_c&lt;unsigned&gt; </td><td class="memItemRight" valign="bottom"><b>kc_
 <code class="line"><span class="comment">// the capture subsystem from pushing new events while we&#39;re doing this).</span></code>
 <code class="line"><span class="keywordflow">switch</span> (<a class="code" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue</a>())</code>
 <code class="line">{</code>
-<code class="line">   <span class="comment">// ...</span></code>
+<code class="line">   <span class="comment">// Handle the cases...</span></code>
 <code class="line">}</code>
 </pre><!-- fragment --><dl class="section note"><dt>Note</dt><dd>If the capture subsystem finds the capture mutex locked when the capture device sends in a new frame, the frame will be discarded rather than waiting for the lock to be released. </dd></dl>
 
@@ -576,7 +576,7 @@ vcs_event_c&lt;unsigned&gt; </td><td class="memItemRight" valign="bottom"><b>kc_
       </table>
 </div><div class="memdoc">
 <p>Asks the capture device to set its input resolution to the one given, overriding the current input resolution.</p>
-<p>This function fires a <a class="el" href="capture_8h.html#a8f91a0ff6da74dea2b22a6673de5588e">kc_evNewVideoMode</a> event.</p>
+<p>This function fires a <a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a> event.</p>
 <dl class="section note"><dt>Note</dt><dd>If the resolution of the captured signal doesn't match this resolution, the captured image may display incorrectly. </dd></dl>
 
 </div>
@@ -1360,7 +1360,7 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>An event fired when the capture subsystem reports its capture device to be invalid. An invalid capture device can't be used.</p>
-<p>The event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
+<p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
 </div>
 </div>
@@ -1376,7 +1376,7 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>An event fired when the capture device reports its input signal to be invalid; e.g. of an unsupported resolution.</p>
-<p>The event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
+<p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
 </div>
 </div>
@@ -1417,14 +1417,14 @@ VisionRGB-PRO2".</p>
 
 </div>
 </div>
-<a id="aa0593fc70717d8dc65faca306055e049"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0593fc70717d8dc65faca306055e049">&#9670; </a></span>kc_evNewProposedVideoMode</h2>
+<a id="ab2467dc85f9af11473597f5e5f9c0295"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2467dc85f9af11473597f5e5f9c0295">&#9670; </a></span>kc_evNewProposedVideoMode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">vcs_event_c&lt;<a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&gt; kc_evNewProposedVideoMode</td>
+          <td class="memname">vcs_event_c&lt;const <a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&amp;&gt; kc_evNewProposedVideoMode</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1434,7 +1434,7 @@ VisionRGB-PRO2".</p>
 <p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem.</p>
 <pre class="fragment"><code class="line"><span class="comment">// A sample implementation that approves the proposed video mode if there&#39;s</span></code>
 <code class="line"><span class="comment">// no alias for it, and otherwise forces the alias mode.</span></code>
-<code class="line"><a class="code" href="capture_8h.html#aa0593fc70717d8dc65faca306055e049">kc_evNewProposedVideoMode</a>.subscribe([](<a class="code" href="structcapture__video__mode__s.html">capture_video_mode_s</a> videoMode)</code>
+<code class="line"><a class="code" href="capture_8h.html#ab2467dc85f9af11473597f5e5f9c0295">kc_evNewProposedVideoMode</a>.subscribe([](<span class="keyword">const</span> <a class="code" href="structcapture__video__mode__s.html">capture_video_mode_s</a> &amp;videoMode)</code>
 <code class="line">{</code>
 <code class="line">   <span class="keywordflow">if</span> (ka_has_alias(videoMode.resolution))</code>
 <code class="line">   {</code>
@@ -1445,24 +1445,24 @@ VisionRGB-PRO2".</p>
 <code class="line">       kc_evNewVideoMode.fire(videoMode);</code>
 <code class="line">   }</code>
 <code class="line">});</code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a8f91a0ff6da74dea2b22a6673de5588e">kc_evNewVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl>
+</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl>
 
 </div>
 </div>
-<a id="a8f91a0ff6da74dea2b22a6673de5588e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f91a0ff6da74dea2b22a6673de5588e">&#9670; </a></span>kc_evNewVideoMode</h2>
+<a id="a72c5b3c9569aca6c7dbe4a82286143c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72c5b3c9569aca6c7dbe4a82286143c3">&#9670; </a></span>kc_evNewVideoMode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">vcs_event_c&lt;<a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&gt; kc_evNewVideoMode</td>
+          <td class="memname">vcs_event_c&lt;const <a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&amp;&gt; kc_evNewVideoMode</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>An event fired when the capture video mode has changed.</p>
 <p>It's not guaranteed that the new video mode is different from the previous one, although usually it will be. The mode should be treated as new regardless &ndash; or, if you will, as a resetting of the mode if it's the same as the previous mode.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa0593fc70717d8dc65faca306055e049">kc_evNewProposedVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#ab2467dc85f9af11473597f5e5f9c0295">kc_evNewProposedVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl>
 
 </div>
 </div>
@@ -1478,7 +1478,7 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>An event fired when the capture device begins receiving an input signal. This implies that the device was in a state of "no signal" previously.</p>
-<p>The event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
+<p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
 </div>
 </div>
@@ -1494,7 +1494,7 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>An event fired when the capture device loses its input signal. This implies that the capture device was receiving a signal previously.</p>
-<p>The event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
+<p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
 </div>
 </div>
@@ -1510,7 +1510,7 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>An event fired when an error occurs in the capture subsystem from which the subsystem can't recover.</p>
-<p>The event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
+<p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
 </div>
 </div>
@@ -1526,13 +1526,12 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>An event fired when the capture device's active input channel is changed.</p>
-<p>The event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
+<p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="acapture_8h_html_aa0593fc70717d8dc65faca306055e049"><div class="ttname"><a href="capture_8h.html#aa0593fc70717d8dc65faca306055e049">kc_evNewProposedVideoMode</a></div><div class="ttdeci">vcs_event_c&lt;capture_video_mode_s&gt; kc_evNewProposedVideoMode</div></div>
 <div class="ttc" id="astructresolution__s_html_a820d69aaad874195f93866b539fcdeb6"><div class="ttname"><a href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">resolution_s::h</a></div><div class="ttdeci">unsigned long h</div><div class="ttdoc">Height (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:55</div></div>
 <div class="ttc" id="astructcapture__video__mode__s_html"><div class="ttname"><a href="structcapture__video__mode__s.html">capture_video_mode_s</a></div><div class="ttdoc">A video mode of the capture device's input signal.</div><div class="ttdef"><b>Definition:</b> capture.h:325</div></div>
 <div class="ttc" id="astructcaptured__frame__s_html"><div class="ttname"><a href="structcaptured__frame__s.html">captured_frame_s</a></div><div class="ttdoc">Stores the data of an image received from a capture device.</div><div class="ttdef"><b>Definition:</b> capture.h:336</div></div>
@@ -1540,12 +1539,13 @@ VisionRGB-PRO2".</p>
 <div class="ttc" id="acapture_8h_html_a657a68d9d5bcd78729fdff851d094704"><div class="ttname"><a href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a></div><div class="ttdeci">vcs_event_c&lt;const captured_frame_s &amp;&gt; kc_evNewCapturedFrame</div></div>
 <div class="ttc" id="acapture_8h_html_ace498676712ab27536873d4ccf186ae1"><div class="ttname"><a href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer</a></div><div class="ttdeci">const captured_frame_s &amp; kc_get_frame_buffer(void)</div></div>
 <div class="ttc" id="acapture_8h_html_a5ccdba141d21cfa16b59aeb9d1f17d7c"><div class="ttname"><a href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue</a></div><div class="ttdeci">capture_event_e kc_pop_capture_event_queue(void)</div></div>
+<div class="ttc" id="acapture_8h_html_ab2467dc85f9af11473597f5e5f9c0295"><div class="ttname"><a href="capture_8h.html#ab2467dc85f9af11473597f5e5f9c0295">kc_evNewProposedVideoMode</a></div><div class="ttdeci">vcs_event_c&lt;const capture_video_mode_s &amp;&gt; kc_evNewProposedVideoMode</div></div>
 <div class="ttc" id="astructresolution__s_html_ae01e8bac378ef94734144849e8d62d1d"><div class="ttname"><a href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">resolution_s::w</a></div><div class="ttdeci">unsigned long w</div><div class="ttdoc">Width (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:52</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_33eff72d368e09fa9f58259b8a9511dc.html">capture</a></li><li class="navelem"><a class="el" href="capture_8h.html">capture.h</a></li>
-    <li class="footer">Generated on Fri Jun 25 2021 09:42:44 for VCS 2.4.0 by
+    <li class="footer">Generated on Fri Jun 25 2021 20:20:45 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

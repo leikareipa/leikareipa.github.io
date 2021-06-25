@@ -267,6 +267,7 @@ hr
 
 .fieldtable th
 {
+	display: none !important;
 	border-radius: 0 !important;
 	font-weight: 500 !important;
 	background-image: none !important;
@@ -282,7 +283,7 @@ hr
 {
 	content: "Constants" !important;
 	font-size: initial !important;
-	font-weight: 500 !important;
+	font-weight: normal !important;
 	color: var(--primary-heading-text-color) !important
 }
 
@@ -408,8 +409,8 @@ hr
 {
 	padding: 10px var(--contents-container-horizontal-padding) !important;
 	background-image: none !important;
-	background-color: var(--secondary-background-color) !important;
-	border-bottom: 1px solid var(--separating-border-color) !important;
+	background-color: #f2f2f2 !important;
+	border-bottom: 1px solid lightgray !important;
 }
 
 .header .summary
@@ -429,7 +430,7 @@ hr
 	font-weight: normal !important;
 	display: flex !important;
 	align-items: center !important;
-	color: black !important;
+	color: var(--primary-heading-text-color) !important;
 }
 
 .ui-resizable-handle
@@ -707,12 +708,13 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 	box-shadow: none !important;
 	background-color: transparent !important;
 	font-weight: 500 !important;
-	border: none !important;
+	border: 1px solid lightgray !important;
 	padding-top: 12px !important;
 	padding-bottom: 12px !important;
 	margin-bottom: 12px !important;
 	background-color: #f2f2f2 !important;
 	padding-left: 10px !important;
+	border-radius: 0 !important;
 }
 
 .memproto a
@@ -749,9 +751,8 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 .memdoc > .fragment
 {
 	counter-reset: line;
-	background-color: #f8f8f8 !important;
-	border: none;
-	border-left: 5px solid #aaaaaa !important;
+	background-color: var(--secondary-background-color) !important;
+	border: 1px solid var(--separating-border-color) !important;
 	border-radius: 0 !important;
 	margin: 0 !important;
 	margin-top: var(--section-vertical-margin) !important;
@@ -862,7 +863,7 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 .section.warning dt,
 .section.note dt
 {
-	font-weight: normal !important;
+	font-weight: 500 !important;
 	color: var(--primary-heading-text-color) !important;
 }
 
@@ -878,11 +879,6 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 	border: none !important;
 	border-radius: 0 !important;
 	background-color: transparent !important;
-}
-
-.section.warning > dt
-{
-	font-weight: 500 !important;
 }
 
 .section.see dt::after
