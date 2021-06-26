@@ -296,7 +296,8 @@ vcs_event_c&lt;unsigned&gt; </td><td class="memItemRight" valign="bottom"><b>kc_
 </table>
 </div><div class="memdoc">
 <p>Enumerates the de-interlacing modes recognized by the capture subsystem.</p>
-<dl class="section note"><dt>Note</dt><dd>The capture subsystem itself doesn't apply de-interlacing, it just asks the capture device to do so. The capture device in turn may support only some or none of these modes, and/or might apply them only when receiving an interlaced signal. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The capture subsystem itself doesn't apply de-interlacing, it just asks the capture device to do so. The capture device in turn may support only some or none of these modes, and/or might apply them only when receiving an interlaced signal.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a917d7e71681fb7b566fd7dad70440fcb">kc_set_deinterlacing_mode()</a> </dd></dl>
 
 </div>
 </div>
@@ -319,7 +320,8 @@ vcs_event_c&lt;unsigned&gt; </td><td class="memItemRight" valign="bottom"><b>kc_
   </tr>
 </table>
 </div><div class="memdoc">
-<p>VCS will periodically query the capture subsystem for the latest capture events. This enumerates the range of capture events that the capture subsystem can report back. </p>
+<p>VCS will periodically query the capture subsystem for the latest capture events. This enumerates the range of capture events that the capture subsystem can report back.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue()</a> </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a01259dd4659e237afca37701f0940985a334c4a4c42fdb79d7ebc3e73b517e6f8"></a>none </td><td class="fielddoc"><p>No capture events to report. Although some capture events may have occurred, the capture subsystem chooses to not inform VCS of them. </p>
 </td></tr>
@@ -391,18 +393,18 @@ vcs_event_c&lt;unsigned&gt; </td><td class="memItemRight" valign="bottom"><b>kc_
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a reference to a mutex which should be locked by the capture subsystem while it's accessing data shared with the rest of VCS (e.g. capture event flags or the capture frame buffer), and which the rest of VCS should lock while accessing that data.</p>
+<p>Returns a reference to a mutex that should be locked by the capture subsystem while it's accessing data shared with the rest of VCS (e.g. capture event flags or the capture frame buffer), and which the rest of VCS should lock while accessing that data.</p>
 <p>Failure to observe this mutex when accessing capture subsystem data may result in a race condition, as the capture subsystem is allowed to run outside of the main VCS thread.</p>
 <pre class="fragment"><code class="line"><span class="comment">// Code running in the main VCS thread.</span></code>
 <code class="line"> </code>
-<code class="line"><span class="comment">// Blocks until the capture mutex allows us to access the capture data.</span></code>
+<code class="line"><span class="comment">// Blocks execution until the capture mutex allows us to access the capture data.</span></code>
 <code class="line">std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex</a>());</code>
 <code class="line"> </code>
 <code class="line"><span class="comment">// Handle the most recent capture event (having locked the mutex prevents</span></code>
 <code class="line"><span class="comment">// the capture subsystem from pushing new events while we&#39;re doing this).</span></code>
 <code class="line"><span class="keywordflow">switch</span> (<a class="code" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue</a>())</code>
 <code class="line">{</code>
-<code class="line">   <span class="comment">// Handle the cases...</span></code>
+<code class="line">   <span class="comment">// ...</span></code>
 <code class="line">}</code>
 </pre><!-- fragment --><dl class="section note"><dt>Note</dt><dd>If the capture subsystem finds the capture mutex locked when the capture device sends in a new frame, the frame will be discarded rather than waiting for the lock to be released. </dd></dl>
 
@@ -1012,7 +1014,7 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>Returns true if the current capture signal is invalid; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd>has_no_signal() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a0819e9e06e550ebb8cac1acf5ac18265">kc_has_no_signal()</a> </dd></dl>
 
 </div>
 </div>
@@ -1032,7 +1034,7 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>Returns true if there's currently no capture signal on the capture device's active input channel; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd>has_signal(), <a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#adbc418ad49a7eb0080558f9732537fa2">kc_has_signal()</a>, <a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a> </dd></dl>
 
 </div>
 </div>
@@ -1052,7 +1054,7 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>Returns true if the capture device's active input channel is currently receiving a signal; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd>has_no_signal(), <a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a0819e9e06e550ebb8cac1acf5ac18265">kc_has_no_signal()</a>, <a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a> </dd></dl>
 
 </div>
 </div>
@@ -1091,7 +1093,7 @@ VisionRGB-PRO2".</p>
       </table>
 </div><div class="memdoc">
 <p>Returns true if the current capture signal is valid; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd>has_invalid_signal(), has_no_signal() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>has_invalid_signal(), <a class="el" href="capture_8h.html#a0819e9e06e550ebb8cac1acf5ac18265">kc_has_no_signal()</a> </dd></dl>
 
 </div>
 </div>
@@ -1113,7 +1115,13 @@ VisionRGB-PRO2".</p>
 <p>Initializes the capture subsystem.</p>
 <p>By default, VCS will call this function on program startup.</p>
 <dl class="section note"><dt>Note</dt><dd>Will trigger an assertion failure if the initialization fails.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a> </dd></dl>
+<pre class="fragment"><code class="line"><a class="code" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture</a>();</code>
+<code class="line"> </code>
+<code class="line"><a class="code" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
+<code class="line">{</code>
+<code class="line">   printf(<span class="stringliteral">&quot;Captured a frame (%lu x %lu)\n&quot;</span>, frame.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, frame.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
+<code class="line">});</code>
+</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a> </dd></dl>
 
 </div>
 </div>
@@ -1394,21 +1402,23 @@ VisionRGB-PRO2".</p>
 <p>An event fired when the capture subsystem makes a new captured frame available.</p>
 <p>The event won't be fired at the exact time of capture but rather once VCS has polled the capture subsystem and found that a new frame is available. In other words, the event is fired by VCS's event loop rather than by the capture subsystem.</p>
 <p>Frames that don't register on calls to <a class="el" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue()</a> won't generate this event.</p>
-<p>A reference to the frame's data is provided as an argument to subscribed handlers. A given handler can assume the data to remain valid until returning.</p>
-<pre class="fragment"><code class="line"><a class="code" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a>.subscribe([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
+<p>A reference to the frame's data is provided as an argument to event listeners. The data will remain valid for each listener until the listener function returns.</p>
+<pre class="fragment"><code class="line"><span class="comment">// Register an event listener that gets run each time a new frame is captured.</span></code>
+<code class="line"><a class="code" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
 <code class="line">{</code>
-<code class="line">   <span class="comment">// Access the frame&#39;s data. If you want the data to persist after the</span></code>
-<code class="line">   <span class="comment">// handler returns, copy it into a local memory buffer.</span></code>
+<code class="line">   <span class="comment">// The frame&#39;s data is available to this listener until the function</span></code>
+<code class="line">   <span class="comment">// returns. If we want to keep hold of the data for longer, we need to</span></code>
+<code class="line">   <span class="comment">// copy it into a local buffer.</span></code>
 <code class="line">});</code>
-</pre><!-- fragment --><pre class="fragment"><code class="line"><span class="comment">// Feeds captured frames into the scaler subsystem.</span></code>
-<code class="line"><a class="code" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a>.subscribe([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
+</pre><!-- fragment --><pre class="fragment"><code class="line"><span class="comment">// Feed captured frames into the scaler subsystem.</span></code>
+<code class="line"><a class="code" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
 <code class="line">{</code>
 <code class="line">   printf(<span class="stringliteral">&quot;Captured in %lu x %lu.\n&quot;</span>, frame.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, frame.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
 <code class="line">   ks_scale_frame(frame);</code>
 <code class="line">});</code>
 <code class="line"> </code>
-<code class="line"><span class="comment">// Receives a notification when a frame has been scaled.</span></code>
-<code class="line">ks_evNewScaledFrame.subscribe([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
+<code class="line"><span class="comment">// Receive a notification whenever a frame has been scaled.</span></code>
+<code class="line">ks_evNewScaledFrame.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
 <code class="line">{</code>
 <code class="line">   printf(<span class="stringliteral">&quot;Scaled to %lu x %lu.\n&quot;</span>, frame.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, frame.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
 <code class="line">});</code>
@@ -1434,7 +1444,7 @@ VisionRGB-PRO2".</p>
 <p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem.</p>
 <pre class="fragment"><code class="line"><span class="comment">// A sample implementation that approves the proposed video mode if there&#39;s</span></code>
 <code class="line"><span class="comment">// no alias for it, and otherwise forces the alias mode.</span></code>
-<code class="line"><a class="code" href="capture_8h.html#ab2467dc85f9af11473597f5e5f9c0295">kc_evNewProposedVideoMode</a>.subscribe([](<span class="keyword">const</span> <a class="code" href="structcapture__video__mode__s.html">capture_video_mode_s</a> &amp;videoMode)</code>
+<code class="line"><a class="code" href="capture_8h.html#ab2467dc85f9af11473597f5e5f9c0295">kc_evNewProposedVideoMode</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcapture__video__mode__s.html">capture_video_mode_s</a> &amp;videoMode)</code>
 <code class="line">{</code>
 <code class="line">   <span class="keywordflow">if</span> (ka_has_alias(videoMode.resolution))</code>
 <code class="line">   {</code>
@@ -1533,10 +1543,11 @@ VisionRGB-PRO2".</p>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructresolution__s_html_a820d69aaad874195f93866b539fcdeb6"><div class="ttname"><a href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">resolution_s::h</a></div><div class="ttdeci">unsigned long h</div><div class="ttdoc">Height (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:55</div></div>
-<div class="ttc" id="astructcapture__video__mode__s_html"><div class="ttname"><a href="structcapture__video__mode__s.html">capture_video_mode_s</a></div><div class="ttdoc">A video mode of the capture device's input signal.</div><div class="ttdef"><b>Definition:</b> capture.h:325</div></div>
-<div class="ttc" id="astructcaptured__frame__s_html"><div class="ttname"><a href="structcaptured__frame__s.html">captured_frame_s</a></div><div class="ttdoc">Stores the data of an image received from a capture device.</div><div class="ttdef"><b>Definition:</b> capture.h:336</div></div>
+<div class="ttc" id="astructcapture__video__mode__s_html"><div class="ttname"><a href="structcapture__video__mode__s.html">capture_video_mode_s</a></div><div class="ttdoc">A video mode of the capture device's input signal.</div><div class="ttdef"><b>Definition:</b> capture.h:334</div></div>
+<div class="ttc" id="astructcaptured__frame__s_html"><div class="ttname"><a href="structcaptured__frame__s.html">captured_frame_s</a></div><div class="ttdoc">Stores the data of an image received from a capture device.</div><div class="ttdef"><b>Definition:</b> capture.h:345</div></div>
 <div class="ttc" id="acapture_8h_html_adb8b80446b127b6553db60e53092baac"><div class="ttname"><a href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex</a></div><div class="ttdeci">std::mutex &amp; kc_capture_mutex(void)</div></div>
 <div class="ttc" id="acapture_8h_html_a657a68d9d5bcd78729fdff851d094704"><div class="ttname"><a href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a></div><div class="ttdeci">vcs_event_c&lt;const captured_frame_s &amp;&gt; kc_evNewCapturedFrame</div></div>
+<div class="ttc" id="acapture_8h_html_a66ea9368c0a2ce32e4609e159fc4a476"><div class="ttname"><a href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture</a></div><div class="ttdeci">void kc_initialize_capture(void)</div></div>
 <div class="ttc" id="acapture_8h_html_ace498676712ab27536873d4ccf186ae1"><div class="ttname"><a href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer</a></div><div class="ttdeci">const captured_frame_s &amp; kc_get_frame_buffer(void)</div></div>
 <div class="ttc" id="acapture_8h_html_a5ccdba141d21cfa16b59aeb9d1f17d7c"><div class="ttname"><a href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue</a></div><div class="ttdeci">capture_event_e kc_pop_capture_event_queue(void)</div></div>
 <div class="ttc" id="acapture_8h_html_ab2467dc85f9af11473597f5e5f9c0295"><div class="ttname"><a href="capture_8h.html#ab2467dc85f9af11473597f5e5f9c0295">kc_evNewProposedVideoMode</a></div><div class="ttdeci">vcs_event_c&lt;const capture_video_mode_s &amp;&gt; kc_evNewProposedVideoMode</div></div>
@@ -1545,7 +1556,7 @@ VisionRGB-PRO2".</p>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_33eff72d368e09fa9f58259b8a9511dc.html">capture</a></li><li class="navelem"><a class="el" href="capture_8h.html">capture.h</a></li>
-    <li class="footer">Generated on Fri Jun 25 2021 20:20:45 for VCS 2.4.0 by
+    <li class="footer">Generated on Sat Jun 26 2021 10:02:24 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -13,7 +13,7 @@
 :root
 {
 	--page-background-color: rgb(238, 238, 238);
-	--secondary-background-color: #fafafa;
+	--secondary-background-color: #f8f8f8;
 	--content-padding: 27px;
 	--section-vertical-margin: 16px;
 	--theme-color: #ffa400;
@@ -25,6 +25,7 @@
 	--contents-container-vertical-padding: var(--group-heading-vertical-margin);
 	--navi-indent: 1.25ch;
 	--main-nav-item-horizontal-spacing: 14px;
+	--header-color: #3c3c3c;
 	--primary-body-text-color: #404040;
 	--primary-heading-text-color: #202020;
 	--secondary-body-text-color: gray;
@@ -61,9 +62,10 @@
 	color: var(--primary-body-text-color) !important;
 }
 
-p
+p,
+dd
 {
-	line-height: 1.3em !important;
+	line-height: 1.35em !important;
 }
 
 body
@@ -149,7 +151,7 @@ hr
 #nav-tree
 {
 	background-image: none !important;
-	background-color: var(--page-background-color) !important;
+	background-color: white !important;
 	padding: 15px !important;
 	padding-top: 0 !important;
 	padding-bottom: 0 !important;
@@ -261,7 +263,7 @@ hr
 
 .fieldtable .fieldname
 {
-	font-weight: 500 !important;
+	vertical-align: middle !important;
 	width: 1ch !important; /* Shrink to content's minimum required width.*/
 }
 
@@ -290,7 +292,7 @@ hr
 .fieldtable td,
 .fieldtable th
 {
-	padding: 6px !important;
+	padding: 5px !important;
 	padding-left: 8px !important;
 	padding-right: 8px !important;
 	border-color: var(--separating-border-color) !important;
@@ -409,7 +411,7 @@ hr
 {
 	padding: 10px var(--contents-container-horizontal-padding) !important;
 	background-image: none !important;
-	background-color: #f2f2f2 !important;
+	background-color: var(--secondary-background-color) !important;
 	border-bottom: 1px solid lightgray !important;
 }
 
@@ -430,17 +432,16 @@ hr
 	font-weight: normal !important;
 	display: flex !important;
 	align-items: center !important;
-	color: var(--primary-heading-text-color) !important;
 }
 
 .ui-resizable-handle
 {
 	background-image: none !important;
 	background-color: white !important;
-	box-shadow: inset 0 0 0px 1px rgba(0, 0, 0, 0.4) !important;
 	width: var(--side-nav-resize-bar-width) !important;
 	min-width: var(--side-nav-resize-bar-width) !important;
 	max-width: var(--side-nav-resize-bar-width) !important;
+	box-shadow: inset 1px 0 5px 0px rgba(0, 0, 0, 0.35) !important;
 }
 
 #titlearea
@@ -465,7 +466,7 @@ hr
 {
 	padding-left: 0 !important;
     background-image: none !important;
-    background-color: #3c3c3c !important;
+    background-color: var(--header-color) !important;
 	height: 40px;
     display: flex;
     align-items: center;
@@ -537,7 +538,7 @@ hr
 
 .memitem
 {
-	margin-bottom: 40px !important;
+	margin-bottom: var(--contents-container-horizontal-padding) !important;
 	margin-top: 16px !important;
 }
 
@@ -705,16 +706,16 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 
 .memproto
 {
+	box-sizing: border-box !important;
 	box-shadow: none !important;
-	background-color: transparent !important;
 	font-weight: 500 !important;
-	border: 1px solid lightgray !important;
-	padding-top: 12px !important;
-	padding-bottom: 12px !important;
-	margin-bottom: 12px !important;
-	background-color: #f2f2f2 !important;
-	padding-left: 10px !important;
+	border: 1px solid var(--separating-border-color) !important;
+	padding-top: 10px !important;
+	padding-bottom: 10px !important;
+	background-color: var(--secondary-background-color) !important;
+	padding-left: 16px !important;
 	border-radius: 0 !important;
+	border-bottom: none !important;
 }
 
 .memproto a
@@ -724,12 +725,12 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 
 .memdoc
 {
-	margin-top: -3px !important;
 	box-shadow: none !important;
-	border: none !important;
+	border: 1px solid var(--separating-border-color) !important;
 	padding: 0 !important;
 	background: none !important;
-	padding-left: 10px !important;
+	border-radius: 0 !important;
+	padding: 16px !important;
 }
 
 .memdoc p
@@ -751,13 +752,13 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 .memdoc > .fragment
 {
 	counter-reset: line;
-	background-color: var(--secondary-background-color) !important;
+	background-color: white !important;
 	border: 1px solid var(--separating-border-color) !important;
-	border-radius: 0 !important;
+	border-radius: 7px !important;
 	margin: 0 !important;
 	margin-top: var(--section-vertical-margin) !important;
 	margin-bottom: var(--section-vertical-margin) !important;
-	padding: 15px !important;
+	padding: 16px !important;
 	line-height: 0 !important;
 }
 
