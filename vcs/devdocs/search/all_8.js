@@ -83,5 +83,8 @@ var searchData=
   ['kd_5fspin_5fevent_5floop_99',['kd_spin_event_loop',['../display_8h.html#ab03382911b280df2a7f796094ba1c1af',1,'display.h']]],
   ['kd_5fupdate_5foutput_5fwindow_5fsize_100',['kd_update_output_window_size',['../display_8h.html#a0fdc2b0606b2d14c4c275ed5a0bc221d',1,'display.h']]],
   ['kd_5fupdate_5foutput_5fwindow_5ftitle_101',['kd_update_output_window_title',['../display_8h.html#a5622698adab1106e3c6affb4652b9f88',1,'display.h']]],
-  ['ks_5fevinputchannelchanged_102',['ks_evInputChannelChanged',['../capture_8h.html#ab4cb30efd18b923be9c73280fce4dce2',1,'capture.h']]]
+  ['kmem_5fallocate_102',['kmem_allocate',['../memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0',1,'memory.h']]],
+  ['kmem_5frelease_103',['kmem_release',['../memory_8h.html#ac9ce5ee32b731b37955730c94f351556',1,'memory.h']]],
+  ['kmem_5fsizeof_5fallocation_104',['kmem_sizeof_allocation',['../memory_8h.html#a98b9271b20d5e7e2053fcf19858cd7cb',1,'memory.h']]],
+  ['ks_5fevinputchannelchanged_105',['ks_evInputChannelChanged',['../capture_8h.html#ab4cb30efd18b923be9c73280fce4dce2',1,'capture.h']]]
 ];

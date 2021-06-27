@@ -23,18 +23,18 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "VCS 2.4.0", "index.html", [
-    [ "VCS Developer Docs", "index.html", null ],
-    [ "Data Structures", "annotated.html", [
-      [ "Data Structures", "annotated.html", "annotated_dup" ],
-      [ "Data Structure Index", "classes.html", null ],
-      [ "Data Fields", "functions.html", [
+    [ "Main page", "index.html", null ],
+    [ "Data structures", "annotated.html", [
+      [ "Data structures", "annotated.html", "annotated_dup" ],
+      [ "Data structure index", "classes.html", null ],
+      [ "Data fields", "functions.html", [
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ],
+      [ "File list", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
