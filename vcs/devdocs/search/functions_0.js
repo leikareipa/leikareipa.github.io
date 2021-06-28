@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['empty_148',['empty',['../structrecording__buffer__s.html#a01195b4db9e7c0e448bca2e6f678a954',1,'recording_buffer_s']]]
+  ['alloc_162',['alloc',['../structheap__bytes__s.html#a18c633c2ef74e7785f6d352f41bc496a',1,'heap_bytes_s']]]
 ];

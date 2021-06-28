@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['w_135',['w',['../structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d',1,'resolution_s']]]
+  ['vcs_20developer_20docs_144',['VCS Developer Docs',['../index.html',1,'']]],
+  ['video_5fsignal_5fparameters_5fs_145',['video_signal_parameters_s',['../structvideo__signal__parameters__s.html',1,'']]]
 ];

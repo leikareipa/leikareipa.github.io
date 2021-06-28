@@ -13,15 +13,15 @@
 :root
 {
 	--page-background-color: rgb(238, 238, 238);
-	--secondary-background-color: #f8f8f8;
+	--secondary-background-color: #f7f7f7;
 	--content-padding: 27px;
 	--section-vertical-margin: 16px;
 	--theme-color: whitesmoke;
 	--glow-color: #ffa40024;
 	--link-color: #0c64ee;
-	--separating-border-color: #e6e6e6;
+	--separating-border-color: #e4e4e4;
 	--group-heading-vertical-margin: 21px;
-	--contents-container-horizontal-padding: 25px;
+	--contents-container-horizontal-padding: 30px;
 	--contents-container-vertical-padding: var(--group-heading-vertical-margin);
 	--navi-indent: 1.25ch;
 	--main-nav-item-horizontal-spacing: 13px;
@@ -161,12 +161,13 @@ hr
 	padding: 15px !important;
 	padding-top: 5px !important;
 	padding-bottom: 0 !important;
+	padding-right: 5px !important;
 	box-sizing: border-box !important;
 }
 
 #nav-tree .children_ul
 {
-	border-left: 1px dotted #c9c9c9 !important;
+	border-left: 1px solid var(--separating-border-color) !important;
 }
 
 #nav-tree .selected
@@ -193,6 +194,11 @@ hr
 #nav-tree .item:not(.selected) > .label > a:hover
 {
 	color: black !important;
+}
+
+#nav-tree-contents
+{
+	overflow: hidden;
 }
 
 #nav-tree-contents > ul,
@@ -382,13 +388,15 @@ hr
 .directory .entry,
 .directory .entry + .desc
 {
-	padding-top: 4px !important;
-	padding-bottom: 4px !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
 	padding-left: 8px !important;
 	padding-right: 10px !important;
 	background-color: white !important;
 	min-width: 100px !important;
-	vertical-align: top;
+	vertical-align: middle !important;
+	height: 30px !important;
+	box-sizing: border-box !important;
 }
 
 .directory .levels
@@ -669,7 +677,10 @@ table.memberdecls td[class*="memItem"],
 table.memberdecls td[class*="mdesc"]
 {
 	border-top: 1px solid var(--separating-border-color) !important;
-	padding: 4px !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	height: 30px !important;
+	box-sizing: border-box !important;
 }
 
 table.memberdecls td.memItemLeft,
@@ -749,7 +760,8 @@ table.memname tr:not(:nth-last-child(-n+2))::after
 .memproto .memtemplate
 {
 	margin-left: 0 !important;
-	color: #6f6f6f !important;
+	margin-bottom: 2px !important;
+	color: #595959 !important;
 }
 
 .memproto a

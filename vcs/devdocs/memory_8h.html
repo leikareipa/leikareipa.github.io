@@ -103,12 +103,13 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The interface to VCS's memory subsystem. </p>
-<p>The memory subsystem provides pre-allocated heap memory for POD data types to VCS.</p>
-<p>The subsystem allocates a fixed-size memory buffer on initialization and deals out portions of the buffer as virtual allocations to callers. The subsystem also maintains internal bookkeeping of requested allocations, allowing for monitoring of VCS's memory usage.</p>
-<dl class="section note"><dt>Note</dt><dd>A C++-style wrapper for this interface is provided by heap_bytes_s.</dd></dl>
+<p>The memory subsystem provides chunks of pre-allocated heap memory to the rest of VCS and its subsystems for storing blocks of POD data.</p>
+<p>The subsystem allocates a fixed-size memory buffer on initialization and deals out portions of it as virtual allocations to callers. The subsystem also maintains internal bookkeeping of requested allocations, allowing for monitoring of VCS's memory usage.</p>
+<dl class="section note"><dt>Note</dt><dd>A C++-style wrapper for this interface is provided by <a class="el" href="structheap__bytes__s.html" title="A C++ wrapper for the memory subsystem interface (memory.h).">heap_bytes_s</a>.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This memory interface is for POD data only; i.e. anything you wouldn't mind using <em>memset</em> on.</dd></dl>
 <h2>Usage</h2>
 <ol type="1">
-<li>Call <a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> to request an allocation of memory: <pre class="fragment"><code class="line"><span class="comment">// Note: The memory is explicitly 0-initialized.</span></code>
+<li>Call <a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> to request an allocation of memory: <pre class="fragment"><code class="line"><span class="comment">// Note: The allocator will 0-initialize the memory.</span></code>
 <code class="line"><span class="keywordtype">char</span> *bytes = (<span class="keywordtype">char</span>*)<a class="code" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate</a>(101, <span class="stringliteral">&quot;101 bytes&quot;</span>);</code>
 <code class="line"><span class="keywordtype">int</span> *ints = (<span class="keywordtype">int</span>*)<a class="code" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate</a>(2*<span class="keyword">sizeof</span>(<span class="keywordtype">int</span>), <span class="stringliteral">&quot;A pair of ints&quot;</span>);</code>
 <code class="line"> </code>
@@ -116,15 +117,15 @@ Functions</h2></td></tr>
 <code class="line">bytes[0] = 82;</code>
 <code class="line">ints[1] = 1234;</code>
 </pre><!-- fragment --></li>
-<li>You can use <a class="el" href="memory_8h.html#a98b9271b20d5e7e2053fcf19858cd7cb">kmem_sizeof_allocation()</a> to find the size of an allocation: <pre class="fragment"><code class="line"><span class="keywordtype">unsigned</span> size = <a class="code" href="memory_8h.html#a98b9271b20d5e7e2053fcf19858cd7cb">kmem_sizeof_allocation</a>((<span class="keywordtype">void</span>*)bytes);</code>
-<code class="line"><span class="comment">// size == 101.</span></code>
+<li>You can use <a class="el" href="memory_8h.html#a98b9271b20d5e7e2053fcf19858cd7cb">kmem_sizeof_allocation()</a> to find the size of an allocation: <pre class="fragment"><code class="line"><span class="keywordtype">char</span> *buffer = (<span class="keywordtype">char</span>*)<a class="code" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate</a>(44);</code>
+<code class="line"><span class="keywordtype">unsigned</span> size = <a class="code" href="memory_8h.html#a98b9271b20d5e7e2053fcf19858cd7cb">kmem_sizeof_allocation</a>((<span class="keywordtype">void</span>*)buffer);</code>
+<code class="line"><span class="comment">// size == 44.</span></code>
 </pre><!-- fragment --></li>
-<li>Call <a class="el" href="memory_8h.html#ac9ce5ee32b731b37955730c94f351556">kmem_release()</a> to release an allocation back into circulation for subsequent calls to <a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a>: <pre class="fragment"><code class="line"><span class="comment">// Note: The memory pointer is set to NULL by the call.</span></code>
-<code class="line"><a class="code" href="memory_8h.html#ac9ce5ee32b731b37955730c94f351556">kmem_release</a>((<span class="keywordtype">void</span>**)&amp;bytes);</code>
-<code class="line"><a class="code" href="memory_8h.html#ac9ce5ee32b731b37955730c94f351556">kmem_release</a>((<span class="keywordtype">void</span>**)&amp;ints);</code>
+<li>Call <a class="el" href="memory_8h.html#ac9ce5ee32b731b37955730c94f351556">kmem_release()</a> to release an allocation back into circulation for subsequent calls to <a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a>: <pre class="fragment"><code class="line"><span class="keywordtype">char</span> *buffer = (<span class="keywordtype">char</span>*)<a class="code" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate</a>(1);</code>
+<code class="line"><span class="comment">// buffer != NULL.</span></code>
 <code class="line"> </code>
-<code class="line"><span class="comment">// bytes == NULL.</span></code>
-<code class="line"><span class="comment">// ints == NULL.</span></code>
+<code class="line"><a class="code" href="memory_8h.html#ac9ce5ee32b731b37955730c94f351556">kmem_release</a>((<span class="keywordtype">void</span>**)&amp;buffer);</code>
+<code class="line"><span class="comment">// buffer == NULL.</span></code>
 </pre><!-- fragment --> </li>
 </ol>
 </div><h2 class="groupheader">Function Documentation</h2>
@@ -230,7 +231,7 @@ buffer").</p>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_fdedb0aba14d44ce9d99bc100e026e6a.html">common</a></li><li class="navelem"><a class="el" href="dir_e673cebbcabf3e2994264573d5786a29.html">memory</a></li><li class="navelem"><a class="el" href="memory_8h.html">memory.h</a></li>
-    <li class="footer">Generated on Sun Jun 27 2021 11:22:32 for VCS 2.4.0 by
+    <li class="footer">Generated on Mon Jun 28 2021 11:03:51 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

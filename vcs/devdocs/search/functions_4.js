@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['pop_229',['pop',['../structrecording__buffer__s.html#aa918844b647dc32b45f50d407ea88ea2',1,'recording_buffer_s']]],
-  ['push_230',['push',['../structrecording__buffer__s.html#acb8c560823e5578bc7f892bc80189c8d',1,'recording_buffer_s']]]
+  ['initialize_166',['initialize',['../structrecording__buffer__s.html#a13d0db149a8ffdbfd7a54101fc28ec6c',1,'recording_buffer_s']]],
+  ['is_5fnull_167',['is_null',['../structheap__bytes__s.html#a3ce11ecb056a8ed046644ca397715023',1,'heap_bytes_s']]]
 ];
