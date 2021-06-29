@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['maxheight_268',['maxHeight',['../structrecording__buffer__s.html#a865edaa1a8a19188ec481ce02fe39177',1,'recording_buffer_s']]],
-  ['maxwidth_269',['maxWidth',['../structrecording__buffer__s.html#ae2cccfc01720e2a79dd982c8f08fd776',1,'recording_buffer_s']]],
-  ['mutex_270',['mutex',['../structrecording__buffer__s.html#a4d6e0341bf31fa92e3fcf3d359817528',1,'recording_buffer_s']]]
+  ['maxheight_314',['maxHeight',['../structrecording__buffer__s.html#a865edaa1a8a19188ec481ce02fe39177',1,'recording_buffer_s']]],
+  ['maxwidth_315',['maxWidth',['../structrecording__buffer__s.html#ae2cccfc01720e2a79dd982c8f08fd776',1,'recording_buffer_s']]],
+  ['mutex_316',['mutex',['../structrecording__buffer__s.html#a4d6e0341bf31fa92e3fcf3d359817528',1,'recording_buffer_s']]]
 ];

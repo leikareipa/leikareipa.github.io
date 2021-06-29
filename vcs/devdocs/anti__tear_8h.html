@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('anti__tear_8h.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 
-<p>The interface to VCS's anti-tear subsystem.  
+<p>The anti-tear subsystem interface.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -160,7 +160,7 @@ Functions</h2></td></tr>
 <tr class="separator:a09376104a341d78f7055c9aad0151626"><td class="memSeparator" colspan="2"> </td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The interface to VCS's anti-tear subsystem. </p>
+<div class="textblock"><p>The anti-tear subsystem interface. </p>
 <p>The anti-tear subsystem is responsible for reducing temporal tearing artifacts in captured frames.</p>
 <p>Generally, tearing artifacts occur when the capture device samples an image of the input signal while the signal source is still in the process of drawing the image. The captured frame will then consists of parts of new image data and parts of old image data, with tears occurring where new and old parts meet.</p>
 <p>The anti-tear subsystem takes as input a series of images and produces as output a second, reduced series of images in which the input images' new parts have been combined into un-torn images. For instance, if you input two captured frames in which the top half of the first frame contains one half of an image and the bottom half of the second frame contains the second half of the image, the output will be one whole image.</p>
@@ -529,7 +529,7 @@ The pointer returned by this function should be considered invalid after <a clas
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5e2795aa7dae10bcb6100770a11d9623.html">anti_tear</a></li><li class="navelem"><a class="el" href="anti__tear_8h.html">anti_tear.h</a></li>
-    <li class="footer">Generated on Mon Jun 28 2021 11:03:51 for VCS 2.4.0 by
+    <li class="footer">Generated on Tue Jun 29 2021 08:56:26 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

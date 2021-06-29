@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['down_278',['down',['../anti__tear_8h.html#a87fe0bace9e2f5160db75b20a02b1e09a74e8333ad11685ff3bdae589c8f6e34d',1,'anti_tear.h']]]
+  ['all_5f4_5f3_325',['all_4_3',['../scaler_8h.html#a7cd705d079c62dc45d0dd6e420024841a64c93bf02f94660e5cdbb266c58ac112',1,'scaler.h']]]
 ];

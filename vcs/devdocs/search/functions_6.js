@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['operator_5b_5d_246',['operator[]',['../structheap__bytes__s.html#aab7b47559e7baaad6e61debc480cc976',1,'heap_bytes_s']]]
+  ['initialize_194',['initialize',['../structrecording__buffer__s.html#a13d0db149a8ffdbfd7a54101fc28ec6c',1,'recording_buffer_s']]],
+  ['is_5fnull_195',['is_null',['../classheap__mem.html#abf7258c5e85bb4b280562d413a998303',1,'heap_mem']]]
 ];

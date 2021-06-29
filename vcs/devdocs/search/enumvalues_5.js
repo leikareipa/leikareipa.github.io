@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['signal_5flost_290',['signal_lost',['../capture_8h.html#a01259dd4659e237afca37701f0940985a719c2aaea2c4550792dce98960861744',1,'capture.h']]],
-  ['sleep_291',['sleep',['../capture_8h.html#a01259dd4659e237afca37701f0940985ac9fab33e9458412c527c3fe8a13ee37d',1,'capture.h']]]
+  ['rgb_5f555_336',['rgb_555',['../capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31a83542aeef98998adcf59900e4a59ad8b',1,'capture.h']]],
+  ['rgb_5f565_337',['rgb_565',['../capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31aad637190c0fbd90844a8bb3201837da8',1,'capture.h']]],
+  ['rgb_5f888_338',['rgb_888',['../capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31a15c17bc94e115748f995df18482e5266',1,'capture.h']]]
 ];

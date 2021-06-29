@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 </div><!--header-->
 <div class="contents">
 
-<p>The interface to VCS's display subsystem.  
+<p>The display subsystem interface.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -145,7 +145,7 @@ vcs_event_c&lt;void&gt; </td><td class="memItemRight" valign="bottom"><b>kd_evDi
 <tr class="separator:ad65798c1e89524a4b1ec7818f1b4f042"><td class="memSeparator" colspan="2"> </td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The interface to VCS's display subsystem. </p>
+<div class="textblock"><p>The display subsystem interface. </p>
 <p>The VCS GUI is responsible for providing the user with real-time means to enter information (e.g. configuring capture parameters), for directing such input to VCS, and for displaying captured frames and other information about VCS's run-time state to the user.</p>
 <p>The display interface decouples the GUI's implementation from the rest of VCS, making it possible to replace the GUI with fairly minimal modification to the rest of VCS.</p>
 <p>VCS's default GUI uses Qt, and its implementation of the display interface can be found in src/display/qt/d_main.cpp.</p>
@@ -523,9 +523,9 @@ vcs_event_c&lt;void&gt; </td><td class="memItemRight" valign="bottom"><b>kd_evDi
 </div><div class="memdoc">
 <p>Lets the GUI know that the size of output frames has changed. The GUI should update the size of its output window accordingly.</p>
 <p>VCS expects the size of the output window to match the size of output frames; although the GUI may choose not to honor this.</p>
-<p>The current size of output frames can be obtained via the scaler interface, src/scaler/scaler.h, by calling ks_output_resolution().</p>
+<p>The current size of output frames can be obtained via the scaler interface, <a class="el" href="scaler_8h.html">src/scaler/scaler.h</a>, by calling <a class="el" href="scaler_8h.html#a00dc0b94b754062e6f540318203bdf78">ks_output_resolution()</a>.</p>
 <p>The following sample Qt 5 code sizes the output window to match the size of VCS's output frames (<em>this</em> is the output window's instance):</p>
-<pre class="fragment"><code class="line"><a class="code" href="structresolution__s.html">resolution_s</a> r = ks_output_resolution();</code>
+<pre class="fragment"><code class="line"><a class="code" href="structresolution__s.html">resolution_s</a> r = <a class="code" href="scaler_8h.html#a00dc0b94b754062e6f540318203bdf78">ks_output_resolution</a>();</code>
 <code class="line">this-&gt;setFixedSize(r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
 </pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a5622698adab1106e3c6affb4652b9f88">kd_update_output_window_title()</a> </dd></dl>
 
@@ -555,6 +555,7 @@ vcs_event_c&lt;void&gt; </td><td class="memItemRight" valign="bottom"><b>kd_evDi
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="ascaler_8h_html_a00dc0b94b754062e6f540318203bdf78"><div class="ttname"><a href="scaler_8h.html#a00dc0b94b754062e6f540318203bdf78">ks_output_resolution</a></div><div class="ttdeci">resolution_s ks_output_resolution(void)</div></div>
 <div class="ttc" id="astructresolution__s_html_a820d69aaad874195f93866b539fcdeb6"><div class="ttname"><a href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">resolution_s::h</a></div><div class="ttdeci">unsigned long h</div><div class="ttdoc">Height (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:55</div></div>
 <div class="ttc" id="astructresolution__s_html"><div class="ttname"><a href="structresolution__s.html">resolution_s</a></div><div class="ttdoc">Describes the resolution of a pixel surface – e.g. a program window or an image buffer.</div><div class="ttdef"><b>Definition:</b> display.h:49</div></div>
 <div class="ttc" id="astructresolution__s_html_ae01e8bac378ef94734144849e8d62d1d"><div class="ttname"><a href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">resolution_s::w</a></div><div class="ttdeci">unsigned long w</div><div class="ttdoc">Width (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:52</div></div>
@@ -562,7 +563,7 @@ vcs_event_c&lt;void&gt; </td><td class="memItemRight" valign="bottom"><b>kd_evDi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_25685f9c6d837c57f295dee081495707.html">display</a></li><li class="navelem"><a class="el" href="display_8h.html">display.h</a></li>
-    <li class="footer">Generated on Mon Jun 28 2021 11:03:51 for VCS 2.4.0 by
+    <li class="footer">Generated on Tue Jun 29 2021 08:56:26 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['empty_163',['empty',['../structrecording__buffer__s.html#a01195b4db9e7c0e448bca2e6f678a954',1,'recording_buffer_s']]]
+  ['count_189',['count',['../classheap__mem.html#a83e74be2cb99b5e86cf646d3ad876b2c',1,'heap_mem']]]
 ];

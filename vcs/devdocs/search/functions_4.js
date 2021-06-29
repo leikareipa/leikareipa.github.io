@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['initialize_166',['initialize',['../structrecording__buffer__s.html#a13d0db149a8ffdbfd7a54101fc28ec6c',1,'recording_buffer_s']]],
-  ['is_5fnull_167',['is_null',['../structheap__bytes__s.html#a3ce11ecb056a8ed046644ca397715023',1,'heap_bytes_s']]]
+  ['full_192',['full',['../structrecording__buffer__s.html#acf36504a4e0de87e981872c76526de70',1,'recording_buffer_s']]]
 ];

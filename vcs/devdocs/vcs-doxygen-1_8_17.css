@@ -198,7 +198,7 @@ hr
 
 #nav-tree-contents
 {
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 #nav-tree-contents > ul,
@@ -388,8 +388,8 @@ hr
 .directory .entry,
 .directory .entry + .desc
 {
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
 	padding-left: 8px !important;
 	padding-right: 10px !important;
 	background-color: white !important;
@@ -511,7 +511,7 @@ hr
 
 #main-menu::before
 {
-	content: "VCS Developer Docs" !important;
+	content: "VCS Dev Docs" !important;
     color: whitesmoke !important;
     padding-left: 10px !important;
     margin-right: var(--main-nav-item-horizontal-spacing) !important;
@@ -600,13 +600,6 @@ hr
 	font-weight: normal !important;
 }
 
-/* Undo the two non-breaking spaces that occur after every n elements in
- * enum value listings.*/
-.memItemRight br + b
-{
-	margin-left: -0.5em !important;
-}
-
 .memItemRight br
 {
 	display: none !important;
@@ -677,8 +670,8 @@ table.memberdecls td[class*="memItem"],
 table.memberdecls td[class*="mdesc"]
 {
 	border-top: 1px solid var(--separating-border-color) !important;
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
 	height: 30px !important;
 	box-sizing: border-box !important;
 }

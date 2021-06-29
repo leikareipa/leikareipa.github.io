@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['point_5fto_122',['point_to',['../structheap__bytes__s.html#a367364bcf068a4347c26fa69d2e48544',1,'heap_bytes_s::point_to(heap_bytes_s&lt; T &gt; &amp;other)'],['../structheap__bytes__s.html#a8dc81f5113512bf05af547fdaddb63e2',1,'heap_bytes_s::point_to(T *const newPtr, const int size)']]],
-  ['pop_123',['pop',['../structrecording__buffer__s.html#aa918844b647dc32b45f50d407ea88ea2',1,'recording_buffer_s']]],
-  ['ptr_124',['ptr',['../structheap__bytes__s.html#a0355a15fd1fe21e34acc12a4ed105eed',1,'heap_bytes_s']]],
-  ['push_125',['push',['../structrecording__buffer__s.html#acb8c560823e5578bc7f892bc80189c8d',1,'recording_buffer_s']]]
+  ['point_5fto_146',['point_to',['../classheap__mem.html#a175a07161e9eb45a183741ad54973f27',1,'heap_mem::point_to(heap_mem&lt; T &gt; &amp;other)'],['../classheap__mem.html#addd90279892a975fab10dd551d812acc',1,'heap_mem::point_to(T *const dataPtr, const int numElements)']]],
+  ['pop_147',['pop',['../structrecording__buffer__s.html#a78bd4c901f985486c212da74b2f76baa',1,'recording_buffer_s']]],
+  ['push_148',['push',['../structrecording__buffer__s.html#a2a94c70044d0006c5ffcf3fe8f8f51b4',1,'recording_buffer_s']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['unrecoverable_5ferror_292',['unrecoverable_error',['../capture_8h.html#a01259dd4659e237afca37701f0940985aa25f609922590b36354b5c18c860821a',1,'capture.h']]],
-  ['up_293',['up',['../anti__tear_8h.html#a87fe0bace9e2f5160db75b20a02b1e09a46c48bec0d282018b9d167eef7711b2c',1,'anti_tear.h']]]
+  ['signal_5flost_339',['signal_lost',['../capture_8h.html#a01259dd4659e237afca37701f0940985a719c2aaea2c4550792dce98960861744',1,'capture.h']]],
+  ['sleep_340',['sleep',['../capture_8h.html#a01259dd4659e237afca37701f0940985ac9fab33e9458412c527c3fe8a13ee37d',1,'capture.h']]]
 ];
