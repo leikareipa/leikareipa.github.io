@@ -269,7 +269,8 @@ hr
 {
 	width: 100% !important;
 	margin: 16px 0 !important;
-	border-radius: 0 !important;
+	border-radius: 7px !important;
+	padding: 6px !important;
 	border-color: var(--separating-border-color) !important;
 }
 
