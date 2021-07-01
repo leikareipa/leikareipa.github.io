@@ -1,13 +1,5 @@
 var anti__tear_8h =
 [
-    [ "KAT_DEFAULT_NUM_MATCHES_REQUIRED", "anti__tear_8h.html#a29b0824c7ec56d5032e288989df3dc87", null ],
-    [ "KAT_DEFAULT_SCAN_DIRECTION", "anti__tear_8h.html#a2df568535c67b45caa33db0aebd82542", null ],
-    [ "KAT_DEFAULT_SCAN_HINT", "anti__tear_8h.html#ab6cffb10655fe7218acce6fd56699eb8", null ],
-    [ "KAT_DEFAULT_STEP_SIZE", "anti__tear_8h.html#a0f38e5292c31c7118e564597ee8f1432", null ],
-    [ "KAT_DEFAULT_THRESHOLD", "anti__tear_8h.html#a3aba01853e353c2d581af672b545394a", null ],
-    [ "KAT_DEFAULT_VISUALIZE_SCAN_RANGE", "anti__tear_8h.html#a4bae63fcc677c15ae636fb7b72bcdcd3", null ],
-    [ "KAT_DEFAULT_VISUALIZE_TEARS", "anti__tear_8h.html#abac85917dc37b1af1e3eff01b75a7db8", null ],
-    [ "KAT_DEFAULT_WINDOW_LENGTH", "anti__tear_8h.html#a028bbf99dc2a2c6b781b00e0b1c68b81", null ],
     [ "anti_tear_scan_direction_e", "anti__tear_8h.html#a87fe0bace9e2f5160db75b20a02b1e09", [
       [ "up", "anti__tear_8h.html#a87fe0bace9e2f5160db75b20a02b1e09a46c48bec0d282018b9d167eef7711b2c", null ],
       [ "down", "anti__tear_8h.html#a87fe0bace9e2f5160db75b20a02b1e09a74e8333ad11685ff3bdae589c8f6e34d", null ]
