@@ -6,6 +6,7 @@
 
 
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -165,14 +166,13 @@ template&lt;typename T&gt; </div>
 <span class="memname"><a class="el" href="classheap__mem.html">heap_mem</a>&lt;T&gt;::()</span></div><div class="memdoc">
 <p>Initializes the object without allocating memory for its data buffer. The memory can be allocated later with <a class="el" href="classheap__mem.html#ac6dfb1db668c622a96a686b761da9666">allocate()</a>.</p>
 <pre class="fragment"><code class="line"><a class="code" href="classheap__mem.html">heap_mem&lt;char&gt;</a> buffer;</code>
-<code class="line"> </code>
 <code class="line"><span class="comment">// buffer.is_null() == true.</span></code>
 <code class="line"><span class="comment">// buffer.count() == 0.</span></code>
 </pre><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Attempting to dereference the object's unallocated data buffer (e.g. with <a class="el" href="classheap__mem.html#a1a67515996f88f51400073d160daa117">heap_mem::operator[]</a>) will result in a bounds-checking assertion failure if the RELEASE_BUILD build flag isn't defined, and undefined behavior otherwise.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classheap__mem.html#ac6dfb1db668c622a96a686b761da9666">allocate()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="classheap__mem.html#ac6dfb1db668c622a96a686b761da9666">allocate()</a> </dd></dl></div>
 <a id="afa410f91e2b7842b62dfbb604ce25de5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afa410f91e2b7842b62dfbb604ce25de5">◆</a></span>heap_mem() <span class="overload">[2/2]</span></h2>
 
@@ -185,14 +185,13 @@ template&lt;typename T&gt; </div>
 <p>Initializes the object and allocates <code>numElements</code> elements of type <code>T</code> for its data buffer.</p>
 <p>This function calls <a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> to perform the memory allocation. See that function's documentation for more information about the memory it allocates.</p>
 <pre class="fragment"><code class="line"><a class="code" href="classheap__mem.html">heap_mem&lt;char&gt;</a> buffer(10);</code>
-<code class="line"> </code>
 <code class="line"><span class="comment">// buffer.is_null() == false.</span></code>
 <code class="line"><span class="comment">// buffer.count() == 10.</span></code>
 <code class="line"><span class="comment">// buffer[0] == 0.</span></code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> </dd></dl></div>
 <h2 class="groupheader">Member function documentation</h2>
 <a id="ac6dfb1db668c622a96a686b761da9666"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac6dfb1db668c622a96a686b761da9666">◆</a></span>allocate()</h2>
@@ -204,7 +203,6 @@ template&lt;typename T&gt; </div>
       
 <span class="memname">void <a class="el" href="classheap__mem.html">heap_mem</a>&lt;T&gt;::allocate(<span class="vcs-param-type">const int</span> <span class="vcs-param-name">elementCount,</span> <span class="vcs-param-type">const char *const</span> <span class="vcs-param-name">reason = nullptr</span>)</span></div><div class="memdoc">
 <p>Allocates memory for the data buffer.</p>
-<dl class="section warning"><dt>Warning</dt><dd>Call <a class="el" href="classheap__mem.html#a13302c7c810fe8a1c8e7925928d38133">release()</a> before re-allocating. Attempting to allocate over an existing data buffer will trigger an assertion failure.</dd></dl>
 <pre class="fragment"><code class="line"><span class="comment">// Allocate memory for 10 ints using the constructor.</span></code>
 <code class="line"><a class="code" href="classheap__mem.html">heap_mem&lt;int&gt;</a> ints(10);</code>
 <code class="line"> </code>
@@ -223,7 +221,8 @@ template&lt;typename T&gt; </div>
 <code class="line">   ints3.allocate(5);</code>
 <code class="line">   <span class="comment">// ints3.count() == 5.</span></code>
 <code class="line">}</code>
-</pre><!-- fragment --> 
+</pre><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>Call <a class="el" href="classheap__mem.html#a13302c7c810fe8a1c8e7925928d38133">release()</a> before re-allocating. Attempting to allocate over an existing data buffer will trigger an assertion failure. </dd></dl>
+
 </div>
 </div>
 <a id="a83e74be2cb99b5e86cf646d3ad876b2c"></a>
@@ -241,10 +240,10 @@ template&lt;typename T&gt; </div>
 <code class="line"><span class="comment">// ints.size() == (11 * sizeof(int)).</span></code>
 </pre><!-- fragment --><pre class="fragment"><code class="line"><a class="code" href="classheap__mem.html">heap_mem&lt;int&gt;</a> ints;</code>
 <code class="line"><span class="comment">// ints.count() == 0.</span></code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classheap__mem.html#a301f738824b24744f6514d5865398292">size()</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="classheap__mem.html#a301f738824b24744f6514d5865398292">size()</a> </dd></dl></div>
 <a id="a8be1c279ab2f9b305c876ce05effbb73"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8be1c279ab2f9b305c876ce05effbb73">◆</a></span>data()</h2>
 
@@ -266,10 +265,10 @@ template&lt;typename T&gt; </div>
 <code class="line"><span class="comment">// You could use the pointer e.g. with the mem* functions.</span></code>
 <code class="line">std::memset(buffer.<a class="code" href="classheap__mem.html#a8be1c279ab2f9b305c876ce05effbb73">data</a>(), 0, buffer.<a class="code" href="classheap__mem.html#a301f738824b24744f6514d5865398292">size</a>());</code>
 </pre><!-- fragment --><dl class="section note"><dt>Note</dt><dd>If the RELEASE_BUILD build flag isn't defined, calling this function when the data buffer is unallocated (<a class="el" href="classheap__mem.html#abf7258c5e85bb4b280562d413a998303">is_null()</a> returns true) will result in an assertion failure.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classheap__mem.html#a1a67515996f88f51400073d160daa117">heap_mem::operator[]</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="classheap__mem.html#a1a67515996f88f51400073d160daa117">heap_mem::operator[]</a> </dd></dl></div>
 <a id="abf7258c5e85bb4b280562d413a998303"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf7258c5e85bb4b280562d413a998303">◆</a></span>is_null()</h2>
 
@@ -296,10 +295,10 @@ template&lt;typename T&gt; </div>
 <code class="line"> </code>
 <code class="line">intsRef.<a class="code" href="classheap__mem.html#a175a07161e9eb45a183741ad54973f27">point_to</a>(ints);</code>
 <code class="line"><span class="comment">// intsRef.is_null() == false.</span></code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classheap__mem.html#ac6dfb1db668c622a96a686b761da9666">allocate()</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="classheap__mem.html#ac6dfb1db668c622a96a686b761da9666">allocate()</a> </dd></dl></div>
 <a id="a1a67515996f88f51400073d160daa117"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a67515996f88f51400073d160daa117">◆</a></span>operator[]()</h2>
 
@@ -322,10 +321,10 @@ template&lt;typename T&gt; </div>
 <code class="line"><span class="comment">// 10 elements have been allocated. Triggers an assertion failure if the</span></code>
 <code class="line"><span class="comment">// RELEASE_BUILD build flag isn't defined.</span></code>
 <code class="line">buffer[10] = 0;</code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classheap__mem.html#a8be1c279ab2f9b305c876ce05effbb73">data()</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="classheap__mem.html#a8be1c279ab2f9b305c876ce05effbb73">data()</a> </dd></dl></div>
 <a id="a175a07161e9eb45a183741ad54973f27"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a175a07161e9eb45a183741ad54973f27">◆</a></span>point_to() <span class="overload">[1/2]</span></h2>
 
@@ -362,10 +361,10 @@ template&lt;typename T&gt; </div>
 <code class="line"> </code>
 <code class="line"><span class="comment">// Will now correctly trigger the bounds-checking of operator[].</span></code>
 <code class="line">intsRef[0];</code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classheap__mem.html#addd90279892a975fab10dd551d812acc">point_to(T *const, const int)</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="classheap__mem.html#addd90279892a975fab10dd551d812acc">point_to(T *const, const int)</a> </dd></dl></div>
 <a id="addd90279892a975fab10dd551d812acc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#addd90279892a975fab10dd551d812acc">◆</a></span>point_to() <span class="overload">[2/2]</span></h2>
 
@@ -383,10 +382,10 @@ template&lt;typename T&gt; </div>
 <code class="line"> </code>
 <code class="line">ints[0] = 1234;</code>
 <code class="line"><span class="comment">// intsRef[0] == 1234.</span></code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classheap__mem.html#a175a07161e9eb45a183741ad54973f27">point_to(heap_mem&lt;T&gt; &amp;)</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="classheap__mem.html#a175a07161e9eb45a183741ad54973f27">point_to(heap_mem&lt;T&gt; &amp;)</a> </dd></dl></div>
 <a id="a13302c7c810fe8a1c8e7925928d38133"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a13302c7c810fe8a1c8e7925928d38133">◆</a></span>release()</h2>
 
@@ -423,10 +422,10 @@ template&lt;typename T&gt; </div>
 <code class="line">intsRef.<a class="code" href="classheap__mem.html#a13302c7c810fe8a1c8e7925928d38133">release</a>();</code>
 <code class="line"><span class="comment">// intsRef.is_null() == true.</span></code>
 <code class="line"><span class="comment">// ints.is_null() == false.</span></code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="memory_8h.html#ac9ce5ee32b731b37955730c94f351556">kmem_release()</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="memory_8h.html#ac9ce5ee32b731b37955730c94f351556">kmem_release()</a> </dd></dl></div>
 <a id="a301f738824b24744f6514d5865398292"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a301f738824b24744f6514d5865398292">◆</a></span>size()</h2>
 
@@ -440,10 +439,10 @@ template&lt;typename T&gt; </div>
 <pre class="fragment"><code class="line"><a class="code" href="classheap__mem.html">heap_mem&lt;int&gt;</a> ints(11);</code>
 <code class="line"><span class="comment">// ints.size() == (11 * sizeof(int)).</span></code>
 <code class="line"><span class="comment">// ints.count() == 11.</span></code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classheap__mem.html#a83e74be2cb99b5e86cf646d3ad876b2c">count()</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="classheap__mem.html#a83e74be2cb99b5e86cf646d3ad876b2c">count()</a> </dd></dl></div>
 <a id="a23d6fcff30e231deaa5bbcb1558d9ae4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a23d6fcff30e231deaa5bbcb1558d9ae4">◆</a></span>size_check()</h2>
 
@@ -471,18 +470,18 @@ template&lt;typename T&gt; </div>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclassheap__mem_html_a13302c7c810fe8a1c8e7925928d38133"><div class="ttname"><a href="classheap__mem.html#a13302c7c810fe8a1c8e7925928d38133">heap_mem::release</a></div><div class="ttdeci">void release(void)</div><div class="ttdef"><b>Definition:</b> heap_mem.h:396</div></div>
+<div class="ttc" id="aclassheap__mem_html_a13302c7c810fe8a1c8e7925928d38133"><div class="ttname"><a href="classheap__mem.html#a13302c7c810fe8a1c8e7925928d38133">heap_mem::release</a></div><div class="ttdeci">void release(void)</div><div class="ttdef"><b>Definition:</b> heap_mem.h:394</div></div>
 <div class="ttc" id="aclassheap__mem_html"><div class="ttname"><a href="classheap__mem.html">heap_mem</a></div><div class="ttdoc">A C++ wrapper for the memory subsystem interface.</div><div class="ttdef"><b>Definition:</b> heap_mem.h:93</div></div>
-<div class="ttc" id="aclassheap__mem_html_a23d6fcff30e231deaa5bbcb1558d9ae4"><div class="ttname"><a href="classheap__mem.html#a23d6fcff30e231deaa5bbcb1558d9ae4">heap_mem::size_check</a></div><div class="ttdeci">unsigned size_check(const unsigned size) const</div><div class="ttdef"><b>Definition:</b> heap_mem.h:228</div></div>
-<div class="ttc" id="aclassheap__mem_html_a175a07161e9eb45a183741ad54973f27"><div class="ttname"><a href="classheap__mem.html#a175a07161e9eb45a183741ad54973f27">heap_mem::point_to</a></div><div class="ttdeci">void point_to(heap_mem&lt;T&gt; &amp;other)</div><div class="ttdef"><b>Definition:</b> heap_mem.h:275</div></div>
-<div class="ttc" id="aclassheap__mem_html_a301f738824b24744f6514d5865398292"><div class="ttname"><a href="classheap__mem.html#a301f738824b24744f6514d5865398292">heap_mem::size</a></div><div class="ttdeci">unsigned size(void) const</div><div class="ttdef"><b>Definition:</b> heap_mem.h:453</div></div>
-<div class="ttc" id="aclassheap__mem_html_a8be1c279ab2f9b305c876ce05effbb73"><div class="ttname"><a href="classheap__mem.html#a8be1c279ab2f9b305c876ce05effbb73">heap_mem::data</a></div><div class="ttdeci">T * data(void) const</div><div class="ttdef"><b>Definition:</b> heap_mem.h:203</div></div>
-<div class="ttc" id="aclassheap__mem_html_ac6dfb1db668c622a96a686b761da9666"><div class="ttname"><a href="classheap__mem.html#ac6dfb1db668c622a96a686b761da9666">heap_mem::allocate</a></div><div class="ttdeci">void allocate(const int elementCount, const char *const reason=nullptr)</div><div class="ttdef"><b>Definition:</b> heap_mem.h:339</div></div>
+<div class="ttc" id="aclassheap__mem_html_a23d6fcff30e231deaa5bbcb1558d9ae4"><div class="ttname"><a href="classheap__mem.html#a23d6fcff30e231deaa5bbcb1558d9ae4">heap_mem::size_check</a></div><div class="ttdeci">unsigned size_check(const unsigned size) const</div><div class="ttdef"><b>Definition:</b> heap_mem.h:226</div></div>
+<div class="ttc" id="aclassheap__mem_html_a175a07161e9eb45a183741ad54973f27"><div class="ttname"><a href="classheap__mem.html#a175a07161e9eb45a183741ad54973f27">heap_mem::point_to</a></div><div class="ttdeci">void point_to(heap_mem&lt;T&gt; &amp;other)</div><div class="ttdef"><b>Definition:</b> heap_mem.h:273</div></div>
+<div class="ttc" id="aclassheap__mem_html_a301f738824b24744f6514d5865398292"><div class="ttname"><a href="classheap__mem.html#a301f738824b24744f6514d5865398292">heap_mem::size</a></div><div class="ttdeci">unsigned size(void) const</div><div class="ttdef"><b>Definition:</b> heap_mem.h:451</div></div>
+<div class="ttc" id="aclassheap__mem_html_a8be1c279ab2f9b305c876ce05effbb73"><div class="ttname"><a href="classheap__mem.html#a8be1c279ab2f9b305c876ce05effbb73">heap_mem::data</a></div><div class="ttdeci">T * data(void) const</div><div class="ttdef"><b>Definition:</b> heap_mem.h:201</div></div>
+<div class="ttc" id="aclassheap__mem_html_ac6dfb1db668c622a96a686b761da9666"><div class="ttname"><a href="classheap__mem.html#ac6dfb1db668c622a96a686b761da9666">heap_mem::allocate</a></div><div class="ttdeci">void allocate(const int elementCount, const char *const reason=nullptr)</div><div class="ttdef"><b>Definition:</b> heap_mem.h:337</div></div>
 <!-- start footer part -->
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classheap__mem.html">heap_mem</a></li>
-    <li class="footer">Generated on Thu Jul 1 2021 09:01:32 for VCS 2.4.0 by
+    <li class="footer">Generated on Fri Jul 2 2021 08:22:57 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>

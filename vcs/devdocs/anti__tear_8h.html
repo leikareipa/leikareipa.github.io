@@ -6,6 +6,7 @@
 
 
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -202,10 +203,10 @@ $(document).ready(function(){initNavTree('anti__tear_8h.html',''); initResizable
 <dl class="section warning"><dt>Warning</dt><dd>This function should not be called before the subsystem has been initialized with <a class="el" href="anti__tear_8h.html#a2c07f76b77e3a562fc976db21b24aa27">kat_initialize_anti_tear()</a>.</dd>
 <dd>
 The pointer returned by this function should be considered invalid after <a class="el" href="anti__tear_8h.html#a20d423ecc670296a4397dcbcde07df81">kat_release_anti_tear()</a> has been called.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="anti__tear_8h.html#a9d706efde4f4f93951b3719d8bcfc38a">kat_set_anti_tear_enabled()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="anti__tear_8h.html#a9d706efde4f4f93951b3719d8bcfc38a">kat_set_anti_tear_enabled()</a> </dd></dl></div>
 <a id="a2c07f76b77e3a562fc976db21b24aa27"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c07f76b77e3a562fc976db21b24aa27">◆</a></span>kat_initialize_anti_tear()</h2>
 
@@ -216,10 +217,10 @@ The pointer returned by this function should be considered invalid after <a clas
 <p>Initializes the anti-tear subsystem.</p>
 <p>By default, VCS will call this function on program startup.</p>
 <dl class="section note"><dt>Note</dt><dd>Will trigger an assertion failure if the initialization fails.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="anti__tear_8h.html#a20d423ecc670296a4397dcbcde07df81">kat_release_anti_tear()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="anti__tear_8h.html#a20d423ecc670296a4397dcbcde07df81">kat_release_anti_tear()</a> </dd></dl></div>
 <a id="a20d423ecc670296a4397dcbcde07df81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a20d423ecc670296a4397dcbcde07df81">◆</a></span>kat_release_anti_tear()</h2>
 
@@ -231,10 +232,10 @@ The pointer returned by this function should be considered invalid after <a clas
 <p>By default, VCS will call this function on program exit.</p>
 <p>Returns true on success; false otherwise.</p>
 <dl class="section warning"><dt>Warning</dt><dd>Calling this function – regardless of its return value – invalidates the pointer returned by <a class="el" href="anti__tear_8h.html#af5d7a92e2cc36b12ae7d7a330861948f">kat_anti_tear()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="anti__tear_8h.html#a2c07f76b77e3a562fc976db21b24aa27">kat_initialize_anti_tear()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="anti__tear_8h.html#a2c07f76b77e3a562fc976db21b24aa27">kat_initialize_anti_tear()</a> </dd></dl></div>
 <a id="a9d706efde4f4f93951b3719d8bcfc38a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d706efde4f4f93951b3719d8bcfc38a">◆</a></span>kat_set_anti_tear_enabled()</h2>
 
@@ -270,10 +271,10 @@ The pointer returned by this function should be considered invalid after <a clas
 <p>Sets the number of pixels in the row of an input image that must pass the delta value threshold for the row to be considered new data relative to the previous input image.</p>
 <p>Due to analog noise etc., the tear scanner is expected to generate some false positives when comparing pixels between adjacent captured frames. This setting reduces the scanner's sensitivity by allowing a greater number of false positives without triggering a false detection of a tear.</p>
 <p>The less temporal pixel noise in the input images, the lower the value of <code>mr</code> can be.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="anti__tear_8h.html#ad62c57063c52aa53ff56524688c3f590">kat_set_threshold()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="anti__tear_8h.html#ad62c57063c52aa53ff56524688c3f590">kat_set_threshold()</a> </dd></dl></div>
 <a id="ae263095f6f61d676194fe9ead2ae7a97"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae263095f6f61d676194fe9ead2ae7a97">◆</a></span>kat_set_range()</h2>
 
@@ -284,10 +285,10 @@ The pointer returned by this function should be considered invalid after <a clas
 <p>Sets the vertical range over which the anti-tearer will scan input images for tears.</p>
 <p><code>min</code> is the vertical pixel row offset from the first pixel row in the image toward the last row, while <code>max</code> is the vertical pixel row offset from the last pixel row in the image toward the first row. If the current scan direction is down, the first pixel row is at the top of the image and the last row is at the bottom, whereas if the scan direction is up, the first pixel row is at the bottom of the image and the last row is at the top.</p>
 <p>For example, to scan the bottom half of a 640 x 480 image when the scan direction is down, pass 240 for <code>min</code> (start at the 240th vertical pixel row from the top) and 0 for <code>max</code> (scan down to the 480 - <code>max</code> = 480th vertical pixel row). To scan the same region of the image when the scan direction is up, pass 0 for <code>min</code> (start at the 480 - <code>min</code> = 480th pixel row) and 240 for <code>max</code> (scan up to the 240th pixel row).</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="anti__tear_8h.html#a09f580d7a57e0b13c60eb721cd41d798">kat_set_scan_direction()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="anti__tear_8h.html#a09f580d7a57e0b13c60eb721cd41d798">kat_set_scan_direction()</a> </dd></dl></div>
 <a id="a09f580d7a57e0b13c60eb721cd41d798"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a09f580d7a57e0b13c60eb721cd41d798">◆</a></span>kat_set_scan_direction()</h2>
 
@@ -356,7 +357,7 @@ The pointer returned by this function should be considered invalid after <a clas
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5e2795aa7dae10bcb6100770a11d9623.html">anti_tear</a></li><li class="navelem"><a class="el" href="anti__tear_8h.html">anti_tear.h</a></li>
-    <li class="footer">Generated on Thu Jul 1 2021 09:01:32 for VCS 2.4.0 by
+    <li class="footer">Generated on Fri Jul 2 2021 08:22:57 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>

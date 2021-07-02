@@ -6,6 +6,7 @@
 
 
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -268,10 +269,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 </div><div class="memdoc">
 <p>Enumerates the de-interlacing modes recognized by the capture subsystem.</p>
 <dl class="section note"><dt>Note</dt><dd>The capture subsystem itself doesn't apply de-interlacing, it just asks the capture device to do so. The capture device in turn may support only some or none of these modes, and/or might apply them only when receiving an interlaced signal.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a917d7e71681fb7b566fd7dad70440fcb">kc_set_deinterlacing_mode()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a917d7e71681fb7b566fd7dad70440fcb">kc_set_deinterlacing_mode()</a> </dd></dl></div>
 <a id="a01259dd4659e237afca37701f0940985"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a01259dd4659e237afca37701f0940985">◆</a></span>capture_event_e</h2>
 
@@ -292,7 +293,7 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 </table>
 </div><div class="memdoc">
 <p>VCS will periodically query the capture subsystem for the latest capture events. This enumerates the range of capture events that the capture subsystem can report back.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue()</a> </dd></dl>
+
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a01259dd4659e237afca37701f0940985a334c4a4c42fdb79d7ebc3e73b517e6f8"></a>none</td><td class="fielddoc"><p>No capture events to report. Although some capture events may have occurred, the capture subsystem chooses to not inform VCS of them. </p>
 </td></tr>
@@ -315,7 +316,7 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 </table>
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue()</a> </dd></dl></div>
 <a id="ad99ae6bee14419e8625fdfc0cce62b31"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad99ae6bee14419e8625fdfc0cce62b31">◆</a></span>capture_pixel_format_e</h2>
 
@@ -336,7 +337,7 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 </table>
 </div><div class="memdoc">
 <p>Enumerates the pixel color formats recognized by the capture subsystem for captured frames.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structcaptured__frame__s.html" title="Stores the data of an image received from a capture device.">captured_frame_s</a> </dd></dl>
+
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad99ae6bee14419e8625fdfc0cce62b31a83542aeef98998adcf59900e4a59ad8b"></a>rgb_555</td><td class="fielddoc"><p>16 bits per pixel: 5 bits for red, 5 bits for green, 5 bits for blue, and 1 bit of padding. No alpha. </p>
 </td></tr>
@@ -347,7 +348,7 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 </table>
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="structcaptured__frame__s.html" title="Stores the data of an image received from a capture device.">captured_frame_s</a> </dd></dl></div>
 <h2 class="groupheader">Function documentation</h2>
 <a id="adb8b80446b127b6553db60e53092baac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb8b80446b127b6553db60e53092baac">◆</a></span>kc_capture_mutex()</h2>
@@ -507,10 +508,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
       
 <span class="memname"><span class="vcs-member-name">refresh_rate_s kc_get_capture_refresh_rate</span>()</span></div><div class="memdoc">
 <p>Returns the refresh rate of the current capture signal.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a> </dd></dl></div>
 <a id="a9ae89f490ed737b94d5e91f03b24bddc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ae89f490ed737b94d5e91f03b24bddc">◆</a></span>kc_get_capture_resolution()</h2>
 
@@ -521,10 +522,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 <p>Returns the capture device's current input/output resolution.</p>
 <dl class="section note"><dt>Note</dt><dd>The capture device's input and output resolutions are expected to always be equal; any scaling of captured frames is expected to be done by VCS and not the capture device.</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Don't take this to be the resolution of the latest captured frame (returned from <a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a>), as the capture device's resolution may have changed since that frame was captured.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a>, <a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a>, <a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a> </dd></dl></div>
 <a id="ad0535a338fd91b79b6b6de0b3e290c47"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0535a338fd91b79b6b6de0b3e290c47">◆</a></span>kc_get_capture_video_mode()</h2>
 
@@ -533,10 +534,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
       
 <span class="memname"><a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a> kc_get_capture_video_mode()</span></div><div class="memdoc">
 <p>Returns the current video mode of the capture device's input signal.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a2173d3c9f085a1a7476353e656a49075">kc_get_capture_refresh_rate()</a>, <a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a2173d3c9f085a1a7476353e656a49075">kc_get_capture_refresh_rate()</a>, <a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a> </dd></dl></div>
 <a id="a4893687cb205b317fa3be2c9eaa5cef0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4893687cb205b317fa3be2c9eaa5cef0">◆</a></span>kc_get_device_api_name()</h2>
 
@@ -557,10 +558,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 <span class="memname"><span class="vcs-member-name">std::string kc_get_device_driver_version</span>()</span></div><div class="memdoc">
 <p>Returns a string that identifies the capture device's driver version; e.g. "14.12.3".</p>
 <p>Will return "Unknown" if the firmware version is not known.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa3a32c010a31c956aa2de4e87a642e2e">kc_get_device_firmware_version()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aa3a32c010a31c956aa2de4e87a642e2e">kc_get_device_firmware_version()</a> </dd></dl></div>
 <a id="aa3a32c010a31c956aa2de4e87a642e2e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3a32c010a31c956aa2de4e87a642e2e">◆</a></span>kc_get_device_firmware_version()</h2>
 
@@ -570,10 +571,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 <span class="memname"><span class="vcs-member-name">std::string kc_get_device_firmware_version</span>()</span></div><div class="memdoc">
 <p>Returns a string that identifies the capture device's firmware version; e.g. "14.12.3".</p>
 <p>Will return "Unknown" if the firmware version is not known.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#abe82b8bc0e9aad8c4b9ffa835302f5cb">kc_get_device_driver_version()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#abe82b8bc0e9aad8c4b9ffa835302f5cb">kc_get_device_driver_version()</a> </dd></dl></div>
 <a id="aa82129076a792668a1da52aea243294e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa82129076a792668a1da52aea243294e">◆</a></span>kc_get_device_input_channel_idx()</h2>
 
@@ -583,10 +584,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 <span class="memname"><span class="vcs-member-name">unsigned kc_get_device_input_channel_idx</span>()</span></div><div class="memdoc">
 <p>Returns the index value of the capture device's input channel on which the device is currently listening for signals. The value is in the range [0,n-1], where n = <a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a>.</p>
 <p>If the capture device has more input channels than are supported by the interface, the interface is expected to map the index to a consecutive range. For example, if channels #1, #5, and #6 on the capture device are available to the interface, capturing on channel #5 would correspond to an index value of 1, with index 0 being channel #1 and index 2 channel #6.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl></div>
 <a id="a9605cca11c5b1559383b773dc0d67af1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9605cca11c5b1559383b773dc0d67af1">◆</a></span>kc_get_device_maximum_input_count()</h2>
 
@@ -596,10 +597,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 <span class="memname"><span class="vcs-member-name">int kc_get_device_maximum_input_count</span>()</span></div><div class="memdoc">
 <p>Returns the number of input channels on the capture device that're available to the interface.</p>
 <p>The value returned is an integer in the range [1,n] such that if the capture device has, for instance, 16 input channels and the interface can use two of them, 2 is returned.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a> </dd></dl></div>
 <a id="a8cc822ab84bb916d4afa59e95f144c1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8cc822ab84bb916d4afa59e95f144c1e">◆</a></span>kc_get_device_maximum_resolution()</h2>
 
@@ -609,10 +610,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 <span class="memname"><a class="el" href="structresolution__s.html">resolution_s</a> kc_get_device_maximum_resolution()</span></div><div class="memdoc">
 <p>Returns the maximum capture resolution supported by the capture device.</p>
 <dl class="section note"><dt>Note</dt><dd>This resolution may be smaller - but not larger - than the maximum capture resolution supported by the capture device.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl></div>
 <a id="aef9e55bdfc6885fced7fa787a937c128"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef9e55bdfc6885fced7fa787a937c128">◆</a></span>kc_get_device_minimum_resolution()</h2>
 
@@ -622,10 +623,10 @@ vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_e
 <span class="memname"><a class="el" href="structresolution__s.html">resolution_s</a> kc_get_device_minimum_resolution()</span></div><div class="memdoc">
 <p>Returns the minimum capture resolution supported by the capture device.</p>
 <dl class="section note"><dt>Note</dt><dd>This resolution may be larger - but not smaller - than the minimum capture resolution supported by the capture device.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl></div>
 <a id="a7211579132596d6b2c41990d751dd6e9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7211579132596d6b2c41990d751dd6e9">◆</a></span>kc_get_device_name()</h2>
 
@@ -647,10 +648,10 @@ VisionRGB-PRO2".</p>
       
 <span class="memname"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> kc_get_device_video_parameter_defaults()</span></div><div class="memdoc">
 <p>Returns the capture device's default video signal parameters.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a> </dd></dl></div>
 <a id="a8ccd158b6f2ceed31f5836d1ecb1e124"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ccd158b6f2ceed31f5836d1ecb1e124">◆</a></span>kc_get_device_video_parameter_maximums()</h2>
 
@@ -659,10 +660,10 @@ VisionRGB-PRO2".</p>
       
 <span class="memname"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> kc_get_device_video_parameter_maximums()</span></div><div class="memdoc">
 <p>Returns the maximum value supported by the capture device for each video signal parameter.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
 <a id="abad7b023845886a56a92363448a62d74"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abad7b023845886a56a92363448a62d74">◆</a></span>kc_get_device_video_parameter_minimums()</h2>
 
@@ -671,10 +672,10 @@ VisionRGB-PRO2".</p>
       
 <span class="memname"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> kc_get_device_video_parameter_minimums()</span></div><div class="memdoc">
 <p>Returns the minimum value supported by the capture device for each video signal parameter.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
 <a id="acc9addf5be34bea48a9bf16acaaacfc3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acc9addf5be34bea48a9bf16acaaacfc3">◆</a></span>kc_get_device_video_parameters()</h2>
 
@@ -683,10 +684,10 @@ VisionRGB-PRO2".</p>
       
 <span class="memname"><a class="el" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> kc_get_device_video_parameters()</span></div><div class="memdoc">
 <p>Returns the capture device's current video signal parameters.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
 <a id="ace498676712ab27536873d4ccf186ae1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace498676712ab27536873d4ccf186ae1">◆</a></span>kc_get_frame_buffer()</h2>
 
@@ -695,17 +696,17 @@ VisionRGB-PRO2".</p>
       
 <span class="memname">const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp; kc_get_frame_buffer()</span></div><div class="memdoc">
 <p>Returns a reference to the most recent captured frame.</p>
+<p>To ensure that the frame buffer's data isn't modified by another thread while you're accessing it, acquire the capture mutex before calling this function.</p>
 <pre class="fragment"><code class="line"><span class="comment">// The capture mutex should be locked first, to ensure that the frame buffer</span></code>
 <code class="line"><span class="comment">// isn't modified by another thread while we're accessing its data.</span></code>
 <code class="line">std::lock_guard&lt;std::mutex&gt; lock(<a class="code" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex</a>());</code>
 <code class="line"> </code>
 <code class="line"><span class="keyword">const</span> <span class="keyword">auto</span> &amp;frameBuffer = <a class="code" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer</a>();</code>
 <code class="line"><span class="comment">// Access the frame buffer's data...</span></code>
-</pre><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>To ensure that the frame buffer's data isn't modified by another thread while you're accessing it, acquire the capture mutex before calling this function.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a>, <a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a>, <a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a> </dd></dl></div>
 <a id="aabfe0198ffaaff02971c887d179a5bf9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aabfe0198ffaaff02971c887d179a5bf9">◆</a></span>kc_get_missed_frames_count()</h2>
 
@@ -738,10 +739,10 @@ VisionRGB-PRO2".</p>
       
 <span class="memname"><span class="vcs-member-name">bool kc_has_valid_signal</span>()</span></div><div class="memdoc">
 <p>Returns true if the current capture signal is valid; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd>has_invalid_signal(), <a class="el" href="capture_8h.html#a0bfdd3bc863edc59cca58704265305f5">kc_is_receiving_signal()</a>, <a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a>, <a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a0bfdd3bc863edc59cca58704265305f5">kc_is_receiving_signal()</a>, <a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a>, <a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl></div>
 <a id="a66ea9368c0a2ce32e4609e159fc4a476"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a66ea9368c0a2ce32e4609e159fc4a476">◆</a></span>kc_initialize_capture()</h2>
 
@@ -759,10 +760,10 @@ VisionRGB-PRO2".</p>
 <code class="line">{</code>
 <code class="line">   printf(<span class="stringliteral">"Captured a frame (%lu x %lu)\n"</span>, frame.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, frame.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
 <code class="line">});</code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a>, <a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a>, <a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a> </dd></dl></div>
 <a id="a2e1945229a8b6d4e039bcf808c38d995"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e1945229a8b6d4e039bcf808c38d995">◆</a></span>kc_initialize_device()</h2>
 
@@ -773,10 +774,10 @@ VisionRGB-PRO2".</p>
 <p>Initializes the capture device.</p>
 <p>Returns true on success; false otherwise.</p>
 <dl class="section warning"><dt>Warning</dt><dd>Don't call this function directly. Instead, call <a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, which will initialize both the capture device and the capture subsystem.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a6b0e4d27a4f2053f1fb6367bb10af4ea">kc_release_device()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a6b0e4d27a4f2053f1fb6367bb10af4ea">kc_release_device()</a> </dd></dl></div>
 <a id="a0bfdd3bc863edc59cca58704265305f5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0bfdd3bc863edc59cca58704265305f5">◆</a></span>kc_is_receiving_signal()</h2>
 
@@ -785,10 +786,10 @@ VisionRGB-PRO2".</p>
       
 <span class="memname"><span class="vcs-member-name">bool kc_is_receiving_signal</span>()</span></div><div class="memdoc">
 <p>Returns true if the capture device's active input channel is currently receiving a signal; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a>, <a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a>, <a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a>, <a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a>, <a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl></div>
 <a id="a9d8938a91f890c5ff8612255c56add9e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d8938a91f890c5ff8612255c56add9e">◆</a></span>kc_mark_frame_buffer_as_processed()</h2>
 
@@ -821,10 +822,10 @@ VisionRGB-PRO2".</p>
 <span class="memname"><span class="vcs-member-name">void kc_release_capture</span>()</span></div><div class="memdoc">
 <p>Releases the capture subsystem.</p>
 <p>By default, VCS will call this function on program exit.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> </dd></dl></div>
 <a id="a6b0e4d27a4f2053f1fb6367bb10af4ea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b0e4d27a4f2053f1fb6367bb10af4ea">◆</a></span>kc_release_device()</h2>
 
@@ -836,10 +837,10 @@ VisionRGB-PRO2".</p>
 <p>By default, this function will be called by <a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a>, which you should call if you want to release the capture device.</p>
 <p>Returns true on success; false otherwise.</p>
 <dl class="section warning"><dt>Warning</dt><dd>Don't call this function directly. Instead, call <a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a>, which will release both the capture device and the capture subsystem (they are interlinked).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a2e1945229a8b6d4e039bcf808c38d995">kc_initialize_device()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a2e1945229a8b6d4e039bcf808c38d995">kc_initialize_device()</a> </dd></dl></div>
 <a id="af7429f44115159f37a2dbe8816fba256"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7429f44115159f37a2dbe8816fba256">◆</a></span>kc_set_capture_input_channel()</h2>
 
@@ -849,10 +850,10 @@ VisionRGB-PRO2".</p>
 <span class="memname"><span class="vcs-member-name">bool kc_set_capture_input_channel</span>(<span class="vcs-param-type">const unsigned</span> <span class="vcs-param-name">idx</span>)</span></div><div class="memdoc">
 <p>Tells the capture device to start listening for signals on the given input channel.</p>
 <p>Returns true on success; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl></div>
 <a id="aa4eea05780910ea03cd81b9ca0a1dbe7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa4eea05780910ea03cd81b9ca0a1dbe7">◆</a></span>kc_set_capture_pixel_format()</h2>
 
@@ -862,10 +863,10 @@ VisionRGB-PRO2".</p>
 <span class="memname"><span class="vcs-member-name">bool kc_set_capture_pixel_format</span>(<a class="el vcs-param-type" href="capture_8h.html#ad99ae6bee14419e8625fdfc0cce62b31">capture_pixel_format_e</a> <span class="vcs-param-name">pf</span>)</span></div><div class="memdoc">
 <p>Tells the capture device to store its captured frames using the given pixel format.</p>
 <p>Returns true on success; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a8deeb65610bc4e70638f354c9d8258a5">kc_get_capture_pixel_format()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a8deeb65610bc4e70638f354c9d8258a5">kc_get_capture_pixel_format()</a> </dd></dl></div>
 <a id="a5922629d625e283e75518802fcba07f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5922629d625e283e75518802fcba07f0">◆</a></span>kc_set_capture_resolution()</h2>
 
@@ -874,13 +875,13 @@ VisionRGB-PRO2".</p>
       
 <span class="memname"><span class="vcs-member-name">bool kc_set_capture_resolution</span>(<a class="el vcs-param-type" href="structresolution__s.html">resolution_s</a> <span class="vcs-param-name">r</span>)</span></div><div class="memdoc">
 <p>Tells the capture device to adopt the given resolution as its input and output resolution.</p>
+<p>Returns true on success; false otherwise.</p>
 <dl class="section note"><dt>Note</dt><dd>The capture device must adopt this as both its input and output resolution. For example, if this resolution is 800 x 600, the capture device should interpret the video signal as if it were 800 x 600, rather than scaling the frame to 800 x 600 after capturing.</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Since this will be set as the capture device's input resolution, captured frames may exhibit artefacting if the resolution doesn't match the video signal's true resolution.</dd></dl>
-<p>Returns true on success; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a> </dd></dl></div>
 <a id="a917d7e71681fb7b566fd7dad70440fcb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a917d7e71681fb7b566fd7dad70440fcb">◆</a></span>kc_set_deinterlacing_mode()</h2>
 
@@ -902,10 +903,10 @@ VisionRGB-PRO2".</p>
 <span class="memname"><span class="vcs-member-name">bool kc_set_video_signal_parameters</span>(<a class="el vcs-param-type" href="structvideo__signal__parameters__s.html">video_signal_parameters_s</a> <span class="vcs-param-name">p</span>)</span></div><div class="memdoc">
 <p>Assigns to the capture device the given video signal parameters.</p>
 <p>Returns true on success; false otherwise.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
 <h2 class="groupheader">Variable documentation</h2>
 <a id="a27e2ca2dfafb694d6097fa0cde3f4499"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a27e2ca2dfafb694d6097fa0cde3f4499">◆</a></span>kc_evInvalidDevice</h2>
@@ -913,7 +914,7 @@ VisionRGB-PRO2".</p>
 <div class="memitem">
 <div class="memproto">
       
-<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evInvalidDevice</span>(</span></div><div class="memdoc">
+<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evInvalidDevice</span></span></div><div class="memdoc">
 <p>An event fired when the capture subsystem reports its capture device to be invalid. An invalid capture device can't be used.</p>
 <p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
@@ -925,7 +926,7 @@ VisionRGB-PRO2".</p>
 <div class="memitem">
 <div class="memproto">
       
-<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evInvalidSignal</span>(</span></div><div class="memdoc">
+<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evInvalidSignal</span></span></div><div class="memdoc">
 <p>An event fired when the capture device reports its input signal to be invalid; e.g. of an unsupported resolution.</p>
 <p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
@@ -937,7 +938,7 @@ VisionRGB-PRO2".</p>
 <div class="memitem">
 <div class="memproto">
       
-<span class="memname">vcs_event_c&lt;const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp;&gt; kc_evNewCapturedFrame(</span></div><div class="memdoc">
+<span class="memname">vcs_event_c&lt;const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp;&gt; kc_evNewCapturedFrame</span></div><div class="memdoc">
 <p>An event fired when the capture subsystem makes a new captured frame available.</p>
 <p>The event won't be fired at the exact time of capture but rather once VCS has polled the capture subsystem and found that a new frame is available. In other words, the event is fired by VCS's event loop rather than by the capture subsystem.</p>
 <p>Frames that don't register on calls to <a class="el" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue()</a> won't generate this event.</p>
@@ -962,17 +963,17 @@ VisionRGB-PRO2".</p>
 <code class="line">   printf(<span class="stringliteral">"Scaled to %lu x %lu.\n"</span>, frame.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, frame.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
 <code class="line">});</code>
 </pre><!-- fragment --><dl class="section note"><dt>Note</dt><dd>The capture mutex must be locked before firing this event, including before acquiring the frame reference from <a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a>, <a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a>, <a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a> </dd></dl></div>
 <a id="ab2467dc85f9af11473597f5e5f9c0295"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2467dc85f9af11473597f5e5f9c0295">◆</a></span>kc_evNewProposedVideoMode</h2>
 
 <div class="memitem">
 <div class="memproto">
       
-<span class="memname">vcs_event_c&lt;const <a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&amp;&gt; kc_evNewProposedVideoMode(</span></div><div class="memdoc">
+<span class="memname">vcs_event_c&lt;const <a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&amp;&gt; kc_evNewProposedVideoMode</span></div><div class="memdoc">
 <p>An event fired when the capture subsystem reports its input signal to have changed in video mode (e.g. resolution or refresh rate).</p>
 <p>This event is to be treated as a proposal in that the video mode is what the capture device thinks is correct but which VCS might disagree with, e.g. as per an alias resolution.</p>
 <p>You can accept the mode proposal by firing the kc_evNewVideoMode event, or call <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> to change it.</p>
@@ -990,59 +991,59 @@ VisionRGB-PRO2".</p>
 <code class="line">       kc_evNewVideoMode.fire(videoMode);</code>
 <code class="line">   }</code>
 <code class="line">});</code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a72c5b3c9569aca6c7dbe4a82286143c3">kc_evNewVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl></div>
 <a id="a72c5b3c9569aca6c7dbe4a82286143c3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a72c5b3c9569aca6c7dbe4a82286143c3">◆</a></span>kc_evNewVideoMode</h2>
 
 <div class="memitem">
 <div class="memproto">
       
-<span class="memname">vcs_event_c&lt;const <a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&amp;&gt; kc_evNewVideoMode(</span></div><div class="memdoc">
+<span class="memname">vcs_event_c&lt;const <a class="el" href="structcapture__video__mode__s.html">capture_video_mode_s</a>&amp;&gt; kc_evNewVideoMode</span></div><div class="memdoc">
 <p>An event fired when the capture video mode has changed.</p>
 <p>It's not guaranteed that the new video mode is different from the previous one, although usually it will be. The mode should be treated as new regardless – or, if you will, as a resetting of the mode if it's the same as the previous mode.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#ab2467dc85f9af11473597f5e5f9c0295">kc_evNewProposedVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#ab2467dc85f9af11473597f5e5f9c0295">kc_evNewProposedVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl></div>
 <a id="a484060c8a561673fcd05014380cddcd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a484060c8a561673fcd05014380cddcd1">◆</a></span>kc_evSignalGained</h2>
 
 <div class="memitem">
 <div class="memproto">
       
-<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evSignalGained</span>(</span></div><div class="memdoc">
+<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evSignalGained</span></span></div><div class="memdoc">
 <p>An event fired when the capture device begins receiving an input signal. This implies that the device was in a state of "no signal" previously.</p>
 <p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl></div>
 <a id="ae3d3e0f99b7227139f91b50e05164b62"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae3d3e0f99b7227139f91b50e05164b62">◆</a></span>kc_evSignalLost</h2>
 
 <div class="memitem">
 <div class="memproto">
       
-<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evSignalLost</span>(</span></div><div class="memdoc">
+<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evSignalLost</span></span></div><div class="memdoc">
 <p>An event fired when the capture device loses its input signal. This implies that the capture device was receiving a signal previously.</p>
 <p>The event is fired only when the signal is lost, not continuously while there's no signal.</p>
 <p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem.</p>
 <pre class="fragment"><code class="line"><span class="comment">// Have VCS's output window display a "no signal" message when there's no signal.</span></code>
 <code class="line"><a class="code" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a>.listen(<a class="code" href="scaler_8h.html#a8f971047e4fbec9212e91bb2bbab3cc7">ks_indicate_no_signal</a>);</code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a> </dd></dl></div>
 <a id="af2cd8911b4e676b08c22dbbf52d35822"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af2cd8911b4e676b08c22dbbf52d35822">◆</a></span>kc_evUnrecoverableError</h2>
 
 <div class="memitem">
 <div class="memproto">
       
-<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evUnrecoverableError</span>(</span></div><div class="memdoc">
+<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; kc_evUnrecoverableError</span></span></div><div class="memdoc">
 <p>An event fired when an error occurs in the capture subsystem from which the subsystem can't recover.</p>
 <p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
@@ -1054,7 +1055,7 @@ VisionRGB-PRO2".</p>
 <div class="memitem">
 <div class="memproto">
       
-<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; ks_evInputChannelChanged</span>(</span></div><div class="memdoc">
+<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;void&gt; ks_evInputChannelChanged</span></span></div><div class="memdoc">
 <p>An event fired when the capture device's active input channel is changed.</p>
 <p>This event is fired by VCS's event loop (which polls the capture subsystem) rather than by the capture subsystem. </p>
 
@@ -1080,7 +1081,7 @@ VisionRGB-PRO2".</p>
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_33eff72d368e09fa9f58259b8a9511dc.html">capture</a></li><li class="navelem"><a class="el" href="capture_8h.html">capture.h</a></li>
-    <li class="footer">Generated on Thu Jul 1 2021 09:01:32 for VCS 2.4.0 by
+    <li class="footer">Generated on Fri Jul 2 2021 08:22:57 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>

@@ -6,6 +6,7 @@
 
 
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -141,10 +142,10 @@ vcs_event_c&lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDir
 <p>Asks the GUI to create and open the output window. The output window is a surface on which VCS's output frames are to be displayed by the GUI.</p>
 <p>If the GUI makes use of child windows and/or dialogs, this may be a good time to create them, as well.</p>
 <p>It's expected that VCS will only call this function once, at program launch.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a57d5c5d487906d9af9ab12e7f2155d19">kd_release_output_window()</a>, <a class="el" href="display_8h.html#ab03382911b280df2a7f796094ba1c1af">kd_spin_event_loop()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#a57d5c5d487906d9af9ab12e7f2155d19">kd_release_output_window()</a>, <a class="el" href="display_8h.html#ab03382911b280df2a7f796094ba1c1af">kd_spin_event_loop()</a> </dd></dl></div>
 <a id="ab70ef16802820ec345547f13e0b30bb0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab70ef16802820ec345547f13e0b30bb0">◆</a></span>kd_add_filter_graph_node()</h2>
 
@@ -178,10 +179,10 @@ vcs_event_c&lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDir
       
 <span class="memname"><span class="vcs-member-name">void kd_clear_filter_graph</span>()</span></div><div class="memdoc">
 <p>Instructs the GUI to erase all information (nodes, connections, etc.) from its filter graph.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#ab70ef16802820ec345547f13e0b30bb0">kd_add_filter_graph_node()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#ab70ef16802820ec345547f13e0b30bb0">kd_add_filter_graph_node()</a> </dd></dl></div>
 <a id="a25832af9e1209ed08627095a1a9bc99a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a25832af9e1209ed08627095a1a9bc99a">◆</a></span>kd_is_fullscreen()</h2>
 
@@ -258,10 +259,10 @@ vcs_event_c&lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDir
 <span class="memname"><span class="vcs-member-name">void kd_release_output_window</span>()</span></div><div class="memdoc">
 <p>Asks the GUI to close and destroy the output window; as well as any child windows and/or dialogs.</p>
 <p>It's expected that VCS will only call this function once, when the program is about to exit.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#ae624633776327f21294e1c5df8179446">kd_acquire_output_window()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#ae624633776327f21294e1c5df8179446">kd_acquire_output_window()</a> </dd></dl></div>
 <a id="ad77cd9d3099ddb3fb56e0b43431ee9e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad77cd9d3099ddb3fb56e0b43431ee9e5">◆</a></span>kd_show_headless_assert_error_message()</h2>
 
@@ -271,10 +272,10 @@ vcs_event_c&lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDir
 <span class="memname"><span class="vcs-member-name">void kd_show_headless_assert_error_message</span>(<span class="vcs-param-type">const char *const</span> <span class="vcs-param-name">msg,</span> <span class="vcs-param-type">const char *const</span> <span class="vcs-param-name">filename,</span> <span class="vcs-param-type">const uint</span> <span class="vcs-param-name">lineNum</span>)</span></div><div class="memdoc">
 <p>Asks the GUI to display an assertion error message to the user.</p>
 <p>The message should be deliverable with a headless GUI, i.e. requiring minimal prior GUI initialization.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f">kd_show_headless_info_message()</a>, <a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f">kd_show_headless_info_message()</a>, <a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a> </dd></dl></div>
 <a id="a7ea5703c9f856d9d999428fdee356f74"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ea5703c9f856d9d999428fdee356f74">◆</a></span>kd_show_headless_error_message()</h2>
 
@@ -284,10 +285,10 @@ vcs_event_c&lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDir
 <span class="memname"><span class="vcs-member-name">void kd_show_headless_error_message</span>(<span class="vcs-param-type">const char *const</span> <span class="vcs-param-name">title,</span> <span class="vcs-param-type">const char *const</span> <span class="vcs-param-name">msg</span>)</span></div><div class="memdoc">
 <p>Asks the GUI to display an error message to the user.</p>
 <p>The message should be deliverable with a headless GUI, i.e. requiring minimal prior GUI initialization.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f">kd_show_headless_info_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f">kd_show_headless_info_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl></div>
 <a id="aa9f9c589c53ddf7b60625a7ca1f09b3f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa9f9c589c53ddf7b60625a7ca1f09b3f">◆</a></span>kd_show_headless_info_message()</h2>
 
@@ -307,10 +308,10 @@ vcs_event_c&lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDir
 <code class="line">mb.setDefaultButton(QMessageBox::Ok);</code>
 <code class="line"> </code>
 <code class="line">mb.exec();</code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl></div>
 <a id="ab03382911b280df2a7f796094ba1c1af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab03382911b280df2a7f796094ba1c1af">◆</a></span>kd_spin_event_loop()</h2>
 
@@ -341,10 +342,10 @@ vcs_event_c&lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDir
 <p>The following sample Qt 5 code sizes the output window to match the size of VCS's output frames (<em>this</em> is the output window's instance):</p>
 <pre class="fragment"><code class="line"><a class="code" href="structresolution__s.html">resolution_s</a> r = <a class="code" href="scaler_8h.html#a00dc0b94b754062e6f540318203bdf78">ks_output_resolution</a>();</code>
 <code class="line">this-&gt;setFixedSize(r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
-</pre><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a5622698adab1106e3c6affb4652b9f88">kd_update_output_window_title()</a> </dd></dl>
+</pre><!-- fragment -->
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#a5622698adab1106e3c6affb4652b9f88">kd_update_output_window_title()</a> </dd></dl></div>
 <a id="a5622698adab1106e3c6affb4652b9f88"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5622698adab1106e3c6affb4652b9f88">◆</a></span>kd_update_output_window_title()</h2>
 
@@ -355,10 +356,10 @@ vcs_event_c&lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDir
 <p>Asks the GUI to refresh the output window's title bar text.</p>
 <p>VCS assumes that the output window's title bar displays certain information about VCS's state - e.g. the current capture resolution. VCS will thus call this function to let the GUI know that the relevant state has changed.</p>
 <p>If your custom GUI implementation displays different state variables than VCS's default GUI does, you may need to do custom polling of the relevant state in order to be aware of changes to it.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a0fdc2b0606b2d14c4c275ed5a0bc221d">kd_update_output_window_size()</a> </dd></dl>
+
 
 </div>
-</div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#a0fdc2b0606b2d14c4c275ed5a0bc221d">kd_update_output_window_size()</a> </dd></dl></div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="ascaler_8h_html_a00dc0b94b754062e6f540318203bdf78"><div class="ttname"><a href="scaler_8h.html#a00dc0b94b754062e6f540318203bdf78">ks_output_resolution</a></div><div class="ttdeci">resolution_s ks_output_resolution(void)</div></div>
@@ -369,7 +370,7 @@ vcs_event_c&lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDir
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_25685f9c6d837c57f295dee081495707.html">display</a></li><li class="navelem"><a class="el" href="display_8h.html">display.h</a></li>
-    <li class="footer">Generated on Thu Jul 1 2021 09:01:32 for VCS 2.4.0 by
+    <li class="footer">Generated on Fri Jul 2 2021 08:22:57 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>
