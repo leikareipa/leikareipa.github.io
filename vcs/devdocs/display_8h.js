@@ -1,11 +1,10 @@
 var display_8h =
 [
+    [ "abstract_filter_graph_node_s", "structabstract__filter__graph__node__s.html", "structabstract__filter__graph__node__s" ],
     [ "filter_graph_option_s", "structfilter__graph__option__s.html", "structfilter__graph__option__s" ],
     [ "resolution_s", "structresolution__s.html", "structresolution__s" ],
     [ "kd_acquire_output_window", "display_8h.html#ae624633776327f21294e1c5df8179446", null ],
-    [ "kd_add_filter_graph_node", "display_8h.html#ab70ef16802820ec345547f13e0b30bb0", null ],
     [ "kd_add_log_entry", "display_8h.html#aae1a2bd7a28edcc105f3fc015a54367c", null ],
-    [ "kd_clear_filter_graph", "display_8h.html#a4b271579a1a0664aff02251d973a2761", null ],
     [ "kd_is_fullscreen", "display_8h.html#a25832af9e1209ed08627095a1a9bc99a", null ],
     [ "kd_load_aliases", "display_8h.html#a5b2ee4388f04582f5377d505f4fa04e5", null ],
     [ "kd_load_filter_graph", "display_8h.html#a3c9fe0b0e3f07f23551abd8bca970a1d", null ],

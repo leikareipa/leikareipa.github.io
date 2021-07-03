@@ -7,6 +7,7 @@
 
 
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -22,7 +23,7 @@
 <script src="navtreedata.js" type="text/javascript"></script>
 <script src="navtree.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
-<link href="vcs-doxygen-1_8_17.css" rel="stylesheet" type="text/css"/>
+<link href="vcs-for-doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -66,10 +67,10 @@ $(document).ready(function(){initNavTree('memory_8h.html',''); initResizable(); 
 </script>
 <div id="doc-content">
 <div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
-  <div class="headertitle">
-<div class="title"><span class="vcs-referent">memory.h</span><span class="vcs-separator"></span><span class="vcs-referrer">File reference</span></div>  </div>
+<div class="summary">
+<a href="#func-members">Functions</a> </div>
+<div class="headertitle">
+<div class="title"><span class="vcs-referent">memory.h</span><span class="vcs-separator"></span><span class="vcs-referrer">File reference</span></div> </div>
 </div><!--header-->
 <div class="contents">
 
@@ -117,8 +118,8 @@ $(document).ready(function(){initNavTree('memory_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void* kmem_allocate</span>(<span class="vcs-param-type">const int</span> <span class="vcs-param-name">numBytes,</span> <span class="vcs-param-type">const char *const</span> <span class="vcs-param-name">reason</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void*</span><span class="vcs-member-name">kmem_allocate</span>(<span class="vcs-param-type">const int</span> <span class="vcs-param-name">numBytes,</span> <span class="vcs-param-type">const char *const</span> <span class="vcs-param-name">reason</span>)</span></div><div class="memdoc">
 <p>Allocates a consecutive block of <code>numBytes</code> bytes and returns a pointer to the first byte. The block's bytes are 0-initialized.</p>
 <p>The allocation is virtual in that no new memory is allocated; rather, the pointer returned is to an unused region of the memory subsystem's pre-allocated fixed-size memory buffer.</p>
 <p>For bookkeeping and debugging purposes, <code>reason</code> gives a string briefly explaining the caller's intended purpose for the allocation (e.g. "Scratch
@@ -136,8 +137,8 @@ buffer").</p>
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void kmem_release</span>(<span class="vcs-param-type">void **</span> <span class="vcs-param-name">mem</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">kmem_release</span>(<span class="vcs-param-type">void **</span> <span class="vcs-param-name">mem</span>)</span></div><div class="memdoc">
 <p>Releases an allocation made with <a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a>.</p>
 <p>The allocation is identified by <code>mem</code>, which is the pointer returned by <a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> for that allocation.</p>
 <dl class="section note"><dt>Note</dt><dd><code>mem</code> will be set to NULL by the call.</dd></dl>
@@ -159,8 +160,8 @@ buffer").</p>
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">uint kmem_sizeof_allocation</span>(<span class="vcs-param-type">const void *const</span> <span class="vcs-param-name">mem</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">uint</span><span class="vcs-member-name">kmem_sizeof_allocation</span>(<span class="vcs-param-type">const void *const</span> <span class="vcs-param-name">mem</span>)</span></div><div class="memdoc">
 <p>Returns the size (in number of bytes) of an allocation made with <a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a>.</p>
 <p>The allocation is identified by <code>mem</code>, which is the pointer returned by <a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> for that allocation.</p>
 <pre class="fragment"><code class="line"><span class="keywordtype">char</span> *buffer = (<span class="keywordtype">char</span>*)<a class="code" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate</a>(101, <span class="stringliteral">"An example allocation"</span>);</code>
@@ -180,7 +181,7 @@ buffer").</p>
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_fdedb0aba14d44ce9d99bc100e026e6a.html">common</a></li><li class="navelem"><a class="el" href="dir_e673cebbcabf3e2994264573d5786a29.html">memory</a></li><li class="navelem"><a class="el" href="memory_8h.html">memory.h</a></li>
-    <li class="footer">Generated on Fri Jul 2 2021 08:22:57 for VCS 2.4.0 by
+    <li class="footer">Generated on Sat Jul 3 2021 09:56:31 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>

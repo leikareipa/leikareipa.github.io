@@ -7,6 +7,7 @@
 
 
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -22,7 +23,7 @@
 <script src="navtreedata.js" type="text/javascript"></script>
 <script src="navtree.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
-<link href="vcs-doxygen-1_8_17.css" rel="stylesheet" type="text/css"/>
+<link href="vcs-for-doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -66,10 +67,10 @@ $(document).ready(function(){initNavTree('disk_8h.html',''); initResizable(); })
 </script>
 <div id="doc-content">
 <div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
-  <div class="headertitle">
-<div class="title"><span class="vcs-referent">disk.h</span><span class="vcs-separator"></span><span class="vcs-referrer">File reference</span></div>  </div>
+<div class="summary">
+<a href="#func-members">Functions</a> </div>
+<div class="headertitle">
+<div class="title"><span class="vcs-referent">disk.h</span><span class="vcs-separator"></span><span class="vcs-referrer">File reference</span></div> </div>
 </div><!--header-->
 <div class="contents">
 
@@ -79,8 +80,8 @@ $(document).ready(function(){initNavTree('disk_8h.html',''); initResizable(); })
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Functions</h2></td></tr>
 <tr class="memitem:a26ce4e3a12655ab114b41133999aa3e8"><td align="right" class="memItemLeft" valign="top">std::vector&lt;resolution_alias_s&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="disk_8h.html#a26ce4e3a12655ab114b41133999aa3e8">kdisk_load_aliases</a>(const std::string &amp;filename)</td></tr>
 <tr class="separator:a26ce4e3a12655ab114b41133999aa3e8"><td class="memSeparator" colspan="2"></td></tr>
-<tr class="memitem:a35fbd6be7eefba2979497e74dec563dc"><td align="right" class="memItemLeft" valign="top">std::vector&lt;FilterGraphNode*&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="disk_8h.html#a35fbd6be7eefba2979497e74dec563dc">kdisk_load_filter_graph</a>(const std::string &amp;filename)</td></tr>
-<tr class="separator:a35fbd6be7eefba2979497e74dec563dc"><td class="memSeparator" colspan="2"></td></tr>
+<tr class="memitem:abbc8c6a65c8e4451d072f01250407394"><td align="right" class="memItemLeft" valign="top">std::vector&lt;<a class="el" href="structabstract__filter__graph__node__s.html">abstract_filter_graph_node_s</a>&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="disk_8h.html#abbc8c6a65c8e4451d072f01250407394">kdisk_load_filter_graph</a>(const std::string &amp;filename)</td></tr>
+<tr class="separator:abbc8c6a65c8e4451d072f01250407394"><td class="memSeparator" colspan="2"></td></tr>
 <tr class="memitem:acc505f33f83ad4c63a768a51158bafd7"><td align="right" class="memItemLeft" valign="top">std::vector&lt;video_preset_s*&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="disk_8h.html#acc505f33f83ad4c63a768a51158bafd7">kdisk_load_video_presets</a>(const std::string &amp;filename)</td></tr>
 <tr class="separator:acc505f33f83ad4c63a768a51158bafd7"><td class="memSeparator" colspan="2"></td></tr>
 <tr class="memitem:a7a3bfbb913be4ac8ccae6a28724312c3"><td align="right" class="memItemLeft" valign="top">bool</td><td class="memItemRight" valign="bottom"><a class="el" href="disk_8h.html#a7a3bfbb913be4ac8ccae6a28724312c3">kdisk_save_aliases</a>(const std::vector&lt;resolution_alias_s&gt; &amp;aliases, const std::string &amp;filename)</td></tr>
@@ -100,21 +101,21 @@ $(document).ready(function(){initNavTree('disk_8h.html',''); initResizable(); })
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">std::vector&lt;resolution_alias_s&gt; kdisk_load_aliases</span>(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">std::vector&lt;resolution_alias_s&gt;</span><span class="vcs-member-name">kdisk_load_aliases</span>(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
 <p>Loads the capture resolution aliases stored in <code>filename</code>.</p>
 <p>Returns the loaded aliases. If the loading fails, returns an empty vector.</p>
 
 
 </div>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="disk_8h.html#a7a3bfbb913be4ac8ccae6a28724312c3">kdisk_save_aliases()</a> </dd></dl></div>
-<a id="a35fbd6be7eefba2979497e74dec563dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35fbd6be7eefba2979497e74dec563dc">◆</a></span>kdisk_load_filter_graph()</h2>
+<a id="abbc8c6a65c8e4451d072f01250407394"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbc8c6a65c8e4451d072f01250407394">◆</a></span>kdisk_load_filter_graph()</h2>
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">std::vector&lt;FilterGraphNode*&gt; kdisk_load_filter_graph</span>(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
+
+<span class="memname">std::vector&lt;<a class="el" href="structabstract__filter__graph__node__s.html">abstract_filter_graph_node_s</a>&gt; kdisk_load_filter_graph(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
 <p>Loads the filter graph nodes stored in <code>filename</code>.</p>
 <p>Returns the loaded filter graph nodes. If the loading fails, returns an empty vector.</p>
 
@@ -126,8 +127,8 @@ $(document).ready(function(){initNavTree('disk_8h.html',''); initResizable(); })
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">std::vector&lt;video_preset_s*&gt; kdisk_load_video_presets</span>(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">std::vector&lt;video_preset_s*&gt;</span><span class="vcs-member-name">kdisk_load_video_presets</span>(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
 <p>Loads the video presets stored in <code>filename</code>.</p>
 <p>Returns the loaded video presets. If the loading fails, returns an empty vector.</p>
 
@@ -139,8 +140,8 @@ $(document).ready(function(){initNavTree('disk_8h.html',''); initResizable(); })
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">bool kdisk_save_aliases</span>(<span class="vcs-param-type">const std::vector&lt;resolution_alias_s&gt;&amp;</span> <span class="vcs-param-name">aliases,</span> <span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">bool</span><span class="vcs-member-name">kdisk_save_aliases</span>(<span class="vcs-param-type">const std::vector&lt;resolution_alias_s&gt;&amp;</span> <span class="vcs-param-name">aliases,</span> <span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
 <p>Saves the given alias resolutions into <code>filename</code>.</p>
 <p>Returns true on success, false otherwise.</p>
 
@@ -152,21 +153,21 @@ $(document).ready(function(){initNavTree('disk_8h.html',''); initResizable(); })
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">bool kdisk_save_filter_graph</span>(<span class="vcs-param-type">const std::vector&lt;FilterGraphNode*&gt;&amp;</span> <span class="vcs-param-name">nodes,</span> <span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">bool</span><span class="vcs-member-name">kdisk_save_filter_graph</span>(<span class="vcs-param-type">const std::vector&lt;FilterGraphNode*&gt;&amp;</span> <span class="vcs-param-name">nodes,</span> <span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
 <p>Saves the given filter graph nodes into <code>filename</code>.</p>
 <p>Returns true on success, false otherwise.</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="disk_8h.html#a35fbd6be7eefba2979497e74dec563dc">kdisk_load_filter_graph()</a> </dd></dl></div>
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="disk_8h.html#abbc8c6a65c8e4451d072f01250407394">kdisk_load_filter_graph()</a> </dd></dl></div>
 <a id="ad2d7da1e3a778869f15c64ad8ab56735"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad2d7da1e3a778869f15c64ad8ab56735">◆</a></span>kdisk_save_video_presets()</h2>
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">bool kdisk_save_video_presets</span>(<span class="vcs-param-type">const std::vector&lt;video_preset_s*&gt;&amp;</span> <span class="vcs-param-name">presets,</span> <span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">bool</span><span class="vcs-member-name">kdisk_save_video_presets</span>(<span class="vcs-param-type">const std::vector&lt;video_preset_s*&gt;&amp;</span> <span class="vcs-param-name">presets,</span> <span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">filename</span>)</span></div><div class="memdoc">
 <p>Saves the given video presets into <code>filename</code>.</p>
 <p>Returns true on success, false otherwise.</p>
 
@@ -179,7 +180,7 @@ $(document).ready(function(){initNavTree('disk_8h.html',''); initResizable(); })
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_fdedb0aba14d44ce9d99bc100e026e6a.html">common</a></li><li class="navelem"><a class="el" href="dir_8e5ed8c496a67bae7cc38bca29547856.html">disk</a></li><li class="navelem"><a class="el" href="disk_8h.html">disk.h</a></li>
-    <li class="footer">Generated on Fri Jul 2 2021 08:22:57 for VCS 2.4.0 by
+    <li class="footer">Generated on Sat Jul 3 2021 09:56:31 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>

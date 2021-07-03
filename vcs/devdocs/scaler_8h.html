@@ -7,6 +7,7 @@
 
 
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -22,7 +23,7 @@
 <script src="navtreedata.js" type="text/javascript"></script>
 <script src="navtree.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
-<link href="vcs-doxygen-1_8_17.css" rel="stylesheet" type="text/css"/>
+<link href="vcs-for-doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -66,12 +67,12 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 </script>
 <div id="doc-content">
 <div class="header">
-  <div class="summary">
+<div class="summary">
 <a href="#enum-members">Enumerations</a> |
 <a href="#func-members">Functions</a> |
-<a href="#var-members">Variables</a>  </div>
-  <div class="headertitle">
-<div class="title"><span class="vcs-referent">scaler.h</span><span class="vcs-separator"></span><span class="vcs-referrer">File reference</span></div>  </div>
+<a href="#var-members">Variables</a> </div>
+<div class="headertitle">
+<div class="title"><span class="vcs-referent">scaler.h</span><span class="vcs-separator"></span><span class="vcs-referrer">File reference</span></div> </div>
 </div><!--header-->
 <div class="contents">
 
@@ -130,15 +131,7 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 <tr class="separator:ad8051b394b0f6cd9c28c69ac5918da0d"><td class="memSeparator" colspan="2"></td></tr>
 <tr class="memitem:a4daa271056804eef2fc1f1021664e4cd"><td align="right" class="memItemLeft" valign="top">const std::string&amp;</td><td class="memItemRight" valign="bottom"><a class="el" href="scaler_8h.html#a4daa271056804eef2fc1f1021664e4cd">ks_upscaling_filter_name</a>()</td></tr>
 <tr class="separator:a4daa271056804eef2fc1f1021664e4cd"><td class="memSeparator" colspan="2"></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">Variables</h2></td></tr>
-<tr class="memitem:a26ef4caacbe0d4dff8ff6bc7284395ba"><td align="right" class="memItemLeft" valign="top">vcs_event_c&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="scaler_8h.html#a26ef4caacbe0d4dff8ff6bc7284395ba">ks_evFramesPerSecond</a></td></tr>
-<tr class="separator:a26ef4caacbe0d4dff8ff6bc7284395ba"><td class="memSeparator" colspan="2"></td></tr>
-<tr class="memitem:a57ad9adc10639ca5ed14d0a9cd2e3021"><td align="right" class="memItemLeft" valign="top">vcs_event_c&lt;const <a class="el" href="structresolution__s.html">resolution_s</a>&amp;&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="scaler_8h.html#a57ad9adc10639ca5ed14d0a9cd2e3021">ks_evNewOutputResolution</a></td></tr>
-<tr class="separator:a57ad9adc10639ca5ed14d0a9cd2e3021"><td class="memSeparator" colspan="2"></td></tr>
-<tr class="memitem:a2f1d440a296c3b43b2146d63cc1f5f64"><td align="right" class="memItemLeft" valign="top">vcs_event_c&lt;const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp;&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="scaler_8h.html#a2f1d440a296c3b43b2146d63cc1f5f64">ks_evNewScaledImage</a></td></tr>
-<tr class="separator:a2f1d440a296c3b43b2146d63cc1f5f64"><td class="memSeparator" colspan="2"></td></tr>
-</table>
+</table><table class="memberdecls"><tbody><tr class="heading"><td colspan="2"><h2 class="groupheader">Events</h2></td></tr><tr class="memitem:a26ef4caacbe0d4dff8ff6bc7284395ba"><td align="right" class="memItemLeft" valign="top">&lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="scaler_8h.html#a26ef4caacbe0d4dff8ff6bc7284395ba">ks_evFramesPerSecond</a></td></tr><tr class="memitem:a57ad9adc10639ca5ed14d0a9cd2e3021"><td align="right" class="memItemLeft" valign="top">&lt;const <a class="el" href="structresolution__s.html">resolution_s</a>&amp;&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="scaler_8h.html#a57ad9adc10639ca5ed14d0a9cd2e3021">ks_evNewOutputResolution</a></td></tr><tr class="memitem:a2f1d440a296c3b43b2146d63cc1f5f64"><td align="right" class="memItemLeft" valign="top">&lt;const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp;&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="scaler_8h.html#a2f1d440a296c3b43b2146d63cc1f5f64">ks_evNewScaledImage</a></td></tr></tbody></table>
 <a id="details" name="details"></a><h2 class="groupheader">Detailed description</h2>
 <div class="textblock"><p>The scaler subsystem interface. </p>
 <p>The scaler subsystem provides facilities to VCS for scaling captured frames.</p>
@@ -157,13 +150,13 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 <li>You can automate the scaling of captured frames using event listeners: <pre class="fragment"><code class="line"><span class="comment">// Executed each time the capture subsystem reports a new captured frame.</span></code>
 <code class="line"><a class="code" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
 <code class="line">{</code>
-<code class="line">   <a class="code" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame</a>(frame);</code>
+<code class="line">    <a class="code" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame</a>(frame);</code>
 <code class="line">});</code>
 <code class="line"> </code>
 <code class="line"><span class="comment">// Executed each time the scaler subsystem produces a new scaled image.</span></code>
 <code class="line"><a class="code" href="scaler_8h.html#a2f1d440a296c3b43b2146d63cc1f5f64">ks_evNewScaledImage</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
 <code class="line">{</code>
-<code class="line">   printf(<span class="stringliteral">"A frame was scaled to %lu x %lu.\n"</span>, frame.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, frame.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
+<code class="line">    printf(<span class="stringliteral">"A frame was scaled to %lu x %lu.\n"</span>, frame.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, frame.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
 <code class="line">});</code>
 </pre><!-- fragment --></li>
 <li>Call <a class="el" href="scaler_8h.html#ad6f164d077957be0cfc77787e6d96561">ks_release_scaler()</a> to release the subsystem. This is VCS's default exit behavior. </li>
@@ -175,17 +168,17 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="scaler_8h.html#a7cd705d079c62dc45d0dd6e420024841">scaler_aspect_ratio_e</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"></span>  </td>
-  </tr>
+<tr>
+<td class="mlabels-left">
+<table class="memname">
+<tr>
+<td class="memname">enum <a class="el" href="scaler_8h.html#a7cd705d079c62dc45d0dd6e420024841">scaler_aspect_ratio_e</a></td>
+</tr>
+</table>
+</td>
+<td class="mlabels-right">
+<span class="mlabels"></span> </td>
+</tr>
 </table>
 </div><div class="memdoc">
 <p>Enumerates the aspect ratios recognized by the scaler subsystem.</p>
@@ -207,7 +200,7 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
+
 <span class="memname"><a class="el" href="scaler_8h.html#a7cd705d079c62dc45d0dd6e420024841">scaler_aspect_ratio_e</a> ks_aspect_ratio()</span></div><div class="memdoc">
 <p>Returns the scaler subsystem's current aspect ratio.</p>
 
@@ -219,7 +212,7 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
+
 <span class="memname"><a class="el" href="structresolution__s.html">resolution_s</a> ks_base_resolution()</span></div><div class="memdoc">
 <p>Returns the resolution to which the scaler will scale input frames, prior to the application of resolution-influencing modifiers like a scaling multiplier.</p>
 <p>In most cases, you'd be interested in <a class="el" href="scaler_8h.html#a00dc0b94b754062e6f540318203bdf78">ks_output_resolution()</a>, instead.</p>
@@ -232,8 +225,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">const std::string&amp; ks_downscaling_filter_name</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">const std::string&amp;</span><span class="vcs-member-name">ks_downscaling_filter_name</span>()</span></div><div class="memdoc">
 <p>Returns the name of the current downscaling filter.</p>
 
 
@@ -244,7 +237,7 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
+
 <span class="memname">const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp; ks_frame_buffer()</span></div><div class="memdoc">
 <p>Returns a reference to the scaler subsystem's frame buffer.</p>
 <p>The frame buffer contains the most recent image produced by the subsystem. This may be a scaled frame (produced by <a class="el" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame()</a>) or some other type of image (e.g. one produced by <a class="el" href="scaler_8h.html#a8f971047e4fbec9212e91bb2bbab3cc7">ks_indicate_no_signal()</a>).</p>
@@ -257,8 +250,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_indicate_invalid_signal</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_indicate_invalid_signal</span>()</span></div><div class="memdoc">
 <p>Draws an "invalid signal" image into the scaler subsystem's frame buffer, erasing any previous image there.</p>
 <dl class="section note"><dt>Note</dt><dd>A subsequent call to <a class="el" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame()</a> will overwite the image.</dd></dl>
 <pre class="fragment"><code class="line"><span class="comment">// Produce an "invalid signal" image when the capture device loses its signal.</span></code>
@@ -272,8 +265,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_indicate_no_signal</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_indicate_no_signal</span>()</span></div><div class="memdoc">
 <p>Draws a "no signal" image into the scaler subsystem's frame buffer, erasing any previous image there.</p>
 <dl class="section note"><dt>Note</dt><dd>A subsequent call to <a class="el" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame()</a> will overwite the image.</dd></dl>
 <pre class="fragment"><code class="line"><span class="comment">// Produce a "no signal" image when the capture device loses its signal.</span></code>
@@ -291,8 +284,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_initialize_scaler</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_initialize_scaler</span>()</span></div><div class="memdoc">
 <p>Initializes the scaler subsystem.</p>
 <dl class="section note"><dt>Note</dt><dd>This function should be called before any other functions of the scaler interface.</dd></dl>
 
@@ -304,8 +297,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">bool ks_is_aspect_ratio_enabled</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">bool</span><span class="vcs-member-name">ks_is_aspect_ratio_enabled</span>()</span></div><div class="memdoc">
 <p>Returns true if the scaler is currently forcing scaled frames into a particular aspect ratio.</p>
 
 
@@ -316,7 +309,7 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
+
 <span class="memname"><a class="el" href="structresolution__s.html">resolution_s</a> ks_output_resolution()</span></div><div class="memdoc">
 <p>Returns the resolution to which the scaler would currently scale an input frame.</p>
 
@@ -328,8 +321,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_release_scaler</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_release_scaler</span>()</span></div><div class="memdoc">
 <p>Releases the scaler subsystem.</p>
 <dl class="section note"><dt>Note</dt><dd>No scaler interface functions should be called after this function has been called.</dd></dl>
 
@@ -341,8 +334,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_scale_frame</span>(<a class="el vcs-param-type" href="structcaptured__frame__s.html">captured_frame_s</a> <span class="vcs-param-name">frame</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_scale_frame</span>(<span class="vcs-param-type"><span>const </span><a class="el" href="structcaptured__frame__s.html">captured_frame_s</a><span>&amp;</span></span> <span class="vcs-param-name">frame</span>)</span></div><div class="memdoc">
 <p>Applies scaling to the given frame's pixels and stores the result in the scaler subsystem's frame buffer. The input data are not modified.</p>
 <p>After this call, the scaled image is available via <a class="el" href="scaler_8h.html#a4146195dc32be4d0c5e8e510b9fcfe99">ks_frame_buffer()</a>.</p>
 <pre class="fragment"><code class="line"><a class="code" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame</a>(frame);</code>
@@ -350,13 +343,13 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 </pre><!-- fragment --><pre class="fragment"><code class="line"><span class="comment">// Feed captured frames into the scaler using a VCS event listener.</span></code>
 <code class="line"><a class="code" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
 <code class="line">{</code>
-<code class="line">   <a class="code" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame</a>(frame);</code>
+<code class="line">    <a class="code" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame</a>(frame);</code>
 <code class="line">});</code>
 <code class="line"> </code>
 <code class="line"><span class="comment">// Receive scaled frames from the scaler.</span></code>
 <code class="line"><a class="code" href="scaler_8h.html#a2f1d440a296c3b43b2146d63cc1f5f64">ks_evNewScaledImage</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;frame)</code>
 <code class="line">{</code>
-<code class="line">   printf(<span class="stringliteral">"A frame was scaled to %lu x %lu.\n"</span>, frame.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, frame.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
+<code class="line">    printf(<span class="stringliteral">"A frame was scaled to %lu x %lu.\n"</span>, frame.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, frame.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
 <code class="line">});</code>
 </pre><!-- fragment -->
 
@@ -367,8 +360,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">std::vector&lt;std::string&gt; ks_scaling_filter_names</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">std::vector&lt;std::string&gt;</span><span class="vcs-member-name">ks_scaling_filter_names</span>()</span></div><div class="memdoc">
 <p>Returns a list of the names of the scaling filters available in this build of VCS.</p>
 <pre class="fragment"><code class="line"><span class="keyword">const</span> <span class="keyword">auto</span> list = <a class="code" href="scaler_8h.html#acea6ba37d84562ff571e34b96fd5b02f">ks_scaling_filter_names</a>();</code>
 <code class="line"><span class="comment">// list == {"Nearest", "Linear", "Area", ...}.</span></code>
@@ -381,8 +374,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_set_aspect_ratio</span>(<a class="el vcs-param-type" href="scaler_8h.html#a7cd705d079c62dc45d0dd6e420024841">scaler_aspect_ratio_e</a> <span class="vcs-param-name">aspect</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_set_aspect_ratio</span>(<span class="vcs-param-type"><span>const </span><a class="el" href="scaler_8h.html#a7cd705d079c62dc45d0dd6e420024841">scaler_aspect_ratio_e</a></span> <span class="vcs-param-name">aspect</span>)</span></div><div class="memdoc">
 <p>Sets the aspect ratio to which the scaler subsystem scales input frames.</p>
 <p>When scaling to a particular aspect ratio, input frames are squished to the given ratio, then padded with black borders as necessary to fit the output size.</p>
 <pre class="fragment"><code class="line"><span class="comment">// A frame of size 640 x 400 (16:10 aspect ratio).</span></code>
@@ -404,8 +397,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_set_aspect_ratio_enabled</span>(<span class="vcs-param-type">const bool</span> <span class="vcs-param-name">state</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_set_aspect_ratio_enabled</span>(<span class="vcs-param-type">const bool</span> <span class="vcs-param-name">state</span>)</span></div><div class="memdoc">
 <p>Enables or disables the scaler subsystem's aspect ratio.</p>
 <p>If disabled, input frames will be scaled to their native aspect ratios. </p>
 
@@ -416,8 +409,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_set_base_resolution</span>(<a class="el vcs-param-type" href="structresolution__s.html">resolution_s</a> <span class="vcs-param-name">r</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_set_base_resolution</span>(<span class="vcs-param-type"><span>const </span><a class="el" href="structresolution__s.html">resolution_s</a><span>&amp;</span></span> <span class="vcs-param-name">r</span>)</span></div><div class="memdoc">
 <p>Sets the resolution to which input frames are to be scaled, before applying size modifiers like aspect ratio correction or a scaling multiplier. By default, the scaler will apply the modifiers to each input frame's own resolution.</p>
 <pre class="fragment"><code class="line"><span class="comment">// Frames will be scaled to 2x of their original resolution.</span></code>
 <code class="line"><a class="code" href="scaler_8h.html#a809a2b9e09a5efda8b2d8630c01f8539">ks_set_base_resolution_enabled</a>(<span class="keyword">false</span>);</code>
@@ -436,8 +429,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_set_base_resolution_enabled</span>(<span class="vcs-param-type">const bool</span> <span class="vcs-param-name">enabled</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_set_base_resolution_enabled</span>(<span class="vcs-param-type">const bool</span> <span class="vcs-param-name">enabled</span>)</span></div><div class="memdoc">
 <p>Enables or disables the scaler subsystem's overridable base resolution.</p>
 <p>If disabled, the base resolution will be the resolution of the input frame.</p>
 
@@ -449,9 +442,9 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_set_downscaling_filter</span>(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">name</span>)</span></div><div class="memdoc">
-<p>Sets the scaling filter to be used when frames are downscaled, i.e. when the scaling multiplier is &lt;1. The desired filter is identified by <code>name</code>.</p>
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_set_downscaling_filter</span>(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">name</span>)</span></div><div class="memdoc">
+<p>Sets the scaling filter to be used when frames are downscaled, i.e. when the scaling multiplier is &lt; 1. The desired filter is identified by <code>name</code>.</p>
 <pre class="fragment"><code class="line"><span class="comment">// Produce an image downscaled by 0.75x using a linearly sampling scaler.</span></code>
 <code class="line"><a class="code" href="scaler_8h.html#a7dbcd3a2b23369e983488b2315c132e4">ks_set_downscaling_filter</a>(<span class="stringliteral">"Linear"</span>);</code>
 <code class="line"><a class="code" href="scaler_8h.html#a89cbbcdbd2dd3426ad39ccf270ffac67">ks_set_scaling_multiplier</a>(0.75);</code>
@@ -468,8 +461,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_set_scaling_multiplier</span>(<span class="vcs-param-type">const double</span> <span class="vcs-param-name">s</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_set_scaling_multiplier</span>(<span class="vcs-param-type">const double</span> <span class="vcs-param-name">s</span>)</span></div><div class="memdoc">
 <p>Sets the multiplier by which input frames are scaled. The multiplier applies to both the width and height of the frame.</p>
 <pre class="fragment"><code class="line"><span class="comment">// Input frames will be upscaled by 2x using the current upscaling filter.</span></code>
 <code class="line"><a class="code" href="scaler_8h.html#a89cbbcdbd2dd3426ad39ccf270ffac67">ks_set_scaling_multiplier</a>(2);</code>
@@ -485,7 +478,7 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
+
 <span class="memname"><a class="el" href="scaler_8h.html#a7cd705d079c62dc45d0dd6e420024841">scaler_aspect_ratio_e</a> ks_set_scaling_multiplier()</span></div><div class="memdoc">
 <p>Returns the scaler subsystem's current scaling multiplier.</p>
 
@@ -497,8 +490,8 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_set_scaling_multiplier_enabled</span>(<span class="vcs-param-type">const bool</span> <span class="vcs-param-name">enabled</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_set_scaling_multiplier_enabled</span>(<span class="vcs-param-type">const bool</span> <span class="vcs-param-name">enabled</span>)</span></div><div class="memdoc">
 <p>Enables or disables the scaler subsystem's scaling multiplier.</p>
 
 
@@ -509,9 +502,9 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void ks_set_upscaling_filter</span>(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">name</span>)</span></div><div class="memdoc">
-<p>Sets the scaling filter to be used when frames are upscaled, i.e. when the scaling multiplier is&gt; 1. The desired filter is identified by <code>name</code>.</p>
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">ks_set_upscaling_filter</span>(<span class="vcs-param-type">const std::string&amp;</span> <span class="vcs-param-name">name</span>)</span></div><div class="memdoc">
+<p>Sets the scaling filter to be used when frames are upscaled, i.e. when the scaling multiplier is &gt; 1. The desired filter is identified by <code>name</code>.</p>
 <pre class="fragment"><code class="line"><span class="comment">// Produce an image upscaled by 1.25x using a linearly sampling scaler.</span></code>
 <code class="line"><a class="code" href="scaler_8h.html#ad8051b394b0f6cd9c28c69ac5918da0d">ks_set_upscaling_filter</a>(<span class="stringliteral">"Linear"</span>);</code>
 <code class="line"><a class="code" href="scaler_8h.html#a89cbbcdbd2dd3426ad39ccf270ffac67">ks_set_scaling_multiplier</a>(1.25);</code>
@@ -528,37 +521,29 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">const std::string&amp; ks_upscaling_filter_name</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">const std::string&amp;</span><span class="vcs-member-name">ks_upscaling_filter_name</span>()</span></div><div class="memdoc">
 <p>Returns the name of the current upscaling filter.</p>
 
 
 </div>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="scaler_8h.html#ad8051b394b0f6cd9c28c69ac5918da0d">ks_set_upscaling_filter()</a>, <a class="el" href="scaler_8h.html#acea6ba37d84562ff571e34b96fd5b02f">ks_scaling_filter_names()</a> </dd></dl></div>
-<h2 class="groupheader">Variable documentation</h2>
-<a id="a26ef4caacbe0d4dff8ff6bc7284395ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26ef4caacbe0d4dff8ff6bc7284395ba">◆</a></span>ks_evFramesPerSecond</h2>
-
-<div class="memitem">
+<h2 class="groupheader">Event documentation</h2><a id="a2f1d440a296c3b43b2146d63cc1f5f64"></a><h2 class="memtitle"><span class="permalink"><a href="#a2f1d440a296c3b43b2146d63cc1f5f64">◆</a></span>ks_evNewScaledImage</h2><div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">vcs_event_c&lt;unsigned&gt; ks_evFramesPerSecond</span></span></div><div class="memdoc">
-<p>An event fired once per second, giving the number of input frames the scaler subsystem scaled during that time.</p>
-<pre class="fragment"><code class="line"><a class="code" href="scaler_8h.html#a26ef4caacbe0d4dff8ff6bc7284395ba">ks_evFramesPerSecond</a>.listen([](<span class="keywordtype">unsigned</span> numFrames)</code>
+
+<span class="memname">&lt;const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp;&gt; ks_evNewScaledImage</span></div><div class="memdoc">
+<p>An event fired when the scaler subsystem has finished scaling a frame.</p>
+<pre class="fragment"><code class="line"><a class="code" href="scaler_8h.html#a2f1d440a296c3b43b2146d63cc1f5f64">ks_evNewScaledImage</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;scaledImage)</code>
 <code class="line">{</code>
-<code class="line">   printf(<span class="stringliteral">"Scaled %u frames per second.\n"</span>, numFrames);</code>
+<code class="line">    printf(<span class="stringliteral">"Scaled a frame to %lu x %lu.\n"</span>, scaledImage.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, scaledImage.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
 <code class="line">});</code>
 </pre><!-- fragment -->
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame()</a> </dd></dl></div>
-<a id="a57ad9adc10639ca5ed14d0a9cd2e3021"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57ad9adc10639ca5ed14d0a9cd2e3021">◆</a></span>ks_evNewOutputResolution</h2>
-
-<div class="memitem">
+<dl class="section see"><dt>See also:</dt><dd><a class="el" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame()</a> </dd></dl></div><a id="a57ad9adc10639ca5ed14d0a9cd2e3021"></a><h2 class="memtitle"><span class="permalink"><a href="#a57ad9adc10639ca5ed14d0a9cd2e3021">◆</a></span>ks_evNewOutputResolution</h2><div class="memitem">
 <div class="memproto">
-      
-<span class="memname">vcs_event_c&lt;const <a class="el" href="structresolution__s.html">resolution_s</a>&amp;&gt; ks_evNewOutputResolution</span></div><div class="memdoc">
+
+<span class="memname">&lt;const <a class="el" href="structresolution__s.html">resolution_s</a>&amp;&gt; ks_evNewOutputResolution</span></div><div class="memdoc">
 <p>An event fired when the scaler subsystem scales a frame into a resolution different from the previous frame's.</p>
 <pre class="fragment"><code class="line"><a class="code" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame</a>(frame);</code>
 <code class="line"> </code>
@@ -568,50 +553,58 @@ $(document).ready(function(){initNavTree('scaler_8h.html',''); initResizable(); 
 <code class="line"><a class="code" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame</a>(frame);</code>
 </pre><!-- fragment --> 
 </div>
-</div>
-<a id="a2f1d440a296c3b43b2146d63cc1f5f64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f1d440a296c3b43b2146d63cc1f5f64">◆</a></span>ks_evNewScaledImage</h2>
-
-<div class="memitem">
+</div><a id="a26ef4caacbe0d4dff8ff6bc7284395ba"></a><h2 class="memtitle"><span class="permalink"><a href="#a26ef4caacbe0d4dff8ff6bc7284395ba">◆</a></span>ks_evFramesPerSecond</h2><div class="memitem">
 <div class="memproto">
-      
-<span class="memname">vcs_event_c&lt;const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp;&gt; ks_evNewScaledImage</span></div><div class="memdoc">
-<p>An event fired when the scaler subsystem has finished scaling a frame.</p>
-<pre class="fragment"><code class="line"><a class="code" href="scaler_8h.html#a2f1d440a296c3b43b2146d63cc1f5f64">ks_evNewScaledImage</a>.listen([](<span class="keyword">const</span> <a class="code" href="structcaptured__frame__s.html">captured_frame_s</a> &amp;scaledImage)</code>
+
+<span class="memname"><span class="vcs-member-return">&lt;unsigned&gt;</span><span class="vcs-member-name">ks_evFramesPerSecond</span></span></div><div class="memdoc">
+<p>An event fired once per second, giving the number of input frames the scaler subsystem scaled during that time.</p>
+<pre class="fragment"><code class="line"><a class="code" href="scaler_8h.html#a26ef4caacbe0d4dff8ff6bc7284395ba">ks_evFramesPerSecond</a>.listen([](<span class="keywordtype">unsigned</span> numFrames)</code>
 <code class="line">{</code>
-<code class="line">   printf(<span class="stringliteral">"Scaled a frame to %lu x %lu.\n"</span>, scaledImage.r.<a class="code" href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">w</a>, scaledImage.r.<a class="code" href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">h</a>);</code>
+<code class="line">    printf(<span class="stringliteral">"Scaled %u frames per second.\n"</span>, numFrames);</code>
 <code class="line">});</code>
 </pre><!-- fragment -->
 
 </div>
 <dl class="section see"><dt>See also:</dt><dd><a class="el" href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame()</a> </dd></dl></div>
+
+
+
+
+
+
+
+
+
+
+
+
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="ascaler_8h_html_a809a2b9e09a5efda8b2d8630c01f8539"><div class="ttname"><a href="scaler_8h.html#a809a2b9e09a5efda8b2d8630c01f8539">ks_set_base_resolution_enabled</a></div><div class="ttdeci">void ks_set_base_resolution_enabled(const bool enabled)</div></div>
-<div class="ttc" id="astructresolution__s_html_a820d69aaad874195f93866b539fcdeb6"><div class="ttname"><a href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">resolution_s::h</a></div><div class="ttdeci">unsigned long h</div><div class="ttdoc">Height (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:55</div></div>
+<div class="ttc" id="astructresolution__s_html_a820d69aaad874195f93866b539fcdeb6"><div class="ttname"><a href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">resolution_s::h</a></div><div class="ttdeci">unsigned long h</div><div class="ttdef"><b>Definition:</b> display.h:92</div></div>
 <div class="ttc" id="ascaler_8h_html_ad8051b394b0f6cd9c28c69ac5918da0d"><div class="ttname"><a href="scaler_8h.html#ad8051b394b0f6cd9c28c69ac5918da0d">ks_set_upscaling_filter</a></div><div class="ttdeci">void ks_set_upscaling_filter(const std::string &amp;name)</div></div>
-<div class="ttc" id="ascaler_8h_html_a7cd705d079c62dc45d0dd6e420024841a64c93bf02f94660e5cdbb266c58ac112"><div class="ttname"><a href="scaler_8h.html#a7cd705d079c62dc45d0dd6e420024841a64c93bf02f94660e5cdbb266c58ac112">scaler_aspect_ratio_e::all_4_3</a></div><div class="ttdeci">@ all_4_3</div><div class="ttdoc">An aspect ratio of 4:3, disregarding the image's native ratio.</div></div>
-<div class="ttc" id="astructcaptured__frame__s_html"><div class="ttname"><a href="structcaptured__frame__s.html">captured_frame_s</a></div><div class="ttdoc">Stores the data of an image received from a capture device.</div><div class="ttdef"><b>Definition:</b> capture.h:359</div></div>
-<div class="ttc" id="ascaler_8h_html_acea6ba37d84562ff571e34b96fd5b02f"><div class="ttname"><a href="scaler_8h.html#acea6ba37d84562ff571e34b96fd5b02f">ks_scaling_filter_names</a></div><div class="ttdeci">std::vector&lt;std::string&gt; ks_scaling_filter_names(void)</div></div>
-<div class="ttc" id="ascaler_8h_html_a26ef4caacbe0d4dff8ff6bc7284395ba"><div class="ttname"><a href="scaler_8h.html#a26ef4caacbe0d4dff8ff6bc7284395ba">ks_evFramesPerSecond</a></div><div class="ttdeci">vcs_event_c&lt;unsigned&gt; ks_evFramesPerSecond</div></div>
+<div class="ttc" id="ascaler_8h_html_a7cd705d079c62dc45d0dd6e420024841a64c93bf02f94660e5cdbb266c58ac112"><div class="ttname"><a href="scaler_8h.html#a7cd705d079c62dc45d0dd6e420024841a64c93bf02f94660e5cdbb266c58ac112">scaler_aspect_ratio_e::all_4_3</a></div><div class="ttdeci">@ all_4_3</div></div>
+<div class="ttc" id="astructcaptured__frame__s_html"><div class="ttname"><a href="structcaptured__frame__s.html">captured_frame_s</a></div><div class="ttdoc">Stores the data of an image received from a capture device.</div><div class="ttdef"><b>Definition:</b> capture.h:376</div></div>
+<div class="ttc" id="ascaler_8h_html_acea6ba37d84562ff571e34b96fd5b02f"><div class="ttname"><a href="scaler_8h.html#acea6ba37d84562ff571e34b96fd5b02f">ks_scaling_filter_names</a></div><div class="ttdeci">std::vector&lt; std::string &gt; ks_scaling_filter_names(void)</div></div>
+<div class="ttc" id="ascaler_8h_html_a26ef4caacbe0d4dff8ff6bc7284395ba"><div class="ttname"><a href="scaler_8h.html#a26ef4caacbe0d4dff8ff6bc7284395ba">ks_evFramesPerSecond</a></div><div class="ttdeci">vcs_event_c&lt; unsigned &gt; ks_evFramesPerSecond</div></div>
 <div class="ttc" id="ascaler_8h_html_a8f971047e4fbec9212e91bb2bbab3cc7"><div class="ttname"><a href="scaler_8h.html#a8f971047e4fbec9212e91bb2bbab3cc7">ks_indicate_no_signal</a></div><div class="ttdeci">void ks_indicate_no_signal(void)</div></div>
-<div class="ttc" id="acapture_8h_html_a657a68d9d5bcd78729fdff851d094704"><div class="ttname"><a href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a></div><div class="ttdeci">vcs_event_c&lt;const captured_frame_s&amp;&gt; kc_evNewCapturedFrame</div></div>
-<div class="ttc" id="acapture_8h_html_ae3d3e0f99b7227139f91b50e05164b62"><div class="ttname"><a href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a></div><div class="ttdeci">vcs_event_c&lt;void&gt; kc_evSignalLost</div></div>
-<div class="ttc" id="acapture_8h_html_a7a7d72a76f6bed79ef3ae6979bd3fe26"><div class="ttname"><a href="capture_8h.html#a7a7d72a76f6bed79ef3ae6979bd3fe26">kc_evInvalidSignal</a></div><div class="ttdeci">vcs_event_c&lt;void&gt; kc_evInvalidSignal</div></div>
+<div class="ttc" id="acapture_8h_html_a657a68d9d5bcd78729fdff851d094704"><div class="ttname"><a href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a></div><div class="ttdeci">vcs_event_c&lt; const captured_frame_s &amp; &gt; kc_evNewCapturedFrame</div></div>
+<div class="ttc" id="acapture_8h_html_ae3d3e0f99b7227139f91b50e05164b62"><div class="ttname"><a href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a></div><div class="ttdeci">vcs_event_c&lt; void &gt; kc_evSignalLost</div></div>
+<div class="ttc" id="acapture_8h_html_a7a7d72a76f6bed79ef3ae6979bd3fe26"><div class="ttname"><a href="capture_8h.html#a7a7d72a76f6bed79ef3ae6979bd3fe26">kc_evInvalidSignal</a></div><div class="ttdeci">vcs_event_c&lt; void &gt; kc_evInvalidSignal</div></div>
 <div class="ttc" id="ascaler_8h_html_a00b0dc02f9bcb144e846e68ca01f4d92"><div class="ttname"><a href="scaler_8h.html#a00b0dc02f9bcb144e846e68ca01f4d92">ks_indicate_invalid_signal</a></div><div class="ttdeci">void ks_indicate_invalid_signal(void)</div></div>
 <div class="ttc" id="ascaler_8h_html_a7d598c76c0fed56b61932b3770fea532"><div class="ttname"><a href="scaler_8h.html#a7d598c76c0fed56b61932b3770fea532">ks_scale_frame</a></div><div class="ttdeci">void ks_scale_frame(const captured_frame_s &amp;frame)</div></div>
 <div class="ttc" id="ascaler_8h_html_a89cbbcdbd2dd3426ad39ccf270ffac67"><div class="ttname"><a href="scaler_8h.html#a89cbbcdbd2dd3426ad39ccf270ffac67">ks_set_scaling_multiplier</a></div><div class="ttdeci">scaler_aspect_ratio_e ks_set_scaling_multiplier(void)</div></div>
-<div class="ttc" id="astructresolution__s_html_ae01e8bac378ef94734144849e8d62d1d"><div class="ttname"><a href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">resolution_s::w</a></div><div class="ttdeci">unsigned long w</div><div class="ttdoc">Width (in pixels).</div><div class="ttdef"><b>Definition:</b> display.h:52</div></div>
+<div class="ttc" id="astructresolution__s_html_ae01e8bac378ef94734144849e8d62d1d"><div class="ttname"><a href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">resolution_s::w</a></div><div class="ttdeci">unsigned long w</div><div class="ttdef"><b>Definition:</b> display.h:89</div></div>
 <div class="ttc" id="ascaler_8h_html_ade936dc0d5ad1eb59e0a72260e6ead9e"><div class="ttname"><a href="scaler_8h.html#ade936dc0d5ad1eb59e0a72260e6ead9e">ks_set_aspect_ratio</a></div><div class="ttdeci">void ks_set_aspect_ratio(const scaler_aspect_ratio_e aspect)</div></div>
 <div class="ttc" id="ascaler_8h_html_a2e14b290e9a22e4d057e82decd415523"><div class="ttname"><a href="scaler_8h.html#a2e14b290e9a22e4d057e82decd415523">ks_set_base_resolution</a></div><div class="ttdeci">void ks_set_base_resolution(const resolution_s &amp;r)</div></div>
 <div class="ttc" id="ascaler_8h_html_a7dbcd3a2b23369e983488b2315c132e4"><div class="ttname"><a href="scaler_8h.html#a7dbcd3a2b23369e983488b2315c132e4">ks_set_downscaling_filter</a></div><div class="ttdeci">void ks_set_downscaling_filter(const std::string &amp;name)</div></div>
-<div class="ttc" id="ascaler_8h_html_a2f1d440a296c3b43b2146d63cc1f5f64"><div class="ttname"><a href="scaler_8h.html#a2f1d440a296c3b43b2146d63cc1f5f64">ks_evNewScaledImage</a></div><div class="ttdeci">vcs_event_c&lt;const captured_frame_s&amp;&gt; ks_evNewScaledImage</div></div>
+<div class="ttc" id="ascaler_8h_html_a2f1d440a296c3b43b2146d63cc1f5f64"><div class="ttname"><a href="scaler_8h.html#a2f1d440a296c3b43b2146d63cc1f5f64">ks_evNewScaledImage</a></div><div class="ttdeci">vcs_event_c&lt; const captured_frame_s &amp; &gt; ks_evNewScaledImage</div></div>
 <div class="ttc" id="ascaler_8h_html_a4146195dc32be4d0c5e8e510b9fcfe99"><div class="ttname"><a href="scaler_8h.html#a4146195dc32be4d0c5e8e510b9fcfe99">ks_frame_buffer</a></div><div class="ttdeci">const captured_frame_s &amp; ks_frame_buffer(void)</div></div>
 <!-- start footer part -->
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_bffb66a1d1c6557eb969fe6ffb1bc420.html">scaler</a></li><li class="navelem"><a class="el" href="scaler_8h.html">scaler.h</a></li>
-    <li class="footer">Generated on Fri Jul 2 2021 08:22:57 for VCS 2.4.0 by
+    <li class="footer">Generated on Sat Jul 3 2021 09:56:31 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>

@@ -7,6 +7,7 @@
 
 
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -22,7 +23,7 @@
 <script src="navtreedata.js" type="text/javascript"></script>
 <script src="navtree.js" type="text/javascript"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css"/>
-<link href="vcs-doxygen-1_8_17.css" rel="stylesheet" type="text/css"/>
+<link href="vcs-for-doxygen.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -66,11 +67,11 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 </script>
 <div id="doc-content">
 <div class="header">
-  <div class="summary">
+<div class="summary">
 <a href="#pub-methods">Public Member Functions</a> |
-<a href="#pub-attribs">Data Fields</a>  </div>
-  <div class="headertitle">
-<div class="title"><span class="vcs-referent">recording_buffer_s</span><span class="vcs-separator"></span><span class="vcs-referrer">Struct reference</span></div>  </div>
+<a href="#pub-attribs">Data Fields</a> </div>
+<div class="headertitle">
+<div class="title"><span class="vcs-referent">recording_buffer_s</span><span class="vcs-separator"></span><span class="vcs-referrer">Struct reference</span></div> </div>
 </div><!--header-->
 <div class="contents">
 
@@ -122,8 +123,8 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">bool recording_buffer_s::empty</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">bool</span><span class="vcs-member-name">recording_buffer_s::empty</span>()</span></div><div class="memdoc">
 <p>Returns true if the buffer currently has no frame slots reserved; false otherwise. </p>
 
 </div>
@@ -133,8 +134,8 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">bool recording_buffer_s::full</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">bool</span><span class="vcs-member-name">recording_buffer_s::full</span>()</span></div><div class="memdoc">
 <p>Returns true if the buffer is currently at maximum capacity; false otherwise.</p>
 <p>If the buffer is full, no new frames can be queued with <a class="el" href="structrecording__buffer__s.html#a2a94c70044d0006c5ffcf3fe8f8f51b4">push()</a> until one or more frame slots are unreserved with <a class="el" href="structrecording__buffer__s.html#a78bd4c901f985486c212da74b2f76baa">pop()</a> or the buffer is reset with <a class="el" href="structrecording__buffer__s.html#a6c43229f0e5ca6d00a4b8f48a6b129da">reset()</a>. </p>
 
@@ -145,8 +146,8 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void recording_buffer_s::initialize</span>(<span class="vcs-param-type">const size_t</span> <span class="vcs-param-name">frameCapacity = 10</span>)</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">recording_buffer_s::initialize</span>(<span class="vcs-param-type">const size_t</span> <span class="vcs-param-name">frameCapacity = 10</span>)</span></div><div class="memdoc">
 <p>Initializes the buffer, allocating memory to hold at most the number of frames given by <code>frameCapacity</code>. </p>
 
 </div>
@@ -156,7 +157,7 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
+
 <span class="memname"><a class="el" href="classheap__mem.html">heap_mem</a>&lt;u8&gt;* recording_buffer_s::pop()</span></div><div class="memdoc">
 <p>Unreserves a frame slot in the queue and returns a pointer to its memory.</p>
 <p>The returned pointer will remain valid until either <a class="el" href="structrecording__buffer__s.html#a2a94c70044d0006c5ffcf3fe8f8f51b4">push()</a> or <a class="el" href="structrecording__buffer__s.html#af129d953b27086a21a95c5152d171687">release()</a> is called. </p>
@@ -168,7 +169,7 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
+
 <span class="memname"><a class="el" href="classheap__mem.html">heap_mem</a>&lt;u8&gt;* recording_buffer_s::push()</span></div><div class="memdoc">
 <p>Reserves a frame slot in the buffer and returns a pointer to its memory. </p>
 
@@ -179,8 +180,8 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void recording_buffer_s::release</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">recording_buffer_s::release</span>()</span></div><div class="memdoc">
 <p>Releases the buffer.</p>
 <dl class="section warning"><dt>Warning</dt><dd>This function deallocates the buffer's memory, invalidating all pointers obtained from <a class="el" href="structrecording__buffer__s.html#a2a94c70044d0006c5ffcf3fe8f8f51b4">push()</a> or <a class="el" href="structrecording__buffer__s.html#a78bd4c901f985486c212da74b2f76baa">pop()</a>. </dd></dl>
 
@@ -191,8 +192,8 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">void recording_buffer_s::reset</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">recording_buffer_s::reset</span>()</span></div><div class="memdoc">
 <p>Resets the buffer to an empty state. </p>
 
 </div>
@@ -202,8 +203,8 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">unsigned recording_buffer_s::usage</span>()</span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">unsigned</span><span class="vcs-member-name">recording_buffer_s::usage</span>()</span></div><div class="memdoc">
 <p>Returns as a percentage (0–100) the amount of buffer capacity currently in use. </p>
 
 </div>
@@ -214,8 +215,8 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">const unsigned recording_buffer_s::maxHeight</span></span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">const unsigned</span><span class="vcs-member-name">recording_buffer_s::maxHeight</span></span></div><div class="memdoc">
 <p>Specifies the maximum height of frame that the buffer can store. </p>
 
 </div>
@@ -225,8 +226,8 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">const unsigned recording_buffer_s::maxWidth</span></span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">const unsigned</span><span class="vcs-member-name">recording_buffer_s::maxWidth</span></span></div><div class="memdoc">
 <p>Specifies the maximum width of frame that the buffer can store. </p>
 
 </div>
@@ -236,8 +237,8 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
-<span class="memname"><span class="vcs-member-name">std::mutex recording_buffer_s::mutex</span></span></div><div class="memdoc">
+
+<span class="memname"><span class="vcs-member-return">std::mutex</span><span class="vcs-member-name">recording_buffer_s::mutex</span></span></div><div class="memdoc">
 <p>A convenience mutex for use by the recording subsystem.</p>
 <p>Not used by the buffer. </p>
 
@@ -248,7 +249,7 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 
 <div class="memitem">
 <div class="memproto">
-      
+
 <span class="memname"><a class="el" href="classheap__mem.html">heap_mem</a>&lt;u8&gt; recording_buffer_s::scratchBuffer</span></div><div class="memdoc">
 <p>An extra memory buffer for any temporary frame operations the VCS video recording subsystem might need to do.</p>
 <p>The buffer has room for one captured frame.</p>
@@ -266,7 +267,7 @@ $(document).ready(function(){initNavTree('structrecording__buffer__s.html',''); 
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structrecording__buffer__s.html">recording_buffer_s</a></li>
-    <li class="footer">Generated on Fri Jul 2 2021 08:22:57 for VCS 2.4.0 by
+    <li class="footer">Generated on Sat Jul 3 2021 09:56:31 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>
