@@ -8,6 +8,8 @@
 
 
 
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -122,7 +124,7 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 </table><table class="memberdecls"><tbody><tr class="heading"><td colspan="2"><h2 class="groupheader">Events</h2></td></tr><tr class="memitem:ad65798c1e89524a4b1ec7818f1b4f042"><td align="right" class="memItemLeft" valign="top"><a id="ad65798c1e89524a4b1ec7818f1b4f042"></a>
 &lt;void&gt;</td><td class="memItemRight" valign="bottom"><b>kd_evDirty</b></td></tr></tbody></table>
 <a id="details" name="details"></a><h2 class="groupheader">Detailed description</h2>
-<div class="textblock"><p>The display subsystem interface. </p>
+<div class="textblock vcs-section-details"><p>The display subsystem interface. </p>
 <p>The VCS GUI is responsible for providing the user with real-time means to enter information (e.g. configuring capture parameters), for directing such input to VCS, and for displaying captured frames and other information about VCS's run-time state to the user.</p>
 <p>The display interface decouples the GUI's implementation from the rest of VCS, making it possible to replace the GUI with fairly minimal modification to the rest of VCS.</p>
 <p>VCS's default GUI uses Qt, and its implementation of the display interface can be found in src/display/qt/d_main.cpp.</p>
@@ -141,7 +143,7 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#a57d5c5d487906d9af9ab12e7f2155d19">kd_release_output_window()</a>, <a class="el" href="display_8h.html#ab03382911b280df2a7f796094ba1c1af">kd_spin_event_loop()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a57d5c5d487906d9af9ab12e7f2155d19">kd_release_output_window()</a>, <a class="el" href="display_8h.html#ab03382911b280df2a7f796094ba1c1af">kd_spin_event_loop()</a> </dd></dl></div>
 <a id="aae1a2bd7a28edcc105f3fc015a54367c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae1a2bd7a28edcc105f3fc015a54367c">◆</a></span>kd_add_log_entry()</h2>
 
@@ -208,15 +210,15 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 <div class="memproto">
 
 <span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">kd_recalculate_filter_graph_chains</span>()</span></div><div class="memdoc">
-<p>Asks the GUI to inform the filter interface, src/filter/filter.h, of all filter chains currently configured in the GUI.</p>
+<p>Asks the GUI to inform the filter interface, <a class="el" href="filter_8h.html">src/filter/filter.h</a>, of all filter chains currently configured in the GUI.</p>
 <p>This assumes that the GUI provides a dialog of some sort in which the user can create and modify filter chains. When this function is called, the GUI is expected to enumerate those filter chains into a format consumed by the filter interface and then to submit them to the filter interface.</p>
 <p>In pseudocode, the GUI would do something like the following:</p>
-<pre class="fragment"><code class="line">kf_unregister_all_filter_chains();</code>
+<pre class="fragment"><code class="line"><a class="code" href="filter_8h.html#ab2a3981b1fd7843be3891d7ba4259509">kf_unregister_all_filter_chains</a>();</code>
 <code class="line"> </code>
 <code class="line"><span class="keywordflow">for</span> (chain: guiFilterChains)</code>
 <code class="line">{</code>
 <code class="line">    <span class="keyword">const</span> standardFilterChain = ...convert chain into standard format...</code>
-<code class="line">    kf_register_filter_chain(standardFilterChain);</code>
+<code class="line">    <a class="code" href="filter_8h.html#a7d804d8a97c0cdae4ca47f591195c6e9">kf_register_filter_chain</a>(standardFilterChain);</code>
 <code class="line">}</code>
 </pre><!-- fragment --> 
 </div>
@@ -233,7 +235,7 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#ae624633776327f21294e1c5df8179446">kd_acquire_output_window()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#ae624633776327f21294e1c5df8179446">kd_acquire_output_window()</a> </dd></dl></div>
 <a id="ad77cd9d3099ddb3fb56e0b43431ee9e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad77cd9d3099ddb3fb56e0b43431ee9e5">◆</a></span>kd_show_headless_assert_error_message()</h2>
 
@@ -246,7 +248,7 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f">kd_show_headless_info_message()</a>, <a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f">kd_show_headless_info_message()</a>, <a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a> </dd></dl></div>
 <a id="a7ea5703c9f856d9d999428fdee356f74"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ea5703c9f856d9d999428fdee356f74">◆</a></span>kd_show_headless_error_message()</h2>
 
@@ -259,7 +261,7 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f">kd_show_headless_info_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#aa9f9c589c53ddf7b60625a7ca1f09b3f">kd_show_headless_info_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl></div>
 <a id="aa9f9c589c53ddf7b60625a7ca1f09b3f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa9f9c589c53ddf7b60625a7ca1f09b3f">◆</a></span>kd_show_headless_info_message()</h2>
 
@@ -282,7 +284,7 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 </pre><!-- fragment -->
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a7ea5703c9f856d9d999428fdee356f74">kd_show_headless_error_message()</a>, <a class="el" href="display_8h.html#ad77cd9d3099ddb3fb56e0b43431ee9e5">kd_show_headless_assert_error_message()</a> </dd></dl></div>
 <a id="ab03382911b280df2a7f796094ba1c1af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab03382911b280df2a7f796094ba1c1af">◆</a></span>kd_spin_event_loop()</h2>
 
@@ -316,7 +318,7 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 </pre><!-- fragment -->
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#a5622698adab1106e3c6affb4652b9f88">kd_update_output_window_title()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a5622698adab1106e3c6affb4652b9f88">kd_update_output_window_title()</a> </dd></dl></div>
 <a id="a5622698adab1106e3c6affb4652b9f88"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5622698adab1106e3c6affb4652b9f88">◆</a></span>kd_update_output_window_title()</h2>
 
@@ -330,18 +332,20 @@ $(document).ready(function(){initNavTree('display_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="display_8h.html#a0fdc2b0606b2d14c4c275ed5a0bc221d">kd_update_output_window_size()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="display_8h.html#a0fdc2b0606b2d14c4c275ed5a0bc221d">kd_update_output_window_size()</a> </dd></dl></div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="afilter_8h_html_a7d804d8a97c0cdae4ca47f591195c6e9"><div class="ttname"><a href="filter_8h.html#a7d804d8a97c0cdae4ca47f591195c6e9">kf_register_filter_chain</a></div><div class="ttdeci">void kf_register_filter_chain(std::vector&lt; abstract_filter_c * &gt; newChain)</div></div>
 <div class="ttc" id="ascaler_8h_html_a00dc0b94b754062e6f540318203bdf78"><div class="ttname"><a href="scaler_8h.html#a00dc0b94b754062e6f540318203bdf78">ks_output_resolution</a></div><div class="ttdeci">resolution_s ks_output_resolution(void)</div></div>
 <div class="ttc" id="astructresolution__s_html_a820d69aaad874195f93866b539fcdeb6"><div class="ttname"><a href="structresolution__s.html#a820d69aaad874195f93866b539fcdeb6">resolution_s::h</a></div><div class="ttdeci">unsigned long h</div><div class="ttdef"><b>Definition:</b> display.h:92</div></div>
+<div class="ttc" id="afilter_8h_html_ab2a3981b1fd7843be3891d7ba4259509"><div class="ttname"><a href="filter_8h.html#ab2a3981b1fd7843be3891d7ba4259509">kf_unregister_all_filter_chains</a></div><div class="ttdeci">void kf_unregister_all_filter_chains(void)</div></div>
 <div class="ttc" id="astructresolution__s_html"><div class="ttname"><a href="structresolution__s.html">resolution_s</a></div><div class="ttdoc">Describes the resolution of a pixel surface – e.g. a program window or an image buffer.</div><div class="ttdef"><b>Definition:</b> display.h:86</div></div>
 <div class="ttc" id="astructresolution__s_html_ae01e8bac378ef94734144849e8d62d1d"><div class="ttname"><a href="structresolution__s.html#ae01e8bac378ef94734144849e8d62d1d">resolution_s::w</a></div><div class="ttdeci">unsigned long w</div><div class="ttdef"><b>Definition:</b> display.h:89</div></div>
 <!-- start footer part -->
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_25685f9c6d837c57f295dee081495707.html">display</a></li><li class="navelem"><a class="el" href="display_8h.html">display.h</a></li>
-    <li class="footer">Generated on Sat Jul 3 2021 09:56:31 for VCS 2.4.0 by
+    <li class="footer">Generated on Mon Jul 5 2021 07:59:44 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>

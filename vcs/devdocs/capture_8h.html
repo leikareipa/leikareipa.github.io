@@ -8,6 +8,8 @@
 
 
 
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -210,7 +212,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 </table><table class="memberdecls"><tbody><tr class="heading"><td colspan="2"><h2 class="groupheader">Events</h2></td></tr><tr class="memitem:a27e2ca2dfafb694d6097fa0cde3f4499"><td align="right" class="memItemLeft" valign="top">&lt;void&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a27e2ca2dfafb694d6097fa0cde3f4499">kc_evInvalidDevice</a></td></tr><tr class="memitem:a7a7d72a76f6bed79ef3ae6979bd3fe26"><td align="right" class="memItemLeft" valign="top">&lt;void&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a7a7d72a76f6bed79ef3ae6979bd3fe26">kc_evInvalidSignal</a></td></tr><tr class="memitem:a67758b8e2c262987fb9ba0f33de3aa99"><td align="right" class="memItemLeft" valign="top"><a id="a67758b8e2c262987fb9ba0f33de3aa99"></a>
 &lt;unsigned&gt;</td><td class="memItemRight" valign="bottom"><b>kc_evMissedFramesCount</b></td></tr><tr class="memitem:a657a68d9d5bcd78729fdff851d094704"><td align="right" class="memItemLeft" valign="top">&lt;const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp;&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a></td></tr><tr class="memitem:ab707abf57bb4b18aa38eb43a240501c4"><td align="right" class="memItemLeft" valign="top">&lt;const <a class="el" href="structvideo__mode__s.html">video_mode_s</a>&amp;&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#ab707abf57bb4b18aa38eb43a240501c4">kc_evNewProposedVideoMode</a></td></tr><tr class="memitem:a7cfc35dca16a7ca8ed22d94317e4537e"><td align="right" class="memItemLeft" valign="top">&lt;const <a class="el" href="structvideo__mode__s.html">video_mode_s</a>&amp;&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a7cfc35dca16a7ca8ed22d94317e4537e">kc_evNewVideoMode</a></td></tr><tr class="memitem:a484060c8a561673fcd05014380cddcd1"><td align="right" class="memItemLeft" valign="top">&lt;void&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a></td></tr><tr class="memitem:ae3d3e0f99b7227139f91b50e05164b62"><td align="right" class="memItemLeft" valign="top">&lt;void&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a></td></tr><tr class="memitem:af2cd8911b4e676b08c22dbbf52d35822"><td align="right" class="memItemLeft" valign="top">&lt;void&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#af2cd8911b4e676b08c22dbbf52d35822">kc_evUnrecoverableError</a></td></tr><tr class="memitem:ab4cb30efd18b923be9c73280fce4dce2"><td align="right" class="memItemLeft" valign="top">&lt;void&gt;</td><td class="memItemRight" valign="bottom"><a class="el" href="capture_8h.html#ab4cb30efd18b923be9c73280fce4dce2">ks_evInputChannelChanged</a></td></tr></tbody></table>
 <a id="details" name="details"></a><h2 class="groupheader">Detailed description</h2>
-<div class="textblock"><p>The capture subsystem interface. </p>
+<div class="textblock vcs-section-details"><p>The capture subsystem interface. </p>
 <p>The capture subsystem is responsible for mediating exchange between VCS and the capture device; including initializing the device and providing VCS with access to the frame buffer(s) associated with the device.</p>
 <p>The capture subsystem is an exceptional subsystem in that it's allowed to run outside of the main VCS thread. This freedom – in what is otherwise a single-threaded application – is granted because some capture devices require out-of-thread callbacks or the like.</p>
 <p>The multithreaded capture subsystem will typically have an idle monitoring thread that waits for the capture device to send in data. When data comes in, the thread will copy it to a local memory buffer to be operated on in the main VCS thread when it's ready to do so.</p>
@@ -251,7 +253,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a917d7e71681fb7b566fd7dad70440fcb">kc_set_deinterlacing_mode()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a917d7e71681fb7b566fd7dad70440fcb">kc_set_deinterlacing_mode()</a> </dd></dl></div>
 <a id="a01259dd4659e237afca37701f0940985"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a01259dd4659e237afca37701f0940985">◆</a></span>capture_event_e</h2>
 
@@ -295,7 +297,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 </table>
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a5ccdba141d21cfa16b59aeb9d1f17d7c">kc_pop_capture_event_queue()</a> </dd></dl></div>
 <a id="ad99ae6bee14419e8625fdfc0cce62b31"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad99ae6bee14419e8625fdfc0cce62b31">◆</a></span>capture_pixel_format_e</h2>
 
@@ -327,7 +329,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 </table>
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="structcaptured__frame__s.html" title="Stores the data of an image received from a capture device.">captured_frame_s</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structcaptured__frame__s.html" title="Stores the data of an image received from a capture device.">captured_frame_s</a> </dd></dl></div>
 <h2 class="groupheader">Function documentation</h2>
 <a id="adb8b80446b127b6553db60e53092baac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb8b80446b127b6553db60e53092baac">◆</a></span>kc_capture_mutex()</h2>
@@ -490,7 +492,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a7cfc35dca16a7ca8ed22d94317e4537e">kc_evNewVideoMode</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a7cfc35dca16a7ca8ed22d94317e4537e">kc_evNewVideoMode</a> </dd></dl></div>
 <a id="a9ae89f490ed737b94d5e91f03b24bddc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ae89f490ed737b94d5e91f03b24bddc">◆</a></span>kc_get_capture_resolution()</h2>
 
@@ -504,7 +506,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a>, <a class="el" href="capture_8h.html#a7cfc35dca16a7ca8ed22d94317e4537e">kc_evNewVideoMode</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a>, <a class="el" href="capture_8h.html#a7cfc35dca16a7ca8ed22d94317e4537e">kc_evNewVideoMode</a> </dd></dl></div>
 <a id="aa1d726e52fb992fc598ddd455282eadf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa1d726e52fb992fc598ddd455282eadf">◆</a></span>kc_get_capture_video_mode()</h2>
 
@@ -516,7 +518,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a2173d3c9f085a1a7476353e656a49075">kc_get_capture_refresh_rate()</a>, <a class="el" href="capture_8h.html#a7cfc35dca16a7ca8ed22d94317e4537e">kc_evNewVideoMode</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a2173d3c9f085a1a7476353e656a49075">kc_get_capture_refresh_rate()</a>, <a class="el" href="capture_8h.html#a7cfc35dca16a7ca8ed22d94317e4537e">kc_evNewVideoMode</a> </dd></dl></div>
 <a id="a4893687cb205b317fa3be2c9eaa5cef0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4893687cb205b317fa3be2c9eaa5cef0">◆</a></span>kc_get_device_api_name()</h2>
 
@@ -540,7 +542,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aa3a32c010a31c956aa2de4e87a642e2e">kc_get_device_firmware_version()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa3a32c010a31c956aa2de4e87a642e2e">kc_get_device_firmware_version()</a> </dd></dl></div>
 <a id="aa3a32c010a31c956aa2de4e87a642e2e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3a32c010a31c956aa2de4e87a642e2e">◆</a></span>kc_get_device_firmware_version()</h2>
 
@@ -553,7 +555,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#abe82b8bc0e9aad8c4b9ffa835302f5cb">kc_get_device_driver_version()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#abe82b8bc0e9aad8c4b9ffa835302f5cb">kc_get_device_driver_version()</a> </dd></dl></div>
 <a id="aa82129076a792668a1da52aea243294e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa82129076a792668a1da52aea243294e">◆</a></span>kc_get_device_input_channel_idx()</h2>
 
@@ -566,7 +568,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl></div>
 <a id="a9605cca11c5b1559383b773dc0d67af1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9605cca11c5b1559383b773dc0d67af1">◆</a></span>kc_get_device_maximum_input_count()</h2>
 
@@ -579,7 +581,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a> </dd></dl></div>
 <a id="a8cc822ab84bb916d4afa59e95f144c1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8cc822ab84bb916d4afa59e95f144c1e">◆</a></span>kc_get_device_maximum_resolution()</h2>
 
@@ -592,7 +594,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl></div>
 <a id="aef9e55bdfc6885fced7fa787a937c128"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef9e55bdfc6885fced7fa787a937c128">◆</a></span>kc_get_device_minimum_resolution()</h2>
 
@@ -605,7 +607,7 @@ $(document).ready(function(){initNavTree('capture_8h.html',''); initResizable();
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a>, <a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#a5922629d625e283e75518802fcba07f0">kc_set_capture_resolution()</a> </dd></dl></div>
 <a id="a7211579132596d6b2c41990d751dd6e9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7211579132596d6b2c41990d751dd6e9">◆</a></span>kc_get_device_name()</h2>
 
@@ -630,7 +632,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a> </dd></dl></div>
 <a id="a8ccd158b6f2ceed31f5836d1ecb1e124"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ccd158b6f2ceed31f5836d1ecb1e124">◆</a></span>kc_get_device_video_parameter_maximums()</h2>
 
@@ -642,7 +644,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
 <a id="abad7b023845886a56a92363448a62d74"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abad7b023845886a56a92363448a62d74">◆</a></span>kc_get_device_video_parameter_minimums()</h2>
 
@@ -654,7 +656,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
 <a id="acc9addf5be34bea48a9bf16acaaacfc3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acc9addf5be34bea48a9bf16acaaacfc3">◆</a></span>kc_get_device_video_parameters()</h2>
 
@@ -666,7 +668,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a322a89993af31a067107227b69d7dd5d">kc_set_video_signal_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
 <a id="ace498676712ab27536873d4ccf186ae1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace498676712ab27536873d4ccf186ae1">◆</a></span>kc_get_frame_buffer()</h2>
 
@@ -685,7 +687,7 @@ VisionRGB-PRO2".</p>
 </pre><!-- fragment -->
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a>, <a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a>, <a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a> </dd></dl></div>
 <a id="aabfe0198ffaaff02971c887d179a5bf9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aabfe0198ffaaff02971c887d179a5bf9">◆</a></span>kc_get_missed_frames_count()</h2>
 
@@ -721,7 +723,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a0bfdd3bc863edc59cca58704265305f5">kc_is_receiving_signal()</a>, <a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a>, <a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a0bfdd3bc863edc59cca58704265305f5">kc_is_receiving_signal()</a>, <a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a>, <a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl></div>
 <a id="a66ea9368c0a2ce32e4609e159fc4a476"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a66ea9368c0a2ce32e4609e159fc4a476">◆</a></span>kc_initialize_capture()</h2>
 
@@ -742,7 +744,7 @@ VisionRGB-PRO2".</p>
 </pre><!-- fragment -->
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a>, <a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a265903d7b5e899ffc9e38245735407ac">kc_release_capture()</a>, <a class="el" href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a> </dd></dl></div>
 <a id="a2e1945229a8b6d4e039bcf808c38d995"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e1945229a8b6d4e039bcf808c38d995">◆</a></span>kc_initialize_device()</h2>
 
@@ -756,7 +758,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a6b0e4d27a4f2053f1fb6367bb10af4ea">kc_release_device()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a6b0e4d27a4f2053f1fb6367bb10af4ea">kc_release_device()</a> </dd></dl></div>
 <a id="a0bfdd3bc863edc59cca58704265305f5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0bfdd3bc863edc59cca58704265305f5">◆</a></span>kc_is_receiving_signal()</h2>
 
@@ -768,7 +770,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a>, <a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a>, <a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#af7429f44115159f37a2dbe8816fba256">kc_set_capture_input_channel()</a>, <a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a>, <a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl></div>
 <a id="a9d8938a91f890c5ff8612255c56add9e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9d8938a91f890c5ff8612255c56add9e">◆</a></span>kc_mark_frame_buffer_as_processed()</h2>
 
@@ -804,7 +806,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a> </dd></dl></div>
 <a id="a6b0e4d27a4f2053f1fb6367bb10af4ea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b0e4d27a4f2053f1fb6367bb10af4ea">◆</a></span>kc_release_device()</h2>
 
@@ -819,7 +821,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a2e1945229a8b6d4e039bcf808c38d995">kc_initialize_device()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a66ea9368c0a2ce32e4609e159fc4a476">kc_initialize_capture()</a>, <a class="el" href="capture_8h.html#a2e1945229a8b6d4e039bcf808c38d995">kc_initialize_device()</a> </dd></dl></div>
 <a id="af7429f44115159f37a2dbe8816fba256"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7429f44115159f37a2dbe8816fba256">◆</a></span>kc_set_capture_input_channel()</h2>
 
@@ -832,7 +834,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#aa82129076a792668a1da52aea243294e">kc_get_device_input_channel_idx()</a>, <a class="el" href="capture_8h.html#a9605cca11c5b1559383b773dc0d67af1">kc_get_device_maximum_input_count()</a> </dd></dl></div>
 <a id="aa4eea05780910ea03cd81b9ca0a1dbe7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa4eea05780910ea03cd81b9ca0a1dbe7">◆</a></span>kc_set_capture_pixel_format()</h2>
 
@@ -845,7 +847,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a8deeb65610bc4e70638f354c9d8258a5">kc_get_capture_pixel_format()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a8deeb65610bc4e70638f354c9d8258a5">kc_get_capture_pixel_format()</a> </dd></dl></div>
 <a id="a5922629d625e283e75518802fcba07f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5922629d625e283e75518802fcba07f0">◆</a></span>kc_set_capture_resolution()</h2>
 
@@ -860,7 +862,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a9ae89f490ed737b94d5e91f03b24bddc">kc_get_capture_resolution()</a>, <a class="el" href="capture_8h.html#aef9e55bdfc6885fced7fa787a937c128">kc_get_device_minimum_resolution()</a>, <a class="el" href="capture_8h.html#a8cc822ab84bb916d4afa59e95f144c1e">kc_get_device_maximum_resolution()</a> </dd></dl></div>
 <a id="a917d7e71681fb7b566fd7dad70440fcb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a917d7e71681fb7b566fd7dad70440fcb">◆</a></span>kc_set_deinterlacing_mode()</h2>
 
@@ -885,7 +887,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#acc9addf5be34bea48a9bf16acaaacfc3">kc_get_device_video_parameters()</a>, <a class="el" href="capture_8h.html#abad7b023845886a56a92363448a62d74">kc_get_device_video_parameter_minimums()</a>, <a class="el" href="capture_8h.html#a8ccd158b6f2ceed31f5836d1ecb1e124">kc_get_device_video_parameter_maximums()</a>, <a class="el" href="capture_8h.html#a6e4d453de8c170f5b4763ad91670e4d1">kc_get_device_video_parameter_defaults()</a> </dd></dl></div>
 <h2 class="groupheader">Event documentation</h2><a id="ab4cb30efd18b923be9c73280fce4dce2"></a><h2 class="memtitle"><span class="permalink"><a href="#ab4cb30efd18b923be9c73280fce4dce2">◆</a></span>ks_evInputChannelChanged</h2><div class="memitem">
 <div class="memproto">
 
@@ -917,7 +919,7 @@ VisionRGB-PRO2".</p>
 </pre><!-- fragment -->
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a> </dd></dl></div><a id="a484060c8a561673fcd05014380cddcd1"></a><h2 class="memtitle"><span class="permalink"><a href="#a484060c8a561673fcd05014380cddcd1">◆</a></span>kc_evSignalGained</h2><div class="memitem">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a484060c8a561673fcd05014380cddcd1">kc_evSignalGained</a> </dd></dl></div><a id="a484060c8a561673fcd05014380cddcd1"></a><h2 class="memtitle"><span class="permalink"><a href="#a484060c8a561673fcd05014380cddcd1">◆</a></span>kc_evSignalGained</h2><div class="memitem">
 <div class="memproto">
 
 <span class="memname"><span class="vcs-member-return">&lt;void&gt;</span><span class="vcs-member-name">kc_evSignalGained</span></span></div><div class="memdoc">
@@ -926,7 +928,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl></div><a id="a7cfc35dca16a7ca8ed22d94317e4537e"></a><h2 class="memtitle"><span class="permalink"><a href="#a7cfc35dca16a7ca8ed22d94317e4537e">◆</a></span>kc_evNewVideoMode</h2><div class="memitem">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#ae3d3e0f99b7227139f91b50e05164b62">kc_evSignalLost</a> </dd></dl></div><a id="a7cfc35dca16a7ca8ed22d94317e4537e"></a><h2 class="memtitle"><span class="permalink"><a href="#a7cfc35dca16a7ca8ed22d94317e4537e">◆</a></span>kc_evNewVideoMode</h2><div class="memitem">
 <div class="memproto">
 
 <span class="memname">&lt;const <a class="el" href="structvideo__mode__s.html">video_mode_s</a>&amp;&gt; kc_evNewVideoMode</span></div><div class="memdoc">
@@ -935,7 +937,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#ab707abf57bb4b18aa38eb43a240501c4">kc_evNewProposedVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl></div><a id="ab707abf57bb4b18aa38eb43a240501c4"></a><h2 class="memtitle"><span class="permalink"><a href="#ab707abf57bb4b18aa38eb43a240501c4">◆</a></span>kc_evNewProposedVideoMode</h2><div class="memitem">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#ab707abf57bb4b18aa38eb43a240501c4">kc_evNewProposedVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl></div><a id="ab707abf57bb4b18aa38eb43a240501c4"></a><h2 class="memtitle"><span class="permalink"><a href="#ab707abf57bb4b18aa38eb43a240501c4">◆</a></span>kc_evNewProposedVideoMode</h2><div class="memitem">
 <div class="memproto">
 
 <span class="memname">&lt;const <a class="el" href="structvideo__mode__s.html">video_mode_s</a>&amp;&gt; kc_evNewProposedVideoMode</span></div><div class="memdoc">
@@ -959,7 +961,7 @@ VisionRGB-PRO2".</p>
 </pre><!-- fragment -->
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#a7cfc35dca16a7ca8ed22d94317e4537e">kc_evNewVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl></div><a id="a657a68d9d5bcd78729fdff851d094704"></a><h2 class="memtitle"><span class="permalink"><a href="#a657a68d9d5bcd78729fdff851d094704">◆</a></span>kc_evNewCapturedFrame</h2><div class="memitem">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#a7cfc35dca16a7ca8ed22d94317e4537e">kc_evNewVideoMode</a>, <a class="el" href="capture_8h.html#a5a4b4e4a065c5e01e9261bbca3c49fac">kc_force_capture_resolution()</a> </dd></dl></div><a id="a657a68d9d5bcd78729fdff851d094704"></a><h2 class="memtitle"><span class="permalink"><a href="#a657a68d9d5bcd78729fdff851d094704">◆</a></span>kc_evNewCapturedFrame</h2><div class="memitem">
 <div class="memproto">
 
 <span class="memname">&lt;const <a class="el" href="structcaptured__frame__s.html">captured_frame_s</a>&amp;&gt; kc_evNewCapturedFrame</span></div><div class="memdoc">
@@ -990,7 +992,7 @@ VisionRGB-PRO2".</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a>, <a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a> </dd></dl></div><a id="a7a7d72a76f6bed79ef3ae6979bd3fe26"></a><h2 class="memtitle"><span class="permalink"><a href="#a7a7d72a76f6bed79ef3ae6979bd3fe26">◆</a></span>kc_evInvalidSignal</h2><div class="memitem">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="capture_8h.html#ace498676712ab27536873d4ccf186ae1">kc_get_frame_buffer()</a>, <a class="el" href="capture_8h.html#adb8b80446b127b6553db60e53092baac">kc_capture_mutex()</a> </dd></dl></div><a id="a7a7d72a76f6bed79ef3ae6979bd3fe26"></a><h2 class="memtitle"><span class="permalink"><a href="#a7a7d72a76f6bed79ef3ae6979bd3fe26">◆</a></span>kc_evInvalidSignal</h2><div class="memitem">
 <div class="memproto">
 
 <span class="memname"><span class="vcs-member-return">&lt;void&gt;</span><span class="vcs-member-name">kc_evInvalidSignal</span></span></div><div class="memdoc">
@@ -1062,7 +1064,7 @@ VisionRGB-PRO2".</p>
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_33eff72d368e09fa9f58259b8a9511dc.html">capture</a></li><li class="navelem"><a class="el" href="capture_8h.html">capture.h</a></li>
-    <li class="footer">Generated on Sat Jul 3 2021 09:56:31 for VCS 2.4.0 by
+    <li class="footer">Generated on Mon Jul 5 2021 07:59:44 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>

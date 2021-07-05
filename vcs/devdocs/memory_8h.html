@@ -8,6 +8,8 @@
 
 
 
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta content="text/xhtml;charset=utf-8" http-equiv="Content-Type"/>
@@ -86,7 +88,7 @@ $(document).ready(function(){initNavTree('memory_8h.html',''); initResizable(); 
 <tr class="separator:a98b9271b20d5e7e2053fcf19858cd7cb"><td class="memSeparator" colspan="2"></td></tr>
 </table>
 <a id="details" name="details"></a><h2 class="groupheader">Detailed description</h2>
-<div class="textblock"><p>The memory subsystem interface. </p>
+<div class="textblock vcs-section-details"><p>The memory subsystem interface. </p>
 <p>The memory subsystem provides chunks of pre-allocated heap memory to the rest of VCS and its subsystems for storing blocks of POD data.</p>
 <p>The subsystem allocates a fixed-size memory buffer on initialization and deals out portions of it as virtual allocations to callers. The subsystem also maintains internal bookkeeping of requested allocations, allowing for monitoring of VCS's memory usage.</p>
 <dl class="section note"><dt>Note</dt><dd>A C++-style wrapper for this interface is provided by <a class="el" href="classheap__mem.html" title="A C++ wrapper for the memory subsystem interface.">heap_mem</a>.</dd></dl>
@@ -131,7 +133,7 @@ buffer").</p>
 
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="memory_8h.html#ac9ce5ee32b731b37955730c94f351556">kmem_release()</a>, <a class="el" href="memory_8h.html#a98b9271b20d5e7e2053fcf19858cd7cb">kmem_sizeof_allocation()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="memory_8h.html#ac9ce5ee32b731b37955730c94f351556">kmem_release()</a>, <a class="el" href="memory_8h.html#a98b9271b20d5e7e2053fcf19858cd7cb">kmem_sizeof_allocation()</a> </dd></dl></div>
 <a id="ac9ce5ee32b731b37955730c94f351556"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac9ce5ee32b731b37955730c94f351556">◆</a></span>kmem_release()</h2>
 
@@ -154,7 +156,7 @@ buffer").</p>
 </pre><!-- fragment -->
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> </dd></dl></div>
 <a id="a98b9271b20d5e7e2053fcf19858cd7cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a98b9271b20d5e7e2053fcf19858cd7cb">◆</a></span>kmem_sizeof_allocation()</h2>
 
@@ -171,7 +173,7 @@ buffer").</p>
 </pre><!-- fragment -->
 
 </div>
-<dl class="section see"><dt>See also:</dt><dd><a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> </dd></dl></div>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate()</a> </dd></dl></div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="amemory_8h_html_a21fb78d1d63b6bdce1e6fed7d507fda0"><div class="ttname"><a href="memory_8h.html#a21fb78d1d63b6bdce1e6fed7d507fda0">kmem_allocate</a></div><div class="ttdeci">void * kmem_allocate(const int numBytes, const char *const reason)</div></div>
@@ -181,7 +183,7 @@ buffer").</p>
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_fdedb0aba14d44ce9d99bc100e026e6a.html">common</a></li><li class="navelem"><a class="el" href="dir_e673cebbcabf3e2994264573d5786a29.html">memory</a></li><li class="navelem"><a class="el" href="memory_8h.html">memory.h</a></li>
-    <li class="footer">Generated on Sat Jul 3 2021 09:56:31 for VCS 2.4.0 by
+    <li class="footer">Generated on Mon Jul 5 2021 07:59:44 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>
