@@ -176,8 +176,9 @@ $(document).ready(function(){initNavTree('filter_8h.html',''); initResizable(); 
 </pre><!-- fragment --></li>
 <li>(Optional) Apply filters individually: <pre class="fragment"><code class="line"><span class="keyword">auto</span> *blur = kf_create_filter_instance&lt;filter_blur_c&gt;();</code>
 <code class="line"> </code>
-<code class="line">uint8_t pixels[2];</code>
-<code class="line"><a class="code" href="structresolution__s.html">resolution_s</a> resolution = {1, 2};</code>
+<code class="line"><span class="comment">// Filter a dummy image of 1 x 2 resolution (BGRA/8888 format).</span></code>
+<code class="line">uint8_t pixels[8];</code>
+<code class="line"><a class="code" href="structresolution__s.html">resolution_s</a> resolution = {1, 2, 32};</code>
 <code class="line">blur-&gt;apply(pixels, resolution);</code>
 <code class="line"> </code>
 <code class="line"><span class="comment">// When we no longer need the filter.</span></code>
@@ -370,6 +371,7 @@ $(document).ready(function(){initNavTree('filter_8h.html',''); initResizable(); 
 <span class="memname"><span class="vcs-member-return">void</span><span class="vcs-member-name">kf_apply_matching_filter_chain</span>(<span class="vcs-param-type">u8 *const</span> <span class="vcs-param-name">pixels,</span> <span class="vcs-param-type"><span>const </span><a class="el" href="structresolution__s.html">resolution_s</a><span>&amp;</span></span> <span class="vcs-param-name">r</span>)</span></div><div class="memdoc">
 <p>Applies to the <code>pixels</code> of an image of resolution <code>r</code> the first filter chain registered with <a class="el" href="filter_8h.html#a7d804d8a97c0cdae4ca47f591195c6e9">kf_register_filter_chain()</a> whose input condition matches <code>r</code> and whose output condition matches the scaler subsystem's current output resolution. If there's no chain that matches these conditions, no chain will be applied.</p>
 <p>If the filter subsystem is disabled, or if there are no registered filter chains, calling this function has no effect.</p>
+<dl class="section note"><dt>Note</dt><dd><code>pixels</code> is expected to be in BGRA/8888 format, each pixel being 4 bytes in B,G,R,A order.</dd></dl>
 
 
 </div>
@@ -534,7 +536,7 @@ $(document).ready(function(){initNavTree('filter_8h.html',''); initResizable(); 
 <div class="ttc" id="astructcaptured__frame__s_html"><div class="ttname"><a href="structcaptured__frame__s.html">captured_frame_s</a></div><div class="ttdoc">Stores the data of an image received from a capture device.</div><div class="ttdef"><b>Definition:</b> capture.h:376</div></div>
 <div class="ttc" id="afilter_8h_html_a95b81a6bc901c8cb2d55766a4baae46f"><div class="ttname"><a href="filter_8h.html#a95b81a6bc901c8cb2d55766a4baae46f">kf_delete_filter_instance</a></div><div class="ttdeci">void kf_delete_filter_instance(const abstract_filter_c *const filter)</div></div>
 <div class="ttc" id="afilter_8h_html_a865c376e81c67825f112a23323283bba"><div class="ttname"><a href="filter_8h.html#a865c376e81c67825f112a23323283bba">kf_initialize_filters</a></div><div class="ttdeci">void kf_initialize_filters(void)</div></div>
-<div class="ttc" id="afilter_8h_html_a93af5badb962d0ff38cfadd629c074f7"><div class="ttname"><a href="filter_8h.html#a93af5badb962d0ff38cfadd629c074f7">filter_category_e</a></div><div class="ttdeci">filter_category_e</div><div class="ttdoc">Enumerates the functional categories into which filters can be divided.</div><div class="ttdef"><b>Definition:</b> filter.h:316</div></div>
+<div class="ttc" id="afilter_8h_html_a93af5badb962d0ff38cfadd629c074f7"><div class="ttname"><a href="filter_8h.html#a93af5badb962d0ff38cfadd629c074f7">filter_category_e</a></div><div class="ttdeci">filter_category_e</div><div class="ttdoc">Enumerates the functional categories into which filters can be divided.</div><div class="ttdef"><b>Definition:</b> filter.h:317</div></div>
 <div class="ttc" id="acapture_8h_html_a657a68d9d5bcd78729fdff851d094704"><div class="ttname"><a href="capture_8h.html#a657a68d9d5bcd78729fdff851d094704">kc_evNewCapturedFrame</a></div><div class="ttdeci">vcs_event_c&lt; const captured_frame_s &amp; &gt; kc_evNewCapturedFrame</div></div>
 <div class="ttc" id="afilter_8h_html_afc15a35814126dad800d9c1bb66c2f70"><div class="ttname"><a href="filter_8h.html#afc15a35814126dad800d9c1bb66c2f70">kf_available_filter_types</a></div><div class="ttdeci">const std::vector&lt; const abstract_filter_c * &gt; &amp; kf_available_filter_types(void)</div></div>
 <div class="ttc" id="astructresolution__s_html"><div class="ttname"><a href="structresolution__s.html">resolution_s</a></div><div class="ttdoc">Describes the resolution of a pixel surface – e.g. a program window or an image buffer.</div><div class="ttdef"><b>Definition:</b> display.h:86</div></div>
@@ -545,7 +547,7 @@ $(document).ready(function(){initNavTree('filter_8h.html',''); initResizable(); 
 <div class="navpath" id="nav-path"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_8681a82a265081a91d191144ff606af9.html">filter</a></li><li class="navelem"><a class="el" href="filter_8h.html">filter.h</a></li>
-    <li class="footer">Generated on Mon Jul 5 2021 07:59:44 for VCS 2.4.0 by
+    <li class="footer">Generated on Mon Jul 5 2021 19:47:27 for VCS 2.4.0 by
     <a href="http://www.doxygen.org/index.html">
     <img alt="doxygen" class="footer" src="doxygen.png"/></a> 1.8.17 </li>
   </ul>
