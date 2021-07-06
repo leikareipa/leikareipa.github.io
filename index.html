@@ -6,9 +6,6 @@
         <link rel="stylesheet"
               type="text/css"
               href="./soft/system/dokki.css">
-        <link rel="stylesheet"
-              href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
-              crossorigin="anonymous">
         <script defer src="https://cdn.jsdelivr.net/npm/vue@3.0.11/dist/vue.global.prod.js"></script>
         <script defer src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.prod.js"></script>
         <script defer src="./soft/system/dokki.js"></script>
@@ -22,8 +19,8 @@
 
         <template id="dokki-document">
 
-            <dokki-header icon="fas fa-book"
-                          title="Software index of leikareipa">
+            <dokki-header icon="fas fa-caret-down"
+                          title="Software portfolio">
             </dokki-header>
 
             <dokki-side-panel>
@@ -52,19 +49,11 @@
                             GitHub <a href="https://github.com/leikareipa" target="_blank" rel="noopener">github.com/leikareipa</a>
                         </div>
 
-                        <span style="margin: 0 8px;"></span>
-
-                        <div style="display: inline-block;">
-                            <i class="fab fa-youtube"></i>
-                            YouTube <a href="https://www.youtube.com/user/vvbee" target="_blank" rel="noopener">youtube.com/user/vvbee</a>
-                        </div>
-
                     </dokki-spoiler>
 
                     <dokki-image expanded src="./soft/img/lintulista/lintulista-4.png">
                         <template #caption>
-                            Browsing a list of observations
-                            (see: <a href="#lintulista">Lintulista</a>)
+                            Browsing a list of observations (<a href="#lintulista">Lintulista</a>)
                         </template>
                     </dokki-image>
                 </dokki-topic>
@@ -830,30 +819,26 @@
                             <table>
                                 <tr>
                                     <th></th>
-                                    <th colspan="3">Benchmark</th>
+                                    <th colspan="3">Benchmark<sup>&dagger;</sup></th>
                                 </tr>
                                 <tr>
                                     <th>
-                                        Browser
-                                        <sup>*</sup>
+                                        Browser<sup>*</sup>
                                     </th>
                                     <th>
-                                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_heavy.html">
+                                        <a target="_blank" href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_heavy.html">
                                             Heavy
                                         </a>
-                                        <sup>&dagger;</sup>
                                     </th>
                                     <th>
-                                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1.html">
+                                        <a target="_blank" href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1.html">
                                             Light
                                         </a>
-                                        <sup>&dagger;</sup>
                                     </th>
                                     <th>
-                                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_wireframe.html">
+                                        <a target="_blank" href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_wireframe.html">
                                             Wireframe
                                         </a>
-                                        <sup>&dagger;</sup>
                                     </th>
                                 </tr>
                                 <tr>
@@ -876,9 +861,9 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4">
-                                        <sup>*</sup> In Linux on a quad-core Intel Haswell CPU.
+                                        <sup>*</sup> Running in Linux on a quad-core Intel Haswell CPU.
                                         <br>
-                                        <sup>&dagger;</sup> Frames per second (average of three runs).
+                                        <sup>&dagger;</sup> Values are frames per second (average of three runs).
                                     </td>
                                 </tr>
                             </table>
@@ -2734,7 +2719,7 @@
 
                 <dokki-topic title="3dcube-js">
                     <p>
-                        My first project in JavaScript (after a decade or two of hobbyist C++).
+                        My first project in JavaScript, after a decade or two of hobbyist C++.
                         Renders spinning 3D cubes with three different techniques of rasterization.
                         This project later evolved into the more advanced
                         <a href="#retro-ngon-renderer">retro n-gon renderer</a>.

@@ -1,6 +1,8 @@
+@import url("https://use.fontawesome.com/releases/v5.12.0/css/all.css");
+
 :root
 {
-    --dokkiCSS-header-height: 59px;
+    --dokkiCSS-header-height: 37px;
     --dokkiCSS-header-bottom-margin: 23px;
 
     --dokkiCSS-side-panel-width: 290px;
@@ -20,7 +22,7 @@
     --dokkiCSS-subtopic-anchor-top-margin: 30px;
     --dokkiCSS-text-block-line-anchor-top-margin: 20vh;
 
-    --dokkiCSS-embedded-border-radius: 8px;
+    --dokkiCSS-embedded-border-radius: 0;
     --dokkiCSS-navibar-item-padding: 8px 10px;
 }
 
@@ -47,8 +49,8 @@ body,
     --dokkiCSS-page-primary-bg-color: white;
     --dokkiCSS-page-secondary-bg-color: #fdfdfd;
     --dokkiCSS-page-inert-bg-color: #f6f6f6;
-    --dokkiCSS-page-primary-fg-color: #151515;
-    --dokkiCSS-page-secondary-fg-color: #404040;
+    --dokkiCSS-page-primary-fg-color: #303030;
+    --dokkiCSS-page-secondary-fg-color: #505050;
     --dokkiCSS-page-inert-fg-color: lightgray;
     --dokkiCSS-page-primary-line-color: lightgray;
     --dokkiCSS-page-secondary-line-color: lightgray;
@@ -63,7 +65,7 @@ body,
     --dokkiCSS-page-secondary-bg-color: #1d1d1d;
     --dokkiCSS-page-inert-bg-color: #272727;
     --dokkiCSS-page-primary-fg-color: #e4e4e4;
-    --dokkiCSS-page-secondary-fg-color: #a0a0a0;
+    --dokkiCSS-page-secondary-fg-color: #a9a9a9;
     --dokkiCSS-page-inert-fg-color: gray;
     --dokkiCSS-page-primary-line-color: black;
     --dokkiCSS-page-secondary-line-color: black;
@@ -96,13 +98,10 @@ body,
     margin-left: auto;
     font-size: initial;
     cursor: pointer;
-    color: var(--dokkiCSS-page-inert-fg-color);
+    color: var(--dokkiCSS-page-secondary-fg-color);
     font-variant: small-caps;
     text-transform: lowercase;
-    padding: 0 15px;
-    border: 1px solid var(--dokkiCSS-page-secondary-line-color);
-    border-bottom: none;
-    border-top: none;
+    border: none;
     height: 100%;
     display: flex;
     align-items: center;
@@ -128,19 +127,19 @@ body,
     left: 0;
     z-index: 2;
     box-sizing: border-box;
-    background-color: var(--dokkiCSS-page-inert-bg-color);
     text-align: left;
     font-weight: normal;
-    font-size: 150%;
+    font-size: 100%;
     height: var(--dokkiCSS-header-height);
     position: fixed;
     width: 100%;
+    background-color: var(--dokkiCSS-page-inert-bg-color);
     color: var(--dokkiCSS-page-primary-fg-color);
 }
 
 [while-dokki-initializing]
 {
-    padding-left: calc(10px + var(--dokkiCSS-document-horizontal-left-start));
+    padding-left: 15px;
     font-size: initial;
     font-weight: normal;
     color: var(--dokkiCSS-page-secondary-fg-color);
@@ -150,10 +149,10 @@ body,
 {
     display: flex;
     align-items: center;
-    width: var(--dokkiCSS-document-width);
     position: relative;
-    left: var(--dokkiCSS-document-horizontal-left-start);
     height: 100%;
+    width: 100%;
+    margin: 0px 16px;
 }
 
 .dokkiCSS-header-container > * + *
@@ -296,7 +295,7 @@ body,
 
 .dokki-topic p
 {
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
 .dokki-topic p a,
@@ -751,7 +750,7 @@ body,
     .dokkiCSS-header-container
     {
         margin-left: 10px;
-        margin-right: 0;
+        margin-right: 10px;
     }
 
     .dokki-theme-selector
