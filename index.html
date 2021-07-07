@@ -507,13 +507,31 @@
 
                     <dokki-image expanded src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/tomb-raider-1-texture-lightmap-2.png">
                         <template #caption>
-                            A scene from Tomb Raider
+                            A scene from Tomb Raider, with pre-baked path-traced lighting
                         </template>
                     </dokki-image>
 
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/retro-ngon/master/images/screenshots/beta/teapt.png">
                         <template #caption>
                             The Utah teapot with Phong shading
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/rngon/rngon-1.png">
+                        <template #caption>
+                            The original Spa-Francorchamps of Grand Prix Legends
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/rngon/rngon-3.png">
+                        <template #caption>
+                            At the French grand prix in Grand Prix Legends
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/rngon/rngon-2.png">
+                        <template #caption>
+                            A pixel shader applying depth-aware image blurring
                         </template>
                     </dokki-image>
 
@@ -2163,13 +2181,17 @@
             
                 <dokki-topic title="Vond">
                     <p>
-                        A hybrid voxel/polygon 3D renderer that runs on the CPU. Draws inspiration from old
+                        A hybrid voxel/polygon 3D software renderer that draws inspiration from retro
                         voxel-based games like Delta Force and Outcast.
                     </p>
 
                     <p>
-                        The voxel renderer works on 2D heightmaps and has full degrees of freedom, multi-threading
-                        with OpenMP, and bilinear interpolation of height and texture data. The polygon renderer
+                        The voxel renderer works with 2D heightmaps and features six degrees of freedom,
+                        OpenMP multi-threading, and bilinear interpolation.
+                    </p>
+
+                    <p>
+                        The polygon renderer
                         supports single-threaded scanline and barycentric rasterization. The two renderers operate
                         on the same depth map, first populated by the voxel renderer and then the polygon one.
                     </p>
@@ -2186,9 +2208,9 @@
                         Links: <a href="https://www.github.com/leikareipa/vond">GitHub</a>
                     </p>
 
-                    <dokki-image expanded src="https://raw.githubusercontent.com/leikareipa/vond/master/images/screenshots/vond-4.png">
+                    <dokki-image expanded src="./soft/img/vond/vond-1.png">
                         <template #caption>
-                            Visualizing heightmap data from the National Land Survey of Finland (orthophoto & elevation 11/2020)
+                            Visualizing a dataset from the National Land Survey of Finland (elevation and orthophoto, 6/2021)
                         </template>
                     </dokki-image>
 
@@ -2226,74 +2248,6 @@
                                     <td>265</td>
                                     <td>191</td>
                                     <td>833</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
-                </dokki-topic>
-
-
-                <dokki-topic title="pfm-view">
-                    <p>
-                        A learner project in Python; or in other words a PyQt app for viewing high-dynamic-range
-                        PFM images. Includes custom PFM loading and a porting from C to Python of Frédéric Drago's
-                        implementation of his 2003 tone-mapping algorithm.
-                    </p>
-
-                    <p>
-                        Made in 2020.
-                    </p>
-            
-                    <p>
-                        Tech used: Python, PyQt
-                    </p>
-                    
-                    <p>
-                        Links:
-                        <a href="https://www.github.com/leikareipa/pfm-view">GitHub</a>
-                    </p>
-                    
-                    <dokki-image expanded src="https://raw.githubusercontent.com/leikareipa/pfm-view/master/images/screenshots/1.png">
-                        <template #caption>
-                            Displaying an image with tone mapping
-                            (image source: <a href="https://hdrihaven.com/hdri/?c=outdoor&h=champagne_castle_1">HDRI Haven [Greg Zaal]</a>)
-                        </template>
-                    </dokki-image>
-
-                    <dokki-table>
-                        <template #caption>
-                            Source code CLOC statistics
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>4</td>
-                                    <td>86</td>
-                                    <td>58</td>
-                                    <td>377</td>
-                                </tr>
-                                <tr>
-                                    <td>Python</td>
-                                    <td>3</td>
-                                    <td>86</td>
-                                    <td>58</td>
-                                    <td>223</td>
-                                </tr>
-                                <tr>
-                                    <td>Qt</td>
-                                    <td>1</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>154</td>
                                 </tr>
                             </table>
                         </template>
@@ -2510,6 +2464,74 @@
                                     <td>72</td>
                                     <td>53</td>
                                     <td>330</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                </dokki-topic>
+
+
+                <dokki-topic title="pfm-view">
+                    <p>
+                        A learner project in Python; or in other words a PyQt app for viewing high-dynamic-range
+                        PFM images. Includes custom PFM loading and a porting from C to Python of Frédéric Drago's
+                        implementation of his 2003 tone-mapping algorithm.
+                    </p>
+
+                    <p>
+                        Made in 2020.
+                    </p>
+            
+                    <p>
+                        Tech used: Python, PyQt
+                    </p>
+                    
+                    <p>
+                        Links:
+                        <a href="https://www.github.com/leikareipa/pfm-view">GitHub</a>
+                    </p>
+                    
+                    <dokki-image expanded src="https://raw.githubusercontent.com/leikareipa/pfm-view/master/images/screenshots/1.png">
+                        <template #caption>
+                            Displaying an image with tone mapping
+                            (image source: <a href="https://hdrihaven.com/hdri/?c=outdoor&h=champagne_castle_1">HDRI Haven [Greg Zaal]</a>)
+                        </template>
+                    </dokki-image>
+
+                    <dokki-table>
+                        <template #caption>
+                            Source code CLOC statistics
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Sum</td>
+                                    <td>4</td>
+                                    <td>86</td>
+                                    <td>58</td>
+                                    <td>377</td>
+                                </tr>
+                                <tr>
+                                    <td>Python</td>
+                                    <td>3</td>
+                                    <td>86</td>
+                                    <td>58</td>
+                                    <td>223</td>
+                                </tr>
+                                <tr>
+                                    <td>Qt</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>154</td>
                                 </tr>
                             </table>
                         </template>
@@ -2782,7 +2804,7 @@
                 </dokki-topic>
                 
             
-                <dokki-topic title="vrgb-fps">
+                <dokki-topic title=./soft/img/gpl-dta/gpl-dta-2.png"rgb-fps">
                     <p>
                         A simple command-line tool that shows the current output rate (frames per second) of a Datapath
                         VisionRGB capture card. Useful for e.g. estimating the card's maximun capture rate while excluding

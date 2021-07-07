@@ -22,7 +22,7 @@
     --dokkiCSS-subtopic-anchor-top-margin: 30px;
     --dokkiCSS-text-block-line-anchor-top-margin: 20vh;
 
-    --dokkiCSS-embedded-border-radius: 0;
+    --dokkiCSS-embedded-border-radius: 4px;
     --dokkiCSS-navibar-item-padding: 8px 10px;
 }
 
@@ -805,7 +805,7 @@ body,
         --dokkiCSS-topic-horizontal-padding: 10px;
     }
 
-    .dokki-theme-selector
+    body:not([sandbox-for-dokki-ab-render-test]) .dokki-theme-selector
     {
         display: none;
     }
