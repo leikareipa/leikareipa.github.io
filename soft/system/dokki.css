@@ -152,7 +152,7 @@ samp,
 
 [while-dokki-initializing]
 {
-    padding-left: 15px;
+    padding-left: 10px;
     font-size: initial;
     font-weight: normal;
     color: var(--dokkiCSS-page-secondary-fg-color);
@@ -412,7 +412,6 @@ samp,
 .dokkiCSS-text-block-line.dokkiCSS-highlighted
 {
     background-color: var(--dokkiCSS-page-inert-bg-color);
-    font-weight: bold;
 }
 
 .dokkiCSS-text-block-line.dokkiCSS-highlighted > .dokkiCSS-text-block-line-number
@@ -434,6 +433,7 @@ samp,
     cursor: pointer;
     white-space: normal;
     padding-right: 1.5ch;
+    text-align: right;
 }
 
 .dokkiCSS-checker-background
