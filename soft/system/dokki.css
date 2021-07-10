@@ -1,11 +1,12 @@
 @import url("https://use.fontawesome.com/releases/v5.12.0/css/all.css");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono&display=swap');
 
 :root
 {
     --dokkiCSS-header-height: 37px;
     --dokkiCSS-header-bottom-margin: 23px;
 
-    --dokkiCSS-side-panel-width: 290px;
+    --dokkiCSS-side-panel-width: 300px;
     --dokkiCSS-topics-container-width: 49%;
     --dokkiCSS-document-width: calc(var(--dokkiCSS-side-panel-width) + var(--dokkiCSS-topics-container-width));
 
@@ -35,7 +36,8 @@ a.dokkiCSS-unstyled
 body,
 .dokkiCSS-document-container
 {
-    font-family: sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
     background-color: var(--dokkiCSS-page-inert-bg-color);
     color: var(--dokkiCSS-page-secondary-fg-color);
     padding: 0;
@@ -71,6 +73,17 @@ body,
     --dokkiCSS-page-secondary-line-color: black;
     --dokkiCSS-embedded-header-bg-color: #323232;
     --dokkiCSS-embedded-footer-bg-color: var(--document-bg-color);
+}
+
+code,
+samp,
+.dokkiCSS-embedded.dokki-console > footer,
+.dokkiCSS-text-block-line-content,
+.dokkiCSS-text-block-line-number
+{
+    font-size: 14.1px;
+    font-family: "JetBrains Mono", monospace;
+    font-variant-ligatures: none;
 }
 
 .dokkiCSS-italic
@@ -152,7 +165,8 @@ body,
     position: relative;
     height: 100%;
     width: 100%;
-    margin: 0px 16px;
+    padding: 0px 10px;
+    box-sizing: border-box;
 }
 
 .dokkiCSS-header-container > * + *
@@ -165,11 +179,6 @@ body,
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.dokkiCSS-header-title > i
-{
-    margin-right: 4px;
 }
 
 .dokkiCSS-product-tag
@@ -208,7 +217,7 @@ body,
     position: fixed;
     z-index: 0;
     top: var(--dokkiCSS-header-height);
-    left: var(--dokkiCSS-document-horizontal-left-start);
+    left: 0;
     background-color: var(--dokkiCSS-page-secondary-bg-color);
     width: var(--dokkiCSS-side-panel-width);
     text-align: left;
@@ -278,9 +287,14 @@ body,
     left: calc(var(--dokkiCSS-document-horizontal-left-start) + var(--dokkiCSS-side-panel-width));
     top: 0;
     z-index: 1;
-    border-right: 1px solid var(--dokkiCSS-page-secondary-line-color);
     box-sizing: border-box;
     min-height: 100vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dokki-topics.casts-shadow
+{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .dokki-topic
@@ -391,7 +405,6 @@ body,
 .dokki0-text-block-with-line-numbers
 {
     width: 100%;
-    font-family: monospace;
     white-space: pre;
     border-collapse: collapse;
 }
@@ -441,6 +454,7 @@ body,
 .dokkiCSS-embedded
 {
     width: 100%;
+    margin: 18px 0;
     box-sizing: border-box;
     border: 1px solid var(--dokkiCSS-page-primary-line-color);
     border-radius: var(--dokkiCSS-embedded-border-radius);
@@ -620,14 +634,8 @@ body,
     align-items: center;
 }
 
-.dokkiCSS-embedded.dokki-console > header > code
-{
-    font-size: 110%;
-}
-
 .dokkiCSS-embedded.dokki-console > footer
 {
-    font-size: 110%;
     padding: 14px;
 }
 
@@ -668,14 +676,12 @@ body,
 
 .dokkiCSS-embedded.dokki-code > footer
 {
-    font-size: 110%;
     overflow: auto;
     padding: 14px;
 }
 
 .dokkiCSS-embedded.dokki-code > footer table
 {
-    font-family: monospace;
     white-space: pre;
 }
 
@@ -749,8 +755,7 @@ body,
 
     .dokkiCSS-header-container
     {
-        margin-left: 10px;
-        margin-right: 10px;
+        padding: 0 10px;
     }
 
     .dokki-theme-selector
@@ -805,8 +810,13 @@ body,
         --dokkiCSS-topic-horizontal-padding: 10px;
     }
 
-    body:not([sandbox-for-dokki-ab-render-test]) .dokki-theme-selector
+    .dokkiCSS-header-icon
     {
         display: none;
+    }
+
+    .dokkiCSS-header-title
+    {
+        margin-left: 0;
     }
 }
