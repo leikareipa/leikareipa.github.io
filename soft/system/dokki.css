@@ -24,7 +24,7 @@
     --dokkiCSS-text-block-line-anchor-top-margin: 20vh;
 
     --dokkiCSS-embedded-border-radius: 4px;
-    --dokkiCSS-navibar-item-padding: 7px 10px;
+    --dokkiCSS-navibar-item-padding: 7px 10px 7px 15px;
 
     --dokkiCSS-bold-text-weight: 500;
 }
@@ -168,7 +168,7 @@ samp,
     position: relative;
     height: 100%;
     width: 100%;
-    padding: 0px 10px;
+    padding: 0px 15px;
     box-sizing: border-box;
 }
 
@@ -211,7 +211,7 @@ samp,
     width: 100%;
     box-sizing: border-box;
     padding: 16px;
-    background-color: var(--dokkiCSS-page-inert-bg-color);
+    background-color: var(--dokkiCSS-embedded-header-bg-color);
     border-left: 5px solid var(--dokkiCSS-page-inert-fg-color);
 }
 
@@ -654,7 +654,7 @@ samp,
 .dokkiCSS-embedded.dokki-warning
 {
     display: flex;
-    align-items: center;
+    align-items: baseline;
 }
 
 .dokkiCSS-embedded.dokki-tip > header,
