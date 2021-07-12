@@ -9,6 +9,64 @@
         <script defer src="https://cdn.jsdelivr.net/npm/vue@3.0.11/dist/vue.global.prod.js"></script>
         <script defer src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.prod.js"></script>
         <script defer src="./soft/system/dokki.js"></script>
+
+        <style>
+            .sw-category
+            {
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                border-left: none;
+                border-right: none;
+                padding: 5px 0;
+                font-size: 95%;
+            }
+
+            .sw-category .category
+            {
+                font-weight: 500;
+            }
+
+            .sw-category .label
+            {
+                margin-right: 3px;
+            }
+
+            .dokkiCSS-topic-title
+            {
+                padding-bottom: unset !important;
+            }
+        </style>
+
+        <script>
+            const swCategory = {
+                $tag: "sw-category",
+                props: {
+                    categories: {default: []},
+                },
+                template: `
+                <p class="sw-category">
+
+                    <span class="label">
+
+                        Category:
+
+                    </span>
+                    
+                    <span v-for="(cat, idx) in categories" :key="cat">
+
+                        <span class="category">{{cat}}</span>
+
+                        <i v-if="idx < (categories.length-1)"
+                           class="fas fa-caret-right"
+                           style="color: gray; margin: 6px;"/>
+
+                    </span>
+
+                </p>
+                `,
+            };
+
+            window.dokkiUserComponents = [swCategory];
+        </script>
     </head>
     <body>
         <div while-dokki-initializing>
@@ -56,6 +114,9 @@
                 </dokki-topic>
 
                 <dokki-topic title="VCS">
+                    <sw-category :categories="['Desktop','Linux/Windows','Video capture']">
+                    </sw-category>
+
                     <p>
                         A useful capture tool for Datapath's VisionRGB range of capture cards. Features
                         anti-tearing, advanced image filtering, video presets with activation by resolution,
@@ -172,7 +233,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -219,6 +280,9 @@
                 
             
                 <dokki-topic title="PCbi">
+                    <sw-category :categories="['Desktop','Linux/Windows','Emulation auxiliary']">
+                    </sw-category>
+
                     <p>
                         A unique 3D frontend for the PC emulator PCem. Assemble an olden PC
                         in a 3D environment and have PCem's emulation run on its screen.
@@ -285,7 +349,7 @@
                     
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -332,6 +396,9 @@
                 
             
                 <dokki-topic title="Lintulista">
+                    <sw-category :categories="['Web','Full-stack']">
+                    </sw-category>
+
                     <p>
                         A full-stack web app for hobbyist birdwatchers to keep track of their sightings.
                         Used to be publically available but is currently closed-access; the code is
@@ -383,7 +450,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -458,6 +525,9 @@
 
 
                 <dokki-topic title="Retro n-gon renderer">
+                    <sw-category :categories="['Web','Front-end','Rendering','Rasterization']">
+                    </sw-category>
+                    
                     <p>
                         A well-featured retro-oriented 3D software renderer for the HTML5 canvas.
                         Rasterizes n-sided polygons onto either a canvas or an offscreen buffer.
@@ -910,7 +980,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -957,6 +1027,9 @@
 
 
                 <dokki-topic title="Serlain">
+                    <sw-category :categories="['Web','Front-end']">
+                    </sw-category>
+                    
                     <p>
                         Looks like an old browser, acts like an old browser - and almost is one. Serlain
                         is a frontend for Internet Archive's Wayback Machine that displays archived web
@@ -992,7 +1065,7 @@
                     
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -1046,6 +1119,9 @@
 
             
                 <dokki-topic title="RallySportED">
+                    <sw-category :categories="['Multi-platform','Modding tool']">
+                    </sw-category>
+                    
                     <p>
                         A multi-platform asset-editing toolset for the cult DOS game Rally-Sport. RallySportED
                         lets you create and edit tracks, textures, and various other aspects of the game. Currently
@@ -1157,7 +1233,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -1218,6 +1294,9 @@
                 
             
                 <dokki-topic title="Rally-Sport Content">
+                    <sw-category :categories="['Web','Full-stack','Content management']">
+                    </sw-category>
+                    
                     <p>
                         A platform for users of <a href="#rallysported">RallySportED</a> to
                         share content they've made.
@@ -1240,7 +1319,7 @@
                     </p>
             
                     <p>
-                        Tech used: PHP, REST
+                        Tech used: PHP, REST, HTML, CSS
                     </p>
                     
                     <p>
@@ -1256,7 +1335,7 @@
                     
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -1303,13 +1382,16 @@
 
 
                 <dokki-topic title="Cloud simulation">
+                    <sw-category :categories="['Desktop','Linux/Windows','Atmospheric simulation']">
+                    </sw-category>
+                    
                     <p>
-                        Ever wanted a cloud physics simulator and renderer?
+                        Ever wanted a cloud physics simulator and renderer? Maybe not, but Ifu
+                        provides.
                     </p>
-
+                    
                     <p>
-                        Maybe not, but Ifu
-                        provides. Condensation from moist rising air is simulated and rendered
+                        Condensation from moist rising air is simulated and rendered
                         into realistic images of clouds. You can configure the atmospheric
                         properties as you like and view the state of the simulation as it runs.
                         Naturally simulates various cloud effects like pilei.
@@ -1349,7 +1431,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -1403,6 +1485,9 @@
 
 
                 <dokki-topic title="U7DCP">
+                    <sw-category :categories="['Desktop','DOS','Patch']">
+                    </sw-category>
+                    
                     <p>
                         Patches a bug/feature in Ultima 7 that forces the CPU cache on at launch.
                     </p>
@@ -1467,7 +1552,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -1500,6 +1585,9 @@
 
 
                 <dokki-topic title="Yqr">
+                    <sw-category :categories="['Desktop','Linux','Rendering','Path tracing']">
+                    </sw-category>
+                    
                     <p>
                         The first ray/path tracer I made, serving as a personal testbed in offline
                         rendering. Had naive implementations of volumetric photon mapping, spectral
@@ -1543,6 +1631,9 @@
                 
             
                 <dokki-topic title="Wray">
+                    <sw-category :categories="['Web','Front-end','Rendering','Path tracing']">
+                    </sw-category>
+                    
                     <p>
                         A vanilla JavaScript path tracer.
                     </p>
@@ -1649,7 +1740,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -1682,6 +1773,9 @@
                 
             
                 <dokki-topic title="Luujanko">
+                    <sw-category :categories="['Web','Front-end','Rendering','Wireframe']">
+                    </sw-category>
+                    
                     <p>
                         A streamlined SVG wireframe renderer of arbitrary polygons for the HTML5
                         canvas. No external dependencies; easy to integrate into an existing
@@ -1773,7 +1867,7 @@
                     
                         <dokki-table>
                             <template #caption>
-                                Source code CLOC statistics
+                                CLOC readout of the source code
                             </template>
         
                             <template #table>
@@ -1808,6 +1902,9 @@
 
 
                 <dokki-topic title="Dokki">
+                    <sw-category :categories="['Web','Front-end','Documentation']">
+                    </sw-category>
+                    
                     <p>
                         A documentation framework for creating end-user-oriented single-page docs. This website is made with it.
                     </p>
@@ -1835,6 +1932,9 @@
                 
             
                 <dokki-topic title="Kelpo">
+                    <sw-category :categories="['Desktop','Win32','Rendering','Rasterization']">
+                    </sw-category>
+                    
                     <p>
                         A streamlined retro-oriented Win32 3D rasterizer API wrapper written in C89. The
                         idea is to create an easy-to-use master API that exposes a minimal unifying feature
@@ -1892,7 +1992,7 @@
                     
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -1932,6 +2032,9 @@
                 
             
                 <dokki-topic title="KAC file format">
+                    <sw-category :categories="['Data','Custom file format']">
+                    </sw-category>
+                    
                     <p>
                         A binary file format for storing 3D models and their textures; a companion
                         format for the <a href="#kelpo">Kelpo</a> renderer. Designed with limitations
@@ -1972,6 +2075,9 @@
                 
             
                 <dokki-topic title="What">
+                    <sw-category :categories="['Web','Front-end','Audio/Video']">
+                    </sw-category>
+                    
                     <p>
                         A HTML5 video player whose seek bar shows a spectrogram of the video's audio.
                     </p>
@@ -2000,7 +2106,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2033,6 +2139,9 @@
                 
             
                 <dokki-topic title="NPTO">
+                    <sw-category :categories="['Desktop','Linux/Windows','Typing']">
+                    </sw-category>
+                    
                     <p>
                         A program to measure your typing speed in detail. Provides statistics like
                         percentage of mis-presses for each key, breakdown of typing time per key,
@@ -2061,7 +2170,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2108,9 +2217,12 @@
                 
             
                 <dokki-topic title="Ranssi">
+                    <sw-category :categories="['Desktop','Linux','Typing']">
+                    </sw-category>
+                    
                     <p>
                         A transcription app/IDE with a streamlined UI, error highlighting,
-                        and playback of raw audio. I used it commercially at some point.
+                        and playback of raw audio.
                     </p>
 
                     <p>
@@ -2135,6 +2247,9 @@
                 
             
                 <dokki-topic title="Smartti parseri">
+                    <sw-category :categories="['Desktop','Linux']">
+                    </sw-category>
+                    
                     <p>
                         Turns hard drive SMART logs into graphs. Has its own simple scripting
                         language to combine and process various SMART attributes' values.
@@ -2164,6 +2279,9 @@
 
             
                 <dokki-topic title="Vond">
+                    <sw-category :categories="['Desktop','Rendering','Ray tracing']">
+                    </sw-category>
+
                     <p>
                         A hybrid voxel/polygon 3D software renderer that draws inspiration from retro
                         voxel-based games like Delta Force and Outcast.
@@ -2185,7 +2303,7 @@
                     </p>
             
                     <p>
-                        Tech used: C++
+                        Tech used: C++, Qt
                     </p>
                     
                     <p>
@@ -2200,7 +2318,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2240,6 +2358,9 @@
 
 
                 <dokki-topic title="Weather widget">
+                    <sw-category :categories="['Web','Front-end']">
+                    </sw-category>
+                    
                     <p>
                         A little learner project in React. Fetches and displays weather forecasts from the Finnish
                         Meteorological Institute's open data API.
@@ -2277,7 +2398,7 @@
                     
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2317,6 +2438,9 @@
                 
             
                 <dokki-topic title="GPL-DTA">
+                    <sw-category :categories="['Data','File format converter']">
+                    </sw-category>
+                    
                     <p>
                         A set of cross-platform command-line tools for converting data from the DAT
                         files of Grand Prix Legends into more standard formats. Can selectively
@@ -2344,7 +2468,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2391,6 +2515,9 @@
 
 
                 <dokki-topic title="Dig">
+                    <sw-category :categories="['Data','File format converter']">
+                    </sw-category>
+                    
                     <p>
                         A cross-platform command-line tool to extract 3D models (into OBJ) and
                         paletted textures (into PNG) from Tomb Raider 1's PHD files.
@@ -2416,7 +2543,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2456,6 +2583,9 @@
 
 
                 <dokki-topic title="OPDB">
+                    <sw-category :categories="['Desktop','Database']">
+                    </sw-category>
+                    
                     <p>
                         A no-frills database and grapher for minimalist logging of sequential data.
                     </p>
@@ -2498,6 +2628,9 @@
 
 
                 <dokki-topic title="PFM-View">
+                    <sw-category :categories="['Desktop','Utility']">
+                    </sw-category>
+                    
                     <p>
                         A learner project in Python; or in other words a PyQt app for viewing high-dynamic-range
                         PFM images. Includes custom PFM loading and a porting from C to Python of Frédéric Drago's
@@ -2526,7 +2659,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2566,6 +2699,9 @@
                 
 
                 <dokki-topic title="Slowray">
+                    <sw-category :categories="['Mobile','Rendering','Path tracing']">
+                    </sw-category>
+                    
                     <p>
                         A simple path tracer that can be compiled to run on the Game Boy Advance. Its code also
                         compiles for desktop platforms. Since path tracing is very computationally expensive and
@@ -2593,7 +2729,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2626,6 +2762,9 @@
                 
             
                 <dokki-topic title="AV Scissors">
+                    <sw-category :categories="['Desktop','Linux','Audio/Video']">
+                    </sw-category>
+                    
                     <p>
                         A Qt-based video player whose timeline highlights the parts of the video that contain movement or sounds. Useful for pet surveillance and that sort of thing. You may find that the program works well for some videos and less well for others; typically, a suitable recording has good image and audio quality with little background noise.
                     </p>
@@ -2644,7 +2783,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2691,6 +2830,9 @@
                 
             
                 <dokki-topic title="Limpynet">
+                    <sw-category :categories="['Desktop','Machine learning']">
+                    </sw-category>
+                    
                     <p>
                         A feed-forward neural net with customizable layering. Learns the MNIST digits to about 97%, depending on the settings provided. Written from scratch.
                     </p>
@@ -2726,7 +2868,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2766,6 +2908,9 @@
 
 
                 <dokki-topic title="3DCube-js">
+                    <sw-category :categories="['Web','Front-end','Rendering','Rasterization']">
+                    </sw-category>
+                    
                     <p>
                         My first project in JavaScript, after a decade or two of hobbyist C++.
                         Renders spinning 3D cubes with three different techniques of rasterization.
@@ -2798,7 +2943,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2831,6 +2976,9 @@
                 
             
                 <dokki-topic title="VRGB-FPS">
+                    <sw-category :categories="['Desktop','Windows','Video capture']">
+                    </sw-category>
+                    
                     <p>
                         A simple command-line tool that shows the current output rate (frames per second) of a Datapath
                         VisionRGB capture card. Useful for e.g. estimating the card's maximun capture rate while excluding
@@ -2870,7 +3018,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -2903,6 +3051,9 @@
 
 
                 <dokki-topic title="DOS path tracing benchmark">
+                    <sw-category :categories="['Desktop','DOS','Benchmark']">
+                    </sw-category>
+                    
                     <p>
                         Test your DOS era processor's floating-point performance with this grayscale path
                         tracer that renders a scene of spheres and counts the number of seconds it took.
@@ -2978,6 +3129,9 @@
                 
             
                 <dokki-topic title="DOS video chip compatibility list">
+                    <sw-category :categories="['Web','Front-end']">
+                    </sw-category>
+                    
                     <p>
                         An early web dev effort of mine, whose goal was to redesign Gona's very useful but somewhat hard-to-read DOS video chip compatibility matrix for improved accessibility. I harvested the HTML matrix data into JSON and implemented a front-end for at-a-glance-friendly access to the data.
                     </p>
@@ -3003,6 +3157,9 @@
                 
             
                 <dokki-topic title="DOS C Compiler Benchmark">
+                    <sw-category :categories="['Desktop','DOS','Benchmark']">
+                    </sw-category>
+                    
                     <p>
                         A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C compilers. Compatible with a variety of legacy C toolchains, such as from Microsoft, Borland, and HI-TECH. The program renders a spinning sphere in VGA mode 13h, then provides characteristics of its runtime performance.
                     </p>
@@ -3068,7 +3225,7 @@
                     
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -3108,6 +3265,9 @@
 
 
                 <dokki-topic title="Vond Jr.">
+                    <sw-category :categories="['Desktop','Rendering','Ray tracing']">
+                    </sw-category>
+                    
                     <p>
                         A simplified port of <a href="#vond">Vond</a> and a learner project in Java. Provides
                         a heightmap-based software voxel renderer with full degrees of camera rotation. Comes
@@ -3150,7 +3310,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>
@@ -3176,6 +3336,9 @@
 
 
                 <dokki-topic title="Tryffeli">
+                    <sw-category :categories="['Desktop','Rendering','Ray tracing']">
+                    </sw-category>
+                    
                     <p>
                         A learner project in Python by way of a simple ray tracer. Comes with a fairly clean,
                         extendable OOP codebase. Uses PyQt to export the rendering into a PNG image.
@@ -3200,19 +3363,9 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-console platform="unix"
-                                command="./render.py">
-                        <template #output>
-                            <pre>
-                                Exposing film: 100%
-                                Exporting to PNG...
-                            </pre>
-                        </template>
-                    </dokki-console>
-
                     <dokki-table>
                         <template #caption>
-                            Source code CLOC statistics
+                            CLOC readout of the source code
                         </template>
 
                         <template #table>

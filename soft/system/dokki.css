@@ -24,7 +24,7 @@
     --dokkiCSS-text-block-line-anchor-top-margin: 20vh;
 
     --dokkiCSS-embedded-border-radius: 4px;
-    --dokkiCSS-navibar-item-padding: 7px 10px 7px 15px;
+    --dokkiCSS-navibar-item-padding: 5px 10px 5px 15px;
 
     --dokkiCSS-bold-text-weight: 500;
 }
@@ -261,17 +261,19 @@ samp,
     text-overflow: ellipsis;
     overflow: hidden;
     text-decoration: none;
-    color: inherit;
+    color: var(--dokkiCSS-page-primary-fg-color);
 }
 
 .dokkiCSS-vertical-navi .dokkiCSS-navi-link-subtopic
 {
     padding-left: 30px;
+    color: var(--dokkiCSS-page-secondary-fg-color);
+    font-style: italic;
 }
 
 .dokkiCSS-vertical-navi .dokkiCSS-navi-link:hover
 {
-    background-color: var(--dokkiCSS-page-inert-bg-color);
+    background-color: rgba(0, 0, 0, 0.04);
     text-decoration: none;
 }
 
@@ -657,13 +659,19 @@ samp,
     align-items: baseline;
 }
 
+.dokkiCSS-embedded.dokki-tip > footer,
+.dokkiCSS-embedded.dokki-warning > footer
+{
+    padding-left: 0;
+}
+
 .dokkiCSS-embedded.dokki-tip > header,
 .dokkiCSS-embedded.dokki-warning > header
 {
     background-color: unset;
     display: inline-block;
-    font-weight: var(--dokkiCSS-bold-text-weight);
-    padding-right: 0;
+    font-style: italic;
+    padding-right: 1ch;
 }
 
 .dokkiCSS-embedded.dokki-code.has-output + .dokkiCSS-embedded.dokki-output
