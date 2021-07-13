@@ -13,11 +13,19 @@
         <style>
             .sw-category
             {
+                padding: 4px 14px;
+                padding-left: 0;
+                font-size: 95%;
                 border: 1px solid var(--dokkiCSS-page-primary-line-color);
                 border-left: none;
                 border-right: none;
-                padding: 5px 0;
-                font-size: 95%;
+                border-radius: 0;
+            }
+
+            .sw-category > header
+            {
+                overflow: auto;
+                white-space: nowrap;
             }
 
             .sw-category .category
@@ -30,9 +38,14 @@
                 margin-right: 3px;
             }
 
-            .dokkiCSS-topic-title
+            hr.topic-section-separator
             {
-                padding-bottom: unset !important;
+                border: none;
+                border-bottom: 1px solid var(--dokkiCSS-page-primary-line-color);
+                width: calc(100% + calc(2 * var(--dokkiCSS-topic-padding)));
+                transform: translateX(calc(-1 * var(--dokkiCSS-topic-padding)));
+                margin-bottom: var(--dokkiCSS-topic-padding);
+                margin-top: var(--dokkiCSS-topic-padding);
             }
         </style>
 
@@ -45,21 +58,25 @@
                 template: `
                 <p class="sw-category">
 
-                    <span class="label">
+                    <header>
 
-                        Category:
+                        <span class="label">
 
-                    </span>
-                    
-                    <span v-for="(cat, idx) in categories" :key="cat">
+                            Category:
 
-                        <span class="category">{{cat}}</span>
+                        </span>
+                        
+                        <span v-for="(cat, idx) in categories" :key="cat">
 
-                        <i v-if="idx < (categories.length-1)"
-                           class="fas fa-caret-right"
-                           style="color: #b0b0b0; margin: 7px;"/>
+                            <span class="category">{{cat}}</span>
 
-                    </span>
+                            <i class="fas fa-caret-right"
+                               style="color: #b0b0b0; margin: 7px;"
+                               :style="{visibility: idx < (categories.length-1)? 'visible' : 'hidden'}"/>
+
+                        </span>
+
+                    </header>
 
                 </p>
                 `,
@@ -119,26 +136,41 @@
 
                     <p>
                         A useful capture tool for Datapath's VisionRGB range of capture cards. Features
-                        anti-tearing, advanced image filtering, video presets with activation by resolution,
-                        refresh rate and shortcut, and several other things that enable high-quality
-                        analog and digital capture for recreational and professional use.
+                        a variable output refresh rate, anti-tearing, highly configurable image filtering,
+                        video presets with activation by resolution, refresh rate and shortcut, and several
+                        other things that enable high-quality analog and digital capture for recreational
+                        and professional use.
                     </p>
 
                     <p>
-                        Implements fully custom-designed GUI styling with Qt/QSS. Subclasses several Qt
-                        components for custom functionality. Manages a multi-threaded context to synchronize
-                        hardware and software. Allows creating complex chains of image filters with a node
-                        graph. Outputs in software and OpenGL (supports variable refresh rate). Leverages
-                        Qt for HTML/CSS-stylable capture overlays. Supports capturing in Windows (XP and up)
-                        and Linux (5.x). Low reliance on GPU features; can run virtualized in QEMU, VMWare,
-                        and VirtualBox.
+                        VCS supports capturing in Windows (XP and later) and Linux (kernel 5).
+                        Since it also has a low reliance on GPU features, VCS is highly compatible with
+                        virtualization software (tested to run in QEMU, VMWare Player, and VirtualBox).
+                        Fully virtualized capture via PCI passthrough in QEMU (Linux host, Windows
+                        XP and 7 guest) from a Datapath VisionRGB-PRO has been confirmed working.
                     </p>
 
                     <p>
-                        Although made for Datapath capture cards, VCS's code provides an interface with
-                        which support for other manufacturers' hardware can be added. Find out more in the
+                        VCS introduces minimal latency to the capture chain. The full latency from a
+                        visual event triggering in the target system to it being captured by a Datapath
+                        VisionRGB device, uploaded into system memory for VCS, and displayed in VCS's
+                        output window is typically in single-digit milliseconds for common VGA
+                        resolutions.
+                    </p>
+
+                    <p>
+                        The VCS architecture runs a central execution loop which calls on functionality
+                        provided by its subsystems to capture, manipulate, and display frames obtained
+                        from the capture device. The subsystems are self-contained and provide a public
+                        interface both for using the subsystem and replacing it with another implementation
+                        of the interface. For example, support for new capture devices can be added
+                        by replacing the implementation of
                         <a href="https://www.tarpeeksihyvaesoft.com/vcs/devdocs/capture_8h.html">
-                        developer docs</a>.
+                        the capture subsystem interface</a>.
+                    </p>
+
+                    <p>
+                        VCS comes with fully custom GUI styling made using Qt's CSS-like QSS language.
                     </p>
 
                     <p>
@@ -160,7 +192,9 @@
                         <a href="https://github.com/leikareipa/vcs/blob/master/README.md#users-manual">User's manual</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/vcs/devdocs/index.html">Developer docs (work in progress)</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/vcs/master/images/screenshots/v2.4.0/filter-graph-dialog.png">
                         <template #caption>
                             Creating a filter graph that decimates, blurs and rotates captured frames
@@ -225,7 +259,7 @@
                                 </tr>
                                 <tr>
                                     <td>April 2017</td>
-                                    <td>beta.1 (first release)</td>
+                                    <td>Initial release (beta.1)</td>
                                 </tr>
                             </table>
                         </template>
@@ -277,54 +311,89 @@
                         </template>
                     </dokki-table>
                 </dokki-topic>
-                
-            
-                <dokki-topic title="PCbi">
-                    <sw-category :categories="['Desktop','Emulation','User interface']">
+
+
+                <dokki-topic title="RallySportED">
+                    <sw-category :categories="['Multi-platform','Modding tool']">
                     </sw-category>
-
+                    
                     <p>
-                        A unique 3D frontend for the PC emulator PCem. Assemble an olden PC
-                        in a 3D environment and have PCem's emulation run on its screen.
+                        A multi-platform asset-editing toolset for the cult DOS game Rally-Sport. This toolset
+                        lets you create and edit tracks, textures, and various other aspects of the game. To
+                        my knowledge, it's the only available modding tool for the game.
                     </p>
 
                     <p>
-                        Implements shared memory communication with PCem in Linux and Windows.
-                        Originally used full software 3D rendering (barycentric rasterization)
-                        but now has software transform + OpenGL rasterization. Custom-styled
-                        Qt GUI. Moddable: tooling and documentation is provided for creating
-                        and adding new hardware components.
+                        The browser version runs in modern browsers like Google Chrome. It dutifully reproduces
+                        Rally-Sport's unique 3D rendering style, with <i>n</i>-sided polygons, screen space
+                        texture-mapping, and one-point perspective. It integrates a browser version of DOSBox
+                        for playing custom content in-game in the browser, and provides WebRTC data streaming
+                        for easy sharing of your creations with friends.
                     </p>
 
                     <p>
-                        Made between 2018&ndash;2021.
+                        The Windows version supports Windows 95 and up, is Wine-compatible, and provides 3D
+                        hardware rendering via OpenGL and Glide (with fallback software rendering available).
+                        The Windows version is currently deprecated in favor of the browser version.
+                    </p>
+
+                    <p>
+                        The DOS version is written in 386 assembly. It includes the required loader program
+                        for playing custom content in Rally-Sport, as well as a clever AI opponent editor.
+                        This version used also to include track and texture editors, but they've been
+                        deprecated in favor of the browser version.
+                    </p>
+
+                    <p>
+                        Made between 2016&ndash;2021.
                     </p>
             
                     <p>
-                        Tech used: C++, Qt, OpenGL, JavaScript, Blender
+                        Tech used: JavaScript, 386 assembly, C, C++, IDA
                     </p>
                     
                     <p>
                         Links:
-                        <a href="https://github.com/leikareipa/pcbi-content">Additional content</a> &bull;
-                        <a href="https://www.youtube.com/playlist?list=PLMVzQTDRXhK_CZ3j-Lax7fRICLvbL_7do">Dev playlist on YouTube</a>
+                        <a href="https://www.tarpeeksihyvaesoft.com/rallysported/">Run in browser</a> &bull;
+                        <a href="https://www.github.com/leikareipa/rallysported-frontend/">GitHub (frontend)</a> &bull;
+                        <a href="https://www.github.com/leikareipa/rallysported-backend/">GitHub (backend)</a>
                     </p>
 
-                    <dokki-image src="./soft/img/pcbi/pcbi-5.png">
+                    <hr class="topic-section-separator">
+
+                    <dokki-iframe autofocus
+                                  title="Run the browser version"
+                                  src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#renderer:-pixelated/ui:-menubar"
+                                  height="500px">
+                    </dokki-iframe>
+
+                    <dokki-iframe autofocus
+                                  title="Play Rally-Sport in the browser version"
+                                  src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play"
+                                  height="500px">
+                    </dokki-iframe>
+
+                    <dokki-image src="./soft/img/rallysported/rallysported-1.png">
                         <template #caption>
-                            Selecting components to install
-                        </template>
-                    </dokki-image>
-                    
-                    <dokki-image src="./soft/img/pcbi/pcbi-1.png">
-                        <template #caption>
-                            Playing Quake in someone's bedroom
+                            The browser version in Chrome
                         </template>
                     </dokki-image>
 
-                    <dokki-video platform="youtube" src="4Xh8L9PbXeM">
+                    <dokki-video platform="youtube" src="32QEM7Nc8V8">
                         <template #caption>
-                            Assembling a Cyrix-based Socket 7 machine
+                            The Windows version in Linux using Wine, with OpenGL rendering
+                        </template>
+                    </dokki-video>
+
+                    <dokki-video platform="youtube" src="2h-FnAyijTY">
+                        <template #caption>
+                            The Windows version in Windows 98, rendered by the 3dfx Voodoo
+                        </template>
+                    </dokki-video>
+
+                    <dokki-video platform="youtube" src="KXUgjmiD5DI">
+                        <template #caption>
+                            The DOS version in DOS on a 486-class PC
                         </template>
                     </dokki-video>
 
@@ -336,17 +405,33 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <td>May 2020</td>
-                                    <td>0.13.0 (first non-beta)</td>
+                                    <th>Time</th>
+                                    <th>Version</th>
                                 </tr>
                                 <tr>
-                                    <td>January 2018</td>
-                                    <td>beta.1 (first release)</td>
+                                    <td>December 2020</td>
+                                    <td>Browser version 1.0</td>
+                                </tr>
+                                <tr>
+                                    <td>November 2018</td>
+                                    <td>First release of the browser version</td>
+                                </tr>
+                                <tr>
+                                    <td>August 2018</td>
+                                    <td>First release of the Windows version</td>
+                                </tr>
+                                <tr>
+                                    <td>April 2017</td>
+                                    <td>First release of the DOS version</td>
+                                </tr>
+                                <tr>
+                                    <td>November 2016</td>
+                                    <td>Initial public release (Linux/Windows)</td>
                                 </tr>
                             </table>
                         </template>
                     </dokki-table>
-                    
+
                     <dokki-table>
                         <template #caption>
                             CLOC readout of the source code
@@ -363,31 +448,45 @@
                                 </tr>
                                 <tr>
                                     <td>Sum</td>
-                                    <td>75</td>
-                                    <td>2125</td>
-                                    <td>1056</td>
-                                    <td>9007</td>
+                                    <td>139</td>
+                                    <td>4583</td>
+                                    <td>4758</td>
+                                    <td>18116</td>
                                 </tr>
                                 <tr>
                                     <td>C++</td>
-                                    <td>32</td>
-                                    <td>1564</td>
-                                    <td>859</td>
-                                    <td>6317</td>
+                                    <td>39</td>
+                                    <td>1831</td>
+                                    <td>1200</td>
+                                    <td>7114</td>
                                 </tr>
                                 <tr>
-                                    <td>Qt</td>
-                                    <td>4</td>
-                                    <td>14</td>
-                                    <td>0</td>
-                                    <td>1611</td>
+                                    <td>JavaScript</td>
+                                    <td>49</td>
+                                    <td>1525</td>
+                                    <td>1349</td>
+                                    <td>6272</td>
+                                </tr>
+                                <tr>
+                                    <td>Assembly</td>
+                                    <td>20</td>
+                                    <td>731</td>
+                                    <td>1946</td>
+                                    <td>3384</td>
                                 </tr>
                                 <tr>
                                     <td>C/C++ Header</td>
-                                    <td>39</td>
-                                    <td>547</td>
-                                    <td>197</td>
-                                    <td>1079</td>
+                                    <td>30</td>
+                                    <td>450</td>
+                                    <td>261</td>
+                                    <td>982</td>
+                                </tr>
+                                <tr>
+                                    <td>CSS</td>
+                                    <td>1</td>
+                                    <td>46</td>
+                                    <td>2</td>
+                                    <td>364</td>
                                 </tr>
                             </table>
                         </template>
@@ -400,31 +499,37 @@
                     </sw-category>
 
                     <p>
-                        A full-stack web app for hobbyist birdwatchers to keep track of their sightings.
-                        Used to be publically available but is currently closed-access; the code is
-                        open-source and a public sample is provided (see links, below).
+                        A web app for hobbyist birdwatchers to keep track of their sighted species
+                        in a visually engaging, slightly gamified way. Each sighting is represented
+                        as a card showing an image of the species along with the date of observation,
+                        while the total of observations made are presented as a list of these cards
+                        &ndash; usage of the  program is then akin to card-collecting.
                     </p>
 
                     <p>
-                        The code enforces type checks, implements pseudo-inheritance with underlying typing
-                        for custom objects and uses a try/catch-wrapping action system to make debugging
-                        and end-user error-reporting easier and less verbose to write.
+                        To make debugging and runtime error-reporting easier, as well as to improve
+                        the reliability of the program, Lintulista's JavaScript code enforces type
+                        checks with explicit runtime assertions, introduces underlying typing for
+                        custom objects via simple pseudo-inheritance, and provides a try/catch-wrapping
+                        action system that groups related commands toward a goal with the user-facing
+                        error messages associated with that goal's failure states.
                     </p>
                     
                     <p>
-                        The backend is Heroku-compatible and conserves database rows &ndash; useful
-                        for those on the limited Heroku Free plan.
+                        Lintulista's backend is Heroku-compatible and makes an attempt to minimize
+                        the use of database rows &ndash; potentially useful for those on the limited
+                        Heroku Free plan. The backend provides unit tests, while the frontend implements
+                        React component tests.
                     </p>
 
                     <p>
-                        Unit tests are implemented for the backend; the frontend implements React component
-                        tests (but see <a href="https://github.com/leikareipa/lintulista-client/releases/tag/beta.2">
-                        beta.2 release notes</a>).
+                        The Lintulista repo comes with tooling to semi-automate the creation bird
+                        thumbnails from images on Wikimedia Commons.
                     </p>
 
                     <p>
-                        Comes with tooling to semi-automate the creation of copyright info-preserving
-                        bird thumbnails from images on Wikimedia Commons.
+                        Lintulista is for private use at this time, but a public sample is provided
+                        (see links, below).
                     </p>
 
                     <p>
@@ -432,7 +537,7 @@
                     </p>
             
                     <p>
-                        Tech used: JavaScript, React, Redux, CSS, Node.js, PostgreSQL, C++, Qt
+                        Tech used: JavaScript, React, Redux, CSS, Node.js, PostgreSQL, C++, Qt, PHP
                     </p>
                     
                     <p>
@@ -441,7 +546,9 @@
                         <a href="https://www.github.com/leikareipa/lintulista-client">GitHub (client)</a> &bull;
                         <a href="https://www.github.com/leikareipa/lintulista-server">GitHub (server)</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/lintulista/lintulista-4.png">
                         <template #caption>
                             Browsing a list of observations
@@ -530,23 +637,26 @@
                     
                     <p>
                         A well-featured retro-oriented 3D software renderer for the HTML5 canvas.
-                        Rasterizes n-sided polygons onto either a canvas or an offscreen buffer.
+                        Rasterizes <i>n</i>-sided polygons onto a given canvas &ndash; or, optionally,
+                        into an offscreen pixel buffer.
                     </p>
                     
                     <p>
-                        Features genuine retro aesthetics, reasonable performance, vertex and pixel
-                        shaders, async rendering, modular design, streamlined API, docs, lots of
-                        samples, a Blender exporter, and more.
+                        This renderer features retro aesthetics; reasonable performance; vertex and
+                        pixel shaders; affine and screen space texture-mapping; rasterization of
+                        points, lines, and <i>n</i>-sided convex polygons; flat, per-vertex (Gouraud),
+                        and per-pixel (Phong) shading; alpha testing; stippled alpha blending; 16-bit
+                        (RGBA/5551) and 32-bit (RGBA/8888) textures; texture mip-mapping; clamped and
+                        repeating UV coordinates with support for negative coordinates; wireframe
+                        rendering; translation, rotation, and scaling of vertices; async rendering
+                        using Web Workers; Blender export; unit, integration, and performance tests;
+                        a streamlined API; docs; samples; and more.
                     </p>
                     
                     <p>
-                        The project depends on no extra packages or package managers, and uses a plain
-                        Bash script to bundle the source files into a single-file distributable that
-                        can be imported either globally or as an ES6 module.
-                    </p>
-
-                    <p>
-                        Unit, integration and performance tests are provided.
+                        The renderer has no external dependencies. It uses a plain Bash script to
+                        bundle its source files into a single-file distributable, which can be
+                        imported either globally or as an ES6 module.
                     </p>
 
                     <p>
@@ -560,14 +670,16 @@
                     <p>
                         Links:
                         <a href="https://www.github.com/leikareipa/retro-ngon">GitHub</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/">Render samples</a> &bull;
                         <a href="https://github.com/leikareipa/retro-ngon/blob/master/README.md#users-manual">User's manual</a> &bull;
                         <a href="https://github.com/leikareipa/retro-ngon/blob/master/README.md#api-reference">API reference</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_heavy.html">Benchmark (heavy)</a> &bull;
-                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1.html">Benchmark (light)</a> &bull;
-                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1_wireframe.html">Benchmark (wireframe)</a>
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/tests/performance/benchmarks/quake-1-e1m1.html">Benchmark (light)</a>
                     </p>
+
+                    <hr class="topic-section-separator">
                 
-                    <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
+                    <dokki-iframe title="Run interactive sample (click to capture mouse, ESDF & QA to move)"
                                   src="https://www.tarpeeksihyvaesoft.com/experimental/retro-ngon/samples/tomb-raider-home/"
                                   height="500px">
                     </dokki-iframe>
@@ -652,7 +764,7 @@
                     
                     </dokki-code>
 
-                    <dokki-code title="Simple async rendering">
+                    <dokki-code title="Async rendering">
 
                         <template #code>
                             <pre>
@@ -968,11 +1080,11 @@
                                 </tr>
                                 <tr>
                                     <td>December 2019</td>
-                                    <td>beta.1</td>
+                                    <td>First beta release</td>
                                 </tr>
                                 <tr>
                                     <td>January 2019</td>
-                                    <td>alpha.1</td>
+                                    <td>First alpha release</td>
                                 </tr>
                             </table>
                         </template>
@@ -1026,6 +1138,132 @@
                 </dokki-topic>
 
 
+                <dokki-topic title="PCbi">
+                    <sw-category :categories="['Desktop','Emulation','User interface']">
+                    </sw-category>
+
+                    <p>
+                        A 3D front-end for the PC emulator PCem. PCbi replaces PCem's text-based
+                        user interface with a 3D scene in which you can assemble and run emulated
+                        computers.
+                    </p>
+
+                    <p>
+                        Rather than clicking through plaintext menus to select which components
+                        an emulated PC should have, PCbi lets you stick components into a
+                        motherboard in a 3D view &ndash; making the assembly a more tangible,
+                        rewarding experience. Once the PC has been assembled, PCem can be made
+                        to run the emulation on its virtual screen.
+                    </p>
+
+                    <p>
+                        PCbi uses shared memory in Linux and Windows to interface and exchange
+                        runtime data with PCem. The 3D renderer uses OpenGL for rasterization.
+                        A custom GUI styling has been implemented using Qt's HTML and CSS
+                        facilities. Tooling is provided for adding new hardware components.
+                    </p>
+
+                    <p>
+                        Made between 2018&ndash;2021.
+                    </p>
+            
+                    <p>
+                        Tech used: C++, Qt, OpenGL, JavaScript, Blender
+                    </p>
+                    
+                    <p>
+                        Links:
+                        <a href="https://github.com/leikareipa/pcbi-content">Additional content</a> &bull;
+                        <a href="https://www.youtube.com/playlist?list=PLMVzQTDRXhK_CZ3j-Lax7fRICLvbL_7do">Dev playlist on YouTube</a>
+                    </p>
+
+                    <hr class="topic-section-separator">
+
+                    <dokki-image src="./soft/img/pcbi/pcbi-5.png">
+                        <template #caption>
+                            Selecting components to install
+                        </template>
+                    </dokki-image>
+                    
+                    <dokki-image src="./soft/img/pcbi/pcbi-1.png">
+                        <template #caption>
+                            Playing Quake in someone's bedroom
+                        </template>
+                    </dokki-image>
+
+                    <dokki-video platform="youtube" src="4Xh8L9PbXeM">
+                        <template #caption>
+                            Assembling and booting a Cyrix-based Socket 7 machine
+                        </template>
+                    </dokki-video>
+
+                    <dokki-table>
+                        <template #caption>
+                            Version milestones
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <td>May 2020</td>
+                                    <td>First non-beta release (0.13.0)</td>
+                                </tr>
+                                <tr>
+                                    <td>January 2018</td>
+                                    <td>Initial release (beta.1)</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                    
+                    <dokki-table>
+                        <template #caption>
+                            CLOC readout of the source code
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Sum</td>
+                                    <td>75</td>
+                                    <td>2125</td>
+                                    <td>1056</td>
+                                    <td>9007</td>
+                                </tr>
+                                <tr>
+                                    <td>C++</td>
+                                    <td>32</td>
+                                    <td>1564</td>
+                                    <td>859</td>
+                                    <td>6317</td>
+                                </tr>
+                                <tr>
+                                    <td>Qt</td>
+                                    <td>4</td>
+                                    <td>14</td>
+                                    <td>0</td>
+                                    <td>1611</td>
+                                </tr>
+                                <tr>
+                                    <td>C/C++ Header</td>
+                                    <td>39</td>
+                                    <td>547</td>
+                                    <td>197</td>
+                                    <td>1079</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                </dokki-topic>
+
+
                 <dokki-topic title="Serlain">
                     <sw-category :categories="['Web','Front-end','User interface']">
                     </sw-category>
@@ -1033,7 +1271,7 @@
                     <p>
                         Looks like an old browser, acts like an old browser - and almost is one. Serlain
                         is a frontend for Internet Archive's Wayback Machine that displays archived web
-                        content inside period-correct-looking faux browsers. Set on a faux period-themed
+                        content inside period-correct-looking faux browsers, set on a faux period-themed
                         desktop.
                     </p>
 
@@ -1050,16 +1288,18 @@
                         <a href="https://serlain.herokuapp.com/distributable/">Run in browser</a> &bull;
                         <a href="https://www.github.com/leikareipa/serlain">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/serlain/serlain-1.png">
                         <template #caption>
-                            A mock Internet Explorer 4.0 in a mock 1999 Windows environment
+                            A mock Internet Explorer on a mock 1999 desktop
                         </template>
                     </dokki-image>
 
                     <dokki-image src="./soft/img/serlain/serlain-2.png">
                         <template #caption>
-                            A mock Chrome 1.0 in a mock 2009 Windows environment
+                            A mock Chrome on a mock 2009 desktop
                         </template>
                     </dokki-image>
                     
@@ -1118,200 +1358,33 @@
                 </dokki-topic>
 
             
-                <dokki-topic title="RallySportED">
-                    <sw-category :categories="['Multi-platform','Modding tool']">
-                    </sw-category>
-                    
-                    <p>
-                        A multi-platform asset-editing toolset for the cult DOS game Rally-Sport. RallySportED
-                        lets you create and edit tracks, textures, and various other aspects of the game. Currently
-                        focused on running in the browser (RallySportED-js), but over the years there have been native
-                        versions for DOS, Windows, and Linux.
-                    </p>
-
-                    <p>
-                        The browser version of the toolset fully reproduces the game's unique software-rendered 3D
-                        graphics. It also allows modded content to be played directly in an in-browser DOSBox, and
-                        comes with WebRTC data streaming to easily share your creations with friends.
-                    </p>
-
-                    <p>
-                        The Windows version (now deprecated) supported Windows 95 and up (Wine-compatible), and
-                        provided 3D rendering via OpenGL, Glide, and software.
-                    </p>
-
-                    <p>
-                        The 16-bit DOS version (now deprecated, except for the backend) was written in assembly and
-                        C/C++, and could run on 386-class PCs (486 or Pentium recommended).
-                    </p>
-
-                    <p>
-                        Made between 2016&ndash;2021.
-                    </p>
-            
-                    <p>
-                        Tech used: JavaScript, 386 assembly, C, C++, IDA
-                    </p>
-                    
-                    <p>
-                        Links:
-                        <a href="https://www.tarpeeksihyvaesoft.com/rallysported/">Run in browser</a> &bull;
-                        <a href="https://www.github.com/leikareipa/rallysported-frontend/">GitHub (frontend)</a> &bull;
-                        <a href="https://www.github.com/leikareipa/rallysported-backend/">GitHub (backend)</a>
-                    </p>
-
-                    <dokki-iframe autofocus
-                                  title="Run RallySportED-js"
-                                  src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#renderer:-pixelated/ui:-menubar"
-                                  height="500px">
-                    </dokki-iframe>
-
-                    <dokki-iframe autofocus
-                                  title="Play Rally-Sport"
-                                  src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demod#play"
-                                  height="500px">
-                    </dokki-iframe>
-
-                    <dokki-image src="./soft/img/rallysported/rallysported-1.png">
-                        <template #caption>
-                            RallySportED-js running in Chrome
-                        </template>
-                    </dokki-image>
-
-                    <dokki-video platform="youtube" src="32QEM7Nc8V8">
-                        <template #caption>
-                            RallySportED's Win32-based track editor in Linux with Wine and OpenGL
-                        </template>
-                    </dokki-video>
-
-                    <dokki-video platform="youtube" src="2h-FnAyijTY">
-                        <template #caption>
-                            RallySportED's Win32-based track editor with Glide rendering using the 1996 3dfx Voodoo
-                        </template>
-                    </dokki-video>
-
-                    <dokki-video platform="youtube" src="KXUgjmiD5DI">
-                        <template #caption>
-                            RallySportED's DOS-based track editor in DOS on a 486-class PC
-                        </template>
-                    </dokki-video>
-
-                    <dokki-table>
-                        <template #caption>
-                            Version milestones
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Version</th>
-                                </tr>
-                                <tr>
-                                    <td>December 2020</td>
-                                    <td>1.0 for browsers</td>
-                                </tr>
-                                <tr>
-                                    <td>November 2018</td>
-                                    <td>First release for browsers</td>
-                                </tr>
-                                <tr>
-                                    <td>August 2018</td>
-                                    <td>First release for Windows 95</td>
-                                </tr>
-                                <tr>
-                                    <td>April 2017</td>
-                                    <td>First release for 16-bit DOS</td>
-                                </tr>
-                                <tr>
-                                    <td>November 2016</td>
-                                    <td>First public release (Linux/Windows)</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
-
-                    <dokki-table>
-                        <template #caption>
-                            CLOC readout of the source code
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>139</td>
-                                    <td>4583</td>
-                                    <td>4758</td>
-                                    <td>18116</td>
-                                </tr>
-                                <tr>
-                                    <td>C++</td>
-                                    <td>39</td>
-                                    <td>1831</td>
-                                    <td>1200</td>
-                                    <td>7114</td>
-                                </tr>
-                                <tr>
-                                    <td>JavaScript</td>
-                                    <td>49</td>
-                                    <td>1525</td>
-                                    <td>1349</td>
-                                    <td>6272</td>
-                                </tr>
-                                <tr>
-                                    <td>Assembly</td>
-                                    <td>20</td>
-                                    <td>731</td>
-                                    <td>1946</td>
-                                    <td>3384</td>
-                                </tr>
-                                <tr>
-                                    <td>C/C++ Header</td>
-                                    <td>30</td>
-                                    <td>450</td>
-                                    <td>261</td>
-                                    <td>982</td>
-                                </tr>
-                                <tr>
-                                    <td>CSS</td>
-                                    <td>1</td>
-                                    <td>46</td>
-                                    <td>2</td>
-                                    <td>364</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
-                </dokki-topic>
-                
-            
                 <dokki-topic title="Rally-Sport Content">
                     <sw-category :categories="['Web','Full-stack','Content management']">
                     </sw-category>
                     
                     <p>
                         A platform for users of <a href="#rallysported">RallySportED</a> to
-                        share content they've made.
-                    </p>
-                    
-                    <p>
-                        Provides a REST API for client queries, implements a componentized
-                        MVC framework to create views into the backend data, and comes with
-                        a handy frontend view. Has user accounts with registration, login, and
-                        password reset. Smart auto-generation of track minimaps in SVG based
-                        on the track's CPU opponent's driving line.
+                        share and obtain custom content for Rally-Sport.
                     </p>
 
                     <p>
-                        Temporarily unavailable live.
+                        This platform provides both a back-end that stores RallySportED-made
+                        content (e.g. custom tracks) and a REST API through which clients can
+                        interact with the back-end, fetching and posting content. Also provided
+                        is a handy HTML view for accessing the API with a browser.
+                    </p>
+
+                    <p>
+                        The implementation contains a custom MVC framework for creating views
+                        into the content; a modular HTML builder for generating pages
+                        for the HTML view; and an OOP resource system to support multiple
+                        types of content (e.g. tracks, cars) through a generic interface.
+                        Includes user accounts with registration, login, and password reset.
+                    </p>
+
+                    <p>
+                        Temporarily unavailable live (due to changes in the host's tech stack,
+                        which I haven't had time to adapt this program for).
                     </p>
 
                     <p>
@@ -1326,12 +1399,31 @@
                         Links:
                         <a href="https://www.github.com/leikareipa/rallysport-content">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/rallysport-content/rallysport-content-2.png">
                         <template #caption>
-                            A selection of custom tracks
+                            A selection of tracks, as seen with the HTML view
                         </template>
                     </dokki-image>
+
+                    <dokki-code title="Building a sample HTML page"
+                                code="
+                                $page = new HTMLPage();
+
+                                $page->use_component(RallySportContentHeader::class);
+                                $page->use_component(RallySportContentFooter::class);
+
+                                $page->head->title = 'Hello there.';
+
+                                $page->body->add_element(RallySportContentHeader::html());
+                                $page->body->add_element('<main>Here's the thing.</main>');
+                                $page->body->add_element(RallySportContentFooter::html());
+
+                                echo $page->html();
+                                ">
+                    </dokki-code>
                     
                     <dokki-table>
                         <template #caption>
@@ -1386,27 +1478,45 @@
                     </sw-category>
                     
                     <p>
-                        Ever wanted a cloud physics simulator and renderer? Maybe not, but Ifu
-                        provides.
+                        Ever wanted a cloud physics simulator and renderer? Maybe not, but this
+                        app provides.
                     </p>
                     
                     <p>
-                        Condensation from moist rising air is simulated and rendered
-                        into realistic images of clouds. You can configure the atmospheric
-                        properties as you like and view the state of the simulation as it runs.
-                        Naturally simulates various cloud effects like pilei.
+                        The program simulates the rising of moist air and the subsequent condensation
+                        of cloud-forming droplets as the air cools; then renders the resulting 3D
+                        droplet grid into a realistic image of clouds.
                     </p>
                     
                     <p>
-                        Empirically approximates spectral Mie scattering. Adopts the
-                        Hosek&ndash;Wilkie 2012 sky model to approximate Rayleigh scattering.
-                        Uses volumetric photon mapping to speed up the rendering of in-cloud
-                        sunlight.
+                        You can configure the simulator's atmospheric properties to your liking,
+                        including the environmental lapse rate and relative humidity curves. The
+                        GUI provides real-time visualization of the state of the simulation, showing
+                        the relative humidity, air temperature, and droplet distribution either as
+                        averages across the simulation grid or as horizontal or vertical slices.
+                    </p>
+                    
+                    <p>
+                        The renderer uses volumetric path tracing and photon mapping to model
+                        in-cloud light transfer. Spectral Mie scattering is empirically approximated
+                        (by eyeballing MiePlot graphs), while the Hosek&ndash;Wilkie 2012 sky
+                        model is used to approximate Rayleigh scattering. Optionally, a HDR
+                        environment map can be used in place of the parametric sky model.
                     </p>
 
                     <p>
-                        Requires a beefy computer and some knowledge of cloud-related
-                        atmospheric processes.
+                        OpenCL is used to accelerate calculations of condensation (a square
+                        root and a multiplication or two per simulation grid cell, each cell
+                        being processable parallel to the others), while the renderer works
+                        on tiles distributed across the system's cores.
+                    </p>
+
+                    <p>
+                        This program required a beefy computer. With a mid-to-low-range home PC
+                        of the time, running the simulation on a high-resolution grid (e.g. 300
+                        &times; 300 &times; 300) could take hours, and the rendering would take
+                        several days to converge to a relatively noise-free outcome even at low
+                        render resolutions (e.g. 512 &times; 512).
                     </p>
 
                     <p>
@@ -1416,7 +1526,9 @@
                     <p>
                         Tech used: C++, Qt, OpenCL
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/ifu/ifu-1.png">
                         <template #caption>
                             Fluffy clouds
@@ -1425,7 +1537,7 @@
 
                     <dokki-image src="./soft/img/ifu/ifu-2.png">
                         <template #caption>
-                            An explosive cloud lifted by an unnaturally high amount of surface heat (simulation grid visible)
+                            An artificially explosive cloud (simulation grid visible)
                         </template>
                     </dokki-image>
 
@@ -1494,34 +1606,27 @@
 
                     <p>
                         Ultima 7 &ndash; like many programs of the time &ndash; will run too fast
-                        on PCs that are much newer than what the game was originally made for. One
-                        way around this is to disable the CPU's cache, heavily reducing its
-                        performance and thus making it more compatible with the game.
+                        on PCs that are much newer than what the game was originally made for. A
+                        common workaround for this kind of problem is to soft-disable the CPU's
+                        cache, heavily reducing its performance and thus bringing it more in line
+                        with what the program expects.
                     </p>
 
                     <p>
-                        Unfortunately, Ultima 7 also uses the somewhat uncommon unreal memory addressing
-                        mode, and apparently unnecessarily resets all CPU flags while entering this
-                        mode. Since the flags include the 'CPU cache off' bit, resetting them will
-                        (re-)enable the CPU cache, making it impossible to actually run the game
-                        with the CPU cache off.
+                        Unfortunately, this workaround is no good for Ultima 7, because the game
+                        resets the cache-disabling CPU flags on launch. Bummer.
                     </p>
 
                     <p>
-                        This patch modifies the game's executables so that they preserve the value
-                        of the CPU cache bit. The CPU cache can then remain off and the game will
-                        run quite well even on modern CPUs &ndash; provided that the PC also has a
-                        compatible sound card.
+                        Luckily, this patch modifies the game executables so that they preserve
+                        the relevant CPU flags. As a result, the game can be run with the cache
+                        off.
                     </p>
 
                     <p>
-                        Thanks to a member (name forgotten) of the VOGONS forum for discovering
-                        that the bug had to do with the game resetting CPU flags.
-                    </p>
-
-                    <p>
-                        This app is written against the multi-platform fasm assembler and should
-                        be fairly straightforward to build from source.
+                        Thanks to a member (whose name is unfortunately forgotten) of the VOGONS
+                        forum for discovering that the bug had to do with the game resetting CPU
+                        flags.
                     </p>
 
                     <p>
@@ -1535,6 +1640,8 @@
                     <p>
                         Links: <a href="https://www.github.com/leikareipa/u7dcp">GitHub</a>
                     </p>
+
+                    <hr class="topic-section-separator">
 
                     <dokki-console platform="windows"
                                 command="u7dcp.exe">
@@ -1565,13 +1672,6 @@
                                     <th>Code</th>
                                 </tr>
                                 <tr>
-                                    <td>Sum</td>
-                                    <td>3</td>
-                                    <td>54</td>
-                                    <td>147</td>
-                                    <td>321</td>
-                                </tr>
-                                <tr>
                                     <td>Assembly</td>
                                     <td>3</td>
                                     <td>54</td>
@@ -1589,11 +1689,16 @@
                     </sw-category>
                     
                     <p>
-                        The first ray/path tracer I made, serving as a personal testbed in offline
-                        rendering. Had naive implementations of volumetric photon mapping, spectral
+                        The first path tracer I ever made. It served as a personal testbed in offline
+                        rendering.
+                    </p>
+                    
+                    <p>
+                        This renderer had naive implementations of volumetric photon mapping, spectral
                         reflectance, subsurface scattering, environment mapping, and various other
-                        things. Could render volumetric effects like fog, snow, and clouds. Supported
-                        running ray&ndash;triangle intersection tests on the GPU with OpenCL.
+                        things. It could also render volumetric effects like fog, snow, and clouds
+                        (see <a href="#cloud-simulation">Cloud simulation</a>); and supported
+                        ray&ndash;triangle intersection tests on the GPU with OpenCL.
                     </p>
                     
                     <p>
@@ -1601,8 +1706,10 @@
                     </p>
             
                     <p>
-                        Tech used: C++, Qt, OpenCL
+                        Tech used: C++, OpenCL
                     </p>
+
+                    <hr class="topic-section-separator">
 
                     <dokki-image src="./soft/img/yqr/yqr-1.png">
                         <template #caption>
@@ -1641,9 +1748,9 @@
                     <p>
                         Features basic cosine-weighted Lambertian diffuse reflection, importing
                         scenes from Blender, exporting renderings into PFM, continuing previous
-                        renderings from PFM, multi-threaded tracing, tone mapping, a BVH tree to
-                        accelerate ray&ndash;triangle intersection testing, and a JSON scene
-                        file format.
+                        renderings from PFM, multi-threaded rendering with Web Workers, tone-mapping,
+                        a BVH tree to accelerate ray&ndash;triangle intersection tests, and a
+                        custom JSON scene file format.
                     </p>
 
                     <p>
@@ -1657,15 +1764,22 @@
                     <p>
                         Links: <a href="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=4&resolution=1280x720">Run live sample</a> &bull; <a href="https://www.github.com/leikareipa/wray">GitHub</a>
                     </p>
-                    
-                    <dokki-iframe title="Run sample"
-                                  src="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=4&pixelSize=1&resolution=500x350"
+
+                    <hr class="topic-section-separator">
+
+                    <dokki-iframe title="Run sample (1 thread)"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=1&pixelSize=1&resolution=500x350"
+                                  height="420px">
+                    </dokki-iframe>
+
+                    <dokki-iframe title="Run sample (all threads)"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=all&pixelSize=1&resolution=500x350"
                                   height="420px">
                     </dokki-iframe>
 
                     <dokki-image src="./soft/img/wray/wray-1.png">
                         <template #caption>
-                            The Ajax bust (decimated to about 140,000 triangles). Model source: Jotero GbR.
+                            The Ajax bust (pre-decimated to roughly 140,000 triangles). Model source: Jotero GbR.
                         </template>
                     </dokki-image>
 
@@ -1753,13 +1867,6 @@
                                     <th>Code</th>
                                 </tr>
                                 <tr>
-                                    <td>Sum</td>
-                                    <td>20</td>
-                                    <td>377</td>
-                                    <td>489</td>
-                                    <td>1659</td>
-                                </tr>
-                                <tr>
                                     <td>JavaScript</td>
                                     <td>20</td>
                                     <td>377</td>
@@ -1777,10 +1884,14 @@
                     </sw-category>
                     
                     <p>
-                        A streamlined SVG wireframe renderer of arbitrary polygons for the HTML5
-                        canvas. No external dependencies; easy to integrate into an existing
-                        JavaScript project. Includes polygon clipping and rotation, and comes
-                        with a sample implementation of a first-person camera.
+                        An SVG wireframe renderer of arbitrary polygons for the HTML5 canvas.
+                        Includes polygon clipping and rotation, and a couple of interactive
+                        render samples.
+                    </p>
+
+                    <p>
+                        This program is an offshoot of the <a href="#retro-n-gon-renderer">
+                        Retro n-gon renderer</a>, sharing much of its streamlined API style.
                     </p>
 
                     <p>
@@ -1796,6 +1907,8 @@
                         <a href="https://www.github.com/leikareipa/luujanko">GitHub</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/">View interactive samples</a>
                     </p>
+
+                    <hr class="topic-section-separator">
 
                     <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
                                   src="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/quake-e1m1/"
@@ -1880,13 +1993,6 @@
                                         <th>Code</th>
                                     </tr>
                                     <tr>
-                                        <td>Sum</td>
-                                        <td>11</td>
-                                        <td>151</td>
-                                        <td>142</td>
-                                        <td>534</td>
-                                    </tr>
-                                    <tr>
                                         <td>JavaScript</td>
                                         <td>11</td>
                                         <td>151</td>
@@ -1906,7 +2012,8 @@
                     </sw-category>
                     
                     <p>
-                        A documentation framework for creating end-user-oriented single-page docs. This website is made with it.
+                        A documentation framework for creating end-user-oriented single-page docs.
+                        This website is made with it!
                     </p>
 
                     <p>
@@ -1924,7 +2031,6 @@
                     <p>
                         Links:
                         <a href="https://www.github.com/leikareipa/dokki">GitHub</a> &bull;
-                        <a href="https://www.tarpeeksihyvaesoft.com/dokki/tests/render-ab/">Run render test</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/dokki/docs/api-reference.html">API reference</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/dokki/docs/sample.html">Sample document</a>
                     </p>
@@ -1936,14 +2042,22 @@
                     </sw-category>
                     
                     <p>
-                        A streamlined retro-oriented Win32 3D rasterizer API wrapper written in C89. The
-                        idea is to create an easy-to-use master API that exposes a minimal unifying feature
-                        set which in other words produces as feature-identical an output as reasonably
-                        possible on as many 1990s 3D cards as reasonably possible.
+                        A streamlined, retro-oriented Win32 3D rasterizer API wrapper.
                     </p>
                     
                     <p>
-                        Currently supports rendering with Direct3D 5 & 7, OpenGL 1.1 & 3.0, and Glide 3.
+                        The idea behind Kelpo is to create an easy-to-use umbrella render API that
+                        exposes a minimal unifying feature set to cover as many 1990s 3D APIs/hardware
+                        as reasonably possible and producing generally the same output image regardless
+                        of which render platform is being used. (The 1990s, you may recall, saw a
+                        relative lack of 3D rendering standards and a wild west of video card
+                        feature-sets &ndash; see e.g. <a href="https://vintage3d.org/">vintage3d.org</a>
+                        for more info.)
+                    </p>
+                    
+                    <p>
+                        Kelpo is work-in-progress (there's no hurry to complete it), and currently
+                        supports Direct3D 5, Direct3D 7, OpenGL 1.1, OpenGL 3.0, and Glide 3.
                         Planned support includes the proprietary 3D APIs of Matrox, S3, and ATi.
                     </p>
 
@@ -1958,7 +2072,9 @@
                     <p>
                         Links: <a href="https://www.github.com/leikareipa/kelpo">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/kelpo/kelpo-1.png">
                         <template #caption>
                             The 3dfx Voodoo rendering a scene from Tomb Raider
@@ -2031,14 +2147,14 @@
                 </dokki-topic>
                 
             
-                <dokki-topic title="KAC file format">
-                    <sw-category :categories="['Data','File format']">
+                <dokki-topic title="KAC">
+                    <sw-category :categories="['File format']">
                     </sw-category>
                     
                     <p>
                         A binary file format for storing 3D models and their textures; a companion
-                        format for the <a href="#kelpo">Kelpo</a> renderer. Designed with limitations
-                        of 1990s 3D hardware in mind.
+                        format for the <a href="#kelpo">Kelpo</a> renderer (which was formerly entitled
+                        Shiet). Designed with limitations of 1990s 3D hardware in mind.
                     </p>
 
                     <p>
@@ -2051,9 +2167,10 @@
                     </p>
                     
                     <p>
-                        An importer (for loading KAC meshes into C/C++ programs) and exporter (for
-                        converting OBJ models into KAC meshes) are provided. The exporter automatically
-                        generates texture mipmaps and converts pixel colors into 16-bit.
+                        An importer &ndash; for loading KAC meshes into C/C++ programs &ndash; and
+                        exporter &ndash; for converting OBJ models into KAC meshes &ndash; are provided.
+                        The exporter automatically generates texture mipmaps and converts pixels into
+                        16-bit color.
                     </p>
 
                     <p>
@@ -2100,7 +2217,9 @@
                         Links:
                         <a href="https://www.github.com/leikareipa/what">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/what/what-1.png">
                     </dokki-image>
 
@@ -2117,13 +2236,6 @@
                                     <th>Blank</th>
                                     <th>Comment</th>
                                     <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>4</td>
-                                    <td>51</td>
-                                    <td>73</td>
-                                    <td>230</td>
                                 </tr>
                                 <tr>
                                     <td>JavaScript</td>
@@ -2155,7 +2267,9 @@
                     <p>
                         Tech used: C++, Qt
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/npto/npto-1.png">
                         <template #caption>
                             Inspecting which keys have taken the longest to type
@@ -2236,7 +2350,9 @@
                     <p>
                         Links: <a href="https://github.com/leikareipa/ranssi/">GitHub (rewrite)</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/ranssi/ranssi-1.png">
                         <template #caption>
                             Transcribing lorem ipsum
@@ -2262,8 +2378,9 @@
                     <p>
                         Tech used: C++, Qt
                     </p>
-                    
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/smartti-parseri/smartti-parseri-2.png">
                         <template #caption>
                             Monitoring an SSD
@@ -2309,6 +2426,8 @@
                     <p>
                         Links: <a href="https://www.github.com/leikareipa/vond">GitHub</a>
                     </p>
+
+                    <hr class="topic-section-separator">
 
                     <dokki-image src="./soft/img/vond/vond-1.png">
                         <template #caption>
@@ -2379,6 +2498,8 @@
                         <a href="https://www.github.com/leikareipa/weather-widget">GitHub</a> &bull;
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Helsinki">Run in browser</a>
                     </p>
+
+                    <hr class="topic-section-separator">
 
                     <dokki-iframe title="Latest forecast for Helsinki"
                                   src="https://www.tarpeeksihyvaesoft.com/experimental/weather-widget/?place=Helsinki"
@@ -2460,6 +2581,8 @@
                         Links: <a href="https://www.github.com/leikareipa/gpl-dta">GitHub</a>
                     </p>
 
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/gpl-dta/gpl-dta-2.png">
                         <template #caption>
                             Exported assets from the Spa track opened in Blender
@@ -2535,6 +2658,8 @@
                         Links: <a href="https://www.github.com/leikareipa/dig">GitHub</a>
                     </p>
 
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/dig/dig-1.png">
                         <template #caption>
                             Exported assets from level #3 opened in Blender (minor UV issues visible)
@@ -2582,51 +2707,6 @@
                 </dokki-topic>
 
 
-                <dokki-topic title="OPDB">
-                    <sw-category :categories="['Desktop','Database']">
-                    </sw-category>
-                    
-                    <p>
-                        A no-frills database and grapher for minimalist logging of sequential data.
-                    </p>
-
-                    <p>
-                        The database, loosely termed, is a headerless binary file consisting of 12-byte
-                        time/value pairs: a 4-byte float that stores a value logged on an occasion, and
-                        an 8-byte int that records the time &ndash; in milliseconds since epoch &dash;
-                        of the occasion.
-                    </p>
-
-                    <p>
-                        The grapher provides a no-nonsense visual readout of data from a given database.
-                    </p>
-
-                    <p>
-                        This program was purposefully written to conform to feature minimalism: it has a
-                        small set of base features, enough to do the intended business, and is to receive
-                        no new features regardless of post-creation needs.
-                    </p>
-
-                    <p>
-                        Made originally in 2016.
-                    </p>
-            
-                    <p>
-                        Tech used: C, PHP
-                    </p>
-                    
-                    <p>
-                        Links: <a href="https://www.github.com/leikareipa/opdb">GitHub</a>
-                    </p>
-
-                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/opdb/master/images/screenshots/air-pressure.png">
-                        <template #caption>
-                            An air pressure readout
-                        </template>
-                    </dokki-image>
-                </dokki-topic>
-
-
                 <dokki-topic title="PFM-View">
                     <sw-category :categories="['Desktop','Utility']">
                     </sw-category>
@@ -2649,7 +2729,9 @@
                         Links:
                         <a href="https://www.github.com/leikareipa/pfm-view">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/pfm-view/master/images/screenshots/1.png">
                         <template #caption>
                             Displaying an image with tone mapping
@@ -2720,7 +2802,9 @@
                     <p>
                         Links: <a href="https://www.github.com/leikareipa/slowray">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/slowray/slowray-2.png">
                         <template #caption>
                             Colored balls in GBA's native 240 &times; 160 resolution (16-bit color)
@@ -2740,13 +2824,6 @@
                                     <th>Blank</th>
                                     <th>Comment</th>
                                     <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>1</td>
-                                    <td>89</td>
-                                    <td>29</td>
-                                    <td>339</td>
                                 </tr>
                                 <tr>
                                     <td>C</td>
@@ -2780,6 +2857,8 @@
                     <p>
                         Links: <a href="https://www.github.com/leikareipa/avscissors">GitHub</a>
                     </p>
+
+                    <hr class="topic-section-separator">
 
                     <dokki-table>
                         <template #caption>
@@ -2848,7 +2927,9 @@
                     <p>
                         Links: <a href="https://www.github.com/leikareipa/limpynet">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-console platform="unix"
                                 command="./limpynet -L 10 -e 3">
                         <template #output>
@@ -2936,6 +3017,8 @@
                         <a href="https://www.tarpeeksihyvaesoft.com/experimental/3dcube-js/">Run in browser</a>
                     </p>
 
+                    <hr class="topic-section-separator">
+
                     <dokki-iframe title="Run"
                                   src="https://www.tarpeeksihyvaesoft.com/experimental/3dcube-js/"
                                   height="600px">
@@ -2954,13 +3037,6 @@
                                     <th>Blank</th>
                                     <th>Comment</th>
                                     <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>13</td>
-                                    <td>290</td>
-                                    <td>349</td>
-                                    <td>1232</td>
                                 </tr>
                                 <tr>
                                     <td>JavaScript</td>
@@ -2996,7 +3072,9 @@
                     <p>
                         Links: <a href="https://www.github.com/leikareipa/vrgb-fps">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-console platform="windows"
                                    command="vrgb-fps.exe"
                                    output="
@@ -3029,13 +3107,6 @@
                                     <th>Blank</th>
                                     <th>Comment</th>
                                     <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>1</td>
-                                    <td>38</td>
-                                    <td>22</td>
-                                    <td>118</td>
                                 </tr>
                                 <tr>
                                     <td>C++</td>
@@ -3072,7 +3143,9 @@
                     <p>
                         Tech used: C++
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/dos-path-bench/dos-path-bench-2.png">
                         <template #caption>
                             Running in DOSBox
@@ -3133,7 +3206,14 @@
                     </sw-category>
                     
                     <p>
-                        An early web dev effort of mine, whose goal was to redesign Gona's very useful but somewhat hard-to-read DOS video chip compatibility matrix for improved accessibility. I harvested the HTML matrix data into JSON and implemented a front-end for at-a-glance-friendly access to the data.
+                        An early webdev effort of mine. The goal was to re-design Gona's very useful
+                        but somewhat hard-to-read DOS video chip compatibility matrix (see link, below)
+                        for improved usability.
+                    </p>
+
+                    <p>
+                        I harvested the matrix's HTML data, converted it into a JSON-based format, and
+                        implemented a front-end to provide a structured view to the data.
                     </p>
 
                     <p>
@@ -3141,13 +3221,15 @@
                     </p>
             
                     <p>
-                        Tech used: HTML, CSS, JavaScript, C++, PHP
+                        Tech used: JavaScript, CSS, C++, PHP
                     </p>
                     
                     <p>
                         Links: <a href="https://web.archive.org/web/20180103021524/https://gona.mactar.hu/DOS_TESTS/">Original matrix</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/dosvideo/dosvideo-1.png">
                         <template #caption>
                             Looking up a video card
@@ -3161,7 +3243,20 @@
                     </sw-category>
                     
                     <p>
-                        A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C compilers. Compatible with a variety of legacy C toolchains, such as from Microsoft, Borland, and HI-TECH. The program renders a spinning sphere in VGA mode 13h, then provides characteristics of its runtime performance.
+                        A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C
+                        compilers. Compatible with a number of legacy C toolchains, such as from
+                        Microsoft, Borland, and HI-TECH.
+                    </p>
+
+                    <p>
+                        The benchmark renders a spinning sphere in VGA mode 13h, then provides simple
+                        characteristics of its runtime performance.
+                    </p>
+
+                    <p>
+                        Given the results (table, below), it seems that Microsoft's C/C++ compiler
+                        version 8 (as shipped with Visual Studio 1.5) is in a league of its own. At
+                        least when running the benchmark in DOSBox.
                     </p>
 
                     <p>
@@ -3172,9 +3267,11 @@
                         Links: <a href="https://www.github.com/leikareipa/dccb">GitHub</a>
                     </p>
 
+                    <hr class="topic-section-separator">
+
                     <dokki-table>
                         <template #caption>
-                            Benchmark results with various compilers
+                            Benchmark results with various compilers (running in DOSBox)
                         </template>
                     
                         <template #table>
@@ -3271,7 +3368,7 @@
                     <p>
                         A simplified port of <a href="#vond">Vond</a> and a learner project in Java. Provides
                         a heightmap-based software voxel renderer with full degrees of camera rotation. Comes
-                        with a relatively extendable OOP codebase and basic unit tests.
+                        with a relatively extendable OOP codebase and some unit tests.
                     </p>
 
                     <p>
@@ -3286,7 +3383,9 @@
                         Links:
                         <a href="https://www.github.com/leikareipa/vond-jr">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="./soft/img/vond-jr/vond-jr-1.png">
                         <template #caption>
                             Blocky voxel greenery
@@ -3356,7 +3455,9 @@
                         Links:
                         <a href="https://www.github.com/leikareipa/tryffeli">GitHub</a>
                     </p>
-                    
+
+                    <hr class="topic-section-separator">
+
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/tryffeli/master/images/screenshots/tryffeli-pre-alpha.png">
                         <template #caption>
                             Your typical shadow-casting Lambertian spheres
@@ -3387,6 +3488,53 @@
                             </table>
                         </template>
                     </dokki-table>
+                </dokki-topic>
+
+
+                <dokki-topic title="OPDB">
+                    <sw-category :categories="['Desktop','Database']">
+                    </sw-category>
+                    
+                    <p>
+                        A no-frills database and grapher for minimalist logging of sequential data.
+                    </p>
+
+                    <p>
+                        The database, loosely termed, is a headerless binary file consisting of 12-byte
+                        time/value pairs: a 4-byte float that stores a value logged on an occasion, and
+                        an 8-byte int that records the time &ndash; in milliseconds since epoch &dash;
+                        of the occasion.
+                    </p>
+
+                    <p>
+                        The grapher provides a no-nonsense visual readout of data from a given database.
+                    </p>
+
+                    <p>
+                        This program was purposefully written to conform to feature minimalism: it has a
+                        small set of base features, enough to do the intended business, and is to receive
+                        no new features regardless of post-creation needs.
+                    </p>
+
+                    <p>
+                        Made originally in 2016.
+                    </p>
+            
+                    <p>
+                        Tech used: C, PHP
+                    </p>
+                    
+                    <p>
+                        Links: <a href="https://www.github.com/leikareipa/opdb">GitHub</a>
+                    </p>
+
+                    <hr class="topic-section-separator">
+
+                    <dokki-image src="https://raw.githubusercontent.com/leikareipa/opdb/master/images/screenshots/air-pressure.png">
+                        <template #caption>
+                            An air pressure readout
+                        </template>
+                    </dokki-image>
                 </dokki-topic>
 
 
