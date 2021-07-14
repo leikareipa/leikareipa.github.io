@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>What? - Tarpeeksi Hyvae Soft</title>
+        <meta http-equiv="content-type"
+              content="text/html; charset=UTF-8">
+        <meta name="viewport"
+              content="width=device-width">
+        <link rel="stylesheet"
+              href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+              crossorigin="anonymous">
+        <link rel="stylesheet"
+              type="text/css"
+              href="index.css">
+	</head>
+	<body>
+        <div id="app">
+
+            <div id="startup-tarp"
+                 v-if="!isVideoLoaded">
+
+                <input id="video-file-selector"
+                       type="file"
+                       accept="video/*">
+                       
+            </div>
+
+            <div id="video-player-container"
+                 v-cloak
+                 v-visible-if="isVideoLoaded">
+                <video id="video-player"></video>
+            </div>
+
+            <div id="controls-container"
+                 v-cloak
+                 v-visible-if="isVideoLoaded">
+
+                <div class="control-button"
+                     v-on:click="toggle_video_playback()">
+
+                    <i :class="(isVideoPlaying
+                                ? 'fas fa-pause'
+                                : 'fas fa-play')"></i>
+
+                </div>
+
+                <div id="seek-bar"
+                     :class="isSeekBarExpanded? 'expanded' : ''">
+
+                    <canvas id="spectrogram"
+                            width="1000"
+                            height="200">
+                    </canvas>
+
+                    <div id="position-indicator"
+                         class="fas fa-caret-down">
+                    </div>
+                            
+                </div>
+
+                <div class="control-button"
+                     v-on:click="toggle_seekbar_expansion()">
+
+                    <i :class="(isSeekBarExpanded
+                                ? 'fas fa-compress-alt'
+                                : 'fas fa-expand-alt')"></i>
+
+                </div>
+
+                <div class="control-button"
+                     v-on:click="increase_playback_rate()">
+
+                    <i class="fas fa-times"
+                       style="margin-right: 5px; font-size: 55%;"></i>
+                    {{playbackRate}}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="./what.js" type="module"></script>
+            
+        </script>
+    </body>
+</html>

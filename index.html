@@ -9,12 +9,17 @@
         <script defer src="https://cdn.jsdelivr.net/npm/vue@3.0.11/dist/vue.global.prod.js"></script>
         <script defer src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.prod.js"></script>
         <script defer src="./soft/system/dokki.js"></script>
+        <script src="./soft/system/highlight.min.js"></script>
 
         <style>
+            code .hljs-comment
+            {
+                color: #3e8220;
+            }
+
             .sw-category
             {
-                padding: 4px 14px;
-                padding-left: 0;
+                padding: 4px 0;
                 font-size: 95%;
                 border: 1px solid var(--dokkiCSS-page-primary-line-color);
                 border-left: none;
@@ -642,15 +647,16 @@
                     </p>
                     
                     <p>
-                        This renderer features retro aesthetics; reasonable performance; vertex and
-                        pixel shaders; affine and screen space texture-mapping; rasterization of
-                        points, lines, and <i>n</i>-sided convex polygons; flat, per-vertex (Gouraud),
-                        and per-pixel (Phong) shading; alpha testing; stippled alpha blending; 16-bit
-                        (RGBA/5551) and 32-bit (RGBA/8888) textures; texture mip-mapping; clamped and
-                        repeating UV coordinates with support for negative coordinates; wireframe
-                        rendering; translation, rotation, and scaling of vertices; async rendering
-                        using Web Workers; Blender export; unit, integration, and performance tests;
-                        a streamlined API; docs; samples; and more.
+                        This renderer features retro aesthetics; reasonable performance (for
+                        lower-resolution rendering); vertex and pixel shaders; affine and screen space
+                        texture-mapping; rasterization of points, lines, and <i>n</i>-sided convex
+                        polygons; flat, per-vertex (Gouraud), and per-pixel (Phong) shading; alpha
+                        testing; stippled alpha blending; 16-bit (RGBA/5551) and 32-bit (RGBA/8888)
+                        textures; texture mip-mapping; clamped and repeating UV coordinates with
+                        support for negative coordinates; wireframe rendering; translation, rotation,
+                        and scaling of vertices; async rendering using Web Workers; Blender export;
+                        unit, integration, and performance tests; a streamlined API; docs; samples;
+                        and more.
                     </p>
                     
                     <p>
@@ -815,7 +821,8 @@
                     
                     </dokki-code>
 
-                    <dokki-code title="Sample vertex shader">
+                    <dokki-code title="Sample vertex shader"
+                                syntax="javascript">
 
                         <template #code>
                             <pre>
@@ -881,7 +888,8 @@
                     
                     </dokki-code>
 
-                    <dokki-code title="Selective pixel shader">
+                    <dokki-code title="Selective pixel shader"
+                                syntax="javascript">
 
                         <template #code>
                             <pre>
@@ -1409,17 +1417,39 @@
                     </dokki-image>
 
                     <dokki-code title="Building a sample HTML page"
+                                syntax="php"
                                 code="
                                 $page = new HTMLPage();
 
+                                // Register the components to be used on the page.
                                 $page->use_component(RallySportContentHeader::class);
                                 $page->use_component(RallySportContentFooter::class);
 
+                                // Set the page title.
                                 $page->head->title = 'Hello there.';
 
+                                // Construct the page body, using pre-made components and a
+                                // custom element.
                                 $page->body->add_element(RallySportContentHeader::html());
                                 $page->body->add_element('<main>Here's the thing.</main>');
                                 $page->body->add_element(RallySportContentFooter::html());
+
+                                // Output the page's HTML.
+                                echo $page->html();
+                                ">
+                    </dokki-code>
+
+                    <dokki-code title="Using the HTML builder and a HTML view to display track metadata"
+                                syntax="php"
+                                code="
+                                $page = new HTMLPage();
+
+                                $page->use_component(TrackResourceMetadata::class);
+                                $page->use_component(ResourceMetadataContainer::class);
+
+                                $page->body->add_element(ResourceMetadataContainer::open());
+                                $page->body->add_element($track->view('metadata-html'));
+                                $page->body->add_element(ResourceMetadataContainer::close());
 
                                 echo $page->html();
                                 ">
@@ -1614,12 +1644,12 @@
 
                     <p>
                         Unfortunately, this workaround is no good for Ultima 7, because the game
-                        resets the cache-disabling CPU flags on launch. Bummer.
+                        resets the cache-disabling CPU flag on launch. Bummer.
                     </p>
 
                     <p>
                         Luckily, this patch modifies the game executables so that they preserve
-                        the relevant CPU flags. As a result, the game can be run with the cache
+                        the relevant CPU flag. As a result, the game can be run with the cache
                         off.
                     </p>
 
@@ -1656,6 +1686,30 @@
                             </pre>
                         </template>
                     </dokki-console>
+
+                    <dokki-code title="The patch payload"
+                                syntax="x86asm">
+
+                        <template #code>
+                            <pre>
+                                ; The game wants to enable protected mode as the first step in entering
+                                ; unreal mode. Normally, it assigns 1 to EBX, which sets the relevant
+                                ; first bit but also resets all the other bits (importantly, bit #30,
+                                ; for cache disable). Instead, we want to set only the first bit and
+                                ; leave the others untouched.
+                                mov ebx, cr0
+                                or bl, 1
+                                mov cr0, ebx
+
+                                ; ...
+
+                                ; The game has entered unreal mode and is ready to disable protected
+                                ; mode. Again, we want to manipulate only the relevant first bit.
+                                and bl, 0feh
+                                mov cr0, ebx
+                            </pre>
+                        </template>
+                    </dokki-code>
 
                     <dokki-table>
                         <template #caption>
@@ -1783,7 +1837,8 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Sample JSON scene file">
+                    <dokki-code title="Sample JSON scene file"
+                                syntax="json">
                         <template #code>
                             <pre>
                                 {
@@ -2087,14 +2142,18 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Sample initialization and rendering">
+                    <dokki-code title="Sample initialization and rendering"
+                                syntax="c">
                         <template #code>
                             <pre>
+                                // Initialize Kelpo for OpenGL 1.1.
                                 const struct kelpo_interface_s *kelpo = NULL;
                                 kelpo_create_interface(&kelpo, ``opengl_1_1``);
 
+                                // Open a 640 x 480 (16-bit) window on video device #0.
                                 kelpo->window.open(0, 640, 480, 16);
 
+                                // Run the render loop.
                                 while (kelpo->window.process_messages(),
                                        !kelpo->window.is_closing())
                                 {
@@ -2153,8 +2212,8 @@
                     
                     <p>
                         A binary file format for storing 3D models and their textures; a companion
-                        format for the <a href="#kelpo">Kelpo</a> renderer (which was formerly entitled
-                        Shiet). Designed with limitations of 1990s 3D hardware in mind.
+                        format for the <a href="#kelpo">Kelpo</a> renderer. Designed with limitations
+                        of 1990s 3D hardware in mind.
                     </p>
 
                     <p>
@@ -2196,13 +2255,21 @@
                     </sw-category>
                     
                     <p>
-                        A HTML5 video player whose seek bar shows a spectrogram of the video's audio.
+                        A HTML5 video player whose seek bar shows an expandable spectrogram of the video's
+                        audio. This is effectively a feature-optimized browser version of
+                        <a href="#av-scissors">AV Scissors</a>.
                     </p>
 
                     <p>
-                        Samples the output of a &lt;video&gt; element with an AnalyserNode to produce a
-                        time-variant spectrum (audio spectrogram) that's painted onto a &lt;canvas&gt;
+                        Samples the output of a &lt;video&gt; element using an AnalyserNode to produce a
+                        time-variant spectrum (audio spectrogram), then paints it onto a &lt;canvas&gt;
                         on the video's seek bar.
+                    </p>
+
+                    <p>
+                        This app was originally made for a friend who had a need for it, but it turned
+                        out their iPad was overly paranoid about letting the browser access videos on
+                        the system, and so they couldn't use this.
                     </p>
 
                     <p>
@@ -2210,11 +2277,12 @@
                     </p>
             
                     <p>
-                        Tech used: JavaScript, Vue.js
+                        Tech used: JavaScript, Web Audio API, Vue.js
                     </p>
                     
                     <p>
                         Links:
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/what/">Run in browser</a> &bull;
                         <a href="https://www.github.com/leikareipa/what">GitHub</a>
                     </p>
 
@@ -2257,7 +2325,7 @@
                     <p>
                         A program to measure your typing speed in detail. Provides statistics like
                         percentage of mis-presses for each key, breakdown of typing time per key,
-                        etc. Also has a cool custom GUI made with Qt.
+                        and other stats of that kind. Also has a cool custom GUI made with Qt.
                     </p>
 
                     <p>
@@ -2330,45 +2398,20 @@
                 </dokki-topic>
                 
             
-                <dokki-topic title="Ranssi">
-                    <sw-category :categories="['Desktop','Typing']">
-                    </sw-category>
-                    
-                    <p>
-                        A transcription app/IDE with a streamlined UI, error highlighting,
-                        and playback of raw audio.
-                    </p>
-
-                    <p>
-                        Made in 2018.
-                    </p>
-            
-                    <p>
-                        Tech used: C++, Qt
-                    </p>
-                    
-                    <p>
-                        Links: <a href="https://github.com/leikareipa/ranssi/">GitHub (rewrite)</a>
-                    </p>
-
-                    <hr class="topic-section-separator">
-
-                    <dokki-image src="./soft/img/ranssi/ranssi-1.png">
-                        <template #caption>
-                            Transcribing lorem ipsum
-                        </template>
-                    </dokki-image>
-                        
-                </dokki-topic>
-                
-            
                 <dokki-topic title="Smartti parseri">
-                    <sw-category :categories="['Desktop','Utility']">
+                    <sw-category :categories="['Desktop','Visualization']">
                     </sw-category>
                     
                     <p>
-                        Turns hard drive SMART logs into graphs. Has its own simple scripting
-                        language to combine and process various SMART attributes' values.
+                        A utility to turn hard drive SMART logs (output dumps from <i>smartctl</i>)
+                        into nice little graphs.
+                    </p>
+
+                    <p>
+                        Provides a configuration file with which the user can customize the
+                        generated imagery. Graphs can be arranged into rows and columns, and
+                        simple mathematical expressions can be given to modify the logged
+                        values for output &ndash; e.g. converting Celsius &rarr; Kelvin.
                     </p>
 
                     <p>
@@ -2383,44 +2426,60 @@
 
                     <dokki-image src="./soft/img/smartti-parseri/smartti-parseri-2.png">
                         <template #caption>
-                            Monitoring an SSD
+                            Various statistics of an SSD
                         </template>
                     </dokki-image>
 
-                    <dokki-image src="./soft/img/smartti-parseri/smartti-parseri-lite-1.png">
-                        <template #caption>
-                            Alternate output in minimalist-styled HTML
+                    <dokki-code title="Sample configuration">
+
+                        <template #code>
+                            <pre>
+                                # Attribute  Graph size  Graph X,Y  Value  Expression(s)           C-Window  Range  Title
+                                #---------------------------------------------------------------------------------------------------------
+                                  241        HALF        1,1        RAW    a*0.000477              1         0      WRITES, MB PER HOUR
+                                  241        QUARTER     1,2        RAW    a*0.000000477, a/1024   p300      0      TOTAL WRITES, TB
+                                  190        QUARTER     2,2        RAW    a+273.15                0         0      TEMPERATURE, °K
+                            </pre>
                         </template>
-                    </dokki-image>
+
+                        <dokki-output>
+                            <img src="./soft/img/smartti-parseri/sample-output.png"
+                                 style="border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                                        border-radius: var(--dokkiCSS-embedded-border-radius);">
+                        </dokki-output>
+
+                    </dokki-code>
                 </dokki-topic>
 
             
                 <dokki-topic title="Vond">
-                    <sw-category :categories="['Desktop','Rendering','Ray tracing']">
+                    <sw-category :categories="['Desktop','Rendering']">
                     </sw-category>
 
                     <p>
-                        A hybrid voxel/polygon 3D software renderer that draws inspiration from retro
-                        voxel-based games like Delta Force and Outcast.
+                        A hybrid voxel/polygon 3D software renderer that gets its inspiration from
+                        retro voxel/polygon games like Delta Force and Outcast.
                     </p>
 
                     <p>
-                        The voxel renderer works with 2D heightmaps and features six degrees of freedom,
-                        OpenMP multi-threading, and bilinear interpolation.
+                        The voxel renderer makes 2D heightmaps into 3D landscapes. It's effectively a
+                        ray tracer, tracing a ray through each pixel on the screen and sampling height
+                        values from the heightmap along the ray's path. The renderer has full six
+                        degrees of freedom, multi-threading, and bilinear interpolation.
                     </p>
 
                     <p>
-                        The polygon renderer
-                        supports single-threaded scanline and barycentric rasterization. The two renderers operate
-                        on the same depth map, first populated by the voxel renderer and then the polygon one.
+                        The polygon renderer supports single-threaded scanline and barycentric
+                        rasterization. It uses the depth map generated by the voxel renderer to
+                        discard pixels occluded by the terrain.
                     </p>
 
                     <p>
-                        Made between 2018&ndash;2020.
+                        Made between 2018&ndash;2021.
                     </p>
             
                     <p>
-                        Tech used: C++, Qt
+                        Tech used: C++
                     </p>
                     
                     <p>
@@ -2481,8 +2540,13 @@
                     </sw-category>
                     
                     <p>
-                        A little learner project in React. Fetches and displays weather forecasts from the Finnish
-                        Meteorological Institute's open data API.
+                        My first learner project in React. Fetches weather forecasts from the Finnish
+                        Meteorological Institute's open data API and displays them as cards.
+                    </p>
+
+                    <p>
+                        I developed <a href="#lintulista">Lintulista</a> &ndash; my second React
+                        project &ndash; right after this one.
                     </p>
 
                     <p>
@@ -2513,7 +2577,7 @@
                     
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/weather-widget/master/images/screenshots/app.png">
                         <template #caption>
-                            A vintage weather forecast for Helsinki
+                            A vintage forecast for Helsinki
                         </template>
                     </dokki-image>
                     
@@ -2563,10 +2627,19 @@
                     </sw-category>
                     
                     <p>
-                        A set of cross-platform command-line tools for converting data from the DAT
-                        files of Grand Prix Legends into more standard formats. Can selectively
-                        extract files from DATs, export MIPs and SRBs into PNG, and convert 3DOs
-                        into OBJs.
+                        A set of command-line tools for converting data from the DAT files of
+                        Grand Prix Legends into more standard formats.
+                    </p>
+
+                    <p>
+                        The tools can selectively extract files from DATs, convert MIPs and SRBs
+                        into PNG and 3DOs into OBJs. There's currently no option for inserting
+                        data back into a DAT, though.
+                    </p>
+
+                    <p>
+                        I wrote these tools to help generate scenes for rendering with the
+                        <a href="#retro-n-gon-renderer">Retro n-gon renderer</a>.
                     </p>
 
                     <p>
@@ -2585,9 +2658,29 @@
 
                     <dokki-image src="./soft/img/gpl-dta/gpl-dta-2.png">
                         <template #caption>
-                            Exported assets from the Spa track opened in Blender
+                            Converted assets of Spa-Francorchamps opened in Blender
                         </template>
                     </dokki-image>
+
+                    <dokki-image src="./soft/img/rngon/rngon-1.png">
+                        <template #caption>
+                            The Spa-Francorchamps assets rendered with the
+                            <a href="#retro-n-gon-renderer">Retro n-gon renderer</a>
+                        </template>
+                    </dokki-image>
+
+                    <dokki-console command="php dat-extract.php -i rouen.dat -w *.mip,*.3do">
+                        <template #output>
+                            <pre>
+                                Exporting rouen.3do...
+                                Exporting horiz.3do...
+                                ...
+                                Exporting mbox.3do...
+                                Exporting fenceb.3do...
+                                Wrote 4304528 byte(s) in 331 file(s) matching wildcard pattern *.mip,*.3do
+                            </pre>
+                        </template>
+                    </dokki-console>
 
                     <dokki-table>
                         <template #caption>
@@ -2647,6 +2740,11 @@
                     </p>
 
                     <p>
+                        I wrote these tools to help generate scenes for rendering with the
+                        <a href="#retro-n-gon-renderer">Retro n-gon renderer</a>.
+                    </p>
+
+                    <p>
                         Made between 2019&ndash;2020.
                     </p>
             
@@ -2663,6 +2761,12 @@
                     <dokki-image src="./soft/img/dig/dig-1.png">
                         <template #caption>
                             Exported assets from level #3 opened in Blender (minor UV issues visible)
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/kelpo/kelpo-1.png">
+                        <template #caption>
+                            The assets of level #3 rendered with <a href="#kelpo">Kelpo</a>.
                         </template>
                     </dokki-image>
 
@@ -2708,13 +2812,17 @@
 
 
                 <dokki-topic title="PFM-View">
-                    <sw-category :categories="['Desktop','Utility']">
+                    <sw-category :categories="['Desktop','Miscellaneous']">
                     </sw-category>
                     
                     <p>
                         A learner project in Python; or in other words a PyQt app for viewing high-dynamic-range
-                        PFM images. Includes custom PFM loading and a porting from C to Python of Frédéric Drago's
-                        implementation of his 2003 tone-mapping algorithm.
+                        PFM images.
+                    </p>
+
+                    <p>
+                        This app includes a custom PFM image loader and a porting from C to Python of Frédéric
+                        Drago's implementation of his 2003 tone-mapping algorithm.
                     </p>
 
                     <p>
@@ -2836,6 +2944,38 @@
                         </template>
                     </dokki-table>
                 </dokki-topic>
+
+
+                <dokki-topic title="Ranssi">
+                    <sw-category :categories="['Desktop','Typing']">
+                    </sw-category>
+                    
+                    <p>
+                        A transcription app with a minimalist UI, syntax error highlighting, and
+                        audio playback.
+                    </p>
+
+                    <p>
+                        Made in 2018.
+                    </p>
+            
+                    <p>
+                        Tech used: C++, Qt
+                    </p>
+                    
+                    <p>
+                        Links: <a href="https://github.com/leikareipa/ranssi/">GitHub (rewrite)</a>
+                    </p>
+
+                    <hr class="topic-section-separator">
+
+                    <dokki-image src="./soft/img/ranssi/ranssi-1.png">
+                        <template #caption>
+                            Transcribing lorem ipsum
+                        </template>
+                    </dokki-image>
+                        
+                </dokki-topic>
                 
             
                 <dokki-topic title="AV Scissors">
@@ -2913,7 +3053,9 @@
                     </sw-category>
                     
                     <p>
-                        A feed-forward neural net with customizable layering. Learns the MNIST digits to about 97%, depending on the settings provided. Written from scratch.
+                        A regular feed-forward neural net with customizable layering. Learns the MNIST
+                        digits to about 97%. Written from scratch without frameworks as a learner
+                        project in machine learning.
                     </p>
 
                     <p>
@@ -2931,7 +3073,7 @@
                     <hr class="topic-section-separator">
 
                     <dokki-console platform="unix"
-                                command="./limpynet -L 10 -e 3">
+                                   command="./limpynet -L 10 -e 3">
                         <template #output>
                             <pre>
                                 Initializing for MNIST...
@@ -2994,13 +3136,16 @@
                     
                     <p>
                         My first project in JavaScript, after a decade or two of hobbyist C++.
-                        Renders spinning 3D cubes with three different techniques of rasterization.
-                        This project later evolved into the more advanced
-                        <a href="#retro-ngon-renderer">retro n-gon renderer</a>.
+                        Renders spinning 3D cubes using three different techniques of rasterization.
                     </p>
 
                     <p>
-                        Implements a custom framework for running unit tests.
+                        I developed the browser version of <a href="#rallysported">RallySportED</a>
+                        &ndash; my second project in JavaScript &ndash; right after this one. The
+                        basic render framework of this project was used as a starting point for
+                        the renderer in the browser version of RallySportED, which in turn was
+                        later forked to become the <a href="#retro-ngon-renderer">Retro n-gon
+                        renderer</a>.
                     </p>
 
                     <p>
@@ -3255,7 +3400,7 @@
 
                     <p>
                         Given the results (table, below), it seems that Microsoft's C/C++ compiler
-                        version 8 (as shipped with Visual Studio 1.5) is in a league of its own. At
+                        version 8 (as shipped with Visual C++ 1.5) is in a league of its own. At
                         least when running the benchmark in DOSBox.
                     </p>
 
