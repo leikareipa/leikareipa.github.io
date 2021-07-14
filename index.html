@@ -1933,134 +1933,6 @@
                     </dokki-table>
                 </dokki-topic>
                 
-            
-                <dokki-topic title="Luujanko">
-                    <sw-category :categories="['Web','Front-end','Rendering','Wireframe']">
-                    </sw-category>
-                    
-                    <p>
-                        An SVG wireframe renderer of arbitrary polygons for the HTML5 canvas.
-                        Includes polygon clipping and rotation, and a couple of interactive
-                        render samples.
-                    </p>
-
-                    <p>
-                        This program is an offshoot of the <a href="#retro-n-gon-renderer">
-                        Retro n-gon renderer</a>, sharing much of its streamlined API style.
-                    </p>
-
-                    <p>
-                        Made in 2020.
-                    </p>
-            
-                    <p>
-                        Tech used: JavaScript
-                    </p>
-                    
-                    <p>
-                        Links:
-                        <a href="https://www.github.com/leikareipa/luujanko">GitHub</a> &bull;
-                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/">View interactive samples</a>
-                    </p>
-
-                    <hr class="topic-section-separator">
-
-                    <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
-                                  src="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/quake-e1m1/"
-                                  height="500px">
-                    </dokki-iframe>
-                    
-                    <dokki-image src="./soft/img/luujanko/luujanko-1.png">
-                        <template #caption>
-                            Looking down a corridor of the E1M1 level in Quake
-                        </template>
-                    </dokki-image>
-
-                    <dokki-code title="Minimum setup to render a triangle"
-                                code="
-                                <svg id='rendering' width='200' height='200'></svg>
-                                <script type='module'>
-                                    import {Luu} from 'luujanko.js';
-                                    const targetSVG = document.getElementById('rendering');
-
-                                    const triangle = Luu.ngon([
-                                        Luu.vertex(-1, -1, 0),
-                                        Luu.vertex( 1, -1, 0),
-                                        Luu.vertex( 1,  1, 0)
-                                    ]);
-
-                                    Luu.render([Luu.mesh([triangle])], targetSVG, {
-                                        viewRotation: Luu.rotation(0, 0, 0),
-                                        viewPosition: Luu.translation(0, 0, -3)
-                                    });
-                                </script>
-                                ">
-
-                        <dokki-output title="Run">
-                            <iframe style="width: 100%;
-                                        height: 200px;
-                                        border: none;"
-                                    srcdoc="
-                                    <style scoped>
-                                        body {
-                                            height: 100vh;
-                                            padding: 0;
-                                            margin: 0;
-                                        }
-                                        svg {
-                                            stroke: gray;
-                                            stroke-width: 1;
-                                            shape-rendering: crispEdges;
-                                        }
-                                    </style>
-                                    <svg id='rendering' width='200' height='200'></svg>
-                                    <script type='module'>
-                                        import {Luu} from 'https://www.tarpeeksihyvaesoft.com/experimental/luujanko/distributable/luujanko.js';
-                                        const targetSVG = document.getElementById('rendering');
-
-                                        const triangle = Luu.ngon([
-                                            Luu.vertex(-1, -1, 0),
-                                            Luu.vertex( 1, -1, 0),
-                                            Luu.vertex( 1,  1, 0)
-                                        ]);
-
-                                        Luu.render([Luu.mesh([triangle])], targetSVG, {
-                                            viewRotation: Luu.rotation(0, 0, 0),
-                                            viewPosition: Luu.translation(0, 0, -3)
-                                        });
-                                    </script>
-                                    ">
-                            </iframe>
-                        </dokki-output>
-                    
-                        <dokki-table>
-                            <template #caption>
-                                CLOC readout of the source code
-                            </template>
-        
-                            <template #table>
-                                <table>
-                                    <tr>
-                                        <th>Language</th>
-                                        <th>Files</th>
-                                        <th>Blank</th>
-                                        <th>Comment</th>
-                                        <th>Code</th>
-                                    </tr>
-                                    <tr>
-                                        <td>JavaScript</td>
-                                        <td>11</td>
-                                        <td>151</td>
-                                        <td>142</td>
-                                        <td>534</td>
-                                    </tr>
-                                </table>
-                            </template>
-                        </dokki-table>
-                    </dokki-code>
-
-                </dokki-topic>
-
 
                 <dokki-topic title="Dokki">
                     <sw-category :categories="['Web','Front-end','Framework']">
@@ -2494,6 +2366,12 @@
                         </template>
                     </dokki-image>
 
+                    <dokki-image src="./soft/img/vond/vond-2.png">
+                        <template #caption>
+                            Using the Hosek&ndash;Wilkie 2012 sky model
+                        </template>
+                    </dokki-image>
+
                     <dokki-table>
                         <template #caption>
                             CLOC readout of the source code
@@ -2808,6 +2686,134 @@
                             </table>
                         </template>
                     </dokki-table>
+                </dokki-topic>
+
+
+                <dokki-topic title="Luujanko">
+                    <sw-category :categories="['Web','Front-end','Rendering','Wireframe']">
+                    </sw-category>
+                    
+                    <p>
+                        An SVG wireframe renderer of arbitrary polygons for the HTML5 canvas.
+                        Includes polygon clipping and rotation, and a couple of interactive
+                        render samples.
+                    </p>
+
+                    <p>
+                        This program is an offshoot of the <a href="#retro-n-gon-renderer">
+                        Retro n-gon renderer</a>, sharing much of its streamlined API style.
+                    </p>
+
+                    <p>
+                        Made in 2020.
+                    </p>
+            
+                    <p>
+                        Tech used: JavaScript
+                    </p>
+                    
+                    <p>
+                        Links:
+                        <a href="https://www.github.com/leikareipa/luujanko">GitHub</a> &bull;
+                        <a href="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/">View interactive samples</a>
+                    </p>
+
+                    <hr class="topic-section-separator">
+
+                    <dokki-iframe title="Run sample (click to capture mouse, ESDF & QA to move)"
+                                  src="https://www.tarpeeksihyvaesoft.com/experimental/luujanko/samples/quake-e1m1/"
+                                  height="500px">
+                    </dokki-iframe>
+                    
+                    <dokki-image src="./soft/img/luujanko/luujanko-1.png">
+                        <template #caption>
+                            Looking down a corridor of the E1M1 level in Quake
+                        </template>
+                    </dokki-image>
+
+                    <dokki-code title="Minimum setup to render a triangle"
+                                code="
+                                <svg id='rendering' width='200' height='200'></svg>
+                                <script type='module'>
+                                    import {Luu} from 'luujanko.js';
+                                    const targetSVG = document.getElementById('rendering');
+
+                                    const triangle = Luu.ngon([
+                                        Luu.vertex(-1, -1, 0),
+                                        Luu.vertex( 1, -1, 0),
+                                        Luu.vertex( 1,  1, 0)
+                                    ]);
+
+                                    Luu.render([Luu.mesh([triangle])], targetSVG, {
+                                        viewRotation: Luu.rotation(0, 0, 0),
+                                        viewPosition: Luu.translation(0, 0, -3)
+                                    });
+                                </script>
+                                ">
+
+                        <dokki-output title="Run">
+                            <iframe style="width: 100%;
+                                        height: 200px;
+                                        border: none;"
+                                    srcdoc="
+                                    <style scoped>
+                                        body {
+                                            height: 100vh;
+                                            padding: 0;
+                                            margin: 0;
+                                        }
+                                        svg {
+                                            stroke: gray;
+                                            stroke-width: 1;
+                                            shape-rendering: crispEdges;
+                                        }
+                                    </style>
+                                    <svg id='rendering' width='200' height='200'></svg>
+                                    <script type='module'>
+                                        import {Luu} from 'https://www.tarpeeksihyvaesoft.com/experimental/luujanko/distributable/luujanko.js';
+                                        const targetSVG = document.getElementById('rendering');
+
+                                        const triangle = Luu.ngon([
+                                            Luu.vertex(-1, -1, 0),
+                                            Luu.vertex( 1, -1, 0),
+                                            Luu.vertex( 1,  1, 0)
+                                        ]);
+
+                                        Luu.render([Luu.mesh([triangle])], targetSVG, {
+                                            viewRotation: Luu.rotation(0, 0, 0),
+                                            viewPosition: Luu.translation(0, 0, -3)
+                                        });
+                                    </script>
+                                    ">
+                            </iframe>
+                        </dokki-output>
+                    
+                        <dokki-table>
+                            <template #caption>
+                                CLOC readout of the source code
+                            </template>
+        
+                            <template #table>
+                                <table>
+                                    <tr>
+                                        <th>Language</th>
+                                        <th>Files</th>
+                                        <th>Blank</th>
+                                        <th>Comment</th>
+                                        <th>Code</th>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>11</td>
+                                        <td>151</td>
+                                        <td>142</td>
+                                        <td>534</td>
+                                    </tr>
+                                </table>
+                            </template>
+                        </dokki-table>
+                    </dokki-code>
+
                 </dokki-topic>
 
 
