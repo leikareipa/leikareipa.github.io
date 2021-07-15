@@ -1,5 +1,5 @@
 @import url("https://use.fontawesome.com/releases/v5.12.0/css/all.css");
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono&display=swap');
 
 :root
 {
@@ -503,6 +503,7 @@ samp,
 
 .dokkiCSS-embedded > footer
 {
+    overflow: auto;
     padding: 16px;
     background-color: var(--dokkiCSS-embedded-footer-bg-color); 
 }
@@ -689,11 +690,6 @@ samp,
     border-bottom: none;
 }
 
-.dokkiCSS-embedded.dokki-code > footer
-{
-    overflow: auto;
-}
-
 .dokkiCSS-embedded.dokki-code > footer table
 {
     white-space: pre;
@@ -814,8 +810,8 @@ samp,
 {
     :root
     {
-        --dokkiCSS-topic-bottom-margin: 10px;
-        --dokkiCSS-topic-padding: 10px;
+        --dokkiCSS-topic-bottom-margin: 20px;
+        --dokkiCSS-topic-padding: 20px;
     }
 
     .dokkiCSS-header-icon
