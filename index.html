@@ -12,6 +12,11 @@
         <script src="./soft/system/highlight.min.js"></script>
 
         <style>
+            :root
+            {
+                --dokkiCSS-embedded-border-radius: 6px;
+            }
+
             code .hljs-comment
             {
                 color: #3e8220;
@@ -51,6 +56,11 @@
                 transform: translateX(calc(-1 * var(--dokkiCSS-topic-padding)));
                 margin-bottom: var(--dokkiCSS-topic-padding);
                 margin-top: var(--dokkiCSS-topic-padding);
+            }
+
+            .dokkiCSS-embedded
+            {
+                margin: var(--dokkiCSS-topic-padding) 0;
             }
         </style>
 
