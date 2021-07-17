@@ -79,7 +79,7 @@ body,
 
 code,
 samp,
-.dokkiCSS-embedded.dokki-console > footer,
+.dokkiCSS-embedded.dokki-console footer,
 .dokkiCSS-text-block-line-content,
 .dokkiCSS-text-block-line-number
 {
@@ -318,8 +318,8 @@ samp,
     line-height: 1.4;
 }
 
-.dokki-topic p a,
-.dokki-topic p a:visited
+.dokki-topic a,
+.dokki-topic a:visited
 {
     text-decoration: none;
     color: var(--dokkiCSS-page-link-color);
@@ -460,6 +460,16 @@ samp,
     background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
 }
 
+.dokki0-animated-expander
+{
+    transition: height 0.25s ease-out;
+}
+
+.dokki0-animated-expander.dokkiCSS-never-overflow
+{
+    overflow: hidden !important;
+}
+
 .dokkiCSS-embedded.dokkiCSS-casts-shadow
 {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -501,20 +511,20 @@ samp,
     margin-right: 2px;
 }
 
-.dokkiCSS-embedded > footer
+.dokkiCSS-embedded footer
 {
     overflow: auto;
     padding: 16px;
     background-color: var(--dokkiCSS-embedded-footer-bg-color); 
 }
 
-.dokkiCSS-embedded > footer > *:first-child,
+.dokkiCSS-embedded footer > *:first-child,
 .dokki-area > *:first-child
 {
     margin-top: 0;
 }
 
-.dokkiCSS-embedded > footer > *:last-child,
+.dokkiCSS-embedded footer > *:last-child,
 .dokki-area > *:last-child
 {
     margin-bottom: 0;
@@ -546,12 +556,12 @@ samp,
     display: none;
 }
 
-.dokkiCSS-embedded.dokki-iframe > footer
+.dokkiCSS-embedded.dokki-iframe footer
 {
     padding: 0;
 }
 
-.dokkiCSS-embedded.dokki-iframe > footer > iframe
+.dokkiCSS-embedded.dokki-iframe footer > iframe
 {
     max-width: 100%;
     min-width: 100%;
@@ -660,8 +670,8 @@ samp,
     align-items: baseline;
 }
 
-.dokkiCSS-embedded.dokki-tip > footer,
-.dokkiCSS-embedded.dokki-warning > footer
+.dokkiCSS-embedded.dokki-tip footer,
+.dokkiCSS-embedded.dokki-warning footer
 {
     padding-left: 0;
 }
@@ -671,8 +681,8 @@ samp,
 {
     background-color: unset;
     display: inline-block;
-    font-style: italic;
-    padding-right: 1ch;
+    font-weight: 500;
+    padding-right: 2ch;
 }
 
 .dokkiCSS-embedded.dokki-code.has-output + .dokkiCSS-embedded.dokki-output
@@ -690,7 +700,7 @@ samp,
     border-bottom: none;
 }
 
-.dokkiCSS-embedded.dokki-code > footer table
+.dokkiCSS-embedded.dokki-code footer table
 {
     white-space: pre;
 }
@@ -701,21 +711,21 @@ samp,
     flex-direction: column;
 }
 
-.dokkiCSS-embedded.dokki-image > .dokkiCSS-container
+.dokkiCSS-embedded.dokki-image .dokkiCSS-container
 {
     min-height: 20px;
     display: flex;
     overflow: auto;
 }
 
-.dokkiCSS-embedded.dokki-image > .dokkiCSS-container > img
+.dokkiCSS-embedded.dokki-image .dokkiCSS-container > img
 {
     max-width: 100%;
     width: auto;
     height: auto;
 }
 
-.dokkiCSS-embedded.dokki-image > .dokkiCSS-container > img.dokkiCSS-upscale-to-fit
+.dokkiCSS-embedded.dokki-image .dokkiCSS-container > img.dokkiCSS-upscale-to-fit
 {
     width: 100%;
     height: 100%;

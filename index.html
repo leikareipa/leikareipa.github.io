@@ -6,8 +6,8 @@
         <link rel="stylesheet"
               type="text/css"
               href="./soft/system/dokki.css">
-        <script defer src="https://cdn.jsdelivr.net/npm/vue@3.1.1/dist/vue.global.js" crossorigin="anonymous" integrity="sha384-MIMvVyIyheJKNP5BQNBUzx4JieX7Q5OBTRfVcgjeuLBdllVTCmu1lBPgtkDVKaBN"></script>
-        <script defer src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.js" crossorigin="anonymous" integrity="sha384-kyee6BrPEnlefRkepwMRF1Mf7h+8pxnolcmyvNq0now4MDG+sfhu32kmfca6Uprk"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/vue@3.1.1/dist/vue.global.prod.js" crossorigin="anonymous" integrity="sha384-Hg3VhjsO7jg5xqcLsx4q/KiOsuEvxbGA6yD+JZItAuz5nrMEccMLcyDWkFW6AhrQ"></script>
+        <script defer src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.prod.js" crossorigin="anonymous" integrity="sha384-/6WtrxQ/nd/YVOF50CdgbnpT8ah4rEYpS/RLBbWhxpjU9SzUR/TZ1q0uOW/2goGa"></script>
         <script defer src="./soft/system/dokki.js"></script>
         <script src="./soft/system/highlight.min.js"></script>
 
@@ -147,12 +147,14 @@
                 <dokki-topic title="Introduction">
                     <p>
                         This document provides information about some of the software associated with the
-                        Tarpeeksi Hyvae Soft banner.
+                        <b style="font-weight: 500;">Tarpeeksi Hyvae Soft</b> banner.
                     </p>
 
                     <p>
-                        Binaries are currently unavailable, but the code is by and large open-source.
+                        Binaries are currently unavailable, but the code is by and large open source.
                     </p>
+
+                    <hr class="topic-section-separator">
 
                     <dokki-spoiler title="Contact">
 
@@ -169,6 +171,49 @@
                         </div>
 
                     </dokki-spoiler>
+
+                    <dokki-table>
+                        <template #caption>
+                            Count of featured software by language
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language (primary)</th>
+                                    <th>Software</th>
+                                </tr>
+                                <tr>
+                                    <td>C++</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>JavaScript</td>
+                                    <td>11</td>
+                                </tr>
+                                <tr>
+                                    <td>C</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>Python</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Java</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>PHP</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>x86 assembly</td>
+                                    <td>1</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
                 </dokki-topic>
 
                 <dokki-topic title="VCS">
@@ -286,7 +331,7 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <th>Time</th>
+                                    <th>Release date</th>
                                     <th>Version</th>
                                 </tr>
                                 <tr>
@@ -444,7 +489,7 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <th>Time</th>
+                                    <th>Release date</th>
                                     <th>Version</th>
                                 </tr>
                                 <tr>
@@ -1115,7 +1160,7 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <th>Time</th>
+                                    <th>Release date</th>
                                     <th>Version</th>
                                 </tr>
                                 <tr>
@@ -2182,6 +2227,9 @@
                     <hr class="topic-section-separator">
 
                     <dokki-image src="./soft/img/what/what-1.png">
+                        <template #caption>
+                            A spectrographic seek bar
+                        </template>
                     </dokki-image>
 
                     <dokki-table>
@@ -2289,59 +2337,6 @@
                     </dokki-table>
                 </dokki-topic>
                 
-            
-                <dokki-topic title="Smartti parseri">
-                    <sw-category :categories="['Desktop','Visualization']">
-                    </sw-category>
-                    
-                    <p>
-                        A utility to turn hard drive SMART logs (output dumps from <i>smartctl</i>)
-                        into nice little graphs.
-                    </p>
-
-                    <p>
-                        Provides a configuration file with which the user can customize the
-                        generated imagery. Graphs can be arranged into rows and columns, and
-                        simple mathematical expressions can be given to modify the logged
-                        values for output &ndash; e.g. converting Celsius &rarr; Kelvin.
-                    </p>
-
-                    <p>
-                        Made in 2015.
-                    </p>
-
-                    <sw-tech-list :tech="['C++','Qt']">
-                    </sw-tech-list>
-
-                    <hr class="topic-section-separator">
-
-                    <dokki-image src="./soft/img/smartti-parseri/smartti-parseri-2.png">
-                        <template #caption>
-                            Various statistics of an SSD
-                        </template>
-                    </dokki-image>
-
-                    <dokki-code title="Sample configuration">
-
-                        <template #code>
-                            <pre>
-                                # Attribute  Graph size  Graph X,Y  Value  Expression(s)           C-Window  Range  Title
-                                #---------------------------------------------------------------------------------------------------------
-                                  241        HALF        1,1        RAW    a*0.000477              1         0      WRITES, MB PER HOUR
-                                  241        QUARTER     1,2        RAW    a*0.000000477, a/1024   p300      0      TOTAL WRITES, TB
-                                  190        QUARTER     2,2        RAW    a+273.15                0         0      TEMPERATURE, °K
-                            </pre>
-                        </template>
-
-                        <dokki-output>
-                            <img src="./soft/img/smartti-parseri/sample-output.png"
-                                 style="border: 1px solid var(--dokkiCSS-page-primary-line-color);
-                                        border-radius: var(--dokkiCSS-embedded-border-radius);">
-                        </dokki-output>
-
-                    </dokki-code>
-                </dokki-topic>
-
             
                 <dokki-topic title="Vond">
                     <sw-category :categories="['Desktop','Rendering']">
@@ -3063,87 +3058,6 @@
                     </dokki-table>
                 </dokki-topic>
                 
-            
-                <dokki-topic title="Limpynet">
-                    <sw-category :categories="['Desktop','Machine learning']">
-                    </sw-category>
-                    
-                    <p>
-                        A regular feed-forward neural net with customizable layering. Learns the MNIST
-                        digits to about 97%. Written from scratch without frameworks as a learner
-                        project in machine learning.
-                    </p>
-
-                    <p>
-                        Made in 2016.
-                    </p>
-
-                    <sw-tech-list :tech="['C++']">
-                    </sw-tech-list>
-                    
-                    <p>
-                        Links: <a href="https://www.github.com/leikareipa/limpynet">GitHub</a>
-                    </p>
-
-                    <hr class="topic-section-separator">
-
-                    <dokki-console platform="unix"
-                                   command="./limpynet -L 10 -e 3">
-                        <template #output>
-                            <pre>
-                                Initializing for MNIST...
-                                Net: Topology: N784-L10-S10 
-                                     Learning rate: 0.010000
-                                     Training epochs: 3
-                                Training on MNIST (60000/10000)...
-                                Epoch 1 of 3: train = 68.947%, validate = 0.000%.
-                                Epoch 2 of 3: train = 90.213%, validate = 90.300%.
-                                Epoch 3 of 3: train = 91.570%, validate = 90.770%.
-                                Training finished.
-                            </pre>
-                        </template>
-                    </dokki-console>
-
-                    <dokki-table>
-                        <template #caption>
-                            CLOC readout of the source code
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>13</td>
-                                    <td>316</td>
-                                    <td>217</td>
-                                    <td>1007</td>
-                                </tr>
-                                <tr>
-                                    <td>C++</td>
-                                    <td>6</td>
-                                    <td>200</td>
-                                    <td>99</td>
-                                    <td>773</td>
-                                </tr>
-                                <tr>
-                                    <td>C/C++ Header</td>
-                                    <td>7</td>
-                                    <td>116</td>
-                                    <td>118</td>
-                                    <td>234</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
-                </dokki-topic>
-
 
                 <dokki-topic title="3DCube-js">
                     <sw-category :categories="['Web','Front-end','Rendering','Software rasterization']">
@@ -3691,6 +3605,138 @@
                             An air pressure readout
                         </template>
                     </dokki-image>
+                </dokki-topic>
+
+
+                <dokki-topic title="Smartti parseri">
+                    <sw-category :categories="['Desktop','Visualization']">
+                    </sw-category>
+                    
+                    <p>
+                        A utility to turn hard drive SMART logs (output dumps from <i>smartctl</i>)
+                        into nice little graphs.
+                    </p>
+
+                    <p>
+                        Provides a configuration file with which the user can customize the
+                        generated imagery. Graphs can be arranged into rows and columns, and
+                        simple mathematical expressions can be given to modify the logged
+                        values for output &ndash; e.g. converting Celsius &rarr; Kelvin.
+                    </p>
+
+                    <p>
+                        Made in 2015.
+                    </p>
+
+                    <sw-tech-list :tech="['C++','Qt']">
+                    </sw-tech-list>
+
+                    <hr class="topic-section-separator">
+
+                    <dokki-image src="./soft/img/smartti-parseri/smartti-parseri-2.png">
+                        <template #caption>
+                            Various statistics of an SSD
+                        </template>
+                    </dokki-image>
+
+                    <dokki-code title="Sample configuration">
+
+                        <template #code>
+                            <pre>
+                                # Attribute  Graph size  Graph X,Y  Value  Expression(s)           C-Window  Range  Title
+                                #---------------------------------------------------------------------------------------------------------
+                                  241        HALF        1,1        RAW    a*0.000477              1         0      WRITES, MB PER HOUR
+                                  241        QUARTER     1,2        RAW    a*0.000000477, a/1024   p300      0      TOTAL WRITES, TB
+                                  190        QUARTER     2,2        RAW    a+273.15                0         0      TEMPERATURE, °K
+                            </pre>
+                        </template>
+
+                        <dokki-output>
+                            <img src="./soft/img/smartti-parseri/sample-output.png">
+                        </dokki-output>
+
+                    </dokki-code>
+                </dokki-topic>
+
+
+                <dokki-topic title="Limpynet">
+                    <sw-category :categories="['Desktop','Machine learning']">
+                    </sw-category>
+                    
+                    <p>
+                        A regular feed-forward neural net with customizable layering. Learns the MNIST
+                        digits to about 97%. Written from scratch without frameworks as a learner
+                        project in machine learning.
+                    </p>
+
+                    <p>
+                        Made in 2016.
+                    </p>
+
+                    <sw-tech-list :tech="['C++']">
+                    </sw-tech-list>
+                    
+                    <p>
+                        Links: <a href="https://www.github.com/leikareipa/limpynet">GitHub</a>
+                    </p>
+
+                    <hr class="topic-section-separator">
+
+                    <dokki-console platform="unix"
+                                   command="./limpynet -L 10 -e 3">
+                        <template #output>
+                            <pre>
+                                Initializing for MNIST...
+                                Net: Topology: N784-L10-S10 
+                                     Learning rate: 0.010000
+                                     Training epochs: 3
+                                Training on MNIST (60000/10000)...
+                                Epoch 1 of 3: train = 68.947%, validate = 0.000%.
+                                Epoch 2 of 3: train = 90.213%, validate = 90.300%.
+                                Epoch 3 of 3: train = 91.570%, validate = 90.770%.
+                                Training finished.
+                            </pre>
+                        </template>
+                    </dokki-console>
+
+                    <dokki-table>
+                        <template #caption>
+                            CLOC readout of the source code
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Sum</td>
+                                    <td>13</td>
+                                    <td>316</td>
+                                    <td>217</td>
+                                    <td>1007</td>
+                                </tr>
+                                <tr>
+                                    <td>C++</td>
+                                    <td>6</td>
+                                    <td>200</td>
+                                    <td>99</td>
+                                    <td>773</td>
+                                </tr>
+                                <tr>
+                                    <td>C/C++ Header</td>
+                                    <td>7</td>
+                                    <td>116</td>
+                                    <td>118</td>
+                                    <td>234</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
                 </dokki-topic>
 
 
