@@ -12,11 +12,6 @@
         <script src="./soft/system/highlight.min.js"></script>
 
         <style>
-            :root
-            {
-                --dokkiCSS-embedded-border-radius: 6px;
-            }
-
             code .hljs-comment
             {
                 color: #3e8220;
@@ -135,7 +130,7 @@
 
         <template id="dokki-document">
 
-            <dokki-header icon="fas fa-atlas"
+            <dokki-header icon="fas fa-book"
                           title="Tarpeeksi Hyvae Soft's softs">
             </dokki-header>
 
@@ -151,7 +146,7 @@
                     </p>
 
                     <p>
-                        Binaries are currently unavailable, but the code is by and large open source.
+                        Binaries are currently unavailable. Source code is by and large open.
                     </p>
 
                     <hr class="topic-section-separator">
@@ -180,12 +175,12 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <th>Language (primary)</th>
+                                    <th>Primary language</th>
                                     <th>Software</th>
                                 </tr>
                                 <tr>
                                     <td>C++</td>
-                                    <td>13</td>
+                                    <td>14</td>
                                 </tr>
                                 <tr>
                                     <td>JavaScript</td>
@@ -200,6 +195,10 @@
                                     <td>2</td>
                                 </tr>
                                 <tr>
+                                    <td>Assembly</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
                                     <td>Java</td>
                                     <td>1</td>
                                 </tr>
@@ -207,8 +206,134 @@
                                     <td>PHP</td>
                                     <td>1</td>
                                 </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+
+                    <dokki-table>
+                        <template #caption>
+                            Count of featured software by category
+                        </template>
+
+                        <template #table>
+                            <table>
                                 <tr>
-                                    <td>x86 assembly</td>
+                                    <th>Primary category</th>
+                                    <th>Software</th>
+                                </tr>
+                                <tr>
+                                    <td>Rendering</td>
+                                    <td>11</td>
+                                </tr>
+                                <tr>
+                                    <td>User interface</td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td>Audio/video</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Benchmark</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Content management</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Data converter</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Typing</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Database</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>File format</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Machine learning</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Modding</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Patch</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Simulation</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Visualization</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Uncategorized</td>
+                                    <td>2</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+
+                    <dokki-table>
+                        <template #caption>
+                            Count of featured software by year of creation
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Software</th>
+                                </tr>
+                                <tr>
+                                    <td>2021</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>2020</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>2019</td>
+                                    <td>11</td>
+                                </tr>
+                                <tr>
+                                    <td>2018</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>2017</td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td>2016</td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td>2015</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>2013</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>2010</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>2003</td>
                                     <td>1</td>
                                 </tr>
                             </table>
@@ -331,20 +456,20 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <th>Release date</th>
                                     <th>Version</th>
+                                    <th>Release date</th>
                                 </tr>
                                 <tr>
-                                    <td>April 2020</td>
                                     <td>2.0.0</td>
+                                    <td>April 2020</td>
                                 </tr>
                                 <tr>
-                                    <td>March 2018</td>
                                     <td>1.0.0</td>
+                                    <td>March 2018</td>
                                 </tr>
                                 <tr>
-                                    <td>April 2017</td>
                                     <td>Initial release (beta.1)</td>
+                                    <td>April 2017</td>
                                 </tr>
                             </table>
                         </template>
@@ -399,7 +524,7 @@
 
 
                 <dokki-topic title="RallySportED">
-                    <sw-category :categories="['Multi-platform','Modding tool']">
+                    <sw-category :categories="['Multi-platform','Modding']">
                     </sw-category>
                     
                     <p>
@@ -463,6 +588,12 @@
                         </template>
                     </dokki-image>
 
+                    <dokki-image src="./soft/img/rallysported/rtex.b9-dos.png">
+                        <template #caption>
+                            The texture editor of the DOS version (deprecated)
+                        </template>
+                    </dokki-image>
+
                     <dokki-video platform="youtube" src="32QEM7Nc8V8">
                         <template #caption>
                             The Windows version in Linux using Wine, with OpenGL rendering
@@ -489,28 +620,28 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <th>Release date</th>
                                     <th>Version</th>
+                                    <th>Release date</th>
                                 </tr>
                                 <tr>
-                                    <td>December 2020</td>
                                     <td>Browser version 1.0</td>
+                                    <td>December 2020</td>
                                 </tr>
                                 <tr>
-                                    <td>November 2018</td>
                                     <td>First release of the browser version</td>
+                                    <td>November 2018</td>
                                 </tr>
                                 <tr>
-                                    <td>August 2018</td>
                                     <td>First release of the Windows version</td>
+                                    <td>August 2018</td>
                                 </tr>
                                 <tr>
-                                    <td>April 2017</td>
                                     <td>First release of the DOS version</td>
+                                    <td>April 2017</td>
                                 </tr>
                                 <tr>
-                                    <td>November 2016</td>
                                     <td>Initial public release (Linux/Windows)</td>
+                                    <td>November 2016</td>
                                 </tr>
                             </table>
                         </template>
@@ -1160,16 +1291,16 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <th>Release date</th>
                                     <th>Version</th>
+                                    <th>Release date</th>
                                 </tr>
                                 <tr>
-                                    <td>December 2019</td>
                                     <td>First beta release</td>
+                                    <td>December 2019</td>
                                 </tr>
                                 <tr>
-                                    <td>January 2019</td>
                                     <td>First alpha release</td>
+                                    <td>January 2019</td>
                                 </tr>
                             </table>
                         </template>
@@ -1224,7 +1355,7 @@
 
 
                 <dokki-topic title="PCbi">
-                    <sw-category :categories="['Desktop','Emulation','User interface']">
+                    <sw-category :categories="['Desktop','User interface']">
                     </sw-category>
 
                     <p>
@@ -1289,12 +1420,16 @@
                         <template #table>
                             <table>
                                 <tr>
-                                    <td>May 2020</td>
-                                    <td>First non-beta release (0.13.0)</td>
+                                    <th>Version</th>
+                                    <th>Release date</th>
                                 </tr>
                                 <tr>
-                                    <td>January 2018</td>
+                                    <td>First non-beta (0.13.0)</td>
+                                    <td>May 2020</td>
+                                </tr>
+                                <tr>
                                     <td>Initial release (beta.1)</td>
+                                    <td>January 2018</td>
                                 </tr>
                             </table>
                         </template>
@@ -1815,16 +1950,18 @@
                     </sw-category>
                     
                     <p>
-                        The first path tracer I ever made. It served as a personal testbed in offline
-                        rendering.
+                        My first path tracer. It served as a personal testbed in messing around with
+                        offline rendering.
                     </p>
                     
                     <p>
-                        This renderer had naive implementations of volumetric photon mapping, spectral
-                        reflectance, subsurface scattering, environment mapping, and various other
-                        things. It could also render volumetric effects like fog, snow, and clouds
-                        (see <a href="#cloud-simulation">Cloud simulation</a>); and supported
-                        ray&ndash;triangle intersection tests on the GPU with OpenCL.
+                        This renderer featured photon mapping; spectral reflectance; volumetric
+                        rendering (subsurface scatter, clouds, snow); HDR environment mapping;
+                        ray&ndash;triangle intersection tests on the GPU; and various other things.
+                    </p>
+
+                    <p>
+                        This renderer powered <a href="#cloud-simulation">Cloud simulation</a>.
                     </p>
                     
                     <p>
@@ -2002,10 +2139,10 @@
                         </template>
                     </dokki-table>
                 </dokki-topic>
-                
+
 
                 <dokki-topic title="Dokki">
-                    <sw-category :categories="['Web','Front-end','Framework']">
+                    <sw-category :categories="['Web','Front-end','Content management']">
                     </sw-category>
                     
                     <p>
@@ -2078,7 +2215,7 @@
 
                     <dokki-image src="./soft/img/kelpo/kelpo-2.png">
                         <template #caption>
-                            A scene from Tomb Raider rendered with Direct3D in Wine 
+                            A scene from Tomb Raider rendered with Direct3D in Wine (ignore the cursor)
                         </template>
                     </dokki-image>
 
@@ -2190,7 +2327,7 @@
                 
             
                 <dokki-topic title="What">
-                    <sw-category :categories="['Web','Front-end','Audio/Video']">
+                    <sw-category :categories="['Web','Front-end','Audio/video']">
                     </sw-category>
                     
                     <p>
@@ -2280,7 +2417,7 @@
 
                     <dokki-image src="./soft/img/npto/npto-1.png">
                         <template #caption>
-                            Inspecting which keys have taken the longest to type
+                            Which keys took the longest to press?
                         </template>
                     </dokki-image>
                         
@@ -2339,7 +2476,7 @@
                 
             
                 <dokki-topic title="Vond">
-                    <sw-category :categories="['Desktop','Rendering']">
+                    <sw-category :categories="['Desktop','Rendering','Hybrid']">
                     </sw-category>
 
                     <p>
@@ -2513,7 +2650,7 @@
                 
             
                 <dokki-topic title="GPL-DTA">
-                    <sw-category :categories="['Desktop','File converter']">
+                    <sw-category :categories="['Desktop','Data converter']">
                     </sw-category>
                     
                     <p>
@@ -2620,7 +2757,7 @@
 
 
                 <dokki-topic title="Dig">
-                    <sw-category :categories="['Desktop','File converter']">
+                    <sw-category :categories="['Desktop','Data converter']">
                     </sw-category>
                     
                     <p>
@@ -2827,7 +2964,7 @@
 
 
                 <dokki-topic title="PFM-View">
-                    <sw-category :categories="['Desktop','Miscellaneous']">
+                    <sw-category :categories="['Desktop']">
                     </sw-category>
                     
                     <p>
@@ -2857,7 +2994,7 @@
                     <dokki-image src="https://raw.githubusercontent.com/leikareipa/pfm-view/master/images/screenshots/1.png">
                         <template #caption>
                             Displaying an image with tone mapping
-                            (image source: <a href="https://hdrihaven.com/hdri/?c=outdoor&h=champagne_castle_1">HDRI Haven [Greg Zaal]</a>)
+                            (original image: <a href="https://hdrihaven.com/hdri/?c=outdoor&h=champagne_castle_1">HDRI Haven [Greg Zaal]</a>)
                         </template>
                     </dokki-image>
 
@@ -2991,7 +3128,7 @@
                 
             
                 <dokki-topic title="AV Scissors">
-                    <sw-category :categories="['Desktop','Audio/Video']">
+                    <sw-category :categories="['Desktop','Audio/video']">
                     </sw-category>
                     
                     <p>
@@ -3192,6 +3329,55 @@
                     </dokki-table>
                 </dokki-topic>
 
+                <dokki-topic title="Ray caster">
+                    <sw-category :categories="['Desktop','Rendering','Ray casting']">
+                    </sw-category>
+                    
+                    <p>
+                        My first ray caster, from 2003. Its initial incarnation was based on Permadi's
+                        (then-)famous ray-casting tutorial.
+                    </p>
+                    
+                    <p>
+                        The renderer evolved from a standard Wolfenstein-style 90-degree-walled
+                        caster into a heightmapped 2.5D voxel renderer, as I kept experimentally adding
+                        to it here and there.
+                    </p>
+
+                    <p>
+                        In about 2005, I moved away from this project and into other kinds of programming.
+                        Eventually, after playing around with it some more in 2008&ndash;2009, I started
+                        working on my first ray tracer, which quickly evolved into <a href="#yqr">Yqr</a>.
+                    </p>
+
+                    <p>
+                        Made in 2003&ndash;2005, 2008&ndash;2009.
+                    </p>
+
+                    <sw-tech-list :tech="['C++']">
+                    </sw-tech-list>
+                    
+                    <hr class="topic-section-separator">
+
+                    <dokki-video platform="youtube" src="z_ESMkBhUhU">
+                        <template #caption>
+                            An early wall caster (16 August 2003)
+                        </template>
+                    </dokki-video>
+
+                    <dokki-video platform="youtube" src="Ztm02zvWy04">
+                        <template #caption>
+                            Heightmapped voxels with dynamic lights (25 August 2003)
+                        </template>
+                    </dokki-video>
+                    
+                    <dokki-video platform="youtube" src="X99HO4atphA">
+                        <template #caption>
+                            Heightmapped voxels with dynamic shadows (21 September 2008)
+                        </template>
+                    </dokki-video>
+                </dokki-topic>
+
 
                 <dokki-topic title="DOS path tracing benchmark">
                     <sw-category :categories="['Desktop','Benchmark']">
@@ -3258,14 +3444,6 @@
                                     <td>165</td>
                                     <td>Intel Pentium 90</td>
                                 </tr>
-                                <tr>
-                                    <td>361</td>
-                                    <td>Intel i486DX2 66</td>
-                                </tr>
-                                <tr>
-                                    <td>4758</td>
-                                    <td>Intel i386DX 40</td>
-                                </tr>
                             </table>
                         </template>
                     </dokki-table>
@@ -3330,6 +3508,10 @@
                         Given the results (table, below), it seems that Microsoft's C/C++ compiler
                         version 8 (as shipped with Visual C++ 1.5) is in a league of its own. At
                         least when running the benchmark in DOSBox.
+                    </p>
+
+                    <p>
+                        Made in 2018.
                     </p>
 
                     <sw-tech-list :tech="['C']">
@@ -3573,12 +3755,12 @@
                         The database, loosely termed, is a headerless binary file consisting of 12-byte
                         time/value pairs: a 4-byte <i>float</i> that stores a value logged on an occasion,
                         and an 8-byte <i>int</i> that records the time &ndash; in milliseconds since
-                        epoch &dash; of the occasion. Functionality is provided for entering and fetching
-                        data.
+                        epoch &dash; of the occasion. The database provides a simple command-line
+                        interface for entering and fetching data.
                     </p>
 
                     <p>
-                        The grapher provides a no-nonsense visual readout of data from a given database.
+                        The grapher produces no-nonsense visual readouts of data from databases.
                     </p>
 
                     <p>
@@ -3605,6 +3787,12 @@
                             An air pressure readout
                         </template>
                     </dokki-image>
+
+                    <dokki-image src="./soft/img/opdb/opdbc-terminal.png">
+                        <template #caption>
+                            An ASCII readout in the terminal (deprecated feature)
+                        </template>
+                    </dokki-image>
                 </dokki-topic>
 
 
@@ -3613,15 +3801,20 @@
                     </sw-category>
                     
                     <p>
-                        A utility to turn hard drive SMART logs (output dumps from <i>smartctl</i>)
+                        A utility to turn hard drive SMART logs (i.e. output dumps from <i>smartctl</i>)
                         into nice little graphs.
                     </p>
 
                     <p>
-                        Provides a configuration file with which the user can customize the
-                        generated imagery. Graphs can be arranged into rows and columns, and
-                        simple mathematical expressions can be given to modify the logged
-                        values for output &ndash; e.g. converting Celsius &rarr; Kelvin.
+                        Provides a configuration file with which the user can customize the generated
+                        imagery. Graphs can be arranged into customized rows and columns, and simple
+                        mathematical expressions can be given to modify the logged values for output
+                        (e.g. to convert Celsius &rarr; Kelvin).
+                    </p>
+
+                    <p>
+                        The program uses Qt to draw the graphs and for exporting them into PNG image
+                        files.
                     </p>
 
                     <p>
@@ -3639,7 +3832,7 @@
                         </template>
                     </dokki-image>
 
-                    <dokki-code title="Sample configuration">
+                    <dokki-code title="Sample configuration file">
 
                         <template #code>
                             <pre>
@@ -3665,8 +3858,12 @@
                     
                     <p>
                         A regular feed-forward neural net with customizable layering. Learns the MNIST
-                        digits to about 97%. Written from scratch without frameworks as a learner
-                        project in machine learning.
+                        digits to about 97%.
+                    </p>
+
+                    <p>
+                        This program was written from scratch (without frameworks) as a learner project
+                        in machine learning.
                     </p>
 
                     <p>
