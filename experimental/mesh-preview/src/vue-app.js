@@ -20,7 +20,10 @@ export function run_mesh_preview_app(vuexStore)
         },
         mounted()
         {
-            this.$store.commit("set_mesh_idx", 0);
+            const initialMeshName = (vuexStore.state.startupArgs.initialMeshName || "");
+            const meshMeta = (vuexStore.state.startupArgs.meshesMetadata || []);
+            const initialMeshIdx = Math.max(0, meshMeta.findIndex(e=>e.name.toLowerCase() == initialMeshName.toLowerCase()));
+            this.$store.commit("set_mesh_idx", initialMeshIdx);
         },
         template: `
             <div class="mesh-preview">

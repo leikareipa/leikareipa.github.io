@@ -17,6 +17,7 @@ body
 
 .mesh-preview > .info-box
 {
+    cursor: pointer;
     user-select: none;
     position: absolute;
     bottom: 40px;
@@ -166,12 +167,14 @@ body
 .mesh-preview > .control-panel .field input
 {
     appearance: none;
-    padding: 12px;
+    padding: 10px;
     margin-top: 8px;
     border: 1px solid var(--border-color--secondary);
     border-radius: 6px;
     background-color: white;
     outline: none;
+    font-size: 95%;
+    font-family: unset;
 }
 
 .mesh-preview > .control-panel .field select:focus,
@@ -202,8 +205,8 @@ body
 .mesh-preview-transition-flip-enter-active,
 .mesh-preview-transition-flip-leave-active
 {
-    transition: transform 0.2s,
-                opacity 0.2s;
+    transition: transform 0.25s,
+                opacity 0.25s;
 }
 .mesh-preview-transition-flip-enter
 {
@@ -217,15 +220,11 @@ body
 .mesh-preview-transition-drop-enter-active,
 .mesh-preview-transition-drop-leave-active
 {
-    transition: transform 0.2s;
-}
-.mesh-preview-transition-drop-enter-active
-{
-    transition: transform 0.1s;
+    transition: transform 0.25s;
 }
 .mesh-preview-transition-drop-enter
 {
-    transform: translateY(-50px) scale(2.2);
+    transform: translateY(-40px);
 }
 .mesh-preview-transition-drop-leave-to 
 {

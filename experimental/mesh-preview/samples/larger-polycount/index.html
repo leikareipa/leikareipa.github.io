@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport"
+              content="width=device-width">
+        <meta http-equiv="content-type"
+              content="text/html; charset=UTF-8">
+        <title>Larger polycount sample - Mesh preview</title>
+        <style>
+            body
+            {
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import {start_mesh_preview} from "../../src/mesh-preview.js";
+            import {load_obj} from "../obj-models/load-obj.js";
+
+            const meshesMetadata = [
+                {name: "Bunny"},
+                {name: "Statue"},
+                {name: "Dragon", viewDistance: 1.7},
+            ];
+
+            start_mesh_preview({
+                get_mesh_data,
+                meshesMetadata,
+                modulePath: "../../src/",
+                defaultViewDistance: 2,
+                defaultOrientation: [0.3, 0, 0],
+                infoText: "Meshes from <a href='https://graphics.stanford.edu/data/3Dscanrep/' target='_blank' rel='noreferrer'>the Stanford 3D Scanning Repository</a>",
+                continuousRendering: false,
+            });
+
+            async function get_mesh_data(meshMetadata)
+            {
+                const mesh = await load_obj(`./models/${meshMetadata.name}.obj`,
+                                            `./models/${meshMetadata.name}.mtl`);
+
+                return mesh;
+            }
+        </script>
+    </body>
+</html>

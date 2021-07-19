@@ -33,6 +33,7 @@ export function create_mesh_preview_store(args)
                     const meshData = await args.get_mesh_data(meshMetadata);
                     const luujankoMesh = meshData.map(face=>Luu.ngon(face.map(v=>Luu.vertex(v.x, v.y, v.z))));
 
+                    window.location.hash = meshMetadata.name;
                     state.activeMeshNgons = luujankoMesh;
                     state.viewDistance = (meshMetadata.viewDistance || state.startupArgs.defaultViewDistance || 40000);
                 }

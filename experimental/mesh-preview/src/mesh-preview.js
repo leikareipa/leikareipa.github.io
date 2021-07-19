@@ -19,6 +19,8 @@ export function start_mesh_preview(startupArgs = {})
 
 function combined_with_default_args(args)
 {
+    const initialMeshName = decodeURI(window.location.hash.substr(1));
+
     const combinedArgs = {
         ...{
             infoText: "",
@@ -31,6 +33,7 @@ function combined_with_default_args(args)
             defaultViewDistance: 40000,
             continuousRendering: true,
             guiVisibility: {},
+            initialMeshName: (initialMeshName.length? initialMeshName : undefined),
         },
         ...args,
     };
