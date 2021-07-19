@@ -22,8 +22,9 @@
                 font-weight: 500;
             }
 
-            .sw-category
+            .sw-category-list
             {
+                color: var(--dokkiCSS-page-primary-fg-color);
                 padding: 9px 0;
                 font-size: 95%;
                 border: 1px solid var(--dokkiCSS-page-primary-line-color);
@@ -32,13 +33,13 @@
                 border-radius: 0;
             }
 
-            .sw-category > header
+            .sw-category-list > header
             {
                 overflow: auto;
                 white-space: nowrap;
             }
 
-            .sw-category .category
+            .sw-category-list .category
             {
                 font-weight: 500;
             }
@@ -61,12 +62,12 @@
 
         <script>
             const swCategory = {
-                $tag: "sw-category",
+                $tag: "sw-category-list",
                 props: {
                     categories: {default: []},
                 },
                 template: `
-                <p class="sw-category">
+                <p class="sw-category-list">
 
                     <header>
 
@@ -131,7 +132,7 @@
         <template id="dokki-document">
 
             <dokki-header icon="fas fa-book"
-                          title="Tarpeeksi Hyvae Soft's softs">
+                          title="Tarpeeksi Hyvae Soft">
             </dokki-header>
 
             <dokki-side-panel>
@@ -146,26 +147,10 @@
                     </p>
 
                     <p>
-                        Binaries are currently unavailable. The source code is by and large open.
+                        Binaries are currently unavailable, but the source code is by and large open.
                     </p>
 
                     <hr class="topic-section-separator">
-
-                    <dokki-spoiler title="Contact">
-
-                        <div style="display: inline-block; white-space: nowrap;">
-                            <i class="fas fa-envelope"></i>
-                            Email <a href="mailto:sw@tarpeeksihyvaesoft.com">sw@tarpeeksihyvaesoft.com</a>
-                        </div>
-
-                        <span style="margin: 0 8px;"></span>
-
-                        <div style="display: inline-block; white-space: nowrap;">
-                            <i class="fab fa-github"></i>
-                            GitHub <a href="https://github.com/leikareipa" target="_blank" rel="noopener">github.com/leikareipa</a>
-                        </div>
-
-                    </dokki-spoiler>
 
                     <dokki-table>
                         <template #caption>
@@ -339,11 +324,27 @@
                             </table>
                         </template>
                     </dokki-table>
+
+                    <dokki-spoiler title="Contact">
+
+                        <div style="display: inline-block; white-space: nowrap;">
+                            <i class="fas fa-envelope"></i>
+                            Email <a href="mailto:sw@tarpeeksihyvaesoft.com">sw@tarpeeksihyvaesoft.com</a>
+                        </div>
+
+                        <span style="margin: 0 8px;"></span>
+
+                        <div style="display: inline-block; white-space: nowrap;">
+                            <i class="fab fa-github"></i>
+                            GitHub <a href="https://github.com/leikareipa" target="_blank" rel="noopener">github.com/leikareipa</a>
+                        </div>
+
+                    </dokki-spoiler>
                 </dokki-topic>
 
                 <dokki-topic title="VCS">
-                    <sw-category :categories="['Desktop','Video capture']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Video capture']">
+                    </sw-category-list>
 
                     <p>
                         A useful capture tool for Datapath's VisionRGB range of capture cards. Features
@@ -524,8 +525,8 @@
 
 
                 <dokki-topic title="RallySportED">
-                    <sw-category :categories="['Multi-platform','Modding']">
-                    </sw-category>
+                    <sw-category-list :categories="['Multi-platform','Modding']">
+                    </sw-category-list>
                     
                     <p>
                         A multi-platform asset-editing toolset for the cult DOS game Rally-Sport. This toolset
@@ -710,8 +711,8 @@
                 
             
                 <dokki-topic title="Lintulista">
-                    <sw-category :categories="['Web','Full-stack']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Full-stack']">
+                    </sw-category-list>
 
                     <p>
                         A web app for hobbyist birdwatchers to keep track of their sighted species
@@ -846,8 +847,8 @@
 
 
                 <dokki-topic title="The retro n-gon renderer">
-                    <sw-category :categories="['Web','Front-end','Rendering','Software rasterization']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','Rendering','Software rasterization']">
+                    </sw-category-list>
                     
                     <p>
                         A well-featured, retro-oriented 3D software renderer for the HTML5 canvas.
@@ -918,7 +919,7 @@
 
                     <dokki-image src="./soft/img/rngon/rngon-3.png">
                         <template #caption>
-                            At the French grand prix in Grand Prix Legends (lo-res)
+                            At the French Grand Prix in Grand Prix Legends (lo-res)
                         </template>
                     </dokki-image>
 
@@ -1266,11 +1267,11 @@
                                 <tr>
                                     <td>
                                         <img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/70.1.0/firefox/firefox_16x16.png">
-                                        Firefox 89
+                                        Firefox 90
                                     </td>
                                     <td>4</td>
                                     <td>87</td>
-                                    <td>121</td>
+                                    <td>123</td>
                                 </tr>
                                 <tr>
                                     <td colspan="4">
@@ -1355,8 +1356,8 @@
 
 
                 <dokki-topic title="PCbi">
-                    <sw-category :categories="['Desktop','User interface']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','User interface']">
+                    </sw-category-list>
 
                     <p>
                         A 3D front-end for the PC emulator PCem. PCbi replaces PCem's text-based
@@ -1484,13 +1485,13 @@
 
 
                 <dokki-topic title="Serlain">
-                    <sw-category :categories="['Web','Front-end','User interface']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','User interface']">
+                    </sw-category-list>
                     
                     <p>
-                        Looks like an old browser, acts like an old browser - and almost is one. Serlain
-                        is a frontend for Internet Archive's Wayback Machine that displays archived web
-                        content inside period-correct-looking faux browsers, set on a faux period-themed
+                        Looks like an old browser, acts like an old browser. Serlain is a frontend
+                        for Internet Archive's Wayback Machine that displays archived web content
+                        inside period-correct-looking faux browsers, set on a faux period-themed
                         desktop.
                     </p>
 
@@ -1577,12 +1578,12 @@
 
             
                 <dokki-topic title="Rally-Sport Content">
-                    <sw-category :categories="['Web','Full-stack','Content management']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Full-stack','Content management']">
+                    </sw-category-list>
                     
                     <p>
                         A platform for users of <a href="#rallysported">RallySportED</a> to
-                        share and obtain custom content for Rally-Sport.
+                        share and download custom content for Rally-Sport.
                     </p>
 
                     <p>
@@ -1713,8 +1714,8 @@
 
 
                 <dokki-topic title="Cloud simulation">
-                    <sw-category :categories="['Desktop','Simulation','Atmosphere']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Simulation','Atmosphere']">
+                    </sw-category-list>
                     
                     <p>
                         Ever wanted a cloud physics simulator and renderer? Maybe not, but this
@@ -1835,8 +1836,8 @@
 
 
                 <dokki-topic title="U7DCP">
-                    <sw-category :categories="['Desktop','Patch']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Patch']">
+                    </sw-category-list>
                     
                     <p>
                         Patches a bug/feature in Ultima 7 that forces the CPU cache on at launch.
@@ -1946,8 +1947,8 @@
 
 
                 <dokki-topic title="Yqr">
-                    <sw-category :categories="['Desktop','Rendering','Path tracing']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Rendering','Path tracing']">
+                    </sw-category-list>
                     
                     <p>
                         My first path tracer. It served as a personal testbed in messing around with
@@ -1994,8 +1995,8 @@
                 
             
                 <dokki-topic title="Wray">
-                    <sw-category :categories="['Web','Front-end','Rendering','Path tracing']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','Rendering','Path tracing']">
+                    </sw-category-list>
                     
                     <p>
                         A vanilla JavaScript path tracer.
@@ -2136,8 +2137,8 @@
 
 
                 <dokki-topic title="Dokki">
-                    <sw-category :categories="['Web','Front-end','Content management']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','Content management']">
+                    </sw-category-list>
                     
                     <p>
                         A documentation framework for creating end-user-oriented single-page docs.
@@ -2200,14 +2201,14 @@
                                             // Hello there.
                                             int main(void)
                                             {
-                                                printf(``Hello there.\n``);
+                                                printf(``Hello there\n``);
                                                 return 0;
                                             }
                                         </pre>
                                     </template>
 
                                     <dokki-output>
-                                        Hello there.
+                                        Hello there
                                     </dokki-output>
 
                                 </dokki-code>
@@ -2218,8 +2219,8 @@
                 
             
                 <dokki-topic title="Kelpo">
-                    <sw-category :categories="['Desktop','Rendering','Hardware rasterization']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Rendering','Hardware rasterization']">
+                    </sw-category-list>
                     
                     <p>
                         A streamlined, retro-oriented Win32 3D rasterizer API wrapper.
@@ -2331,8 +2332,8 @@
                 
             
                 <dokki-topic title="KAC">
-                    <sw-category :categories="['File format']">
-                    </sw-category>
+                    <sw-category-list :categories="['File format']">
+                    </sw-category-list>
                     
                     <p>
                         A binary file format for storing 3D models and their textures; a companion
@@ -2374,8 +2375,8 @@
                 
             
                 <dokki-topic title="What">
-                    <sw-category :categories="['Web','Front-end','Audio/video']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','Audio/video']">
+                    </sw-category-list>
                     
                     <p>
                         A HTML5 video player whose seek bar shows an expandable spectrogram of the video's
@@ -2444,8 +2445,8 @@
                 
             
                 <dokki-topic title="NPTO">
-                    <sw-category :categories="['Desktop','Typing']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Typing']">
+                    </sw-category-list>
                     
                     <p>
                         A program to measure your typing speed in detail. Provides statistics like
@@ -2523,8 +2524,8 @@
                 
             
                 <dokki-topic title="Vond">
-                    <sw-category :categories="['Desktop','Rendering','Hybrid']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Rendering','Hybrid']">
+                    </sw-category-list>
 
                     <p>
                         A hybrid voxel/polygon 3D software renderer that gets its inspiration from
@@ -2611,11 +2612,11 @@
 
 
                 <dokki-topic title="Mesh preview">
-                    <sw-category :categories="['Web','Front-end','User interface']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','User interface']">
+                    </sw-category-list>
 
                     <p>
-                        A simple-to-use interface (API and UI) for visualizing 3D meshes. The
+                        A  interface (API and UI) for visualizing 3D meshes. The
                         app takes as input the raw vertex data of a given set of meshes, and
                         renders them on screen as rotating wireframes with adjustable zoom.
                     </p>
@@ -2628,7 +2629,7 @@
                     
                     <p>
                         Uses <a href="#luujanko">Luujanko</a> for the wireframe rendering. (The performance
-                        of the SVG-based Luujanko is somewhat sub-par for rendering large meshes; it's
+                        of the SVG-based Luujanko is somewhat sub-par for rendering large meshes, so it's
                         possible that future versions of this app will migrate to WebGL or the like.)
                     </p>
 
@@ -2748,17 +2749,17 @@
 
 
                 <dokki-topic title="Weather widget">
-                    <sw-category :categories="['Web','Front-end','User interface']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','User interface']">
+                    </sw-category-list>
                     
                     <p>
-                        My first learner app in React. Fetches weather forecasts from the Finnish
-                        Meteorological Institute's open data API and displays them as cards.
+                        My learner widget in React. Fetches weather forecasts from the Finnish Meteorological
+                        Institute's open data API and displays them as cards.
                     </p>
 
                     <p>
-                        I made <a href="#lintulista">Lintulista</a> &ndash; my second app using
-                        React &ndash; right after this one.
+                        I made <a href="#lintulista">Lintulista</a> &ndash; my second React app &ndash; straight
+                        after this one.
                     </p>
 
                     <p>
@@ -2834,8 +2835,8 @@
                 
             
                 <dokki-topic title="GPL-DTA">
-                    <sw-category :categories="['Desktop','Data converter']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Data converter']">
+                    </sw-category-list>
                     
                     <p>
                         A set of command-line tools for converting data from the DAT files of
@@ -2878,19 +2879,6 @@
                             <a href="#the-retro-n-gon-renderer">the retro n-gon renderer</a>
                         </template>
                     </dokki-image>
-
-                    <dokki-console command="php dat-extract.php -i rouen.dat -w *.mip,*.3do">
-                        <template #output>
-                            <pre>
-                                Exporting rouen.3do...
-                                Exporting horiz.3do...
-                                ...
-                                Exporting mbox.3do...
-                                Exporting fenceb.3do...
-                                Wrote 4304528 byte(s) in 331 file(s) matching wildcard pattern *.mip,*.3do
-                            </pre>
-                        </template>
-                    </dokki-console>
 
                     <dokki-table>
                         <template #caption>
@@ -2941,8 +2929,8 @@
 
 
                 <dokki-topic title="Dig">
-                    <sw-category :categories="['Desktop','Data converter']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Data converter']">
+                    </sw-category-list>
                     
                     <p>
                         A cross-platform command-line tool to extract 3D models (into OBJ) and
@@ -3021,8 +3009,8 @@
 
 
                 <dokki-topic title="Luujanko">
-                    <sw-category :categories="['Web','Front-end','Rendering','Wireframe']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','Rendering','Wireframe']">
+                    </sw-category-list>
                     
                     <p>
                         An SVG wireframe renderer of arbitrary polygons for the HTML5 canvas.
@@ -3149,8 +3137,8 @@
 
 
                 <dokki-topic title="PFM-View">
-                    <sw-category :categories="['Desktop']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop']">
+                    </sw-category-list>
                     
                     <p>
                         A learner project in Python; or in other words a PyQt app for viewing high-dynamic-range
@@ -3225,8 +3213,8 @@
                 
 
                 <dokki-topic title="Slowray">
-                    <sw-category :categories="['Mobile','Rendering','Path tracing']">
-                    </sw-category>
+                    <sw-category-list :categories="['Mobile','Rendering','Path tracing']">
+                    </sw-category-list>
                     
                     <p>
                         A simple path tracer that can be compiled to run on the Game Boy Advance. Its code also
@@ -3282,8 +3270,8 @@
 
 
                 <dokki-topic title="Ranssi">
-                    <sw-category :categories="['Desktop','Typing']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Typing']">
+                    </sw-category-list>
                     
                     <p>
                         A transcription app with a minimalist UI, syntax error highlighting, and
@@ -3313,8 +3301,8 @@
                 
             
                 <dokki-topic title="AV Scissors">
-                    <sw-category :categories="['Desktop','Audio/video']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Audio/video']">
+                    </sw-category-list>
                     
                     <p>
                         A Qt-based video player whose timeline highlights the parts of the video that contain movement or sounds. Useful for pet surveillance and that sort of thing. You may find that the program works well for some videos and less well for others; typically, a suitable recording has good image and audio quality with little background noise.
@@ -3382,8 +3370,8 @@
                 
 
                 <dokki-topic title="3DCube-js">
-                    <sw-category :categories="['Web','Front-end','Rendering','Software rasterization']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','Rendering','Software rasterization']">
+                    </sw-category-list>
                     
                     <p>
                         My first project in JavaScript, after a decade or two of hobbyist C++.
@@ -3447,8 +3435,8 @@
                 
             
                 <dokki-topic title="VRGB-FPS">
-                    <sw-category :categories="['Desktop','Video capture']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Video capture']">
+                    </sw-category-list>
                     
                     <p>
                         A simple command-line tool that shows the current output rate (frames per second) of a Datapath
@@ -3515,8 +3503,8 @@
                 </dokki-topic>
 
                 <dokki-topic title="Ray caster">
-                    <sw-category :categories="['Desktop','Rendering','Ray casting']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Rendering','Ray casting']">
+                    </sw-category-list>
                     
                     <p>
                         My first ray caster, from 2003. Its initial incarnation was based quite heavily
@@ -3565,8 +3553,8 @@
 
 
                 <dokki-topic title="DOS path tracing benchmark">
-                    <sw-category :categories="['Desktop','Benchmark']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Benchmark']">
+                    </sw-category-list>
                     
                     <p>
                         Test your DOS era processor's floating-point performance with this grayscale path
@@ -3636,8 +3624,8 @@
                 
             
                 <dokki-topic title="DOS video chip compatibility list">
-                    <sw-category :categories="['Web','Front-end','User interface']">
-                    </sw-category>
+                    <sw-category-list :categories="['Web','Front-end','User interface']">
+                    </sw-category-list>
                     
                     <p>
                         An early webdev effort of mine. The goal was to re-design Gona's very useful
@@ -3675,8 +3663,8 @@
                 
             
                 <dokki-topic title="DOS C Compiler Benchmark">
-                    <sw-category :categories="['Desktop','Benchmark']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Benchmark']">
+                    </sw-category-list>
                     
                     <p>
                         A 16-bit 3D rasterizer benchmark for recreational perf-testing of DOS-based C
@@ -3801,8 +3789,8 @@
 
 
                 <dokki-topic title="Vond Jr.">
-                    <sw-category :categories="['Desktop','Rendering','Ray tracing']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Rendering','Ray tracing']">
+                    </sw-category-list>
                     
                     <p>
                         A simplified port of <a href="#vond">Vond</a> and a learner project in Java. Provides
@@ -3873,8 +3861,8 @@
 
 
                 <dokki-topic title="Tryffeli">
-                    <sw-category :categories="['Desktop','Rendering','Ray tracing']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Rendering','Ray tracing']">
+                    </sw-category-list>
                     
                     <p>
                         A learner project in Python by way of a simple ray tracer. Comes with a fairly clean,
@@ -3929,8 +3917,8 @@
 
 
                 <dokki-topic title="OPDB">
-                    <sw-category :categories="['Desktop','Database']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Database']">
+                    </sw-category-list>
                     
                     <p>
                         A no-frills database and grapher for minimalist logging of sequential data.
@@ -3975,15 +3963,15 @@
 
                     <dokki-image src="./soft/img/opdb/opdbc-terminal.png">
                         <template #caption>
-                            An ASCII readout in the terminal (deprecated feature)
+                            An ASCII graph readout in the terminal (deprecated feature)
                         </template>
                     </dokki-image>
                 </dokki-topic>
 
 
                 <dokki-topic title="Smartti parseri">
-                    <sw-category :categories="['Desktop','Visualization']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Visualization']">
+                    </sw-category-list>
                     
                     <p>
                         A utility to turn hard drive SMART logs (i.e. output dumps from <i>smartctl</i>)
@@ -4038,8 +4026,8 @@
 
 
                 <dokki-topic title="Limpynet">
-                    <sw-category :categories="['Desktop','Machine learning']">
-                    </sw-category>
+                    <sw-category-list :categories="['Desktop','Machine learning']">
+                    </sw-category-list>
                     
                     <p>
                         A feed-forward neural net with customizable layering. Learns the MNIST digits
