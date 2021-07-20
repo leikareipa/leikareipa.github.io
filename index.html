@@ -152,12 +152,6 @@
 
                     <hr class="topic-section-separator">
 
-                    <dokki-image expanded src="./soft/img/lintulista/lintulista-4.png">
-                        <template #caption>
-                            Browsing a list of observations (<a href="#lintulista">Lintulista</a>)
-                        </template>
-                    </dokki-image>
-
                     <dokki-table>
                         <template #caption>
                             Count of featured software by language
@@ -3286,15 +3280,26 @@
                     </sw-category-list>
                     
                     <p>
-                        A transcription app with a minimalist UI, syntax error highlighting, and
-                        audio playback.
+                        A transcription app with a minimalist UI, syntax error highlighting, audio
+                        playback, and some other things.
+                    </p>
+
+                    <p>
+                        The original version of this program was written for a personal need in the
+                        space of a few days. It did the business but the codebase was messy; I
+                        eventually opted for a rewrite to make it more open-sourcable.
+                    </p>
+
+                    <p>
+                        The project is currently on hold, as I don't need a program like this at the
+                        moment nor do I have a target audience in mind to market it to.
                     </p>
 
                     <p>
                         Made in 2018.
                     </p>
 
-                    <sw-tech-list :tech="['C++','Qt']">
+                    <sw-tech-list :tech="['C++','Qt','FFmpeg']">
                     </sw-tech-list>
                     
                     <p>
@@ -3306,6 +3311,12 @@
                     <dokki-image src="./soft/img/ranssi/ranssi-1.png">
                         <template #caption>
                             Transcribing lorem ipsum
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/ranssi/ranssi-2.png">
+                        <template #caption>
+                            The syntax checker warning about capitalization, punctuation, and an unknown speaker name
                         </template>
                     </dokki-image>
                         
@@ -3596,8 +3607,7 @@
 
                     <hr class="topic-section-separator">
 
-                    <dokki-iframe autofocus
-                                  title="Run in DOSBox"
+                    <dokki-iframe title="Run in DOSBox"
                                   src="https://www.tarpeeksihyvaesoft.com/dosbox/#dos-path-tracing-benchmark"
                                   height="500px">
                     </dokki-iframe>
@@ -3722,14 +3732,12 @@
 
                     <hr class="topic-section-separator">
 
-                    <dokki-iframe autofocus
-                                  title="Run in DOSBox (Microsoft C/C++ 8)"
+                    <dokki-iframe title="Run in DOSBox (Microsoft C/C++ 8)"
                                   src="https://www.tarpeeksihyvaesoft.com/dosbox/#dos-c-compiler-benchmark:microsoft-c-cpp-8"
                                   height="500px">
                     </dokki-iframe>
 
-                    <dokki-iframe autofocus
-                                  title="Run in DOSBox (Mix Power C 2)"
+                    <dokki-iframe title="Run in DOSBox (Mix Power C 2)"
                                   src="https://www.tarpeeksihyvaesoft.com/dosbox/#dos-c-compiler-benchmark:mix-power-c-2"
                                   height="500px">
                     </dokki-iframe>
