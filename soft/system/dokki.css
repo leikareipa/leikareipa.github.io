@@ -430,7 +430,7 @@ ul.dokkiCSS-vertical-navi
 
 .dokkiCSS-text-block-line.dokkiCSS-highlighted
 {
-    background-color: var(--dokkiCSS-page-inert-bg-color);
+    background-color: var(--dokkiCSS-page-secondary-bg-color);
 }
 
 .dokkiCSS-text-block-line.dokkiCSS-highlighted > .dokkiCSS-text-block-line-number

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport"
+              content="width=device-width">
+
+        <meta http-equiv="content-type"
+              content="text/html; charset=UTF-8">
+              
+        <link rel="stylesheet"
+              type="text/css"
+              href="index.css">
+
+        <title>DOSBox</title>
+
+        <script src="./js-dos/js-dos.js"></script>
+    </head>
+    <body>
+
+        <div id="jsdos-container">
+
+            <canvas id="jsdos-canvas" width="320" height="200"></canvas>
+
+        </div>
+
+        <script type="module">
+            import {start_dosbox} from "./dosbox.js";
+
+            const targetContent = (window.location.hash || "").substr(1);
+
+            const content = {
+                "dos-path-tracing-benchmark": {
+                    dosboxRunCommand: "pathb.exe",
+                    contentTitle: "DOS Path Tracing Benchmark",
+                    contentZipFilename: "./content/dos-path-tracing-benchmark/dptb.zip",
+                },
+                "dos-c-compiler-benchmark:mix-power-c-2": {
+                    dosboxRunCommand: "t_pc.exe",
+                    contentTitle: "DOS C Compiler Benchmark",
+                    contentZipFilename: "./content/dos-c-compiler-benchmark/dccb.zip",
+                },
+                "dos-c-compiler-benchmark:microsoft-c-cpp-8": {
+                    dosboxRunCommand: "t_vc15.exe",
+                    contentTitle: "DOS C Compiler Benchmark",
+                    contentZipFilename: "./content/dos-c-compiler-benchmark/dccb.zip",
+                },
+                undefined: {
+                    contentZipFilename: "",
+                },
+            };
+
+            start_dosbox(content[targetContent] || content[undefined]);
+        </script>
+    
+    </body>
+</html>

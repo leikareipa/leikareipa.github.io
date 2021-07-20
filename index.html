@@ -152,6 +152,12 @@
 
                     <hr class="topic-section-separator">
 
+                    <dokki-image expanded src="./soft/img/lintulista/lintulista-4.png">
+                        <template #caption>
+                            Browsing a list of observations (<a href="#lintulista">Lintulista</a>)
+                        </template>
+                    </dokki-image>
+
                     <dokki-table>
                         <template #caption>
                             Count of featured software by language
@@ -431,15 +437,15 @@
                                 </tr>
                                 <tr>
                                     <td>Datapath</td>
-                                    <td>VisionRGB-PRO1/-PRO2</td>
+                                    <td>VisionRGB-PRO1/PRO2</td>
                                 </tr>
                                 <tr>
                                     <td>Datapath</td>
-                                    <td>VisionRGB-E1/-E2</td>
+                                    <td>VisionRGB-E1/E2</td>
                                 </tr>
                                 <tr>
                                     <td>Datapath</td>
-                                    <td>VisionRGB-E1S/-E2S</td>
+                                    <td>VisionRGB-E1S/E2S</td>
                                 </tr>
                                 <tr>
                                     <td>Datapath</td>
@@ -586,6 +592,12 @@
                     <dokki-image src="./soft/img/rallysported/rallysported-1.png">
                         <template #caption>
                             The browser version in Chrome
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/rallysported/rgeo.b9-dos.png">
+                        <template #caption>
+                            The track editor of the DOS version (deprecated)
                         </template>
                     </dokki-image>
 
@@ -839,6 +851,128 @@
                                     <td>13</td>
                                     <td>22</td>
                                     <td>49</td>
+                                </tr>
+                            </table>
+                        </template>
+                    </dokki-table>
+                </dokki-topic>
+
+
+                <dokki-topic title="Cloud simulation">
+                    <sw-category-list :categories="['Desktop','Simulation','Atmosphere']">
+                    </sw-category-list>
+                    
+                    <p>
+                        Ever wanted a cloud physics simulator and renderer? Maybe not, but this
+                        app provides.
+                    </p>
+                    
+                    <p>
+                        The program simulates the rising of moist air and the subsequent condensation
+                        of cloud-forming droplets as the air cools; then renders the resulting 3D
+                        droplet grid into a realistic image of clouds.
+                    </p>
+                    
+                    <p>
+                        You can configure the simulator's atmospheric properties to your liking,
+                        including the environmental lapse rate and relative humidity curves. The
+                        GUI provides real-time visualization of the state of the simulation, showing
+                        the relative humidity, air temperature, and droplet distribution either as
+                        averages across the simulation grid or as horizontal or vertical slices.
+                    </p>
+                    
+                    <p>
+                        The renderer uses volumetric path tracing and photon mapping to model
+                        in-cloud light transfer. Spectral Mie scattering is empirically approximated
+                        (by eyeballing MiePlot graphs), while the Hosek&ndash;Wilkie 2012 sky
+                        model is used to approximate Rayleigh scattering. Optionally, a HDR
+                        environment map can be used in place of the parametric sky model.
+                    </p>
+
+                    <p>
+                        OpenCL is used to accelerate calculations of condensation (a square
+                        root and a multiplication or two per simulation grid cell, each cell
+                        being processable parallel to the others), while the renderer works
+                        on tiles distributed across the system's cores.
+                    </p>
+
+                    <p>
+                        This program required a beefy computer. With a mid-to-low-range home PC
+                        of the time, running the simulation on a high-resolution grid (e.g. 300
+                        &times; 300 &times; 300) could take hours, and the rendering would take
+                        several days to converge to a relatively noise-free outcome even at low
+                        render resolutions (e.g. 512 &times; 512).
+                    </p>
+
+                    <p>
+                        Made in 2013&ndash;2014.
+                    </p>
+
+                    <sw-tech-list :tech="['C++','Qt','OpenCL']">
+                    </sw-tech-list>
+
+                    <hr class="topic-section-separator">
+
+                    <dokki-image src="./soft/img/ifu/ifu-1.png">
+                        <template #caption>
+                            Fluffy clouds
+                        </template>
+                    </dokki-image>
+
+                    <dokki-image src="./soft/img/ifu/ifu-2.png">
+                        <template #caption>
+                            An overly explosive cloud (simulation grid visible)
+                        </template>
+                    </dokki-image>
+
+                    <dokki-table>
+                        <template #caption>
+                            CLOC readout of the source code
+                        </template>
+
+                        <template #table>
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Files</th>
+                                    <th>Blank</th>
+                                    <th>Comment</th>
+                                    <th>Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Sum</td>
+                                    <td>75</td>
+                                    <td>6697</td>
+                                    <td>8262</td>
+                                    <td>24528</td>
+                                </tr>
+                                <tr>
+                                    <td>C++</td>
+                                    <td>34</td>
+                                    <td>5402</td>
+                                    <td>7291</td>
+                                    <td>19650</td>
+                                </tr>
+                                <tr>
+                                    <td>C/C++ Header</td>
+                                    <td>34</td>
+                                    <td>1158</td>
+                                    <td>836</td>
+                                    <td>3718</td>
+                                </tr>
+                                <tr>
+                                    <td>Qt</td>
+                                    <td>4</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>777</td>
+                                </tr>
+                                <tr>
+                                    <td>OpenCL</td>
+                                    <td>3</td>
+                                    <td>135</td>
+                                    <td>135</td>
+                                    <td>383</td>
                                 </tr>
                             </table>
                         </template>
@@ -1226,7 +1360,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Benchmark results in various browsers
+                            Benchmark results in select browsers
                         </template>
 
                         <template #table>
@@ -1277,7 +1411,7 @@
                                     <td colspan="4">
                                         <sup>*</sup> Running in Linux on a quad-core Intel Haswell CPU.
                                         <br>
-                                        <sup>&dagger;</sup> Values are frames per second (average of three runs).
+                                        <sup>&dagger;</sup> Values are frames per second (average of two or three runs).
                                     </td>
                                 </tr>
                             </table>
@@ -1706,128 +1840,6 @@
                                     <td>3</td>
                                     <td>9</td>
                                     <td>21</td>
-                                </tr>
-                            </table>
-                        </template>
-                    </dokki-table>
-                </dokki-topic>
-
-
-                <dokki-topic title="Cloud simulation">
-                    <sw-category-list :categories="['Desktop','Simulation','Atmosphere']">
-                    </sw-category-list>
-                    
-                    <p>
-                        Ever wanted a cloud physics simulator and renderer? Maybe not, but this
-                        app provides.
-                    </p>
-                    
-                    <p>
-                        The program simulates the rising of moist air and the subsequent condensation
-                        of cloud-forming droplets as the air cools; then renders the resulting 3D
-                        droplet grid into a realistic image of clouds.
-                    </p>
-                    
-                    <p>
-                        You can configure the simulator's atmospheric properties to your liking,
-                        including the environmental lapse rate and relative humidity curves. The
-                        GUI provides real-time visualization of the state of the simulation, showing
-                        the relative humidity, air temperature, and droplet distribution either as
-                        averages across the simulation grid or as horizontal or vertical slices.
-                    </p>
-                    
-                    <p>
-                        The renderer uses volumetric path tracing and photon mapping to model
-                        in-cloud light transfer. Spectral Mie scattering is empirically approximated
-                        (by eyeballing MiePlot graphs), while the Hosek&ndash;Wilkie 2012 sky
-                        model is used to approximate Rayleigh scattering. Optionally, a HDR
-                        environment map can be used in place of the parametric sky model.
-                    </p>
-
-                    <p>
-                        OpenCL is used to accelerate calculations of condensation (a square
-                        root and a multiplication or two per simulation grid cell, each cell
-                        being processable parallel to the others), while the renderer works
-                        on tiles distributed across the system's cores.
-                    </p>
-
-                    <p>
-                        This program required a beefy computer. With a mid-to-low-range home PC
-                        of the time, running the simulation on a high-resolution grid (e.g. 300
-                        &times; 300 &times; 300) could take hours, and the rendering would take
-                        several days to converge to a relatively noise-free outcome even at low
-                        render resolutions (e.g. 512 &times; 512).
-                    </p>
-
-                    <p>
-                        Made in 2013&ndash;2014.
-                    </p>
-
-                    <sw-tech-list :tech="['C++','Qt','OpenCL']">
-                    </sw-tech-list>
-
-                    <hr class="topic-section-separator">
-
-                    <dokki-image src="./soft/img/ifu/ifu-1.png">
-                        <template #caption>
-                            Fluffy clouds
-                        </template>
-                    </dokki-image>
-
-                    <dokki-image src="./soft/img/ifu/ifu-2.png">
-                        <template #caption>
-                            An overly explosive cloud (simulation grid visible)
-                        </template>
-                    </dokki-image>
-
-                    <dokki-table>
-                        <template #caption>
-                            CLOC readout of the source code
-                        </template>
-
-                        <template #table>
-                            <table>
-                                <tr>
-                                    <th>Language</th>
-                                    <th>Files</th>
-                                    <th>Blank</th>
-                                    <th>Comment</th>
-                                    <th>Code</th>
-                                </tr>
-                                <tr>
-                                    <td>Sum</td>
-                                    <td>75</td>
-                                    <td>6697</td>
-                                    <td>8262</td>
-                                    <td>24528</td>
-                                </tr>
-                                <tr>
-                                    <td>C++</td>
-                                    <td>34</td>
-                                    <td>5402</td>
-                                    <td>7291</td>
-                                    <td>19650</td>
-                                </tr>
-                                <tr>
-                                    <td>C/C++ Header</td>
-                                    <td>34</td>
-                                    <td>1158</td>
-                                    <td>836</td>
-                                    <td>3718</td>
-                                </tr>
-                                <tr>
-                                    <td>Qt</td>
-                                    <td>4</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>777</td>
-                                </tr>
-                                <tr>
-                                    <td>OpenCL</td>
-                                    <td>3</td>
-                                    <td>135</td>
-                                    <td>135</td>
-                                    <td>383</td>
                                 </tr>
                             </table>
                         </template>
@@ -3557,10 +3569,18 @@
                     </sw-category-list>
                     
                     <p>
-                        Test your DOS era processor's floating-point performance with this grayscale path
+                        Test your old processor's floating-point performance with this DOS path
                         tracer that renders a scene of spheres and counts the number of seconds it took.
                         A 486-66 will get it done in about six minutes, a Pentium 90 in 160 seconds or so,
                         and the Xeon E3-1230 in less than one second.
+                    </p>
+
+                    <p>
+                        The program runs in VGA mode 13h (320 &times; 200, 256 colors) and renders
+                        its test image in 120 &times; 80 resolution (upscaled to 240 &times; 160 for
+                        display). The scene to be rendered is made of eight spheres (five diffuse
+                        Lambertian and three reflective) and a large triangle for the ground plane; the
+                        background is a light source approximating the CIE Standard Overcast Sky.
                     </p>
 
                     <p>
@@ -3576,6 +3596,12 @@
 
                     <hr class="topic-section-separator">
 
+                    <dokki-iframe autofocus
+                                  title="Run in DOSBox"
+                                  src="https://www.tarpeeksihyvaesoft.com/dosbox/#dos-path-tracing-benchmark"
+                                  height="500px">
+                    </dokki-iframe>
+
                     <dokki-image src="./soft/img/dos-path-bench/dos-path-bench-2.png">
                         <template #caption>
                             Running in DOSBox
@@ -3584,7 +3610,7 @@
 
                     <dokki-table>
                         <template #caption>
-                            Benchmark results on various CPUs
+                            Benchmark results with various CPUs
                         </template>
                     
                         <template #table>
@@ -3695,6 +3721,18 @@
                     </p>
 
                     <hr class="topic-section-separator">
+
+                    <dokki-iframe autofocus
+                                  title="Run in DOSBox (Microsoft C/C++ 8)"
+                                  src="https://www.tarpeeksihyvaesoft.com/dosbox/#dos-c-compiler-benchmark:microsoft-c-cpp-8"
+                                  height="500px">
+                    </dokki-iframe>
+
+                    <dokki-iframe autofocus
+                                  title="Run in DOSBox (Mix Power C 2)"
+                                  src="https://www.tarpeeksihyvaesoft.com/dosbox/#dos-c-compiler-benchmark:mix-power-c-2"
+                                  height="500px">
+                    </dokki-iframe>
 
                     <dokki-table>
                         <template #caption>
