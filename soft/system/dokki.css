@@ -195,12 +195,12 @@ samp,
     background-color: var(--dokkiCSS-page-inert-bg-color);
     text-align: left;
     border-bottom: 1px solid var(--dokkiCSS-page-secondary-line-color);
-    position: sticky;
+    position: relative;
     top: 0;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: var(--dokkiCSS-page-primary-fg-color);
+    color: var(--dokkiCSS-page-secondary-fg-color);
     box-sizing: border-box;
     display: flex;
     align-items: center;

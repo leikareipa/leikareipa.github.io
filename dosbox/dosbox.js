@@ -4,14 +4,22 @@
  */
 
 let isDosboxRunning = false;
-let jsDosController = null;
+let jsdosController = null;
 
 const dosboxContainer = document.getElementById("jsdos-container");
 const dosboxCanvas = document.getElementById("jsdos-canvas");
 
-function report_error(error)
+function resize_canvas_to_fit_window()
 {
-    window.alert(error);
+    const mulWidth = Math.max(1, Math.floor(window.innerWidth / 320));
+    const mulHeight = Math.max(1, Math.floor(window.innerHeight / 200));
+    const multiplier = Math.min(mulWidth, mulHeight);
+
+    const width = (320 * multiplier);
+    const height = (200 * multiplier);
+
+    dosboxContainer.style.width = `${width}px`;
+    dosboxContainer.style.height = `${height}px`;
 
     return;
 }
@@ -28,12 +36,11 @@ export async function start_dosbox(args = {})
         ...args
     };
 
-    if (jsDosController)
+    if (jsdosController)
     {
         stop_dosbox();
     }
 
-    dosboxContainer.style.display = "initial";
     dosboxContainer.classList.add("running");
 
     const jsdosOptions = {
@@ -58,7 +65,7 @@ export async function start_dosbox(args = {})
             throw new Error("Invalid content file.");
         }
         
-        jsDosController = await main([
+        jsdosController = await main([
             "-conf", "dosbox.conf",
             "-c", `mixer master ${args.dosboxMasterVolume}`,
             "-c", args.dosboxRunCommand,
@@ -69,6 +76,9 @@ export async function start_dosbox(args = {})
                                : `${args.contentTitle} - DOSBox`;
 
         isDosboxRunning = true;
+
+        resize_canvas_to_fit_window();
+        window.addEventListener("resize", resize_canvas_to_fit_window);
     });
 
     return;
@@ -76,15 +86,17 @@ export async function start_dosbox(args = {})
 
 export function stop_dosbox()
 {
-    if (jsDosController)
+    if (jsdosController)
     {
-        jsDosController.exit();
+        jsdosController.exit();
     }
 
-    jsDosController = null;
+    jsdosController = null;
     isDosboxRunning = false;
 
     dosboxCanvas.getContext("2d").clearRect(0, 0, playerCanvas.width, playerCanvas.height);
     dosboxContainer.style.display = "none";
     dosboxContainer.classList.remove("running");
+
+    return;
 }
