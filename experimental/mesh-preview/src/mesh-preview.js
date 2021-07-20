@@ -19,13 +19,14 @@ export function start_mesh_preview(startupArgs = {})
 
 function combined_with_default_args(args)
 {
-    const initialMeshName = decodeURI(window.location.hash.substr(1));
+    const initialMeshName = (args.ignoreHash? "" : decodeURI(window.location.hash.substr(1)));
 
     const combinedArgs = {
         ...{
             infoText: "",
             modulePath: "./",
             get_mesh_data: async (meshMetadata)=>([]),
+            ignoreHash: false,
             meshesMetadata: [],
             containerId: "mesh-preview",
             defaultOrientation: [0.5, 0, 0],

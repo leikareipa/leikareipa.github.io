@@ -3,25 +3,73 @@
  *
  */
 
-let isDosboxRunning = false;
-let jsdosController = null;
-
-const dosboxContainer = document.getElementById("jsdos-container");
+const dosboxContainer = document.getElementById("dosbox-container");
 const dosboxCanvas = document.getElementById("jsdos-canvas");
+let jsdosInterface = null;
 
-function resize_canvas_to_fit_window()
-{
-    const mulWidth = Math.max(1, Math.floor(window.innerWidth / 320));
-    const mulHeight = Math.max(1, Math.floor(window.innerHeight / 200));
-    const multiplier = Math.min(mulWidth, mulHeight);
+const dosboxNativeResolution = {
+    width: 320,
+    height: 200
+};
 
-    const width = (320 * multiplier);
-    const height = (200 * multiplier);
+const jsdosOptions = {
+    wdosboxUrl: "./js-dos/wdosbox.js",
+    onerror: (error)=>{throw error},
+};
 
-    dosboxContainer.style.width = `${width}px`;
-    dosboxContainer.style.height = `${height}px`;
+const dosboxCanvasScaler = {
+    // Stretch as close to the size of the viewport as an integer multiple will
+    // allow, keeping DOSBox's pixel and resolution aspect ratios and not
+    // overflowing the viewport.
+    contain_integer: function()
+    {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
 
-    return;
+        const widthRatio = Math.max(1, Math.floor(viewportWidth / dosboxNativeResolution.width));
+        const heightRatio = Math.max(1, Math.floor(viewportHeight / dosboxNativeResolution.height));
+        const multiplier = Math.min(widthRatio, heightRatio);
+    
+        const width = (dosboxNativeResolution.width * multiplier);
+        const height = (dosboxNativeResolution.height * multiplier);
+    
+        dosboxContainer.style.width = `${width}px`;
+        dosboxContainer.style.height = `${height}px`;
+    },
+
+    native: function()
+    {
+        dosboxContainer.style.width = `${dosboxNativeResolution.width}px`;
+        dosboxContainer.style.height = `${dosboxNativeResolution.height}px`;
+    },
+
+    // Scale to twice the size of DOSBox's native resolution. May overflow the
+    // viewport.
+    double: function()
+    {
+        /// TODO (potentially).
+    },
+
+    // Scale to thrice the size of DOSBox's native resolution. May overflow the
+    // viewport.
+    triple: function()
+    {
+        /// TODO (potentially).
+    },
+
+    // Stretch to the size of the viewport, ignoring DOSBox's resolution aspect
+    // ratio.
+    stretch: function()
+    {
+        /// TODO (potentially).
+    },
+
+    // Stretch to the size of the viewport, keeping DOSBox's resolution aspect
+    // ratio.
+    contain: function()
+    {
+        /// TODO (potentially).
+    },
 }
 
 export async function start_dosbox(args = {})
@@ -29,73 +77,98 @@ export async function start_dosbox(args = {})
     args = {
         ...{
             dosboxMasterVolume: "17:17",
-            dosboxRunCommand: "mem",
+            dosboxRunCommand: "",
             contentZipFilename: "",
             contentTitle: undefined,
         },
         ...args
     };
 
-    if (jsdosController)
+    if (jsdosInterface)
     {
         stop_dosbox();
     }
 
-    dosboxContainer.classList.add("running");
-
-    const jsdosOptions = {
-        wdosboxUrl: "./js-dos/wdosbox.js",
-        onerror: (error)=>{throw new Error(error)},
-    };
-
-    const contentZipFile = await fetch(args.contentZipFilename);
-
-    if (!contentZipFile.ok) {
-        throw new Error("Failed to fetch the content file.");
-    }
-
-    await Dos(dosboxCanvas, jsdosOptions).ready(async(fileSystem, main)=>
+    try
     {
+        dosboxCanvasScaler.contain_integer();
+        window.addEventListener("resize", dosboxCanvasScaler.contain_integer);
+
+        const contentZipFile = await (async()=>
+        {
+            try
+            {
+                const response = await fetch(args.contentZipFilename);
+
+                if (!response.ok) {
+                    throw `${response.status} (${response.statusText})`;
+                }
+
+                return await response.blob();
+            }
+            catch (error)
+            {
+                throw new Error("Failed to fetch the content file: " + error);
+            }
+        })();
+
+        const jsdosInstance = await (async()=>
+        {
+            try
+            {
+                return await Dos(dosboxCanvas, jsdosOptions);
+            }
+            catch (error)
+            {
+                throw new Error("Failed to create a DOSBox instance: " + error);
+            }
+        })();
+
         try
         {
-            await fileSystem.extract(URL.createObjectURL(await contentZipFile.blob()));
+            await jsdosInstance.fs.extract(URL.createObjectURL(contentZipFile));
         }
         catch (error)
         {
-            throw new Error("Invalid content file.");
+            throw new Error("Failed to extract the content file on the DOSBox instance: " + error);
         }
-        
-        jsdosController = await main([
-            "-conf", "dosbox.conf",
-            "-c", `mixer master ${args.dosboxMasterVolume}`,
-            "-c", args.dosboxRunCommand,
-        ]);
 
-        window.document.title= (args.contentTitle == undefined)
-                               ? "DOSBox"
-                               : `${args.contentTitle} - DOSBox`;
+        try
+        {
+            jsdosInterface = await jsdosInstance.main([
+                "-conf", "dosbox.conf",
+                "-c", `mixer master ${args.dosboxMasterVolume}`,
+                "-c", args.dosboxRunCommand,
+            ]);
+        }
+        catch (error)
+        {
+            throw new Error("Failed to execute main() on the DOSBox instance: " + error);
+        }
 
-        isDosboxRunning = true;
+        dosboxContainer.classList.add("running");
+        window.document.title = (args.contentTitle == undefined)
+                                ? "DOSBox"
+                                : `${args.contentTitle} - DOSBox`;
+    }
+    catch (error)
+    {
+        console.error("Could not run DOSBox. " + error);
+    }
 
-        resize_canvas_to_fit_window();
-        window.addEventListener("resize", resize_canvas_to_fit_window);
-    });
-
-    return;
+    return jsdosInterface;
 }
 
 export function stop_dosbox()
 {
-    if (jsdosController)
+    if (jsdosInterface &&
+        (jsdosInterface.exit() === 0))
     {
-        jsdosController.exit();
+        throw new Error("Failed to terminate DOSBox.")
     }
 
-    jsdosController = null;
-    isDosboxRunning = false;
+    jsdosInterface = null;
 
-    dosboxCanvas.getContext("2d").clearRect(0, 0, playerCanvas.width, playerCanvas.height);
-    dosboxContainer.style.display = "none";
     dosboxContainer.classList.remove("running");
 
     return;

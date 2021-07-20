@@ -36,7 +36,9 @@ export function create_mesh_preview_store(args)
                     state.activeMeshNgons = luujankoMesh;
                     state.viewDistance = (meshMetadata.viewDistance || state.startupArgs.defaultViewDistance || 40000);
 
-                    history.replaceState(undefined, undefined, `#${meshMetadata.name}`);
+                    if (!state.startupArgs.ignoreHash) {
+                        history.replaceState(null, "", `#${meshMetadata.name}`);
+                    }
                 }
                 catch (error)
                 {
