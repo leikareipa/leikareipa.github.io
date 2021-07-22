@@ -466,7 +466,7 @@ ul.dokkiCSS-vertical-navi
 
 .dokki0-animated-expander
 {
-    transition: height 0.1s ease;
+    transition: height 0.175s ease;
     overflow: hidden;
 }
 
@@ -727,8 +727,6 @@ ul.dokkiCSS-vertical-navi
 .dokkiCSS-embedded.dokki-image .dokkiCSS-container > img
 {
     max-width: 100%;
-    width: auto;
-    height: auto;
 }
 
 .dokkiCSS-embedded.dokki-image .dokkiCSS-container > img.dokkiCSS-upscale-to-fit

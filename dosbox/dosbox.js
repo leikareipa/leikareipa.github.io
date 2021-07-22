@@ -7,11 +7,6 @@ const dosboxContainer = document.getElementById("dosbox-container");
 const dosboxCanvas = document.getElementById("jsdos-canvas");
 let jsdosInterface = null;
 
-const dosboxNativeResolution = {
-    width: 320,
-    height: 200
-};
-
 const jsdosOptions = {
     wdosboxUrl: "./js-dos/wdosbox.js",
     onerror: (error)=>{throw error},
@@ -26,12 +21,12 @@ const dosboxCanvasScaler = {
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
 
-        const widthRatio = Math.max(1, Math.floor(viewportWidth / dosboxNativeResolution.width));
-        const heightRatio = Math.max(1, Math.floor(viewportHeight / dosboxNativeResolution.height));
+        const widthRatio = Math.max(1, Math.floor(viewportWidth / dosboxCanvas.width));
+        const heightRatio = Math.max(1, Math.floor(viewportHeight / dosboxCanvas.height));
         const multiplier = Math.min(widthRatio, heightRatio);
     
-        const width = (dosboxNativeResolution.width * multiplier);
-        const height = (dosboxNativeResolution.height * multiplier);
+        const width = (dosboxCanvas.width * multiplier);
+        const height = (dosboxCanvas.height * multiplier);
     
         dosboxContainer.style.width = `${width}px`;
         dosboxContainer.style.height = `${height}px`;
@@ -39,8 +34,8 @@ const dosboxCanvasScaler = {
 
     native: function()
     {
-        dosboxContainer.style.width = `${dosboxNativeResolution.width}px`;
-        dosboxContainer.style.height = `${dosboxNativeResolution.height}px`;
+        dosboxContainer.style.width = `${dosboxCanvas.width}px`;
+        dosboxContainer.style.height = `${dosboxCanvas.height}px`;
     },
 
     // Scale to twice the size of DOSBox's native resolution. May overflow the
@@ -91,9 +86,6 @@ export async function start_dosbox(args = {})
 
     try
     {
-        dosboxCanvasScaler.contain_integer();
-        window.addEventListener("resize", dosboxCanvasScaler.contain_integer);
-
         const contentZipFile = await (async()=>
         {
             try
@@ -145,6 +137,15 @@ export async function start_dosbox(args = {})
         {
             throw new Error("Failed to execute main() on the DOSBox instance: " + error);
         }
+
+        dosboxCanvasScaler.contain_integer();
+        window.addEventListener("resize", dosboxCanvasScaler.contain_integer);
+
+        const dosboxVideoModeObserver = new MutationObserver(dosboxCanvasScaler.contain_integer);
+        dosboxVideoModeObserver.observe(dosboxCanvas, { 
+            attributes: true, 
+            attributeFilter: ["width", "height"],
+        });
 
         dosboxContainer.classList.add("running");
         window.document.title = (args.contentTitle == undefined)
