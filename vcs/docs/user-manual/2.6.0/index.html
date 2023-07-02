@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            window.VCS_MANUAL_VERSION = "2.6.0";
+        </script>
+        
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+        <link rel="stylesheet" href="./font-awesome-5-15-4/css/all.min.css">
+        <script defer src="./font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="./dokki.js"></script>
+
+        <script type="module" src="../js/manual-version-selector.js"></script>
+
+        <script type="module">
+            import {keyboardKey, keyCombo} from "./js/key-combo.js";
+            import {menuPath} from "./js/menu-path.js";
+            window.dokkiUserComponents = (window.dokkiUserComponents || []);
+            window.dokkiUserComponents.push(menuPath, keyboardKey, keyCombo);
+        </script>
+
+        <style>
+            .dokki-topic .key-combo > .icon,
+            .dokki-topic .menu-path > .icon
+            {
+                display: none;
+                padding-left: 0.7em;
+                padding-right: 0.7em;
+                background-color: var(--dokkiCSS-page-primary-line-color);
+            }
+
+            .dokki-topic .key-combo .separator,
+            .dokki-topic .menu-path .separator
+            {
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+
+            .dokki-topic .menu-path .separator
+            {
+                margin: 0 0.6em;
+            }
+
+            .dokki-topic td:first-child > .menu-path:first-child,
+            .dokki-topic td:first-child > .key-combo:first-child
+            {
+                /* Tables hide their overflow and have no space between the first <td> and
+                 * the edge of the table, so we need to offset this element a little or its
+                 * left-falling shadow gets cut off.*/
+                margin-left: 2px;
+            }
+
+            .dokki-topic em,
+            .dokki-topic .menu-path,
+            .dokki-topic .key-combo
+            {
+                font-style: normal;
+                background-color: var(--dokkiCSS-embedded-auxiliary-color);
+                border-radius: 10px;
+                font-weight: normal !important;
+                padding: 0.13rem 0.5rem;
+                margin: 1px;
+                display: inline-flex;
+                color: var(--dokkiCSS-page-primary-fg-color);
+                font-size: 95%;
+            }
+
+            .dokki-topic strong
+            {
+                font-weight: var(--dokkiCSS-bold-text-weight);
+            }
+
+            .dokki-topic td > .dokkiCSS-embedded
+            {
+                margin: 16px 0;
+            }
+
+            .dokki-topic td > .dokkiCSS-embedded:last-child
+            {
+                margin-bottom: 0;
+            }
+            
+            .dokki-topic td > .key-combo
+            {
+                margin: 0;
+            }
+
+            .dokki-topic table.wrap-last-td td:last-child
+            {
+                white-space: normal;
+            }
+
+            .dokki-table td.with-inline-table
+            {
+                padding: 0 !important;
+
+                /* Force the <td> to not expand to fit the width of the inline table, so that the
+                * inline table - and not the parent table - gets the horizontal scroll bar.*/
+                max-width: 0;
+            }
+
+            .dokki-table td.with-inline-table > .dokki-table
+            {
+                width: 100%;
+                margin: 0;
+                border: none;
+                border-radius: 0;
+                background-color: inherit;
+            }
+
+            .dokki-table td.with-inline-table > .dokki-table > header
+            {
+                padding: 8px;
+                line-height: var(--dokkiCSS-content-line-height);
+                box-shadow: none;
+            }
+
+            .dokki-table td.with-inline-table > .dokki-table > header > .dokki0-expansion-indicator
+            {
+                margin-right: 0.75ch;
+            }
+
+            .dokki-table td.with-inline-table > .dokki-table > header > .caption > .icon
+            {
+                display: none;
+            }
+
+            .dokki-table td.with-inline-table > .dokki-table > header > .title
+            {
+                display: none;
+            }
+
+            .dokki-table ul
+            {
+                padding-inline-start: 1.25em !important;
+            }
+
+            .dokki-table ul li
+            {
+                line-height: 1;
+            }
+
+            .dokki-topic h1 > .idx,
+            .dokki-topic h2 > .idx
+            {
+                display: initial !important;
+            }
+
+            .dokki-header .dokki-user-widget .widget-icon
+            {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                User's manual for VCS 2.6.0
+            
+                        </template>
+                        <template #widgets>
+                <manual-version-selector></manual-version-selector>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<dokki-topic title="Introduction to VCS">
+<p>VCS is a third-party control application by <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> for Datapath's VisionRGB range of capture hardware; developed especially for capturing retro PCs and consoles, whose dynamic, non-standard video signals aren't well supported by Datapath's default capture software.</p>
+<p>VCS is <a href="https://github.com/leikareipa/vcs">available on GitHub</a>.</p>
+<dokki-image src="./img/vcs-2.4-with-dialogs.webp" width="1189" height="878"     headerless   thumbnail-src="data:image/png;base64,UklGRgIBAABXRUJQVlA4WAoAAAAQAAAAEwAADgAAQUxQSEIAAAABYBPbVqNnABnIgPKbQERSgZtkBAE42Gr7nLOAiJgAHNtpv+CsO6PNYTgzXa9S3PCjXXvH1DxDROQvAYB6DeO7+QhWUDggmgAAAJADAJ0BKhQADwA+bSyRRaQioZgEAEAGxKAJ0AHoaFRB6saGecAA/uTqgey0NeRUKc3B0Pv/3Y367EPSxffAKaaae3Rcq5eRfD6jIRVevD84Z8qkyuR7w2UZAvlity3P4Cin/SDXOWBzClN+966siI+U//MeAj9TJVYlC4sNkjZjXzVj4Rx557Xcq4KWz8IEGPfvatMX/9LgAAA="><template #caption>A screenshot of VCS 2.4.0 showing the output window and some of the control dialogs</template>
+                        </dokki-image>
+<dokki-subtopic title="Program features">
+<ul>
+<li>Augments the capabilities of the VisionRGB hardware for capturing dynamic signals (e.g. retro PCs)</li>
+<li>Various feature and usability improvements over Datapath's default capture application</li>
+<li>Supports both modern and legacy VisionRGB hardware</li>
+<li>Runs on Windows (XP and later) and Linux (experimental)</li>
+<li>Unlimited video presets with automatic programmable activation</li>
+<li>Several scaling modes and customizable image filters</li>
+<li>Post-processing to reduce or eliminate tearing in captured frames</li>
+<li>On-screen display with HTML/CSS formatting</li>
+<li>Variable refresh rate output to match the input signal's frequency</li>
+<li>Low reliance on GPU features, easy to run in virtual machines</li>
+<li>Custom dark GUI theme</li>
+<li>Good documentation for both end-users and developers</li>
+<li>Modular code extendable to support capture hardware from other vendors</li>
+<li>Free and open source</li>
+</ul>
+</dokki-subtopic><dokki-subtopic title="Supported capture hardware">
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Vendor</th>
+            <th>Model</th>
+        </tr>
+        <tr>
+            <td>Datapath</td>
+            <td>VisionRGB-PRO1</td>
+        </tr>
+        <tr>
+            <td>Datapath</td>
+            <td>VisionRGB-PRO2</td>
+        </tr>
+        <tr>
+            <td>Datapath</td>
+            <td>VisionRGB-E1</td>
+        </tr>
+        <tr>
+            <td>Datapath</td>
+            <td>VisionRGB-E2</td>
+        </tr>
+        <tr>
+            <td>Datapath</td>
+            <td>VisionRGB-E1S</td>
+        </tr>
+        <tr>
+            <td>Datapath</td>
+            <td>VisionRGB-E2S</td>
+        </tr>
+        <tr>
+            <td>Datapath</td>
+            <td>VisionRGB-X2</td>
+        </tr>
+        <tr>
+            <td>Datapath</td>
+            <td>VisionAV series<sup>*</sup></td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td colspan="2">
+                    <sup>*</sup>Can't be guaranteed, but user reports suggest compatibility.
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</dokki-table>
+</dokki-subtopic><dokki-subtopic title="System requirements">
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>OS</th>
+            <td>
+                <dokki-table headerless>
+                    <table>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Required version</th>
+                        </tr>
+                        <tr>
+                            <td>Windows</td>
+                            <td>XP or later</td>
+                        </tr>
+                        <tr>
+                            <td>Linux</td>
+                            <td>Kernel 5</td>
+                        </tr>
+                    </table>
+                </dokki-table>
+            </td>
+        </tr>
+        <tr>
+            <th>CPU</th>
+            <td>
+                <dokki-table headerless>
+                    <table>
+                        <tr>
+                            <th>Capture resolution</th>
+                            <th>Recommended performance level</th>
+                        </tr>
+                        <tr>
+                            <td>VGA</td>
+                            <td>Intel Sandy Bridge</td>
+                        </tr>
+                        <tr>
+                            <td>1080p, 30 FPS</td>
+                            <td>Intel Haswell</td>
+                        </tr>
+                        <tr>
+                            <td>1080p, 60 FPS</td>
+                            <td>Intel Coffee Lake</td>
+                        </tr>
+                    </table>
+                </dokki-table>
+            </td>
+        </tr>
+        <tr>
+            <th>GPU</th>
+            <td>
+                For hardware rendering (optional), a graphics card with support for OpenGL 1.2
+            </td>
+        </tr>
+        <tr>
+            <th>RAM</th>
+            <td>1 GB</td>
+        </tr>
+    </table>
+</dokki-table>
+</dokki-subtopic></dokki-topic>
+
+<dokki-topic title="FAQ">
+<p>In this section, you'll find answers to some of the common questions and problems that one might have when using VCS.</p>
+<dokki-subtopic title="Where to download VCS?">
+<p>A download for the latest Windows version of VCS is <a href="https://github.com/leikareipa/vcs/releases">available on GitHub</a>.</p>
+<p>For Linux, you can grab the <a href="https://github.com/leikareipa/vcs/">VCS source code</a> and compile it for your platform.</p>
+</dokki-subtopic><dokki-subtopic title="Getting started">
+<p>Assuming you've installed the drivers for your capture device, simply run the VCS executable (e.g. <strong>vcs.exe</strong> on Windows) to get started.</p>
+<p>When you start up VCS, two windows should open: a console window, in which notifications about VCS's status will appear during operation; and the <a href="#output-window">output window</a>, in which captured frames are displayed. Right-clicking inside the output window will open a context menu that gives you access to the various controls of VCS.</p>
+</dokki-subtopic><dokki-subtopic title="Adjusting the color balance">
+<p>The capture hardware may not always provide an accurate color balance by default.</p>
+<p>To correct this, you can use the <a href="#dialog-windows-video-presets-dialog">Video presets dialog</a> to manually adjust the balance, then save the settings to be applied automatically next time you run VCS in this video mode.</p>
+</dokki-subtopic><dokki-subtopic title="Reducing visual noise">
+<p>When capturing an analog source, some visual noise is to be expected. VCS comes with a few ways to mitigate this.</p>
+<p>The first thing to check is that you have suitable analog capture parameters set, using the <a href="#dialog-windows-video-presets-dialog">Video presets dialog</a>. The <em>phase</em> setting is especially important to get right. What the exact correct settings are depends on your capture source and can't be pre-determined, so simply adjust them until the output looks correct. You can use the capture window's magnifying glass (see <a href="#output-window-features">Capture window: Features</a>) to inspect the output in closer detail. Once you're happy with the settings, you can save them to be applied automatically next time.</p>
+<p>Depending on the capture source, some noise may be present regardless of the capture parameters, in which case you can apply <a href="#dialog-windows-filter-graph-dialog">frame filtering</a> to reduce the noise further. The <em>Denoise (pixel gate)</em> filter can be used to eliminate pixel shimmer; and there's also the more powerful – but more performance-hungry – <em>Denoise (non-local means)</em> filter. If you're capturing a line-doubled source (e.g. VGA mode 13h), you can apply a 1× <em>Decimate</em> filter to remove sub-pixel noise. The <em>Delta histogram</em> filter will produce a visual indication of the amount of noise present, allowing you to better estimate the effect of the various filters (just make sure that this histogram filter is the last one in the filter chain, so that it sees the changes from the other filters).</p>
+</dokki-subtopic><dokki-subtopic title="Fixing an incorrect capture resolution">
+<p>The capture hardware may not always correctly sense the resolution of the input signal, resulting in the displaying of malformed frames in VCS's <a href="#output-window">capture window</a> and/or the reporting of an incorrect input resolution in the capture window's <a href="#output-window-title-bar">title bar</a>.</p>
+<p>You can use the <a href="#dialog-windows-input-resolution-dialog">Input resolution dialog</a> to manually correct the resolution.</p>
+<p>If you find that a particular resolution is consistently misidentified by the capture hardware, you can have VCS correct it automatically via the <a href="#dialog-windows-alias-resolutions-dialog">Alias resolutions dialog</a>.</p>
+</dokki-subtopic><dokki-subtopic title="Resizing the capture window">
+<p>The size of the capture window can be changed via the <a href="#dialog-windows-output-resolution-dialog">Output resolution dialog</a>.</p>
+</dokki-subtopic><dokki-subtopic title="Changing the output aspect ratio">
+<p>There are two ways to set a custom output aspect ratio:</p>
+<ol>
+<li>Use the <a href="#dialog-windows-output-size-dialog">Output size dialog</a> to force a particular resolution. This setting applies to all captured frames regardless of their native resolution.</li>
+<li>Use the output scaling filter of the <a href="#dialog-windows-filter-graph-dialog">Filter graph dialog</a> to set a custom output resolution with optional letterboxing. This method allows you to have different settings for different input resolutions.</li>
+</ol>
+</dokki-subtopic><dokki-subtopic title="Preventing the capture window from resizing">
+<p>You can use the <a href="#dialog-windows-output-resolution-dialog">Output resolution dialog</a> to set a fixed resolution for the capture window. All captured frames will then be scaled automatically to that resolution using the currently-active scaler. (To customize the scaler, use the <menu-path>Context &gt; Output &gt; Upscaler</menu-path> and <menu-path>Context &gt; Output &gt; Downscaler</menu-path> menu options.)</p>
+</dokki-subtopic><dokki-subtopic title="Entering fullscreen mode">
+<p>VCS supports two fullscreen modes: windowed fullscreen, and true fullscreen. In most cases, the windowed fullscreen mode is recommended, but the true fullscreen mode may be needed for variable refresh rate output.</p>
+<h3>Windowed fullscreen</h3>
+<p>To enter windowed fullscreen mode, first use the <a href="#dialog-windows-output-resolution-dialog">Output resolution dialog</a> to set the resolution of the capture window to the size of your screen, then press the <key-combo>F1</key-combo> key (or use the <menu-path>Context &gt; Window &gt; Border</menu-path> menu option) to set the capture window into borderless mode. While in borderless mode, the window will be positioned on top of other desktop elements (e.g. windows and task bars).
+<h3>True fullscreen</h3>
+</p><p>To enter true fullscreen mode, first use the <a href="#dialog-windows-output-resolution-dialog">Output resolution dialog</a> to set the resolution of the capture window to the size of your screen, then press the <key-combo>F11</key-combo> key to place the window into fullscreen mode.</p>
+<h3>Aspect ratio</h3>
+<p>To ensure that the capture window displays frames in their correct aspect ratio while in either of the fullscreen modes, select the <menu-path>Context &gt; Output &gt; Aspect ratio &gt; Traditional 4:3</menu-path> menu option.</p>
+</dokki-subtopic><dokki-subtopic title="Enabling variable refresh rate output">
+<p>If you hardware supports variable refresh rate output with OpenGL, VCS should be able to take advantage of it.</p>
+<p>First, select the <menu-path>Context &gt; Window &gt; Render using &gt; OpenGL</menu-path> menu option to enable OpenGL rendering, then press the <key-combo>F11</key-combo> key to enter fullscreen mode (see <a href="#faq-entering-fullscreen-mode">Entering fullscreen mode</a> for caveats). Your hardware's refresh rate should now be matched to the capture's refresh rate.</p>
+</dokki-subtopic><dokki-subtopic title="Reducing screen tearing">
+<p>With some capture sources (e.g. DOS-mode VGA), you may find the image susceptible to tearing. This kind of tearing is present in the output signal and doesn't result from the capture process – you'd see it even if you were viewing the output directly through a monitor.</p>
+<dokki-image src="./img/tr1-torn.webp" width="600" height="374"     headerless   thumbnail-src="data:image/png;base64,UklGRuAAAABXRUJQVlA4INQAAAAQBgCdASoUAAwAPm0qkUWkIqGYBABABsS2AE6ZQjgbyCmA/7u0nb8F3AezIRE4n9JA06dRgl7lwKoA/vdpz3U5Fg6RJ9PHxvAdB0JafvV4VWsL7Yx+FIKZMM4fXE+RzO0rTRwvbusx41kCwLvOUvDwRtY9JizdiPBDPRp3EguEaRIk7aJS4o8n6qvwkd+7jJCDwdb/u3ua7H1A43CGqcmp/wwNuFpHwGTRNVUCWURmIMMnZkeTbc9uI9l8OqwCsz3janfCGYGxUCsQYjsdnQ514wNwAA=="><template #caption>Screen tearing in Tomb Raider (DOS)</template>
+                        </dokki-image>
+<p>To reduce or even eliminate this kind of tearing, VCS provides anti-tearing functionality. See <a href="#dialog-windows-anti-tear-dialog">Anti-tear dialog</a> for more information.</p>
+<dokki-video platform="youtube" src="_gNywFJFRWo"       ><template #caption>Before (left) and after (right) applying VCS's anti-tearing</template>
+                    </dokki-video>
+</dokki-subtopic><dokki-subtopic title="How much capture latency is there?">
+<p>VCS with a Datapath VisionRGB capture card should exhibit minimal latency, typically one or two frames (10~20 milliseconds).</p>
+</dokki-subtopic></dokki-topic>
+
+<dokki-topic title="Output window">
+<p>The central point of the VCS user interface is the output window, where captured frames are displayed as they arrive from the capture device and having undergone any of VCS's filtering and scaling.</p>
+<dokki-image src="./img/output-window.webp" width="642" height="508"     headerless   thumbnail-src="data:image/png;base64,UklGRvwAAABXRUJQVlA4WAoAAAAQAAAAEwAADwAAQUxQSBQAAAABD/D+/4iIICQgaP7PtiCi/ynxAlZQOCDCAAAA0AQAnQEqFAAQAD5tKpFFpCKhmAQAQAbEtgBOmUI4G8rpgGn/kVsL+NbPqZtqA4AA/sEQFOig9oIWlgYiXDElroR0U4CNR5RlaU95CoRkNJATs6/HXOnLus+WOJy0HlhDPoY9FrnJvu/x5cbAcP07Dun0fAN5tjM/b7Arl24quTA9s8Zr/ERA2eW72UbES71PdIug/IVbA566oq8HQ0Nwsmki3OEIjnCgNFvxCeacac6dodOVB5s8ijxKT9Vw92AAAAA="><template #caption>A screenshot of the output window</template>
+                        </dokki-image>
+<dokki-subtopic title="Features">
+<h3>Magnifying glass</h3>
+<p>If you press the middle mouse button over the output window, a magnifying glass will pop up, showing an elarged view of the area around the cursor.</p>
+<dokki-warning>
+    The magnifying glass feature isn't available when using the OpenGL renderer.
+</dokki-warning>
+<h3>Dragging</h3>
+<p>You can drag the output window by left-clicking and holding anywhere on the window.</p>
+<h3>Borderless mode</h3>
+<p>You can double-click inside the output window to toggle borderless mode on/off. The <key-combo>F1</key-combo> key will also toggle this mode.</p>
+<h3>Resizing</h3>
+<p>The output window – along with the frames it's displaying – can be resized via the <a href="#output-resolution-dialog">Output resolution</a> dialog. Spinning the mouse scroll wheel over the output window will also adjust the output size.</p>
+<h3>Fullscreen mode</h3>
+<p>Although you can emulate a fullscreen mode by turning off the output window's border and then scaling the window to the size of the the display area, there's also a true fullscreen mode available. You can toggle it on/off with the <key-combo>F11</key-combo> key.</p>
+<dokki-tip>
+    For the fullscreen mode to work best, you may first need to manually resize the output window to match the resolution of your screen.
+</dokki-tip>
+</dokki-subtopic><dokki-subtopic title="Title bar">
+<p>The output window's title bar shows information about VCS's current operating state – for example, the input and output resolution.</p>
+<dokki-image src="./img/title-bar.webp" width="479" height="25"     headerless   thumbnail-src="data:image/png;base64,UklGRloAAABXRUJQVlA4IE4AAAAwAwCdASoUAAEAPm0skkWkIqGYBABABsSyi8AAAGqeeDUgAP7swT8U83VGm4dBcP/Pxn5+JZ1JZ1JZ1JgM2LlD0kl/1G/vLkfC/i7IAAA="><template #caption>A sample of the output window's title bar on Linux</template>
+                        </dokki-image>
+<p>The title bar may contain some or all of the following elements, from left to right:</p>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Element</th>
+            <th>Desription</th>
+        </tr>
+        <tr>
+            <td>{!}</td>
+            <td>
+                The frame drop indicator. Shown when VCS is having to drop captured frames due to insufficient performance (e.g. the CPU not being fast enough for the current capture settings).
+            </td>
+        </tr>
+        <tr>
+            <td>VCS</td>
+            <td>
+                The program's name.
+            </td>
+        </tr>
+        <tr>
+            <td>RFOA</td>
+            <td class="with-inline-table">
+                <dokki-table>
+                    <table>
+                        <tr>
+                            <th>Element</th>
+                            <th>Explanation</th>
+                        </tr>
+                        <tr>
+                            <td>R</td>
+                            <td>
+                                Shown when video recording is active (see <a href="#dialog-windows-video-recorder-dialog">Video recorder dialog</a>)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>F</td>
+                            <td>
+                                Shown when the filter graph is active (see <a href="#dialog-windows-filter-graph-dialog">Filter graph dialog</a>)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>O</td>
+                            <td>
+                                Shown when the overlay is active (see <a href="#dialog-windows-overlay-editor-dialog">Overlay editor dialog</a>)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>A</td>
+                            <td>
+                                Shown when anti-tearing is active (see <a href="#dialog-windows-anti-tear-dialog">Anti-tear dialog</a>)
+                            </td>
+                        </tr>
+                    </table>
+                </dokki-table>
+            </td>
+        </tr>
+        <tr>
+            <td>░ &times; ░ (░ Hz)</td>
+            <td>
+                The current capture resolution and its refresh rate.
+            </td>
+        </tr>
+        <tr>
+            <td>shown in ░ &times; ░ (░ FPS)</td>
+            <td>
+                The current output resolution and the rate at which the output is being updated.
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+<p>Under special circumstances, the title bar may also show one of these messages:</p>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Message</th>
+            <th>Reason</th>
+        </tr>
+        <tr>
+            <td>No signal</td>
+            <td>
+                The capture device doesn't appear to be receiving a signal.
+            </td>
+        </tr>
+        <tr>
+            <td>Signal out of range</td>
+            <td>
+                Either VCS or the capture device is unable to process the signal's video mode due to the mode exceeding operating parameters. For example, the input resolution may be too high.
+            </td>
+        </tr>
+        <tr>
+            <td>Invalid capture channel</td>
+            <td>
+                <p>
+                    The requested input channel on the capture device, or the entire capture device, is unavailable for use. This could be caused e.g. by an out-of-range input channel index or the capture device driver not being installed.
+                </p>
+                <dokki-tip>
+                    On Linux, the Datapath Vision driver must be re-installed whenever your kernel is updated &ndash; failure to do so will result in this error message. Sometimes a kernel update will break compatibility with the driver, so ensure that the driver installer finishes successfully.
+                </dokki-tip> 
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+</dokki-subtopic><dokki-subtopic title="Context menu">
+<p>Right-clicking inside the output window will bring up its context menu, which gives you access to the various controls and dialogs of VCS.</p>
+<h3>Save as image</h3>
+<p>Selecting this option will save the output window's contents into a PNG image file under VCS's working directory. The VCS terminal window will show the name of the file.</p>
+<h3>Input</h3>
+<p>The input menu lets you customize various operational parameters of the capture device. The menu provides the following options:</p>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Option</th>
+            <th>Explanation</th>
+        </tr>
+        <tr>
+            <td>Channel</td>
+            <td>
+                Set the capture device's active input channel.
+            </td>
+        </tr>
+        <tr>
+            <td>Color depth</td>
+            <td>
+                Set the color depth in which the capture device outputs frames. In other words, the device is expected to convert frame data into this format prior to transferring them via the system bus to VCS. Prior to display, VCS will convert the data into the color depth of the <a href="#output-window">output window</a>.
+            </td>
+        </tr>
+        <tr>
+            <td>De-interlacing</td>
+            <td>
+                Set the hardware-side de-interlacing mode for interlaced signals. This setting is expected to have no effect on non-interlaced signals.
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+<h3>Output</h3>
+<p>The output menu lets you customize the way in which VCS processes captured frames prior to display in the <a href="#output-window">output window</a>. The menu provides the following options:</p>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Option</th>
+            <th>Explanation</th>
+        </tr>
+        <tr>
+            <td>Screenshot</td>
+            <td>
+                Save the current output image into an image file.
+            </td>
+        </tr>
+        <tr>
+            <td>Aspect ratio</td>
+            <td class="with-inline-table">
+                <dokki-table>
+                    <table>
+                        <tr>
+                            <th>Sub-option</th>
+                            <th>Explanation</th>
+                        </tr>
+                        <tr>
+                            <td>Native</td>
+                            <td>
+                                Don't force captured frames into a specific aspect ratio.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Traditional 4:3</td>
+                            <td>
+                                Force captured frames into a 4:3 aspect ratio for such input resolutions that historically might have been meant to be displayed as such; for example, 720 &times; 400, 640 &times; 400, and 320 &times; 200.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Always 4:3</td>
+                            <td>
+                                Force all captured frames into a 4:3 aspect ratio.
+                            </td>
+                        </tr>
+                    </table>
+                </dokki-table>
+            </td>
+        </tr>
+        <tr>
+            <td>Scaler</td>
+            <td>
+                Set the scaler to be used when captured frames are scaled to fit the output window.
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+<h3>Window</h3>
+<p>The window menu lets you customize various properties of the <a href="#output-window">output window</a>. The menu provides the following options:</p>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Option</th>
+            <th>Explanation</th>
+        </tr>
+        <tr>
+            <td>Set title...</td>
+            <td>
+                Give the output window a custom title. All of VCS's normal title bar information - except the frame drop indicator - will be replaced with the text you set. Setting an empty string will restore VCS's default title bar.
+            </td>
+        </tr>
+        <tr>
+            <td>Frame drop indicator</td>
+            <td>
+                If enabled, the symbol "{!}" will be shown in the output window's title bar when frames
+                are being dropped.
+            </td>
+        </tr>
+        <tr>
+            <td>Renderer</td>
+            <td class="with-inline-table">
+                <dokki-table>
+                    <table>
+                        <tr>
+                            <th>Sub-option</th>
+                            <th>Explanation</th>
+                        </tr>
+                        <tr>
+                            <td>OpenGL</td>
+                            <td>
+                                <p>
+                                    Draw the window using OpenGL. Allows variable refresh rate output (if supported by your hardware), but is incompatible with Windows XP and the magnifying glass feature.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Software</td>
+                            <td>
+                                Draw the window using software rendering. Performs well and supports the most features, but may not allow variable refresh rate output.
+                            </td>
+                        </tr>
+                    </table>
+                </dokki-table>
+            </td>
+        </tr>
+        <tr>
+            <td>Font size in dialogs</td>
+            <td>
+                Select the font size to be used in VCS <a href="#dialog-windows">dialogs</a>.
+            </td>
+        </tr>
+        <tr>
+            <td>Border</td>
+            <td>
+                A hint to the operating system on whether to decorate the output window with the system's window border and title bar. When the window is in borderless mode, the operating system is also asked to position it on top of other desktop elements. You can achieve a windowed fullscreen mode by disabling the window border and setting the <a href="#output-resolution-dialog">Output resolution</a> to match your desktop resolution (see also the <em>Top left</em> menu option).
+            </td>
+        </tr>
+        <tr>
+            <td>Fullscreen</td>
+            <td>
+                Place the output window into fullscreen mode. For best results, you should first scale the window to the resolution of your screen before entering fullscreen mode. Not fully supported on some distributions of Linux.
+            </td>
+        </tr>
+        <tr>
+            <td>Center</td>
+            <td>
+                Snap the output window to the middle of the screen.
+            </td>
+        </tr>
+        <tr>
+            <td>Top left</td>
+            <td>
+                Snap the output window to the top left corner of the screen.
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+<h3>Eco mode</h3>
+<p>Toggle a power-saving mode in which VCS will micro-sleep between capture events to reduce its overall CPU usage.</p>
+<p>The eco mode may increase capture latency by a bit in some situations, and the responsiveness of the GUI will also suffer to some extent. But you may find these acceptable tradeoffs for energy savings and a cooler-running CPU.</p>
+<p>The eco mode works best when the output resolution is the same as the input resolution, i.e. when VCS has to spend minimal CPU resources processing captured frames, allowing most of the time to be spent in a resource-efficient sleep state.</p>
+</dokki-subtopic></dokki-topic>
+
+<dokki-topic title="Dialog windows">
+<dokki-subtopic title="Alias resolutions dialog">
+<p>This dialog can be accessed with <menu-path>Context &gt; Input &gt; Aliases...</menu-path>.</p>
+<p>With the alias resolutions dialog, you can instruct VCS to automatically override certain capture resolutions.</p>
+<p>For instance, if you find that your capture device is displaying 640 × 400 as 512 × 488 (or something to that effect), you can define 640 × 400 as an alias of 512 × 488. Whenever the capture device reports a new video mode of 512 × 488, VCS will tell the device to use 640 × 400, instead.</p>
+</dokki-subtopic><dokki-subtopic title="Anti-tear dialog">
+<p>This dialog can be accessed with <key-combo>Ctrl + A</key-combo> or <menu-path>Context &gt; Output &gt; Anti-tear...</menu-path>.</p>
+<dokki-image src="./img/anti-tear-dialog.webp" width="489" height="502"     headerless   thumbnail-src="data:image/png;base64,UklGRtIAAABXRUJQVlA4WAoAAAAQAAAAEwAAFAAAQUxQSBoAAAABD0CQbePPvO3XiIg4EBIQNP9vOxDR/5RYAVZQOCCSAAAAsAQAnQEqFAAVAD5tLpFGpCKhoSgNUIANiWkAA+XpCvjKHlMC9iIpo8VPmyjiIAD+8Xqw3L8nmcqG/Oq1ZvRVtl5FJRtD8md6XZwJW4xFJ7u4OghuWOmN90PHPH+83p1HABhwk3t2n9K+CMhVKbXNtKYcaRiG/WiHgIF90kAItwoofq5DjjPH9ThaKL6zdbK+AAA="><template #caption>A screenshot of the anti-tear dialog</template>
+                        </dokki-image>
+<p>The anti-tear dialog provides functionality to remove tearing from captured frames.</p>
+<p>Under some circumstances, like when the captured source doesn't sync its rendering with the refresh rate, captured frames can contain tearing. VCS's anti-tearer helps mitigate this issue.</p>
+<p>Anti-tearing should be considered an experimental feature of VCS. It works well in some cases and not that well in others. It'll completely fail to work if the captured source redraws the screen at a rate higher than the capture's refresh rate – e.g. a game running at 100 FPS with a refresh of 60 Hz.</p>
+<h3>Settings explained</h3>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Scan start</td>
+            <td>
+                Set where the anti-tearer begins scanning each frame for tears. Static screen-wide content like a game's UI bar can prevent the anti-tearing from working, so you should set this value so that such content is excluded. You can choose to visualize the scan range to help you set it up.
+            </td>
+        </tr>
+        <tr>
+            <td>Scan end</td>
+            <td>
+                Same as <strong>Scan start</strong> but for where the scanning should end. This is an offset from the bottom of the screen up, so e.g. a value of 5 at a resolution of 640 &times; 480 would mean the scanning ends at pixel row 475.
+            </td>
+        </tr>
+        <tr>
+            <td>Scan direction</td>
+            <td>
+                If the captured source redraws its screen from bottom to top, set the scan direction to <em>Down</em>. Otherwise, use the <em>Up</em> setting. Using the wrong direction will fully prevent the anti-tearing from working (it may correctly detect tears but won't be able to remove them).
+            </td>
+        </tr>
+        <tr>
+            <td>Scan hint</td>
+            <td>
+                If the captured source redraws its screen at a rate higher than half of its refresh rate but lower than the full refresh rate (e.g. 35 FPS at 60 Hz), you may (or might not) have better results and/or performance by setting this option to <em>Look for one tear per frame</em>. Otherwise, use the <em>Look for multiple tears per frame</em> setting.
+            </td>
+        </tr>
+        <tr>
+            <td>Visualization</td>
+            <td>
+                Draw certain anti-tearing-related markers in the <a href="#output-window">output window</a>.
+            </td>
+        </tr>
+        <tr>
+            <td>Threshold</td>
+            <td>
+                The anti-tearer compares adjacent frames to find which parts of the new frame may be torn (where pixels from the previous frame are still visible). This setting controls the amount by which a pixel's color values are allowed to change between frames without the pixel being considered new (given inherent noise in analog pixels). In an ideal situation where there's no noise in the captured signal, you can set this to 0 or close to it. Otherwise, the value should be high enough to exclude capture noise.
+            </td>
+        </tr>
+        <tr>
+            <td>Window size</td>
+            <td>
+                When scanning frames for tears, the anti-tearer will average together a bunch of horizontal pixels' color values to reduce the negative effect of analog noise. This setting controls the pixel size of the sampling window. Lower values will result in better performance but possibly worse tear detection.
+            </td>
+        </tr>
+        <tr>
+            <td>Step size</td>
+            <td>
+                The number of pixels to skip horizontally when scanning for tears. Higher values will improve performance but may cause a failure to detect subtler tears.
+            </td>
+        </tr>
+        <tr>
+            <td>Matches req'd</td>
+            <td>
+                Set how many times the sampling window must find a pixel's color values to have exceeded the detection threshold for a horizontal row of pixels to be considered new relative to the previous frame. Higher values should reduce the chance of false positives but may also cause a failure to detect subtler tears.
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+</dokki-subtopic><dokki-subtopic title="Filter graph dialog">
+<p>This dialog can be accessed with <key-combo>Ctrl + F</key-combo> or <menu-path>Context &gt; Output &gt; Filter graph...</menu-path>.</p>
+<dokki-image src="./img/vcs-2.6-filter-graph.webp" width="1368" height="835"     headerless   thumbnail-src="data:image/png;base64,UklGRpAAAABXRUJQVlA4WAoAAAAQAAAAEwAACwAAQUxQSBIAAAABD9D/iAgICQia/689iOh/SnxWUDggWAAAAHADAJ0BKhQADAA+bSyRRaQioZgEAEAGxLSAAClS9PL+ufzBYAD++G4lA/eo8dYhETFGygWgQoGM4h9lumlwP4BxMKZ+5fsvovucS3Zc67B33Saj+swEAAA="><template #caption>The filter graph dialog showing a chain of frame filters</template>
+                        </dokki-image>
+<p>The filter graph dialog lets you to create chains of image filters to be applied to captured frames prior to display in the <a href="#output-window">output window</a>.</p>
+<p>The filter graph is made up of nodes that can be connected together in a chain. These nodes come in three varieties: <em>input gate</em>, <em>output gate</em>, and <em>filter</em>.</p>
+<p>The input and output gates determine the resolutions for which the connected filters will be applied. For instance, if you set an input gate's width and height to 640 and 480, and the width and height of an output gate to 1920 and 1080, any filters you connect between these two nodes will be applied when the size of the output window is 1920 × 1080 and the original resolution of the frames (i.e. the capture resolution) is 640 × 480. You can also use the value 0 for a gate's width and/or height to allow VCS to match any value to that dimension: an input gate with a width and height of 0, for instance, will apply the connected filters to frames of all capture resolutions, provided that they also meet the resolution specified for the output gate. A filter graph can have multiple chains of these input-filter-output combos, and VCS will select the most suitable one (or none) given the current capture and output resolutions.</p>
+<dokki-tip>
+    <p>
+        When deciding which of multiple filter chains to use, VCS will prefer more specific chains to more general ones.
+    </p>
+    <p>
+        If you have e.g. an input gate whose width and height are 0, and another input gate whose width and height are 640 and 480, the latter will be used when the capture resolution is exactly 640 &times; 480, and the former otherwise.
+    </p>
+    <p>
+        Likewise, if your input gates are 0 &times; 0 and 640 &times; 0, the former will be applied for capture resolutions of <i>any</i> &times; <i>any</i>, except for 640 &times; <i>any</i>, where the latter chain will apply &ndash; except if you also have a third input gate of 640 &times; 480, in which case that will be used when the capture resolution is exactly 640 &times; 480.
+    </p>
+</dokki-tip>
+<p>To connect two nodes, click and drag with the left mouse button from one node's output edge (square) to another's input edge (circle), or vice versa. A node can be connected to as many other nodes as you like. To disconnect a node from another, right-click on the node's output edge, and select the other node from the list that pops up. To remove a node itself from the graph, right-click on the node and select to remove it. To add nodes to the graph, right-click on the graph's background to bring up the node menu, or select <menu-path>Filters</menu-path> from the dialog's menu bar.</p>
+</dokki-subtopic><dokki-subtopic title="Input resolution dialog">
+<p>This dialog can be accessed with <key-combo>Ctrl + I</key-combo> or <menu-path>Context &gt; Input &gt; Resolution...</menu-path>.</p>
+<p>Normally, the capture device will automatically set the capture resolution to match that of the input signal, but sometimes the result isn't quite right. The input resolution dialog lets you override this resolution with your own one.</p>
+<p>You can change a button's assigned resolution by clicking on it while pressing the <key-combo>Alt</key-combo> key.</p>
+</dokki-subtopic><dokki-subtopic title="Output size dialog">
+<p>This dialog can be accessed with <key-combo>Ctrl + O</key-combo> or <menu-path>Context &gt; Output &gt; Size...</menu-path>.</p>
+<p>The dialog lets you resize the <a href="#output-window">output window</a>.</p>
+<h3>Settings explained</h3>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Constant</td>
+            <td>
+                Lock the size of the output window so that changes to the capture resolution don't affect the output
+                resolution. Frames will be scaled up or down as needed to match this resolution.
+            </td>
+        </tr>
+        <tr>
+            <td>Scale</td>
+            <td>
+                Scale the size of the output window up or down by a percentage of its base size. The base size is
+                either the capture resolution, or, if enabled, the <strong>Constant</strong> resolution.
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+</dokki-subtopic><dokki-subtopic title="Overlay editor dialog">
+<p>This dialog can be accessed with <key-combo>Ctrl + L</key-combo> or <menu-path>Context &gt; Output &gt; Overlay editor...</menu-path>.</p>
+<dokki-image src="./img/vcs-2.6-overlay.webp" width="1438" height="752"     headerless   thumbnail-src="data:image/png;base64,UklGRswAAABXRUJQVlA4WAoAAAAQAAAAEwAACQAAQUxQSCoAAAABN6AoABmI/qGE8mNHjYgI8D4WiAQgmgkGmGCL/29IBkT0fwLUOVgfMwBWUDggfAAAALADAJ0BKhQACgA+bSySRaQioZgEAEAGxLIAWHYJGKwvDMF/hbIoAMtPo0yweNu5Tn2olCEbCDHd4wUIb+l1mWHGHJvAe6vVEbpyHWF22kB60jdk//hZs659ILE38w7lhRIpgrsz81Vhp7Ij7PR1KuGd3hW1RejxxBvqoAA="><template #caption>The overlay editor dialog (right) showing the HTML/CSS source of an overlay (top left) in this capture of a Linux desktop</template>
+                        </dokki-image>
+<p>The overlay dialog lets you define a message to be overlaid on the <a href="#output-window">output window</a>, with optional HTML/CSS styling.</p>
+<h3>Formatting</h3>
+<p>For a list of the HTML and CSS formatting features supported, see <a href="https://doc.qt.io/qt-5/richtext-html-subset.html">Qt5: Supported HTML Subset</a>.</p>
+
+
+                <dokki-code syntax="html"   headerless><template #caption>A sample overlay with HTML/CSS formatting that displays information about the current video mode</template>
+                    <template #code>
+                        <pre>&lt;style&gt;
+    video-mode {
+        color: yellow;
+        background-color: black;
+        font-family: &quot;Comic Sans MS&quot;;
+    }
+&lt;/style&gt;
+
+&lt;video-mode&gt;
+    Input: $inWidth &amp;times; $inHeight, $inRate Hz
+&lt;/video-mode&gt;
+</pre>
+                    </template>
+                </dokki-code>
+            
+
+
+                <dokki-code syntax="text"   headerless><template #caption>A sample overlay without HTML/CSS formatting that displays information about the current video mode</template>
+                    <template #code>
+                        <pre>Input: $inWidth x $inHeight, $inRate Hz
+</pre>
+                    </template>
+                </dokki-code>
+            
+<h3>Variables</h3>
+<p>The following variables will expand to dynamic values in the overlay:</p>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Variable</th>
+            <th>Explanation</th>
+        </tr>
+        <tr>
+            <td><em>$inWidth</em></td>
+            <td>The width of the current input resolution.</td>
+        </tr>
+        <tr>
+            <td><em>$inHeight</em></td>
+            <td>The height of the current input resolution.</td>
+        </tr>
+        <tr>
+            <td><em>$inRate</em></td>
+            <td>The refresh rate of the current input signal.</td>
+        </tr>
+        <tr>
+            <td><em>$inChannel</em></td>
+            <td>The index of the current input channel on the capture device.</td>
+        </tr>
+        <tr>
+            <td><em>$outWidth</em></td>
+            <td>The width of the current output resolution.</td>
+        </tr>
+        <tr>
+            <td><em>$outHeight</em></td>
+            <td>The height of the current output resolution.</td>
+        </tr>
+        <tr>
+            <td><em>$outRate</em></td>
+            <td>The current output frame rate.</td>
+        </tr>
+        <tr>
+            <td><em>$frameDropIndicator</em></td>
+            <td>Shows a warning label if frames are currently being dropped, or nothing if they aren't.</td>
+        </tr>
+        <tr>
+            <td><em>$time</em></td>
+            <td>Current system time.</td>
+        </tr>
+        <tr>
+            <td><em>$date</em></td>
+            <td>Current system date.</td>
+        </tr>
+    </table>
+</dokki-table>
+</dokki-subtopic><dokki-subtopic title="Video presets dialog">
+<p>This dialog can be accessed with <key-combo>Ctrl + V</key-combo> or <menu-path>Context &gt; Input &gt; Video presets...</menu-path>.</p>
+<dokki-image src="./img/video-presets-dialog.webp" width="513" height="656"     headerless   thumbnail-src="data:image/png;base64,UklGRjgBAABXRUJQVlA4WAoAAAAQAAAAEwAAGQAAQUxQSBoAAAABD0CQbePPvO3XiIg4EBIQNP93GxDR/5Q4AVZQOCD4AAAAsAUAnQEqFAAaAD5tLJJFpCKhmAQAQAbEtIApgF5GCAPsAFa7lg6GgtoR89QEugKkwlOQ0gAAAP7yzWhd3l8KJ/6YsXhGlBIEmyhRdW9sSTYwHYJO4oI7gR5pqUvPvrU03dqYFF3J4jMpMhMR8DzbiUwM1h6Ppvk1P3i0D/wgSOx52tw3xouxPRc2n+xynR/CCecmAPobHVPt6hmw7CCLxZ/yULLit3ayW/KdiHttVeGEKCajVytT/ZU26jIb7dt8pv0GJze/g2rctnnup9qk45WUipYqYOArDlQ9nOaQOnb8QeJA/TAyKfy4FV/oUDQVYl/lk/AAAAA="><template #caption>A screenshot of the video presets dialog</template>
+                        </dokki-image>
+<p>The video presets dialog lets you to modify the capture devices's video signal parameters.</p>
+<p>A given video preset's parameters will be applied when all of its &quot;Activates with&quot; conditions are met. For instance, if you've defined a preset's activation resolution as 800 × 600 and have disabled the other activating conditions, the preset's parameters will be applied when the capture video mode is 800 × 600.</p>
+<p>To add or delete a preset, click the + or - buttons next to the preset selector at the top of the dialog. Clicking the + button while holding the Alt key will create a new preset with the current preset's settings.</p>
+<p>If you want your changes to the video presets to persist after you exit VCS, remember to save them first! This can be done via <menu-path>File &gt; Save as…</menu-path>. Saved settings can be restored via <menu-path>File &gt; Open…</menu-path>. Any saved settings that're open when VCS exits will be reloaded automatically when you run VCS again.</p>
+</dokki-subtopic><dokki-subtopic title="Video recorder dialog">
+<p>This dialog can be accessed with <key-combo>Ctrl + R</key-combo> or <menu-path>Context &gt; Output &gt; Video recorder...</menu-path>.</p>
+<dokki-warning>
+    Video recording is not available while using an [output scaling filter](#dialog-windows-filter-graph-dialog).
+</dokki-warning>
+<dokki-warning>
+    On Linux, the video encoder's quality settings can't be modified through VCS &ndash; you'd need to re-compile OpenCV with your desired encoder settings, instead.
+</dokki-warning>
+<p>The video recorder gives you the option to stream captured frames into a video file.</p>
+<p>To use the video recorder in Windows, you'll need to install the 32-bit version of the <a href="https://sourceforge.net/projects/x264vfw/files/x264vfw/44_2851bm_44825/">x264vfw</a> codec and run its configurator at least once, so that its settings are added into the Windows registry for VCS to find.</p>
+<p>The recorder will write frames as they appear in the <a href="#output-window">output window</a> into a video file, with the following caveats:</p>
+<ul>
+<li>The maximum supported resolution is 1024 × 768.</li>
+<li>Audio won't be recorded.</li>
+<li>Frames will be inserted into the video at the rate of capture; the recorder doesn't try to maintain any particular frame rate (e.g. by duplicating or dropping frames). For example, if your capture source is 57.5 Hz, one minute of video will have 57.5 * 60 frames, and if that video is played back at 60 FPS, it will appear slightly sped up.</li>
+<li>If VCS drops any frames during recording (e.g. due to insufficient system performance), the video's playback will be non-linear. So if you're recording a separate audio file and are planning to sync it with the video, you want there to be no frames dropped while recording the video.</li>
+<li>The video will be recorded in the H.264 format using an x264 codec.</li>
+<li>The video resolution will be that of the current output size (see the <a href="#dialog-windows-output-resolution-dialog">Output resolution</a> dialog).</li>
+<li>The output size can't be changed while recording; all frames will be scaled automatically to fit the current size.</li>
+<li>The <a href="#dialog-windows-overlay-editor-dialog">overlay</a> won't be recorded.</li>
+<li>Encoder parameters influencing image quality (e.g. CRF) can't be customized in the Linux version of VCS. This is a limitation of OpenCV. You can, however, modify and recompile the OpenCV code with higher-quality default options (see e.g. <a href="https://www.researchgate.net/post/Is_it_possible_to_set_the_lossfree_option_for_the_X264_codec_in_OpenCV">here</a>).</li>
+</ul>
+<h3>Settings explained</h3>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Setting<sup>*</sup></th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Nominal FPS</td>
+            <td>
+                The video's suggested playback rate. This setting doesn't affect the recording rate, only the rate at which the video might be played back by your video player. The actual recording FPS will be determined by the capture source's refresh rate.
+            </td>
+        </tr>
+        <tr>
+            <td>Video container</td>
+            <td>
+                The file format used for storing the video on disk.
+            </td>
+        </tr>
+        <tr>
+            <td>Video codec</td>
+            <td>
+                The codec used for encoding the video. Currently, only <em>x264</em> is supported.
+            </td>
+        </tr>
+        <tr>
+            <td>Arguments</td>
+            <td>
+                You can enter any additional command-line arguments for the video codec.
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <sup>*</sup>Only some of the available settings are included in this list; others depend on the choice of video codec and are as per standard for that codec (e.g. CRF for x264).
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+<h3>Settings for the highest video quality</h3>
+<p>The following video recorder settings should result in the highest possible output video quality.</p>
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Setting</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Video codec</td>
+            <td><em>x264</em></td>
+        </tr>
+        <tr>
+            <td>Profile</td>
+            <td><em>High 4:4:4</em></td>
+        </tr>
+        <tr>
+            <td>Pixel format</td>
+            <td><em>RGB</em></td>
+        </tr>
+        <tr>
+            <td>CRF</td>
+            <td><em>0</em><sup>*</sup></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <sup>*</sup>Increasing the CRF value to 10&ndash;14 will considerably reduce the size of the resulting video file while maintaining high image quality.
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+<h3>Tips for performance</h3>
+<p>If the recorder dialog indicates that frames are being dropped while recording, your system may be limited in CPU or disk performance. Here are a few tips that may help you mitigate those issues.</p>
+<p>Since VCS is largely a single-threaded program, dragging or otherwise interacting with its GUI items (e.g. dialog windows) during recording may cause transient frame drops even if your system is otherwise capable.</p>
+<p>During recording, frames are saved to disk in batches. If you get a bunch of frames droppede very couple of seconds but are fine otherwise, insufficient disk performance may be the reason. Optimizing the recorder's settings for a smaller file size should help, as would recording at a lower resolution (i.e. with a smaller-sized <a href="#output-window">output window</a>.</p>
+<p>If recording fails and you receive an error in the VCS console window to the tune of &quot;x264 [error]: malloc of size ░ failed&quot;, you may be running into a memory fragmentation issue (see <a href="https://github.com/leikareipa/vcs/issues/21">this issue report on GitHub</a>). VCS is a 32-bit program that, while recording video, shares its couple-gigabyte memory space with the x264 encoder, which may result in x264 being unable to allocate a large-enough contiguous block of memory for its own operation. You may be able to fix this issue either by selecting a <em>Preset</em> option closer to &quot;Ultrafast&quot;, reducing the recording resolution (i.e. the size of the output window), or decreasing the size of VCS's pre-allocated memory cache (see the <em>-m</em> <a href="#command-line-options">command-line option</a>).</p>
+</dokki-subtopic></dokki-topic>
+
+<dokki-topic title="Mouse controls">
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Action</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Double-click <a href="#output-window">output window</a></td>
+            <td>Toggle the window border on/off.</td>
+        </tr>
+        <tr>
+            <td>Middle-click output window</td>
+            <td>Magnify the portion of the output window over which the cursor is hovering.</td>
+        </tr>
+        <tr>
+            <td>Left-click and drag output window</td>
+            <td>Move the window (same as dragging by its title bar).</td>
+        </tr>
+        <tr>
+            <td>Right-click output window</td>
+            <td>Open the output window's <a href="#output-window-context-menu">context menu</a>.</td>
+        </tr>
+        <tr>
+            <td>Mouse wheel over output window</td>
+            <td>Scale the output window up/down.</td>
+        </tr>
+    </table>
+</dokki-table>
+</dokki-topic>
+
+<dokki-topic title="Keyboard controls">
+<dokki-subtopic title="Program-wide">
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Key(s)</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><key-combo>F11</key-combo></td>
+            <td>Toggle fullscreen mode on/off.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + A</key-combo></td>
+            <td>Open the anti-tear dialog.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + F</key-combo></td>
+            <td>Open the filter graph dialog.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + V</key-combo></td>
+            <td>Open the video settings dialog.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + I</key-combo></td>
+            <td>Open the input resolution dialog.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + O</key-combo></td>
+            <td>Open the output resolution dialog.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + R</key-combo></td>
+            <td>Open the record dialog.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + L</key-combo></td>
+            <td>Open the overlay dialog.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + Shift + key</key-combo></td>
+            <td>Toggle the corresponding dialog's functionality on/off (e.g. <key-combo>Ctrl + Shift + R</key-combo> for recording).</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + 1&hellip;9</key-combo></td>
+            <td>Shortcuts for the input resolution buttons on the control panel's Input tab.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Shift + 1&hellip;2</key-combo></td>
+            <td>Set the input channel index.</td>
+        </tr>
+    </table>
+</dokki-table>
+</dokki-subtopic><dokki-subtopic title="Filter graph dialog">
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Key(s)</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><key-combo>Shift + Del</key-combo></td>
+            <td>Delete the selected node(s).</td>
+        </tr>
+        <tr>
+            <td><key-combo>Shift + Mouse drag</key-combo></td>
+            <td>When dragging a node, snap it to a grid.</td>
+        </tr>
+        <tr>
+            <td><key-combo>Ctrl + Mouse wheel</key-combo></td>
+            <td>Zoom the view in and out.</td>
+        </tr>
+    </table>
+</dokki-table>
+</dokki-subtopic></dokki-topic>
+
+<dokki-topic title="Command-line options">
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Option</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>-i <i>&lt;input channel&gt;</i></td>
+            <td>
+                Start capture on the given input channel (1&#8230;<i>n</i>). On Linux, a value of 1 corresponds to <em>/dev/video0</em>, 2 to <em>/dev/video1</em>, 3 to <em>/dev/video2</em>, and so on. By default, channel 1 will be used.
+            </td>
+        </tr>
+        <tr>
+            <td>-v <i>&lt;path&gt;</i></td>
+            <td>
+                Load video presets from the given file on start-up. Video preset files typically have the .vcs-video suffix.
+            </td>
+        </tr>
+        <tr>
+            <td>-f <i>&lt;path&gt;</i></td>
+            <td>
+                Load a custom filter graph from the given file on start-up. Filter graph files typically have the .vcs-filter-graph suffix.
+            </td>
+        </tr>
+        <tr>
+            <td>-a <i>&lt;path&gt;</i></td>
+            <td>
+                Load alias resolutions from the given file on start-up. Alias resolution files typically have the .vcs-alias suffix.
+            </td>
+        </tr>
+        <tr>
+            <td>-m <i>&lt;value in MB&gt;</i></td>
+            <td>
+                Set the amount of system memory that VCS reserves on startup. If you're getting error messages about the memory cache running out, increase this value. If you get x264 allocation errors when attempting to record video, try reducing this value. Default: 256 MB.
+            </td>
+        </tr>
+    </table>
+</dokki-table>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

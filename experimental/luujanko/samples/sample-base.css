@@ -1,0 +1,161 @@
+#sample-container
+{
+    margin: 0;
+    overflow: hidden;
+    background-color: transparent;
+    color: lightgray;
+}
+
+#loading-bar
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 100%;
+    z-index: 1000;
+    color: black;
+}
+
+#loading-bar .fas
+{
+    color: lightgray;
+    font-size: 125%;
+}
+
+#loading-bar .spin
+{
+    animation: fa-spin 2s infinite linear;
+}
+
+body
+{
+    margin: 0px;
+    text-align: center;
+    overflow-y: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    color: black;
+    font-family: sans-serif;
+}
+
+#luujanko-rendering
+{
+    stroke: gray;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.infoboxes-container
+{
+    pointer-events: none;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: row;
+}
+
+/* For infoboxes created by individual samples.*/
+.infoboxes-container.additional
+{
+    width: 100%;
+    justify-content: center;
+    top: calc(100% - 45px - 70px);
+}
+
+.infobox
+{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 4px 25px;
+    width: 90px;
+    height: 65px;
+    background-color: white;
+    color: black;
+    border-radius: 3px;
+    justify-content: center;
+    align-items: center;
+    line-height: 140%;
+    border: 1px solid lightgray;
+}
+
+.infoboxes-container .infobox + .infobox
+{
+    margin-left: 25px;
+}
+
+.infobox.adjustable
+{
+    pointer-events: initial;
+}
+
+.infoboxes-container.additional .infobox
+{
+    width: 150px;
+    height: 70px;
+}
+
+.infobox > .title
+{
+    font-weight: bold;
+    font-size: 90%;
+    text-align: center;
+}
+
+.infobox > .value
+{
+    text-align: center;
+    margin: 0 5px;
+}
+
+.infobox > .adjust
+{
+    cursor: pointer;
+    padding: 5px 15px;
+    color: lightgray;
+    font-weight: bold;
+    position: absolute;
+    transform: translateY(-50%);
+}
+
+.infobox > .adjust:hover
+{
+    color: black;
+}
+
+.infobox > .adjust.left
+{
+    left: 5px;
+    top: 50%;
+}
+
+.infobox > .adjust.right
+{
+    right: 5px;
+    top: 50%;
+}
+
+.infobox > .adjust::before
+{
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+}
+
+.infobox > .adjust.left::before
+{
+    content: "\f0d9";
+}
+
+.infobox > .adjust.right::before
+{
+    content: "\f0da";
+}
+
+.infoboxes-container.additional .infobox > .adjust.left::before,
+.infoboxes-container.additional .infobox > .adjust.right::before
+{
+    font-size: 140%;
+}

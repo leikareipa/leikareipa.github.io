@@ -1,0 +1,16 @@
+The font files have been converted from their original TTF format.
+
+Original attribution:
+
+Roboto-Thin.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-ThinItalic.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-Light.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-LightItalic.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-Regular.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-Italic.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-Medium.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-MediumItalic.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-Bold.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-BoldItalic.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-Black.ttf: Copyright 2011 Google Inc. All Rights Reserved.
+Roboto-BlackItalic.ttf: Copyright 2011 Google Inc. All Rights Reserved.

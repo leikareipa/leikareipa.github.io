@@ -1,0 +1,542 @@
+:root
+{
+    --zindex-dosbox: 9999;
+    --zindex-popups: 99999;
+}
+
+*
+{
+    font-family: "Arial", sans-serif;
+
+    /* Avoid some issues with double-clicks over the canvas initiating drags.*/
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+body
+{
+    cursor: url("./client/assets/cursors/rsed-cursor-arrow.png"), auto;
+    text-align: center;
+    align-content: center;
+    background-color: black;
+    color: white;
+    padding: 0;
+    margin: 0;
+}
+
+body.playing
+{
+    overflow: hidden;
+}
+
+#data-dropdown
+{
+    position: absolute;
+    z-index: 9;
+    top: 2em;
+    left: 0;
+    background-color: white;
+    color: black;
+    text-align: left;
+    border-radius: 6px;
+    border: 1px solid black;
+    padding: 6px;
+    white-space: nowrap;
+    background-image: linear-gradient(rgb(70, 70, 70), rgb(50, 50, 50));
+    color: #c2c2c2;
+}
+
+#data-dropdown:not(.visible)
+{
+    display: none;
+}
+
+#data-dropdown .button
+{
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 6px;
+}
+
+#data-dropdown tr:hover
+{
+    color: whitesmoke;
+}
+
+#data-dropdown tr:hover .button
+{
+    background-image: linear-gradient(rgb(80, 80, 80), rgb(45, 45, 45)) !important;
+}
+
+#data-dropdown tr:not(:hover) .button
+{
+    color: gray !important;
+}
+
+#data-dropdown .button + .button
+{
+    margin-left: 2px;
+}
+
+#data-dropdown table td,
+#data-dropdown table th
+{
+    padding: 5px 7px;
+}
+
+#canvas
+{
+    width: 100%;
+    height: 100vh;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+#ui-overlay
+{
+    pointer-events: none;
+}
+
+canvas
+{
+    position: absolute;
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.pixelated
+{
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+}
+
+#jsdos-container
+{
+    cursor: default;
+    z-index: var(--zindex-dosbox);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+#jsdos-canvas
+{
+    position: relative;
+    z-index: 0;
+    object-fit: contain;
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+}
+
+#jsdos-container .button
+{
+    margin: 0;
+    padding: 5px;
+    position: fixed;
+    z-index: 1; /* Above the js-dos canvas.*/
+    cursor: pointer;
+    color: yellow;
+    bottom: 10px;
+    right: 10px;
+    filter: drop-shadow(0 0 6px black);
+}
+
+#jsdos-container .button:hover
+{
+    color: whitesmoke;
+}
+
+.dosbox-container
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#html
+{
+    background-image: linear-gradient(rgb(70, 70, 70), rgb(50, 50, 50));
+    align-items: center;
+    display: flex;
+    width: 100%;
+    padding: 0;
+    cursor: initial;
+    flex-shrink: 0;
+}
+
+#button-bar
+{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0 2px;
+    white-space: nowrap;
+    overflow: auto;
+    overflow-y: hidden;
+}
+
+#button-bar:not(.visible)
+{
+    display: none;
+}
+
+#button-bar > .button-bar
+{
+    display: flex;
+    height: 100%;
+}
+
+#button-bar > .button-bar.scenes
+{
+    margin-left: auto;
+    border-left: 1px solid #121212;
+    box-shadow: inset 1px 0 0 #4e4e4e;
+}
+
+#button-bar > .button-bar:last-of-type
+{
+    border-right: none;
+}
+
+#html .button,
+#html #project-name
+{
+    font-size: 95%;
+    padding: 0.5em 1em;
+    background: transparent;
+    text-decoration: none;
+}
+
+#html .button.disabled
+{
+    color: gray;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+#html .button.hidden
+{
+    display: none;
+}
+
+#html #project-name
+{
+    display: flex;
+    align-items: center;
+}
+
+#html #project-name .label
+{
+    font-weight: bold;
+}
+
+#html .button
+{
+    color: #c2c2c2;
+    cursor: pointer;
+}
+
+#html .button:hover
+{
+    color: white;
+}
+
+#html .button:active
+{
+    transform: translateY(1px);
+}
+
+#html .button > a
+{
+    color: inherit;
+    text-decoration: none;
+}
+
+#html .button > i
+{
+    margin-right: 0.1em;
+}
+
+#html .button.stream.streamer,
+#html .button.stream.server,
+#html .button.stream.streamer .fas,
+#html .button.stream.server .fas
+{
+    color: white;
+}
+
+#html .button.stream.initializing
+{
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+#html .button.stream.waiting:hover
+{
+    background-color: inherit;
+    background-image: inherit;
+}
+
+#html .button.stream.waiting:active
+{
+    border-bottom: inherit;
+    background-image: inherit;
+}
+
+#stream-button[data-status="server"]
+{
+    color: white !important;
+}
+
+#stream-button .view-count::before
+{
+    content: "(";
+}
+
+#stream-button .view-count::after
+{
+    content: ")";
+}
+
+#stream-button:not([data-status="server"]) .view-count
+{
+    display: none;
+}
+
+#stream-button > i.fa-spin
+{
+    display: none;
+}
+
+#stream-button[data-status="initializing"] > i.fa-spin
+{
+    display: inline-block;
+}
+
+#stream-button > i:not(.fa-spin)
+{
+    display: inline-block;
+}
+
+#stream-button[data-status="initializing"] > i:not(.fa-spin)
+{
+    display: none;
+}
+
+#prop-dropdown
+{
+    border: 1px solid black;
+    cursor: url("./client/assets/cursors/rsed-cursor-arrow.png"), auto;
+    text-align: left;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: white;
+    z-index: 3;
+    padding: 8px 0;
+    border-radius: 6px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    visibility: hidden;
+    background-image: linear-gradient(rgb(70, 70, 70), rgb(50, 50, 50));
+}
+
+#prop-dropdown > .item
+{
+    cursor: url("./client/assets/cursors/rsed-cursor-fingerhand.png"), auto;
+    color: #c2c2c2;
+    padding: 4px 15px;
+    white-space: nowrap;
+}
+
+#prop-dropdown > .item::first-letter
+{
+    text-transform: capitalize;
+}
+
+#prop-dropdown > .item:hover
+{
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 0;
+}
+
+#prop-dropdown.show
+{
+    visibility: visible;
+}
+
+#popup-notifications-container
+{
+    cursor: initial;
+    z-index: var(--zindex-popups);
+    width: 420px;
+    height: auto;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#popup-notifications-container .popup-notification
+{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    height: auto;
+    padding: 20px;
+    text-align: left;
+    word-wrap: break-word;
+    color: black;
+    background-color: yellow;
+    transition: bottom 0.2s ease-in-out,
+                opacity 0.2s ease-in-out,
+                background-color 0.2s ease-in-out,
+                border-radius 0.2s ease-in-out;
+    border-radius: 14px 14px 2px 14px;
+    cursor: pointer;
+}
+
+#popup-notifications-container .popup-notification:not(:last-child)
+{
+    border-radius: 14px;
+    opacity: 0.85;
+    background-color: rgb(255, 255, 97);
+}
+
+#popup-notifications-container .icon-element
+{
+    margin-right: 10px;
+}
+
+#popup-notifications-container .popup-notification.error .text-container::before
+{
+    content: "Error! ";
+}
+
+#popup-notifications-container > .popup-notification.transitioning-in
+{
+    bottom: -150px;
+    opacity: 0;
+}
+
+#blue-screen
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999; /* Above everything else.*/
+    cursor: initial; /* Remove RallySportED-js's own cursor graphic.*/
+    display: none; /* Will be displayed when a fatal error occurs.*/
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: gray;
+    color: rgb(210, 210, 210);
+}
+
+#blue-screen > *
+{
+    transform: translateY(-20vh);
+}
+
+#blue-screen h1
+{
+    font-size: 200%;
+    font-weight: bold;
+}
+
+#blue-screen #error-description
+{
+    font-size: 100%;
+    color: white;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+#blue-screen #error-description::before
+{
+    content: "Reason: ";
+}
+
+[v-cloak]
+{
+    display: none !important;
+}
+
+.animation-flip
+{
+    animation-name: animation-flip-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.2s;
+}
+
+.animation-popup-slide-in
+{
+    animation-name: animation-popup-slide-in-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 0.3s;
+}
+
+@keyframes animation-flip-frames
+{
+    0% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+@keyframes animation-popup-slide-in-frames
+{
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0px); }
+}
+
+@media only screen and (max-width: 1100px)
+{
+    #popup-notifications-container
+    {
+        border-radius: 0;
+        bottom: 0;
+        right: 0;
+        transform: none;
+        width: 100%;
+    }
+
+    #popup-notifications-container .popup-notification
+    {
+        border-radius: 0;
+        padding: 15px;
+        width: 100%;
+    }
+}

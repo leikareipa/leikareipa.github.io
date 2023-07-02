@@ -1,0 +1,94 @@
+body
+{
+    text-align: center;
+    background-color: white;
+    color: black;
+    padding: 0;
+    margin: 20px;
+    font-family: sans-serif;
+}
+
+#benchmark-canvas
+{
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    border: 1px solid black;
+}
+
+#benchmark-container
+{
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    border: 0;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 0;
+    overflow: hidden;
+}
+
+#benchmark-progress-bar
+{
+    width: 0%;
+    height: 0;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: white;
+    text-align: right;
+    line-height: 0;
+    font-size: 95%;
+    padding: 0;
+    margin: 0;
+    margin-right: 10px;
+    border-radius: 0;
+    border: 25px solid black;
+    opacity: 0;
+    transition: width .2s linear, opacity .75s linear;
+}
+
+#benchmark-graph-info-label
+{
+    background-color: white;
+    color: black;
+    position: absolute;
+    z-index: 10;
+    text-align: left;
+    padding: 12px;
+    border-radius: 0;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    display: none;
+    transform: translateX(10px) translateY(10px);
+    border-radius: 0 10px 10px 10px;
+    border: 1px solid gray;
+}
+
+#benchmark-graph-container
+{
+    box-sizing: border-box;
+    border: 1px solid black;
+    display: inline-block;
+    transform: scaleY(-1);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 0;
+    cursor: crosshair;
+    border: 1px solid black;
+}
+
+#benchmark-graph
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    pointer-events: none;
+    shape-rendering: crispEdges;
+}

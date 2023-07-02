@@ -1,0 +1,22 @@
+<title>Tarpeeksi Hyvae Soft</title>
+<style>
+    body {
+        overflow: hidden;
+        font-family: sans-serif;
+    }
+</style>
+<script>
+    setInterval(()=>{ 
+        const [x, y] = [
+            ~~(Math.random() * window.innerWidth),
+            ~~(Math.random() * window.innerHeight)
+        ];
+        const el = document.createElement("div");
+        el.innerText = ((x & 1)? "töh" : "täh");
+        el.style.position = "absolute";
+        el.style.left = `${x + (performance.now() / 10)}px`;
+        el.style.top = `${y}px`;
+        el.style.transform = `translate(-50%, -50%) rotate(${x}deg)`;
+        document.body.append(el);
+    }, 0);
+</script>

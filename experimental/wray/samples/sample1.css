@@ -1,0 +1,189 @@
+body
+{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(134, 134, 134);
+    color: rgb(70, 70, 70);
+    font-variant: small-caps;
+    font-size: 90%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    font-family: "Roboto", sans-serif;
+}
+
+#wray-ui-container
+{
+    border-radius: 5px;
+    background-color: black;
+    box-shadow: 0 0px 69px 33px rgb(0, 0, 0, 0.24);
+    overflow: hidden;
+
+    /* The correct width and height will be assigned when rendering begins.*/
+    width: 500px;
+    height: 500px;
+
+    /* Will be unhidden when rendering begins.*/
+    display: none;
+}
+
+/* For the HTML5 canvas we'll render into.*/
+#wray-ui-container > .canvas
+{
+    position: relative;
+    background-color: transparent;
+    width: 100%;
+    height: auto;
+    display: block;
+
+    /* Pixelated scaling.*/
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+}
+
+#wray-ui-container .status-container
+{
+    position: relative;
+    color: white;
+    padding: 22px 0;
+    width: 100%;
+    height: auto;
+    font-style: italic;
+}
+
+#wray-ui-container .status-container .status
+{
+    position: relative;
+    left: 22px;
+    text-align: left;
+}
+
+#wray-ui-container .controls-container
+{
+    display: flex;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#wray-ui-container .controls-container.left
+{
+    left: 0;
+}
+
+#wray-ui-container .controls-container.right
+{
+    right: 6px;
+}
+
+#wray-ui-container .dropdown-menu
+{
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    padding: 6px 0;
+    position: absolute;
+    bottom: 36px;
+    right: 58px;
+    color: white;
+    font-family: sans-serif;
+    font-variant: normal;
+    font-style: normal;
+    text-align: left;
+    border-radius: 6px;
+    border: 1px solid white;
+    /* Will be displayed when the user selects to open the menu.*/
+    visibility: hidden;
+}
+
+#wray-ui-container .dropdown-menu-element
+{
+    white-space: nowrap;
+    padding: 14px 28px;
+    user-select: none;
+}
+
+#wray-ui-container .dropdown-menu-element:hover
+{
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 1);
+    color: black;
+}
+
+#wray-ui-container .button
+{
+    display: flex;
+    align-items: center;
+}
+
+#wray-ui-container .button i
+{
+    padding: 11px;
+}
+
+#wray-ui-container .button i.active
+{
+    color: white;
+}
+
+#wray-ui-container .button i:hover
+{
+    color: white;
+    cursor: pointer;
+}
+
+#wray-ui-container .button.pause
+{
+    text-transform: uppercase;
+}
+
+#wray-init-notice
+{
+    color: white;
+    font-size: 150%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    font-family: sans-serif;
+}
+
+/* Spinners adapted from https://www.w3schools.com/howto/howto_css_loader.asp.*/
+#wray-init-spinner /* Spins to indicate that Wray is initializing.*/
+{
+    border: 5px solid transparent;
+    border-right: 20px solid black;
+    border-left: 20px solid black;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    animation: spin 2s linear infinite;
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+@keyframes spin
+{
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(359deg); }
+}
+
+@media only screen and (max-width: 1280px)
+{
+    body
+    {
+        padding: 0;
+        margin: 0;
+    }
+
+    #wray-ui-container
+    {
+        border-radius: 0;
+    }
+}

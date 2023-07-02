@@ -1,0 +1,5 @@
+The file rallys-rsed.zip contains the demo version of Rally-Sport supplemented
+with some of RallySportED's files.
+
+It's intended to be used as a basis for loading RallySportED-made tracks into
+a browser version of DOSBox.

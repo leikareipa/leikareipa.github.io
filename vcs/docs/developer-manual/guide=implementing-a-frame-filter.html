@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>Implementing a frame filter - VCS Dev Docs</title>
+<meta name="description" content="No description yet.">
+<meta name="viewport" content="width=device-width">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script defer src="./js/highlight.min.js"></script>
+<script>
+window.addEventListener("DOMContentLoaded", ()=>hljs.highlightAll?.());
+</script>
+<script>
+window.VCSDoxy = {};
+window.VCSDoxy.set_theme = function(theme = "")
+{
+console.assert(["dark", "light"].includes(theme));
+// Workaround to force elements that have a transition to adopt the new
+// theme immediately instead of transitioning it.
+{
+const highlightingElems = document.body.querySelectorAll(".highlightable");
+highlightingElems.forEach(e=>{
+e.style.$oldTransition = e.style.transition;
+e.style.transition = "none";
+});
+// Queue the transition to be restored once the theme has been applied.
+setTimeout(()=>{
+highlightingElems.forEach(e=>{
+e.style.transition = e.style.$oldTransition;
+});
+}, 0);
+}
+const themeEl = document.querySelector("#theme-selector");
+themeEl.innerHTML = `
+${(theme === "light")? "Dark mode" : "Light mode"}
+`;
+document.documentElement.dataset.theme = theme;
+window.localStorage.setItem("VCSDoxy:theme", theme);
+}
+</script>
+<script>
+function highlight_hash_target_elem()
+{
+if (window.location.hash.length <= 1) {
+return;
+}
+const elem = document.querySelector(window.location.hash);
+if (elem && !elem.classList.contains('highlight')) {
+elem.classList.add('highlight');
+setTimeout(()=>elem.classList.remove('highlight'), 1500);
+}
+}
+// Highlight the target element on anchor navigation.
+window.addEventListener('hashchange', highlight_hash_target_elem);
+// Highlight the element that the hash pointed to on page load, if any.
+window.addEventListener('DOMContentLoaded', highlight_hash_target_elem);
+document.documentElement.dataset.theme = (window.localStorage.getItem("VCSDoxy:theme") || "light")
+window.addEventListener('DOMContentLoaded', ()=>{
+theme = document.documentElement.dataset.theme;
+window.VCSDoxy.set_theme(theme);
+});
+</script>
+<link rel="stylesheet" href="./font-awesome/css/all.min.css">
+<link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+<aside>
+<header class='document-header'>
+<a class='link title' href='./index.html'>
+<img alt="VCS logo" width="16" height="16" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA+gD6APoe/B6HAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5gYeBBoMjd2ZHwAAAIxJREFUOMtj2LNj/X8GBgYGdPrpg6tYaXR1jMgcdKCpoYZNmOH6jVtwNiMuzcQY4uIRyIjXBcQYwgjzG7KziDVEWkEb4gJKDIG7AFsAETIEwwXkGILhAlIMwekCUgxh2rNj/X9cCnFFH0YYwNIBMSkPIxbQExEphuBMiaQYwkhJRnLxCGRkwJZFScnSADfUkdbcS16BAAAAAElFTkSuQmCC">
+VCS Dev Docs
+</a>
+<div class="menu">
+<a class="menu-action link files" href='./index=files.html'>
+Files
+</a>
+<a class="menu-action link data-structures" href='./index=data_structures.html'>
+Data structures
+</a>
+<a class="menu-action link guides" href='./index=guides.html'>
+Guides
+</a>
+<hr>
+<a class="menu-action theme-selector" id='theme-selector' onclick="toggle_theme()" href='javascript:;'>
+</a>
+</div>
+<a class="menu-hamburger" onclick='show_menu()' href='javascript:;'>
+<i class="fas fa-bars"></i>
+</a>
+</header>
+<script>
+function toggle_theme()
+{
+const curTheme = document.documentElement.dataset.theme;
+console.assert(['light', 'dark'].includes(curTheme));
+const newTheme = ((curTheme == "light")? "dark" : "light");
+window.VCSDoxy.set_theme(newTheme);
+}
+const headerEl = document.querySelector(".document-header");
+const menuEl = headerEl.querySelector(".menu");
+const hamburgerEl = headerEl.querySelector(".menu-hamburger");
+window.addEventListener("click", (event)=>{
+const isOutsideMenu = [menuEl, hamburgerEl].every(el=>(el !== event.target) && (!el.contains(event.target)));
+const isOnActionItem = event.composedPath().some(el=>el.classList?.contains("menu-action"));
+if (isOutsideMenu || isOnActionItem) {
+menuEl.classList.remove("visible");
+}
+});
+function show_menu(show = undefined)
+{
+const classListFnName = (
+(show === undefined)? "toggle"
+: show? "add"
+: "remove"
+);
+menuEl.classList[classListFnName]("visible");
+}
+</script>
+</aside>
+<main>
+<header class='article-header'>
+<span class='crumb root'>
+<a href='./index.html'>VCS Dev Docs</a>
+<i class='separator fas fa-xs fa-chevron-right'></i>
+</span>
+<span class='crumb type'>
+<a href="./index=guides.html">
+Guide
+</a>
+<i class='separator fas fa-xs fa-chevron-right'></i>
+</span>
+<span class='crumb target'>
+Implementing a frame filter
+</span>
+</header>
+<article class='markdown-page'>
+<div class='contents page'>
+<h1>Implementing a frame filter</h1>
+<a href='./file=src_filter_filter_h.html#filter.h'>Frame filters</a> provide functionality to the end-user of VCS for manipulating the pixels of captured frames. Blurring, cropping, and denoising are some examples of what these filters could be used for.
+<p>In this guide, you&#x27;ll learn how to implement new frame filters for VCS. The guide will go over a sample implementation of a filter that fills each pixel of an input frame with a solid color.</p>
+<p><em>Note</em>: Future versions of VCS may come to support frame filters as dynamic libraries, but for now their code is compiled statically into the VCS executable.</p>
+<h2>Sample implementation</h2>
+<p>There are three steps to implementing a frame filter:</p>
+<ol><li>Subclass <samp>abstract_filter_c</samp>.</li><li>Subclass <samp>filtergui_c</samp>.</li><li>Declare the filter&#x27;s existence to VCS.</li></ol>
+<p>The sub-sections below explain each step in detail, in the process creating a sample frame filter that fills each input frame&#x27;s pixels with a solid, user-customizable color.</p>
+<h3>Subclassing abstract_filter_c</h3>
+<p>The <samp>abstract_filter_c</samp> class provides metadata about a given filter, as well as a function to apply the filter&#x27;s processing onto the pixels of an input frame.</p>
+<p>We&#x27;ll create a new file, <em>filter_filler.h</em>, where we&#x27;ll define a subclass of <samp>abstract_filter_c</samp> for our sample pixel filler filter. The file has the following contents:</p>
+<pre class='program-listing'><code class='language-cpp'>class filter_filler_c : public abstract_filter_c</code><code class='language-cpp'>{</code><code class='language-cpp'>public:</code><code class='language-cpp'>    // Boilerplate to make the filter clonable. All filters must include this line.</code><code class='language-cpp'>    CLONABLE_FILTER_TYPE(filter_filler_c)</code><code class='language-cpp'> </code><code class='language-cpp'>    // The filter&#x27;s user-customizable parameters. In this case, the RGB fill color.</code><code class='language-cpp'>    // The naming of the enumerators is up to you; no particular style is required.</code><code class='language-cpp'>    enum {</code><code class='language-cpp'>        PARAM_RED,</code><code class='language-cpp'>        PARAM_GREEN,</code><code class='language-cpp'>        PARAM_BLUE</code><code class='language-cpp'>    };</code><code class='language-cpp'> </code><code class='language-cpp'>    // The constructor that&#x27;s called whenever a new instance of this filter is created.</code><code class='language-cpp'>    // Note: We set the default fill color to 150, 10, 200. Instances of the filter</code><code class='language-cpp'>    // will start with those values unless &#x27;initialParamValues&#x27; specifies other values.</code><code class='language-cpp'>    filter_filler_c(const std::vector&lt;std::pair&lt;unsigned, double&gt;&gt; &amp;initialParamValues = {}) :</code><code class='language-cpp'>        abstract_filter_c({</code><code class='language-cpp'>            {PARAM_RED, 150},</code><code class='language-cpp'>            {PARAM_GREEN, 10},</code><code class='language-cpp'>            {PARAM_BLUE, 200}</code><code class='language-cpp'>        }, initialParamValues)</code><code class='language-cpp'>    {</code><code class='language-cpp'>        // Note: We&#x27;ll create the filter&#x27;s GUI (filtergui_filler_c) later in this guide.</code><code class='language-cpp'>        // In any case, here we attach an instance of the GUI to this new instance of</code><code class='language-cpp'>        // the filter.</code><code class='language-cpp'>        this-&gt;guiDescription = new filtergui_filler_c(this);</code><code class='language-cpp'>    }</code><code class='language-cpp'> </code><code class='language-cpp'>    // Applies the filter&#x27;s processing onto the pixels of an input frame.</code><code class='language-cpp'>    void apply(<a href='./struct=image_s.html#image_s'>image_s</a> *const image) override;</code><code class='language-cpp'> </code><code class='language-cpp'>    // Metadata about the filter. These data serve both to uniquely identify the filter</code><code class='language-cpp'>    // and for presenting it to the end-user in the VCS UI.</code><code class='language-cpp'>    std::string uuid(void) const override { return &quot;6f6b513d-359e-43c7-8de5-de29b1559d10&quot;; }</code><code class='language-cpp'>    std::string name(void) const override { return &quot;Filler&quot;; }</code><code class='language-cpp'>    <a href='./file=src_filter_filter_h.html#filter_category_e'>filter_category_e</a> category(void) const override { return <a href='./file=src_filter_filter_h.html#reduce'>filter_category_e::reduce</a>; }</code><code class='language-cpp'>};</code></pre>
+<p>In another new file, <em>filter_filler.cpp</em>, we&#x27;ll provide an implementation of the filter&#x27;s <samp>apply()</samp> function:</p>
+<pre class='program-listing'><code class='language-cpp'>void filter_filler_c::apply(<a href='./struct=image_s.html#image_s'>image_s</a> *const image)</code><code class='language-cpp'>{</code><code class='language-cpp'>    // All filters should assert the validity of their input data in this way.</code><code class='language-cpp'>    this-&gt;assert_input_validity(image);</code><code class='language-cpp'> </code><code class='language-cpp'>    // The RGB fill color. Note: The parameter values (e.g. PARAM_RED) can be</code><code class='language-cpp'>    // customized by the end-user at run-time via the filter&#x27;s GUI.</code><code class='language-cpp'>    const uint8_t red   = this-&gt;parameter(PARAM_RED);</code><code class='language-cpp'>    const uint8_t green = this-&gt;parameter(PARAM_GREEN);</code><code class='language-cpp'>    const uint8_t blue  = this-&gt;parameter(PARAM_BLUE);</code><code class='language-cpp'>    const uint8_t alpha = 255;</code><code class='language-cpp'>    </code><code class='language-cpp'>    cv::Mat output = cv::Mat(image-&gt;resolution.<a href='./struct=resolution_s.html#h'>h</a>, image-&gt;resolution.<a href='./struct=resolution_s.html#w'>w</a>, CV_8UC4, image-&gt;pixels);</code><code class='language-cpp'>    output = cv::Scalar(blue, green, red, alpha);</code><code class='language-cpp'> </code><code class='language-cpp'>    return;</code><code class='language-cpp'>}</code></pre>
+<p>When the filter is active in VCS&#x27;s <a href='https://www.tarpeeksihyvaesoft.com/vcs/docs/user-manual/2.5.0/#dialog-windows-filter-graph-dialog'>filter graph dialog</a>, this function will be called by VCS with the data of each frame as they&#x27;re captured.</p>
+<p><em>Note</em>: The <samp>apply()</samp> function is prohibited from modifying the input frame&#x27;s resolution.</p>
+<h3>Subclassing filtergui_c</h3>
+<p>The <samp>filtergui_c</samp> class provides a template for a filter&#x27;s GUI. The GUI &ndash; which will be available to the end-user via VCS&#x27;s <a href='https://www.tarpeeksihyvaesoft.com/vcs/docs/user-manual/2.5.0/#dialog-windows-filter-graph-dialog'>filter graph dialog</a> &ndash; consists of UI widgets for adjusting the filter&#x27;s parameters (e.g. the radius of a blurring filter) at run-time.</p>
+<p><em>Note</em>: The GUI template is defined using an API that&#x27;s independent of VCS&#x27;s display framework (e.g. Qt). VCS will automatically translate the template into the native format of the framework being used.</p>
+<p>To contain the sample filter&#x27;s GUI template, we&#x27;ll create two new files, <em>filtergui_filter_filler.h</em> and <em>filtergui_filter_filler.cpp</em>.</p>
+<p>In <em>filtergui_filter_filler.h</em>:</p>
+<pre class='program-listing'><code class='language-cpp'>class filtergui_filler_c : public filtergui_c</code><code class='language-cpp'>{</code><code class='language-cpp'>public:</code><code class='language-cpp'>    filtergui_filler_c(abstract_filter_c *const filter);</code><code class='language-cpp'>};</code></pre>
+<p>The header file simply needs to set up a subclass of <samp>filtergui_c</samp> and declare its constructor.</p>
+<p>In <em>filtergui_filter_filler.cpp</em>:</p>
+<pre class='program-listing'><code class='language-cpp'>filtergui_filler_c::filtergui_filler_c(abstract_filter_c *const filter)</code><code class='language-cpp'>{</code><code class='language-cpp'>    // A GUI widget that lets the user control a value from 0 to 255 for the</code><code class='language-cpp'>    // color fill&#x27;s red component. The set_value() function gets called when</code><code class='language-cpp'>    // the user changes the value.</code><code class='language-cpp'>    auto *const red = new filtergui_spinbox_s;</code><code class='language-cpp'>    red-&gt;get_value = [=]{return filter-&gt;parameter(filter_filler_c::PARAM_RED);};</code><code class='language-cpp'>    red-&gt;set_value = [=](const double value){filter-&gt;set_parameter(filter_filler_c::PARAM_RED, value);};</code><code class='language-cpp'>    red-&gt;minValue = 0;</code><code class='language-cpp'>    red-&gt;maxValue = 255;</code><code class='language-cpp'>    </code><code class='language-cpp'>    // Same as above but for the fill&#x27;s green component.</code><code class='language-cpp'>    auto *const green = new filtergui_spinbox_s;</code><code class='language-cpp'>    green-&gt;get_value = [=]{return filter-&gt;parameter(filter_filler_c::PARAM_BIT_COUNT_GREEN);};</code><code class='language-cpp'>    green-&gt;set_value = [=](const double value){filter-&gt;set_parameter(filter_filler_c::PARAM_GREEN, value);};</code><code class='language-cpp'>    green-&gt;minValue = 0;</code><code class='language-cpp'>    green-&gt;maxValue = 255;</code><code class='language-cpp'>    </code><code class='language-cpp'>    // For the blue component.</code><code class='language-cpp'>    auto *const blue = new filtergui_spinbox_s;</code><code class='language-cpp'>    blue-&gt;get_value = [=]{return filter-&gt;parameter(filter_filler_c::PARAM_BLUE);};</code><code class='language-cpp'>    blue-&gt;set_value = [=](const double value){filter-&gt;set_parameter(filter_filler_c::PARAM_BLUE, value);};</code><code class='language-cpp'>    blue-&gt;minValue = 0;</code><code class='language-cpp'>    blue-&gt;maxValue = 255;</code><code class='language-cpp'>    </code><code class='language-cpp'>    // Insert the widgets into a row labeled &quot;RGB&quot;.</code><code class='language-cpp'>    this-&gt;guiFields.push_back({&quot;RGB&quot;, {red, green, blue}});</code><code class='language-cpp'> </code><code class='language-cpp'>    return;</code><code class='language-cpp'>}</code></pre>
+<p>The constructor&#x27;s implementation populates the <samp>guiFields</samp> vector of the class instance with the filter&#x27;s GUI widgets for controlling the fill color.</p>
+<p>The sample filter&#x27;s implementation is now complete. All that&#x27;s left to do is to make VCS aware of it.</p>
+<h3>Declaring the filter to VCS</h3>
+<p>Filters are declared in <a href='./file=src_filter_filter_h.html#kf_initialize_filters'>kf_initialize_filters()</a>:</p>
+<pre class='program-listing'><code class='language-cpp'>void <a href='./file=src_filter_filter_h.html#kf_initialize_filters'>kf_initialize_filters</a>(void)</code><code class='language-cpp'>{</code><code class='language-cpp'>    KNOWN_FILTER_TYPES =</code><code class='language-cpp'>    {</code><code class='language-cpp'>        new filter_blur_c(),</code><code class='language-cpp'>        new filter_delta_histogram_c(),</code><code class='language-cpp'>        // ...</code><code class='language-cpp'>    };</code><code class='language-cpp'>}</code></pre>
+<p>We&#x27;ll simply append our new filter onto the list:</p>
+<pre class='program-listing'><code class='language-cpp'>void <a href='./file=src_filter_filter_h.html#kf_initialize_filters'>kf_initialize_filters</a>(void)</code><code class='language-cpp'>{</code><code class='language-cpp'>    KNOWN_FILTER_TYPES =</code><code class='language-cpp'>    {</code><code class='language-cpp'>        new filter_blur_c(),</code><code class='language-cpp'>        new filter_delta_histogram_c(),</code><code class='language-cpp'>        // ...</code><code class='language-cpp'>        new filter_filler_c() // &lt;- Our new filter.</code><code class='language-cpp'>    };</code><code class='language-cpp'>}</code></pre>
+<p>That&#x27;s it. The filter will now appear as a selectable entry in the menus of VCS&#x27;s <a href='https://www.tarpeeksihyvaesoft.com/vcs/docs/user-manual/2.5.0/#dialog-windows-filter-graph-dialog'>filter graph dialog</a>.</p>
+<h2>Programmatic usage</h2>
+<p>Although frame filters will typically be controlled by the end-user via VCS&#x27;s <a href='https://www.tarpeeksihyvaesoft.com/vcs/docs/user-manual/2.5.0/#dialog-windows-filter-graph-dialog'>filter graph dialog</a>, they can also be created and invoked programmatically:</p>
+<pre class='program-listing'><code class='language-cpp'>// Create an instance of the filter using the templated kf_create_filter_instance().</code><code class='language-cpp'>auto *colorFill = kf_create_filter_instance&lt;filter_filler_c&gt;();</code><code class='language-cpp'> </code><code class='language-cpp'>// Or: Create an instance of the filter using its UUID.</code><code class='language-cpp'>// auto *filler = kf_create_filter_instance(&quot;6f6b513d-359e-43c7-8de5-de29b1559d10&quot;).</code><code class='language-cpp'> </code><code class='language-cpp'>colorFill-&gt;set_parameters({</code><code class='language-cpp'>    {filter_filler_c::PARAM_RED, 255},</code><code class='language-cpp'>    {filter_filler_c::PARAM_GREEN, 0},</code><code class='language-cpp'>    {filter_filler_c::PARAM_BLUE,  0}</code><code class='language-cpp'>});</code><code class='language-cpp'> </code><code class='language-cpp'>colorFill-&gt;apply(image);</code></pre>
+</div>
+</article>
+</main>
+<footer>
+<time datetime="2023-3-11">
+Generated 11 March 2023
+</time>
+</footer>
+</body>
+</html>

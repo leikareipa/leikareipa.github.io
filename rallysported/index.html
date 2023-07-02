@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>RallySportED</title>
+
+        <meta name="description" content="Track editor for the classic DOS game Rally-Sport">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <link rel="stylesheet" href="https://www.tarpeeksihyvaesoft.com/assets/font-awesome-5-15-4/css/all.min.css">
+
+        <script defer src="./client/js/rngon.js"></script>
+        <script defer src="./js-dos/js-dos.js"></script>
+        <script defer src="./client/js/rallysported.cat.js"></script>
+    </head>
+    <body ondrop="window.drop_handler(event);" ondragover="event.preventDefault();">
+        
+        <section id="html">
+
+            <div id="button-bar">
+
+            <div id="project-name" class="label" title="The track's name">
+
+                <span class="label"></span>
+
+            </div>
+
+            <div class="button"
+                 title="Access this track's individual Rally-Sport data files"
+                 onclick="Rsed.ui.dom.html.toggle_data_dropdown();">
+
+                <i class="fas fa-cogs"></i>
+                Data
+                <i class="fas fa-xs fa-caret-down"></i>
+
+            </div>
+
+            <div class="button"
+                 title="Download this track as a RallySportED ZIP file"
+                 onclick="Rsed.$currentProject.download_as_zip();">
+
+                <i class="fas fa-download"></i>
+                Download
+
+            </div>
+
+            <div class="button"
+                 title="Rename this track"
+                 onclick="Rsed.$currentProject.rename();">
+
+                <i class="fas fa-i-cursor"></i>
+                Rename
+
+            </div>
+
+            <div class="button"
+                 title="Record a CPU opponent for this track"
+                 onclick="Rsed.player.record_ai_lap();">
+
+                <i class="fas fa-car"></i>
+                Record
+
+            </div>
+
+            <div id="stream-button"
+                 class="button right stream disabled hidden"
+                 title="This feature is currently unavailable">
+
+                <i class="fas fa-network-wired"></i>
+                <i class="fas fa-spin fa-spinner"></i>
+                <span class="label">Serve</span>
+                <span class="view-count">0</span>
+
+            </div>
+
+            <div class="button"
+                 title="Drive this track in practice"
+                 onclick="Rsed.player.play_test_drive();">
+
+                <i class="fas fa-forward"></i>
+                Test
+
+            </div>
+
+            <div class="button"
+                 title="Race this track against the CPU"
+                 onclick="Rsed.player.play_with_opponent();">
+
+                <i class="fas fa-play-circle"></i>
+                Play
+
+            </div>
+
+            <div class="button disabled hidden"
+                 title="Browse other RallySportED-made tracks"
+                 onclick="window.open('https://rallysport-content.herokuapp.com/tracks/', '_blank', 'noopener');">
+
+                <i class="fas fa-draw-polygon"></i>
+                More tracks
+
+            </div>
+
+            <div class="button"
+                 title="Open the user's manual"
+                 onclick="window.open('./help/', '_blank', 'noopener');">
+
+                <i class="fas fa-book-open"></i>
+                Help
+
+            </div>
+
+            <div class="button-bar scenes">
+
+                <div class="button"
+                     onclick="Rsed.$currentScene = 'terrain-editor';">
+
+                    <i class="fas fa-cubes"></i>
+                    Terrain
+
+                </div>
+
+                    <div class="button"
+                         onclick="Rsed.$currentScene = 'tilemap-editor';">
+
+                    <i class="fas fa-paint-roller"></i>
+                    Tilemap
+
+                </div>
+
+                    <div class="button"
+                         onclick="Rsed.$currentScene = 'texture-editor';">
+
+                    <i class="fas fa-image"></i>
+                    Texture
+
+                </div>
+
+            </div>
+
+            <div id="data-dropdown">
+            </div>
+
+            <div id="prop-dropdown" class="dropdown-menu">
+            </div>
+
+            <div id="popup-notifications-container"></div>
+
+        </section>
+
+        <div id="jsdos-container">
+
+            <canvas id="jsdos-canvas" width="320" height="200"></canvas>
+
+            <div id="stop-jsbox-button"
+                class="button stop"
+                style="display: none;"
+                title="Exit the player"
+                v-if="Rsed.player.is_playing()"
+                onclick="Rsed.player.stop();">
+
+                <i class="fas fa-times fa-2x"></i>
+                
+            </div>
+
+        </div>
+
+        <section id="canvas">
+
+             <canvas id="base-render" class="pixelated"></canvas>
+             
+             <canvas id="ui-overlay" class="pixelated"></canvas>
+
+        </section>
+
+        <div id="blue-screen">
+
+            <h1>
+                <i class="fas fa-fw fa-otter"></i>
+                That failed... Maybe reloading would fix it?
+            </h1>
+
+            <div id="error-description">
+                Undefined error
+            </div>
+
+        </div>
+    
+    </body>
+</html>
