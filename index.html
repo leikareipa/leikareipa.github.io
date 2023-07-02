@@ -16,7 +16,7 @@
         el.style.position = "absolute";
         el.style.left = `${x + (performance.now() / 10)}px`;
         el.style.top = `${y}px`;
-        el.style.transform = `translate(-50%, -50%) rotate(${x}deg)`;
+        el.style.transform = `translate(-50%, -50%) rotate(${(performance.now() >> 2) & 0x1ff}deg)`;
         document.body.append(el);
     }, 0);
 </script>
