@@ -164,7 +164,7 @@ src/scaler/scaler.h
 <p>When an input frame is scaled, its pixel data is copied into the subsystem&#x27;s frame buffer, from which callers can fetch it until the next image is scaled (or until the buffer&#x27;s pixel data is modified in some other way).</p>
 <p>By default, it&#x27;s the state of the scaler subsystem&#x27;s frame buffer that gets displayed to the end-user in VCS&#x27;s capture window.</p>
 <h2>Usage</h2>
-<ol><li>Call <a href='./file=src_scaler_scaler_h.html#ks_initialize_scaler'>ks_initialize_scaler()</a> to initialize the subsystem. This is VCS&#x27;s default startup behavior. Note that this function should be called only once per program execution.</li><li>Use setter functions to customize scaler options: <pre class='program-listing'><code class='language-cpp'>ks_set_scaling_multiplier(0.75);</code><code class='language-cpp'>ks_set_downscaling_filter(&quot;Linear&quot;);</code><code class='language-cpp'>ks_set_base_resolution({640, 480});</code></pre></li><li>Feed captured frames into <a href='./file=src_scaler_scaler_h.html#ks_scale_frame'>ks_scale_frame()</a>, then read the scaled output from ks_frame_buffer(): <pre class='program-listing'><code class='language-cpp'>ks_scale_frame(frame);</code><code class='language-cpp'>const auto &amp;scaledImage = ks_frame_buffer();</code></pre></li><li>You can automate the scaling of captured frames using event listeners: <pre class='program-listing'><code class='language-cpp'>// Executed each time the capture subsystem reports a new captured frame.</code><code class='language-cpp'>kc_ev_new_captured_frame.listen([](const captured_frame_s &amp;frame)</code><code class='language-cpp'>{</code><code class='language-cpp'>    ks_scale_frame(frame);</code><code class='language-cpp'>});</code><code class='language-cpp'> </code><code class='language-cpp'>// Executed each time the scaler subsystem produces a new scaled image.</code><code class='language-cpp'>ks_ev_new_scaled_image.listen([](const image_s &amp;image)</code><code class='language-cpp'>{</code><code class='language-cpp'>    printf(&quot;A frame was scaled to %lu x %lu.\n&quot;, image.resolution.w, image.resolution.h);</code><code class='language-cpp'>});</code></pre></li><li>VCS will automatically release the scaler subsystem on program exit. </li></ol>
+<ol><li>Call <a href='./file=src_scaler_scaler_h.html#ks_initialize_scaler'>ks_initialize_scaler()</a> to initialize the subsystem. Note that this function should be called only once per program execution.</li><li>Use setter functions to customize scaler options: <pre class='program-listing'><code class='language-cpp'>ks_set_scaling_multiplier(0.75);</code><code class='language-cpp'>ks_set_downscaling_filter(&quot;Linear&quot;);</code><code class='language-cpp'>ks_set_base_resolution({640, 480});</code></pre></li><li>Feed captured frames into <a href='./file=src_scaler_scaler_h.html#ks_scale_frame'>ks_scale_frame()</a>, then read the scaled output from ks_frame_buffer(): <pre class='program-listing'><code class='language-cpp'>ks_scale_frame(frame);</code><code class='language-cpp'>const auto &amp;scaledImage = ks_frame_buffer();</code></pre></li><li>You can automate the scaling of captured frames using event listeners: <pre class='program-listing'><code class='language-cpp'>// Executed each time the capture subsystem reports a new captured frame.</code><code class='language-cpp'>kc_ev_new_captured_frame.listen([](const captured_frame_s &amp;frame)</code><code class='language-cpp'>{</code><code class='language-cpp'>    ks_scale_frame(frame);</code><code class='language-cpp'>});</code><code class='language-cpp'> </code><code class='language-cpp'>// Executed each time the scaler subsystem produces a new scaled image.</code><code class='language-cpp'>ks_ev_new_scaled_image.listen([](const image_s &amp;image)</code><code class='language-cpp'>{</code><code class='language-cpp'>    printf(&quot;A frame was scaled to %lu x %lu.\n&quot;, image.resolution.w, image.resolution.h);</code><code class='language-cpp'>});</code></pre></li><li>VCS will automatically release the scaler subsystem on program exit. </li></ol>
 </section>
 <section id='function-documentation'>
 <header>
@@ -194,34 +194,34 @@ src/scaler/scaler.h
 <span class='type'>event</span>
 <span class='name'>ks_ev_custom_scaler_disabled</span>
 <span class='param'>(void)</span>
-</header><article class='description'><p>An event fired when there&#x27;s no longer an output scaling filter being used to scale captured frames. </p></article></section>
+</header><article class='description'><p>Fired when there&#x27;s no longer an output scaling filter being used to scale captured frames. </p></article></section>
 <section class='event ks_ev_custom_scaler_enabled'><header id='ks_ev_custom_scaler_enabled' class='anchor highlightable'>
 <span class='type'>event</span>
 <span class='name'>ks_ev_custom_scaler_enabled</span>
 <span class='param'>(void)</span>
-</header><article class='description'><p>An event fired when an output scaling filter becomes active, i.e. when captured frames begin being scaled using such a filter. </p></article></section>
+</header><article class='description'><p>Fired when an output scaling filter becomes active, i.e. when captured frames begin being scaled using such a filter. </p></article></section>
 <section class='event ks_ev_frames_per_second'><header id='ks_ev_frames_per_second' class='anchor highlightable'>
 <span class='type'>event</span>
 <span class='name'>ks_ev_frames_per_second</span>
 <span class='param'>(unsigned)</span>
-</header><article class='description'><p>An event fired once per second, giving the number of input frames the scaler subsystem scaled during that time.</p><pre class='program-listing'><code class='language-cpp'>ks_ev_frames_per_second.listen([](unsigned numFrames)</code><code class='language-cpp'>{</code><code class='language-cpp'>    printf(&quot;Scaled %u frames per second.\n&quot;, numFrames);</code><code class='language-cpp'>});</code></pre><div class='interjection see-also'><span class='label'>See also: </span><a href='./file=src_scaler_scaler_h.html#ks_scale_frame'>ks_scale_frame()</a> </div><p></p></article></section>
+</header><article class='description'><p>Fired once per second, giving the number of input frames the scaler subsystem scaled during that time.</p><pre class='program-listing'><code class='language-cpp'>ks_ev_frames_per_second.listen([](unsigned numFrames)</code><code class='language-cpp'>{</code><code class='language-cpp'>    printf(&quot;Scaled %u frames per second.\n&quot;, numFrames);</code><code class='language-cpp'>});</code></pre><div class='interjection see-also'><span class='label'>See also: </span><a href='./file=src_scaler_scaler_h.html#ks_scale_frame'>ks_scale_frame()</a> </div><p></p></article></section>
 <section class='event ks_ev_new_output_resolution'><header id='ks_ev_new_output_resolution' class='anchor highlightable'>
 <span class='type'>event</span>
 <span class='name'>ks_ev_new_output_resolution</span>
 <span class='param'>(const <a href='./struct=resolution_s.html#resolution_s'>resolution_s</a>&amp;)</span>
-</header><article class='description'><p>An event fired when the scaler subsystem scales a frame into a resolution different from the previous frame&#x27;s.</p><pre class='program-listing'><code class='language-cpp'>ks_scale_frame(frame);</code><code class='language-cpp'> </code><code class='language-cpp'>ks_set_scaling_multiplier(ks_scaling_multiplier() + 1);</code><code class='language-cpp'> </code><code class='language-cpp'>// Fires ks_ev_new_output_resolution.</code><code class='language-cpp'>ks_scale_frame(frame);</code></pre> </article></section>
+</header><article class='description'><p>Fired when the scaler subsystem scales a frame into a resolution different from the previous frame&#x27;s.</p><pre class='program-listing'><code class='language-cpp'>ks_scale_frame(frame);</code><code class='language-cpp'> </code><code class='language-cpp'>ks_set_scaling_multiplier(ks_scaling_multiplier() + 1);</code><code class='language-cpp'> </code><code class='language-cpp'>// Fires ks_ev_new_output_resolution.</code><code class='language-cpp'>ks_scale_frame(frame);</code></pre> </article></section>
 <section class='event ks_ev_new_scaled_image'><header id='ks_ev_new_scaled_image' class='anchor highlightable'>
 <span class='type'>event</span>
 <span class='name'>ks_ev_new_scaled_image</span>
 <span class='param'>(const <a href='./struct=image_s.html#image_s'>image_s</a>&amp;)</span>
-</header><article class='description'><p>An event fired when the scaler subsystem has finished scaling a frame.</p><pre class='program-listing'><code class='language-cpp'>ks_ev_new_scaled_image.listen([](const image_s &amp;scaledImage)</code><code class='language-cpp'>{</code><code class='language-cpp'>    printf(&quot;Scaled a frame to %lu x %lu.\n&quot;, scaledImage.resolution.w, scaledImage.resolution.h);</code><code class='language-cpp'>});</code></pre><div class='interjection see-also'><span class='label'>See also: </span><a href='./file=src_scaler_scaler_h.html#ks_scale_frame'>ks_scale_frame()</a> </div><p></p></article></section>
+</header><article class='description'><p>Fired when the scaler subsystem has finished scaling a frame.</p><pre class='program-listing'><code class='language-cpp'>ks_ev_new_scaled_image.listen([](const image_s &amp;scaledImage)</code><code class='language-cpp'>{</code><code class='language-cpp'>    printf(&quot;Scaled a frame to %lu x %lu.\n&quot;, scaledImage.resolution.w, scaledImage.resolution.h);</code><code class='language-cpp'>});</code></pre><div class='interjection see-also'><span class='label'>See also: </span><a href='./file=src_scaler_scaler_h.html#ks_scale_frame'>ks_scale_frame()</a> </div><p></p></article></section>
 </section>
 </div>
 </article>
 </main>
 <footer>
-<time datetime="2023-7-9">
-Generated 9 July 2023
+<time datetime="2023-7-13">
+Generated 13 July 2023
 </time>
 </footer>
 </body>
