@@ -154,7 +154,6 @@ src/display/display.h
 </tbody></table></section>
 </section>
 <section id='data-structures'><header><h1>Data structures</h1></header><table class='data-structure-signatures'><tbody><tr><td class='type'>struct</td><td class='name'><a href='./struct=abstract_filter_graph_node_s.html#abstract_filter_graph_node_s'>abstract_filter_graph_node_s</a></td></tr><tr><td class='type'>struct</td><td class='name'><a href='./struct=filter_graph_option_s.html#filter_graph_option_s'>filter_graph_option_s</a></td></tr><tr><td class='type'>struct</td><td class='name'><a href='./struct=image_s.html#image_s'>image_s</a></td></tr><tr><td class='type'>struct</td><td class='name'><a href='./struct=resolution_s.html#resolution_s'>resolution_s</a></td></tr></tbody></table></section>
-<section id='events'><header><h1>Events</h1></header><table class='event-signatures'><tbody><tr><td class='event'><a href='./file=src_display_display_h.html#kd_ev_dirty'>kd_ev_dirty</a>(void)</td></tr></tbody></table></section>
 <section class='anchor' id='detailed-description'><header><h1>Detailed description</h1></header><p>The display subsystem interface. </p>
 <p>The VCS GUI is responsible for providing the user with real-time means to enter information (e.g. configuring capture parameters), for directing such input to VCS, and for displaying captured frames and other information about VCS&#x27;s run-time state to the user.</p>
 <p>The display interface decouples the GUI&#x27;s implementation from the rest of VCS, making it possible to replace the GUI with fairly minimal modification to the rest of VCS.</p>
@@ -178,22 +177,12 @@ src/display/display.h
 <section class='function kd_update_output_window_size'><header id='kd_update_output_window_size' class='anchor highlightable'><div class='type'>function</div><div class='meat'><span class='return-value'>void</span> <span class='signature'><span class='name'>kd_update_output_window_size</span>(<span class='param'><span class='type'></span><span class='name'></span></span>)</span></div></header><article class='description'><p>Lets the GUI know that the size of output frames has changed. The GUI should update the size of its output window accordingly.</p><p>VCS expects the size of the output window to match the size of output frames; although the GUI may choose not to honor this.</p><p>The current size of output frames can be obtained via the scaler interface, <a href='./file=src_scaler_scaler_h.html#scaler.h'>src/scaler/scaler.h</a>, by calling <a href='./file=src_scaler_scaler_h.html#ks_output_resolution'>ks_output_resolution()</a>.</p><p>The following sample Qt 5 code sizes the output window to match the size of VCS&#x27;s output frames (<em>this</em> is the output window&#x27;s instance):</p><pre class='program-listing'><code class='language-cpp'>resolution_s r = ks_output_resolution();</code><code class='language-cpp'>this-&gt;setFixedSize(r.w, r.h);</code></pre><div class='interjection see-also'><span class='label'>See also: </span><a href='./file=src_display_display_h.html#kd_update_output_window_title'>kd_update_output_window_title()</a> </div><p></p></article></section>
 <section class='function kd_update_output_window_title'><header id='kd_update_output_window_title' class='anchor highlightable'><div class='type'>function</div><div class='meat'><span class='return-value'>void</span> <span class='signature'><span class='name'>kd_update_output_window_title</span>(<span class='param'><span class='type'></span><span class='name'></span></span>)</span></div></header><article class='description'><p>Asks the GUI to refresh the output window&#x27;s title bar text.</p><p>VCS assumes that the output window&#x27;s title bar displays certain information about VCS&#x27;s state - e.g. the current capture resolution. VCS will thus call this function to let the GUI know that the relevant state has changed.</p><p>If your custom GUI implementation displays different state variables than VCS&#x27;s default GUI does, you may need to do custom polling of the relevant state in order to be aware of changes to it.</p><div class='interjection see-also'><span class='label'>See also: </span><a href='./file=src_display_display_h.html#kd_update_output_window_size'>kd_update_output_window_size()</a> </div><p></p></article></section>
 </section>
-<section id='event-documentation'>
-<header>
-<h1>Event documentation</h1>
-</header>
-<section class='event kd_ev_dirty'><header id='kd_ev_dirty' class='anchor highlightable'>
-<span class='type'>event</span>
-<span class='name'>kd_ev_dirty</span>
-<span class='param'>(void)</span>
-</header><article class='description'><p>An event that can be fired by subsystems to indicate that the output window should redraw its contents. </p></article></section>
-</section>
 </div>
 </article>
 </main>
 <footer>
-<time datetime="2023-7-13">
-Generated 13 July 2023
+<time datetime="2023-7-15">
+Generated 15 July 2023
 </time>
 </footer>
 </body>
