@@ -171,93 +171,25 @@
                     <dokki-topics>
                         
 <dokki-topic title="Introduction to VCS">
-<p>VCS is a well-featured, open-source Linux control application by <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a> for Datapath's VisionRGB range of capture hardware, with a feature-set targeted especially at retro enthusiasts.</p>
-<p>You can <a href="https://github.com/leikareipa/vcs">find VCS on GitHub</a>.</p>
-<dokki-image src="./img/vcs-2.4-with-dialogs.webp" width="1189" height="878"     headerless   thumbnail-src="data:image/png;base64,UklGRgIBAABXRUJQVlA4WAoAAAAQAAAAEwAADgAAQUxQSEIAAAABYBPbVqNnABnIgPKbQERSgZtkBAE42Gr7nLOAiJgAHNtpv+CsO6PNYTgzXa9S3PCjXXvH1DxDROQvAYB6DeO7+QhWUDggmgAAAJADAJ0BKhQADwA+bSyRRaQioZgEAEAGxKAJ0AHoaFRB6saGecAA/uTqgey0NeRUKc3B0Pv/3Y367EPSxffAKaaae3Rcq5eRfD6jIRVevD84Z8qkyuR7w2UZAvlity3P4Cin/SDXOWBzClN+966siI+U//MeAj9TJVYlC4sNkjZjXzVj4Rx557Xcq4KWz8IEGPfvatMX/9LgAAA="><template #caption>A screenshot of VCS 2.4.0 showing the output window and some of the control dialogs</template>
+<p>VCS is an <a href="https://github.com/leikareipa/vcs">open-source</a> Linux video capture application for Datapath capture cards, with a feature-set targeted especially at retro enthusiasts.</p>
+<dokki-image src="./img/vcs-3.0.png" width="1697" height="847" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAC4jAAAuIwF4pT92AAACtElEQVQokS1R204TURQ9736BXCMKls50TilTynSmTFvaAuNwGQgMlIEiAQIJxGCoogLGBJFolIiRi9zRBDSICAUK6INP/om/4As9y0zlYWXv7Oy11r6QSsXNKOWgVFM2OFmLvvEo+sYjSIyFYN0Pon0kgJZBCS1DfrQMSzBGKtE47MvcGRShDYh/CCFECYlEEb3kWl4hIaOzMQxMqGxoWsXzLw2Y2tYwvVuPB3N1iDX70NYbgWGp0Dv8qO9UUG8FoMUlVmP6UNfu/xuLqkfRSPB7JKIe6rXhQ7J0GmcLpx14c9DKZnYMPF7VMLFeh4GHYeTnFMHp4OAtr4Dfp0B0i6CcAKlChqoEmZ2XlZXB4ynLRrebgrw/jGPluAtz+22Y/WzgyaqGyS0NiaQKwUXBuzhUSpXQtDoEgypE0QNNq2WNTY0QqMAcjtLL4uLiS4fDcSkIwiVZObGwfXYXy8cWZnYNTG3qeLHXhK4xBXm5heB5Di6XC06nMwt7Gls4Go2AChzC4SB0XYckSdlespjqxEIqjuWUhfmDdrz71oGNi27ce1qD/NxCcBwHSmkWgmCv6EZNLIpYLIbiWzfh90uoqqqCx+MBz/Mg62cJtnXewzbTCbZ8YrHlI4vt/Opjo89qWc71PHCck1EqMFvMJtgC9nRtpolopBrhUBCG0YxAIJA1JxsXicynn72ZrfOezNJJZ2b+wMzMp8xM36MQy83JvxKkNrIEm2iaJtLpNJLJJG4UFWXrthmlAsj6RQIbP3qwcZ7AYiqO13utePW1BT3JKuTm5DOnszR7Q57/f0dZltHUZGBtbR39/f0oKbkN6nZf9fAgq+lu/cNpl76UsvS3+6Y+89Fo3PzdHapucL8sKCi0n5BRZD+T/RIqvCIkyYdAQEYoqEKWJXjFcni95fD5vFAUGf8AXRR7PHlo4MEAAAAASUVORK5CYII="><template #caption>A screenshot of VCS 3.0 showing the capture window (in the background) and some of the control options.</template>
                         </dokki-image>
-<dokki-subtopic title="Program features">
+<dokki-subtopic title="Key program features">
 <ul>
-<li>Augments the capabilities of the VisionRGB hardware for capturing dynamic signals (e.g. retro PCs)</li>
-<li>Various feature and usability improvements over Datapath's default capture application</li>
-<li>Supports both modern and legacy VisionRGB hardware</li>
-<li>Unlimited video presets with automatic programmable activation</li>
-<li>Several scaling modes and customizable image filters</li>
-<li>Post-processing to reduce or eliminate tearing in captured frames</li>
-<li>On-screen display with HTML/CSS formatting</li>
-<li>Variable refresh rate output to match the input signal's frequency</li>
-<li>Low reliance on GPU features, easy to run in virtual machines</li>
-<li>Custom dark GUI theme</li>
-<li>Good documentation for both end-users and developers</li>
-<li>Modular code extendable to support capture hardware from other vendors</li>
-<li>Free and open source</li>
+<li>Various usability improvements over Datapath's bundled capture application, enabling high-quality capture of dynamic signals</li>
+<li>Unlimited video presets with programmable activation</li>
+<li>Several scaling modes and image filters</li>
+<li>Variable refresh rate output</li>
+<li>Free and open source, with a modular implementation easily extendable to non-Datapath capture devices</li>
 </ul>
 </dokki-subtopic><dokki-subtopic title="Supported capture hardware">
-<dokki-table headerless>
-    <table>
-        <tr>
-            <th>Vendor</th>
-            <th>Model</th>
-        </tr>
-        <tr>
-            <td>Datapath</td>
-            <td>VisionRGB-PRO1</td>
-        </tr>
-        <tr>
-            <td>Datapath</td>
-            <td>VisionRGB-PRO2</td>
-        </tr>
-        <tr>
-            <td>Datapath</td>
-            <td>VisionRGB-E1</td>
-        </tr>
-        <tr>
-            <td>Datapath</td>
-            <td>VisionRGB-E2</td>
-        </tr>
-        <tr>
-            <td>Datapath</td>
-            <td>VisionRGB-E1S</td>
-        </tr>
-        <tr>
-            <td>Datapath</td>
-            <td>VisionRGB-E2S</td>
-        </tr>
-        <tr>
-            <td>Datapath</td>
-            <td>VisionRGB-X2</td>
-        </tr>
-        <tr>
-            <td>Datapath</td>
-            <td>VisionAV series<sup>*</sup></td>
-        </tr>
-        <tfoot>
-            <tr>
-                <td colspan="2">
-                    <sup>*</sup>Can't be guaranteed, but user reports suggest compatibility.
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-</dokki-table>
+<p>Any model of Datapath capture card supported by the Datapath Vision driver for Linux should be compatible with VCS; although the card's full set of capabilities may not be exposed.</p>
 </dokki-subtopic><dokki-subtopic title="System requirements">
 <dokki-table headerless>
     <table>
         <tr>
             <th>OS</th>
-            <td>
-                <dokki-table headerless>
-                    <table>
-                        <tr>
-                            <th>Platform</th>
-                            <th>Required version</th>
-                        </tr>
-                        <tr>
-                            <td>Linux</td>
-                            <td>kernel 5</td>
-                        </tr>
-                    </table>
-                </dokki-table>
-            </td>
+            <td>Linux</td>
         </tr>
         <tr>
             <th>CPU</th>
@@ -287,7 +219,7 @@
         <tr>
             <th>GPU</th>
             <td>
-                For hardware rendering (optional), a graphics card with support for OpenGL 1.2
+                For hardware rendering (optional), an OpenGL 1.2 compatible graphics card
             </td>
         </tr>
         <tr>
@@ -315,7 +247,6 @@
 </dokki-subtopic><dokki-subtopic title="Fixing an incorrect capture resolution">
 <p>The capture hardware may not always correctly sense the resolution of the input signal, resulting in the displaying of malformed frames in VCS's <a href="#output-window">capture window</a> and/or the reporting of an incorrect input resolution in the capture window's <a href="#output-window-title-bar">title bar</a>.</p>
 <p>You can use the <a href="#dialog-windows-input-resolution-dialog">Input resolution dialog</a> to manually correct the resolution.</p>
-<p>If you find that a particular resolution is consistently misidentified by the capture hardware, you can have VCS correct it automatically via the <a href="#dialog-windows-alias-resolutions-dialog">Alias resolutions dialog</a>.</p>
 </dokki-subtopic><dokki-subtopic title="Resizing the capture window">
 <p>The size of the capture window can be changed via the <a href="#dialog-windows-output-resolution-dialog">Output resolution dialog</a>.</p>
 </dokki-subtopic><dokki-subtopic title="Changing the output aspect ratio">
@@ -339,10 +270,10 @@
 <p>First, select the <menu-path>Context &gt; Window &gt; Render using &gt; OpenGL</menu-path> menu option to enable OpenGL rendering, then press the <key-combo>F11</key-combo> key to enter fullscreen mode (see <a href="#faq-entering-fullscreen-mode">Entering fullscreen mode</a> for caveats). Your hardware's refresh rate should now be matched to the capture's refresh rate.</p>
 </dokki-subtopic><dokki-subtopic title="Reducing screen tearing">
 <p>With some capture sources (e.g. DOS-mode VGA), you may find the image susceptible to tearing. This kind of tearing is present in the output signal and doesn't result from the capture process – you'd see it even if you were viewing the output directly through a monitor.</p>
-<dokki-image src="./img/tr1-torn.webp" width="600" height="374"     headerless   thumbnail-src="data:image/png;base64,UklGRuAAAABXRUJQVlA4INQAAAAQBgCdASoUAAwAPm0qkUWkIqGYBABABsS2AE6ZQjgbyCmA/7u0nb8F3AezIRE4n9JA06dRgl7lwKoA/vdpz3U5Fg6RJ9PHxvAdB0JafvV4VWsL7Yx+FIKZMM4fXE+RzO0rTRwvbusx41kCwLvOUvDwRtY9JizdiPBDPRp3EguEaRIk7aJS4o8n6qvwkd+7jJCDwdb/u3ua7H1A43CGqcmp/wwNuFpHwGTRNVUCWURmIMMnZkeTbc9uI9l8OqwCsz3janfCGYGxUCsQYjsdnQ514wNwAA=="><template #caption>Screen tearing in Tomb Raider (DOS)</template>
+<dokki-image src="./img/tr1-torn.webp" width="600" height="374" headerless="true" thumbnail-src="data:image/png;base64,UklGRuAAAABXRUJQVlA4INQAAAAQBgCdASoUAAwAPm0qkUWkIqGYBABABsS2AE6ZQjgbyCmA/7u0nb8F3AezIRE4n9JA06dRgl7lwKoA/vdpz3U5Fg6RJ9PHxvAdB0JafvV4VWsL7Yx+FIKZMM4fXE+RzO0rTRwvbusx41kCwLvOUvDwRtY9JizdiPBDPRp3EguEaRIk7aJS4o8n6qvwkd+7jJCDwdb/u3ua7H1A43CGqcmp/wwNuFpHwGTRNVUCWURmIMMnZkeTbc9uI9l8OqwCsz3janfCGYGxUCsQYjsdnQ514wNwAA=="><template #caption>Screen tearing in Tomb Raider (DOS)</template>
                         </dokki-image>
 <p>To reduce or even eliminate this kind of tearing, VCS provides anti-tearing functionality. See <a href="#dialog-windows-anti-tear-dialog">Anti-tear dialog</a> for more information.</p>
-<dokki-video platform="youtube" src="_gNywFJFRWo"       ><template #caption>Before (left) and after (right) applying VCS's anti-tearing</template>
+<dokki-video platform="youtube" src="_gNywFJFRWo" ><template #caption>Before (left) and after (right) applying VCS's anti-tearing</template>
                     </dokki-video>
 </dokki-subtopic><dokki-subtopic title="How much capture latency is there?">
 <p>VCS with a Datapath VisionRGB capture card should exhibit minimal latency, typically one or two frames (10~20 milliseconds).</p>
@@ -350,7 +281,7 @@
 
 <dokki-topic title="Output window">
 <p>The central point of the VCS user interface is the output window, where captured frames are displayed as they arrive from the capture device and having undergone any of VCS's filtering and scaling.</p>
-<dokki-image src="./img/output-window.webp" width="642" height="508"     headerless   thumbnail-src="data:image/png;base64,UklGRvwAAABXRUJQVlA4WAoAAAAQAAAAEwAADwAAQUxQSBQAAAABD/D+/4iIICQgaP7PtiCi/ynxAlZQOCDCAAAA0AQAnQEqFAAQAD5tKpFFpCKhmAQAQAbEtgBOmUI4G8rpgGn/kVsL+NbPqZtqA4AA/sEQFOig9oIWlgYiXDElroR0U4CNR5RlaU95CoRkNJATs6/HXOnLus+WOJy0HlhDPoY9FrnJvu/x5cbAcP07Dun0fAN5tjM/b7Arl24quTA9s8Zr/ERA2eW72UbES71PdIug/IVbA566oq8HQ0Nwsmki3OEIjnCgNFvxCeacac6dodOVB5s8ijxKT9Vw92AAAAA="><template #caption>A screenshot of the output window</template>
+<dokki-image src="./img/output-window.webp" width="642" height="508" headerless="true" thumbnail-src="data:image/png;base64,UklGRvwAAABXRUJQVlA4WAoAAAAQAAAAEwAADwAAQUxQSBQAAAABD/D+/4iIICQgaP7PtiCi/ynxAlZQOCDCAAAA0AQAnQEqFAAQAD5tKpFFpCKhmAQAQAbEtgBOmUI4G8rpgGn/kVsL+NbPqZtqA4AA/sEQFOig9oIWlgYiXDElroR0U4CNR5RlaU95CoRkNJATs6/HXOnLus+WOJy0HlhDPoY9FrnJvu/x5cbAcP07Dun0fAN5tjM/b7Arl24quTA9s8Zr/ERA2eW72UbES71PdIug/IVbA566oq8HQ0Nwsmki3OEIjnCgNFvxCeacac6dodOVB5s8ijxKT9Vw92AAAAA="><template #caption>A screenshot of the output window</template>
                         </dokki-image>
 <dokki-subtopic title="Features">
 <h3>Magnifying glass</h3>
@@ -371,7 +302,7 @@
 </dokki-tip>
 </dokki-subtopic><dokki-subtopic title="Title bar">
 <p>The output window's title bar shows information about VCS's current operating state – for example, the input and output resolution.</p>
-<dokki-image src="./img/title-bar.webp" width="479" height="25"     headerless   thumbnail-src="data:image/png;base64,UklGRloAAABXRUJQVlA4IE4AAAAwAwCdASoUAAEAPm0skkWkIqGYBABABsSyi8AAAGqeeDUgAP7swT8U83VGm4dBcP/Pxn5+JZ1JZ1JZ1JgM2LlD0kl/1G/vLkfC/i7IAAA="><template #caption>A sample of the output window's title bar on Linux</template>
+<dokki-image src="./img/title-bar.webp" width="479" height="25" headerless="true" thumbnail-src="data:image/png;base64,UklGRloAAABXRUJQVlA4IE4AAAAwAwCdASoUAAEAPm0skkWkIqGYBABABsSyi8AAAGqeeDUgAP7swT8U83VGm4dBcP/Pxn5+JZ1JZ1JZ1JgM2LlD0kl/1G/vLkfC/i7IAAA="><template #caption>A sample of the output window's title bar on Linux</template>
                         </dokki-image>
 <p>The title bar may contain some or all of the following elements, from left to right:</p>
 <dokki-table headerless>
@@ -641,13 +572,9 @@
 </dokki-subtopic></dokki-topic>
 
 <dokki-topic title="Dialog windows">
-<dokki-subtopic title="Alias resolutions dialog">
-<p>This dialog can be accessed with <menu-path>Context &gt; Input &gt; Aliases...</menu-path>.</p>
-<p>With the alias resolutions dialog, you can instruct VCS to automatically override certain capture resolutions.</p>
-<p>For instance, if you find that your capture device is displaying 640 × 400 as 512 × 488 (or something to that effect), you can define 640 × 400 as an alias of 512 × 488. Whenever the capture device reports a new video mode of 512 × 488, VCS will tell the device to use 640 × 400, instead.</p>
-</dokki-subtopic><dokki-subtopic title="Anti-tear dialog">
+<dokki-subtopic title="Anti-tear dialog">
 <p>This dialog can be accessed with <key-combo>Ctrl + A</key-combo> or <menu-path>Context &gt; Output &gt; Anti-tear...</menu-path>.</p>
-<dokki-image src="./img/anti-tear-dialog.webp" width="489" height="502"     headerless   thumbnail-src="data:image/png;base64,UklGRtIAAABXRUJQVlA4WAoAAAAQAAAAEwAAFAAAQUxQSBoAAAABD0CQbePPvO3XiIg4EBIQNP9vOxDR/5RYAVZQOCCSAAAAsAQAnQEqFAAVAD5tLpFGpCKhoSgNUIANiWkAA+XpCvjKHlMC9iIpo8VPmyjiIAD+8Xqw3L8nmcqG/Oq1ZvRVtl5FJRtD8md6XZwJW4xFJ7u4OghuWOmN90PHPH+83p1HABhwk3t2n9K+CMhVKbXNtKYcaRiG/WiHgIF90kAItwoofq5DjjPH9ThaKL6zdbK+AAA="><template #caption>A screenshot of the anti-tear dialog</template>
+<dokki-image src="./img/anti-tear-dialog.webp" width="489" height="502" headerless="true" thumbnail-src="data:image/png;base64,UklGRtIAAABXRUJQVlA4WAoAAAAQAAAAEwAAFAAAQUxQSBoAAAABD0CQbePPvO3XiIg4EBIQNP9vOxDR/5RYAVZQOCCSAAAAsAQAnQEqFAAVAD5tLpFGpCKhoSgNUIANiWkAA+XpCvjKHlMC9iIpo8VPmyjiIAD+8Xqw3L8nmcqG/Oq1ZvRVtl5FJRtD8md6XZwJW4xFJ7u4OghuWOmN90PHPH+83p1HABhwk3t2n9K+CMhVKbXNtKYcaRiG/WiHgIF90kAItwoofq5DjjPH9ThaKL6zdbK+AAA="><template #caption>A screenshot of the anti-tear dialog</template>
                         </dokki-image>
 <p>The anti-tear dialog provides functionality to remove tearing from captured frames.</p>
 <p>Under some circumstances, like when the captured source doesn't sync its rendering with the refresh rate, captured frames can contain tearing. VCS's anti-tearer helps mitigate this issue.</p>
@@ -717,7 +644,7 @@
 </dokki-table>
 </dokki-subtopic><dokki-subtopic title="Filter graph dialog">
 <p>This dialog can be accessed with <key-combo>Ctrl + F</key-combo> or <menu-path>Context &gt; Output &gt; Filter graph...</menu-path>.</p>
-<dokki-image src="./img/vcs-2.6-filter-graph.webp" width="1368" height="835"     headerless   thumbnail-src="data:image/png;base64,UklGRpAAAABXRUJQVlA4WAoAAAAQAAAAEwAACwAAQUxQSBIAAAABD9D/iAgICQia/689iOh/SnxWUDggWAAAAHADAJ0BKhQADAA+bSyRRaQioZgEAEAGxLSAAClS9PL+ufzBYAD++G4lA/eo8dYhETFGygWgQoGM4h9lumlwP4BxMKZ+5fsvovucS3Zc67B33Saj+swEAAA="><template #caption>The filter graph dialog showing a chain of frame filters</template>
+<dokki-image src="./img/vcs-2.6-filter-graph.webp" width="1368" height="835" headerless="true" thumbnail-src="data:image/png;base64,UklGRpAAAABXRUJQVlA4WAoAAAAQAAAAEwAACwAAQUxQSBIAAAABD9D/iAgICQia/689iOh/SnxWUDggWAAAAHADAJ0BKhQADAA+bSyRRaQioZgEAEAGxLSAAClS9PL+ufzBYAD++G4lA/eo8dYhETFGygWgQoGM4h9lumlwP4BxMKZ+5fsvovucS3Zc67B33Saj+swEAAA="><template #caption>The filter graph dialog showing a chain of frame filters</template>
                         </dokki-image>
 <p>The filter graph dialog lets you to create chains of image filters to be applied to captured frames prior to display in the <a href="#output-window">output window</a>.</p>
 <p>The filter graph is made up of nodes that can be connected together in a chain. These nodes come in three varieties: <em>input gate</em>, <em>output gate</em>, and <em>filter</em>.</p>
@@ -766,14 +693,14 @@
 </dokki-table>
 </dokki-subtopic><dokki-subtopic title="Overlay editor dialog">
 <p>This dialog can be accessed with <key-combo>Ctrl + L</key-combo> or <menu-path>Context &gt; Output &gt; Overlay editor...</menu-path>.</p>
-<dokki-image src="./img/vcs-2.6-overlay.webp" width="1438" height="752"     headerless   thumbnail-src="data:image/png;base64,UklGRswAAABXRUJQVlA4WAoAAAAQAAAAEwAACQAAQUxQSCoAAAABN6AoABmI/qGE8mNHjYgI8D4WiAQgmgkGmGCL/29IBkT0fwLUOVgfMwBWUDggfAAAALADAJ0BKhQACgA+bSySRaQioZgEAEAGxLIAWHYJGKwvDMF/hbIoAMtPo0yweNu5Tn2olCEbCDHd4wUIb+l1mWHGHJvAe6vVEbpyHWF22kB60jdk//hZs659ILE38w7lhRIpgrsz81Vhp7Ij7PR1KuGd3hW1RejxxBvqoAA="><template #caption>The overlay editor dialog (right) showing the HTML/CSS source of an overlay (top left) in this capture of a Linux desktop</template>
+<dokki-image src="./img/vcs-2.6-overlay.webp" width="1438" height="752" headerless="true" thumbnail-src="data:image/png;base64,UklGRswAAABXRUJQVlA4WAoAAAAQAAAAEwAACQAAQUxQSCoAAAABN6AoABmI/qGE8mNHjYgI8D4WiAQgmgkGmGCL/29IBkT0fwLUOVgfMwBWUDggfAAAALADAJ0BKhQACgA+bSySRaQioZgEAEAGxLIAWHYJGKwvDMF/hbIoAMtPo0yweNu5Tn2olCEbCDHd4wUIb+l1mWHGHJvAe6vVEbpyHWF22kB60jdk//hZs659ILE38w7lhRIpgrsz81Vhp7Ij7PR1KuGd3hW1RejxxBvqoAA="><template #caption>The overlay editor dialog (right) showing the HTML/CSS source of an overlay (top left) in this capture of a Linux desktop</template>
                         </dokki-image>
 <p>The overlay dialog lets you define a message to be overlaid on the <a href="#output-window">output window</a>, with optional HTML/CSS styling.</p>
 <h3>Formatting</h3>
 <p>For a list of the HTML and CSS formatting features supported, see <a href="https://doc.qt.io/qt-5/richtext-html-subset.html">Qt5: Supported HTML Subset</a>.</p>
 
 
-                <dokki-code syntax="html"   headerless  ><template #caption>A sample overlay with HTML/CSS formatting that displays information about the current video mode</template>
+                <dokki-code syntax="html"headerless="true"><template #caption>A sample overlay with HTML/CSS formatting that displays information about the current video mode</template>
                     <template #code>
                         <pre>&lt;style&gt;
     video-mode {
@@ -792,7 +719,7 @@
             
 
 
-                <dokki-code syntax="text"   headerless  ><template #caption>A sample overlay without HTML/CSS formatting that displays information about the current video mode</template>
+                <dokki-code syntax="text"headerless="true"><template #caption>A sample overlay without HTML/CSS formatting that displays information about the current video mode</template>
                     <template #code>
                         <pre>Input: $inWidth x $inHeight, $inRate Hz
 </pre>
@@ -832,10 +759,6 @@
             <td>The height of the current output resolution.</td>
         </tr>
         <tr>
-            <td><em>$outRate</em></td>
-            <td>The current output frame rate.</td>
-        </tr>
-        <tr>
             <td><em>$frameDropIndicator</em></td>
             <td>Shows a warning label if frames are currently being dropped, or nothing if they aren't.</td>
         </tr>
@@ -851,7 +774,7 @@
 </dokki-table>
 </dokki-subtopic><dokki-subtopic title="Video presets dialog">
 <p>This dialog can be accessed with <key-combo>Ctrl + V</key-combo> or <menu-path>Context &gt; Input &gt; Video presets...</menu-path>.</p>
-<dokki-image src="./img/video-presets-dialog.webp" width="513" height="656"     headerless   thumbnail-src="data:image/png;base64,UklGRjgBAABXRUJQVlA4WAoAAAAQAAAAEwAAGQAAQUxQSBoAAAABD0CQbePPvO3XiIg4EBIQNP93GxDR/5Q4AVZQOCD4AAAAsAUAnQEqFAAaAD5tLJJFpCKhmAQAQAbEtIApgF5GCAPsAFa7lg6GgtoR89QEugKkwlOQ0gAAAP7yzWhd3l8KJ/6YsXhGlBIEmyhRdW9sSTYwHYJO4oI7gR5pqUvPvrU03dqYFF3J4jMpMhMR8DzbiUwM1h6Ppvk1P3i0D/wgSOx52tw3xouxPRc2n+xynR/CCecmAPobHVPt6hmw7CCLxZ/yULLit3ayW/KdiHttVeGEKCajVytT/ZU26jIb7dt8pv0GJze/g2rctnnup9qk45WUipYqYOArDlQ9nOaQOnb8QeJA/TAyKfy4FV/oUDQVYl/lk/AAAAA="><template #caption>A screenshot of the video presets dialog</template>
+<dokki-image src="./img/video-presets-dialog.webp" width="513" height="656" headerless="true" thumbnail-src="data:image/png;base64,UklGRjgBAABXRUJQVlA4WAoAAAAQAAAAEwAAGQAAQUxQSBoAAAABD0CQbePPvO3XiIg4EBIQNP93GxDR/5Q4AVZQOCD4AAAAsAUAnQEqFAAaAD5tLJJFpCKhmAQAQAbEtIApgF5GCAPsAFa7lg6GgtoR89QEugKkwlOQ0gAAAP7yzWhd3l8KJ/6YsXhGlBIEmyhRdW9sSTYwHYJO4oI7gR5pqUvPvrU03dqYFF3J4jMpMhMR8DzbiUwM1h6Ppvk1P3i0D/wgSOx52tw3xouxPRc2n+xynR/CCecmAPobHVPt6hmw7CCLxZ/yULLit3ayW/KdiHttVeGEKCajVytT/ZU26jIb7dt8pv0GJze/g2rctnnup9qk45WUipYqYOArDlQ9nOaQOnb8QeJA/TAyKfy4FV/oUDQVYl/lk/AAAAA="><template #caption>A screenshot of the video presets dialog</template>
                         </dokki-image>
 <p>The video presets dialog lets you to modify the capture devices's video signal parameters.</p>
 <p>A given video preset's parameters will be applied when all of its &quot;Activates with&quot; conditions are met. For instance, if you've defined a preset's activation resolution as 800 × 600 and have disabled the other activating conditions, the preset's parameters will be applied when the capture video mode is 800 × 600.</p>
@@ -990,12 +913,6 @@
             <td>-f <i>&lt;path&gt;</i></td>
             <td>
                 Load a custom filter graph from the given file on start-up. Filter graph files typically have the .vcs-filter-graph suffix.
-            </td>
-        </tr>
-        <tr>
-            <td>-a <i>&lt;path&gt;</i></td>
-            <td>
-                Load alias resolutions from the given file on start-up. Alias resolution files typically have the .vcs-alias suffix.
             </td>
         </tr>
         <tr>
