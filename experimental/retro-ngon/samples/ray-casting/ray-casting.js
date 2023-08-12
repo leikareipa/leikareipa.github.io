@@ -18,7 +18,7 @@ export const sample = {
             position: {x:0, y:0, z:0},
             direction: {x:180, y:0, z:0},
             rotationSpeed: {x:4, y:0.75},
-            allowMoving: false,
+            allowMovement: false,
             allowRotation: true,
         });
 
