@@ -77,6 +77,13 @@ export const sample = {
             case "CRT": shaderFn = ps_crt_effect; break;
             case "Dither": shaderFn = ps_dither_effect; break;
         }
+
+        reset_materials();
+        switch (parent.ACTIVE_SHADER)
+        {
+            case "Wireframe": enable_wireframe(); break;
+            case "Solid": enable_solid(); break;
+        }
     
         return {
             renderOptions: {
@@ -99,73 +106,46 @@ export const sample = {
         };
     },
     lights: [
-        Rngon.light(Rngon.vector(36089, 2600, -33240),{
-            intensity: 7000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),
-        Rngon.light(Rngon.vector(39548, 2846, -31564),{
-            intensity: 4000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),
-        Rngon.light(Rngon.vector(44519, 2840, -31380),{
-            intensity: 4000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),
-        Rngon.light(Rngon.vector(53262, 1681, -28547),{
-            intensity: 5000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),
-        Rngon.light(Rngon.vector(58280, 1681, -28547),{
-            intensity: 5000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),
-    
-        // Outdoors.
-        /*
-        Rngon.light(Rngon.vector(32768, 2261, -33333),{
-            intensity: 4000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),
-        Rngon.light(Rngon.vector(37335, 2921, -27592),{
-            intensity: 4000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),
-        Rngon.light(Rngon.vector(45535, 2751, -27971),{
-            intensity: 4000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),
-        Rngon.light(Rngon.vector(53849, 1784, -25050),{
-            intensity: 4000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),
-        Rngon.light(Rngon.vector(58518, 1784, -25436),{
-            intensity: 4000,
-            attenuation: 1,
-            clip: 1.0,
-            meshRadius: 300,
-        }),*/
+        Rngon.light(7000, Rngon.vector(36089, 2600, -33240)),
+        Rngon.light(4000, Rngon.vector(39548, 2846, -31564)),
+        Rngon.light(4000, Rngon.vector(44519, 2840, -31380)),
+        Rngon.light(5000, Rngon.vector(53262, 1681, -28547)),
+        Rngon.light(5000, Rngon.vector(58280, 1681, -28547)),
     ],
     camera: undefined,
     numTicks: 0,
 };
+
+function enable_wireframe() {
+    for (const material of Object.values(laraHome.materials)) {
+        material.hasWireframe = true;
+        material.hasFill = false;
+    }
+}
+
+function enable_solid() {
+    for (const material of Object.values(laraHome.materials)) {
+        if (material.texture) {
+            material.$texture = material.texture;
+            material.$color = material.color;
+            material.color = Rngon.color(material.texture.pixels[8], material.texture.pixels[9], material.texture.pixels[10]);
+        }
+        material.texture = undefined;
+    }
+}
+
+function reset_materials() {
+    for (const material of Object.values(laraHome.materials)) {
+        material.hasWireframe = false;
+        material.hasFill = true;
+        if (material.$texture) {
+            material.texture = material.$texture;
+            material.$texture = undefined;
+            material.color = material.$color;
+            material.$color = undefined;
+        }
+    }
+}
 
 function ps_crt_effect({renderWidth, renderHeight, pixelBuffer})
 {

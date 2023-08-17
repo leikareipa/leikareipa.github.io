@@ -60,15 +60,11 @@
 
             const shadingModes = ["None", "Flat", "Gouraud", "Baked"];
             const textureFilterModes = ["None", "Dither"];
-            const shaders = ["None", "3dfx", "Dither", "CRT"];
+            const shaders = ["None", "3dfx", "Dither", "CRT", "Solid", "Wireframe"];
 
-            // Select the "Gouraud" shading option by default.
+            // Activate default settings.
             change_shading_mode(-1);
-
-            // Select the "None" texture filter option by default.
             change_texture_filter_mode(0);
-
-            // Select the "None" pixel shader option by default.
             change_pixel_shader(0);
 
             function change_shading_mode(direction = 1)
