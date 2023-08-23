@@ -87,6 +87,7 @@ export const sample = {
     
         return {
             renderOptions: {
+                useDepthBuffer: (parent.ACTIVE_SHADER !== "Wireframe"),
                 cameraDirection: this.camera.direction,
                 cameraPosition: this.camera.position,
                 nearPlane: 100,

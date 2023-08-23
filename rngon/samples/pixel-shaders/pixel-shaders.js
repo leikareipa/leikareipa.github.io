@@ -58,14 +58,14 @@ export const sample = {
                 pixelShader: (
                     (parent.SHADER_PIPELINE_ENABLED && parent.ACTIVE_SHADER.function)
                         ? Object.assign(parent.ACTIVE_SHADER.function.bind(this), parent.ACTIVE_SHADER.function)
-                        : null
+                        : undefined
                 ),
                 // For the mip level map shader to work, we need to enable mipmapping.
                 // So when that shader is in use, let's set n-gon's mipmap level based
                 // on its distance to the camera.
                 vertexShader: (
                     (parent.ACTIVE_SHADER.title !== "Mip level map")
-                        ? null
+                        ? undefined
                         : (ngon, cameraPosition)=>{
                             const maxDistance = (300 * 300);
 
@@ -80,7 +80,7 @@ export const sample = {
                 ),
             },
             mesh: this.Rngon.mesh(scene.ngons, {
-                scaling: this.Rngon.vector(25, 25, 25)
+                scale: this.Rngon.vector(25, 25, 25)
             }),
         };
     },

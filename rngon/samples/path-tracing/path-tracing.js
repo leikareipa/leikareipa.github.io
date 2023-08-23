@@ -63,8 +63,9 @@ export const sample = {
         // The accumulation buffer needs to be reset if the size of the rendering changes,
         // since otherwise the pixels in the buffer won't match the raster buffer's pixels.
         if (
-            (Rngon.state.default.pixelBuffer.width != this.latestRenderResolution.width) ||
-            (Rngon.state.default.pixelBuffer.height != this.latestRenderResolution.height)
+            Rngon.state.default.pixelBuffer &&
+            ((Rngon.state.default.pixelBuffer.width != this.latestRenderResolution.width) ||
+             (Rngon.state.default.pixelBuffer.height != this.latestRenderResolution.height))
         ){
             this.latestRenderResolution.width = Rngon.state.default.pixelBuffer.width;
             this.latestRenderResolution.height = Rngon.state.default.pixelBuffer.height;
@@ -91,7 +92,7 @@ export const sample = {
             mesh: Rngon.mesh(cornellBox.ngons),
             renderOptions: {
                 nearPlane: 0.1,
-                usePerspectiveInterpolation: true,
+                useFullInterpolation: true,
                 cameraDirection: this.camera.direction,
                 cameraPosition: this.camera.position,
                 useFragmentBuffer: Boolean(parent.PATH_TRACING_ENABLED && this.sceneBVH),
@@ -149,7 +150,7 @@ export const sample = {
 // to viewport clipping, screen-space transformation etc.
 function vs_copy_ngons(ngon)
 {
-    Rngon.assert?.(
+    console.assert?.(
         (ngon.vertices.length === 3),
         "Only triangles are supported."
     );

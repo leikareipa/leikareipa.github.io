@@ -31,7 +31,7 @@ export const sample = {
 
         return {
             mesh: this.Rngon.mesh(scene.ngons, {
-                scaling: this.Rngon.vector(25, 25, 25)
+                scale: this.Rngon.vector(25, 25, 25)
             }),
             renderOptions: {
                 cameraDirection: this.camera.direction,
@@ -41,13 +41,13 @@ export const sample = {
                 contextShader: (
                     parent.ACTIVE_SHADER.function
                         ? parent.ACTIVE_SHADER.function.bind(this)
-                        : null
+                        : undefined
                 ),
             },
         };
     },
     shaders: [
-        {title:"None",               function:null},
+        {title:"None",               function:undefined},
         {title:"On-screen display",  function:cs_osd},
         {title:"Rasterized overlay", function:cs_rasterized_overlay},
         {title:"Screen fade",        function:cs_screen_fade},
@@ -134,7 +134,7 @@ function cs_osd({context, image})
     context.fillStyle = "white";
     context.fillText("Retro n-gon renderer", (image.width / 2), fontSize*2);
     context.fillStyle = "gold";
-    context.fillText(`${this.Rngon.version.major}.${this.Rngon.version.minor}.${this.Rngon.version.patch}`, (image.width / 2), fontSize*3.25);
+    context.fillText(`${this.Rngon.version.major}.${this.Rngon.version.minor}`, (image.width / 2), fontSize*3.25);
     
     context.fillStyle = "white";
     context.font = `italic ${fontSize}px monospace`;
