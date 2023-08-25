@@ -13,6 +13,7 @@ export const sample = {
     initialize: function()
     {
         scene.initialize();
+        console.log(Rngon);;;
     },
     tick: function()
     {

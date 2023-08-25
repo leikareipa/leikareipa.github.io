@@ -290,6 +290,7 @@ export const laraHome =
 			allowAlphaBlend: false,
 			allowAlphaReject: false,
 			color: c(255,255,255),
+			wireframeColor: c(255,255,255),
 		};
 
 		const m = this.materials = Object.freeze({
@@ -1669,7 +1670,8 @@ export const laraHome =
 			n([v(29696,-183.5808,-30145.0078,0,0),v(30720,-695.5806,-30145.0078,0.9961,0.0039),v(30720,72.4192,-30145.0078,0.0039,0.9961),],m["ot49"],no(0,0,-1)),
 		);
 
-		// Apply vertex shading.
+		// Apply pre-baked vertex shading. This shading will be used if no
+		// dynamic lighting is active.
 		{
 			let shadeIdx = 0;
 			

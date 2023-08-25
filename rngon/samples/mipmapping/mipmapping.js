@@ -24,6 +24,9 @@ export const sample = {
         const scene = ((parent.MIPMAP_TYPE === "Distance")? sceneDistance : sceneAngle);
 
         return {
+            renderOptions: {
+                useDepthBuffer: false,
+            },
             renderPipeline: {
                 vertexShader: ((scene === sceneDistance)? vs_mipmap_distance : vs_mipmap_angle),
             },
@@ -57,7 +60,7 @@ export const sample = {
 };
 
 // Vertex shader. Adjusts the n-gon's mipmap level based on its distance from the viewer.
-function vs_mipmap_distance(ngon, cameraPosition)
+function vs_mipmap_distance(ngon, renderState)
 {
     if (ngon.material.hasMipmapping)
     {
@@ -65,9 +68,9 @@ function vs_mipmap_distance(ngon, cameraPosition)
         const maxLevel = ((parent.MIPMAP_LEVEL === "Auto")? 1.0 : parent.MIPMAP_LEVEL);
         const maxDistance = (700**2);
         const distance = (
-            ((ngon.vertices[0].x - cameraPosition.x) * (ngon.vertices[0].x  - cameraPosition.x)) +
-            ((ngon.vertices[0].y - cameraPosition.y) * (ngon.vertices[0].y  - cameraPosition.y)) +
-            ((ngon.vertices[0].z - cameraPosition.z) * (ngon.vertices[0].z  - cameraPosition.z))
+            ((ngon.vertices[0].x - renderState.cameraPosition.x)**2) +
+            ((ngon.vertices[0].y - renderState.cameraPosition.y)**2) +
+            ((ngon.vertices[0].z - renderState.cameraPosition.z)**2)
         );    
 
         ngon.mipLevel = Math.max(minLevel, Math.min(maxLevel, (distance / maxDistance)));
