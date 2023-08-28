@@ -16,18 +16,20 @@
 
 body
 {
+    background-color: black;
     cursor: url("./client/assets/cursors/rsed-cursor-arrow.png"), auto;
     text-align: center;
     align-content: center;
-    background-color: black;
     color: white;
     padding: 0;
     margin: 0;
 }
 
-body.playing
+body.playing,
+body.loading
 {
     overflow: hidden;
+    background-image: url(grass.png);
 }
 
 #data-dropdown
@@ -126,7 +128,6 @@ canvas
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: black;
     display: inline-block;
     padding: 0;
     margin: 0;
@@ -138,7 +139,6 @@ canvas
     position: relative;
     z-index: 0;
     object-fit: contain;
-    background-color: black;
     height: 100%;
     width: 100%;
     image-rendering: pixelated;
@@ -157,9 +157,10 @@ canvas
     z-index: 1; /* Above the js-dos canvas.*/
     cursor: pointer;
     color: yellow;
-    bottom: 10px;
-    right: 10px;
-    filter: drop-shadow(0 0 6px black);
+    bottom: 1em;
+    right: 2em;
+    text-shadow: 3px 3px hotpink;
+    font-size: 150%;
 }
 
 #jsdos-container .button:hover
@@ -177,7 +178,7 @@ canvas
 
 #html
 {
-    background-image: linear-gradient(rgb(70, 70, 70), rgb(50, 50, 50));
+    background-image: url(grass.png);
     align-items: center;
     display: flex;
     width: 100%;
@@ -211,8 +212,6 @@ canvas
 #button-bar > .button-bar.scenes
 {
     margin-left: auto;
-    border-left: 1px solid #121212;
-    box-shadow: inset 1px 0 0 #4e4e4e;
 }
 
 #button-bar > .button-bar:last-of-type
@@ -225,8 +224,9 @@ canvas
 {
     font-size: 95%;
     padding: 0.5em 1em;
-    background: transparent;
+    background: black;
     text-decoration: none;
+    border: 2px solid black;
 }
 
 #html .button.disabled
@@ -260,12 +260,7 @@ canvas
 
 #html .button:hover
 {
-    color: white;
-}
-
-#html .button:active
-{
-    transform: translateY(1px);
+    border: 2px solid hotpink;
 }
 
 #html .button > a

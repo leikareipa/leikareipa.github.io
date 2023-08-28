@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (03 April 2023 16:39:32 UTC)
+// VERSION: live (28 August 2023 07:13:47 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -49,10 +49,10 @@
 //	./src/client/js/rallysported-js/scene/scene.js
 //	./src/client/js/rallysported-js/scene/camera-2d.js
 //	./src/client/js/rallysported-js/scene/camera-3d.js
+//	./src/client/js/rallysported-js/scene/rasterizer.js
+//	./src/client/js/rallysported-js/scene/transform-clip-lighter.js
 //	./src/client/js/rallysported-js/scene/terrain-editor/terrain-editor.js
 //	./src/client/js/rallysported-js/scene/terrain-editor/mesh-builder.js
-//	./src/client/js/rallysported-js/scene/terrain-editor/rngon-minimal-fill.js
-//	./src/client/js/rallysported-js/scene/terrain-editor/rngon-minimal-tcl.js
 //	./src/client/js/rallysported-js/scene/texture-editor/texture-editor.js
 //	./src/client/js/rallysported-js/scene/tilemap-editor/tilemap-editor.js
 //	./src/client/js/rallysported-js/scene/loading-spinner/loading-spinner.js
@@ -130,6 +130,10 @@ Rsed.ui.dom.popup_notification(message);
 log: function(message = "")
 {
 console.log(message);
+},
+lerp: function(x, y, interval)
+{
+return (x + (interval * (y - x)));
 },
 throw_if: function(condition, messageIfTrue)
 {
@@ -496,7 +500,7 @@ runCommand: ["-c", `rai ${Rsed.$currentProject.name}`],
 stdout_listener: output_listener,
 showStopButton: false,
 });
-// Once the RSED-AI tool exists, we'll load the recorded lap from the js-dos sandbox into RallySportED.
+// Once the RSED-AI tool exits, we'll load the recorded lap from the js-dos sandbox into RallySportED.
 async function output_listener(outputStream)
 {
 output_listener.buffer += outputStream;
@@ -577,7 +581,7 @@ jsdosInterface = null;
 Rsed.ui.dom.html.set_visible(true);
 Rsed.$currentScene = "terrain-editor";
 playerContainer.style.display = "none";
-document.body.classList.remove("playing");
+document.body.classList.remove("playing", "ingame");
 Rsed.ui.dom.html.refresh();
 return;
 }
@@ -651,6 +655,7 @@ notificationType: "error",
 });
 return false;
 }
+document.body.classList.add("ingame");
 return true;
 }
 async function create_game_zip()
@@ -1674,7 +1679,7 @@ rallySportContentURL: `https://rallysport-content.herokuapp.com`,
 "use strict";
 Rsed.visual = Rsed.visual || {};
 // Implements a 32-bit texture whose output interface is compatible with the retro n-gon
-// renderer's texture_rgba() object (so that n-gons can be textured with the object from
+// renderer's texture() object (so that n-gons can be textured with the object from
 // this function and rendered with the retro n-gon renderer).
 Rsed.visual.texture = function(args = {})
 {
@@ -1688,8 +1693,6 @@ indices: [],
 // The texture's dimensions.
 width: 0,
 height: 0,
-// Whether to flip (mirror) the texture's pixels.
-flipped: "no", // | "vertical"
 // A function with which all of the texture's pixels can be replaced with the
 // given new color indices.
 replace_all_pixels: (newColorIndices = [])=>{},
@@ -1713,26 +1716,6 @@ Rsed.assert?.(
 (args.indices.length === args.pixels.length)),
 "Mismatch between size of texture data and its resolution."
 );
-switch (args.flipped)
-{
-case "no": break;
-case "vertical":
-{
-for (let y = 0; y < args.height/2; y++)
-{
-// Swap horizontal rows vertically.
-for (let x = 0; x < args.width; x++)
-{
-const idxTop = (x + y * args.width);
-const idxBottom = (x + (args.height - y - 1) * args.width);
-[args.pixels[idxTop], args.pixels[idxBottom]] = [args.pixels[idxBottom], args.pixels[idxTop]];
-[args.indices[idxTop], args.indices[idxBottom]] = [args.indices[idxBottom], args.indices[idxTop]];
-}
-}
-break;
-}
-default: Rsed.throw("Unknown texture-flipping mode."); break;
-}
 // Generate mipmaps. Each successive mipmap is one half of the previous
 // mipmap's width and height, starting from the full resolution and working
 // down to 1 x 1. So mipmaps[0] is the original, full-resolution texture,
@@ -1775,18 +1758,12 @@ break;
 // Note: The elements of the 'pixels' array are returned by reference (they're objects of the
 // form {red, green, blue, alpha}). This is done to allow textures to be pre-generated and still
 // have their colors reflect any changes to the global palette without requiring a re-generation.
-const publicInterface = Object.freeze(
-{
-width: args.width,
-height: args.height,
-flipped: args.flipped,
-pixels: args.pixels,
-indices: args.indices,
-mipLevels: mipmaps,
+const publicInterface = Object.freeze({
+$constructor: "Texture",
 replace_all_pixels: args.replace_all_pixels,
 set_pixel_at: args.set_pixel_at,
-name: args.name,
-args,
+...args,
+mipLevels: mipmaps,
 });
 return publicInterface;
 }
@@ -2043,7 +2020,7 @@ Rsed.visual.canvas =
 {
 width: 0,
 height: 0,
-scalingFactor: 0.25,
+scalingFactor: 0.2,
 domElement: document.getElementById("base-render"), // May not be available during unit tests.
 domElementUi: document.getElementById("ui-overlay"), // May not be available during unit tests.
 domElementID: null, // The canvas DOM element may not be available during unit tests, so let's not initialize this here.
@@ -2988,9 +2965,9 @@ y: (wire.end.y + endHeight),
 z: wire.end.z,
 };
 const middlePoint = {
-x: Rngon.lerp(startPoint.x, endPoint.x, 0.5),
-y: (Rngon.lerp(startPoint.y, endPoint.y, 0.5) - wire.curvature),
-z: Rngon.lerp(startPoint.z, endPoint.z, 0.5),
+x: Rsed.lerp(startPoint.x, endPoint.x, 0.5),
+y: (Rsed.lerp(startPoint.y, endPoint.y, 0.5) - wire.curvature),
+z: Rsed.lerp(startPoint.z, endPoint.z, 0.5),
 };
 const thisSegment = [];
 for (let i = 0; i < numCurvePoints; i++)
@@ -3023,9 +3000,9 @@ y: nextWire.y,
 z: nextWire.z
 };
 thisWire.middle = {
-x: Rngon.lerp(thisWire.start.x, thisWire.end.x, 0.5),
-y: Rngon.lerp(thisWire.start.y, thisWire.end.y, 0.5),
-z: Rngon.lerp(thisWire.start.z, thisWire.end.z, 0.5),
+x: Rsed.lerp(thisWire.start.x, thisWire.end.x, 0.5),
+y: Rsed.lerp(thisWire.start.y, thisWire.end.y, 0.5),
+z: Rsed.lerp(thisWire.start.z, thisWire.end.z, 0.5),
 }
 }
 thisSegment.pop();
@@ -3253,7 +3230,7 @@ default: Rsed.throw("Unknown edit action."); break;
 {
 let texture = edit.target?.texture;
 Rsed.assert?.(texture, "Invalid texture reference.");
-Rsed.ui.utils.undoStack.mark_dirty_texture(texture.args.assetType, edit.target.texture.args.assetId);
+Rsed.ui.utils.undoStack.mark_dirty_texture(texture.assetType, edit.target.texture.assetId);
 switch (edit.command)
 {
 case "set-pixel":
@@ -3676,6 +3653,7 @@ let isPropContextMenuOpen = false;
 /// TODO: Prefix boolean-returning functions with "is_", e.g. "key_down" => "is_key_down".
 const publicInterface =
 {
+mousePickBuffer: [],
 set_is_prop_context_menu_open: function(isOpen = false)
 {
 isPropContextMenuOpen = isOpen;
@@ -3904,13 +3882,8 @@ mouseState.position.x = x;
 mouseState.position.y = y;
 if (!this.is_prop_context_menu_open())
 {
-// Update the hover info.
-// Note: We guard against Rsed.visual.canvas being undefined, which
-// it may be when running unit tests.
 const mousePos = this.mouse_pos_scaled_to_render_resolution();
-mouseState.hover = Rsed.visual.canvas
-? Rsed.visual.canvas.mousePickingBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width]
-: null;
+mouseState.hover = Rsed.ui.utils.inputState.mousePickBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width];
 }
 },
 set_mouse_button_down: function(button = "left", isDown = false)
@@ -4746,16 +4719,12 @@ const charset = {
 [X,_],
 [X,_],
 [X,_],
-[X,_],
-[X,_],
-[_,X]], {y: -1}),
+[_,X]]),
 ")": c([[X,_],
 [_,X],
 [_,X],
 [_,X],
-[_,X],
-[_,X],
-[X,_]], {y: -1}),
+[X,_]]),
 "*": c([[X,_,X],
 [_,X,_],
 [X,_,X]], {y: 1}),
@@ -5150,9 +5119,9 @@ ngon(palaTexture),
 ngon(billboardTexture),
 ].slice(0, (1 + Boolean(billboardTexture)));
 {
-const labelString = `${Rsed.ui.utils.terrainBrush.radius + 1}*`;
+const labelString = `Pen: ${Rsed.ui.utils.terrainBrush.radius + 1}*`;
 const labelWidth = Rsed.ui.canvas.font.width_in_pixels(labelString);
-const brushSizeLabel = Rsed.ui.canvas.component.label()(labelString, (x - sideLen - labelWidth + 1), y);
+const brushSizeLabel = Rsed.ui.canvas.component.label()(labelString, (x - sideLen - labelWidth + 10), y);
 ngons.push(...brushSizeLabel.ngons);
 }
 return Rngon.mesh(ngons);
@@ -5163,10 +5132,8 @@ Rngon.vertex(x - sideLen, y),
 Rngon.vertex(x          , y),
 Rngon.vertex(x          , y + sideLen),
 Rngon.vertex(x - sideLen, y + sideLen)], {
-texture: texture,
-allowTransform: false,
-hasWireframe: self.is_hovered(),
-wireframeColor: Rngon.color(255, 255, 0),
+texture,
+isInScreenSpace: true,
 auxiliary: {
 mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
 componentId: self.id,
@@ -5261,7 +5228,7 @@ Rngon.vertex((x - 1), y),
 Rngon.vertex((x + sampleSize), y),
 Rngon.vertex((x + sampleSize), (y + max + 1)),
 Rngon.vertex((x - 1), (y + max + 1))], {
-allowTransform: false,
+isInScreenSpace: true,
 hasWireframe: true,
 color: colorBackground,
 wireframeColor: colorFrame,
@@ -5272,7 +5239,7 @@ ngons.push(
 ...data.map((val, idx)=>Rngon.ngon([
 Rngon.vertex((x + idx), y + max),
 Rngon.vertex((x + idx), (y + max - val))], {
-allowTransform: false,
+isInScreenSpace: true,
 color: (
 (val >= high)
 ? colorHigh
@@ -5355,6 +5322,8 @@ on_hover = ()=>{},
 } = {})
 {
 const self = Rsed.ui.canvas.component({on_grab, on_hover});
+const thumbnailWidth = 10;
+const thumbnailHeight = 10;
 return function(offsetX = 0, offsetY = 0)
 {
 Rsed.assert?.(
@@ -5366,8 +5335,6 @@ self.update();
 const ngons = [];
 const raisedNgons = [];
 const numPalas = Rsed.$currentProject.palat.texture.length;
-const thumbnailWidth = 10;
-const thumbnailHeight = 10;
 const palatPaneHeight = ((Math.round((Rsed.visual.canvas.height - offsetY) / thumbnailHeight) - 1) * thumbnailHeight);
 const numPalatPaneRows = Math.ceil(palatPaneHeight / thumbnailHeight);
 const numPalatPaneCols = Math.ceil(numPalas / numPalatPaneRows);
@@ -5406,19 +5373,51 @@ palaIdx: (palaIdx - 1),
 },
 },
 }));
-if (isCurrentPala || isHovered)
-{
-raisedNgons.push(ngons.at(-1));
-}
 if (isHovered)
 {
 const labelString = `${palaIdx - 1}`;
 const labelWidth = Rsed.ui.canvas.font.width_in_pixels(labelString);
-const x_ = (((offsetX + (x * thumbnailWidth)) - labelWidth) - 1);
-const y_ = ((offsetY + (y * thumbnailHeight)) - (thumbnailHeight / 2) - 1);
-const label = Rsed.ui.canvas.component.label()(labelString, x_, y_);
-ngons.push(...label.ngons);
-raisedNgons.push(...label.ngons);
+const baseX = (offsetX + (x * thumbnailWidth));
+const baseY = (offsetY + (y * thumbnailHeight));
+const newNgons = [
+...Rsed.ui.canvas.component.label()(labelString, (baseX - labelWidth - 1), (baseY - (thumbnailHeight / 2) - 1)).ngons,
+...box({
+x: baseX,
+y: baseY,
+width: thumbnailWidth,
+height: thumbnailHeight,
+material: {
+color: Rngon.color.hotpink,
+},
+}),
+...box({
+x: baseX-1,
+y: baseY-1,
+width: thumbnailWidth,
+height: thumbnailHeight,
+material: {
+color: Rngon.color.yellow,
+},
+}),
+];
+ngons.push(...newNgons);
+raisedNgons.push(...newNgons);
+}
+else if (isCurrentPala)
+{
+const newNgons = [
+...box({
+x: (offsetX + (x * thumbnailWidth)),
+y: (offsetY + (y * thumbnailHeight)),
+width: thumbnailWidth,
+height: thumbnailHeight,
+material: {
+color: Rngon.color.hotpink,
+},
+}),
+];
+ngons.push(...newNgons);
+raisedNgons.push(...newNgons);
 }
 }
 }
@@ -5434,6 +5433,61 @@ ngons.push(ngon);
 }
 }
 return Rngon.mesh(ngons);
+function box({
+x,
+y,
+width,
+height,
+material = {}
+} = {})
+{
+return [
+line({
+x1: x,
+y1: y,
+x2: x+width,
+y2: y,
+material,
+}),
+line({
+x1: x+width,
+y1: y,
+x2: x+width,
+y2: y+height,
+material,
+}),
+line({
+x1: x+width,
+y1: y+height,
+x2: x,
+y2: y+height,
+material,
+}),
+line({
+x1: x,
+y1: y+height,
+x2: x,
+y2: y,
+material,
+}),
+];
+}
+function line({
+x1,
+y1,
+x2,
+y2,
+material = {}
+} = {})
+{
+return Rngon.ngon([
+Rngon.vertex(x1, y1),
+Rngon.vertex(x2, y2)], {
+isInScreenSpace: true,
+...material,
+}
+);
+}
 function ngon({
 x,
 y,
@@ -5449,7 +5503,7 @@ Rngon.vertex(x + width, y),
 Rngon.vertex(x + width, y + height),
 Rngon.vertex(x        , y + height)], {
 texture: texture,
-allowTransform: false,
+isInScreenSpace: true,
 ...material,
 }
 );
@@ -5514,11 +5568,14 @@ height,
 const cameraPos = camera.position_floored();
 const maxX = (Rsed.$currentProject.maasto.width - camera.viewportWidth);
 const maxZ = (Rsed.$currentProject.maasto.height - camera.viewportHeight);
-const camX = Math.max(0, (Math.min(maxX, cameraPos.x) / xMul));
-const camZ = Math.max(0, (Math.min(maxZ, cameraPos.z) / yMul));
-const frameWidth = Math.round((camera.viewportWidth / xMul));
-const frameHeight = Math.round((camera.viewportHeight / yMul));
+const camX = Math.max(-1, (Math.min(maxX, cameraPos.x) / xMul));
+const camZ = Math.max(-1, (Math.min(maxZ, cameraPos.z) / yMul));
+const frameWidth = ~~((camera.viewportWidth / xMul))-1;
+const frameHeight = ~~((camera.viewportHeight / yMul))-1;
+const baseX = ~~(offsX - width + camX);
+const baseZ = ~~(offsY + camZ);
 return Rngon.mesh([
+// The minimap.
 ngon({
 x: (offsX - width),
 y: offsY,
@@ -5537,19 +5594,82 @@ scale: {x: xMul, y: yMul},
 },
 }
 }),
-ngon({
-x: (offsX - width + camX),
-y: (offsY + camZ),
-width: (frameWidth - 1),
-height: (frameHeight - 1),
+// Dropshadow for the position indicator.
+...box({
+x: baseX+1,
+y: baseZ+1,
+width: frameWidth,
+height: frameHeight,
 material: {
-color: Rngon.color(192, 192, 0, 1),
-hasWireframe: true,
-wireframeColor: Rngon.color(255, 255, 0),
-allowAlphaBlend: true,
+color: Rngon.color.hotpink,
+},
+}),
+// Position indicator.
+...box({
+x: baseX,
+y: baseZ,
+width: frameWidth,
+height: frameHeight,
+material: {
+color: Rngon.color.yellow,
 },
 }),
 ]);
+function box({
+x,
+y,
+width,
+height,
+material = {}
+} = {})
+{
+return [
+line({
+x1: x,
+y1: y,
+x2: x+width,
+y2: y,
+material,
+}),
+line({
+x1: x+width,
+y1: y,
+x2: x+width,
+y2: y+height,
+material,
+}),
+line({
+x1: x+width,
+y1: y+height,
+x2: x,
+y2: y+height,
+material,
+}),
+line({
+x1: x,
+y1: y+height,
+x2: x,
+y2: y,
+material,
+}),
+];
+}
+function line({
+x1,
+y1,
+x2,
+y2,
+material = {}
+} = {})
+{
+return Rngon.ngon([
+Rngon.vertex(x1, y1),
+Rngon.vertex(x2, y2)], {
+isInScreenSpace: true,
+...material,
+}
+);
+}
 function ngon({
 x,
 y,
@@ -5565,7 +5685,7 @@ Rngon.vertex(x + width, y),
 Rngon.vertex(x + width, y + height),
 Rngon.vertex(x        , y + height)], {
 texture: texture,
-allowTransform: false,
+isInScreenSpace: true,
 ...material,
 }
 );
@@ -5650,12 +5770,6 @@ material: {
 color: Rngon.color(color.red, color.green, color.blue),
 },
 }));
-const colorIdxLabel = `${currentColorIdx}`;
-ngons.push(...Rsed.ui.canvas.component.label()(
-colorIdxLabel,
-(baseX + (width / 2) - (Rsed.ui.canvas.font.width_in_pixels(colorIdxLabel) / 2)),
-(y + (height / 2) - (Rsed.ui.canvas.font.nativeHeight / 2))
-).ngons);
 }
 return Rngon.mesh(ngons);
 function ngon({
@@ -5673,7 +5787,7 @@ Rngon.vertex(x + width, y),
 Rngon.vertex(x + width, y + height),
 Rngon.vertex(x        , y + height)], {
 texture: texture,
-allowTransform: false,
+isInScreenSpace: true,
 ...material,
 }
 );
@@ -5711,9 +5825,9 @@ Rsed.assert?.(
 );
 self.update();
 const ngons = [];
-let runningXOffs = 0;
 const letterSpacing = 1;
 // Convert the string's characters into polygons for display.
+let runningXOffs = 0;
 for (const ch of string.split(""))
 {
 const symbol = Rsed.ui.canvas.font.character(ch.toUpperCase());
@@ -5733,7 +5847,17 @@ y: (y - 1),
 width: (runningXOffs + 1),
 height: (Rsed.ui.canvas.font.nativeHeight + 2),
 material: {
-color: Rngon.color(255, 255, 0),
+color: Rngon.color.yellow,
+},
+}));
+// Dropshadow.
+ngons.unshift(ngon({
+x,
+y,
+width: (runningXOffs + 1),
+height: (Rsed.ui.canvas.font.nativeHeight + 2),
+material: {
+color: Rngon.color.hotpink,
 },
 }));
 return Rngon.mesh(ngons);
@@ -5752,7 +5876,7 @@ Rngon.vertex(x + width, y),
 Rngon.vertex(x + width, y + height),
 Rngon.vertex(x        , y + height)], {
 texture: texture,
-allowTransform: false,
+isInScreenSpace: true,
 ...material,
 }
 );
@@ -5888,7 +6012,7 @@ function handle_mouse_input()
 {
 if (Rsed.ui.utils.inputState.mouse_wheel_scroll())
 {
-targetZoomLevel += ((targetZoomLevel / baseZoomLevel) * zoomSpeed * Math.sign(Rsed.ui.utils.inputState.mouse_wheel_scroll()));
+targetZoomLevel -= ((targetZoomLevel / baseZoomLevel) * zoomSpeed * Math.sign(Rsed.ui.utils.inputState.mouse_wheel_scroll()));
 Rsed.ui.utils.inputState.reset_wheel_scroll();
 return true;
 }
@@ -5897,7 +6021,7 @@ return false;
 function update()
 {
 const direction = Rngon.vector(0, 0, 0);
-const speed = (movementSpeed * zoomLevel);
+const speed = movementSpeed;
 if (cameraMovement.left) direction.y += -1;
 if (cameraMovement.right) direction.y += 1;
 if (cameraMovement.up) direction.x += -1;
@@ -5905,9 +6029,9 @@ if (cameraMovement.down) direction.x +=  1;
 Rngon.vector.normalize(direction);
 targetPosition.x += (direction.x * speed);
 targetPosition.y += (direction.y * speed);
-x = Rngon.lerp(x, targetPosition.x, (movementDamping * Rsed.core.tickDeltaMs));
-y = Rngon.lerp(y, targetPosition.y, (movementDamping * Rsed.core.tickDeltaMs));
-zoomLevel = Rngon.lerp(zoomLevel, targetZoomLevel, (movementDamping * Rsed.core.tickDeltaMs));
+x = Rsed.lerp(x, targetPosition.x, (movementDamping * Rsed.core.tickDeltaMs));
+y = Rsed.lerp(y, targetPosition.y, (movementDamping * Rsed.core.tickDeltaMs));
+zoomLevel = Rsed.lerp(zoomLevel, targetZoomLevel, (movementDamping * Rsed.core.tickDeltaMs));
 return;
 }
 const publicInterface = {
@@ -6038,7 +6162,7 @@ return Math.ceil(35 * Rsed.core.displayScaleWidth);
 },
 get viewportHeight()
 {
-return Math.ceil(21 * Math.pow(1.5, Rsed.core.displayScaleHeight));
+return Math.ceil(22 * Math.pow(1.5, Rsed.core.displayScaleHeight));
 },
 get tilt()
 {
@@ -6060,9 +6184,9 @@ return;
 update_movement: function(smoothMovement = true)
 {
 const prevPos = (smoothMovement? this.position() : this.position_floored());
-position.x = Rngon.lerp(position.x, targetPosition.x, (movementDamping * Rsed.core.tickDeltaMs));
-position.y = Rngon.lerp(position.y, targetPosition.y, (movementDamping * Rsed.core.tickDeltaMs));
-position.z = Rngon.lerp(position.z, targetPosition.z, (movementDamping * Rsed.core.tickDeltaMs));
+position.x = Rsed.lerp(position.x, targetPosition.x, (movementDamping * Rsed.core.tickDeltaMs));
+position.y = Rsed.lerp(position.y, targetPosition.y, (movementDamping * Rsed.core.tickDeltaMs));
+position.z = Rsed.lerp(position.z, targetPosition.z, (movementDamping * Rsed.core.tickDeltaMs));
 const newPos = (smoothMovement? this.position() : this.position_floored());
 const posDelta = {
 x: (newPos.x - prevPos.x),
@@ -6164,6 +6288,466 @@ return {...position};
 return publicInterface;
 }
 /*
+* 2019-2023 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
+*
+*/
+"use strict";
+Rsed.scenes.$render = (Rsed.scenes.$render || {});
+{ // A block to limit the scope of the unit-global variables we set up, below.
+// We'll sort the n-gon's vertices into those on its left side and those on its
+// right side.
+const leftVerts = new Array(500);
+const rightVerts = new Array(500);
+// Then we'll organize the sorted vertices into edges (lines between given two
+// vertices). Once we've got the edges figured out, we can render the n-gon by filling
+// in the spans between its edges.
+const leftEdges = new Array(500).fill().map(e=>({}));
+const rightEdges = new Array(500).fill().map(e=>({}));
+let numLeftVerts = 0;
+let numRightVerts = 0;
+let numLeftEdges = 0;
+let numRightEdges = 0;
+const vertexSorters = {
+verticalAscending: (vertA, vertB)=>((vertA.y === vertB.y)? 0 : ((vertA.y < vertB.y)? -1 : 1)),
+verticalDescending: (vertA, vertB)=>((vertA.y === vertB.y)? 0 : ((vertA.y > vertB.y)? -1 : 1))
+};
+Rsed.scenes.$render.rasterizer = function(renderState)
+{
+for (let n = 0; n < renderState.ngonCache.count; n++)
+{
+const ngon = renderState.ngonCache.ngons[n];
+switch (ngon.vertices.length)
+{
+case 0:
+{
+continue;
+}
+case 1:
+{
+Rngon.default.render.pipeline.rasterizer.point(renderState, ngon.vertices[0], ngon.material.color);
+continue;
+}
+case 2:
+{
+Rngon.default.render.pipeline.rasterizer.line(renderState, ngon.vertices[0], ngon.vertices[1], ngon.material.color);
+continue;
+}
+default:
+{
+(ngon.material.isInScreenSpace? rasterize_ui_poly : rasterize_poly)(ngon, renderState);
+continue;
+}
+}
+}
+return;
+}
+function rasterize_ui_poly(ngon, renderState)
+{
+Rngon.assert?.((ngon.vertices.length === 4), "Expected UI polygons to be squares");
+const material = ngon.material;
+const texture = ngon.material.texture;
+const pixelBuffer32 = renderState.pixelBuffer32;
+const renderWidth = renderState.pixelBuffer.width;
+const renderHeight = renderState.pixelBuffer.height;
+const startX = ngon.vertices[0].x;
+const endX = ngon.vertices[1].x;
+const startY = ngon.vertices[0].y;
+const endY = ngon.vertices[2].y;
+if (texture)
+{
+const rectWidth = (endX - startX);
+const rectHeight = (endY - startY);
+// Scale the texture to fit the polygon rectangle.
+const tx = (texture.width / rectWidth);
+const ty = (texture.height / rectHeight);
+for (let y = startY; y < endY; y++)
+{
+if (y < 0)
+{
+continue;
+}
+else if (y >= renderHeight)
+{
+break;
+}
+let pixelBufferIdx = ((y * renderWidth) + startX);
+let texelIdx = (~~((y - startY) * ty) * texture.width);
+/// TODO. Temp kludge.
+if (typeof texture.pixels[0] === "object")
+{
+for (let x = startX; x < endX; x++)
+{
+if (x >= renderWidth)
+{
+break;
+}
+if (x >= 0)
+{
+const texel = texture.pixels[~~texelIdx];
+pixelBuffer32[pixelBufferIdx] = (
+(255 << 24) +
+(texel.blue << 16) +
+(texel.green << 8) +
+~~texel.red
+);
+if (material.auxiliary?.mousePickId)
+{
+Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.auxiliary.mousePickId;
+}
+}
+pixelBufferIdx++;
+texelIdx += tx;
+}
+}
+else
+{
+for (let x = startX; x < endX; x++)
+{
+if (x >= renderWidth)
+{
+break;
+}
+if (x >= 0)
+{
+const ti = (~~texelIdx * 4);
+pixelBuffer32[pixelBufferIdx] = (
+(255 << 24) +
+(texture.pixels[ti + 2] << 16) +
+(texture.pixels[ti + 1] << 8) +
+~~texture.pixels[ti + 0]
+);
+if (material.auxiliary?.mousePickId)
+{
+Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.auxiliary.mousePickId;
+}
+}
+pixelBufferIdx++;
+texelIdx += tx;
+}
+}
+}
+}
+else if (material.hasFill)
+{
+const color32 = (
+(255 << 24) +
+(material.color.blue << 16) +
+(material.color.green << 8) +
+~~material.color.red
+);
+for (let y = startY; y < endY; y++)
+{
+if (y < 0)
+{
+continue;
+}
+else if (y >= renderWidth)
+{
+break;
+}
+let pixelBufferIdx = (y * renderWidth);
+for (let x = startX; x < endX; x++)
+{
+if (x < 0)
+{
+continue;
+}
+else if (x >= renderWidth)
+{
+break;
+}
+pixelBuffer32[pixelBufferIdx + x] = color32;
+if (material.auxiliary?.mousePickId)
+{
+Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx + x] = material.auxiliary.mousePickId;
+}
+}
+}
+}
+}
+function rasterize_poly(ngon, renderState)
+{
+Rngon.assert?.((ngon.vertices.length < leftVerts.length), "Overflowing the vertex buffer");
+numLeftVerts = 0;
+numRightVerts = 0;
+numLeftEdges = 0;
+numRightEdges = 0;
+const material = ngon.material;
+const texture = ngon.material.texture;
+const pixelBuffer = renderState.pixelBuffer.data;
+const pixelBuffer32 = new Uint32Array(pixelBuffer.buffer);
+const renderWidth = renderState.pixelBuffer.width;
+const renderHeight = renderState.pixelBuffer.height;
+// Figure out which of the n-gon's vertices are on its left side and which on the
+// right. The vertices on both sides will be arranged from smallest Y to largest
+// Y, i.e. top-to-bottom in screen space. The top-most vertex and the bottom-most
+// vertex will be shared between the two sides.
+{
+// For rectangular ground tiles.
+if (material.auxiliary?.isGroundTile)
+{
+Rngon.assert?.((ngon.vertices.length == 4), "Expected a rectangle.");
+let leftTop = ngon.vertices[3];
+let leftBottom = ngon.vertices[0];
+let rightTop = ngon.vertices[2];
+let rightBottom = ngon.vertices[1];
+// Fix self-intersecting where the supposedly bottom vertex has been raised
+// above the top vertex.
+if (leftBottom.y < leftTop.y) {
+leftBottom.y = leftTop.y;
+}
+if (rightBottom.y < rightTop.y) {
+rightBottom.y = rightTop.y;
+}
+if (leftTop.y < rightTop.y)
+{
+leftVerts[numLeftVerts++] = leftTop;
+leftVerts[numLeftVerts++] = leftBottom;
+rightVerts[numRightVerts++] = leftTop;
+rightVerts[numRightVerts++] = rightTop;
+rightVerts[numRightVerts++] = rightBottom;
+}
+else
+{
+leftVerts[numLeftVerts++] = rightTop;
+leftVerts[numLeftVerts++] = leftTop;
+leftVerts[numLeftVerts++] = leftBottom;
+rightVerts[numRightVerts++] = rightTop;
+rightVerts[numRightVerts++] = rightBottom;
+}
+if (leftBottom.y < rightBottom.y)
+{
+leftVerts[numLeftVerts++] = rightBottom;
+}
+else
+{
+rightVerts[numRightVerts++] = leftBottom;
+}
+}
+// Generic algorithm for n-sided convex polygons.
+else
+{
+// Sort the vertices by height from smallest Y to largest Y.
+ngon.vertices.sort(vertexSorters.verticalAscending);
+const topVert = ngon.vertices[0];
+const bottomVert = ngon.vertices[ngon.vertices.length-1];
+leftVerts[numLeftVerts++] = topVert;
+rightVerts[numRightVerts++] = topVert;
+// Trace a line along XY between the top-most vertex and the bottom-most vertex;
+// and for the intervening vertices, find whether they're to the left or right of
+// that line on X. Being on the left means the vertex is on the n-gon's left side,
+// otherwise it's on the right side.
+for (let i = 1; i < (ngon.vertices.length - 1); i++)
+{
+const lr = Rsed.lerp(topVert.x, bottomVert.x, ((ngon.vertices[i].y - topVert.y) / (bottomVert.y - topVert.y)));
+if (ngon.vertices[i].x >= lr)
+{
+rightVerts[numRightVerts++] = ngon.vertices[i];
+}
+else
+{
+leftVerts[numLeftVerts++] = ngon.vertices[i];
+}
+}
+leftVerts[numLeftVerts++] = bottomVert;
+rightVerts[numRightVerts++] = bottomVert;
+}
+}
+// Create edges out of the vertices.
+{
+for (let l = 1; l < numLeftVerts; l++) add_edge(leftVerts[l-1], leftVerts[l], true);
+for (let r = 1; r < numRightVerts; r++) add_edge(rightVerts[r-1], rightVerts[r], false);
+function add_edge(vert1, vert2, isLeftEdge)
+{
+const startY = Math.round(vert1.y);
+const endY = Math.round(vert2.y);
+const edgeHeight = (endY - startY);
+// Ignore horizontal edges.
+if (edgeHeight === 0) return;
+const startX = Math.round(vert1.x);
+const endX = Math.ceil(vert2.x);
+const deltaX = ((endX - startX) / edgeHeight);
+const startShade = vert1.shade;
+const deltaShade = ((vert2.shade - vert1.shade) / edgeHeight);
+const edge = (isLeftEdge? leftEdges[numLeftEdges++] : rightEdges[numRightEdges++]);
+edge.startY = startY;
+edge.endY = endY;
+edge.startX = startX;
+edge.deltaX = deltaX;
+edge.startShade = startShade;
+edge.deltaShade = deltaShade;
+}
+}
+// Draw the n-gon. On each horizontal raster line, there will be two edges: left and right.
+// We'll render into the pixel buffer each horizontal span that runs between the two edges.
+if (material.hasFill)
+{
+let curLeftEdgeIdx = 0;
+let curRightEdgeIdx = 0;
+let leftEdge = leftEdges[curLeftEdgeIdx];
+let rightEdge = rightEdges[curRightEdgeIdx];
+if (!numLeftEdges || !numRightEdges)
+{
+return;
+}
+// Note: We assume the n-gon's vertices to be sorted by increasing Y.
+const ngonStartY = leftEdges[0].startY;
+const ngonEndY = leftEdges[numLeftEdges-1].endY;
+const ngonHeight = (ngonEndY - ngonStartY);
+const vDiv = ((texture?.height || 1) / ngonHeight);
+let v = ((texture?.height || 1) - vDiv);
+// Rasterize the n-gon in horizontal pixel spans over its height.
+for (let y = ngonStartY; y < ngonEndY; y++)
+{
+const spanStartX = Math.round(leftEdge.startX);
+const spanEndX = Math.round(rightEdge.startX);
+const spanWidth = ((spanEndX - spanStartX) + 1);
+if (
+(spanWidth > 0) &&
+(y >= 0) &&
+(y < renderHeight)
+){
+const deltaShade = ((rightEdge.startShade - leftEdge.startShade) / spanWidth);
+let iplShade = (leftEdge.startShade - deltaShade);
+let pixelBufferIdx = ((spanStartX + y * renderWidth) - 1);
+const vBase = (~~v * texture?.width);
+const uDiv = (texture?.width / spanWidth);
+let u = -uDiv;
+for (let x = spanStartX; x < spanEndX; x++)
+{
+// Update values that're interpolated horizontally along the span.
+iplShade += deltaShade;
+pixelBufferIdx++;
+u += uDiv;
+// Bounds-check, since we don't clip vertices to the viewport.
+if (x < 0)
+{
+continue;
+}
+else if (x >= renderWidth)
+{
+break;
+}
+const {red, green, blue, alpha} = (texture? texture.pixels[~~u + vBase] : material.color);
+if (alpha !== 255)
+{
+continue;
+}
+pixelBuffer32[pixelBufferIdx] = (
+(255 << 24) +
+((blue * iplShade) << 16) +
+((green * iplShade) << 8) +
+~~(red * iplShade)
+);
+if (material.auxiliary?.mousePickId)
+{
+Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.auxiliary.mousePickId;
+}
+}
+}
+// Update values that're interpolated vertically along the edges.
+leftEdge.startX  += leftEdge.deltaX;
+rightEdge.startX += rightEdge.deltaX;
+leftEdge.startShade  += leftEdge.deltaShade;
+rightEdge.startShade += rightEdge.deltaShade;
+v -= vDiv;
+// We can move onto the next edge when we're at the end of the current one.
+if (y === (leftEdge.endY - 1)) leftEdge = leftEdges[++curLeftEdgeIdx];
+if (y === (rightEdge.endY - 1)) rightEdge = rightEdges[++curRightEdgeIdx];
+}
+}
+// Draw a wireframe around any n-gons that wish for one.
+if (material.hasWireframe)
+{
+for (let l = 1; l < numLeftVerts; l++)
+{
+Rngon.default.render.pipeline.rasterizer.line(renderState, leftVerts[l-1], leftVerts[l], material.wireframeColor);
+}
+for (let r = 1; r < numRightVerts; r++)
+{
+Rngon.default.render.pipeline.rasterizer.line(renderState, rightVerts[r-1], rightVerts[r], material.wireframeColor);
+}
+}
+}
+}
+/*
+* 2019-2023 Tarpeeksi Hyvae Soft
+*
+* Software: RallySportED-js
+*
+*/
+"use strict";
+Rsed.scenes.$render = (Rsed.scenes.$render || {});
+// A stripped-down version of the retro n-gon renderer's polygon transformer. Includes
+// only the features required by RallySportED-js, helping to boost FPS.
+//
+// Expects vertices to already be in screen space.
+//
+// For the original function, see Rngon.ngon_transform_and_light().
+Rsed.scenes.$render.transform_clip_lighter = function({renderState, mesh})
+{
+const ngonCache = renderState.ngonCache;
+const renderWidth = renderState.pixelBuffer.width;
+const renderHeight = renderState.pixelBuffer.height;
+for (const ngon of mesh.ngons)
+{
+// Ignore n-gons that would be fully outside of the screen.
+{
+const boundingBox = ngon.vertices.reduce((bounds, v)=>{
+if (bounds.xMin > v.x) bounds.xMin = v.x;
+if (bounds.xMax < v.x) bounds.xMax = v.x;
+if (bounds.yMin > v.y) bounds.yMin = v.y;
+if (bounds.yMax < v.y) bounds.yMax = v.y;
+return bounds;
+}, {xMin: Infinity, xMax: -Infinity, yMin: Infinity, yMax: -Infinity});
+if ((boundingBox.xMin >= renderWidth) || (boundingBox.xMax < 0) ||
+(boundingBox.yMin >= renderHeight) || (boundingBox.yMax < 0))
+{
+continue;
+}
+}
+// Ignore fully transparent n-gons.
+if (!ngon.material.color.alpha &&
+!ngon.material.hasWireframe)
+{
+continue;
+}
+// Copy the ngon into the internal n-gon cache, so we can operate on it without
+// mutating the original n-gon's data.
+const cachedNgon = ngonCache.ngons[ngonCache.count++];
+{
+cachedNgon.vertices.length = 0;
+for (let v = 0; v < ngon.vertices.length; v++)
+{
+cachedNgon.vertices[v] = Rngon.vertex(
+ngon.vertices[v].x,
+ngon.vertices[v].y,
+ngon.vertices[v].z,
+undefined,
+undefined,
+undefined,
+ngon.vertices[v].shade
+);
+}
+cachedNgon.material = ngon.material;
+cachedNgon.isActive = true;
+}
+if (renderState.useVertexShader)
+{
+renderState.modules.vertex_shader(cachedNgon, renderState);
+}
+};
+// Mark as inactive any cached n-gons that we didn't touch, so the renderer knows
+// to ignore them for the current frame.
+for (let i = ngonCache.count; i < ngonCache.ngons.length; i++)
+{
+ngonCache.ngons[i].isActive = false;
+}
+return;
+}
+/*
 * Most recent known filename: js/scene/terrain-editor/terrain-editor.js
 *
 * 2019-2021 Tarpeeksi Hyvae Soft
@@ -6245,6 +6829,7 @@ const scene = Rsed.scene({
 render: function()
 {
 process_user_input();
+Rsed.ui.utils.inputState.mousePickBuffer.fill(null);
 const rendererStats = draw_scene();
 draw_ui(rendererStats);
 return;
@@ -6380,7 +6965,6 @@ if (touchDelta.x || touchDelta.y || touchDelta.z)
 {
 camera.move_by((-touchDelta.x * 0.25), 0, (-touchDelta.y * 0.25));
 }
-Rsed.visual.canvas.mousePickingBuffer.fill(null);
 return;
 }
 function draw_scene()
@@ -6398,8 +6982,8 @@ paintHoverPala: sceneState.showHoverPala,
 {
 // The vanishing point. Defaults to the top middle of the screen, like in
 // the game.
-const vanishX = (Rngon.renderable_width_of(Rsed.visual.canvas.domElement, Rsed.visual.canvas.scalingFactor) / 2);
-const vanishY = (0 - (camera.tilt * 2));
+const vanishX = ((Rngon.state.default.pixelBuffer?.width || 1) / 2);
+const vanishY = (20 - (camera.tilt * 2));
 for (const ngon of trackMesh.ngons)
 {
 // We don't want the renderer applying proper perspective projection.
@@ -6419,27 +7003,35 @@ vertex.y = (vanishY + ((vertex.y - vanishY) / z));
 }
 }
 }
-const rendererStats = Rngon.render(
-Rsed.visual.canvas.domElement,
-[trackMesh],
-{
+const rendererStats = Rngon.render({
+target: Rsed.visual.canvas.domElement,
+meshes: [trackMesh],
+options: {
 cameraPosition: Rngon.vector(0, 0, 0),
 cameraDirection: camera.rotation(),
-scale: Rsed.visual.canvas.scalingFactor,
+resolution: Rsed.visual.canvas.scalingFactor,
 fov: 30,
 nearPlane: 300,
 farPlane: 10000,
 clipToViewport: true,
-depthSort: "painter",
 useDepthBuffer: false,
-auxiliaryBuffers: [Rsed.visual.canvas.mousePickingBuffer],
-vertexShader: vs_distance_fog,
-modules: {
-rasterize: scene.minimal_rngon_filler,
-transformClipLight: scene.minimal_rngon_tcl,
 },
-}
-);
+pipeline: {
+ngonSorter: function(ngons)
+{
+// Painter's sorting, most distant first.
+ngons.sort((ngonA, ngonB)=>
+{
+const a = (ngonA.isActive? (ngonA.vertices.reduce((acc, v)=>(acc + v.z), 0) / ngonA.vertices.length) : 0);
+const b = (ngonB.isActive? (ngonB.vertices.reduce((acc, v)=>(acc + v.z), 0) / ngonB.vertices.length) : 0);
+return ((a === b)? 0 : ((a < b)? 1 : -1));
+});
+},
+vertexShader: vs_distance_fog,
+rasterizer: Rsed.scenes.$render.rasterizer,
+transformClipLighter: Rsed.scenes.$render.transform_clip_lighter,
+},
+});
 rendererStats.totalRenderTimeMs = Math.round(rendererStats.totalRenderTimeMs);
 // If the rendering was resized since the previous frame...
 if ((rendererStats.renderWidth !== Rsed.visual.canvas.width ||
@@ -6464,28 +7056,30 @@ uiMeshes.push(uiComponents.minimap((Rsed.visual.canvas.width - margin), (margin 
 if (!Rsed.browserMetadata.isMobile)
 {
 uiMeshes.push(uiComponents.viewLabel("Editor: Terrain", margin, margin));
-uiMeshes.push(uiComponents.activePala((Rsed.visual.canvas.width - 73), (margin - 1)));
+uiMeshes.push(uiComponents.activePala((Rsed.visual.canvas.width - 72), (margin - 1)));
 uiMeshes.push(uiComponents.footerInfo(margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - margin)));
 }
 if (sceneState.showPalatPane)
 {
-uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - margin), 42));
+uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - margin), 40));
 }
 if (Rsed.browserMetadata.has_url_param("showFPS"))
 {
-uiMeshes.push(uiComponents.frametimeGraph(margin, 20, (rendererStats.totalRenderTimeMs || 0)));
-uiMeshes.push(uiComponents.fpsIndicator(margin, 12, Rsed.core.ticksPerSecond));
+uiMeshes.push(uiComponents.fpsIndicator(margin, 13, Rsed.core.ticksPerSecond));
+uiMeshes.push(uiComponents.frametimeGraph(margin, 22, (rendererStats.totalRenderTimeMs || 0)));
 }
-Rngon.render(
-Rsed.visual.canvas.domElementUi,
-uiMeshes,
-{
+Rngon.render({
+target: Rsed.visual.canvas.domElementUi,
+meshes: uiMeshes,
+options: {
 cameraPosition: Rngon.vector(0, 0, 0),
-scale: Rsed.visual.canvas.scalingFactor,
+resolution: Rsed.visual.canvas.scalingFactor,
 useDepthBuffer: false,
-auxiliaryBuffers: [{buffer:Rsed.visual.canvas.mousePickingBuffer, property:"mousePickId"}],
-}
-);
+},
+pipeline: {
+rasterizer: Rsed.scenes.$render.rasterizer,
+},
+});
 return;
 }
 function update_cursor_graphic()
@@ -6667,16 +7261,16 @@ prevMousePos = Rsed.ui.utils.inputState.mouse_pos();
 return;
 }
 // Vertex shader for a linear distance fog that fades to black.
-function vs_distance_fog(ngon, cameraPosition)
+function vs_distance_fog(ngon, renderState)
 {
 const startDistance = (Math.min(5200, (5200 / Rsed.core.displayScaleHeight)) ** 2);
-const fogDepth = (2300 ** 2);
+const fogDepth = (3500 ** 2);
 for (let v = 0; v < ngon.vertices.length; v++)
 {
 const distance = (
-((ngon.vertices[v].x - cameraPosition.x) ** 2) +
-((ngon.vertices[v].y - cameraPosition.y) ** 2) +
-((ngon.vertices[v].z - cameraPosition.z) ** 2)
+((ngon.vertices[v].x - renderState.cameraPosition.x) ** 2) +
+((ngon.vertices[v].y - renderState.cameraPosition.y) ** 2) +
+((ngon.vertices[v].z - renderState.cameraPosition.z) ** 2)
 ) - startDistance;
 ngon.vertices[v].shade = Math.max(0, Math.min(ngon.vertices[v].shade, (1 - (distance / fogDepth))));
 }
@@ -6733,7 +7327,7 @@ const trackPolygons = [];
 // Note that we adjust Z to account for vertical camera zooming.
 const centerView = {
 x: -((Math.floor(args.camera.viewportWidth / 2) + 1) * Rsed.constants.groundTileSize),
-y: (-650 + cameraPosFloored.y),
+y: (-600 + cameraPosFloored.y),
 z: (3388 - (args.camera.rotation().x / 7.5) + (Rsed.constants.groundTileSize * 3.5))
 };
 const mouseHover = Rsed.ui.utils.inputState.current_mouse_hover();
@@ -7058,363 +7652,6 @@ return dstMesh;
 return publicInterface;
 })();
 /*
-* 2019, 2020 Tarpeeksi Hyvae Soft
-*
-* Software: RallySportED-js
-*
-*/
-"use strict";
-{ // A block to limit the scope of the unit-global variables we set up, below.
-// We'll sort the n-gon's vertices into those on its left side and those on its
-// right side.
-const leftVerts = new Array(500);
-const rightVerts = new Array(500);
-// Then we'll organize the sorted vertices into edges (lines between given two
-// vertices). Once we've got the edges figured out, we can render the n-gon by filling
-// in the spans between its edges.
-const leftEdges = new Array(500).fill().map(e=>({}));
-const rightEdges = new Array(500).fill().map(e=>({}));
-let numLeftVerts = 0;
-let numRightVerts = 0;
-let numLeftEdges = 0;
-let numRightEdges = 0;
-// A stripped-down version of the retro n-gon renderer's polygon filler, optimized for
-// RallySportED's terrain renderer. Includes only the features needed and makes certain
-// assumptions of context, helping to boost FPS. For the original retro n-gon renderer
-// function, see Rngon.ngon_filler().
-Rsed.scenes["terrain-editor"].minimal_rngon_filler = function(auxiliaryBuffers = [])
-{
-const pixelBuffer = Rngon.state.active.pixelBuffer.data;
-const pixelBuffer32 = new Uint32Array(pixelBuffer.buffer);
-const renderWidth = Rngon.state.active.pixelBuffer.width;
-const renderHeight = Rngon.state.active.pixelBuffer.height;
-const auxBuffer = auxiliaryBuffers[0];
-Rngon.assert && auxBuffer
-|| Rngon.throw("Expected an auxiliary buffer for mouse picking");
-const vertexSorters = {
-verticalAscending: (vertA, vertB)=>((vertA.y === vertB.y)? 0 : ((vertA.y < vertB.y)? -1 : 1)),
-verticalDescending: (vertA, vertB)=>((vertA.y === vertB.y)? 0 : ((vertA.y > vertB.y)? -1 : 1))
-}
-// Rasterize the n-gons.
-for (let n = 0; n < Rngon.state.active.ngonCache.count; n++)
-{
-const ngon = Rngon.state.active.ngonCache.ngons[n];
-const material = ngon.material;
-const texture = ngon.material.texture;
-Rngon.assert && (ngon.vertices.length < leftVerts.length)
-|| Rngon.throw("Overflowing the vertex buffer");
-numLeftVerts = 0;
-numRightVerts = 0;
-numLeftEdges = 0;
-numRightEdges = 0;
-// In theory, we should never receive n-gons that have no vertices, but let's check
-// to make sure.
-if (ngon.vertices.length <= 0)
-{
-continue;
-}
-else if (ngon.vertices.length === 1)
-{
-Rngon.baseModules.rasterize.point(ngon.vertices[0], ngon.material, n);
-continue;
-}
-else if (ngon.vertices.length === 2)
-{
-Rngon.baseModules.rasterize.line(ngon.vertices[0], ngon.vertices[1], material.color, n, false);
-continue;
-}
-// Rasterize a polygon with 3 or more vertices.
-else
-{
-// Figure out which of the n-gon's vertices are on its left side and which on the
-// right. The vertices on both sides will be arranged from smallest Y to largest
-// Y, i.e. top-to-bottom in screen space. The top-most vertex and the bottom-most
-// vertex will be shared between the two sides.
-{
-// For rectangular ground tiles.
-if (material.auxiliary.isGroundTile)
-{
-Rngon.assert && (ngon.vertices.length == 4)
-|| Rngon.throw("Expected a rectangle.");
-let leftTop = ngon.vertices[3];
-let leftBottom = ngon.vertices[0];
-let rightTop = ngon.vertices[2];
-let rightBottom = ngon.vertices[1];
-// Fix self-intersecting where the supposedly bottom vertex has been raised
-// above the top vertex.
-if (leftBottom.y < leftTop.y) {
-leftBottom.y = leftTop.y;
-}
-if (rightBottom.y < rightTop.y) {
-rightBottom.y = rightTop.y;
-}
-if (leftTop.y < rightTop.y)
-{
-leftVerts[numLeftVerts++] = leftTop;
-leftVerts[numLeftVerts++] = leftBottom;
-rightVerts[numRightVerts++] = leftTop;
-rightVerts[numRightVerts++] = rightTop;
-rightVerts[numRightVerts++] = rightBottom;
-}
-else
-{
-leftVerts[numLeftVerts++] = rightTop;
-leftVerts[numLeftVerts++] = leftTop;
-leftVerts[numLeftVerts++] = leftBottom;
-rightVerts[numRightVerts++] = rightTop;
-rightVerts[numRightVerts++] = rightBottom;
-}
-if (leftBottom.y < rightBottom.y)
-{
-leftVerts[numLeftVerts++] = rightBottom;
-}
-else
-{
-rightVerts[numRightVerts++] = leftBottom;
-}
-}
-// Generic algorithm for n-sided convex polygons.
-else
-{
-// Sort the vertices by height from smallest Y to largest Y.
-ngon.vertices.sort(vertexSorters.verticalAscending);
-const topVert = ngon.vertices[0];
-const bottomVert = ngon.vertices[ngon.vertices.length-1];
-leftVerts[numLeftVerts++] = topVert;
-rightVerts[numRightVerts++] = topVert;
-// Trace a line along XY between the top-most vertex and the bottom-most vertex;
-// and for the intervening vertices, find whether they're to the left or right of
-// that line on X. Being on the left means the vertex is on the n-gon's left side,
-// otherwise it's on the right side.
-for (let i = 1; i < (ngon.vertices.length - 1); i++)
-{
-const lr = Rngon.lerp(topVert.x, bottomVert.x, ((ngon.vertices[i].y - topVert.y) / (bottomVert.y - topVert.y)));
-if (ngon.vertices[i].x >= lr)
-{
-rightVerts[numRightVerts++] = ngon.vertices[i];
-}
-else
-{
-leftVerts[numLeftVerts++] = ngon.vertices[i];
-}
-}
-leftVerts[numLeftVerts++] = bottomVert;
-rightVerts[numRightVerts++] = bottomVert;
-}
-}
-// Create edges out of the vertices.
-{
-for (let l = 1; l < numLeftVerts; l++) add_edge(leftVerts[l-1], leftVerts[l], true);
-for (let r = 1; r < numRightVerts; r++) add_edge(rightVerts[r-1], rightVerts[r], false);
-function add_edge(vert1, vert2, isLeftEdge)
-{
-const startY = Math.round(vert1.y);
-const endY = Math.round(vert2.y);
-const edgeHeight = (endY - startY);
-// Ignore horizontal edges.
-if (edgeHeight === 0) return;
-const startX = Math.round(vert1.x);
-const endX = Math.ceil(vert2.x);
-const deltaX = ((endX - startX) / edgeHeight);
-const startShade = vert1.shade;
-const deltaShade = ((vert2.shade - vert1.shade) / edgeHeight);
-const edge = (isLeftEdge? leftEdges[numLeftEdges++] : rightEdges[numRightEdges++]);
-edge.startY = startY;
-edge.endY = endY;
-edge.startX = startX;
-edge.deltaX = deltaX;
-edge.startShade = startShade;
-edge.deltaShade = deltaShade;
-}
-}
-// Draw the n-gon. On each horizontal raster line, there will be two edges: left and right.
-// We'll render into the pixel buffer each horizontal span that runs between the two edges.
-if (material.hasFill)
-{
-let curLeftEdgeIdx = 0;
-let curRightEdgeIdx = 0;
-let leftEdge = leftEdges[curLeftEdgeIdx];
-let rightEdge = rightEdges[curRightEdgeIdx];
-if (!numLeftEdges || !numRightEdges) continue;
-// Note: We assume the n-gon's vertices to be sorted by increasing Y.
-const ngonStartY = leftEdges[0].startY;
-const ngonEndY = leftEdges[numLeftEdges-1].endY;
-const ngonHeight = (ngonEndY - ngonStartY);
-// Rasterize the n-gon in horizontal pixel spans over its height.
-let y = (ngonStartY - 1);
-while (++y < ngonEndY)
-{
-const spanStartX = Math.round(leftEdge.startX);
-const spanEndX = Math.round(rightEdge.startX);
-const spanWidth = ((spanEndX - spanStartX) + 1);
-if ((spanWidth > 0) &&
-(y >= 0) &&
-(y < renderHeight))
-{
-const deltaShade = ((rightEdge.startShade - leftEdge.startShade) / spanWidth);
-let iplShade = (leftEdge.startShade - deltaShade);
-// Assumes the pixel buffer consists of 4 elements per pixel (e.g. RGBA).
-let pixelBufferIdx = ((spanStartX + y * renderWidth) - 1);
-// Draw a solid-filled span.
-if (!texture)
-{
-let x = (spanStartX - 1);
-while (++x < spanEndX)
-{
-// Update values that're interpolated horizontally along the span.
-iplShade += deltaShade;
-pixelBufferIdx++;
-// Bounds-check, since we don't clip vertices to the viewport.
-if (x < 0) continue;
-if (x >= renderWidth) break;
-pixelBuffer32[pixelBufferIdx] = (
-(255 << 24) +
-((material.color.blue * iplShade) << 16) +
-((material.color.green * iplShade) << 8) +
-~~(material.color.red * iplShade)
-);
-if (material.auxiliary["mousePickId"])
-{
-auxBuffer[pixelBufferIdx] = material.auxiliary["mousePickId"];
-}
-}
-}
-// Draw a textured span.
-else
-{
-const wDiv = (texture.width / spanWidth);
-const hDiv = (texture.height / ngonHeight);
-const ngonY = (y - ngonStartY + 1);
-const v = ~~(texture.height - (ngonY * hDiv));
-let x = (spanStartX - 1);
-while (++x < spanEndX)
-{
-// Update values that're interpolated horizontally along the span.
-iplShade += deltaShade;
-pixelBufferIdx++;
-// Bounds-check, since we don't clip vertices to the viewport.
-if (x < 0) continue;
-if (x >= renderWidth) break;
-const ngonX = (x - spanStartX + 1);
-const u = ~~(ngonX * wDiv);
-const texel = texture.pixels[u + v * texture.width];
-if (texel.alpha !== 255) continue;
-pixelBuffer32[pixelBufferIdx] = (
-(255 << 24) +
-((texel.blue * iplShade) << 16) +
-((texel.green * iplShade) << 8) +
-~~(texel.red * iplShade)
-);
-if (material.auxiliary["mousePickId"])
-{
-auxBuffer[pixelBufferIdx] = material.auxiliary["mousePickId"];
-}
-}
-}
-}
-// Update values that're interpolated vertically along the edges.
-leftEdge.startX  += leftEdge.deltaX;
-rightEdge.startX += rightEdge.deltaX;
-leftEdge.startShade  += leftEdge.deltaShade;
-rightEdge.startShade += rightEdge.deltaShade;
-// We can move onto the next edge when we're at the end of the current one.
-if (y === (leftEdge.endY - 1)) leftEdge = leftEdges[++curLeftEdgeIdx];
-if (y === (rightEdge.endY - 1)) rightEdge = rightEdges[++curRightEdgeIdx];
-}
-}
-// Draw a wireframe around any n-gons that wish for one.
-if (Rngon.state.active.showGlobalWireframe ||
-material.hasWireframe)
-{
-for (let l = 1; l < numLeftVerts; l++)
-{
-Rngon.baseModules.rasterize.line(leftVerts[l-1], leftVerts[l], material.wireframeColor, n);
-}
-for (let r = 1; r < numRightVerts; r++)
-{
-Rngon.baseModules.rasterize.line(rightVerts[r-1], rightVerts[r], material.wireframeColor, n);
-}
-}
-}
-}
-return;
-}
-}
-/*
-* 2019, 2020 Tarpeeksi Hyvae Soft
-*
-* Software: RallySportED-js
-*
-*/
-"use strict";
-// A stripped-down version of the retro n-gon renderer's polygon transformer. Includes
-// only the features required by RallySportED-js, helping to boost FPS.
-//
-// Expects vertices to already be in screen space.
-//
-// For the original function, see Rngon.ngon_transform_and_light().
-Rsed.scenes["terrain-editor"].minimal_rngon_tcl = function(ngons = [])
-{
-const ngonCache = Rngon.state.active.ngonCache;
-const renderWidth = Rngon.state.active.pixelBuffer.width;
-const renderHeight = Rngon.state.active.pixelBuffer.height;
-for (const ngon of ngons)
-{
-// Ignore n-gons that would be fully outside of the screen.
-{
-const boundingBox = ngon.vertices.reduce((bounds, v)=>{
-if (bounds.xMin > v.x) bounds.xMin = v.x;
-if (bounds.xMax < v.x) bounds.xMax = v.x;
-if (bounds.yMin > v.y) bounds.yMin = v.y;
-if (bounds.yMax < v.y) bounds.yMax = v.y;
-return bounds;
-}, {xMin: Infinity, xMax: -Infinity, yMin: Infinity, yMax: -Infinity});
-if ((boundingBox.xMin >= renderWidth) || (boundingBox.xMax < 0) ||
-(boundingBox.yMin >= renderHeight) || (boundingBox.yMax < 0))
-{
-continue;
-}
-}
-// Ignore fully transparent n-gons.
-if (!ngon.material.color.alpha &&
-!ngon.material.hasWireframe)
-{
-continue;
-}
-// Copy the ngon into the internal n-gon cache, so we can operate on it without
-// mutating the original n-gon's data.
-const cachedNgon = ngonCache.ngons[ngonCache.count++];
-{
-cachedNgon.vertices.length = 0;
-for (let v = 0; v < ngon.vertices.length; v++)
-{
-cachedNgon.vertices[v] = Rngon.vertex(
-ngon.vertices[v].x,
-ngon.vertices[v].y,
-ngon.vertices[v].z,
-undefined,
-undefined,
-undefined,
-ngon.vertices[v].shade
-);
-}
-cachedNgon.material = ngon.material;
-cachedNgon.isActive = true;
-}
-if (Rngon.state.active.useVertexShader)
-{
-Rngon.state.active.vertex_shader(cachedNgon, Rngon.vector(0, 0, 0));
-}
-};
-// Mark as inactive any cached n-gons that we didn't touch, so the renderer knows
-// to ignore them for the current frame.
-for (let i = ngonCache.count; i < ngonCache.ngons.length; i++)
-{
-ngonCache.ngons[i].isActive = false;
-}
-return;
-}
-/*
 * Most recent known filename: js/scene/texture-editor/texture-editor.js
 *
 * 2019-2021 Tarpeeksi Hyvae Soft
@@ -7439,15 +7676,15 @@ window.addEventListener("rallysported:all-textures-changed", ()=>{
 Rsed.scenes["texture-editor"].set_texture(null);
 });
 const camera = Rsed.scenes.$camera2D({
-zoomLevel: 50,
-movementSpeed: 0.02,
-zoomSpeed: 15,
-x: (-Rsed.constants.palaWidth / 2),
-y: (Rsed.constants.palaHeight / 2)
+zoomLevel: 5,
+movementSpeed: 2.5,
+zoomSpeed: 1,
+x: 200,
+y: 100
 });
-const uiMeshes = [];
 // A reference to the Rsed.visual.texture() object that we're to edit.
 let texture = null;
+let textureInfo = {};
 // Texture pixels copied with Ctrl + C.
 let clipboard;
 reset_clipboard();
@@ -7489,6 +7726,7 @@ const scene = Rsed.scene({
 render: function()
 {
 process_user_input();
+Rsed.ui.utils.inputState.mousePickBuffer.fill(null);
 draw_scene();
 draw_ui();
 return;
@@ -7592,12 +7830,11 @@ function process_user_input()
 {
 handle_mouse_input();
 update_cursor_graphic();
-Rsed.visual.canvas.mousePickingBuffer.fill(null);
 return;
 }
 function draw_ui()
 {
-uiMeshes.length = 0;
+const uiMeshes = [];
 const margin = 4;
 if ((Rsed.visual.canvas.width <= 0) ||
 (Rsed.visual.canvas.height <= 0))
@@ -7615,16 +7852,28 @@ const clipboardLabel = clipboard
 : "Clipboard: empty";
 uiMeshes.push(uiComponents.viewLabel("Editor: Texture", margin, margin));
 uiMeshes.push(uiComponents.colorSelector((Rsed.visual.canvas.width - 101), (margin - 1)));
-uiMeshes.push(uiComponents.resolutionLabel(`Size: ${texture.width} * ${texture.height}`, margin, (Rsed.visual.canvas.height - (Rsed.ui.canvas.font.nativeHeight * 2) - 8)));
+uiMeshes.push(uiComponents.resolutionLabel(`Texture size: ${texture.width} * ${texture.height}`, margin, (Rsed.visual.canvas.height - (Rsed.ui.canvas.font.nativeHeight * 2) - 9)));
 uiMeshes.push(uiComponents.clipboardLabel(clipboardLabel, margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - 5)));
 if (Rsed.browserMetadata.has_url_param("showFPS"))
 {
-uiMeshes.push(uiComponents.fpsIndicator(margin, 12, Rsed.core.ticksPerSecond));
+uiMeshes.push(uiComponents.fpsIndicator(margin, 13, Rsed.core.ticksPerSecond));
 }
 if (sceneState.showPalatPane)
 {
 uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - 4), 42));
 }
+Rngon.render({
+target: Rsed.visual.canvas.domElementUi,
+meshes: uiMeshes,
+options: {
+cameraPosition: Rngon.vector(0, 0, 0),
+resolution: Rsed.visual.canvas.scalingFactor,
+useDepthBuffer: false,
+},
+pipeline: {
+rasterizer: Rsed.scenes.$render.rasterizer,
+},
+});
 return;
 }
 function draw_scene()
@@ -7636,73 +7885,40 @@ Rsed.throw_if(Rsed.$currentProject.isPlaceholder,
 scene.set_texture(Rsed.$currentProject.palat.texture[3]);
 }
 camera.update();
-textureMousePickBuffer.length = 0;
+textureInfo.width = ~~(texture.width * camera.zoomLevel);
+textureInfo.height = ~~(texture.height * camera.zoomLevel);
+textureInfo.offsetX = ~~((-camera.position.x) - (textureInfo.width / 2));
+textureInfo.offsetY = ~~(camera.position.y - (textureInfo.height / 2));
 const textureNgon = Rngon.ngon([
-Rngon.vertex(0            , 0             , 0, 0    , 0),
-Rngon.vertex(texture.width, 0             , 0, 0.999, 0),
-Rngon.vertex(texture.width, texture.height, 0, 0.999, 0.999),
-Rngon.vertex(0            , texture.height, 0, 0    , 0.999)], {
-color: Rngon.color(255, 255, 255),
+Rngon.vertex(textureInfo.offsetX                  , textureInfo.offsetY),
+Rngon.vertex(textureInfo.offsetX+textureInfo.width, textureInfo.offsetY),
+Rngon.vertex(textureInfo.offsetX+textureInfo.width, textureInfo.offsetY+textureInfo.height),
+Rngon.vertex(textureInfo.offsetX                  , textureInfo.offsetY+textureInfo.height)], {
+isInScreenSpace: true,
 texture: texture,
-hasWireframe: false,
-wireframeColor: Rngon.color(255, 255, 0),
-textureMapping: "affine",
-uvWrapping: "clamp",
-allowAlphaReject: false,
 auxiliary: {
-mousePickId: {
-type: "texture-editor:current-texture",
-},
+mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
+componentId: "texture",
+cursor: Rsed.ui.dom.cursorHandler.cursors.pencil,
+}),
 },
 }
 );
-const label = text_mesh(texture.name, Rngon.vector(0, (texture.height + 1)));
-const {renderWidth, renderHeight} = Rngon.render(
-Rsed.visual.canvas.domElement,
-[Rngon.mesh([textureNgon]), label],
-{
-cameraPosition: camera.position,
-scale: Rsed.visual.canvas.scalingFactor,
+const label = text_mesh(texture.name, textureInfo.offsetX, textureInfo.offsetY - Rsed.ui.canvas.font.nativeHeight - 3);
+const {renderWidth, renderHeight} = Rngon.render({
+target: Rsed.visual.canvas.domElement,
+meshes: [Rngon.mesh([textureNgon]), label],
+options: {
+resolution: Rsed.visual.canvas.scalingFactor,
 fov: 45,
 nearPlane: 0,
 farPlane: 10000,
-depthSort: "painter",
 useDepthBuffer: false,
-auxiliaryBuffers: [{buffer:Rsed.visual.canvas.mousePickingBuffer, property:"mousePickId"}],
-// For each pixel we're rendered, mark its texture UV coordinates into our
-// mouse-picking buffer.
-pixelShader: function({renderWidth, renderHeight, fragmentBuffer})
-{
-for (let i = 0; i < (renderWidth * renderHeight); i++)
-{
-if (fragmentBuffer[i].ngonIdx !== 0) {
-continue;
-}
-const u = (fragmentBuffer[i].textureUScaled == null)
-? null
-: Math.max(0, Math.min((texture.width - 1), fragmentBuffer[i].textureUScaled));
-const v = (fragmentBuffer[i].textureVScaled == null)
-? null
-: Math.max(0, Math.min((texture.height - 1), fragmentBuffer[i].textureVScaled));
-textureMousePickBuffer[i] = {u, v};
-// Reset the fragment buffer as we go along, since the renderer doesn't at the
-// time of writing this clear the fragment buffer at the beginning of each frame.
-fragmentBuffer[i].textureUScaled = null;
-fragmentBuffer[i].textureVScaled = null;
-}
 },
-}
-);
-Rngon.render(
-Rsed.visual.canvas.domElementUi,
-uiMeshes,
-{
-cameraPosition: Rngon.vector(0, 0, 0),
-scale: Rsed.visual.canvas.scalingFactor,
-useDepthBuffer: false,
-auxiliaryBuffers: [{buffer:Rsed.visual.canvas.mousePickingBuffer, property:"mousePickId"}],
-}
-);
+pipeline: {
+rasterizer: Rsed.scenes.$render.rasterizer,
+},
+});
 // If the rendering was resized since the previous frame...
 if ((renderWidth !== Rsed.visual.canvas.width ||
 (renderHeight !== Rsed.visual.canvas.height)))
@@ -7815,32 +8031,26 @@ function update_cursor_graphic()
 {
 const cursors = Rsed.ui.dom.cursorHandler.cursors;
 const mousePos = Rsed.ui.utils.inputState.mouse_pos_scaled_to_render_resolution();
-const pickElement = textureMousePickBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width];
+const pickElement = Rsed.ui.utils.inputState.mousePickBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width];
 const isCursorOnTexture = (pickElement && (pickElement.u !== null) && (pickElement.v !== null));
-const newCursor = (()=>
-{
 const mouseHover = Rsed.ui.utils.inputState.current_mouse_hover();
+let cursor = cursors.default;
 if (mouseHover && mouseHover.cursor)
 {
-return mouseHover.cursor;
+cursor = mouseHover.cursor;
 }
 if (isCursorOnTexture)
 {
 if (Rsed.ui.utils.inputState.key_down("tab"))
 {
-return cursors.eyedropper;
+cursor = cursors.eyedropper;
 }
 else
 {
-return cursors.pencil;
+cursor = cursors.pencil;
 }
 }
-else
-{
-return cursors.default;
-}
-})();
-Rsed.ui.dom.cursorHandler.set_cursor(newCursor);
+Rsed.ui.dom.cursorHandler.set_cursor(cursor);
 return;
 }
 function handle_mouse_input()
@@ -7852,13 +8062,13 @@ return;
 const mousePos = Rsed.ui.utils.inputState.mouse_pos_scaled_to_render_resolution();
 const grab = Rsed.ui.utils.inputState.current_mouse_grab();
 // Handle painting the texture.
-if (grab?.type == "texture-editor:current-texture")
-{
-const pickElement = textureMousePickBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width];
-const isCursorOnTexture = (pickElement && (pickElement.u !== null) && (pickElement.v !== null));
-if (isCursorOnTexture)
-{
-const colorIdxUnderCursor = texture.indices[pickElement.u + pickElement.v * texture.width];
+if (
+(grab?.type == "ui-component") &&
+(grab.componentId === "texture")
+){
+const textureX = Math.floor((mousePos.x - textureInfo.offsetX) / camera.zoomLevel);
+const textureY = Math.floor((mousePos.y - textureInfo.offsetY) / camera.zoomLevel);
+const colorIdxUnderCursor = texture.indices[textureX + textureY * texture.width];
 // Eyedropper.
 if (Rsed.ui.utils.inputState.key_down("tab"))
 {
@@ -7876,12 +8086,11 @@ Rsed.ui.utils.assetMutator.user_edit("texture", {
 command: "set-pixel",
 target: {
 texture,
-u: pickElement.u,
-v: pickElement.v,
+u: textureX,
+v: textureY,
 },
 data: sceneState.penColorIdx,
 });
-}
 }
 }
 }
@@ -7891,7 +8100,7 @@ camera.handle_mouse_input();
 }
 return;
 }
-function text_mesh(string = "", position = Rngon.vector())
+function text_mesh(string = "", originX = 0, originY = 0)
 {
 const ngons = [];
 let runningXOffs = 0;
@@ -7901,8 +8110,8 @@ for (const ch of string.split(""))
 {
 const symbol = Rsed.ui.canvas.font.character(ch.toUpperCase());
 ngons.push(ngon({
-x: (runningXOffs + symbol.offsetX),
-y: symbol.offsetY,
+x: originX + 1 + (runningXOffs + symbol.offsetX),
+y: originY + 1 + symbol.offsetY,
 width: symbol.width,
 height: symbol.height,
 texture: symbol.texture,
@@ -7911,18 +8120,15 @@ runningXOffs += (symbol.width + symbol.offsetX + letterSpacing);
 }
 // Background color.
 ngons.unshift(ngon({
-x: -1,
-y: -1,
+x: originX,
+y: originY,
 width: (runningXOffs + 1),
 height: (Rsed.ui.canvas.font.nativeHeight + 2),
 material: {
-color: Rngon.color(255, 255, 0),
+color: Rngon.color.yellow,
 },
 }));
-return Rngon.mesh(ngons, {
-translation: position,
-scaling: Rngon.vector(0.4, 0.4, 0.4),
-});
+return Rngon.mesh(ngons);
 function ngon({
 x,
 y,
@@ -7937,6 +8143,7 @@ Rngon.vertex(x        , y),
 Rngon.vertex(x + width, y),
 Rngon.vertex(x + width, y + height),
 Rngon.vertex(x        , y + height)], {
+isInScreenSpace: true,
 texture: texture,
 ...material,
 }
@@ -7958,23 +8165,15 @@ texture: texture,
 Rsed.scenes["tilemap-editor"] = (function()
 {
 const camera = Rsed.scenes.$camera2D({
-zoomLevel: 125,
-movementSpeed: 0.02,
-zoomSpeed: 20,
-x: -64,
-y: 32
+zoomLevel: 1,
+movementSpeed: 2.5,
+zoomSpeed: 0.15,
+x: 200,
+y: 100
 });
-// A buffer in which we store mouse-picking information about the rendering - so for
-// each pixel on-screen, we can tell to which part of the texture the pixel corresponds.
-const mousePickBuffer = [];
-const uiMeshes = [];
 // A representation of the track's VARIMAA data.
 const tilemap = {
-texture: {
-pixels: [],
-width: 0,
-height: 0,
-},
+texture: undefined,
 mesh: Rngon.mesh([]),
 width: 0,
 height: 0,
@@ -8013,18 +8212,25 @@ footer: Rsed.ui.canvas.component.label(),
 const scene = Rsed.scene({
 render: function()
 {
+if (!tilemap.texture)
+{
+this.refresh_tilemap();
+}
 process_user_input();
+Rsed.ui.utils.inputState.mousePickBuffer.fill(null);
 draw_scene();
 draw_ui();
 return;
 },
 refresh_tilemap: function()
 {
-tilemap.texture.width = Rsed.$currentProject.varimaa.width;
-tilemap.texture.height = Rsed.$currentProject.varimaa.height;
-tilemap.texture.pixels = new Array(tilemap.texture.width * tilemap.texture.height * 4);
-tilemap.width = 128;
-tilemap.height = 64;
+const width = Rsed.$currentProject.varimaa.width;
+const height = Rsed.$currentProject.varimaa.height;
+tilemap.texture = Rngon.texture({
+width,
+height,
+pixels: new Array(width * height * 4),
+});
 knownCanvasSizeX = Rsed.visual.canvas.width;
 knownCanvasSizeY = Rsed.visual.canvas.height;
 refresh_tilemap_texture();
@@ -8131,7 +8337,7 @@ return;
 }
 function draw_ui()
 {
-uiMeshes.length = 0;
+const uiMeshes = [];
 const margin = 4;
 if ((Rsed.visual.canvas.width <= 0) ||
 (Rsed.visual.canvas.height <= 0))
@@ -8140,15 +8346,26 @@ return;
 }
 uiMeshes.push(uiComponents.viewLabel("Editor: Tilemap", margin, margin));
 uiMeshes.push(uiComponents.activePala((Rsed.visual.canvas.width - margin), (margin - 1)));
-uiMeshes.push(uiComponents.footer(`Size: ${Rsed.$currentProject.maasto.width} * ${Rsed.$currentProject.maasto.width}`, margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - 5)));
+uiMeshes.push(uiComponents.footer(`Map size: ${Rsed.$currentProject.maasto.width} * ${Rsed.$currentProject.maasto.width}`, margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - 5)));
 if (sceneState.showPalatPane)
 {
-uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - margin), 42));
+uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - margin), 40));
 }
 if (Rsed.browserMetadata.has_url_param("showFPS"))
 {
-uiMeshes.push(uiComponents.fpsIndicator(margin, 12, Rsed.core.ticksPerSecond));
+uiMeshes.push(uiComponents.fpsIndicator(margin, 13, Rsed.core.ticksPerSecond));
 }
+Rngon.render({
+target: Rsed.visual.canvas.domElementUi,
+meshes: uiMeshes,
+options: {
+resolution: Rsed.visual.canvas.scalingFactor,
+useDepthBuffer: false,
+},
+pipeline: {
+rasterizer: Rsed.scenes.$render.rasterizer,
+},
+});
 return;
 }
 function draw_scene()
@@ -8161,70 +8378,40 @@ if ((Rsed.visual.canvas.width != knownCanvasSizeX) ||
 scene.refresh_tilemap();
 }
 camera.update();
-mousePickBuffer.length = 0;
+tilemap.width = ~~(tilemap.texture.width * 2 * camera.zoomLevel);
+tilemap.height = ~~(tilemap.texture.height * camera.zoomLevel);
+tilemap.offsetX = ~~((-camera.position.x) - (tilemap.width / 2));
+tilemap.offsetY = ~~(camera.position.y - (tilemap.height / 2));
 // The tilemap n-gon is a rectangle textured with the tilemap's pixels.
 const tilemapNgon = Rngon.ngon([
-Rngon.vertex(0            , 0             , 0, 0    , 0),
-Rngon.vertex(tilemap.width, 0             , 0, 0.999, 0),
-Rngon.vertex(tilemap.width, tilemap.height, 0, 0.999, 0.999),
-Rngon.vertex(0            , tilemap.height, 0, 0    , 0.999)],
-{
-color: Rngon.color(255, 255, 255),
-texture: Rngon.texture(tilemap.texture),
-hasWireframe: false,
-wireframeColor: Rngon.color(255, 255, 0),
-textureMapping: "affine",
-uvWrapping: "clamp",
+Rngon.vertex(tilemap.offsetX              , tilemap.offsetY),
+Rngon.vertex(tilemap.offsetX+tilemap.width, tilemap.offsetY),
+Rngon.vertex(tilemap.offsetX+tilemap.width, tilemap.offsetY+tilemap.height),
+Rngon.vertex(tilemap.offsetX              , tilemap.offsetY+tilemap.heightA)], {
+isInScreenSpace: true,
+texture: tilemap.texture,
 auxiliary: {
-mousePickId: {
-type: "tilemap-editor:tilemap",
-},
+mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
+componentId: "tilemap",
+cursor: Rsed.ui.dom.cursorHandler.cursors.pencil,
+}),
 },
 }
 );
-const {renderWidth, renderHeight} = Rngon.render(
-Rsed.visual.canvas.domElement,
-[Rngon.mesh([tilemapNgon])],
-{
-cameraPosition: camera.position,
-scale: Rsed.visual.canvas.scalingFactor,
+const {renderWidth, renderHeight} = Rngon.render({
+target: Rsed.visual.canvas.domElement,
+meshes: [Rngon.mesh([tilemapNgon])],
+options: {
+resolution: Rsed.visual.canvas.scalingFactor,
 fov: 45,
 nearPlane: 0,
 farPlane: 10,
-depthSort: "painter",
 useDepthBuffer: false,
-auxiliaryBuffers: [{buffer:Rsed.visual.canvas.mousePickingBuffer, property:"mousePickId"}],
-// For each pixel we're rendered, mark its texture UV coordinates into our
-// mouse-picking buffer.
-pixelShader: function({renderWidth, renderHeight, fragmentBuffer})
-{
-for (let i = 0; i < (renderWidth * renderHeight); i++)
-{
-const u = (fragmentBuffer[i].textureUScaled == null)
-? null
-: Math.max(0, Math.min((tilemap.texture.width - 1), fragmentBuffer[i].textureUScaled));
-const v = (fragmentBuffer[i].textureVScaled == null)
-? null
-: Math.max(0, Math.min((tilemap.texture.height - 1), fragmentBuffer[i].textureVScaled));
-mousePickBuffer[i] = {u, v: (tilemap.texture.height - 1 - v)};
-// Reset the fragment buffer as we go along, since the renderer doesn't at the
-// time of writing this clear the fragment buffer at the beginning of each frame.
-fragmentBuffer[i].textureUScaled = null;
-fragmentBuffer[i].textureVScaled = null;
-}
 },
+pipeline: {
+rasterizer: Rsed.scenes.$render.rasterizer,
 }
-);
-Rngon.render(
-Rsed.visual.canvas.domElementUi,
-uiMeshes,
-{
-cameraPosition: Rngon.vector(0, 0, 0),
-scale: Rsed.visual.canvas.scalingFactor,
-useDepthBuffer: false,
-auxiliaryBuffers: [{buffer:Rsed.visual.canvas.mousePickingBuffer, property:"mousePickId"}],
-}
-);
+});
 // If the rendering was resized since the previous frame...
 if ((renderWidth !== Rsed.visual.canvas.width ||
 (renderHeight !== Rsed.visual.canvas.height)))
@@ -8239,28 +8426,29 @@ function process_user_input()
 {
 handle_mouse_input();
 update_cursor_graphic();
-Rsed.visual.canvas.mousePickingBuffer.fill(null);
 return;
 }
 function update_cursor_graphic()
 {
 const cursors = Rsed.ui.dom.cursorHandler.cursors;
 const mousePos = Rsed.ui.utils.inputState.mouse_pos_scaled_to_render_resolution();
-const pickElement = mousePickBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width];
+const pickElement = Rsed.ui.utils.inputState.mousePickBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width];
 const mouseHover = Rsed.ui.utils.inputState.current_mouse_hover();
 const isCursorOnTilemap = (pickElement && (pickElement.u !== null) && (pickElement.v !== null));
+let cursor = cursors.default;
 if (mouseHover && mouseHover.cursor)
 {
-Rsed.ui.dom.cursorHandler.set_cursor(mouseHover.cursor);
+cursor = mouseHover.cursor;
 }
 else if (isCursorOnTilemap)
 {
-Rsed.ui.dom.cursorHandler.set_cursor(cursors.pencil);
+cursor = cursors.pencil;
 }
 else
 {
-Rsed.ui.dom.cursorHandler.set_cursor(cursors.default);
+cursor = cursors.default;
 }
+Rsed.ui.dom.cursorHandler.set_cursor(cursor);
 return;
 }
 function handle_mouse_input()
@@ -8268,26 +8456,25 @@ function handle_mouse_input()
 const mousePos = Rsed.ui.utils.inputState.mouse_pos_scaled_to_render_resolution();
 const grab = Rsed.ui.utils.inputState.current_mouse_grab();
 // Handle painting the tilemap.
-if (grab?.type == "tilemap-editor:tilemap")
-{
-const pickElement = mousePickBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width];
+if (
+(grab?.type == "ui-component") &&
+(grab.componentId === "tilemap")
+){
 const brushSize = (Rsed.ui.utils.terrainBrush.radius + 1);
-const isCursorOnTexture = ((pickElement?.u !== null) && (pickElement?.v !== null));
-if (isCursorOnTexture)
-{
+const tilemapX = Math.floor(((mousePos.x - tilemap.offsetX) / camera.zoomLevel) / 2);
+const tilemapY = Math.floor((mousePos.y - tilemap.offsetY) / camera.zoomLevel);
 Rsed.ui.utils.terrainBrush.apply({
 target: "varimaa-value",
 data: Rsed.ui.utils.terrainBrush.textureIdx,
-x: pickElement.u,
-y: pickElement.v
+x: tilemapX,
+y: tilemapY
 });
 refresh_tilemap_texture(
-(pickElement.u - brushSize),
-(pickElement.v - brushSize),
+(tilemapX - brushSize),
+(tilemapY - brushSize),
 (brushSize * 2),
 (brushSize * 2)
 );
-}
 }
 else
 {
@@ -8309,77 +8496,6 @@ return;
 Rsed.scenes["loading-spinner"] = (function()
 {
 let rotation = 0;
-const uiMeshes = [];
-// Rally-Sport's grassy texture.
-const texture = Rngon.texture({
-width: 16,
-height: 16,
-pixels: [
-8,64,16,255,	16,96,36,255,	24,128,48,255,	8,64,16,255,
-16,96,36,255,	24,128,48,255,	24,128,48,255,	16,96,36,255,
-8,64,16,255,	24,128,48,255,	24,128,48,255,	16,96,36,255,
-24,128,48,255,	16,96,36,255,	24,128,48,255,	16,96,36,255,
-24,128,48,255,	16,96,36,255,	8,64,16,255,	8,64,16,255,
-24,128,48,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
-16,96,36,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
-16,96,36,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
-8,64,16,255,	24,128,48,255,	16,96,36,255,	16,96,36,255,
-8,64,16,255,	24,128,48,255,	16,96,36,255,	24,128,48,255,
-24,128,48,255,	16,96,36,255,	8,64,16,255,	16,96,36,255,
-24,128,48,255,	16,96,36,255,	8,64,16,255,	24,128,48,255,
-24,128,48,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
-24,128,48,255,	16,96,36,255,	16,96,36,255,	16,96,36,255,
-16,96,36,255,	16,96,36,255,	24,128,48,255,	24,128,48,255,
-16,96,36,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
-8,64,16,255,	16,96,36,255,	8,64,16,255,	16,96,36,255,
-24,128,48,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
-16,96,36,255,	8,64,16,255,	16,96,36,255,	24,128,48,255,
-24,128,48,255,	24,128,48,255,	8,64,16,255,	24,128,48,255,
-16,96,36,255,	16,96,36,255,	16,96,36,255,	8,64,16,255,
-24,128,48,255,	24,128,48,255,	8,64,16,255,	24,128,48,255,
-8,64,16,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
-24,128,48,255,	24,128,48,255,	24,128,48,255,	8,64,16,255,
-8,64,16,255,	24,128,48,255,	24,128,48,255,	24,128,48,255,
-8,64,16,255,	24,128,48,255,	16,96,36,255,	24,128,48,255,
-8,64,16,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
-8,64,16,255,	24,128,48,255,	16,96,36,255,	24,128,48,255,
-24,128,48,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
-24,128,48,255,	16,96,36,255,	16,96,36,255,	16,96,36,255,
-8,64,16,255,	8,64,16,255,	8,64,16,255,	16,96,36,255,
-8,64,16,255,	8,64,16,255,	24,128,48,255,	24,128,48,255,
-8,64,16,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
-16,96,36,255,	16,96,36,255,	24,128,48,255,	16,96,36,255,
-24,128,48,255,	24,128,48,255,	24,128,48,255,	8,64,16,255,
-8,64,16,255,	16,96,36,255,	8,64,16,255,	16,96,36,255,
-16,96,36,255,	8,64,16,255,	16,96,36,255,	24,128,48,255,
-8,64,16,255,	24,128,48,255,	24,128,48,255,	8,64,16,255,
-8,64,16,255,	8,64,16,255,	16,96,36,255,	24,128,48,255,
-24,128,48,255,	8,64,16,255,	24,128,48,255,	8,64,16,255,
-8,64,16,255,	16,96,36,255,	8,64,16,255,	24,128,48,255,
-16,96,36,255,	8,64,16,255,	16,96,36,255,	16,96,36,255,
-16,96,36,255,	16,96,36,255,	24,128,48,255,	16,96,36,255,
-8,64,16,255,	16,96,36,255,	24,128,48,255,	24,128,48,255,
-8,64,16,255,	16,96,36,255,	16,96,36,255,	8,64,16,255,
-16,96,36,255,	16,96,36,255,	8,64,16,255,	24,128,48,255,
-8,64,16,255,	16,96,36,255,	24,128,48,255,	24,128,48,255,
-24,128,48,255,	16,96,36,255,	24,128,48,255,	8,64,16,255,
-16,96,36,255,	8,64,16,255,	16,96,36,255,	24,128,48,255,
-24,128,48,255,	24,128,48,255,	24,128,48,255,	24,128,48,255,
-24,128,48,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
-16,96,36,255,	16,96,36,255,	24,128,48,255,	8,64,16,255,
-24,128,48,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
-24,128,48,255,	24,128,48,255,	24,128,48,255,	8,64,16,255,
-24,128,48,255,	24,128,48,255,	8,64,16,255,	16,96,36,255,
-16,96,36,255,	16,96,36,255,	24,128,48,255,	24,128,48,255,
-24,128,48,255,	8,64,16,255,	24,128,48,255,	24,128,48,255,
-24,128,48,255,	16,96,36,255,	8,64,16,255,	16,96,36,255,
-8,64,16,255,	16,96,36,255,	24,128,48,255,	16,96,36,255,
-24,128,48,255,	16,96,36,255,	24,128,48,255,	8,64,16,255,
-8,64,16,255,	16,96,36,255,	8,64,16,255,	24,128,48,255,
-8,64,16,255,	8,64,16,255,	16,96,36,255,	16,96,36,255,
-16,96,36,255,	8,64,16,255,	24,128,48,255,	16,96,36,255,
-24,128,48,255,	24,128,48,255,	16,96,36,255,	16,96,36,255],
-});
 const scene = Rsed.scene({
 render: function()
 {
@@ -8391,25 +8507,25 @@ return;
 return scene;
 function draw_scene()
 {
-rotation += 1;
-const point = Rngon.ngon([
-Rngon.vertex(-1, -1, 0, 0, 0),
-Rngon.vertex( 1, -1, 0, 1, 0),
-Rngon.vertex( 1,  1, 0, 1, 1),
-Rngon.vertex(-1,  1, 0, 0, 1)], {
-texture,
-textureMapping: "affine",
-hasWireframe: true,
-wireframeColor: Rngon.color(255, 255, 0),
-});
-const mesh = Rngon.mesh([point], {
-rotation: Rngon.vector(0, rotation, rotation),
-scaling: Rngon.vector(1.5, 1.5, 1.5),
-});
-const {renderWidth, renderHeight} = Rngon.render(Rsed.visual.canvas.domElement, [mesh],
+rotation += 2;
+const label = Rsed.ui.canvas.component.label()("...", -2, -4);
+for (const ngon of label.ngons)
 {
+ngon.material.isInScreenSpace = false;
+}
+label.rotate.y = rotation/2;
+label.rotate.z = rotation;
+label.scale.x = .3;
+label.scale.y = .3;
+label.scale.z = .3;
+const {renderWidth, renderHeight} = Rngon.render({
+target: Rsed.visual.canvas.domElement,
+meshes: [label],
+options: {
 cameraPosition: Rngon.vector(0, 0, -18),
-scale: Rsed.visual.canvas.scalingFactor,
+resolution: Rsed.visual.canvas.scalingFactor,
+useDepthBuffer: false,
+},
 });
 // If the rendering was resized since the previous frame.
 if ((renderWidth !== Rsed.visual.canvas.width ||
@@ -8422,25 +8538,20 @@ return;
 }
 function draw_ui()
 {
-uiMeshes.length = 0;
 const width = Rsed.visual.canvas.width;
 const height = Rsed.visual.canvas.height;
 if ((width <= 0) || (height <= 0))
 {
 return;
 }
-const text = "Loading";
-const textWidth = Rsed.ui.canvas.font.width_in_pixels(text);
-uiMeshes.push(Rsed.ui.canvas.component.label()(text, ((width / 2) - (textWidth / 2)), (height / 2)));
-Rngon.render(
-Rsed.visual.canvas.domElementUi,
-uiMeshes,
-{
-cameraPosition: Rngon.vector(0, 0, 0),
-scale: Rsed.visual.canvas.scalingFactor,
-useDepthBuffer: false,
-}
-);
+// Clear the UI.
+Rngon.render({
+target: Rsed.visual.canvas.domElementUi,
+meshes: [],
+options: {
+resolution: Rsed.visual.canvas.scalingFactor,
+},
+});
 return;
 }
 })();
@@ -8988,6 +9099,10 @@ stream: null,
 start: async function(args = {})
 {
 Rsed.throw_if_not_type("object", args);
+// Modify the renderer's default polygon material. This only needs to be
+// done once, after the renderer's script has been importent. For reasons
+// of lazy we're doing it here rather than in a more suitable place.
+Rngon.default.ngon.material.isTwoSided = true;
 args = {
 ...Rsed.core.default_startup_args(),
 ...args,
@@ -8996,7 +9111,9 @@ startupArgs = args;
 // Hide the UI while we load up the project's data etc.
 Rsed.ui.dom.html.set_visible(false);
 coreIsRunning = false;
+project = Rsed.project.placeholder;
 Rsed.$currentScene = "loading-spinner";
+document.body.classList.add("loading");
 await load_project(args.project);
 if (args.renderer.pixelatedUpscale)
 {
@@ -9018,6 +9135,7 @@ Rsed.ui.dom.html.set_visible(args.ui.showMenubar);
 Rsed.browserMetadata.warn_of_incompatibilities();
 }
 coreIsRunning = true;
+document.body.classList.remove("loading");
 return;
 },
 // Something went fatally wrong and the app can't recover from it. All that's
@@ -9058,8 +9176,10 @@ return publicInterface;
 // Called once per frame to orchestrate program flow.
 function tick(timestamp = 0, timeDeltaMs = 0)
 {
-if (!Rsed.player.is_playing())
-{
+if (
+(project !== Rsed.project.placeholder) &&
+!Rsed.player.is_playing()
+){
 const {clientWidth, clientHeight} = document.getElementById("canvas");
 displayScaleWidth = (clientWidth / 1920);
 displayScaleHeight = (clientHeight / 930);
