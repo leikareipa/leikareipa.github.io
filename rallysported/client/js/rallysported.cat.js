@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (28 August 2023 07:13:47 UTC)
+// VERSION: live (28 August 2023 07:38:20 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -8513,11 +8513,9 @@ for (const ngon of label.ngons)
 {
 ngon.material.isInScreenSpace = false;
 }
-label.rotate.y = rotation/2;
-label.rotate.z = rotation;
-label.scale.x = .3;
-label.scale.y = .3;
-label.scale.z = .3;
+label.rotate.x = 180;
+label.scale.x = .3+Math.sin(rotation/50)/10;
+label.scale.y = .3+Math.sin(rotation/50)/10;
 const {renderWidth, renderHeight} = Rngon.render({
 target: Rsed.visual.canvas.domElement,
 meshes: [label],
@@ -9177,7 +9175,7 @@ return publicInterface;
 function tick(timestamp = 0, timeDeltaMs = 0)
 {
 if (
-(project !== Rsed.project.placeholder) &&
+((project !== Rsed.project.placeholder) || (scene === Rsed.scenes["loading-spinner"])) &&
 !Rsed.player.is_playing()
 ){
 const {clientWidth, clientHeight} = document.getElementById("canvas");
