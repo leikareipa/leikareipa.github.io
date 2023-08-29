@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (29 August 2023 03:38:29 UTC)
+// VERSION: live (29 August 2023 04:04:29 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -5292,7 +5292,7 @@ const tileX = mouseHover.groundTileX;
 const tileY = mouseHover.groundTileY;
 const height = Rsed.$currentProject.maasto.tile_at(tileX, tileY);
 strings.push(
-`Pala: ${Rsed.$currentProject.varimaa.tile_at(x, y)}`,
+`Pala: ${Rsed.$currentProject.varimaa.tile_at(tileX, tileY)}`,
 `X,Y: ${tileX},${tileY}`,
 `Height: ${height < 0? "-" : "+"}${Math.abs(height)}`,
 );
