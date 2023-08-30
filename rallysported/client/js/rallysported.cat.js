@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (29 August 2023 04:04:29 UTC)
+// VERSION: live (30 August 2023 00:29:54 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -1144,7 +1144,7 @@ const targetPaletteIdx = Math.floor(Number(args[0]));
 const red = Math.floor(Number(args[1] * 4));
 const green = Math.floor(Number(args[2] * 4));
 const blue = Math.floor(Number(args[3] * 4));
-Rsed.visual.palette.set_color(targetPaletteIdx, {red, green, blue});
+Rsed.visual.palette.set_color(targetPaletteIdx, red, green, blue);
 }
 // Command: STOP. Stops parsing the manifesto file.
 function apply_99(args = [])
@@ -1403,7 +1403,7 @@ case 6: waterLevel = -100; break;
 case 7: waterLevel = -40; break;
 default: Rsed.throw(`Unknown track id (${trackId}).`);
 }
-Rsed.visual.palette.set_palette(
+Rsed.visual.palette.set_active_palette(
 (trackId === 4)? 1 :
 (trackId === 5)? 2 :
 (trackId === 7)? 3 :
@@ -1649,99 +1649,44 @@ rallySportContentURL: `https://rallysport-content.herokuapp.com`,
 /*
 * Most recent known filename: js/visual/texture.js
 *
-* Tarpeeksi Hyvae Soft 2018 /
+* Tarpeeksi Hyvae Soft 2018-2023 /
 * RallySportED-js
 *
 */
 "use strict";
 Rsed.visual = Rsed.visual || {};
-// Implements a 32-bit texture whose output interface is compatible with the retro n-gon
-// renderer's texture() object (so that n-gons can be textured with the object from
-// this function and rendered with the retro n-gon renderer).
-Rsed.visual.texture = function(args = {})
+// An paletted image for texturing polygons.
+Rsed.visual.texture = function({
+// The image's resolution.
+width = 0,
+height = 0,
+// The palette index of each pixel.
+indices = [],
+// A function with which all of the images's pixels can be replaced with the
+// colors of the given palette indices.
+replace_all_pixels = (newColorIndices = [])=>{},
+// A function with which a given texel's color in the image can be altered.
+// Returns a reference to the updated texture object.
+set_pixel_at = (u, v, newColorIdx)=>{},
+// A user-facing string for identifying this texture. Might be used e.g. in
+// the texture editor.
+name = "Unnamed",
+} = {})
 {
-args =
-{
-...{
-// Pixel RGB values, each element being {red, green, blue} (value range 0-255).
-pixels: [],
-// Each pixel's corresponding palette index.
-indices: [],
-// The texture's dimensions.
-width: 0,
-height: 0,
-// A function with which all of the texture's pixels can be replaced with the
-// given new color indices.
-replace_all_pixels: (newColorIndices = [])=>{},
-// A function with which a given texel's color in the texture can be altered.
-// Note: The function shuold return a reference to the updated texture object.
-set_pixel_at: (x, y, newColorIdx)=>{},
-name: "Unnamed",
-},
-...args
-};
 Rsed.assert?.(
-((args.width > 0) &&
-(args.height > 0) &&
-(args.pixels.length) &&
-(args.indices.length)),
+(width > 0) &&
+(height > 0) &&
+(indices.length),
 "Expected non-empty texture data."
 );
 Rsed.assert?.(
-((args.indices.length === (args.width * args.height)) &&
-(args.pixels.length === (args.width * args.height)) &&
-(args.indices.length === args.pixels.length)),
+(indices.length === (width * height)),
 "Mismatch between size of texture data and its resolution."
 );
-// Generate mipmaps. Each successive mipmap is one half of the previous
-// mipmap's width and height, starting from the full resolution and working
-// down to 1 x 1. So mipmaps[0] is the original, full-resolution texture,
-// and mipmaps[mipmaps.length-1] is the smallest, 1 x 1 texture.
-const mipmaps = [];
-for (let m = 0; ; m++)
-{
-const mipWidth = Math.max(1, Math.floor(args.width / Math.pow(2, m)));
-const mipHeight = Math.max(1, Math.floor(args.height / Math.pow(2, m)));
-// Downscale the texture image to the next mip level.
-const mipPixelData = [];
-{
-const deltaW = (args.width / mipWidth);
-const deltaH = (args.height / mipHeight);
-for (let y = 0; y < mipHeight; y++)
-{
-for (let x = 0; x < mipWidth; x++)
-{
-const dstIdx = (x + y * mipWidth);
-const srcIdx = (Math.floor(x * deltaW) + Math.floor(y * deltaH) * args.width);
-mipPixelData[dstIdx] = args.pixels[srcIdx];
-}
-}
-}
-mipmaps.push({
-width: mipWidth,
-height: mipHeight,
-pixels: mipPixelData,
-});
-// We're finished generating mip levels once we've done them down to 1 x 1.
-if ((mipWidth === 1) && (mipHeight === 1))
-{
-if (!mipmaps.length)
-{
-Rsed.throw("Failed to generate mip levels for a texture.");
-}
-break;
-}
-}
-// Note: The elements of the 'pixels' array are returned by reference (they're objects of the
-// form {red, green, blue, alpha}). This is done to allow textures to be pre-generated and still
-// have their colors reflect any changes to the global palette without requiring a re-generation.
-const publicInterface = Object.freeze({
+const publicInterface = {
 $constructor: "Texture",
-replace_all_pixels: args.replace_all_pixels,
-set_pixel_at: args.set_pixel_at,
-...args,
-mipLevels: mipmaps,
-});
+...arguments[0],
+};
 return publicInterface;
 }
 /*
@@ -1755,234 +1700,214 @@ return publicInterface;
 Rsed.visual = Rsed.visual || {};
 Rsed.visual.palette = (function()
 {
-// How many colors there are in a single palette.
-const numColorsInPalette = 32;
-// The four hard-coded palettes in Rally-Sport's demo. These should not be changed
-// during run-time.
-const rallySportPalettes = [
-// Palette #1.
-[{red:0, green:0, blue:0},
-{red:8, green:64, blue:16},
-{red:16, green:96, blue:36},
-{red:24, green:128, blue:48},
-{red:252, green:0, blue:0},
-{red:252, green:252, blue:252},
-{red:192, green:192, blue:192},
-{red:128, green:128, blue:128},
-{red:64, green:64, blue:64},
-{red:0, green:0, blue:252},
-{red:72, green:128, blue:252},
-{red:208, green:100, blue:252},
-{red:208, green:72, blue:44},
-{red:252, green:112, blue:76},
-{red:16, green:96, blue:32},
-{red:32, green:192, blue:64},
-{red:228, green:56, blue:244},
-{red:132, green:36, blue:172},
-{red:68, green:92, blue:252},
-{red:252, green:252, blue:48},
-{red:32, green:32, blue:32},
-{red:152, green:48, blue:24},
-{red:80, green:24, blue:12},
-{red:124, green:124, blue:24},
-{red:128, green:0, blue:0},
-{red:12, green:20, blue:132},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:136, green:28, blue:128},
-{red:16, green:252, blue:8}],
-// Palette #2.
-[{red:0, green:0, blue:0},
-{red:80, green:88, blue:104},
-{red:96, green:104, blue:120},
-{red:112, green:128, blue:144},
-{red:252, green:0, blue:0},
-{red:252, green:252, blue:252},
-{red:192, green:192, blue:192},
-{red:128, green:128, blue:128},
-{red:64, green:64, blue:64},
-{red:0, green:0, blue:252},
-{red:72, green:128, blue:252},
-{red:208, green:100, blue:252},
-{red:208, green:72, blue:44},
-{red:252, green:112, blue:76},
-{red:8, green:136, blue:16},
-{red:32, green:192, blue:64},
-{red:228, green:56, blue:244},
-{red:132, green:36, blue:172},
-{red:68, green:92, blue:252},
-{red:252, green:252, blue:48},
-{red:32, green:32, blue:32},
-{red:152, green:48, blue:24},
-{red:80, green:24, blue:12},
-{red:124, green:124, blue:24},
-{red:128, green:0, blue:0},
-{red:12, green:20, blue:132},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:136, green:28, blue:128},
-{red:16, green:252, blue:8}],
-// Palette #3.
-[{red:0, green:0, blue:0},
-{red:72, green:20, blue:12},
-{red:144, green:44, blue:20},
-{red:168, green:56, blue:28},
-{red:252, green:0, blue:0},
-{red:252, green:252, blue:252},
-{red:192, green:192, blue:192},
-{red:128, green:128, blue:128},
-{red:64, green:64, blue:64},
-{red:0, green:0, blue:252},
-{red:72, green:128, blue:252},
-{red:208, green:100, blue:252},
-{red:208, green:72, blue:44},
-{red:252, green:112, blue:76},
-{red:16, green:96, blue:32},
-{red:32, green:192, blue:64},
-{red:228, green:56, blue:244},
-{red:132, green:36, blue:172},
-{red:68, green:92, blue:252},
-{red:252, green:252, blue:48},
-{red:32, green:32, blue:32},
-{red:152, green:48, blue:24},
-{red:80, green:24, blue:12},
-{red:124, green:124, blue:24},
-{red:128, green:0, blue:0},
-{red:12, green:20, blue:132},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:136, green:28, blue:128},
-{red:16, green:252, blue:8}],
-// Palette #4.
-[{red:0, green:0, blue:0},
-{red:28, green:52, blue:8},
-{red:64, green:64, blue:16},
-{red:80, green:84, blue:28},
-{red:252, green:0, blue:0},
-{red:252, green:252, blue:252},
-{red:192, green:192, blue:192},
-{red:128, green:128, blue:128},
-{red:64, green:64, blue:64},
-{red:0, green:0, blue:252},
-{red:72, green:128, blue:252},
-{red:208, green:100, blue:252},
-{red:208, green:72, blue:44},
-{red:252, green:112, blue:76},
-{red:32, green:64, blue:32},
-{red:64, green:128, blue:64},
-{red:228, green:56, blue:244},
-{red:132, green:36, blue:172},
-{red:68, green:92, blue:252},
-{red:252, green:252, blue:48},
-{red:32, green:32, blue:32},
-{red:152, green:48, blue:24},
-{red:80, green:24, blue:12},
-{red:124, green:124, blue:24},
-{red:128, green:0, blue:0},
-{red:12, green:20, blue:132},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:252, green:252, blue:252},
-{red:136, green:28, blue:128},
-{red:16, green:252, blue:8}]
+// Rally-Sport's palettes.
+let palettes = undefined;
+let activePaletteIdx = 0;
+// A palette whose colors are guaranteed immutable, safe to use e.g. for the UI.
+const immutablePalette = {
+"background":   {red:255, green:255, blue:16,  alpha:255},
+"black":        {red:0,   green:0,   blue:0,   alpha:255},
+"grey":         {red:127, green:127, blue:127, alpha:255},
+"dimgray":      {red:64,  green:64,  blue:64,  alpha:255},
+"lightgray":    {red:192, green:192, blue:192, alpha:255},
+"dimgrey":      {red:64,  green:64,  blue:64,  alpha:255},
+"white":        {red:255, green:255, blue:255, alpha:255},
+"blue":         {red:0,   green:0,   blue:255, alpha:255},
+"darkorchid":   {red:153, green:50,  blue:204, alpha:255},
+"paleorchid":   {red:158, green:123, blue:176, alpha:255},
+"yellow":       {red:255, green:255, blue:0,   alpha:255},
+"red":          {red:255, green:0,   blue:0,   alpha:255},
+"green":        {red:0,   green:255, blue:0,   alpha:255},
+"gold":         {red:179, green:112, blue:25,  alpha:255},
+"hotpink":      {red:255, green:105, blue:180, alpha:255},
+};
+const publicInterface = {
+reset_palettes: ()=>
+{
+palettes = [
+rally_sport_palette(0),
+rally_sport_palette(1),
+rally_sport_palette(2),
+rally_sport_palette(3),
 ];
-// The palette we'll operate on; which is to say, when the user requests us to return a
-// color for a particular palette index, or to change the color at a particular index,
-// this is the palette we'll use.
-const activePalette = (new Array(256)).fill().map(e=>({red:127,green:127,blue:127,alpha:255,unitRange:{red:1, green:1, blue:1, alpha:1}}));
-const activePaletteWithAlpha = (new Array(256)).fill().map(e=>({red:127,green:127,blue:127,alpha:255,unitRange:{red:1, green:1, blue:1, alpha:1}}));
-const publicInterface =
-{
-numColorsInPalette,
-// Return the color at the given index in the palette. Optionally, the index may be
-// a string identifying one of the pre-set UI colors (which are otherwise the same as
-// regular colors, but guaranteed to remain constant even when the palette is otherwise
-// altered during operation). The color is returned as an object containing the color's
-// red, green, and blue channels as properties. Aside from the UI colors, the object
-// will be returned by reference to an index in the palette, so any changes to the
-// palette afterwards will be reflected in colors returned previously.
-color_at_idx: (colorIdx = 0, useAlpha = false)=>
-{
-// Named UI colors.
-switch (colorIdx)
-{
-case "background":  return {red:255,  green:255,  blue:16,  alpha:255};
-case "black":       return {red:0,   green:0,   blue:0,   alpha:255};
-case "gray":
-case "grey":        return {red:127, green:127, blue:127, alpha:255};
-case "lightgray":
-case "lightgrey":   return {red:192, green:192, blue:192, alpha:255};
-case "dimgray":
-case "dimgrey":     return {red:64,  green:64,  blue:64,  alpha:255};
-case "white":       return {red:255, green:255, blue:255, alpha:255};
-case "blue":        return {red:0,   green:0,   blue:255, alpha:255};
-case "darkorchid":  return {red:153, green:50,  blue:204, alpha:255};
-case "paleorchid":  return {red:158, green:123, blue:176, alpha:255};
-case "yellow":      return {red:255, green:255, blue:0,   alpha:255};
-case "red":         return {red:255, green:0,   blue:0,   alpha:255};
-case "green":       return {red:0,   green:255, blue:0,   alpha:255};
-case "gold":        return {red:179, green:112, blue:25,  alpha:255};
-default: break;
-}
-return (useAlpha? activePaletteWithAlpha : activePalette)[colorIdx];
 },
-// Assign one of the four Rally-Sport palettes as the current active one.
-set_palette: (paletteIdx)=>
+// Returns the color at the given index in the currently-active palette. Optionally,
+// the index may be a string identifying one of the immutable colors.
+color_at: (colorIdx = 0)=>
+{
+return (
+immutablePalette[colorIdx] ||
+palettes[activePaletteIdx][colorIdx] ||
+immutablePalette["white"]
+);
+},
+set_active_palette: (paletteIdx)=>
 {
 Rsed.assert?.(
 ((paletteIdx >= 0) &&
-(paletteIdx < rallySportPalettes.length)),
+(paletteIdx < palettes.length)),
 "Trying to access a palette index out of bounds."
 );
-rallySportPalettes[paletteIdx].forEach((color, idx)=>
-{
-activePaletteWithAlpha[idx].red = color.red;
-activePaletteWithAlpha[idx].green = color.green;
-activePaletteWithAlpha[idx].blue = color.blue;
-activePaletteWithAlpha[idx].alpha = ((idx === 0)? 0 : 255);
-activePalette[idx].red = color.red;
-activePalette[idx].green = color.green;
-activePalette[idx].blue = color.blue;
-activePalette[idx].alpha = 255;
-});
+activePaletteIdx = paletteIdx;
 },
-// Change the color at the given palette index in the current active palette.
-set_color: (colorIdx = 0, newColor = {red:0,green:0,blue:0})=>
+set_color: (colorIdx = 0, red, green, blue)=>
 {
 Rsed.assert?.(
 ((colorIdx >= 0) &&
-(colorIdx < numColorsInPalette)),
+(colorIdx < Rsed.constants.paletteSize)),
 `Trying to access a palette color out of bounds (#${colorIdx}).`
 );
-newColor =
-{
-...
-{
-red: activePalette[colorIdx].red,
-green: activePalette[colorIdx].green,
-blue: activePalette[colorIdx].blue,
-},
-...newColor,
-}
-activePaletteWithAlpha[colorIdx].red = newColor.red;
-activePaletteWithAlpha[colorIdx].green = newColor.green;
-activePaletteWithAlpha[colorIdx].blue = newColor.blue;
-activePaletteWithAlpha[colorIdx].alpha = ((colorIdx === 0)? 0 : 255);
-activePalette[colorIdx].red = newColor.red;
-activePalette[colorIdx].green = newColor.green;
-activePalette[colorIdx].blue = newColor.blue;
-activePalette[colorIdx].alpha = 255;
+palettes[activePaletteIdx][colorIdx].red = red;
+palettes[activePaletteIdx][colorIdx].green = green;
+palettes[activePaletteIdx][colorIdx].blue = blue;
 },
 };
 return publicInterface;
 })();
+// Replicates the four palettes of the Rally-Sport demo.
+function rally_sport_palette(idx = 0)
+{
+switch (idx)
+{
+case 0: return [
+{red:0, green:0, blue:0, alpha:255},
+{red:8, green:64, blue:16, alpha:255},
+{red:16, green:96, blue:36, alpha:255},
+{red:24, green:128, blue:48, alpha:255},
+{red:252, green:0, blue:0, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:192, green:192, blue:192, alpha:255},
+{red:128, green:128, blue:128, alpha:255},
+{red:64, green:64, blue:64, alpha:255},
+{red:0, green:0, blue:252, alpha:255},
+{red:72, green:128, blue:252, alpha:255},
+{red:208, green:100, blue:252, alpha:255},
+{red:208, green:72, blue:44, alpha:255},
+{red:252, green:112, blue:76, alpha:255},
+{red:16, green:96, blue:32, alpha:255},
+{red:32, green:192, blue:64, alpha:255},
+{red:228, green:56, blue:244, alpha:255},
+{red:132, green:36, blue:172, alpha:255},
+{red:68, green:92, blue:252, alpha:255},
+{red:252, green:252, blue:48, alpha:255},
+{red:32, green:32, blue:32, alpha:255},
+{red:152, green:48, blue:24, alpha:255},
+{red:80, green:24, blue:12, alpha:255},
+{red:124, green:124, blue:24, alpha:255},
+{red:128, green:0, blue:0, alpha:255},
+{red:12, green:20, blue:132, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:136, green:28, blue:128, alpha:255},
+{red:16, green:252, blue:8, alpha:255},
+];
+case 1: return [
+{red:0, green:0, blue:0, alpha:255},
+{red:80, green:88, blue:104, alpha:255},
+{red:96, green:104, blue:120, alpha:255},
+{red:112, green:128, blue:144, alpha:255},
+{red:252, green:0, blue:0, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:192, green:192, blue:192, alpha:255},
+{red:128, green:128, blue:128, alpha:255},
+{red:64, green:64, blue:64, alpha:255},
+{red:0, green:0, blue:252, alpha:255},
+{red:72, green:128, blue:252, alpha:255},
+{red:208, green:100, blue:252, alpha:255},
+{red:208, green:72, blue:44, alpha:255},
+{red:252, green:112, blue:76, alpha:255},
+{red:8, green:136, blue:16, alpha:255},
+{red:32, green:192, blue:64, alpha:255},
+{red:228, green:56, blue:244, alpha:255},
+{red:132, green:36, blue:172, alpha:255},
+{red:68, green:92, blue:252, alpha:255},
+{red:252, green:252, blue:48, alpha:255},
+{red:32, green:32, blue:32, alpha:255},
+{red:152, green:48, blue:24, alpha:255},
+{red:80, green:24, blue:12, alpha:255},
+{red:124, green:124, blue:24, alpha:255},
+{red:128, green:0, blue:0, alpha:255},
+{red:12, green:20, blue:132, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:136, green:28, blue:128, alpha:255},
+{red:16, green:252, blue:8, alpha:255},
+];
+case 2: return [
+{red:0, green:0, blue:0, alpha:255},
+{red:72, green:20, blue:12, alpha:255},
+{red:144, green:44, blue:20, alpha:255},
+{red:168, green:56, blue:28, alpha:255},
+{red:252, green:0, blue:0, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:192, green:192, blue:192, alpha:255},
+{red:128, green:128, blue:128, alpha:255},
+{red:64, green:64, blue:64, alpha:255},
+{red:0, green:0, blue:252, alpha:255},
+{red:72, green:128, blue:252, alpha:255},
+{red:208, green:100, blue:252, alpha:255},
+{red:208, green:72, blue:44, alpha:255},
+{red:252, green:112, blue:76, alpha:255},
+{red:16, green:96, blue:32, alpha:255},
+{red:32, green:192, blue:64, alpha:255},
+{red:228, green:56, blue:244, alpha:255},
+{red:132, green:36, blue:172, alpha:255},
+{red:68, green:92, blue:252, alpha:255},
+{red:252, green:252, blue:48, alpha:255},
+{red:32, green:32, blue:32, alpha:255},
+{red:152, green:48, blue:24, alpha:255},
+{red:80, green:24, blue:12, alpha:255},
+{red:124, green:124, blue:24, alpha:255},
+{red:128, green:0, blue:0, alpha:255},
+{red:12, green:20, blue:132, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:136, green:28, blue:128, alpha:255},
+{red:16, green:252, blue:8, alpha:255},
+];
+case 3: return [
+{red:0, green:0, blue:0, alpha:255},
+{red:28, green:52, blue:8, alpha:255},
+{red:64, green:64, blue:16, alpha:255},
+{red:80, green:84, blue:28, alpha:255},
+{red:252, green:0, blue:0, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:192, green:192, blue:192, alpha:255},
+{red:128, green:128, blue:128, alpha:255},
+{red:64, green:64, blue:64, alpha:255},
+{red:0, green:0, blue:252, alpha:255},
+{red:72, green:128, blue:252, alpha:255},
+{red:208, green:100, blue:252, alpha:255},
+{red:208, green:72, blue:44, alpha:255},
+{red:252, green:112, blue:76, alpha:255},
+{red:32, green:64, blue:32, alpha:255},
+{red:64, green:128, blue:64, alpha:255},
+{red:228, green:56, blue:244, alpha:255},
+{red:132, green:36, blue:172, alpha:255},
+{red:68, green:92, blue:252, alpha:255},
+{red:252, green:252, blue:48, alpha:255},
+{red:32, green:32, blue:32, alpha:255},
+{red:152, green:48, blue:24, alpha:255},
+{red:80, green:24, blue:12, alpha:255},
+{red:124, green:124, blue:24, alpha:255},
+{red:128, green:0, blue:0, alpha:255},
+{red:12, green:20, blue:132, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:252, green:252, blue:252, alpha:255},
+{red:136, green:28, blue:128, alpha:255},
+{red:16, green:252, blue:8, alpha:255},
+];
+default: Rsed.throw("Unrecognized palette index");
+}
+}
 /*
 * Most recent known filename: js/visual/canvas.js
 *
@@ -2397,27 +2322,19 @@ return Rsed.visual.texture(
 ...args,
 width: 1,
 height: 1,
-pixels: [Rsed.visual.palette.color_at_idx("black")],
 indices: [0],
 args: args,
 });
 }
-// Billboard PALAs will have alpha-testing enabled (so color index 0 is see-through),
-// while other PALAs will not.
-const isBillboardPala = ((palaId == 176) ||
-(palaId == 177) ||
-((palaId >= 208) && (palaId <= 239)));
 // A slice of the entire PALAT data representing the region in which this particular
 // PALAT texture's pixels are.
 const dataSlice = data.slice(dataIdx, (dataIdx + palaSize));
-const pixels = Array.from(dataSlice, (colorIdx)=>Rsed.visual.palette.color_at_idx(colorIdx, isBillboardPala));
 return Rsed.visual.texture(
 {
 ...args,
 name: `Pala ${palaId}`,
 width: palaWidth,
 height: palaHeight,
-pixels: pixels,
 indices: dataSlice,
 flipped: "no",
 assetId: palaId,
@@ -2483,21 +2400,33 @@ Rsed.gameContent.props = async function(textureAtlas = Uint8Array)
 {
 const data = await fetch_prop_metadata_from_server();
 Rsed.assert?.(
-((typeof data.propMeshes !== "undefined") &&
+(typeof data.propMeshes !== "undefined") &&
 (typeof data.propLocations !== "undefined") &&
-(typeof data.propNames !== "undefined")),
+(typeof data.propNames !== "undefined"),
 "Missing properties in prop metadata."
 );
 // Filter out comments and other auxiliary info from the JSON data; and sort by the relevant
 // index, so we can access the xth element with [x].
-const propNames = data.propNames.filter(m=>(typeof m.propId !== "undefined"))
-.sort((a, b)=>((a.propId === b.propId)? 0 : ((a.propId > b.propId)? 1 : -1)));
-const propMeshes = data.propMeshes.filter(m=>(typeof m.propId !== "undefined"))
-.sort((a, b)=>((a.propId === b.propId)? 0 : ((a.propId > b.propId)? 1 : -1)));
-const trackPropLocations = data.propLocations.filter(m=>(typeof m.trackId !== "undefined"))
-.sort((a, b)=>((a.trackId === b.trackId)? 0 : ((a.trackId > b.trackId)? 1 : -1)));
-const textureRects = data.propTextureRects.filter(m=>(typeof m.textureId !== "undefined"))
-.sort((a, b)=>((a.textureId === b.textureId)? 0 : ((a.textureId > b.textureId)? 1 : -1)));
+const propNames = (
+data.propNames
+.filter(m=>(typeof m.propId !== "undefined"))
+.sort((a, b)=>((a.propId === b.propId)? 0 : ((a.propId > b.propId)? 1 : -1)))
+);
+const propMeshes = (
+data.propMeshes
+.filter(m=>(typeof m.propId !== "undefined"))
+.sort((a, b)=>((a.propId === b.propId)? 0 : ((a.propId > b.propId)? 1 : -1)))
+);
+const trackPropLocations = (
+data.propLocations
+.filter(m=>(typeof m.trackId !== "undefined"))
+.sort((a, b)=>((a.trackId === b.trackId)? 0 : ((a.trackId > b.trackId)? 1 : -1)))
+);
+const textureRects = (
+data.propTextureRects
+.filter(m=>(typeof m.textureId !== "undefined"))
+.sort((a, b)=>((a.textureId === b.textureId)? 0 : ((a.textureId > b.textureId)? 1 : -1)))
+);
 // The assumed width of the prop texture atlas.
 const textureAtlasWidth = 128;
 // Pre-compute the individual prop textures.
@@ -2535,40 +2464,22 @@ const prebakedPropTextures = new Array(textureRects.length).fill().map((tex, idx
 // or the texture's index, depending on the fill type); and a list of the n vertices
 // that define the n-gon.
 //
-const prebakedPropMeshes = (new Array(propMeshes.length)).fill().map((mesh, idx)=>
-{
-const ngons = propMeshes[idx].ngons.map(ngon=>
-{
-const meshNgon =
-{
-fill: Object.freeze(
-{
+const prebakedPropMeshes = new Array(propMeshes.length).fill().map((mesh, idx)=>({
+ngons: propMeshes[idx].ngons.map(ngon=>({
+fill: {
 type: ngon.fill.type.slice(),
 idx: ngon.fill.idx
-}),
-vertices: ngon.vertices.map(vert=>(Object.freeze(
-{
+},
+vertices: ngon.vertices.map(vert=>({
 x: vert.x,
 y: -vert.y,
 z: -vert.z
-}))),
-};
-Object.freeze(meshNgon.vertices);
-return meshNgon;
-});
-// Pre-sort the mesh's ngons by depth, so that during rendering, we don't need to depth-
-// sort them every frame.
-ngons.sort((ngonA, ngonB)=>
-{
-const depthA = ngonA.vertices.reduce((depth, z)=>(depth + z)) / ngonA.vertices.length;
-const depthB = ngonB.vertices.reduce((depth, z)=>(depth + z)) / ngonB.vertices.length;
-return ((depthA === depthB)? 0 : ((depthA < depthB)? 1 : -1));
-});
-return {ngons};
-});
+})),
+}))
+}));
 const publicInterface =
 {
-mesh: Object.freeze(prebakedPropMeshes),
+mesh: prebakedPropMeshes,
 texture: prebakedPropTextures,
 // Copies the given texture's data over the prop texture at the given index.
 // This causes the current texture to be re-generated; a reference to the
@@ -2797,7 +2708,6 @@ function generate_prop_texture(idx)
 {
 const width = textureRects[idx].rect.width;
 const height = textureRects[idx].rect.height;
-const pixels = [];
 const indices = [];
 // Copy the texture's pixel region from the texture atlas.
 for (let y = 0; y < height; y++)
@@ -2806,15 +2716,13 @@ for (let x = 0; x < width; x++)
 {
 const dataIdx = ((textureRects[idx].rect.topLeft.x + x) + (textureRects[idx].rect.topLeft.y + y) * textureAtlasWidth);
 indices.push(textureAtlas[dataIdx]);
-pixels.push(Rsed.visual.palette.color_at_idx(textureAtlas[dataIdx], true));
 }
 }
 return Rsed.visual.texture({
 name: `Text ${idx}`,
 width,
 height,
-pixels: pixels,
-indices: indices,
+indices,
 flipped: "no",
 assetId: idx,
 assetType: "props",
@@ -2874,16 +2782,15 @@ return Rsed.clamp(value, min, max);
 // track props.
 async function fetch_prop_metadata_from_server()
 {
-return fetch("./client/assets/track-props.json")
-.then(response=>
+try
 {
-if (response.status !== 200)
-{
-throw "Failed to fetch prop metadata from the RallySportED-js server.";
+const response = await fetch("./client/assets/track-props.json");
+return await response.json();
 }
-return response.json();
-})
-.catch(error=>{ Rsed.throw(error); });
+catch (error)
+{
+Rsed.throw(error);
+}
 }
 }
 function broadcast_texture_change(newTexture, previousTexture)
@@ -4236,10 +4143,10 @@ ${Math.round(Rsed.$currentProject.asset_byte_size(dataType.name.toLowerCase()) /
 class="button"
 onclick="Rsed.$currentProject.download_asset_file('${dataType.name.toLowerCase()}')"
 >
-<i class="fas fa-download"></i> Export
+Export
 </div>
 <label class="button">
-<i class="fas fa-file-import"></i> Import...
+Import...
 <input
 style="display: none;"
 type="file"
@@ -4941,31 +4848,17 @@ const charset = {
 for (const charsetKey of Object.keys(charset))
 {
 const symbol = charset[charsetKey];
-const pixels = new Array(symbol.width * symbol.height * 4);
+const indices = new Array(symbol.width * symbol.height);
+let idx = 0;
 for (let y = 0; y < symbol.height; y++)
 {
 for (let x = 0; x < symbol.width; x++)
 {
-const idx = ((x + y * symbol.width) * 4);
-const colorName = symbol.pixel_at(x, y);
-if (colorName === "background")
-{
-pixels[idx + 0] = 255;
-pixels[idx + 1] = 255;
-pixels[idx + 2] = 0;
-pixels[idx + 3] = 255;
-}
-else
-{
-pixels[idx + 0] = 0;
-pixels[idx + 1] = 0;
-pixels[idx + 2] = 0;
-pixels[idx + 3] = 255;
+indices[idx++] = symbol.pixel_at(x, y);
 }
 }
-}
-symbol.texture = Rngon.texture({
-pixels: pixels,
+symbol.texture = Rsed.visual.texture({
+indices,
 width: symbol.width,
 height: symbol.height,
 });
@@ -4976,7 +4869,7 @@ character: function(ch = "?")
 {
 return (charset[ch] || charset["unknown"]);
 },
-width_in_pixels: function(string = "A", characterSpacing = 1)
+pixel_width: function(string = "A", characterSpacing = 1)
 {
 Rsed.throw_if_not_type("string", string);
 Rsed.throw_if(!string.length);
@@ -5113,7 +5006,7 @@ ngon(billboardTexture),
 ].slice(0, (1 + Boolean(billboardTexture)));
 {
 const labelString = `Pen: ${Rsed.ui.utils.terrainBrush.radius + 1}*`;
-const labelWidth = Rsed.ui.canvas.font.width_in_pixels(labelString);
+const labelWidth = Rsed.ui.canvas.font.pixel_width(labelString);
 const brushSizeLabel = Rsed.ui.canvas.component.label()(labelString, (x - sideLen - labelWidth + 10), y);
 ngons.push(...brushSizeLabel.ngons);
 }
@@ -5127,12 +5020,10 @@ Rngon.vertex(x          , y + sideLen),
 Rngon.vertex(x - sideLen, y + sideLen)], {
 texture,
 isInScreenSpace: true,
-auxiliary: {
-mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
+$mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
 componentId: self.id,
 cursor: Rsed.ui.dom.cursorHandler.cursors.fingerHand,
 }),
-},
 }
 );
 }
@@ -5190,11 +5081,11 @@ sampleSize = 55
 {
 const self = Rsed.ui.canvas.component();
 const data = [];
-const colorLow = Rngon.color(0, 255, 0);
-const colorHigh = Rngon.color(255, 0, 0);
-const colorNormal = Rngon.color(255, 255, 0);
-const colorBackground = Rngon.color(0, 0, 0);
-const colorFrame = Rngon.color(64, 64, 64);
+const colorLow = "green";
+const colorHigh = "red";
+const colorNormal = "yellow";
+const colorBackground = "black";
+const colorFrame = "dimgray";
 return function(x = 0, y = 0, value)
 {
 Rsed.assert?.(
@@ -5363,20 +5254,17 @@ material: {
 hasWireframe: true,
 wireframeColor: ((isCurrentPala || isHovered)? Rngon.color(255, 255, 0, 255) : Rngon.color(0, 0, 0, 255)),
 allowAlphaReject: false,
-auxiliary: {
-mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component",
-{
+$mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
 componentId: self.id,
 cursor: Rsed.ui.dom.cursorHandler.cursors.fingerHand,
 palaIdx: (palaIdx - 1),
 }),
 },
-},
 }));
 if (isHovered)
 {
 const labelString = `${palaIdx - 1}`;
-const labelWidth = Rsed.ui.canvas.font.width_in_pixels(labelString);
+const labelWidth = Rsed.ui.canvas.font.pixel_width(labelString);
 const baseX = (offsetX + (x * thumbnailWidth));
 const baseY = (offsetY + (y * thumbnailHeight));
 const newNgons = [
@@ -5387,7 +5275,7 @@ y: baseY,
 width: thumbnailWidth,
 height: thumbnailHeight,
 material: {
-color: Rngon.color.hotpink,
+color: "hotpink",
 },
 }),
 ...box({
@@ -5396,7 +5284,7 @@ y: baseY-1,
 width: thumbnailWidth,
 height: thumbnailHeight,
 material: {
-color: Rngon.color.yellow,
+color: "yellow",
 },
 }),
 ];
@@ -5412,7 +5300,7 @@ y: (offsetY + (y * thumbnailHeight)),
 width: thumbnailWidth,
 height: thumbnailHeight,
 material: {
-color: Rngon.color.hotpink,
+color: "hotpink",
 },
 }),
 ];
@@ -5535,14 +5423,14 @@ Rsed.assert?.(
 "Expected numbers."
 );
 self.update();
-// Generate the minimap image by iterating over the tilemap and grabbing a pixel off each
-// corresponding PALA texture.
-/// TODO: You can pre-generate the image rather than re-generating it each frame.
 const width = 64;
 const height = 32;
 const xMul = (Rsed.$currentProject.maasto.width / width);
 const yMul = (Rsed.$currentProject.maasto.width / height);
-const pixels = [];
+// Generate the minimap image by iterating over the tilemap (VARIMAA) and
+// grabbing a pixel off each corresponding PALA texture.
+/// TODO: You can pre-generate the image rather than re-generating it each frame.
+const indices = [];
 for (let y = 0; y < height; y++)
 {
 for (let x = 0; x < width; x++)
@@ -5550,17 +5438,12 @@ for (let x = 0; x < width; x++)
 const tileX = (x * xMul);
 const tileZ = (y * yMul);
 const tile = Rsed.$currentProject.varimaa.tile_at(tileX, tileZ);
-const pala = Rsed.$currentProject.palat.texture[tile];
-const colorIdx = ((pala == null)? 0 : pala.indices[1]);
-const color = Rsed.visual.palette.color_at_idx(colorIdx);
-pixels[(x + y * width) * 4 + 0] = color.red;
-pixels[(x + y * width) * 4 + 1] = color.green;
-pixels[(x + y * width) * 4 + 2] = color.blue;
-pixels[(x + y * width) * 4 + 3] = 255;
+const texture = Rsed.$currentProject.palat.texture[tile];
+indices.push(texture?.indices[1] || 0);
 }
 }
-const texture = Rngon.texture({
-pixels: pixels,
+const texture = Rsed.visual.texture({
+indices,
 width,
 height,
 });
@@ -5583,15 +5466,12 @@ texture,
 width: texture.width,
 height: texture.height,
 material: {
-auxiliary: {
-mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component",
-{
+$mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
 componentId: self.id,
 cursor: Rsed.ui.dom.cursorHandler.cursors.fingerHand,
 topLeft: {x: (offsX - width), y: offsY},
 scale: {x: xMul, y: yMul},
 }),
-},
 }
 }),
 // Dropshadow for the position indicator.
@@ -5601,7 +5481,7 @@ y: baseZ+1,
 width: frameWidth,
 height: frameHeight,
 material: {
-color: Rngon.color.hotpink,
+color: "hotpink",
 },
 }),
 // Position indicator.
@@ -5611,7 +5491,7 @@ y: baseZ,
 width: frameWidth,
 height: frameHeight,
 material: {
-color: Rngon.color.yellow,
+color: "yellow",
 },
 }),
 ]);
@@ -5732,26 +5612,22 @@ self.update();
 const ngons = [];
 const numSwatchesPerRow = 8;
 // Draw a grid of color swatches.
-for (let i = 0; i < Rsed.visual.palette.numColorsInPalette; i++)
+for (let i = 0; i < Rsed.constants.paletteSize; i++)
 {
 const offsX = (i % numSwatchesPerRow);
 const offsY = Math.floor(i / numSwatchesPerRow);
-const color = Rsed.visual.palette.color_at_idx(i);
 ngons.push(ngon({
 x: (x + (offsX * swatchSideLen)),
 y: (y + (offsY * swatchSideLen)),
 width: swatchSideLen,
 height: swatchSideLen,
 material: {
-color: Rngon.color(color.red, color.green, color.blue),
-auxiliary: {
-mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component",
-{
+color: i,
+$mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
 componentId: self.id,
 cursor: Rsed.ui.dom.cursorHandler.cursors.fingerHand,
 colorIdx: i,
 }),
-},
 }
 }));
 }
@@ -5759,7 +5635,6 @@ colorIdx: i,
 {
 const width = 33;
 const height = 32;
-const color = Rsed.visual.palette.color_at_idx(currentColorIdx);
 const baseX = (x + (numSwatchesPerRow * swatchSideLen));
 ngons.push(ngon({
 x: baseX,
@@ -5767,7 +5642,7 @@ y: y,
 width: width,
 height: height,
 material: {
-color: Rngon.color(color.red, color.green, color.blue),
+color: currentColorIdx,
 },
 }));
 }
@@ -5851,7 +5726,7 @@ y: (y - 1),
 width: (runningXOffs + 1),
 height: (Rsed.ui.canvas.font.nativeHeight + 2),
 material: {
-color: Rngon.color.yellow,
+color: "yellow",
 },
 }));
 // Dropshadow.
@@ -5861,7 +5736,7 @@ y,
 width: (runningXOffs + 1),
 height: (Rsed.ui.canvas.font.nativeHeight + 2),
 material: {
-color: Rngon.color.hotpink,
+color: "hotpink",
 },
 }));
 return Rngon.mesh(ngons);
@@ -6330,12 +6205,12 @@ continue;
 }
 case 1:
 {
-Rngon.default.render.pipeline.rasterizer.point(renderState, ngon.vertices[0], ngon.material.color);
+Rngon.default.render.pipeline.rasterizer.point(renderState, ngon.vertices[0], Rsed.visual.palette.color_at(ngon.material.color));
 continue;
 }
 case 2:
 {
-Rngon.default.render.pipeline.rasterizer.line(renderState, ngon.vertices[0], ngon.vertices[1], ngon.material.color);
+Rngon.default.render.pipeline.rasterizer.line(renderState, ngon.vertices[0], ngon.vertices[1], Rsed.visual.palette.color_at(ngon.material.color));
 continue;
 }
 default:
@@ -6378,9 +6253,6 @@ break;
 }
 let pixelBufferIdx = ((y * renderWidth) + startX);
 let texelIdx = (~~((y - startY) * ty) * texture.width);
-/// TODO. Temp kludge.
-if (typeof texture.pixels[0] === "object")
-{
 for (let x = startX; x < endX; x++)
 {
 if (x >= renderWidth)
@@ -6389,57 +6261,31 @@ break;
 }
 if (x >= 0)
 {
-const texel = texture.pixels[~~texelIdx];
+const color = Rsed.visual.palette.color_at(texture.indices[~~texelIdx])
 pixelBuffer32[pixelBufferIdx] = (
 (255 << 24) +
-(texel.blue << 16) +
-(texel.green << 8) +
-~~texel.red
+(color.blue << 16) +
+(color.green << 8) +
+~~color.red
 );
-if (material.auxiliary?.mousePickId)
+if (material.$mousePickId)
 {
-Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.auxiliary.mousePickId;
+Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.$mousePickId;
 }
 }
 pixelBufferIdx++;
 texelIdx += tx;
-}
-}
-else
-{
-for (let x = startX; x < endX; x++)
-{
-if (x >= renderWidth)
-{
-break;
-}
-if (x >= 0)
-{
-const ti = (~~texelIdx * 4);
-pixelBuffer32[pixelBufferIdx] = (
-(255 << 24) +
-(texture.pixels[ti + 2] << 16) +
-(texture.pixels[ti + 1] << 8) +
-~~texture.pixels[ti + 0]
-);
-if (material.auxiliary?.mousePickId)
-{
-Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.auxiliary.mousePickId;
-}
-}
-pixelBufferIdx++;
-texelIdx += tx;
-}
 }
 }
 }
 else if (material.hasFill)
 {
+const color = Rsed.visual.palette.color_at(material.color);
 const color32 = (
 (255 << 24) +
-(material.color.blue << 16) +
-(material.color.green << 8) +
-~~material.color.red
+(color.blue << 16) +
+(color.green << 8) +
+~~color.red
 );
 for (let y = startY; y < endY; y++)
 {
@@ -6463,9 +6309,9 @@ else if (x >= renderWidth)
 break;
 }
 pixelBuffer32[pixelBufferIdx + x] = color32;
-if (material.auxiliary?.mousePickId)
+if (material.$mousePickId)
 {
-Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx + x] = material.auxiliary.mousePickId;
+Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx + x] = material.$mousePickId;
 }
 }
 }
@@ -6490,7 +6336,7 @@ const renderHeight = renderState.pixelBuffer.height;
 // vertex will be shared between the two sides.
 {
 // For rectangular ground tiles.
-if (material.auxiliary?.isGroundTile)
+if (material.$isGroundTile)
 {
 Rngon.assert?.((ngon.vertices.length == 4), "Expected a rectangle.");
 let leftTop = ngon.vertices[3];
@@ -6634,20 +6480,23 @@ else if (x >= renderWidth)
 {
 break;
 }
-const {red, green, blue, alpha} = (texture? texture.pixels[~~u + vBase] : material.color);
-if (alpha !== 255)
-{
+const colorIdx = (texture? texture.indices[~~u + vBase] : material.color);
+if (
+(ngon.material.$isBillboard || ngon.material.$isProp) &&
+(colorIdx === 0)
+){
 continue;
 }
+const {red, green, blue} = Rsed.visual.palette.color_at(colorIdx);
 pixelBuffer32[pixelBufferIdx] = (
 (255 << 24) +
 ((blue * iplShade) << 16) +
 ((green * iplShade) << 8) +
 ~~(red * iplShade)
 );
-if (material.auxiliary?.mousePickId)
+if (material.$mousePickId)
 {
-Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.auxiliary.mousePickId;
+Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.$mousePickId;
 }
 }
 }
@@ -6665,13 +6514,14 @@ if (y === (rightEdge.endY - 1)) rightEdge = rightEdges[++curRightEdgeIdx];
 // Draw a wireframe around any n-gons that wish for one.
 if (material.hasWireframe)
 {
+const color = Rsed.visual.palette.color_at(material.wireframeColor);
 for (let l = 1; l < numLeftVerts; l++)
 {
-Rngon.default.render.pipeline.rasterizer.line(renderState, leftVerts[l-1], leftVerts[l], material.wireframeColor);
+Rngon.default.render.pipeline.rasterizer.line(renderState, leftVerts[l-1], leftVerts[l], color);
 }
 for (let r = 1; r < numRightVerts; r++)
 {
-Rngon.default.render.pipeline.rasterizer.line(renderState, rightVerts[r-1], rightVerts[r], material.wireframeColor);
+Rngon.default.render.pipeline.rasterizer.line(renderState, rightVerts[r-1], rightVerts[r], color);
 }
 }
 }
@@ -6711,12 +6561,6 @@ if ((boundingBox.xMin >= renderWidth) || (boundingBox.xMax < 0) ||
 {
 continue;
 }
-}
-// Ignore fully transparent n-gons.
-if (!ngon.material.color.alpha &&
-!ngon.material.hasWireframe)
-{
-continue;
 }
 // Copy the ngon into the internal n-gon cache, so we can operate on it without
 // mutating the original n-gon's data.
@@ -6990,8 +6834,6 @@ const vanishX = ((Rngon.state.default.pixelBuffer?.width || 1) / 2);
 const vanishY = (20 - (camera.tilt * 2));
 for (const ngon of trackMesh.ngons)
 {
-// We don't want the renderer applying proper perspective projection.
-ngon.material.allowTransform = false;
 for (const vertex of ngon.vertices)
 {
 // Tweak the ground mesh's positioning so it matches the game's.
@@ -7454,20 +7296,14 @@ Rngon.vertex(vertX, height4, (vertZ + Rsed.constants.groundTileSize), 0, 1, unde
 ],
 {
 texture: texture,
+wireframeColor: "black",
 hasWireframe: args.includeWireframe,
-auxiliary:
-{
-// We'll encode this ground quad's tile coordinates into a 32-bit id value, which during
-// rasterization we'll write into the mouse-picking buffer, so we can later determine which
-// quad the mouse cursor is hovering over.
-mousePickId: Rsed.ui.utils.mouse_picking_element("ground",
-{
+$mousePickId: Rsed.ui.utils.mouse_picking_element("ground", {
 texture: texture,
 groundTileX: tileX,
 groundTileY: (tileZ - 1),
 }),
-isGroundTile: true,
-}
+$isGroundTile: true,
 }
 );
 trackPolygons.push(groundQuad);
@@ -7532,10 +7368,8 @@ Rngon.vertex( vertX, baseHeight+Rsed.constants.groundTileSize, vertZ, 0, 1)
 const billboardQuad = Rngon.ngon(billboardVertices, {
 texture: billboardTexture,
 hasFill: true,
-auxiliary:
-{
-mousePickId: null,
-}
+$isBillboard: true,
+$mousePickId: null,
 });
 trackPolygons.push(billboardQuad);
 }
@@ -7563,9 +7397,8 @@ const groundHeight = centerView.y + project.maasto.tile_at((pos.x / Rsed.constan
 const x = ((pos.x + centerView.x - (cameraPosFloored.x * Rsed.constants.groundTileSize)) - (fractionX * Rsed.constants.groundTileSize));
 const z = ((centerView.z - pos.z + (cameraPosFloored.z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
 const y = (groundHeight + pos.y);
-trackPolygons.push(...this.prop_mesh(pos.propId, idx,
-{
-position: {x, y,z},
+trackPolygons.push(...this.prop_mesh(pos.propId, idx, {
+position: {x,y,z},
 ...args,
 }));
 }
@@ -7590,7 +7423,7 @@ const y = (centerView.y + prop.y);
 return Rngon.vertex(x, y, z)
 }
 const wireNgon = Rngon.ngon([vertex(wire.start), vertex(wire.end)], {
-color: Rsed.visual.palette.color_at_idx(wire.color)
+color: wire.color,
 });
 trackPolygons.push(wireNgon);
 }
@@ -7623,31 +7456,33 @@ const srcMesh = project.props.mesh[propId];
 const dstMesh = [];
 srcMesh.ngons.forEach(ngon=>
 {
+const color = (args.solidProps && (ngon.fill.type !== "texture"))
+? ngon.fill.idx
+: 0;
 const texture = (args.solidProps && (ngon.fill.type === "texture"))
 ? project.props.texture[ngon.fill.idx]
-: null;
-const propNgon = Rngon.ngon(ngon.vertices.map(v=>Rngon.vertex((v.x + args.position.x),
+: undefined;
+const propNgon = Rngon.ngon(
+ngon.vertices.map(v=>
+Rngon.vertex(
+(v.x + args.position.x),
 (v.y + args.position.y),
-(v.z + args.position.z))),
-{
-color: (args.solidProps? (ngon.fill.type === "texture"? Rsed.visual.palette.color_at_idx(0)
-: Rsed.visual.palette.color_at_idx(ngon.fill.idx))
-: Rsed.visual.palette.color_at_idx(0, true)),
-texture: texture,
-textureMapping: "ortho",
-wireframeColor: Rsed.visual.palette.color_at_idx(args.solidProps? "black" : "lightgray"),
+(v.z + args.position.z)
+)
+), {
+color,
+texture,
+wireframeColor: (args.solidProps? "black" : "lightgray"),
 hasWireframe: (args.solidProps? args.includeWireframe : true),
 hasFill: args.solidProps,
-auxiliary:
-{
-mousePickId: Rsed.ui.utils.mouse_picking_element("prop",
-{
+$mousePickId: Rsed.ui.utils.mouse_picking_element("prop", {
 texture: texture,
 propId: propId,
 propTrackIdx: idxOnTrack
 }),
+$isProp: true,
 }
-});
+);
 dstMesh.push(propNgon);
 });
 return dstMesh;
@@ -7900,12 +7735,10 @@ Rngon.vertex(textureInfo.offsetX+textureInfo.width, textureInfo.offsetY+textureI
 Rngon.vertex(textureInfo.offsetX                  , textureInfo.offsetY+textureInfo.height)], {
 isInScreenSpace: true,
 texture: texture,
-auxiliary: {
-mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
+$mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
 componentId: "texture",
 cursor: Rsed.ui.dom.cursorHandler.cursors.pencil,
 }),
-},
 }
 );
 const label = text_mesh(texture.name, textureInfo.offsetX, textureInfo.offsetY - Rsed.ui.canvas.font.nativeHeight - 3);
@@ -8129,7 +7962,7 @@ y: originY,
 width: (runningXOffs + 1),
 height: (Rsed.ui.canvas.font.nativeHeight + 2),
 material: {
-color: Rngon.color.yellow,
+color: "yellow",
 },
 }));
 return Rngon.mesh(ngons);
@@ -8158,7 +7991,7 @@ texture: texture,
 /*
 * Most recent known filename: js/scene/tilemap-editor/tilemap-editor.js
 *
-* 2019-2021 Tarpeeksi Hyvae Soft
+* 2019-2023 Tarpeeksi Hyvae Soft
 *
 * Software: RallySportED-js
 *
@@ -8230,10 +8063,10 @@ refresh_tilemap: function()
 {
 const width = Rsed.$currentProject.varimaa.width;
 const height = Rsed.$currentProject.varimaa.height;
-tilemap.texture = Rngon.texture({
+tilemap.texture = Rsed.visual.texture({
 width,
 height,
-pixels: new Array(width * height * 4),
+indices: new Array(width * height),
 });
 knownCanvasSizeX = Rsed.visual.canvas.width;
 knownCanvasSizeY = Rsed.visual.canvas.height;
@@ -8313,7 +8146,8 @@ return;
 },
 });
 return scene;
-// Updates the tilemap's texture within the given dirty rectangle.
+// Re-generate the minimap image within the given dirty rectangle by iterating over
+// the tilemap (VARIMAA) and grabbing a pixel off each corresponding PALA texture.
 function refresh_tilemap_texture(startX = 0, startY = 0, width = -1, height = -1)
 {
 const project = Rsed.$currentProject;
@@ -8324,17 +8158,14 @@ for (let y = startY; y < maxY; y++)
 for (let x = startX; x < maxX; x++)
 {
 const pala = project.palat.texture[project.varimaa.tile_at(x, y)];
-let colorIdx = ((pala == null)? 0 : pala.indices[1]);
-if ((x == project.track_checkpoint().x) &&
-(y == project.track_checkpoint().y))
-{
+let colorIdx = (pala? pala.indices[1] : 0);
+if (
+(x == project.track_checkpoint().x) &&
+(y == project.track_checkpoint().y)
+){
 colorIdx = "white";
 }
-const color = Rsed.visual.palette.color_at_idx(colorIdx);
-tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 0] = color.red;
-tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 1] = color.green;
-tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 2] = color.blue;
-tilemap.texture.pixels[(x + y * tilemap.texture.width) * 4 + 3] = 255;
+tilemap.texture.indices[x + y * tilemap.texture.width] = colorIdx;
 }
 }
 return;
@@ -8394,12 +8225,10 @@ Rngon.vertex(tilemap.offsetX+tilemap.width, tilemap.offsetY+tilemap.height),
 Rngon.vertex(tilemap.offsetX              , tilemap.offsetY+tilemap.heightA)], {
 isInScreenSpace: true,
 texture: tilemap.texture,
-auxiliary: {
-mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
+$mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
 componentId: "tilemap",
 cursor: Rsed.ui.dom.cursorHandler.cursors.pencil,
 }),
-},
 }
 );
 const {renderWidth, renderHeight} = Rngon.render({
@@ -8527,6 +8356,9 @@ options: {
 cameraPosition: Rngon.vector(0, 0, -18),
 resolution: Rsed.visual.canvas.scalingFactor,
 useDepthBuffer: false,
+},
+pipeline: {
+rasterizer: Rsed.scenes.$render.rasterizer,
 },
 });
 // If the rendering was resized since the previous frame.
@@ -9200,6 +9032,7 @@ async function load_project(projectMeta)
 {
 /// TODO: Disable undo/redo while the project loads.
 Rsed.ui.utils.undoStack.reset();
+Rsed.visual.palette.reset_palettes();
 project = await Rsed.project(projectMeta);
 }
 })();
