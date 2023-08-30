@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (30 August 2023 00:29:54 UTC)
+// VERSION: live (30 August 2023 09:35:44 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -2304,13 +2304,6 @@ default: return null;
 // Returns the given PALA's pixel data as a texture, whose arguments are set as given.
 function generate_texture(palaId = 0, args = {})
 {
-args =
-{
-...{
-flipped: "vertical",
-},
-...args,
-}
 const dataIdx = (palaId * palaSize);
 // For attempts to access the PALA data out of bounds, return a dummy texture.
 if ((dataIdx < 0) ||
@@ -2336,7 +2329,6 @@ name: `Pala ${palaId}`,
 width: palaWidth,
 height: palaHeight,
 indices: dataSlice,
-flipped: "no",
 assetId: palaId,
 assetType: "palat",
 replace_all_pixels: function(newColorIndices = [])
@@ -3698,7 +3690,14 @@ mouseState.buttons.right = {isDown: false, modifiers: []};
 },
 reset_modifier_keys_state: function()
 {
-modifierKeys.forEach(key=>this.set_key_down(key, false));
+modifierKeys.forEach(key=>
+{
+if (this.key_down(key))
+{
+Rsed.$currentScene.process_key_release(key);
+}
+this.set_key_down(key, false);
+});
 },
 reset_keys: function()
 {
@@ -3706,6 +3705,10 @@ for (const keyIdx of Object.keys(keyboardState))
 {
 clearTimeout(keyboardState[keyIdx].cooldown);
 clearInterval(keyboardState[keyIdx].repeat);
+if (Rsed.$currentScene && keyboardState[keyIdx].isDown)
+{
+Rsed.$currentScene.process_key_release(keyIdx);
+}
 keyboardState[keyIdx].isDown = false;
 }
 },
@@ -4124,9 +4127,7 @@ const dataTypes = [
 {name: "Anims", warning: "Importing this data type can't be undone."},
 ];
 const els = dataTypes.reduce((html, dataType)=>{
-const warningEl = dataType.warning
-? `<i style="color: gray;" class="fas fa-sm fa-exclamation-triangle"></i>`
-: "";
+const warningEl = (dataType.warning? "&#9888;" : "");
 return html + `
 <tr>
 <td>
@@ -4854,7 +4855,7 @@ for (let y = 0; y < symbol.height; y++)
 {
 for (let x = 0; x < symbol.width; x++)
 {
-indices[idx++] = symbol.pixel_at(x, y);
+indices[idx++] = symbol.pixel_at(x, (symbol.height - y - 1));
 }
 }
 symbol.texture = Rsed.visual.texture({
@@ -5436,7 +5437,7 @@ for (let y = 0; y < height; y++)
 for (let x = 0; x < width; x++)
 {
 const tileX = (x * xMul);
-const tileZ = (y * yMul);
+const tileZ = ((height - y - 1) * yMul);
 const tile = Rsed.$currentProject.varimaa.tile_at(tileX, tileZ);
 const texture = Rsed.$currentProject.palat.texture[tile];
 indices.push(texture?.indices[1] || 0);
@@ -5688,9 +5689,11 @@ return accessor;
 *
 */
 "use strict";
-Rsed.ui.canvas.component.label = function()
+Rsed.ui.canvas.component.label = function({
+on_grab = undefined
+} = {})
 {
-const self = Rsed.ui.canvas.component();
+const self = Rsed.ui.canvas.component({on_grab});
 return function(string = "", x = 0, y = 0)
 {
 Rsed.assert?.(
@@ -5757,6 +5760,14 @@ Rngon.vertex(x        , y + height)], {
 texture: texture,
 isInScreenSpace: true,
 ...material,
+$mousePickId: (
+on_grab
+? Rsed.ui.utils.mouse_picking_element("ui-component", {
+componentId: self.id,
+cursor: Rsed.ui.dom.cursorHandler.cursors.fingerHand,
+})
+: undefined
+),
 }
 );
 }
@@ -6252,7 +6263,7 @@ else if (y >= renderHeight)
 break;
 }
 let pixelBufferIdx = ((y * renderWidth) + startX);
-let texelIdx = (~~((y - startY) * ty) * texture.width);
+let texelIdx = ((texture.height - ~~((y - startY) * ty) - 1) * texture.width);
 for (let x = startX; x < endX; x++)
 {
 if (x >= renderWidth)
@@ -6671,7 +6682,12 @@ fpsIndicator: Rsed.ui.canvas.component.valueGraph({
 title: "FPS",
 labelOnly: true,
 }),
-viewLabel: Rsed.ui.canvas.component.label(),
+editorNameLabel: Rsed.ui.canvas.component.label({
+on_grab: function()
+{
+Rsed.$currentScene = "tilemap-editor";
+},
+}),
 };
 const scene = Rsed.scene({
 render: function()
@@ -6710,13 +6726,11 @@ else if (Rsed.ui.utils.inputState.key_down("control"))
 Rsed.ui.utils.undoStack.undo();
 }
 }
-else if (key_is("y") &&
-Rsed.ui.utils.inputState.key_down("control"))
+else if (key_is("y") && Rsed.ui.utils.inputState.key_down("control"))
 {
 Rsed.ui.utils.undoStack.redo();
 }
-else if (key_is("s") &&
-Rsed.ui.utils.inputState.key_down("control"))
+else if (key_is("s") && Rsed.ui.utils.inputState.key_down("control"))
 {
 Rsed.$currentProject.download_as_zip();
 }
@@ -6901,7 +6915,7 @@ return;
 uiMeshes.push(uiComponents.minimap((Rsed.visual.canvas.width - margin), (margin - 1)));
 if (!Rsed.browserMetadata.isMobile)
 {
-uiMeshes.push(uiComponents.viewLabel("Editor: Terrain", margin, margin));
+uiMeshes.push(uiComponents.editorNameLabel("Editor: Terrain", margin, margin));
 uiMeshes.push(uiComponents.activePala((Rsed.visual.canvas.width - 72), (margin - 1)));
 uiMeshes.push(...uiComponents.footerInfo(margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - margin)));
 }
@@ -7527,9 +7541,6 @@ let textureInfo = {};
 // Texture pixels copied with Ctrl + C.
 let clipboard;
 reset_clipboard();
-// A buffer in which we store mouse-picking information about the rendering - so for
-// each pixel on-screen, we can tell to which part of the texture the pixel corresponds.
-const textureMousePickBuffer = [];
 const sceneState = {
 // Which color (index to Rally-Sport's palette) to paint with.
 penColorIdx: 19,
@@ -7551,7 +7562,12 @@ Rsed.ui.utils.inputState.reset_mouse_grab();
 },
 }),
 resolutionLabel: Rsed.ui.canvas.component.label(),
-viewLabel: Rsed.ui.canvas.component.label(),
+editorNameLabel: Rsed.ui.canvas.component.label({
+on_grab: function()
+{
+Rsed.$currentScene = "terrain-editor";
+},
+}),
 clipboardLabel: Rsed.ui.canvas.component.label(),
 palatPane: Rsed.ui.canvas.component.palatPane({
 indicateSelection: false,
@@ -7689,7 +7705,7 @@ scene.set_texture(Rsed.$currentProject.palat.texture[3]);
 const clipboardLabel = clipboard
 ? `Clipboard: ${clipboard.width} * ${clipboard.height}${(clipboard.source == texture)? " (this)" : ""}`
 : "Clipboard: empty";
-uiMeshes.push(uiComponents.viewLabel("Editor: Texture", margin, margin));
+uiMeshes.push(uiComponents.editorNameLabel("Editor: Texture", margin, margin));
 uiMeshes.push(uiComponents.colorSelector((Rsed.visual.canvas.width - 101), (margin - 1)));
 uiMeshes.push(uiComponents.resolutionLabel(`Texture size: ${texture.width} * ${texture.height}`, margin, (Rsed.visual.canvas.height - (Rsed.ui.canvas.font.nativeHeight * 2) - 9)));
 uiMeshes.push(uiComponents.clipboardLabel(clipboardLabel, margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - 5)));
@@ -7869,14 +7885,14 @@ function update_cursor_graphic()
 const cursors = Rsed.ui.dom.cursorHandler.cursors;
 const mousePos = Rsed.ui.utils.inputState.mouse_pos_scaled_to_render_resolution();
 const pickElement = Rsed.ui.utils.inputState.mousePickBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width];
-const isCursorOnTexture = (pickElement && (pickElement.u !== null) && (pickElement.v !== null));
+const isCursorOnTexture = (pickElement && (pickElement.componentId === "texture"));
 const mouseHover = Rsed.ui.utils.inputState.current_mouse_hover();
 let cursor = cursors.default;
 if (mouseHover && mouseHover.cursor)
 {
 cursor = mouseHover.cursor;
 }
-if (isCursorOnTexture)
+else if (isCursorOnTexture)
 {
 if (Rsed.ui.utils.inputState.key_down("tab"))
 {
@@ -7897,14 +7913,16 @@ if (!texture)
 return;
 }
 const mousePos = Rsed.ui.utils.inputState.mouse_pos_scaled_to_render_resolution();
+const hover = Rsed.ui.utils.inputState.current_mouse_hover();
 const grab = Rsed.ui.utils.inputState.current_mouse_grab();
 // Handle painting the texture.
 if (
 (grab?.type == "ui-component") &&
-(grab.componentId === "texture")
+(grab.componentId === "texture") &&
+(hover?.componentId === grab.componentId)
 ){
 const textureX = Math.floor((mousePos.x - textureInfo.offsetX) / camera.zoomLevel);
-const textureY = Math.floor((mousePos.y - textureInfo.offsetY) / camera.zoomLevel);
+const textureY = Math.floor((textureInfo.height - (mousePos.y - textureInfo.offsetY) - 1) / camera.zoomLevel);
 const colorIdxUnderCursor = texture.indices[textureX + textureY * texture.width];
 // Eyedropper.
 if (Rsed.ui.utils.inputState.key_down("tab"))
@@ -8039,7 +8057,12 @@ on_grab: function(event)
 Rsed.ui.utils.terrainBrush.textureIdx = event.palaIdx;
 },
 }),
-viewLabel: Rsed.ui.canvas.component.label(),
+editorNameLabel: Rsed.ui.canvas.component.label({
+on_grab: function()
+{
+Rsed.$currentScene = "texture-editor";
+},
+}),
 fpsIndicator: Rsed.ui.canvas.component.valueGraph({
 title: "FPS",
 labelOnly: true,
@@ -8146,26 +8169,15 @@ return;
 },
 });
 return scene;
-// Re-generate the minimap image within the given dirty rectangle by iterating over
-// the tilemap (VARIMAA) and grabbing a pixel off each corresponding PALA texture.
-function refresh_tilemap_texture(startX = 0, startY = 0, width = -1, height = -1)
+function refresh_tilemap_texture()
 {
-const project = Rsed.$currentProject;
-const maxX = ((width == -1)? tilemap.texture.width : Math.min(tilemap.texture.width, (width + startX)));
-const maxY = ((height == -1)? tilemap.texture.height : Math.min(tilemap.texture.height, (height + startY)));
-for (let y = startY; y < maxY; y++)
+for (let y = 0; y < tilemap.texture.height; y++)
 {
-for (let x = startX; x < maxX; x++)
+for (let x = 0; x < tilemap.texture.width; x++)
 {
-const pala = project.palat.texture[project.varimaa.tile_at(x, y)];
-let colorIdx = (pala? pala.indices[1] : 0);
-if (
-(x == project.track_checkpoint().x) &&
-(y == project.track_checkpoint().y)
-){
-colorIdx = "white";
-}
-tilemap.texture.indices[x + y * tilemap.texture.width] = colorIdx;
+const tile = Rsed.$currentProject.varimaa.tile_at(x, (tilemap.texture.height - y - 1));
+const texture = Rsed.$currentProject.palat.texture[tile];
+tilemap.texture.indices[x + y * tilemap.texture.width] = (texture?.indices[1] || 0);
 }
 }
 return;
@@ -8179,7 +8191,7 @@ if ((Rsed.visual.canvas.width <= 0) ||
 {
 return;
 }
-uiMeshes.push(uiComponents.viewLabel("Editor: Tilemap", margin, margin));
+uiMeshes.push(uiComponents.editorNameLabel("Editor: Tilemap", margin, margin));
 uiMeshes.push(uiComponents.activePala((Rsed.visual.canvas.width - margin), (margin - 1)));
 uiMeshes.push(uiComponents.footer(`Map size: ${Rsed.$currentProject.maasto.width} * ${Rsed.$currentProject.maasto.width}`, margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - 5)));
 if (sceneState.showPalatPane)
@@ -8267,7 +8279,7 @@ const cursors = Rsed.ui.dom.cursorHandler.cursors;
 const mousePos = Rsed.ui.utils.inputState.mouse_pos_scaled_to_render_resolution();
 const pickElement = Rsed.ui.utils.inputState.mousePickBuffer[mousePos.x + mousePos.y * Rsed.visual.canvas.width];
 const mouseHover = Rsed.ui.utils.inputState.current_mouse_hover();
-const isCursorOnTilemap = (pickElement && (pickElement.u !== null) && (pickElement.v !== null));
+const isCursorOnTilemap = (pickElement && (pickElement.componentId === "tilemap"));
 let cursor = cursors.default;
 if (mouseHover && mouseHover.cursor)
 {
@@ -8287,13 +8299,14 @@ return;
 function handle_mouse_input()
 {
 const mousePos = Rsed.ui.utils.inputState.mouse_pos_scaled_to_render_resolution();
+const hover = Rsed.ui.utils.inputState.current_mouse_hover();
 const grab = Rsed.ui.utils.inputState.current_mouse_grab();
 // Handle painting the tilemap.
 if (
 (grab?.type == "ui-component") &&
-(grab.componentId === "tilemap")
+(grab.componentId === "tilemap") &&
+(hover?.componentId === grab.componentId)
 ){
-const brushSize = (Rsed.ui.utils.terrainBrush.radius + 1);
 const tilemapX = Math.floor(((mousePos.x - tilemap.offsetX) / camera.zoomLevel) / 2);
 const tilemapY = Math.floor((mousePos.y - tilemap.offsetY) / camera.zoomLevel);
 Rsed.ui.utils.terrainBrush.apply({
@@ -8302,12 +8315,7 @@ data: Rsed.ui.utils.terrainBrush.textureIdx,
 x: tilemapX,
 y: tilemapY
 });
-refresh_tilemap_texture(
-(tilemapX - brushSize),
-(tilemapY - brushSize),
-(brushSize * 2),
-(brushSize * 2)
-);
+refresh_tilemap_texture();
 }
 else
 {
@@ -8994,6 +9002,7 @@ return scene;
 set_scene: function(sceneName)
 {
 Rsed.assert?.(Rsed.scenes[sceneName], "Attempting to set an unknown scene.");
+Rsed.ui.utils.inputState.reset_keys();
 scene = Rsed.scenes[sceneName];
 // If we've switched to the tilemap scene, make sure it's reflecting
 // any changes we may have made to the track in the previous scene.
@@ -9001,6 +9010,11 @@ if (scene == Rsed.scenes["tilemap-editor"])
 {
 scene.refresh_tilemap();
 }
+// Have the mouse hover info update when the new scene has finished rendering
+// on the next tick.
+window.requestAnimationFrame(()=>{
+publicInterface.forceUpdateMouseHoverOnTickEnd = true;
+});
 return;
 },
 }
