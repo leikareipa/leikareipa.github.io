@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (30 August 2023 09:35:44 UTC)
+// VERSION: live (31 August 2023 06:01:25 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -1700,55 +1700,77 @@ return publicInterface;
 Rsed.visual = Rsed.visual || {};
 Rsed.visual.palette = (function()
 {
-// Rally-Sport's palettes.
-let palettes = undefined;
-let activePaletteIdx = 0;
 // A palette whose colors are guaranteed immutable, safe to use e.g. for the UI.
 const immutablePalette = {
-"background":   {red:255, green:255, blue:16,  alpha:255},
-"black":        {red:0,   green:0,   blue:0,   alpha:255},
-"grey":         {red:127, green:127, blue:127, alpha:255},
-"dimgray":      {red:64,  green:64,  blue:64,  alpha:255},
-"lightgray":    {red:192, green:192, blue:192, alpha:255},
-"dimgrey":      {red:64,  green:64,  blue:64,  alpha:255},
-"white":        {red:255, green:255, blue:255, alpha:255},
-"blue":         {red:0,   green:0,   blue:255, alpha:255},
-"darkorchid":   {red:153, green:50,  blue:204, alpha:255},
-"paleorchid":   {red:158, green:123, blue:176, alpha:255},
-"yellow":       {red:255, green:255, blue:0,   alpha:255},
-"red":          {red:255, green:0,   blue:0,   alpha:255},
-"green":        {red:0,   green:255, blue:0,   alpha:255},
-"gold":         {red:179, green:112, blue:25,  alpha:255},
-"hotpink":      {red:255, green:105, blue:180, alpha:255},
+white:     {red:255, green:255, blue:255},
+black:     {red:0,   green:0,   blue:0},
+dimgray:   {red:64,  green:64,  blue:64},
+lightgray: {red:192, green:192, blue:192},
+yellow:    {red:255, green:255, blue:0},
+red:       {red:255, green:0,   blue:0},
+green:     {red:0,   green:255, blue:0},
+hotpink:   {red:255, green:105, blue:180},
 };
-const publicInterface = {
-reset_palettes: ()=>
+// Rally-Sport's palettes.
+let activePaletteIdx = 0;
+let activePalette = rally_sport_palette(activePaletteIdx);
+// How many levels of shading will be computed for each color in the palette.
+const numLightLevels = 9;
+function generate_light_levels(colorRGBA)
 {
-palettes = [
-rally_sport_palette(0),
-rally_sport_palette(1),
-rally_sport_palette(2),
-rally_sport_palette(3),
-];
-},
-// Returns the color at the given index in the currently-active palette. Optionally,
-// the index may be a string identifying one of the immutable colors.
+const lightLevels = [];
+const deltaShade = (1 / (numLightLevels - 1));
+for (let i = numLightLevels; i > 0; i--)
+{
+const shade = ((numLightLevels - i) * deltaShade);
+const color32 = (
+(255 << 24) +
+((colorRGBA.blue * shade) << 16) +
+((colorRGBA.green * shade) << 8) +
+~~(colorRGBA.red * shade)
+);
+lightLevels.push(color32);
+}
+return lightLevels;
+}
+// Converts the {red, green, blue} color values of the given palette into 32-bit
+// packed color values with light levels.
+function precompile_palette(palette)
+{
+const precompiled = palette.map(c=>generate_light_levels(c));
+Object.values(immutablePalette).forEach((c, idx)=>{
+precompiled[Rsed.constants.paletteSize + idx] = generate_light_levels(c);
+});
+for (let i = precompiled.length; i < 256; i++)
+{
+precompiled[i] = generate_light_levels(immutablePalette.dimgray);
+}
+return precompiled;
+}
+const publicInterface = {
+// The currently-active palette converted into 32-bit packed color values
+// (for writing directly into a 32-bit RGBA pixel buffer), with pre-computed
+// shading levels for each color.
+precompiled: precompile_palette(activePalette),
+numLightLevels,
 color_at: (colorIdx = 0)=>
 {
 return (
 immutablePalette[colorIdx] ||
-palettes[activePaletteIdx][colorIdx] ||
+activePalette[colorIdx] ||
 immutablePalette["white"]
 );
 },
 set_active_palette: (paletteIdx)=>
 {
 Rsed.assert?.(
-((paletteIdx >= 0) &&
-(paletteIdx < palettes.length)),
+(paletteIdx >= 0) &&
+(paletteIdx < 4),
 "Trying to access a palette index out of bounds."
 );
 activePaletteIdx = paletteIdx;
+activePalette = rally_sport_palette(activePaletteIdx);
+publicInterface.precompiled = precompile_palette(activePalette);
 },
 set_color: (colorIdx = 0, red, green, blue)=>
 {
@@ -1757,157 +1779,163 @@ Rsed.assert?.(
 (colorIdx < Rsed.constants.paletteSize)),
 `Trying to access a palette color out of bounds (#${colorIdx}).`
 );
-palettes[activePaletteIdx][colorIdx].red = red;
-palettes[activePaletteIdx][colorIdx].green = green;
-palettes[activePaletteIdx][colorIdx].blue = blue;
+activePalette[colorIdx].red = red;
+activePalette[colorIdx].green = green;
+activePalette[colorIdx].blue = blue;
+publicInterface.precompiled = precompile_palette(activePalette);
 },
 };
+Object.keys(immutablePalette).forEach((c, idx)=>publicInterface[c.toUpperCase()] = Rsed.constants.paletteSize + idx);
 return publicInterface;
-})();
 // Replicates the four palettes of the Rally-Sport demo.
 function rally_sport_palette(idx = 0)
 {
 switch (idx)
 {
 case 0: return [
-{red:0, green:0, blue:0, alpha:255},
-{red:8, green:64, blue:16, alpha:255},
-{red:16, green:96, blue:36, alpha:255},
-{red:24, green:128, blue:48, alpha:255},
-{red:252, green:0, blue:0, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:192, green:192, blue:192, alpha:255},
-{red:128, green:128, blue:128, alpha:255},
-{red:64, green:64, blue:64, alpha:255},
-{red:0, green:0, blue:252, alpha:255},
-{red:72, green:128, blue:252, alpha:255},
-{red:208, green:100, blue:252, alpha:255},
-{red:208, green:72, blue:44, alpha:255},
-{red:252, green:112, blue:76, alpha:255},
-{red:16, green:96, blue:32, alpha:255},
-{red:32, green:192, blue:64, alpha:255},
-{red:228, green:56, blue:244, alpha:255},
-{red:132, green:36, blue:172, alpha:255},
-{red:68, green:92, blue:252, alpha:255},
-{red:252, green:252, blue:48, alpha:255},
-{red:32, green:32, blue:32, alpha:255},
-{red:152, green:48, blue:24, alpha:255},
-{red:80, green:24, blue:12, alpha:255},
-{red:124, green:124, blue:24, alpha:255},
-{red:128, green:0, blue:0, alpha:255},
-{red:12, green:20, blue:132, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:136, green:28, blue:128, alpha:255},
-{red:16, green:252, blue:8, alpha:255},
+{red:0, green:0, blue:0},
+{red:8, green:64, blue:16},
+{red:16, green:96, blue:36},
+{red:24, green:128, blue:48},
+{red:252, green:0, blue:0},
+{red:252, green:252, blue:252},
+{red:192, green:192, blue:192},
+{red:128, green:128, blue:128},
+{red:64, green:64, blue:64},
+{red:0, green:0, blue:252},
+{red:72, green:128, blue:252},
+{red:208, green:100, blue:252},
+{red:208, green:72, blue:44},
+{red:252, green:112, blue:76},
+{red:16, green:96, blue:32},
+{red:32, green:192, blue:64},
+{red:228, green:56, blue:244},
+{red:132, green:36, blue:172},
+{red:68, green:92, blue:252},
+{red:252, green:252, blue:48},
+{red:32, green:32, blue:32},
+{red:152, green:48, blue:24},
+{red:80, green:24, blue:12},
+{red:124, green:124, blue:24},
+{red:128, green:0, blue:0},
+{red:12, green:20, blue:132},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:136, green:28, blue:128},
+{red:16, green:252, blue:8},
+...Object.values(structuredClone(immutablePalette)),
 ];
 case 1: return [
-{red:0, green:0, blue:0, alpha:255},
-{red:80, green:88, blue:104, alpha:255},
-{red:96, green:104, blue:120, alpha:255},
-{red:112, green:128, blue:144, alpha:255},
-{red:252, green:0, blue:0, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:192, green:192, blue:192, alpha:255},
-{red:128, green:128, blue:128, alpha:255},
-{red:64, green:64, blue:64, alpha:255},
-{red:0, green:0, blue:252, alpha:255},
-{red:72, green:128, blue:252, alpha:255},
-{red:208, green:100, blue:252, alpha:255},
-{red:208, green:72, blue:44, alpha:255},
-{red:252, green:112, blue:76, alpha:255},
-{red:8, green:136, blue:16, alpha:255},
-{red:32, green:192, blue:64, alpha:255},
-{red:228, green:56, blue:244, alpha:255},
-{red:132, green:36, blue:172, alpha:255},
-{red:68, green:92, blue:252, alpha:255},
-{red:252, green:252, blue:48, alpha:255},
-{red:32, green:32, blue:32, alpha:255},
-{red:152, green:48, blue:24, alpha:255},
-{red:80, green:24, blue:12, alpha:255},
-{red:124, green:124, blue:24, alpha:255},
-{red:128, green:0, blue:0, alpha:255},
-{red:12, green:20, blue:132, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:136, green:28, blue:128, alpha:255},
-{red:16, green:252, blue:8, alpha:255},
+{red:0, green:0, blue:0},
+{red:80, green:88, blue:104},
+{red:96, green:104, blue:120},
+{red:112, green:128, blue:144},
+{red:252, green:0, blue:0},
+{red:252, green:252, blue:252},
+{red:192, green:192, blue:192},
+{red:128, green:128, blue:128},
+{red:64, green:64, blue:64},
+{red:0, green:0, blue:252},
+{red:72, green:128, blue:252},
+{red:208, green:100, blue:252},
+{red:208, green:72, blue:44},
+{red:252, green:112, blue:76},
+{red:8, green:136, blue:16},
+{red:32, green:192, blue:64},
+{red:228, green:56, blue:244},
+{red:132, green:36, blue:172},
+{red:68, green:92, blue:252},
+{red:252, green:252, blue:48},
+{red:32, green:32, blue:32},
+{red:152, green:48, blue:24},
+{red:80, green:24, blue:12},
+{red:124, green:124, blue:24},
+{red:128, green:0, blue:0},
+{red:12, green:20, blue:132},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:136, green:28, blue:128},
+{red:16, green:252, blue:8},
+...Object.values(structuredClone(immutablePalette)),
 ];
 case 2: return [
-{red:0, green:0, blue:0, alpha:255},
-{red:72, green:20, blue:12, alpha:255},
-{red:144, green:44, blue:20, alpha:255},
-{red:168, green:56, blue:28, alpha:255},
-{red:252, green:0, blue:0, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:192, green:192, blue:192, alpha:255},
-{red:128, green:128, blue:128, alpha:255},
-{red:64, green:64, blue:64, alpha:255},
-{red:0, green:0, blue:252, alpha:255},
-{red:72, green:128, blue:252, alpha:255},
-{red:208, green:100, blue:252, alpha:255},
-{red:208, green:72, blue:44, alpha:255},
-{red:252, green:112, blue:76, alpha:255},
-{red:16, green:96, blue:32, alpha:255},
-{red:32, green:192, blue:64, alpha:255},
-{red:228, green:56, blue:244, alpha:255},
-{red:132, green:36, blue:172, alpha:255},
-{red:68, green:92, blue:252, alpha:255},
-{red:252, green:252, blue:48, alpha:255},
-{red:32, green:32, blue:32, alpha:255},
-{red:152, green:48, blue:24, alpha:255},
-{red:80, green:24, blue:12, alpha:255},
-{red:124, green:124, blue:24, alpha:255},
-{red:128, green:0, blue:0, alpha:255},
-{red:12, green:20, blue:132, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:136, green:28, blue:128, alpha:255},
-{red:16, green:252, blue:8, alpha:255},
+{red:0, green:0, blue:0},
+{red:72, green:20, blue:12},
+{red:144, green:44, blue:20},
+{red:168, green:56, blue:28},
+{red:252, green:0, blue:0},
+{red:252, green:252, blue:252},
+{red:192, green:192, blue:192},
+{red:128, green:128, blue:128},
+{red:64, green:64, blue:64},
+{red:0, green:0, blue:252},
+{red:72, green:128, blue:252},
+{red:208, green:100, blue:252},
+{red:208, green:72, blue:44},
+{red:252, green:112, blue:76},
+{red:16, green:96, blue:32},
+{red:32, green:192, blue:64},
+{red:228, green:56, blue:244},
+{red:132, green:36, blue:172},
+{red:68, green:92, blue:252},
+{red:252, green:252, blue:48},
+{red:32, green:32, blue:32},
+{red:152, green:48, blue:24},
+{red:80, green:24, blue:12},
+{red:124, green:124, blue:24},
+{red:128, green:0, blue:0},
+{red:12, green:20, blue:132},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:136, green:28, blue:128},
+{red:16, green:252, blue:8},
+...Object.values(structuredClone(immutablePalette)),
 ];
 case 3: return [
-{red:0, green:0, blue:0, alpha:255},
-{red:28, green:52, blue:8, alpha:255},
-{red:64, green:64, blue:16, alpha:255},
-{red:80, green:84, blue:28, alpha:255},
-{red:252, green:0, blue:0, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:192, green:192, blue:192, alpha:255},
-{red:128, green:128, blue:128, alpha:255},
-{red:64, green:64, blue:64, alpha:255},
-{red:0, green:0, blue:252, alpha:255},
-{red:72, green:128, blue:252, alpha:255},
-{red:208, green:100, blue:252, alpha:255},
-{red:208, green:72, blue:44, alpha:255},
-{red:252, green:112, blue:76, alpha:255},
-{red:32, green:64, blue:32, alpha:255},
-{red:64, green:128, blue:64, alpha:255},
-{red:228, green:56, blue:244, alpha:255},
-{red:132, green:36, blue:172, alpha:255},
-{red:68, green:92, blue:252, alpha:255},
-{red:252, green:252, blue:48, alpha:255},
-{red:32, green:32, blue:32, alpha:255},
-{red:152, green:48, blue:24, alpha:255},
-{red:80, green:24, blue:12, alpha:255},
-{red:124, green:124, blue:24, alpha:255},
-{red:128, green:0, blue:0, alpha:255},
-{red:12, green:20, blue:132, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:252, green:252, blue:252, alpha:255},
-{red:136, green:28, blue:128, alpha:255},
-{red:16, green:252, blue:8, alpha:255},
+{red:0, green:0, blue:0},
+{red:28, green:52, blue:8},
+{red:64, green:64, blue:16},
+{red:80, green:84, blue:28},
+{red:252, green:0, blue:0},
+{red:252, green:252, blue:252},
+{red:192, green:192, blue:192},
+{red:128, green:128, blue:128},
+{red:64, green:64, blue:64},
+{red:0, green:0, blue:252},
+{red:72, green:128, blue:252},
+{red:208, green:100, blue:252},
+{red:208, green:72, blue:44},
+{red:252, green:112, blue:76},
+{red:32, green:64, blue:32},
+{red:64, green:128, blue:64},
+{red:228, green:56, blue:244},
+{red:132, green:36, blue:172},
+{red:68, green:92, blue:252},
+{red:252, green:252, blue:48},
+{red:32, green:32, blue:32},
+{red:152, green:48, blue:24},
+{red:80, green:24, blue:12},
+{red:124, green:124, blue:24},
+{red:128, green:0, blue:0},
+{red:12, green:20, blue:132},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:252, green:252, blue:252},
+{red:136, green:28, blue:128},
+{red:16, green:252, blue:8},
+...Object.values(structuredClone(immutablePalette)),
 ];
 default: Rsed.throw("Unrecognized palette index");
 }
 }
+})();
 /*
 * Most recent known filename: js/visual/canvas.js
 *
@@ -4594,8 +4622,8 @@ return;
 Rsed.ui.canvas.font = (function()
 {
 // Shorthands for colors.
-const X = "black";
-const _ = "background";
+const X = Rsed.visual.palette.BLACK;
+const _ = Rsed.visual.palette.YELLOW;
 const charset = {
 " ": c([[_]]),
 "!": c([[X],
@@ -4902,7 +4930,7 @@ offsetX: options.x,
 offsetY: options.y,
 pixel_at: function(x = 0, y = 0)
 {
-return (pixels[y][x] || "background");
+return (pixels[y][x] || _);
 },
 };
 }
@@ -5082,11 +5110,11 @@ sampleSize = 55
 {
 const self = Rsed.ui.canvas.component();
 const data = [];
-const colorLow = "green";
-const colorHigh = "red";
-const colorNormal = "yellow";
-const colorBackground = "black";
-const colorFrame = "dimgray";
+const colorLow = Rsed.visual.palette.GREEN;
+const colorHigh = Rsed.visual.palette.RED;
+const colorNormal = Rsed.visual.palette.YELLOW;
+const colorBackground = Rsed.visual.palette.BLACK;
+const colorFrame = Rsed.visual.palette.DIMGRAY;
 return function(x = 0, y = 0, value)
 {
 Rsed.assert?.(
@@ -5253,7 +5281,7 @@ width: thumbnailWidth,
 height: thumbnailHeight,
 material: {
 hasWireframe: true,
-wireframeColor: ((isCurrentPala || isHovered)? Rngon.color(255, 255, 0, 255) : Rngon.color(0, 0, 0, 255)),
+wireframeColor: ((isCurrentPala || isHovered)? Rngon.color.yellow : Rngon.color.black),
 allowAlphaReject: false,
 $mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
 componentId: self.id,
@@ -5276,7 +5304,7 @@ y: baseY,
 width: thumbnailWidth,
 height: thumbnailHeight,
 material: {
-color: "hotpink",
+color: Rsed.visual.palette.HOTPINK,
 },
 }),
 ...box({
@@ -5285,7 +5313,7 @@ y: baseY-1,
 width: thumbnailWidth,
 height: thumbnailHeight,
 material: {
-color: "yellow",
+color: Rsed.visual.palette.YELLOW,
 },
 }),
 ];
@@ -5301,7 +5329,7 @@ y: (offsetY + (y * thumbnailHeight)),
 width: thumbnailWidth,
 height: thumbnailHeight,
 material: {
-color: "hotpink",
+color: Rsed.visual.palette.HOTPINK,
 },
 }),
 ];
@@ -5482,7 +5510,7 @@ y: baseZ+1,
 width: frameWidth,
 height: frameHeight,
 material: {
-color: "hotpink",
+color: Rsed.visual.palette.HOTPINK,
 },
 }),
 // Position indicator.
@@ -5492,7 +5520,7 @@ y: baseZ,
 width: frameWidth,
 height: frameHeight,
 material: {
-color: "yellow",
+color: Rsed.visual.palette.YELLOW,
 },
 }),
 ]);
@@ -5729,7 +5757,7 @@ y: (y - 1),
 width: (runningXOffs + 1),
 height: (Rsed.ui.canvas.font.nativeHeight + 2),
 material: {
-color: "yellow",
+color: Rsed.visual.palette.YELLOW,
 },
 }));
 // Dropshadow.
@@ -5739,7 +5767,7 @@ y,
 width: (runningXOffs + 1),
 height: (Rsed.ui.canvas.font.nativeHeight + 2),
 material: {
-color: "hotpink",
+color: Rsed.visual.palette.HOTPINK,
 },
 }));
 return Rngon.mesh(ngons);
@@ -6216,12 +6244,12 @@ continue;
 }
 case 1:
 {
-Rngon.default.render.pipeline.rasterizer.point(renderState, ngon.vertices[0], Rsed.visual.palette.color_at(ngon.material.color));
+Rngon.default.render.pipeline.rasterizer.point(renderState, ngon.vertices[0], {alpha: 255, ...Rsed.visual.palette.color_at(ngon.material.color)});
 continue;
 }
 case 2:
 {
-Rngon.default.render.pipeline.rasterizer.line(renderState, ngon.vertices[0], ngon.vertices[1], Rsed.visual.palette.color_at(ngon.material.color));
+Rngon.default.render.pipeline.rasterizer.line(renderState, ngon.vertices[0], ngon.vertices[1], {alpha: 255, ...Rsed.visual.palette.color_at(ngon.material.color)});
 continue;
 }
 default:
@@ -6272,13 +6300,7 @@ break;
 }
 if (x >= 0)
 {
-const color = Rsed.visual.palette.color_at(texture.indices[~~texelIdx])
-pixelBuffer32[pixelBufferIdx] = (
-(255 << 24) +
-(color.blue << 16) +
-(color.green << 8) +
-~~color.red
-);
+pixelBuffer32[pixelBufferIdx] = (Rsed.visual.palette.precompiled[texture.indices[~~texelIdx]][Rsed.visual.palette.numLightLevels - 1] || 255);
 if (material.$mousePickId)
 {
 Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.$mousePickId;
@@ -6291,13 +6313,7 @@ texelIdx += tx;
 }
 else if (material.hasFill)
 {
-const color = Rsed.visual.palette.color_at(material.color);
-const color32 = (
-(255 << 24) +
-(color.blue << 16) +
-(color.green << 8) +
-~~color.red
-);
+const color32 = (Rsed.visual.palette.precompiled[material.color][Rsed.visual.palette.numLightLevels - 1] || 255);
 for (let y = startY; y < endY; y++)
 {
 if (y < 0)
@@ -6430,8 +6446,9 @@ if (edgeHeight === 0) return;
 const startX = Math.round(vert1.x);
 const endX = Math.ceil(vert2.x);
 const deltaX = ((endX - startX) / edgeHeight);
-const startShade = vert1.shade;
-const deltaShade = ((vert2.shade - vert1.shade) / edgeHeight);
+const startShade = Math.max(0, Math.min(1, vert1.shade));
+const endShade = Math.max(0, Math.min(1, vert2.shade));
+const deltaShade = ((endShade - startShade) / edgeHeight);
 const edge = (isLeftEdge? leftEdges[numLeftEdges++] : rightEdges[numRightEdges++]);
 edge.startY = startY;
 edge.endY = endY;
@@ -6498,13 +6515,8 @@ if (
 ){
 continue;
 }
-const {red, green, blue} = Rsed.visual.palette.color_at(colorIdx);
-pixelBuffer32[pixelBufferIdx] = (
-(255 << 24) +
-((blue * iplShade) << 16) +
-((green * iplShade) << 8) +
-~~(red * iplShade)
-);
+const lightLevel = ~~(iplShade * (Rsed.visual.palette.numLightLevels - 1));
+pixelBuffer32[pixelBufferIdx] = (Rsed.visual.palette.precompiled[colorIdx][lightLevel] || 255);
 if (material.$mousePickId)
 {
 Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.$mousePickId;
@@ -7123,15 +7135,11 @@ return;
 // Vertex shader for a linear distance fog that fades to black.
 function vs_distance_fog(ngon, renderState)
 {
-const startDistance = (Math.min(5200, (5200 / Rsed.core.displayScaleHeight)) ** 2);
-const fogDepth = (3500 ** 2);
+const startDistance = (Math.min(6100, (6100 / Rsed.core.displayScaleHeight)) ** 2);
+const fogDepth = (2700 ** 2);
 for (let v = 0; v < ngon.vertices.length; v++)
 {
-const distance = (
-((ngon.vertices[v].x - renderState.cameraPosition.x) ** 2) +
-((ngon.vertices[v].y - renderState.cameraPosition.y) ** 2) +
-((ngon.vertices[v].z - renderState.cameraPosition.z) ** 2)
-) - startDistance;
+const distance = (((ngon.vertices[v].z - renderState.cameraPosition.z) ** 2) - startDistance);
 ngon.vertices[v].shade = Math.max(0, Math.min(ngon.vertices[v].shade, (1 - (distance / fogDepth))));
 }
 }
@@ -7310,7 +7318,7 @@ Rngon.vertex(vertX, height4, (vertZ + Rsed.constants.groundTileSize), 0, 1, unde
 ],
 {
 texture: texture,
-wireframeColor: "black",
+wireframeColor: Rsed.visual.palette.BLACK,
 hasWireframe: args.includeWireframe,
 $mousePickId: Rsed.ui.utils.mouse_picking_element("ground", {
 texture: texture,
@@ -7486,7 +7494,7 @@ Rngon.vertex(
 ), {
 color,
 texture,
-wireframeColor: (args.solidProps? "black" : "lightgray"),
+wireframeColor: (args.solidProps? Rsed.visual.palette.BLACK : Rsed.visual.palette.LIGHTGRAY),
 hasWireframe: (args.solidProps? args.includeWireframe : true),
 hasFill: args.solidProps,
 $mousePickId: Rsed.ui.utils.mouse_picking_element("prop", {
@@ -7980,7 +7988,7 @@ y: originY,
 width: (runningXOffs + 1),
 height: (Rsed.ui.canvas.font.nativeHeight + 2),
 material: {
-color: "yellow",
+color: Rsed.visual.palette.YELLOW,
 },
 }));
 return Rngon.mesh(ngons);
@@ -8945,6 +8953,7 @@ Rsed.throw_if_not_type("object", args);
 // done once, after the renderer's script has been importent. For reasons
 // of lazy we're doing it here rather than in a more suitable place.
 Rngon.default.ngon.material.isTwoSided = true;
+Rngon.default.ngon.material.color = Rsed.visual.palette.WHITE;
 args = {
 ...Rsed.core.default_startup_args(),
 ...args,
@@ -9046,7 +9055,6 @@ async function load_project(projectMeta)
 {
 /// TODO: Disable undo/redo while the project loads.
 Rsed.ui.utils.undoStack.reset();
-Rsed.visual.palette.reset_palettes();
 project = await Rsed.project(projectMeta);
 }
 })();
