@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (31 August 2023 06:01:25 UTC)
+// VERSION: live (31 August 2023 06:40:25 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -6537,7 +6537,7 @@ if (y === (rightEdge.endY - 1)) rightEdge = rightEdges[++curRightEdgeIdx];
 // Draw a wireframe around any n-gons that wish for one.
 if (material.hasWireframe)
 {
-const color = Rsed.visual.palette.color_at(material.wireframeColor);
+const color = {alpha: 255, ...Rsed.visual.palette.color_at(material.wireframeColor)};
 for (let l = 1; l < numLeftVerts; l++)
 {
 Rngon.default.render.pipeline.rasterizer.line(renderState, leftVerts[l-1], leftVerts[l], color);
