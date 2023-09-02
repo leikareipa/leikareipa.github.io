@@ -36,16 +36,17 @@ body.loading
 {
     position: absolute;
     z-index: 9;
-    top: 2.25em;
+    top: 2.5em;
     left: 0.5em;
     background-color: white;
     color: black;
     text-align: left;
     border: 1px solid black;
-    padding: 0.5em;
+    padding: 0.75em;
     white-space: nowrap;
     background-image: url(grass.png);
     color: #a2a2a2;
+    border: 2px solid greenyellow;
 }
 
 #data-dropdown:not(.visible)

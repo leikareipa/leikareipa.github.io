@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (02 September 2023 04:28:21 UTC)
+// VERSION: live (02 September 2023 07:10:40 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -4325,8 +4325,8 @@ Rsed.ui.utils.inputState = (function()
         {
             const resolution = Rsed.visual.canvas.resolution();
 
-            const scaledX = Math.floor(mouseState.position.x * (resolution.width / window.innerWidth));
-            const scaledY = Math.floor(mouseState.position.y * (resolution.height / window.innerHeight));
+            const scaledX = Math.round(mouseState.position.x * (resolution.width / window.innerWidth));
+            const scaledY = Math.round(mouseState.position.y * (resolution.height / window.innerHeight));
 
             const clampedX = Math.max(0, Math.min((resolution.width - 1), scaledX));
             const clampedY = Math.max(0, Math.min((resolution.height - 1), scaledY));
@@ -6478,82 +6478,90 @@ Rsed.ui.canvas.component.palatPane = function({
 
         const ngons = [];
         const raisedNgons = [];
-        const numPalas = Rsed.$currentProject.palat.texture.length;
-        const palatPaneHeight = ((Math.round((Rsed.visual.canvas.height - offsetY) / thumbnailHeight) - 1) * thumbnailHeight);
-        const numPalatPaneRows = Math.ceil(palatPaneHeight / thumbnailHeight);
-        const numPalatPaneCols = Math.ceil(numPalas / numPalatPaneRows);
+        const numPalat = Rsed.$currentProject.palat.texture.length;
+        const numPalatPaneCols = 17;
+        const numPalatPaneRows = Math.ceil(numPalat / numPalatPaneCols);
         const palatPaneWidth = (numPalatPaneCols * thumbnailWidth);
+        const palaPaneHeight = (numPalatPaneRows * thumbnailHeight);
         offsetX -= palatPaneWidth;
 
-        let palaIdx = 0;
-        loop:
-        for (let y = 0; y < numPalatPaneRows; y++)
+        ngons.push(...Rsed.ui.canvas.component.$box({
+            x: offsetX,
+            y: offsetY,
+            width: palatPaneWidth+1, 
+            height: palaPaneHeight+1,
+            material: {
+                color: Rsed.visual.palette.GREEN,
+            },
+        }));
+
+        offsetX++;
+        offsetY++;
+
+        let x = 0;
+        let y = 0;
+        for (let palaIdx = 0; palaIdx < numPalat; palaIdx++)
         {
-            for (let x = 0; x < numPalatPaneCols; x++)
+            const isCurrentPala = (indicateSelection && (Rsed.ui.utils.terrainBrush.textureIdx == palaIdx));
+            const isHovered = (Rsed.ui.utils.inputState.current_mouse_hover()?.palaIdx === palaIdx);
+            const palaTexture = Rsed.$currentProject.palat.texture[palaIdx];
+
+            ngons.push(ngon({
+                x: (offsetX + (x * thumbnailWidth)),
+                y: (offsetY + (y * thumbnailHeight)),
+                texture: palaTexture,
+                width: thumbnailWidth,
+                height: thumbnailHeight,
+                material: {
+                    $mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
+                        componentId: self.id,
+                        cursor: Rsed.ui.dom.cursorHandler.cursors.fingerHand,
+                        palaIdx: palaIdx,
+                    }),
+                },
+            }));
+
+            if (isHovered)
             {
-                if (palaIdx >= numPalas)
-                {
-                    break loop;
-                }
+                const labelString = `${palaIdx}`;
+                const labelWidth = Rsed.ui.canvas.font.pixel_width(labelString);
+                const baseX = (offsetX + (x * thumbnailWidth));
+                const baseY = (offsetY + (y * thumbnailHeight));
+                const newNgons = [
+                    ...Rsed.ui.canvas.component.label()(labelString, (baseX - labelWidth - 1), (baseY - (thumbnailHeight / 2) - 1)).ngons,
+                    ...Rsed.ui.canvas.component.$box_with_shadow({
+                        x: baseX,
+                        y: baseY,
+                        width: thumbnailWidth, 
+                        height: thumbnailHeight,
+                    }),
+                ];
 
-                const isCurrentPala = (indicateSelection && (Rsed.ui.utils.terrainBrush.textureIdx == palaIdx));
-                const isHovered = (Rsed.ui.utils.inputState.current_mouse_hover()?.palaIdx === palaIdx);
-                const palaTexture = Rsed.$currentProject.palat.texture[palaIdx++];
+                ngons.push(...newNgons);
+                raisedNgons.push(...newNgons);
+            }
+            else if (isCurrentPala)
+            {
+                const newNgons = [
+                    ...Rsed.ui.canvas.component.$box({
+                        x: (offsetX + (x * thumbnailWidth)),
+                        y: (offsetY + (y * thumbnailHeight)),
+                        width: thumbnailWidth, 
+                        height: thumbnailHeight,
+                        material: {
+                            color: Rsed.visual.palette.HOTPINK,
+                        },
+                    }),
+                ];
 
-                ngons.push(ngon({
-                    x: (offsetX + (x * thumbnailWidth)),
-                    y: (offsetY + (y * thumbnailHeight)),
-                    texture: palaTexture,
-                    width: thumbnailWidth,
-                    height: thumbnailHeight,
-                    material: {
-                        hasWireframe: true,
-                        wireframeColor: ((isCurrentPala || isHovered)? Rngon.color.yellow : Rngon.color.black),
-                        allowAlphaReject: false,
-                        $mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
-                            componentId: self.id,
-                            cursor: Rsed.ui.dom.cursorHandler.cursors.fingerHand,
-                            palaIdx: (palaIdx - 1),
-                        }),
-                    },
-                }));
+                ngons.push(...newNgons);
+                raisedNgons.push(...newNgons);
+            }
 
-                if (isHovered)
-                {
-                    const labelString = `${palaIdx - 1}`;
-                    const labelWidth = Rsed.ui.canvas.font.pixel_width(labelString);
-                    const baseX = (offsetX + (x * thumbnailWidth));
-                    const baseY = (offsetY + (y * thumbnailHeight));
-                    const newNgons = [
-                        ...Rsed.ui.canvas.component.label()(labelString, (baseX - labelWidth - 1), (baseY - (thumbnailHeight / 2) - 1)).ngons,
-                        ...Rsed.ui.canvas.component.$box_with_shadow({
-                            x: baseX,
-                            y: baseY,
-                            width: thumbnailWidth, 
-                            height: thumbnailHeight,
-                        }),
-                    ];
-
-                    ngons.push(...newNgons);
-                    raisedNgons.push(...newNgons);
-                }
-                else if (isCurrentPala)
-                {
-                    const newNgons = [
-                        ...Rsed.ui.canvas.component.$box({
-                            x: (offsetX + (x * thumbnailWidth)),
-                            y: (offsetY + (y * thumbnailHeight)),
-                            width: thumbnailWidth, 
-                            height: thumbnailHeight,
-                            material: {
-                                color: Rsed.visual.palette.HOTPINK,
-                            },
-                        }),
-                    ];
-
-                    ngons.push(...newNgons);
-                    raisedNgons.push(...newNgons);
-                }
+            if (++x >= numPalatPaneCols)
+            {
+                y++;
+                x = 0;
             }
         }
 
@@ -6626,6 +6634,19 @@ Rsed.ui.canvas.component.textPane = function({
 
         const ngons = [];
 
+        ngons.push(...Rsed.ui.canvas.component.$box({
+            x: offsetX - width,
+            y: offsetY,
+            width: width+1, 
+            height: height+1,
+            material: {
+                color: Rsed.visual.palette.GREEN,
+            },
+        }));
+
+        offsetX++;
+        offsetY++;
+
         ngons.push(Rngon.ngon([
             Rngon.vertex((offsetX - width),  offsetY),
             Rngon.vertex( offsetX         ,  offsetY),
@@ -6654,10 +6675,10 @@ Rsed.ui.canvas.component.textPane = function({
         for (const {rect, textureId} of Rsed.$currentProject.props.textureRects)
         {
             if (
-                (rect.topLeft.x <= mousePos.x) &&
-                (rect.topLeft.x + rect.width >= mousePos.x) &&
-                (rect.topLeft.y <= mousePos.y) &&
-                (rect.topLeft.y + rect.height >= mousePos.y)
+                (rect.topLeft.x-3 <= mousePos.x) &&
+                (rect.topLeft.x-3 + rect.width >= mousePos.x) &&
+                (rect.topLeft.y-1 <= mousePos.y) &&
+                (rect.topLeft.y-1 + rect.height >= mousePos.y)
             ){
                 if (isGrabbingPane)
                 {
@@ -8368,7 +8389,7 @@ Rsed.scenes["terrain-editor"] = (function()
 
         if (sceneState.showPalatPane)
         {
-            uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - margin), 38));
+            uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - margin) - 2, 38));
         }
 
         if (Rsed.browserMetadata.has_url_param("showFPS"))
@@ -8699,7 +8720,7 @@ Rsed.scenes["terrain-editor"].meshBuilder = (function()
                 const viewNarrowing = ~~(z * 0.13 * Rsed.visual.canvas.aspectRatio);
 
                 // Add the ground tiles.
-                for (let x = viewNarrowing; x < args.camera.viewportWidth-viewNarrowing; x++)
+                for (let x = viewNarrowing-1; x < args.camera.viewportWidth-viewNarrowing; x++)
                 {
                     // Coordinates of the current ground tile.
                     const tileX = (x + cameraPosFloored.x);
@@ -9312,12 +9333,12 @@ Rsed.scenes["texture-editor"] = (function()
 
         if (sceneState.showPalatPane)
         {
-            uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - 4), 38));
+            uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - 6), 38));
         }
 
         if (sceneState.showTextPane)
         {
-            uiMeshes.push(uiComponents.textPane((Rsed.visual.canvas.width - 4), 38));
+            uiMeshes.push(uiComponents.textPane((Rsed.visual.canvas.width - 6), 38));
         }
 
         Rngon.render({
@@ -9881,7 +9902,7 @@ Rsed.scenes["tilemap-editor"] = (function()
 
         if (sceneState.showPalatPane)
         {
-            uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - margin), 38));
+            uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - margin) - 2, 38));
         }
 
         if (Rsed.browserMetadata.has_url_param("showFPS"))
