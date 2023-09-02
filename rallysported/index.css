@@ -42,7 +42,7 @@ body.loading
     color: black;
     text-align: left;
     border: 1px solid black;
-    padding: 0.75em;
+    padding: 0.5em;
     white-space: nowrap;
     background-image: url(grass.png);
     color: #a2a2a2;
@@ -222,7 +222,7 @@ canvas
 #html #project-name
 {
     font-size: 95%;
-    padding: 0.5em 1em;
+    padding: 0.6em 1em;
     background: black;
     text-decoration: none;
     border: 2px solid black;
