@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (02 September 2023 07:10:40 UTC)
+// VERSION: live (02 September 2023 08:37:57 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -8719,6 +8719,8 @@ Rsed.scenes["terrain-editor"].meshBuilder = (function()
                 // row, since fewer tiles will fit the camera's view there.
                 const viewNarrowing = ~~(z * 0.13 * Rsed.visual.canvas.aspectRatio);
 
+                let prevHeightDiff = 0;
+
                 // Add the ground tiles.
                 for (let x = viewNarrowing-1; x < args.camera.viewportWidth-viewNarrowing; x++)
                 {
@@ -8760,10 +8762,12 @@ Rsed.scenes["terrain-editor"].meshBuilder = (function()
                         let height3 = project.maasto.tile_at((tileX + 1), (tileZ - 1));
                         let height4 = project.maasto.tile_at( tileX,      (tileZ - 1));
 
-                        // We'll do rudimentary shading of the polygon based on its orientation.
-                        // Ideally, the shading would replicate that of Rally-Sport, but this
-                        // particular implementation doesn't.
-                        const heightDiff = (Math.max(150, Math.min(255, (255 - ((height1 - height3) * 2)))) / 255);
+                        // We'll do rudimentary shading of the polygon based on its orientation. Ideally,
+                        // the shading would replicate that of Rally-Sport, but this implementation
+                        // doesn't quite match it.
+                        const thisHeightDiff = (Math.max(140, Math.min(255, (255 - ((height1 - height3) * 2)))) / 255);
+                        const heightDiff = Rsed.lerp(thisHeightDiff, prevHeightDiff, 0.5);
+                        prevHeightDiff = thisHeightDiff;
 
                         // Each track in Rally-Sport has a water level, i.e. a height to which all water
                         // tiles' corners will be set. The tiles' actual height can be lower, in which case
