@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (03 September 2023 02:25:13 UTC)
+// VERSION: live (03 September 2023 07:34:20 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -865,8 +865,7 @@ Rsed.project = async function(projectArgs = {})
 
     window.dispatchEvent(new CustomEvent("rallysported:all-textures-changed"));
 
-    Rsed.log(`"${projectData.meta.displayName}" is a valid RallySportED project. \
-             Its internal name is "${projectData.meta.internalName}.`);
+    Rsed.log(`Loaded RallySportED project "${projectData.meta.displayName.toUpperCase()}".`);
 
     const publicInterface = Object.freeze(
     {
@@ -4442,9 +4441,9 @@ Rsed.ui.utils.inputState = (function()
                 clearTimeout(keyboardState[keyIdx].cooldown);
                 clearInterval(keyboardState[keyIdx].repeat);
 
-                if (Rsed.$currentScene && keyboardState[keyIdx].isDown)
+                if (keyboardState[keyIdx].isDown)
                 {
-                    Rsed.$currentScene.process_key_release(keyIdx);
+                    Rsed.$currentScene?.process_key_release(keyIdx);
                 }
 
                 keyboardState[keyIdx].isDown = false;
@@ -4518,10 +4517,7 @@ Rsed.ui.utils.inputState = (function()
 
             function process_key_press(isRepeat = true)
             {
-                if (Rsed.$currentScene)
-                {
-                    Rsed.$currentScene[(isDown? "process_key_press" : "process_key_release")](keyIdx, isRepeat);
-                }
+                Rsed.$currentScene?.[(isDown? "process_key_press" : "process_key_release")](keyIdx, isRepeat);
             }
         },
 
@@ -7065,16 +7061,19 @@ Rsed.scene = function({
     process_key_release = ()=>{},
 } = {})
 {
-    Rsed.assert?.(
-        ((typeof render === "function") &&
-         (typeof process_key_press === "function") &&
-         (typeof process_key_release === "function")),
-        "Expected functions."
-    );
-
     const publicInterface = {
-        ...arguments[0],
+        render,
+        process_key_press,
+        process_key_release,
+        ...arguments[0]
     };
+
+    Rsed.assert?.(
+        ((typeof publicInterface.render === "function") &&
+         (typeof publicInterface.process_key_press === "function") &&
+         (typeof publicInterface.process_key_release === "function")),
+        "One of more required functions are missing."
+    );
 
     return publicInterface;
 }
