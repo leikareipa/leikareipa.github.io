@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (02 September 2023 08:37:57 UTC)
+// VERSION: live (03 September 2023 02:25:13 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -7059,25 +7059,22 @@ Rsed.ui.canvas.component.label = function({
 
 Rsed.scenes = {};
 
-Rsed.scene = function(args = {})
+Rsed.scene = function({
+    render = ()=>{},
+    process_key_press = ()=>{},
+    process_key_release = ()=>{},
+} = {})
 {
-    args = {
-        ...{
-            render: ()=>{},
-            process_key_press: ()=>{},
-            process_key_release: ()=>{},
-        },
-        ...args
-    };
-
     Rsed.assert?.(
-        ((typeof args.render === "function") &&
-         (typeof args.process_key_press === "function") &&
-         (typeof args.process_key_release === "function")),
+        ((typeof render === "function") &&
+         (typeof process_key_press === "function") &&
+         (typeof process_key_release === "function")),
         "Expected functions."
     );
 
-    const publicInterface = args;
+    const publicInterface = {
+        ...arguments[0],
+    };
 
     return publicInterface;
 }
@@ -7251,7 +7248,7 @@ Rsed.scenes.$camera2D = function({
 "use strict";
 
 Rsed.scenes.$camera3D = function({
-    position = {x:0.0, y:0.0, z:0.0},
+    position = {x:0, y:0, z:0},
     rotation = {x:0, y:0, z:0},
 } = {})
 {
@@ -7442,13 +7439,9 @@ Rsed.scenes.$camera3D = function({
 
         reset_position: function()
         {
-            position.x = defaultPosition.x;
-            position.y = defaultPosition.y;
-            position.z = defaultPosition.z;
-
-            targetPosition.x = 0;
-            targetPosition.y = 0;
-            targetPosition.z = 0;
+            targetPosition.x = defaultPosition.x;
+            targetPosition.y = defaultPosition.y;
+            targetPosition.z = defaultPosition.z;
 
             window.close_dropdowns();
         },
@@ -7710,7 +7703,7 @@ function rasterize_poly(ngon, renderState)
     // Y, i.e. top-to-bottom in screen space. The top-most vertex and the bottom-most
     // vertex will be shared between the two sides.
     {
-        // For rectangular ground tiles.
+        // For rectangular ground tiles, whose vertices come in a predictable order.
         if (material.$isGroundTile)
         {
             Rngon.assert?.((ngon.vertices.length == 4), "Expected a rectangle.");
@@ -8028,7 +8021,7 @@ Rsed.scenes.$render.transform_clip_lighter = function({renderState, mesh})
 Rsed.scenes["terrain-editor"] = (function()
 {
     const camera = Rsed.scenes.$camera3D({
-        position: {x:15.0, y:0.0, z:13.0},
+        position: {x:15, y:0, z:13},
         rotation: {x:16, y:0, z:0},
     });
 
@@ -8050,12 +8043,6 @@ Rsed.scenes["terrain-editor"] = (function()
 
         // Whether to render props (track-side 3d objects - like trees, billboards, etc.).
         showProps: true,
-
-        // Whether the currently-selected brush PALA texture should be painted over the
-        // ground tile over which the mouse cursor is currently hovering. This gives the
-        // user a preview of what that texture would look like, without modifying the
-        // tile's actual texture.
-        showHoverPala: true,
     }
     
     const uiComponents = {
@@ -8115,6 +8102,11 @@ Rsed.scenes["terrain-editor"] = (function()
             draw_ui(rendererStats);
 
             return;
+        },
+
+        reset: function()
+        {
+            camera.reset_position();
         },
 
         process_key_release: function(key)
@@ -8286,13 +8278,10 @@ Rsed.scenes["terrain-editor"] = (function()
     {
         camera.move();
 
-        const trackMesh = scene.meshBuilder.track_mesh(
-        {
-            camera: camera,
-            jaggedCameraMovement: false,
+        const trackMesh = scene.meshBuilder.track_mesh({
+            camera,
             solidProps: sceneState.showProps,
             includeWireframe: sceneState.showWireframe,
-            paintHoverPala: sceneState.showHoverPala,
         });
 
         // Transform the n-gons into screen space using Rally-Sport's one-point perspective.
@@ -8642,255 +8631,241 @@ Rsed.scenes["terrain-editor"] = (function()
     return scene;
 })();
 /*
- * Most recent known filename: js/scene/terrain-editor/mesh-builder.js
- *
- * 2019 Tarpeeksi Hyvae Soft
+ * 2019-2023 Tarpeeksi Hyvae Soft
  * 
  * Software: RallySportED-js
- *
+
  */
 
 "use strict";
 
 // Provides functions returning renderable 3d meshes of various world items - like the track and
 // its props - accounting for user-specified arguments such as camera position.
-Rsed.scenes["terrain-editor"].meshBuilder = (function()
-{
-    const publicInterface =
+Rsed.scenes["terrain-editor"].meshBuilder = {
+    // Constructs and returns a 3D mesh of the current project's terrain from the
+    // viewing position of the given camera.
+    track_mesh: function({
+        camera = {},
+        solidProps = true,
+        includeWireframe = false,
+    } = {})
     {
-        // Returns a renderable 3d mesh of the current project's track from the given viewing position
-        // (in tile units). The mesh will be assigned such world coordinates that it'll be located
-        // roughly in the middle of the canvas when rendered.
-        track_mesh: function(args = {})
+        const project = Rsed.$currentProject;
+        const trackMeshPolys = [];
+        const cameraPosFloored = camera.position_floored();
+        const cameraPos = camera.position();
+        const tileSize = Rsed.constants.groundTileSize;
+
+        function out_of_bounds(x, y)
         {
-            Rsed.throw_if_not_type("object", args);
-            Rsed.throw_if_not_type("object", args.camera);
+            return Boolean(
+                (x < 0) || (x >= project.maasto.width) ||
+                (y < 1) || (y > project.maasto.height)
+            );
+        }
 
-            args =
+        // We'll shift the track mesh by these values (world units) to center the mesh on screen.
+        // Note that we adjust Z to account for vertical camera zooming.
+        const centerView = {
+            x: -((Math.floor(camera.viewportWidth / 2) + 1) * tileSize),
+            y: (-600 + cameraPosFloored.y),
+            z: (3388 - (camera.rotation().x / 7.5) + (tileSize * 3.5))
+        };
+
+        const mouseHover = Rsed.ui.utils.inputState.current_mouse_hover();
+        const mouseGrab = Rsed.ui.utils.inputState.current_mouse_grab();
+
+        const fractionX = (cameraPos.x - cameraPosFloored.x);
+        const fractionZ = (cameraPos.z - cameraPosFloored.z);
+
+
+        for (let z = 0; z < camera.viewportHeight; z++)
+        {
+            // As the horizontal ground tile rows come closer to the camera, reduce the width of each
+            // row, since fewer tiles will fit the camera's view there.
+            const viewNarrowing = ~~(z * 0.13 * Rsed.visual.canvas.aspectRatio);
+
+            let prevHeightDiff = 0;
+
+            // Add the ground tiles.
+            for (let x = viewNarrowing-1; x < camera.viewportWidth-viewNarrowing; x++)
             {
-                // Default args.
-                ...{
-                    jaggedCameraMovement: true,
+                // Coordinates of the current ground tile.
+                const tileX = (x + cameraPosFloored.x);
+                const tileZ = (z + cameraPosFloored.z);
 
-                    // Whether to draw props with solid colors(/textures) or with just a wireframe.
-                    solidProps: true,
-
-                    includeWireframe: false,
-
-                    paintHoverPala: false,
-                },
-                ...args,
-            };
-
-            const cameraPosFloored = args.camera.position_floored();
-            const cameraPos = args.jaggedCameraMovement
-                ? cameraPosFloored
-                : args.camera.position();
-
-            // Returns true if the given XY coordinates are out of track bounds.
-            function out_of_bounds(x, y)
-            {
-                return Boolean((x < 0) || (x >= Rsed.$currentProject.maasto.width) ||
-                               (y < 1) || (y > Rsed.$currentProject.maasto.height));
-            }
-
-            // The polygons that make up the track mesh.
-            const trackPolygons = [];
-
-            // We'll shift the track mesh by these values (world units) to center the mesh on screen.
-            // Note that we adjust Z to account for vertical camera zooming.
-            const centerView = {
-                x: -((Math.floor(args.camera.viewportWidth / 2) + 1) * Rsed.constants.groundTileSize),
-                y: (-600 + cameraPosFloored.y),
-                z: (3388 - (args.camera.rotation().x / 7.5) + (Rsed.constants.groundTileSize * 3.5))
-            };
-
-            const mouseHover = Rsed.ui.utils.inputState.current_mouse_hover();
-            const mouseGrab = Rsed.ui.utils.inputState.current_mouse_grab();
-
-            const fractionX = (cameraPos.x - cameraPosFloored.x);
-            const fractionZ = (cameraPos.z - cameraPosFloored.z);
-
-            const project = Rsed.$currentProject;
-
-            for (let z = 0; z < args.camera.viewportHeight; z++)
-            {
-                // As the horizontal ground tile rows come closer to the camera, reduce the width of each
-                // row, since fewer tiles will fit the camera's view there.
-                const viewNarrowing = ~~(z * 0.13 * Rsed.visual.canvas.aspectRatio);
-
-                let prevHeightDiff = 0;
-
-                // Add the ground tiles.
-                for (let x = viewNarrowing-1; x < args.camera.viewportWidth-viewNarrowing; x++)
+                if (out_of_bounds(tileX, tileZ))
                 {
-                    // Coordinates of the current ground tile.
-                    const tileX = (x + cameraPosFloored.x);
-                    const tileZ = (z + cameraPosFloored.z);
+                    continue;
+                }
 
-                    if (out_of_bounds(tileX, tileZ))
+                // Coordinates in world units of the ground tile's top left vertex.
+                const vertX = (((x * tileSize) + centerView.x) - (fractionX * tileSize));
+                const vertZ = ((centerView.z - (z * tileSize)) + (fractionZ * tileSize));
+
+                const isTileUnderBrush = (
+                    !mouseGrab &&
+                    (mouseHover && (mouseHover.type === "ground")) &&
+                    (Math.abs(mouseHover.groundTileX - tileX) <= Rsed.ui.utils.terrainBrush.radius) &&
+                    (Math.abs(mouseHover.groundTileY - (tileZ - 1)) <= Rsed.ui.utils.terrainBrush.radius)
+                );
+
+                // Construct the ground quad polygon.
+                {
+                    const tilePalaIdx = project.varimaa.tile_at(tileX, (tileZ - 1));
+                    
+                    // The heights of the ground quad's corner points.
+                    let height1 = project.maasto.tile_at( tileX,       tileZ);
+                    let height2 = project.maasto.tile_at((tileX + 1),  tileZ);
+                    let height3 = project.maasto.tile_at((tileX + 1), (tileZ - 1));
+                    let height4 = project.maasto.tile_at( tileX,      (tileZ - 1));
+
+                    // We'll do rudimentary shading of the polygon based on its orientation. Ideally,
+                    // the shading would replicate that of Rally-Sport, but this implementation
+                    // doesn't quite match it.
+                    const thisHeightDiff = (Math.max(120, Math.min(255, (255 - ((height1 - height3) * 2)))) / 255);
+                    const heightDiff = Rsed.lerp(thisHeightDiff, prevHeightDiff, 0.5);
+                    prevHeightDiff = thisHeightDiff;
+                    const shade = (isTileUnderBrush? 1 : heightDiff);
+
+                    // Each track in Rally-Sport has a water level, i.e. a height to which all water
+                    // tiles' corners will be set. The tiles' actual height can be lower, in which case
+                    // driving onto them will cause the car to become submerged under the apparent water
+                    // level. In other words, the game will render all water tiles flush with the water
+                    // level, but also keeps track of the tiles' actual height for car-ground collisions.
+                    //
+                    // In wireframe mode, we'll draw the ground tile heights as they are, but in non-
+                    // wireframe mode, we'll make them flush with the track's water level.
+                    if (!includeWireframe)
                     {
-                        continue;
-                    }
-
-                    // Coordinates in world units of the ground tile's top left vertex.
-                    const vertX = (((x * Rsed.constants.groundTileSize) + centerView.x) - (fractionX * Rsed.constants.groundTileSize));
-                    const vertZ = ((centerView.z - (z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
-
-                    // Construct the ground quad polygon.
-                    {
-                        const tilePalaIdx = (()=>
+                        if (tilePalaIdx == 0) // Water tiles are those whose PALA index is 0.
                         {
-                            let idx = project.varimaa.tile_at(tileX, (tileZ - 1));
-
-                            if (
-                                args.paintHoverPala &&
-                                !mouseGrab &&
-                                (mouseHover && (mouseHover.type === "ground")) &&
-                                (Math.abs(mouseHover.groundTileX - tileX) <= Rsed.ui.utils.terrainBrush.radius) &&
-                                (Math.abs(mouseHover.groundTileY - (tileZ - 1)) <= Rsed.ui.utils.terrainBrush.radius)
-                            ){
-                                idx = Rsed.ui.utils.terrainBrush.textureIdx;
-                            }
-
-                            return idx;
-                        })();
-                        
-                        // The heights of the ground quad's corner points.
-                        let height1 = project.maasto.tile_at( tileX,       tileZ);
-                        let height2 = project.maasto.tile_at((tileX + 1),  tileZ);
-                        let height3 = project.maasto.tile_at((tileX + 1), (tileZ - 1));
-                        let height4 = project.maasto.tile_at( tileX,      (tileZ - 1));
-
-                        // We'll do rudimentary shading of the polygon based on its orientation. Ideally,
-                        // the shading would replicate that of Rally-Sport, but this implementation
-                        // doesn't quite match it.
-                        const thisHeightDiff = (Math.max(140, Math.min(255, (255 - ((height1 - height3) * 2)))) / 255);
-                        const heightDiff = Rsed.lerp(thisHeightDiff, prevHeightDiff, 0.5);
-                        prevHeightDiff = thisHeightDiff;
-
-                        // Each track in Rally-Sport has a water level, i.e. a height to which all water
-                        // tiles' corners will be set. The tiles' actual height can be lower, in which case
-                        // driving onto them will cause the car to become submerged under the apparent water
-                        // level. In other words, the game will render all water tiles flush with the water
-                        // level, but also keeps track of the tiles' actual height for car-ground collisions.
-                        //
-                        // In wireframe mode, we'll draw the ground tile heights as they are, but in non-
-                        // wireframe mode, we'll make them flush with the track's water level.
-                        if (!args.includeWireframe)
+                            height1 = project.waterLevel;
+                            height2 = project.waterLevel;
+                            height3 = project.waterLevel;
+                            height4 = project.waterLevel;
+                        }
+                        // This tile is not a water tile but is adjacent to one. In that case, we'll
+                        // adjust the heights of such neighboring corners.
+                        else
                         {
-                            if (tilePalaIdx == 0) // Water tiles are those whose PALA index is 0.
+                            if (0 == project.varimaa.tile_at(tileX, (tileZ - 1) + 1))
                             {
-                                height1 = project.waterLevel;
                                 height2 = project.waterLevel;
+                                height1 = project.waterLevel;
+                            }
+                            if (0 == project.varimaa.tile_at(tileX, (tileZ - 1) - 1))
+                            {
                                 height3 = project.waterLevel;
                                 height4 = project.waterLevel;
                             }
-                            // This tile is not a water tile but is adjacent to one. In that case, we'll
-                            // adjust the heights of such neighboring corners.
-                            else
+                            if (0 == project.varimaa.tile_at(tileX - 1, (tileZ - 1)))
                             {
-                                if (0 == project.varimaa.tile_at(tileX, (tileZ - 1) + 1))
-                                {
-                                    height2 = project.waterLevel;
-                                    height1 = project.waterLevel;
-                                }
-                                if (0 == project.varimaa.tile_at(tileX, (tileZ - 1) - 1))
-                                {
-                                    height3 = project.waterLevel;
-                                    height4 = project.waterLevel;
-                                }
-                                if (0 == project.varimaa.tile_at(tileX - 1, (tileZ - 1)))
-                                {
-                                    height1 = project.waterLevel;
-                                    height4 = project.waterLevel;
-                                }
-                                if (0 == project.varimaa.tile_at(tileX + 1, (tileZ - 1)))
-                                {
-                                    height2 = project.waterLevel;
-                                    height3 = project.waterLevel;
-                                }
-                                if (0 == project.varimaa.tile_at(tileX + 1, (tileZ - 1) + 1))
-                                {
-                                    height2 = project.waterLevel;
-                                }
-                                if (0 == project.varimaa.tile_at(tileX - 1, (tileZ - 1) + 1))
-                                {
-                                    height1 = project.waterLevel;
-                                }
-                                if (0 == project.varimaa.tile_at(tileX + 1, (tileZ - 1) - 1))
-                                {
-                                    height3 = project.waterLevel;
-                                }
-                                if (0 == project.varimaa.tile_at(tileX - 1, (tileZ - 1) - 1))
-                                {
-                                    height4 = project.waterLevel;
-                                }
+                                height1 = project.waterLevel;
+                                height4 = project.waterLevel;
+                            }
+                            if (0 == project.varimaa.tile_at(tileX + 1, (tileZ - 1)))
+                            {
+                                height2 = project.waterLevel;
+                                height3 = project.waterLevel;
+                            }
+                            if (0 == project.varimaa.tile_at(tileX + 1, (tileZ - 1) + 1))
+                            {
+                                height2 = project.waterLevel;
+                            }
+                            if (0 == project.varimaa.tile_at(tileX - 1, (tileZ - 1) + 1))
+                            {
+                                height1 = project.waterLevel;
+                            }
+                            if (0 == project.varimaa.tile_at(tileX + 1, (tileZ - 1) - 1))
+                            {
+                                height3 = project.waterLevel;
+                            }
+                            if (0 == project.varimaa.tile_at(tileX - 1, (tileZ - 1) - 1))
+                            {
+                                height4 = project.waterLevel;
                             }
                         }
+                    }
 
-                        height1 += centerView.y;
-                        height2 += centerView.y;
-                        height3 += centerView.y;
-                        height4 += centerView.y;
+                    height1 += centerView.y;
+                    height2 += centerView.y;
+                    height3 += centerView.y;
+                    height4 += centerView.y;
 
-                        const texture = project.palat.texture[tilePalaIdx];
-                        const tileSize = Rsed.constants.groundTileSize;
-                        const groundQuad = Rngon.ngon([
-                            Rngon.vertex( vertX,             height1,  vertZ,             0, 0, 0, heightDiff),
-                            Rngon.vertex((vertX + tileSize), height2,  vertZ,             1, 0, 0, heightDiff),
-                            Rngon.vertex((vertX + tileSize), height3, (vertZ + tileSize), 1, 1, 0, heightDiff),
-                            Rngon.vertex( vertX,             height4, (vertZ + tileSize), 0, 1, 0, heightDiff)], {
-                                texture: texture,
-                                wireframeColor: Rsed.visual.palette.BLACK,
-                                hasWireframe: args.includeWireframe,
-                                $mousePickId: Rsed.ui.utils.mouse_picking_element("ground", {
-                                    texture: texture,
-                                    groundTileX: tileX,
-                                    groundTileY: (tileZ - 1),
-                                }),
+                    trackMeshPolys.push(Rngon.ngon([
+                        Rngon.vertex( vertX,             height1,  vertZ,             0, 0, 0, shade),
+                        Rngon.vertex((vertX + tileSize), height2,  vertZ,             1, 0, 0, shade),
+                        Rngon.vertex((vertX + tileSize), height3, (vertZ + tileSize), 1, 1, 0, shade),
+                        Rngon.vertex( vertX,             height4, (vertZ + tileSize), 0, 1, 0, shade)], {
+                            texture: (
+                                isTileUnderBrush
+                                    ? undefined
+                                    : project.palat.texture[project.varimaa.tile_at(tileX, (tileZ - 1))]
+                            ),
+                            color: Rsed.visual.palette.BLACK,
+                            wireframeColor: Rsed.visual.palette.BLACK,
+                            hasWireframe: includeWireframe,
+                            $mousePickId: Rsed.ui.utils.mouse_picking_element("ground", {
+                                groundTileX: tileX,
+                                groundTileY: (tileZ - 1),
+                            }),
+                            $isGroundTile: true,
+                    }));
+
+                    // Visualize the brush texture as a tile hovering above the ground.
+                    if (isTileUnderBrush)
+                    {
+                        const hoverHeight = 15;
+
+                        trackMeshPolys.push(Rngon.ngon([
+                            Rngon.vertex( vertX,             (height1 + hoverHeight),  vertZ),
+                            Rngon.vertex((vertX + tileSize), (height2 + hoverHeight),  vertZ),
+                            Rngon.vertex((vertX + tileSize), (height3 + hoverHeight), (vertZ + tileSize)),
+                            Rngon.vertex( vertX,             (height4 + hoverHeight), (vertZ + tileSize))], {
+                                texture: project.palat.texture[Rsed.ui.utils.terrainBrush.textureIdx],
+                                wireframeColor: Rsed.visual.palette.YELLOW,
+                                hasWireframe: includeWireframe,
                                 $isGroundTile: true,
-                        });
-
-                        trackPolygons.push(groundQuad);
+                        }));
                     }
                 }
+            }
 
-                // Add the billboard and bridge tiles. We do this as a separate loop from adding
-                // the ground tiles so that the n-gons are properly sorted by depth for rendering.
-                // Otherwise, billboard/bridge tiles can become obscured by ground tiles behind
-                // them.
-                for (let x = 0; x < args.camera.viewportWidth; x++)
+            // Add the billboard and bridge tiles. We do this as a separate loop from adding
+            // the ground tiles so that the n-gons are properly sorted by depth for rendering.
+            // Otherwise, billboard/bridge tiles can become obscured by ground tiles behind
+            // them.
+            for (let x = 0; x < camera.viewportWidth; x++)
+            {
+                const tileX = (x + cameraPosFloored.x);
+                const tileZ = (z + cameraPosFloored.z);
+
+                if (out_of_bounds(tileX, tileZ))
                 {
-                    const tileX = (x + cameraPosFloored.x);
-                    const tileZ = (z + cameraPosFloored.z);
+                    continue;
+                }
 
-                    if (out_of_bounds(tileX, tileZ))
-                    {
-                        continue;
-                    }
+                const vertX = (((x * tileSize) + centerView.x) - (fractionX * tileSize));
+                const vertZ = ((centerView.z - (z * tileSize)) + (fractionZ * tileSize));
 
-                    const vertX = (((x * Rsed.constants.groundTileSize) + centerView.x) - (fractionX * Rsed.constants.groundTileSize));
-                    const vertZ = ((centerView.z - (z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
+                // If this tile has a billboard, add it.
+                {
+                    const isTileUnderBrush = (
+                        !mouseGrab &&
+                        (mouseHover && (mouseHover.type === "ground")) &&
+                        (Math.abs(mouseHover.groundTileX - tileX) <= Rsed.ui.utils.terrainBrush.radius) &&
+                        (Math.abs(mouseHover.groundTileY - (tileZ - 1)) <= Rsed.ui.utils.terrainBrush.radius)
+                    );
+                    
+                    const tilePalaIdx = (
+                        isTileUnderBrush
+                            ? Rsed.ui.utils.terrainBrush.textureIdx
+                            : project.varimaa.tile_at(tileX, (tileZ - 1))
+                    );
 
-                    const tilePalaIdx = (()=>
-                    {
-                        let idx = project.varimaa.tile_at(tileX, (tileZ - 1));
-
-                        if (args.paintHoverPala &&
-                            !mouseGrab &&
-                            (mouseHover && (mouseHover.type === "ground")) &&
-                            (Math.abs(mouseHover.groundTileX - tileX) <= Rsed.ui.utils.terrainBrush.radius) &&
-                            (Math.abs(mouseHover.groundTileY - (tileZ - 1)) <= Rsed.ui.utils.terrainBrush.radius))
-                        {
-                            idx = Rsed.ui.utils.terrainBrush.textureIdx;
-                        }
-
-                        return idx;
-                    })();
-
-                    // If this tile has a billboard, add it.
                     const billboardPalaIdx = project.palat.billboard_idx(tilePalaIdx, tileX, (tileZ - 1));
+                    
                     if (billboardPalaIdx != null)
                     {
                         const baseHeight = centerView.y + project.maasto.tile_at(tileX, (tileZ - 1));
@@ -8902,9 +8877,9 @@ Rsed.scenes["terrain-editor"].meshBuilder = (function()
                             {
                                 return [
                                     Rngon.vertex( vertX,  centerView.y, vertZ, 0, 0),
-                                    Rngon.vertex((vertX + Rsed.constants.groundTileSize), centerView.y, vertZ, 1, 0),
-                                    Rngon.vertex((vertX + Rsed.constants.groundTileSize), centerView.y, (vertZ+Rsed.constants.groundTileSize), 1, 1),
-                                    Rngon.vertex( vertX, centerView.y, (vertZ+Rsed.constants.groundTileSize), 0, 1)
+                                    Rngon.vertex((vertX + tileSize), centerView.y, vertZ, 1, 0),
+                                    Rngon.vertex((vertX + tileSize), centerView.y, (vertZ+tileSize), 1, 1),
+                                    Rngon.vertex( vertX, centerView.y, (vertZ+tileSize), 0, 1)
                                 ];
                             }
                             // Other billboards (lay vertically).
@@ -8912,9 +8887,9 @@ Rsed.scenes["terrain-editor"].meshBuilder = (function()
                             {
                                 return [
                                     Rngon.vertex( vertX, baseHeight, vertZ, 0, 0),
-                                    Rngon.vertex((vertX + Rsed.constants.groundTileSize), baseHeight, vertZ, 1, 0),
-                                    Rngon.vertex((vertX + Rsed.constants.groundTileSize), baseHeight+Rsed.constants.groundTileSize, vertZ, 1, 1),
-                                    Rngon.vertex( vertX, baseHeight+Rsed.constants.groundTileSize, vertZ, 0, 1)
+                                    Rngon.vertex((vertX + tileSize), baseHeight, vertZ, 1, 0),
+                                    Rngon.vertex((vertX + tileSize), baseHeight+tileSize, vertZ, 1, 1),
+                                    Rngon.vertex( vertX, baseHeight+tileSize, vertZ, 0, 1)
                                 ];
                             }
                         })();
@@ -8926,143 +8901,136 @@ Rsed.scenes["terrain-editor"].meshBuilder = (function()
                             $mousePickId: null,
                         });
 
-                        trackPolygons.push(billboardQuad);
+                        trackMeshPolys.push(billboardQuad);
                     }
                 }
             }
+        }
 
-            // Add extra decorations, like props and wires.
-            {
-                // Camera view frustum in world units, for culling.
-                const cx1 = (cameraPosFloored.x * Rsed.constants.groundTileSize);
-                const cx2 = ((cameraPosFloored.x + args.camera.viewportWidth) * Rsed.constants.groundTileSize);
-                const cz1 = (cameraPosFloored.z * Rsed.constants.groundTileSize);
-                const cz2 = ((cameraPosFloored.z + args.camera.viewportHeight) * Rsed.constants.groundTileSize);
-
-                // Add any track prop meshes that should be visible on the currently-drawn track.
-                const propLocations = project.props.locations_of_props_on_track(project.track_id());
-                propLocations.forEach((pos, idx)=>
-                {
-                    const isPropInsideFrustum =
-                        (pos.x >= cx1) &&
-                        (pos.x <= cx2) &&
-                        (pos.z >= cz1) &&
-                        (pos.z <= cz2);
-
-                    if (isPropInsideFrustum)
-                    {
-                        const groundHeight = centerView.y + project.maasto.tile_at((pos.x / Rsed.constants.groundTileSize), (pos.z / Rsed.constants.groundTileSize));
-                        const x = ((pos.x + centerView.x - (cameraPosFloored.x * Rsed.constants.groundTileSize)) - (fractionX * Rsed.constants.groundTileSize));
-                        const z = ((centerView.z - pos.z + (cameraPosFloored.z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
-                        const y = (groundHeight + pos.y);
-
-                        trackPolygons.push(...this.prop_mesh(pos.propId, idx, {
-                            position: {x,y,z},
-                            ...args,
-                        }));
-                    }
-                });
-
-                // Add any track wires (e.g. telephone lines).
-                if (args.solidProps)
-                {
-                    for (const wire of project.wires.wires_on_track(project.track_id()))
-                    {
-                        const isWireInsideFrustum =
-                            (wire.middle.x >= cx1) &&
-                            (wire.middle.x <= cx2) &&
-                            (wire.middle.z >= cz1) &&
-                            (wire.middle.z <= cz2);
-
-                        if (isWireInsideFrustum)
-                        {
-                            function vertex(prop)
-                            {
-                                const x = ((prop.x + centerView.x - (cameraPosFloored.x * Rsed.constants.groundTileSize)) - (fractionX * Rsed.constants.groundTileSize));
-                                const z = ((centerView.z - prop.z + (cameraPosFloored.z * Rsed.constants.groundTileSize)) + (fractionZ * Rsed.constants.groundTileSize));
-                                const y = (centerView.y + prop.y);
-                                return Rngon.vertex(x, y, z)
-                            }
-
-                            const wireNgon = Rngon.ngon([vertex(wire.start), vertex(wire.end)], {
-                                color: wire.color,
-                            });
-                            
-                            trackPolygons.push(wireNgon);
-                        }
-                    }
-                }
-            }
-
-            return Rngon.mesh(trackPolygons);
-        },
-
-        // Returns a renderable 3d mesh of the given prop at the given position (in world units).
-        prop_mesh: (propId = 0, idxOnTrack = 0, args = {})=>
+        // Add extra decorations, like props and wires.
         {
-            Rsed.throw_if_not_type("object", args);
+            // Camera view frustum in world units, for culling.
+            const cx1 = (cameraPosFloored.x * tileSize);
+            const cx2 = ((cameraPosFloored.x + camera.viewportWidth) * tileSize);
+            const cz1 = (cameraPosFloored.z * tileSize);
+            const cz2 = ((cameraPosFloored.z + camera.viewportHeight) * tileSize);
 
-            args =
-            {
-                ...// Default args.
-                {
-                    position:
-                    {
-                        x: 0,
-                        y: 0,
-                        z: 0,
-                    },
-                    solidProps: true,
-                    includeWireframe: false,
-                },
-                ...args
-            };
-
-            const project = Rsed.$currentProject;
-            const srcMesh = project.props.mesh[propId];
-            const dstMesh = [];
-
-            srcMesh.ngons.forEach(ngon=>
-            {
-                const color = (args.solidProps && (ngon.fill.type !== "texture"))
-                    ? ngon.fill.idx
-                    : 0;
-                    
-                const texture = (args.solidProps && (ngon.fill.type === "texture"))
-                    ? project.props.texture[ngon.fill.idx]
-                    : undefined;
-
-                const propNgon = Rngon.ngon(
-                    ngon.vertices.map(v=>
-                        Rngon.vertex(
-                            (v.x + args.position.x),
-                            (v.y + args.position.y),
-                            (v.z + args.position.z)
-                        )
-                    ), {
-                        color,
-                        texture,
-                        wireframeColor: (args.solidProps? Rsed.visual.palette.BLACK : Rsed.visual.palette.LIGHTGRAY),
-                        hasWireframe: (args.solidProps? args.includeWireframe : true),
-                        hasFill: args.solidProps,
-                        $mousePickId: Rsed.ui.utils.mouse_picking_element("prop", {
-                            texture: texture,
-                            propId: propId,
-                            propTrackIdx: idxOnTrack
-                        }),
-                        $isProp: true,
-                    }
+            // Add any track prop meshes that should be visible on the currently-drawn track.
+            const propLocations = project.props.locations_of_props_on_track(project.track_id());
+            propLocations.forEach((pos, idx)=>{
+                const isPropInsideFrustum = (
+                    (pos.x >= cx1) &&
+                    (pos.x <= cx2) &&
+                    (pos.z >= cz1) &&
+                    (pos.z <= cz2)
                 );
 
-                dstMesh.push(propNgon);
+                if (isPropInsideFrustum)
+                {
+                    const groundHeight = centerView.y + project.maasto.tile_at((pos.x / tileSize), (pos.z / tileSize));
+                    const x = ((pos.x + centerView.x - (cameraPosFloored.x * tileSize)) - (fractionX * tileSize));
+                    const z = ((centerView.z - pos.z + (cameraPosFloored.z * tileSize)) + (fractionZ * tileSize));
+                    const y = (groundHeight + pos.y);
+
+                    trackMeshPolys.push(...this.prop_mesh({
+                        propId: pos.propId,
+                        idxOnTrack: idx,
+                        position: {x,y,z},
+                        solidProps,
+                        includeWireframe,
+                    }));
+                }
             });
 
-            return dstMesh;
-        },
-    };
+            // Add any track wires (e.g. telephone lines).
+            if (solidProps)
+            {
+                for (const wire of project.wires.wires_on_track(project.track_id()))
+                {
+                    const isWireInsideFrustum =
+                        (wire.middle.x >= cx1) &&
+                        (wire.middle.x <= cx2) &&
+                        (wire.middle.z >= cz1) &&
+                        (wire.middle.z <= cz2);
 
-    return publicInterface;
-})();
+                    if (isWireInsideFrustum)
+                    {
+                        function vertex(prop)
+                        {
+                            const x = ((prop.x + centerView.x - (cameraPosFloored.x * tileSize)) - (fractionX * tileSize));
+                            const z = ((centerView.z - prop.z + (cameraPosFloored.z * tileSize)) + (fractionZ * tileSize));
+                            const y = (centerView.y + prop.y);
+                            return Rngon.vertex(x, y, z)
+                        }
+
+                        const wireNgon = Rngon.ngon([vertex(wire.start), vertex(wire.end)], {
+                            color: wire.color,
+                        });
+                        
+                        trackMeshPolys.push(wireNgon);
+                    }
+                }
+            }
+        }
+
+        return Rngon.mesh(trackMeshPolys);
+    },
+
+    // Constructs and returns a 3D mesh of the given track prop, with its origin
+    // set at the given XYZ world position.
+    prop_mesh: function({
+        propId = 0,
+        idxOnTrack = 0,
+        position = {
+            x = 0,
+            y = 0,
+            z = 0,
+        } = {},
+        solidProps = true,
+        includeWireframe = false,
+    })
+    {
+        const project = Rsed.$currentProject;
+        const srcMesh = project.props.mesh[propId];
+        const dstMesh = [];
+
+        srcMesh.ngons.forEach(ngon=>{
+            const texture = (
+                (solidProps && (ngon.fill.type === "texture"))
+                    ? project.props.texture[ngon.fill.idx]
+                    : undefined
+            );
+
+            dstMesh.push(Rngon.ngon(
+                ngon.vertices.map(v=>
+                    Rngon.vertex(
+                        (v.x + position.x),
+                        (v.y + position.y),
+                        (v.z + position.z)
+                    )
+                ), {
+                    color: (
+                        (solidProps && (ngon.fill.type !== "texture"))
+                            ? ngon.fill.idx
+                            : 0
+                    ),
+                    texture,
+                    wireframeColor: Rsed.visual.palette.LIGHTGRAY,
+                    hasWireframe: (solidProps? includeWireframe : true),
+                    hasFill: solidProps,
+                    $mousePickId: Rsed.ui.utils.mouse_picking_element("prop", {
+                        texture: texture,
+                        propId: propId,
+                        propTrackIdx: idxOnTrack
+                    }),
+                    $isProp: true,
+                }
+            ));
+        });
+
+        return dstMesh;
+    },
+}
 /*
  * Most recent known filename: js/scene/texture-editor/texture-editor.js
  *
@@ -10924,5 +10892,6 @@ Rsed.core = (function()
         /// TODO: Disable undo/redo while the project loads.
         Rsed.ui.utils.undoStack.reset();
         project = await Rsed.project(projectMeta);
+        Object.values(Rsed.scenes).forEach(s=>s.reset?.());
     }
 })();
