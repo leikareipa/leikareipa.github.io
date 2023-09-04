@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (03 September 2023 07:34:20 UTC)
+// VERSION: live (04 September 2023 02:59:33 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
 // INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
@@ -80,7 +80,7 @@
 // Note that this object will be extended by the other source files of
 // RallySportED-js, as well.
 const Rsed = {
-    appName: "RallySportED's track editor",
+    appName: "RallySportED",
     appVersion: "dev",
     
     get $currentProject()
@@ -4946,9 +4946,6 @@ Rsed.ui.dom.html = (function()
                         <sup>${warningEl}</sup>
                     </td>
                     <td>
-                        ${Math.round(Rsed.$currentProject.asset_byte_size(dataType.type.toLowerCase()) / 1024)} KB
-                    </td>
-                    <td>
                         <label class="button">
                             Import...
                             <input
@@ -6679,6 +6676,7 @@ Rsed.ui.canvas.component.textPane = function({
                 if (isGrabbingPane)
                 {
                     on_grab({textureId});
+                    Rsed.ui.utils.inputState.reset_mouse_grab();
                 }
 
                 ngons.push(...Rsed.ui.canvas.component.$box_with_shadow({

@@ -21,7 +21,7 @@
 
             <div id="button-bar">
 
-            <div id="project-name" class="label" title="The track's name">
+            <div id="project-name" class="label" title="The name of the track">
 
                 <span class="label"></span>
 
@@ -102,28 +102,27 @@
 
             </div>
 
-            <div class="button-bar scenes">
+            <div class="spacer" style="width: 100%">
+            </div>
+
+            <div class="button"
+                    onclick="Rsed.$currentScene = 'terrain-editor';">
+
+                Terrain
+
+            </div>
 
                 <div class="button"
-                     onclick="Rsed.$currentScene = 'terrain-editor';">
+                        onclick="Rsed.$currentScene = 'tilemap-editor';">
 
-                    Terrain
+                Tilemap
 
-                </div>
+            </div>
 
-                    <div class="button"
-                         onclick="Rsed.$currentScene = 'tilemap-editor';">
+                <div class="button"
+                        onclick="Rsed.$currentScene = 'texture-editor';">
 
-                    Tilemap
-
-                </div>
-
-                    <div class="button"
-                         onclick="Rsed.$currentScene = 'texture-editor';">
-
-                    Texture
-
-                </div>
+                Texture
 
             </div>
 

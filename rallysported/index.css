@@ -35,9 +35,10 @@ body.loading
 
 #data-dropdown
 {
+    font-weight: bold;
     position: absolute;
     z-index: 9;
-    top: 2.75em;
+    top: 3.5em;
     left: 0.5em;
     background-color: white;
     color: black;
@@ -57,7 +58,7 @@ body.loading
 
 #data-dropdown .button
 {
-    display: inline-block;
+    display: inline-block !important;
     background: transparent !important;
     border: 0.4ch solid transparent !important;
 }
@@ -193,30 +194,20 @@ canvas
     display: flex;
     width: 100%;
     height: 100%;
-    margin: 0 2px;
     white-space: nowrap;
     overflow: auto;
     overflow-y: hidden;
+}
+#button-bar .button
+{
+    font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
 #button-bar:not(.visible)
 {
     display: none;
-}
-
-#button-bar > .button-bar
-{
-    display: flex;
-}
-
-#button-bar > .button-bar.scenes
-{
-    margin-left: auto;
-}
-
-#button-bar > .button-bar:last-of-type
-{
-    border-right: none;
 }
 
 #html .button,
@@ -243,13 +234,9 @@ canvas
 
 #html #project-name
 {
-    display: flex;
-    align-items: center;
-}
-
-#html #project-name .label
-{
+    font-size: 125%;
     font-weight: bold;
+    text-transform: uppercase;
 }
 
 #html .button
@@ -359,6 +346,7 @@ canvas
     padding: 0.25em 0.5em;
     white-space: nowrap;
     border: 2px solid transparent;
+    font-weight: bold;
 }
 
 #prop-dropdown > .item::first-letter
@@ -394,6 +382,7 @@ canvas
 
 #popup-notifications-container .popup-notification
 {
+    font-weight: bold;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -411,13 +400,11 @@ canvas
                 opacity 0.2s ease-in-out,
                 background-color 0.2s ease-in-out,
                 border-radius 0.2s ease-in-out;
-    border-radius: 14px 14px 2px 14px;
     cursor: pointer;
 }
 
 #popup-notifications-container .popup-notification:not(:last-child)
 {
-    border-radius: 14px;
     opacity: 0.85;
     background-color: rgb(255, 255, 97);
 }
