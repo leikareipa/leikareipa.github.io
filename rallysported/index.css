@@ -337,6 +337,7 @@ canvas
     border-top-left-radius: 0;
     padding: 0.75em;
     border: 0.4ch solid lime;
+    cursor: url("./client/assets/cursors/rsed-cursor-arrow.png"), auto;
 }
 
 #prop-dropdown > .item

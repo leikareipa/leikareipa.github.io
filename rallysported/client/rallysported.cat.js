@@ -1,67 +1,65 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (04 September 2023 02:59:33 UTC)
+// VERSION: live (05 September 2023 05:09:34 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
-// INCLUDES: { JSZip (c) 2009-2016 Stuart Knightley, David Duponchel, Franz Buchinger, António Afonso }
-// INCLUDES: { FileSaver.js (c) 2016 Eli Grey }
-// INCLUDES: { The retro n-gon renderer (c) 2019-2020 Tarpeeksi Hyvae Soft }
+// INCLUDES: { The retro n-gon renderer (c) 2019-2023 Tarpeeksi Hyvae Soft }
 // FILES:
-//	./src/client/js/rallysported-js/rallysported.js
-//	./src/client/js/rallysported-js/ui/ui.js
-//	./src/client/js/rallysported-js/ui/dom/popup-notification.js
-//	./src/client/js/rallysported-js/misc/browser-metadata.js
-//	./src/client/js/rallysported-js/misc/uuidgen.js
-//	./src/client/js/rallysported-js/player/player.js
-//	./src/client/js/rallysported-js/project/project.js
-//	./src/client/js/rallysported-js/project/hitable.js
-//	./src/client/js/rallysported-js/misc/constants.js
-//	./src/client/js/rallysported-js/visual/texture.js
-//	./src/client/js/rallysported-js/visual/palette.js
-//	./src/client/js/rallysported-js/visual/canvas.js
-//	./src/client/js/rallysported-js/game-content/game-content.js
-//	./src/client/js/rallysported-js/game-content/varimaa.js
-//	./src/client/js/rallysported-js/game-content/maasto.js
-//	./src/client/js/rallysported-js/game-content/kierros.js
-//	./src/client/js/rallysported-js/game-content/palat.js
-//	./src/client/js/rallysported-js/game-content/props.js
-//	./src/client/js/rallysported-js/game-content/wires.js
-//	./src/client/js/rallysported-js/ui/utils/asset-mutator.js
-//	./src/client/js/rallysported-js/ui/utils/undo-stack.js
-//	./src/client/js/rallysported-js/ui/utils/input-state.js
-//	./src/client/js/rallysported-js/ui/utils/mouse-picking-element.js
-//	./src/client/js/rallysported-js/ui/utils/terrain-brush.js
-//	./src/client/js/rallysported-js/ui/dom/html.js
-//	./src/client/js/rallysported-js/ui/dom/cursor-handler.js
-//	./src/client/js/rallysported-js/ui/dom/window.js
-//	./src/client/js/rallysported-js/ui/canvas/font.js
-//	./src/client/js/rallysported-js/ui/canvas/component.js
-//	./src/client/js/rallysported-js/ui/canvas/components/_primitives.js
-//	./src/client/js/rallysported-js/ui/canvas/components/active-pala.js
-//	./src/client/js/rallysported-js/ui/canvas/components/pala-selector.js
-//	./src/client/js/rallysported-js/ui/canvas/components/text-selector.js
-//	./src/client/js/rallysported-js/ui/canvas/components/fps-indicator.js
-//	./src/client/js/rallysported-js/ui/canvas/components/value-graph.js
-//	./src/client/js/rallysported-js/ui/canvas/components/terrain-hover-info.js
-//	./src/client/js/rallysported-js/ui/canvas/components/palat-pane.js
-//	./src/client/js/rallysported-js/ui/canvas/components/text-pane.js
-//	./src/client/js/rallysported-js/ui/canvas/components/terrain-minimap.js
-//	./src/client/js/rallysported-js/ui/canvas/components/color-selector.js
-//	./src/client/js/rallysported-js/ui/canvas/components/label.js
-//	./src/client/js/rallysported-js/scene/scene.js
-//	./src/client/js/rallysported-js/scene/camera-2d.js
-//	./src/client/js/rallysported-js/scene/camera-3d.js
-//	./src/client/js/rallysported-js/scene/rasterizer.js
-//	./src/client/js/rallysported-js/scene/transform-clip-lighter.js
-//	./src/client/js/rallysported-js/scene/terrain-editor/terrain-editor.js
-//	./src/client/js/rallysported-js/scene/terrain-editor/mesh-builder.js
-//	./src/client/js/rallysported-js/scene/texture-editor/texture-editor.js
-//	./src/client/js/rallysported-js/scene/tilemap-editor/tilemap-editor.js
-//	./src/client/js/rallysported-js/scene/loading-spinner/loading-spinner.js
-//	./src/client/js/rallysported-js/stream/stream.js
-//	./src/client/js/rallysported-js/stream/server.js
-//	./src/client/js/rallysported-js/stream/viewer.js
-//	./src/client/js/rallysported-js/core/core.js
+//	./src/rallysported.js
+//	./src/ui/ui.js
+//	./src/ui/dom/popup-notification.js
+//	./src/misc/browser-metadata.js
+//	./src/misc/uuidgen.js
+//	./src/player/player.js
+//	./src/project/project.js
+//	./src/project/hitable.js
+//	./src/misc/constants.js
+//	./src/visual/texture.js
+//	./src/visual/palette.js
+//	./src/visual/canvas.js
+//	./src/game-content/game-content.js
+//	./src/game-content/varimaa.js
+//	./src/game-content/maasto.js
+//	./src/game-content/kierros.js
+//	./src/game-content/palat.js
+//	./src/game-content/props.js
+//	./src/game-content/wires.js
+//	./src/ui/utils/asset-mutator.js
+//	./src/ui/utils/undo-stack.js
+//	./src/ui/utils/input-state.js
+//	./src/ui/utils/mouse-picking-element.js
+//	./src/ui/utils/terrain-brush.js
+//	./src/ui/dom/html.js
+//	./src/ui/dom/cursor-handler.js
+//	./src/ui/dom/window.js
+//	./src/ui/canvas/font.js
+//	./src/ui/canvas/component.js
+//	./src/ui/canvas/components/_primitives.js
+//	./src/ui/canvas/components/active-pala.js
+//	./src/ui/canvas/components/pala-selector.js
+//	./src/ui/canvas/components/text-selector.js
+//	./src/ui/canvas/components/fps-indicator.js
+//	./src/ui/canvas/components/value-graph.js
+//	./src/ui/canvas/components/terrain-hover-info.js
+//	./src/ui/canvas/components/palat-pane.js
+//	./src/ui/canvas/components/text-pane.js
+//	./src/ui/canvas/components/terrain-minimap.js
+//	./src/ui/canvas/components/color-selector.js
+//	./src/ui/canvas/components/label.js
+//	./src/scene/scene.js
+//	./src/scene/camera-2d.js
+//	./src/scene/camera-3d.js
+//	./src/scene/rasterizer.js
+//	./src/scene/transform-clip-lighter.js
+//	./src/scene/terrain-editor/terrain-editor.js
+//	./src/scene/terrain-editor/mesh-builder.js
+//	./src/scene/texture-editor/texture-editor.js
+//	./src/scene/tilemap-editor/tilemap-editor.js
+//	./src/scene/loading-spinner/loading-spinner.js
+//	./src/stream/stream.js
+//	./src/stream/server.js
+//	./src/stream/viewer.js
+//	./src/core/core.js
 /////////////////////////////////////////////////
 
 /*
@@ -4248,17 +4246,15 @@ Rsed.ui.utils.inputState = (function()
         
         set_is_prop_context_menu_open: function(isOpen = false)
         {
-            isPropContextMenuOpen = isOpen;
-
-            if (!isOpen)
+            if (isPropContextMenuOpen)
             {
                 this.reset_mouse_hover();
                 this.reset_mouse_grab();
                 this.reset_mouse_buttons_state();
-
-                // Force the mouse hover info to update.
-                this.set_mouse_pos(...Object.values(this.mouse_pos()));
+                this.update_mouse_hover();
             }
+
+            isPropContextMenuOpen = isOpen;
         },
 
         is_prop_context_menu_open: function()
@@ -4827,35 +4823,32 @@ Rsed.ui.dom.html = (function()
     };
 
     const publicInterface = {
-        update_prop_dropdown_list: function(forFinishLines = false)
+        generate_prop_dropdown_list: function(grab)
         {
+            const isFinishLine = Rsed.$currentProject.props.name(grab.propId).toLowerCase().startsWith("finish");
+
             const newPropEls = Rsed.$currentProject.props
                 .names()
-                .filter(name=>(forFinishLines? name.startsWith("finish") : !name.startsWith("finish")))
+                .filter(name=>(isFinishLine? name.startsWith("finish") : !name.startsWith("finish")))
                 .map(propName=>{
                     const itemEl = document.createElement("div");
                     itemEl.textContent = propName;
                     itemEl.classList.add("item");
-                    itemEl.onclick = ()=>on_prop_select(propName);
+                    itemEl.onmouseup = ()=>on_prop_select(propName, grab.propTrackIdx);
                     return itemEl;
                 });
 
             propDropdownEl.replaceChildren(...newPropEls);
 
-            function on_prop_select(propName = "")
+            function on_prop_select(propName = "", propTrackIdx = 0)
             {
-                if (Rsed.ui.utils.inputState.current_mouse_hover()?.type !== "prop")
-                {
-                    return;
-                }
+                window.close_dropdowns();
 
                 Rsed.ui.utils.assetMutator.user_edit("prop", {
                     command: "set-type",
-                    target: Rsed.ui.utils.inputState.current_mouse_hover().propTrackIdx,
+                    target: propTrackIdx,
                     data: Rsed.$currentProject.props.id_for_name(propName),
                 });
-
-                window.close_dropdowns();
 
                 return;
             }
@@ -5222,11 +5215,6 @@ window.close_dropdowns = function()
         return;
     }
 
-    if (!Rsed.ui.utils.inputState.is_prop_context_menu_open())
-    {
-        return;
-    }
-
     document.querySelectorAll(".dropdown-menu").forEach(menu=>menu.classList.remove("show"));
     Rsed.visual.canvas.domElement.style.pointerEvents = "";
     Rsed.ui.utils.inputState.set_is_prop_context_menu_open(false);
@@ -5242,7 +5230,6 @@ window.oncontextmenu = function(event)
         return;
     }
 
-    // If the right-click menu was already open.
     if (Rsed.ui.utils.inputState.is_prop_context_menu_open())
     {
         window.close_dropdowns();
@@ -5250,7 +5237,6 @@ window.oncontextmenu = function(event)
         return;
     }
 
-    // Ignore right clicks that occur over the dropdown menu.
     if (event.target === document.getElementById("prop-dropdown"))
     {
         event.preventDefault();
@@ -5263,10 +5249,18 @@ window.oncontextmenu = function(event)
         return;
     }
 
-    // Only handle clicks that occur over props.
-    if (!Rsed.ui.utils.inputState.current_mouse_grab() ||
-        Rsed.ui.utils.inputState.current_mouse_grab().type !== "prop")
+    // If we're already holding onto a prop.
+    if (Rsed.ui.utils.inputState.left_mouse_button_down()) 
     {
+        event.preventDefault();
+        return;
+    }
+
+    // Only handle clicks that occur over props.
+    if (
+        (Rsed.ui.utils.inputState.current_mouse_grab()?.type !== "prop") ||
+        (Rsed.ui.utils.inputState.current_mouse_hover()?.type !== "prop")
+    ){
         event.preventDefault();
         return;
     }
@@ -5275,10 +5269,8 @@ window.oncontextmenu = function(event)
 
     // Display a right-click menu for changing the type of the prop under the cursor.
     {
-        /// Temp hack to dispay a special menu for finish lines.
-        const isFinishLine = Rsed.$currentProject.props.name(Rsed.ui.utils.inputState.current_mouse_hover().propId).toLowerCase().startsWith("finish");
+        Rsed.ui.dom.html.generate_prop_dropdown_list(Rsed.ui.utils.inputState.current_mouse_grab());
         
-        Rsed.ui.dom.html.update_prop_dropdown_list(isFinishLine);
         setTimeout(()=>{ // Wait until the dropdown's DOM element has updated its height.
             const mousePos = {x:event.clientX, y:event.clientY};
             const propDropdown = document.getElementById("prop-dropdown");
@@ -5447,13 +5439,15 @@ window.onkeyup = function(event)
 // load up. If it's not, we'll ignore the drop.
 window.drop_handler = function(event)
 {
-    if (!Rsed?.core)
-    {
-        return;
-    }
-
     // Don't let the browser handle the drop.
     event.preventDefault();
+    
+    if (
+        !Rsed?.core ||
+        Rsed.player.is_playing()
+    ){
+        return;
+    }
 
     // See if the drop delivers a zip file.
     const zipFile = Array.from(event.dataTransfer.items, (item)=>item.getAsFile())
@@ -5727,11 +5721,11 @@ Rsed.ui.canvas.font = (function()
                 [X,_,X],
                 [X,_,X]]),
 
-        "O": c([[_,X,_],
+        "O": c([[_,X,X],
                 [X,_,X],
                 [X,_,X],
                 [X,_,X],
-                [_,X,_]]),
+                [X,X,_]]),
 
         "P": c([[X,X,_],
                 [X,_,X],
@@ -7368,6 +7362,16 @@ Rsed.scenes.$camera3D = function({
             return tilt;
         },
 
+        is_moving: function()
+        {
+            return (
+                cameraMovement.left ||
+                cameraMovement.right ||
+                cameraMovement.up ||
+                cameraMovement.down
+            );
+        },
+
         move: function()
         {
             const movementSpeed = (0.03 * Rsed.core.tickDeltaMs);
@@ -7404,10 +7408,6 @@ Rsed.scenes.$camera3D = function({
             // If the camera is moving, either by the user moving it or by residual momentum.
             if (posDelta.x || posDelta.y || posDelta.z)
             {
-                // Force mouse hover to update, since there might now be a different tile under
-                // the cursor.
-                Rsed.core.forceUpdateMouseHoverOnTickEnd = true;
-
                 // If the user is grabbing onto a prop while the camera moves, move the prop as well.
                 if (Rsed.ui.utils.inputState.left_mouse_button_down())
                 {
@@ -7439,8 +7439,6 @@ Rsed.scenes.$camera3D = function({
             targetPosition.x = defaultPosition.x;
             targetPosition.y = defaultPosition.y;
             targetPosition.z = defaultPosition.z;
-
-            window.close_dropdowns();
         },
 
         move_to: function(x, y, z)
@@ -7449,8 +7447,6 @@ Rsed.scenes.$camera3D = function({
             targetPosition.x = x;
             targetPosition.y = y;
             targetPosition.z = z;
-
-            window.close_dropdowns();
         },
 
         move_by: function(deltaX, deltaY, deltaZ)
@@ -7463,6 +7459,12 @@ Rsed.scenes.$camera3D = function({
             if (deltaX || deltaY || deltaZ)
             {
                 window.close_dropdowns();
+
+                if (Rsed.ui.utils.inputState.current_mouse_grab()?.type !== "prop")
+                {
+                    Rsed.ui.utils.inputState.reset_mouse_grab();
+                    Rsed.ui.utils.inputState.reset_mouse_hover();
+                }
             }
 
             return;
@@ -8151,10 +8153,6 @@ Rsed.scenes["terrain-editor"] = (function()
                 if (key_is("a") && !repeat)
                 {
                     sceneState.showPalatPane = !sceneState.showPalatPane;
-
-                    // Prevent a mouse click from acting on the ground behind the pane when the pane
-                    // is brought up, and on the pane when the pane has been removed.
-                    Rsed.core.forceUpdateMouseHoverOnTickEnd = true;
                 }
                 else if (key_is("q"))
                 {
@@ -8326,8 +8324,8 @@ Rsed.scenes["terrain-editor"] = (function()
                     // Painter's sorting, most distant first.
                     ngons.sort((ngonA, ngonB)=>
                     {
-                        const a = (ngonA.isActive? (ngonA.vertices.reduce((acc, v)=>(acc + v.z), 0) / ngonA.vertices.length) : 0);
-                        const b = (ngonB.isActive? (ngonB.vertices.reduce((acc, v)=>(acc + v.z), 0) / ngonB.vertices.length) : 0);
+                        const a = (ngonA.isActive? (ngonA.vertices.reduce((acc, v)=>(acc + v.z - (ngonA.material.$isBrushTile || 0)), 0) / ngonA.vertices.length) : 0);
+                        const b = (ngonB.isActive? (ngonB.vertices.reduce((acc, v)=>(acc + v.z - (ngonB.material.$isBrushTile || 0)), 0) / ngonB.vertices.length) : 0);
                         return ((a === b)? 0 : ((a < b)? 1 : -1));
                     });
                 },
@@ -8437,6 +8435,11 @@ Rsed.scenes["terrain-editor"] = (function()
                     case "prop": return cursors.fingerHand;
                     case "ground":
                     {
+                        if (camera.is_moving())
+                        {
+                            return cursors.default;
+                        }
+
                         if (Rsed.ui.utils.inputState.key_down("tab"))
                         {
                             return cursors.eyedropper;
@@ -8481,6 +8484,11 @@ Rsed.scenes["terrain-editor"] = (function()
             {
                 case "ground":
                 {
+                    if (camera.is_moving())
+                    {
+                        return;
+                    }
+                    
                     // Note: We'll access the mouse-picking info via hover instead of grab,
                     // since grab will be the tile over which the user pressed down the
                     // mouse button regardless of whether the mouse is moved after that;
@@ -8824,6 +8832,7 @@ Rsed.scenes["terrain-editor"].meshBuilder = {
                                 wireframeColor: Rsed.visual.palette.YELLOW,
                                 hasWireframe: includeWireframe,
                                 $isGroundTile: true,
+                                $isBrushTile: true,
                         }));
                     }
                 }
@@ -9816,10 +9825,6 @@ Rsed.scenes["tilemap-editor"] = (function()
                 else if (key_is("a") && !repeat)
                 {
                     sceneState.showPalatPane = !sceneState.showPalatPane;
-
-                    // Prevent a mouse click from acting on the ground behind the pane when the pane
-                    // is brought up, and on the pane when the pane has been removed.
-                    Rsed.core.forceUpdateMouseHoverOnTickEnd = true;
                 }
                 else
                 {
@@ -10684,9 +10689,6 @@ Rsed.core = (function()
     // Set to true while the core is running (e.g. as a result of calling start()).
     let coreIsRunning = false;
 
-    // Set to true when core.panic() is called.
-    let coreIsInPanic = false;
-
     let ticksPerSecond = 0;
 
     // The arguments passed to the most recent call to .start().
@@ -10705,8 +10707,6 @@ Rsed.core = (function()
 
     const publicInterface =
     {
-        forceUpdateMouseHoverOnTickEnd: false,
-
         get ticksPerSecond()
         {
             return ticksPerSecond;
@@ -10813,7 +10813,6 @@ Rsed.core = (function()
             Rsed.ui.dom.html.display_blue_screen(errorMessage);
 
             coreIsRunning = false;
-            coreIsInPanic = true;
 
             publicInterface.start = ()=>{}; // Prevent restarting from code.
         },
@@ -10846,12 +10845,6 @@ Rsed.core = (function()
                 scene.refresh_tilemap();
             }
 
-            // Have the mouse hover info update when the new scene has finished rendering
-            // on the next tick.
-            window.requestAnimationFrame(()=>{
-                publicInterface.forceUpdateMouseHoverOnTickEnd = true;
-            });
-
             return;
         },
     }
@@ -10873,12 +10866,7 @@ Rsed.core = (function()
             Rsed.visual.canvas.aspectRatio = (window.innerWidth / window.innerHeight);
 
             scene.render();
-
-            if (publicInterface.forceUpdateMouseHoverOnTickEnd)
-            {
-                Rsed.ui.utils.inputState.update_mouse_hover();
-                publicInterface.forceUpdateMouseHoverOnTickEnd = false;
-            }
+            Rsed.ui.utils.inputState.update_mouse_hover();
         }
 
         window.requestAnimationFrame((newTimestamp)=>tick(newTimestamp, (newTimestamp - timestamp)));
@@ -10886,7 +10874,7 @@ Rsed.core = (function()
 
     async function load_project(projectMeta)
     {
-        /// TODO: Disable undo/redo while the project loads.
+        window.close_dropdowns();
         Rsed.ui.utils.undoStack.reset();
         project = await Rsed.project(projectMeta);
         Object.values(Rsed.scenes).forEach(s=>s.reset?.());
