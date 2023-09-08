@@ -28,23 +28,24 @@
             </div>
 
             <div class="button"
-                 title="Download this track as a RallySportED ZIP file"
                  onclick="Rsed.$currentProject.download_as_zip();">
 
                 Download
 
             </div>
 
-            <div class="button"
-                 title="Access this track's individual Rally-Sport data files"
-                 onclick="Rsed.ui.dom.html.toggle_data_dropdown();">
+            <div class="button data"
+                 onclick="Rsed.ui.dom.html.toggle_data_dropdown();"
+                 style="position: relative;">
 
                 Data
+
+                <div id="data-dropdown">
+                </div>
 
             </div>
 
             <div class="button"
-                 title="Rename this track"
                  onclick="Rsed.$currentProject.rename();">
 
                 Rename
@@ -52,26 +53,13 @@
             </div>
 
             <div class="button"
-                 title="Record a CPU opponent for this track"
                  onclick="Rsed.player.record_ai_lap();">
 
                 Record
 
             </div>
 
-            <div id="stream-button"
-                 class="button right stream disabled hidden"
-                 title="This feature is currently unavailable">
-
-                <i class="fas fa-network-wired"></i>
-                <i class="fas fa-spin fa-spinner"></i>
-                <span class="label">Serve</span>
-                <span class="view-count">0</span>
-
-            </div>
-
             <div class="button"
-                 title="Drive this track in practice"
                  onclick="Rsed.player.play_test_drive();">
 
                 Test
@@ -79,7 +67,6 @@
             </div>
 
             <div class="button"
-                 title="Race this track against the CPU"
                  onclick="Rsed.player.play_with_opponent();">
 
                 Play
@@ -95,7 +82,6 @@
             </div>
 
             <div class="button"
-                 title="Open the user's manual"
                  onclick="window.open('./help/', '_blank', 'noopener');">
 
                 Help
@@ -106,27 +92,24 @@
             </div>
 
             <div class="button"
-                    onclick="Rsed.$currentScene = 'terrain-editor';">
+                 onclick="Rsed.$currentScene = 'terrain-editor';">
 
                 Terrain
 
             </div>
 
                 <div class="button"
-                        onclick="Rsed.$currentScene = 'tilemap-editor';">
+                     onclick="Rsed.$currentScene = 'tilemap-editor';">
 
                 Tilemap
 
             </div>
 
                 <div class="button"
-                        onclick="Rsed.$currentScene = 'texture-editor';">
+                     onclick="Rsed.$currentScene = 'texture-editor';">
 
                 Texture
 
-            </div>
-
-            <div id="data-dropdown">
             </div>
 
             <div id="prop-dropdown" class="dropdown-menu">

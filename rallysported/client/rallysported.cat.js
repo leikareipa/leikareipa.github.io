@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (05 September 2023 05:09:34 UTC)
+// VERSION: live (08 September 2023 04:18:57 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { The retro n-gon renderer (c) 2019-2023 Tarpeeksi Hyvae Soft }
 // FILES:
@@ -56,9 +56,6 @@
 //	./src/scene/texture-editor/texture-editor.js
 //	./src/scene/tilemap-editor/tilemap-editor.js
 //	./src/scene/loading-spinner/loading-spinner.js
-//	./src/stream/stream.js
-//	./src/stream/server.js
-//	./src/stream/viewer.js
 //	./src/core/core.js
 /////////////////////////////////////////////////
 
@@ -1147,6 +1144,7 @@ Rsed.project = async function(projectArgs = {})
                 case "palat": filename = `PALAT.00${(trackId === 4)? 2 : 1}`; break;
                 case "maasto": filename = `MAASTO.00${trackId+1}`; break;
                 case "varimaa": filename = `VARIMAA.00${trackId+1}`; break;
+                case "kierros": filename = `KIERROS${trackId+1}.DTA`; break;
             }
 
             const data = this.asset_data(assetType);
@@ -2617,25 +2615,15 @@ Rsed.gameContent.kierros = function(data = Uint8Array)
         const idx = (i * bytesPerCheckpoint);
 
         checkpoints.push({
-            x:          ((data[idx+0] | (data[idx+1] << 8)) / 128),
-            z:          ((data[idx+2] | (data[idx+3] << 8)) / 128),
+            x: (data[idx+0] | (data[idx+1] << 8)),
+            z: (data[idx+2] | (data[idx+3] << 8)),
             orientation: (data[idx+4] | (data[idx+5] << 8)),
-            speed:       (data[idx+6] | (data[idx+7] << 8)),
+            speed: (data[idx+6] | (data[idx+7] << 8)),
         });
     }
 
-    const publicInterface =
-    {
-        numCheckpoints: checkpoints.length,
-        checkpoint_at: function(idx = 0)
-        {
-            Rsed.assert?.(
-                ((idx >= 0) && (idx < checkpoints.length)),
-                "Attempting to access checkpoint data out of bounds."
-            );
-
-            return checkpoints[idx];
-        },
+    const publicInterface = {
+        checkpoints,
     };
     
     return publicInterface;
@@ -4782,45 +4770,30 @@ Rsed.ui.utils.terrainBrush = (function()
     return publicInterface;
 })();
 /*
- * Most recent known filename: js/ui/html.js
- *
- * 2018, 2022 Tarpeeksi Hyvae Soft
+ * 2018-2023 Tarpeeksi Hyvae Soft
  * 
  * Software: RallySportED-js
+ * 
+ * 
+ * Provides functionality to manage RallySportED-js's HTML UI.
  * 
  */
 
 "use strict";
 
-// Provides functionality to manage RallySportED-js's HTML UI.
 Rsed.ui.dom.html = (function()
 {
-    const streamButtonStatusLabel = {
-        "disabled": "Serve",
-        "initializing": "Serve",
-        "server": "Serving",
-        "viewer": "Serve",
+    const el = {
+        htmlUi: document.querySelector("#html"),
+        buttonBar: document.querySelector("#button-bar"),
+        propDropdown: document.querySelector("#prop-dropdown"),
+        dataDropdownButton: document.querySelector("#button-bar .button.data"),
+        dataDropdown: document.querySelector("#data-dropdown"),
     };
-
-    const htmlUiEl = document.querySelector("#html");
-    const buttonBarEl = htmlUiEl.querySelector("#button-bar");
-    const propDropdownEl = document.querySelector("#prop-dropdown");
-    const dataDropdownEl = document.querySelector("#data-dropdown");
-    const streamButtonEl = document.querySelector("#stream-button");
-    const streamLabelEl = streamButtonEl.querySelector(".label");
-    const streamViewCountEl = streamButtonEl.querySelector(".view-count");
-
-    streamButtonEl.dataset.status = "disabled";
-    streamButtonEl.onclick = ()=>{
-        // Streaming is currently disabled due to the WebRTC server having been hosted on
-        // Heroku's free tier and Heroku having since discontinued that tier.
-        return Rsed.ui.dom.popup_notification("The Serve feature is currently unavailable.", {
-            notificationType: "error",
-        });
-
-        const stream_fn = Rsed.stream[(streamButtonEl.dataset.status === "disabled")? "start" : "stop"];
-        stream_fn({role: "server"});
-    };
+    Rsed.assert?.(
+        Object.values(el).every(el=>el instanceof HTMLElement),
+        "Malformed HTML."
+    );
 
     const publicInterface = {
         generate_prop_dropdown_list: function(grab)
@@ -4838,7 +4811,7 @@ Rsed.ui.dom.html = (function()
                     return itemEl;
                 });
 
-            propDropdownEl.replaceChildren(...newPropEls);
+            el.propDropdown.replaceChildren(...newPropEls);
 
             function on_prop_select(propName = "", propTrackIdx = 0)
             {
@@ -4876,28 +4849,13 @@ Rsed.ui.dom.html = (function()
 
         set_visible: function(isVisible)
         {
-            buttonBarEl.classList[isVisible? "add" : "remove"]("visible");
-        },
-
-        set_stream_status: function(status = "")
-        {
-            Rsed.assert?.(
-                (Object.keys(streamButtonStatusLabel).includes(status)),
-                `Unrecognized stream status ${status}`
-            );
-
-            streamButtonEl.dataset.status = status;
-            streamLabelEl.textContent = streamButtonStatusLabel[status];
-        },
-
-        set_stream_viewer_count: function(num)
-        {
-            streamViewCountEl.textContent = num;
+            el.buttonBar.classList[isVisible? "add" : "remove"]("visible");
         },
 
         toggle_data_dropdown: function()
         {
-            dataDropdownEl.classList.toggle("visible");
+            el.dataDropdown.classList.toggle("visible");
+            el.dataDropdownButton.classList.toggle("opened");
         },
 
         display_blue_screen: function(errorMessage = "")
@@ -4925,6 +4883,7 @@ Rsed.ui.dom.html = (function()
             {type: "Palat", label: `PALAT`},
             {type: "Text", label: "TEXT1"},
             {type: "Anims", label: "ANIMS", warning: "Importing this data type can't be undone."},
+            {type: "Kierros", label: "KIERROS", warning: "Importing this data type can't be undone."},
         ];
 
         const els = dataTypes.reduce((html, dataType)=>{
@@ -4958,7 +4917,7 @@ Rsed.ui.dom.html = (function()
             `;
         }, "");
 
-        dataDropdownEl.innerHTML = `
+        el.dataDropdown.innerHTML = `
             <table>
                 <tbody>
                     ${els}
@@ -5069,13 +5028,6 @@ window.onblur = function()
     return;
 }
 
-window.onunload = function()
-{
-    Rsed.stream.stop();
-
-    return;
-};
-
 function handle_rallysported_error(errorMessage = "")
 {
     if (Rsed)
@@ -5129,19 +5081,6 @@ window.onload = function(event)
     // Parse the user-supplied URL parameters.
     {
         const params = new URLSearchParams(window.location.search);
-
-        // If the user requests to view a stream, we just need to start the stream.
-        // Once the user joins the stream as a viewer, they'll receive the track's
-        // data and RallySportED-js will be started at that point.
-        if (params.has("transientServer"))
-        {
-            Rsed.stream.start({
-                role: "viewer",
-                proposedId: params.get("transientServer"),
-            });
-            
-            return;
-        }
 
         // The "track" and "fromContent" parameters specify which track the user wants
         // to load. Generally, the "track" parameter is used to load the game's original
@@ -5467,15 +5406,7 @@ window.drop_handler = function(event)
             contentId: zipFile,
         },
     });
-
-    if (Rsed.stream.role !== "server")
-    {
-        // Clear the address bar's parameters to reflect the fact that the user has loaded a local
-        // track resource instead of specifying a server-side resource via the address bar.
-        const basePath = (window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/") + 1));
-        window.history.replaceState({}, document.title, basePath);
-    }
-
+    
     return;
 }
 /*
@@ -6151,7 +6082,7 @@ Rsed.ui.canvas.component.palaSelector = function({
         {
             const labelString = `PALAT`;
             const labelWidth = Rsed.ui.canvas.font.pixel_width(labelString);
-            const brushSizeLabel = Rsed.ui.canvas.component.label()(labelString, (x - sideLen/2 - labelWidth/2), y + (sideLen / 2)- Rsed.ui.canvas.font.nativeHeight + 2);
+            const brushSizeLabel = Rsed.ui.canvas.component.label()(labelString, ~~(x - sideLen/2 - labelWidth/2), y + ~~(sideLen / 2)- Rsed.ui.canvas.font.nativeHeight + 2);
             ngons.push(...brushSizeLabel.ngons);
         }
 
@@ -6207,7 +6138,7 @@ Rsed.ui.canvas.component.textSelector = function({
         {
             const labelString = `TEXT`;
             const labelWidth = Rsed.ui.canvas.font.pixel_width(labelString);
-            const brushSizeLabel = Rsed.ui.canvas.component.label()(labelString, (x - sideLen/2 - labelWidth/2), y + (sideLen / 2)- Rsed.ui.canvas.font.nativeHeight + 2);
+            const brushSizeLabel = Rsed.ui.canvas.component.label()(labelString, ~~(x - sideLen/2 - labelWidth/2), y + ~~(sideLen / 2)- Rsed.ui.canvas.font.nativeHeight + 2);
             ngons.push(...brushSizeLabel.ngons);
         }
 
@@ -6938,6 +6869,7 @@ Rsed.ui.canvas.component.colorSelector = function({
 "use strict";
 
 Rsed.ui.canvas.component.label = function({
+    plain = false,
     on_grab = undefined
 } = {})
 {
@@ -6950,9 +6882,6 @@ Rsed.ui.canvas.component.label = function({
              (typeof y === "number")),
             "Expected numbers."
         );
-
-        x = ~~x;
-        y = ~~y;
 
         self.update();
 
@@ -6993,15 +6922,18 @@ Rsed.ui.canvas.component.label = function({
         }));
 
         // Dropshadow.
-        ngons.unshift(ngon({
-            x,
-            y,
-            width: (runningXOffs + 1),
-            height: (Rsed.ui.canvas.font.nativeHeight + 2),
-            material: {
-                color: Rsed.visual.palette.HOTPINK,
-            },
-        }));
+        if (!plain)
+        {
+            ngons.unshift(ngon({
+                x,
+                y,
+                width: (runningXOffs + 1),
+                height: (Rsed.ui.canvas.font.nativeHeight + 2),
+                material: {
+                    color: Rsed.visual.palette.HOTPINK,
+                },
+            }));
+        }
 
         return Rngon.mesh(ngons);
 
@@ -7459,12 +7391,6 @@ Rsed.scenes.$camera3D = function({
             if (deltaX || deltaY || deltaZ)
             {
                 window.close_dropdowns();
-
-                if (Rsed.ui.utils.inputState.current_mouse_grab()?.type !== "prop")
-                {
-                    Rsed.ui.utils.inputState.reset_mouse_grab();
-                    Rsed.ui.utils.inputState.reset_mouse_hover();
-                }
             }
 
             return;
@@ -8435,17 +8361,11 @@ Rsed.scenes["terrain-editor"] = (function()
                     case "prop": return cursors.fingerHand;
                     case "ground":
                     {
-                        if (camera.is_moving())
-                        {
-                            return cursors.default;
-                        }
-
                         if (Rsed.ui.utils.inputState.key_down("tab"))
                         {
                             return cursors.eyedropper;
                         }
-
-                        if (Rsed.ui.utils.terrainBrush.smoothening)
+                        else if (Rsed.ui.utils.terrainBrush.smoothening)
                         {
                             return cursors.pencilSmooth;
                         }
@@ -8683,14 +8603,13 @@ Rsed.scenes["terrain-editor"].meshBuilder = {
         const fractionX = (cameraPos.x - cameraPosFloored.x);
         const fractionZ = (cameraPos.z - cameraPosFloored.z);
 
-
         for (let z = 0; z < camera.viewportHeight; z++)
         {
             // As the horizontal ground tile rows come closer to the camera, reduce the width of each
             // row, since fewer tiles will fit the camera's view there.
             const viewNarrowing = ~~(z * 0.13 * Rsed.visual.canvas.aspectRatio);
 
-            let prevHeightDiff = 0;
+            let prevHeightDiff = 1;
 
             // Add the ground tiles.
             for (let x = viewNarrowing-1; x < camera.viewportWidth-viewNarrowing; x++)
@@ -8915,28 +8834,42 @@ Rsed.scenes["terrain-editor"].meshBuilder = {
 
         // Add extra decorations, like props and wires.
         {
-            // Camera view frustum in world units, for culling.
-            const cx1 = (cameraPosFloored.x * tileSize);
-            const cx2 = ((cameraPosFloored.x + camera.viewportWidth) * tileSize);
-            const cz1 = (cameraPosFloored.z * tileSize);
-            const cz2 = ((cameraPosFloored.z + camera.viewportHeight) * tileSize);
+            function world_to_screen(worldX, worldY, worldZ)
+            {
+                return {
+                    x: ((worldX + centerView.x - (cameraPosFloored.x * tileSize)) - (fractionX * tileSize)),
+                    y: (centerView.y + worldY),
+                    z: ((centerView.z - worldZ + (cameraPosFloored.z * tileSize)) + (fractionZ * tileSize)),
+                }
+            }
 
-            // Add any track prop meshes that should be visible on the currently-drawn track.
-            const propLocations = project.props.locations_of_props_on_track(project.track_id());
-            propLocations.forEach((pos, idx)=>{
-                const isPropInsideFrustum = (
-                    (pos.x >= cx1) &&
-                    (pos.x <= cx2) &&
-                    (pos.z >= cz1) &&
-                    (pos.z <= cz2)
+            function is_inside_view_frustum(worldX, worldZ)
+            {
+                // Camera view frustum in world units.
+                const cx1 = (cameraPosFloored.x * tileSize);
+                const cx2 = ((cameraPosFloored.x + camera.viewportWidth) * tileSize);
+                const cz1 = (cameraPosFloored.z * tileSize);
+                const cz2 = ((cameraPosFloored.z + camera.viewportHeight) * tileSize);
+
+                return (
+                    (worldX >= cx1) &&
+                    (worldX <= cx2) &&
+                    (worldZ >= cz1) &&
+                    (worldZ <= cz2)
                 );
+            }
 
-                if (isPropInsideFrustum)
-                {
-                    const groundHeight = centerView.y + project.maasto.tile_at((pos.x / tileSize), (pos.z / tileSize));
-                    const x = ((pos.x + centerView.x - (cameraPosFloored.x * tileSize)) - (fractionX * tileSize));
-                    const z = ((centerView.z - pos.z + (cameraPosFloored.z * tileSize)) + (fractionZ * tileSize));
-                    const y = (groundHeight + pos.y);
+            {
+                const propLocations = project.props.locations_of_props_on_track(project.track_id());
+
+                propLocations.forEach((pos, idx)=>{
+                    if (!is_inside_view_frustum(pos.x, pos.z))
+                    {
+                        return;
+                    }
+
+                    const groundHeight = project.maasto.tile_at((pos.x / tileSize), (pos.z / tileSize));
+                    const {x, y, z} = world_to_screen(pos.x, groundHeight, pos.z);
 
                     trackMeshPolys.push(...this.prop_mesh({
                         propId: pos.propId,
@@ -8945,35 +8878,47 @@ Rsed.scenes["terrain-editor"].meshBuilder = {
                         solidProps,
                         includeWireframe,
                     }));
-                }
-            });
+                });
+            }
 
-            // Add any track wires (e.g. telephone lines).
             if (solidProps)
             {
+                for (const checkpoint of Rsed.$currentProject.kierros.checkpoints)
+                {
+                    if (!is_inside_view_frustum(checkpoint.x, checkpoint.z))
+                    {
+                        continue;
+                    }
+    
+                    const groundHeight = project.maasto.tile_at((checkpoint.x / tileSize), (checkpoint.z / tileSize));
+                    const {x, y, z} = world_to_screen(checkpoint.x, groundHeight, checkpoint.z);
+    
+                    trackMeshPolys.push(Rngon.ngon([
+                        Rngon.vertex(x, y, z),
+                        Rngon.vertex(x, y+60, z)], {
+                            color: Rsed.visual.palette.WHITE,
+                    }));
+                }
+
                 for (const wire of project.wires.wires_on_track(project.track_id()))
                 {
-                    const isWireInsideFrustum =
-                        (wire.middle.x >= cx1) &&
-                        (wire.middle.x <= cx2) &&
-                        (wire.middle.z >= cz1) &&
-                        (wire.middle.z <= cz2);
-
-                    if (isWireInsideFrustum)
+                    if (!is_inside_view_frustum(wire.middle.x, wire.middle.z))
                     {
-                        function vertex(prop)
-                        {
-                            const x = ((prop.x + centerView.x - (cameraPosFloored.x * tileSize)) - (fractionX * tileSize));
-                            const z = ((centerView.z - prop.z + (cameraPosFloored.z * tileSize)) + (fractionZ * tileSize));
-                            const y = (centerView.y + prop.y);
-                            return Rngon.vertex(x, y, z)
-                        }
+                        continue;
+                    }
 
-                        const wireNgon = Rngon.ngon([vertex(wire.start), vertex(wire.end)], {
+                    trackMeshPolys.push(Rngon.ngon([
+                        vertex(wire.start),
+                        vertex(wire.end)], {
                             color: wire.color,
-                        });
-                        
-                        trackMeshPolys.push(wireNgon);
+                    }));
+
+                    function vertex(prop)
+                    {
+                        const x = ((prop.x + centerView.x - (cameraPosFloored.x * tileSize)) - (fractionX * tileSize));
+                        const z = ((centerView.z - prop.z + (cameraPosFloored.z * tileSize)) + (fractionZ * tileSize));
+                        const y = (centerView.y + prop.y);
+                        return Rngon.vertex(x, y, z)
                     }
                 }
             }
@@ -10113,566 +10058,6 @@ Rsed.scenes["loading-spinner"] = (function()
         return;
     }
 })();
-/*
- * Most recent known filename: js/stream/stream.js
- *
- * 2020-2022 Tarpeeksi Hyvae Soft
- * 
- * Software: RallySportED-js
- *
- */
-
-"use strict";
-
-// A one-to-many network where viewers are connected to a streamer who sends them
-// data. For a client to take part in this network, it will call Rsed.stream.start()
-// with a role it wishes to take - either a "viewer" (Rsed.stream.viewer) or a
-// "server" (Rsed.stream.server).
-Rsed.stream = (function()
-{
-    const supportedRoles = ["server", "viewer"];
-
-    // Either Rsed.stream.server or Rsed.stream.viewer.
-    let stream = null;
-
-    let connectionCheckInterval = null;
-
-    // Functions callable by the stream objects to inform RallySportED of
-    // various events.
-    const signalsFns = {
-        signal_stream_status: function({status = "unknown"} = {})
-        {
-            Rsed.assert?.((typeof status === "string"), "Expected a string.");
-
-            Rsed.ui.dom.html.set_stream_status(status);
-            Rsed.ui.dom.html.set_stream_viewer_count(stream.num_connections());
-        },
-
-        // Call this to signal to RallySportED that the stream has ended.
-        signal_stream_closed: function({streamId} = {})
-        {
-            Rsed.assert?.((typeof streamId === "string"), "Expected a string.");
-
-            signalsFns.signal_stream_status({status: "disabled"});
-
-            Rsed.log(`Left stream ${streamId}.`);
-
-            clearInterval(connectionCheckInterval);
-            connectionCheckInterval = null;
-
-            // Remove the stream id from the address bar.
-            /// TODO: A less brute force implementation.
-            if (stream.role !== "viewer")
-            {
-                const basePath = `//${location.host}${location.pathname}`;
-                window.history.replaceState({}, document.title, basePath);
-            }
-
-            return;
-        },
-
-        // Call this to signal to RallySportED that the stream has started.
-        signal_stream_open: function({role, streamId} = {})
-        {
-            Rsed.assert?.((typeof role === "string"), "Expected a string.");
-            Rsed.assert?.((typeof streamId === "string"), "Expected a string.");
-            Rsed.assert?.(stream, "The stream isn't open.");
-
-            signalsFns.signal_stream_status({status: role});
-
-            Rsed.log(`Joined stream ${streamId}.`);
-
-            // Replace the URL bar's contents to give the user a link they can
-            // share to others to join the stream.
-            /// TODO: A less brute force implementation.
-            if (stream.role !== "viewer")
-            {
-                const basePath = `//${location.host}${location.pathname}?transientServer=${streamId}`;
-                window.history.replaceState({}, document.title, basePath);
-            }
-
-            // Periodically refresh our list of open connections.
-            connectionCheckInterval = setInterval(()=>
-            {
-                Rsed.ui.dom.html.set_stream_viewer_count(stream.num_connections());
-            }, 2000);
-        },
-
-        signal_stream_error: function(error)
-        {
-            Rsed.ui.dom.popup_notification(`Stream ${error}`, {
-                notificationType: "error",
-            });
-
-            return;
-        },
-    };
-
-    const publicInterface = {
-        get role()
-        {
-            return (stream? stream.role : null);
-        },
-
-        // If 'role' is "streamer" or "server", 'proposedId' is the id with which viewers
-        // can connect to the stream. If 'role' is "viewer", 'proposedId' is the id of 
-        // the streamer that the viewer wants to connect to.
-        start: function({
-            role = null,
-            proposedId = Rsed.stream.generate_random_stream_id(),
-        } = {})
-        {
-            Rsed.assert?.(
-                (supportedRoles.includes(role) && Rsed.stream[role]),
-                "Unrecognized stream role."
-            );
-
-            if (stream)
-            {
-                stream.stop();
-            }
-
-            stream = Rsed.stream[role]({
-                streamId: proposedId,
-                signalFns: signalsFns,
-            });
-            
-            stream.start();
-
-            return;
-        },
-
-        stop: function()
-        {
-            if (!stream)
-            {
-                return;
-            }
-
-            stream.stop();
-            stream = null;
-
-            return;
-        },
-
-        // Encapsulates the given data into an object that is then streamed to the
-        // current viewers (if 'dstViewer' is null) or to a specific viewer (as identified
-        // by 'dstViewer').
-        //
-        // The 'what' argument is a string that identifies the type of data encapsulated
-        // - valid values are "track-project-data" ('data' is expected to contain a track's
-        // entire data: container, manifesto, and metadata), and "user-edit" ('data' is
-        // expected to contain the arguments for a call to Rsed.ui.utils.assetMutator.user_edit()).
-        //
-        // 'headerExtra' allows the caller to insert additional parameters to the header,
-        // or to overwrite the default parameters.
-        send_packet: function({
-            what = "",
-            data,
-            dstViewer = null,
-            headerExtra = {},
-        } = {})
-        {
-            if (!stream)
-            {
-                return;
-            }
-
-            const packet = {
-                header: {
-                    what,
-                    creatorId: stream.id,
-                    createdOn: Date.now(),
-                    keepAlive: true,
-                    ...headerExtra,
-                },
-                data,
-            };
-
-            Rsed.assert?.(
-                publicInterface.is_validly_formed_packet({packet}),
-                "The stream has created a malformed packet."
-            );
-
-            stream.send(packet, dstViewer);
-
-            return;
-        },
-
-        // Returns true if the given stream packet is validly formed (contains the
-        // required parameters, etc.); false otherwise.
-        is_validly_formed_packet: function({packet})
-        {
-            if ((typeof packet !== "object") ||
-                (typeof packet.header !== "object") ||
-                (typeof packet.header.what === "undefined") ||
-                (typeof packet.header.creatorId === "undefined") ||
-                (typeof packet.header.createdOn !== "number") ||
-                (typeof packet.header.keepAlive !== "boolean") ||
-                (typeof packet.data === "undefined"))
-            {
-                return false;
-            }
-
-            return true;
-        },
-    };
-
-    return publicInterface;
-})();
-
-Rsed.stream.localhostPeerJsServerConfig = {
-    host: "localhost",
-    port: 9000,
-    path: "./",
-};
-
-Rsed.stream.herokuPeerJsServerConfig = {
-    secure: true,
-    host: "peerjs-tarpeeksihyvaesoft.herokuapp.com",
-    port: 443,
-};
-
-// The configuration that will be used for PeerJS's Peer().
-Rsed.stream.peerJsServerConfig = Rsed.stream.herokuPeerJsServerConfig;
-
-// Returns a random id that can be used as the id of a peer in a stream.
-Rsed.stream.generate_random_stream_id = function()
-{
-    const alphaSrc = ["a", "c", "d", "e", "h", "k", "n", "s", "u"];
-    const numericSrc = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-    const alphanumeric = [..."000111000"].map(v=>{
-        const src = ((v == "0")? alphaSrc : numericSrc);
-        return src[Math.floor(Math.random() * src.length)];
-    });
-
-    return alphanumeric.join("");
-};
-/*
- * Most recent known filename: js/stream/server.js
- *
- * 2020 Tarpeeksi Hyvae Soft
- * 
- * Software: RallySportED-js
- *
- */
-
-"use strict";
-
-// Server is an Rsed.stream() role in a one-to-many network. Clients who are servers
-// accept connections from viewers, sending them the server client's current project
-// data and then closing the connection.
-Rsed.stream.server = function({streamId, signalFns} = {})
-{
-    let numViewersServed = 0;
-
-    // PeerJS's Peer() object.
-    let peer = null;
-
-    const publicInterface = {
-        role: "server",
-
-        num_connections: function()
-        {
-            return numViewersServed;
-        },
-
-        // Sends the given data packet to the given viewer.
-        send: function(packet, dstViewer = null)
-        {
-            Rsed.throw_if_not_type("object", packet,  packet.header);
-            
-            Rsed.throw_if(!dstViewer,
-                          "A destination is required for stream.server.send().");
-
-            Rsed.throw_if(!["project-data"].includes(packet.header.what),
-                          "A stream server can't send this type of packet.");
-
-            dstViewer.send(packet);
-
-            return;
-        },
-
-        // Servers don't receive data, they just ignore requests to do so.
-        receive: function(){},
-
-        // Start serving.
-        start: function()
-        {
-            numViewersServed = 0;
-
-            if (status.active)
-            {
-                Rsed.log("Attempted to start a new server stream while an existing stream was still active. Ignoring this.");
-                return;
-            }
-
-            signalFns.signal_stream_status({status: "initializing"});
-    
-            peer = new Peer(streamId, Rsed.stream.peerJsServerConfig);
-            peer.on("close", ()=>signalFns.signal_stream_closed({streamId}));
-            peer.on("error", (error)=>
-            {
-                publicInterface.stop();
-                signalFns.signal_stream_error(error);
-            });
-            peer.on("open", (id)=>
-            {
-                if (id != streamId)
-                {
-                    Rsed.ui.dom.popup_notification("Stream: Received an invalid ID from the peer server.", {
-                        notificationType: "error",
-                    });
-
-                    publicInterface.stop();
-    
-                    return;
-                }
-
-                peer.on("connection", handle_new_viewer);
-    
-                signalFns.signal_stream_open({
-                    role: publicInterface.role,
-                    streamId: id,
-                });
-            });
-        },
-
-        // End the serving.
-        stop: function()
-        {
-            peer.destroy();
-        },
-
-        get id()
-        {
-            return (peer? peer.id : undefined);
-        },
-    };
-
-    return publicInterface;
-
-    // Gets called when a new viewer connects to this server.
-    function handle_new_viewer(newViewer)
-    {
-        // Wait until the connection is fully open, then send the new viewer a copy
-        // of the current project's full data.
-        let startTime = Date.now();
-        const connectionWaitTimeoutMs = 10000;
-        const dataReceptionWaitTimeoutMs = 30000;
-        const timeBetweenAttemptsMs = 500;
-        const timer = setInterval(()=>
-        {
-            // If the stream has been closed.
-            if (!peer)
-            {
-                clearInterval(timer);
-                return;
-            }
-
-            if (newViewer.open)
-            {
-                clearInterval(timer);
-
-                Rsed.stream.send_packet({
-                    what: "project-data",
-                    data: Rsed.$currentProject.json(),
-                    dstViewer: newViewer,
-                    headerExtra: {
-                        keepAlive: false,
-                    },
-                });
-
-                numViewersServed++;
-
-                // Give the viewer a bit of time to receive the data, then, if they
-                // haven't yet done so themselves, close their connection to us.
-                /// TODO: Should we instead have bidirectional streaming, i.e. the
-                /// viewer sending the server confirmation when they've received
-                /// the data? Maybe.
-                setTimeout(()=>
-                {
-                    if (newViewer &&
-                        newViewer.open)
-                    {
-                        newViewer.close();
-                    }
-                }, dataReceptionWaitTimeoutMs);
-            }
-            else if ((Date.now() - startTime) > connectionWaitTimeoutMs)
-            {
-                newViewer.close();
-                clearInterval(timer);
-            }
-        }, timeBetweenAttemptsMs);
-
-        return;
-    }
-};
-/*
- * Most recent known filename: js/stream/viewer.js
- *
- * 2020 Tarpeeksi Hyvae Soft
- * 
- * Software: RallySportED-js
- *
- */
-
-"use strict";
-
-// Viewer is an Rsed.stream() role in a one-to-many network. Clients who are viewers
-// connect to a streamer and receive data from them. Data doesn't flow from viewers
-// to streamers, however.
-Rsed.stream.viewer = function({streamId, signalFns} = {})
-{
-    // The stream we're viewing.
-    let srcStream = null;
-
-    // PeerJS's Peer() object.
-    let peer = null;
-
-    const publicInterface = {
-        role: "viewer",
-
-        // How many streamers this viewer is connected to.
-        num_connections: function()
-        {
-            return Number(srcStream !== null);
-        },
-
-        // Viewers don't send data, they just ignore requests to do so.
-        send: function(){},
-
-        // Receive and process a packet of data from the streamer.
-        receive: function(packet)
-        {
-            if (!Rsed.stream.is_validly_formed_packet({packet}))
-            {
-                return;
-            }
-            
-            if (!packet.header.keepAlive)
-            {
-                publicInterface.stop();
-            }
-
-            switch (packet.header.what)
-            {
-                case "request-to-disconnect":
-                {
-                    publicInterface.stop();
-                    break;
-                }
-
-                // A streamer client has edited a track asset and wants us to replicate
-                // those edits on our client. Expects packet.data to contain the data
-                // for a call to Rsed.ui.utils.assetMutator.user_edit().
-                case "user-edit":
-                {
-                    Rsed.ui.utils.assetMutator.user_edit(packet.data.assetType, packet.data.editAction);
-
-                    break;
-                }
-
-                // Expects packet.data to be a string containing the stream project's data
-                // in RallySportED-js's JSON format.
-                case "project-data":
-                {
-                    try
-                    {
-                        const projectData = JSON.parse(packet.data);
-
-                        Rsed.core.start({
-                            stream: packet.header.creatorId, 
-                            project: {
-                                dataLocality: "inline",
-                                data: projectData,
-                            },
-                        });
-                    }
-                    catch (error)
-                    {
-                        Rsed.throw(`Failed to sync with the stream: ${error}`);
-                    }
-
-                    break;
-                }
-                // We'll fully ignore any unknown packets.
-                default: break;
-            }
-
-            return;
-        },
-
-        // Connects this viewer to a stream.
-        start: function()
-        {
-            if (srcStream)
-            {
-                Rsed.log("Attempted to start viewing a stream while already viewing another stream.");
-                publicInterface.stop();
-            }
-
-            signalFns.signal_stream_status({status: "initializing"});
-
-            peer = new Peer(Rsed.stream.generate_random_stream_id(), Rsed.stream.peerJsServerConfig);
-            
-            peer.on("error", (error)=>
-            {
-                publicInterface.stop();
-                signalFns.signal_stream_error(error);
-                Rsed.throw(`Stream ${error}`);
-            });
-            peer.on("close", ()=>
-            {
-                signalFns.signal_stream_closed({streamId});
-            });
-            peer.on("open", ()=>
-            {
-                // Attempt to connect to the given stream.
-                srcStream = peer.connect(streamId, {reliable: true});
-
-                srcStream.on("close", publicInterface.stop);
-                srcStream.on("data", publicInterface.receive);
-                srcStream.on("error", (error)=>
-                {
-                    publicInterface.stop();
-                    signalFns.signal_stream_error(error);
-                    Rsed.throw(`Stream ${error}`);
-                });
-                srcStream.on("open", ()=>
-                {
-                    signalFns.signal_stream_open({
-                        role: publicInterface.role,
-                        streamId: streamId,
-                    });
-                });
-            });
-        },
-
-        stop: function()
-        {
-            if (!srcStream)
-            {
-                Rsed.log("Attempted to close a connection to a stream that we weren't connected to. Ignoring this.");
-                return;
-            }
-
-            srcStream.close();
-            srcStream = null;
-
-            peer.destroy();
-        },
-
-        get id()
-        {
-            return (peer? peer.id : undefined);
-        },
-    };
-
-    return publicInterface;
-};
 /*
  * Most recent known filename: js/core/core.js
  *
