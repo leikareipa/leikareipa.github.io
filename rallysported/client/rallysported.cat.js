@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (08 September 2023 04:18:57 UTC)
+// VERSION: live (08 September 2023 07:39:14 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { The retro n-gon renderer (c) 2019-2023 Tarpeeksi Hyvae Soft }
 // FILES:

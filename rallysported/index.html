@@ -21,7 +21,9 @@
 
             <div id="button-bar">
 
-            <div id="project-name" class="label" title="The name of the track">
+            <div id="project-name"
+                 class="label"
+                 onclick="Rsed.$currentProject.rename();">
 
                 <span class="label"></span>
 
@@ -45,31 +47,31 @@
 
             </div>
 
-            <div class="button"
-                 onclick="Rsed.$currentProject.rename();">
+            <div class="button nonclick">
 
-                Rename
+                <div class="button nested"
+                     onclick="event.stopPropagation(); Rsed.player.play_with_opponent();"
+                >
 
-            </div>
+                    Play
 
-            <div class="button"
-                 onclick="Rsed.player.record_ai_lap();">
+                </div>
 
-                Record
+                <div class="button nested"
+                     onclick="event.stopPropagation(); Rsed.player.play_test_drive();"
+                >
 
-            </div>
+                    Test
 
-            <div class="button"
-                 onclick="Rsed.player.play_test_drive();">
+                </div>
 
-                Test
+                <div class="button nested"
+                     onclick="event.stopPropagation(); Rsed.player.record_ai_lap();"
+                >
 
-            </div>
+                    Record
 
-            <div class="button"
-                 onclick="Rsed.player.play_with_opponent();">
-
-                Play
+                </div>
 
             </div>
 

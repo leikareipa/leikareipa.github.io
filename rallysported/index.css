@@ -206,6 +206,21 @@ canvas
     align-items: center;
 }
 
+#button-bar .button.nested
+{
+    font-size: 100% !important;
+    margin-right: 0;
+}
+
+#button-bar .button.nested:hover
+{
+    border-color: yellow;
+}
+
+#button-bar .button.nested + .button.nested
+{    margin-left: 0;
+}
+
 #button-bar:not(.visible)
 {
     display: none;
@@ -215,10 +230,12 @@ canvas
 #html #project-name
 {
     font-size: 95%;
-    padding: 0.6em 1em;
+    padding: 0.5em 1em;
     background: black;
     text-decoration: none;
     border: 0.4ch solid black;
+    display: flex;
+    align-items: center;
 }
 
 #html .button.disabled
@@ -238,9 +255,10 @@ canvas
     font-size: 125%;
     font-weight: bold;
     text-transform: uppercase;
+    cursor: pointer;
 }
 
-#html .button
+#html .button:not(.nonclick)
 {
     color: #c2c2c2;
     cursor: pointer;
@@ -252,6 +270,11 @@ canvas
     border: 0.4ch solid hotpink;
     color: white;
 }
+
+#html .button.nonclick:hover
+{
+    border: 0.4ch solid lime;
+} 
 
 #html .button > a
 {
