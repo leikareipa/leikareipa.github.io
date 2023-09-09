@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (08 September 2023 07:39:14 UTC)
+// VERSION: live (09 September 2023 05:17:23 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { The retro n-gon renderer (c) 2019-2023 Tarpeeksi Hyvae Soft }
 // FILES:
@@ -35,6 +35,7 @@
 //	./src/ui/canvas/font.js
 //	./src/ui/canvas/component.js
 //	./src/ui/canvas/components/_primitives.js
+//	./src/ui/canvas/components/editor-selector.js
 //	./src/ui/canvas/components/active-pala.js
 //	./src/ui/canvas/components/pala-selector.js
 //	./src/ui/canvas/components/text-selector.js
@@ -2030,6 +2031,7 @@ Rsed.visual.palette = (function()
         white:     {red:255, green:255, blue:255},
         black:     {red:0,   green:0,   blue:0},
         dimgray:   {red:64,  green:64,  blue:64},
+        gray:      {red:128, green:128, blue:128},
         lightgray: {red:192, green:192, blue:192},
         yellow:    {red:255, green:255, blue:0},
         red:       {red:255, green:0,   blue:0},
@@ -5424,7 +5426,7 @@ Rsed.ui.canvas.font = (function()
 {
     // Shorthands for colors.
     const X = Rsed.visual.palette.BLACK;
-    const _ = Rsed.visual.palette.YELLOW;
+    const _ = 0;
 
     const charset = {
         " ": c([[_]]),
@@ -5802,7 +5804,7 @@ Rsed.ui.canvas.font = (function()
 
             pixel_at: function(x = 0, y = 0)
             {
-                return (pixels[y][x] || _);
+                return (pixels[y][x] || 0);
             },
         };
     }
@@ -5978,6 +5980,86 @@ Rsed.ui.canvas.component.$line = function({
             ...material,
         }
     );
+}
+/*
+ * 2023 Tarpeeksi Hyvae Soft
+ * 
+ * Software: RallySportED-js
+ * 
+ */
+
+"use strict";
+
+Rsed.ui.canvas.component.editorSelector = function({
+    on_grab = undefined
+} = {})
+{
+    const self = Rsed.ui.canvas.component({on_grab});
+
+    const terrainEditorLabel = Rsed.ui.canvas.component.label({
+        on_grab: function()
+        {
+            Rsed.$currentScene = "terrain-editor";
+        },
+    });
+
+    const textureEditorLabel = Rsed.ui.canvas.component.label({
+        on_grab: function()
+        {
+            Rsed.$currentScene = "texture-editor";
+        },
+    });
+
+    const tilemapEditorLabel = Rsed.ui.canvas.component.label({
+        on_grab: function()
+        {
+            Rsed.$currentScene = "tilemap-editor";
+        },
+    });
+
+    return function(x = 0, y = 0)
+    {
+        Rsed.assert?.(
+            ((typeof x === "number") &&
+             (typeof y === "number")),
+            "Expected numbers."
+        );
+
+        self.update();
+
+        const labelVerticalSpacing = (Rsed.ui.canvas.font.nativeHeight + 4);
+
+        const isTerrain = (Rsed.$currentScene === Rsed.scenes["terrain-editor"]);
+        const isTilemap = (Rsed.$currentScene === Rsed.scenes["tilemap-editor"]);
+        const isTexture = (Rsed.$currentScene === Rsed.scenes["texture-editor"]);
+
+        return [
+            terrainEditorLabel("Terrain", (x - isTerrain), (y - isTerrain), {
+                plain: !isTerrain,
+                bgColor: (
+                    isTerrain
+                        ? Rsed.visual.palette.YELLOW
+                        : Rsed.visual.palette.HOTPINK
+                ),
+            }),
+            tilemapEditorLabel("Tilemap", (x - isTilemap), (y + labelVerticalSpacing - isTilemap), {
+                plain: !isTilemap,
+                bgColor: (
+                    isTilemap
+                        ? Rsed.visual.palette.YELLOW
+                        : Rsed.visual.palette.HOTPINK
+                ),
+            }),
+            textureEditorLabel("Texture", (x - isTexture), (y + (labelVerticalSpacing * 2) - isTexture), {
+                plain: !isTexture,
+                bgColor: (
+                    isTexture
+                        ? Rsed.visual.palette.YELLOW
+                        : Rsed.visual.palette.HOTPINK
+                ),
+            }),
+        ];
+    };
 }
 /*
  * 2020-2022 Tarpeeksi Hyvae Soft
@@ -6869,19 +6951,31 @@ Rsed.ui.canvas.component.colorSelector = function({
 "use strict";
 
 Rsed.ui.canvas.component.label = function({
-    plain = false,
     on_grab = undefined
 } = {})
 {
     const self = Rsed.ui.canvas.component({on_grab});
 
-    return function(string = "", x = 0, y = 0)
-    {
+    const defaultStyle = {
+        bgColor: Rsed.visual.palette.YELLOW,
+        shadowColor: Rsed.visual.palette.HOTPINK,
+        plain: false,
+    };
+
+    return function(
+        string = "",
+        x = 0,
+        y = 0,
+        style = undefined
+    ){
         Rsed.assert?.(
-            ((typeof x === "number") &&
-             (typeof y === "number")),
-            "Expected numbers."
+            (typeof string === "string") &&
+            (typeof x === "number") &&
+            (typeof y === "number"),
+            "Invalid arguments."
         );
+
+        style = Object.assign({}, defaultStyle, style);
 
         self.update();
 
@@ -6917,12 +7011,12 @@ Rsed.ui.canvas.component.label = function({
             width: (runningXOffs + 1),
             height: (Rsed.ui.canvas.font.nativeHeight + 2),
             material: {
-                color: Rsed.visual.palette.YELLOW,
+                color: style.bgColor,
             },
         }));
 
         // Dropshadow.
-        if (!plain)
+        if (!style.plain)
         {
             ngons.unshift(ngon({
                 x,
@@ -6930,7 +7024,7 @@ Rsed.ui.canvas.component.label = function({
                 width: (runningXOffs + 1),
                 height: (Rsed.ui.canvas.font.nativeHeight + 2),
                 material: {
-                    color: Rsed.visual.palette.HOTPINK,
+                    color: style.shadowColor,
                 },
             }));
         }
@@ -6953,6 +7047,7 @@ Rsed.ui.canvas.component.label = function({
                 Rngon.vertex(x        , y + height)], {
                     texture: texture,
                     isInScreenSpace: true,
+                    allowAlphaReject: true,
                     ...material,
                     $mousePickId: (
                         on_grab
@@ -7555,11 +7650,18 @@ function rasterize_ui_poly(ngon, renderState)
                 
                 if (x >= 0)
                 {
-                    pixelBuffer32[pixelBufferIdx] = (Rsed.visual.palette.precompiled[texture.indices[~~texelIdx]][Rsed.visual.palette.numLightLevels - 1] || 255);
+                    const colorIdx = texture.indices[~~texelIdx];
 
-                    if (material.$mousePickId)
-                    {
-                        Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.$mousePickId;
+                    if (
+                        !material.allowAlphaReject ||
+                        (colorIdx !== 0)
+                    ){
+                        pixelBuffer32[pixelBufferIdx] = (Rsed.visual.palette.precompiled[colorIdx][Rsed.visual.palette.numLightLevels - 1] || 11);
+    
+                        if (material.$mousePickId)
+                        {
+                            Rsed.ui.utils.inputState.mousePickBuffer[pixelBufferIdx] = material.$mousePickId;
+                        }
                     }
                 }
 
@@ -8009,12 +8111,7 @@ Rsed.scenes["terrain-editor"] = (function()
             title: "FPS",
             labelOnly: true,
         }),
-        editorNameLabel: Rsed.ui.canvas.component.label({
-            on_grab: function()
-            {
-                Rsed.$currentScene = "tilemap-editor";
-            },
-        }),
+        editorSelector: Rsed.ui.canvas.component.editorSelector(),
     };
 
     const scene = Rsed.scene({
@@ -8292,7 +8389,7 @@ Rsed.scenes["terrain-editor"] = (function()
 
         if (!Rsed.browserMetadata.isMobile)
         {
-            uiMeshes.push(uiComponents.editorNameLabel("Editor: Terrain", margin, margin));
+            uiMeshes.push(...uiComponents.editorSelector(margin+1, margin+1));
             uiMeshes.push(uiComponents.activePala((Rsed.visual.canvas.width - 72), (margin - 1)));
             uiMeshes.push(...uiComponents.footerInfo(margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - margin)));
         }
@@ -9067,12 +9164,7 @@ Rsed.scenes["texture-editor"] = (function()
             },
         }),
         resolutionLabel: Rsed.ui.canvas.component.label(),
-        editorNameLabel: Rsed.ui.canvas.component.label({
-            on_grab: function()
-            {
-                Rsed.$currentScene = "terrain-editor";
-            },
-        }),
+        editorSelector: Rsed.ui.canvas.component.editorSelector(),
         clipboardLabel: Rsed.ui.canvas.component.label(),
         palatPane: Rsed.ui.canvas.component.palatPane({
             indicateSelection: false,
@@ -9242,7 +9334,7 @@ Rsed.scenes["texture-editor"] = (function()
             ? `Clipboard: ${clipboard.width} * ${clipboard.height}${(clipboard.source == texture)? " (this)" : ""}`
             : "Clipboard: empty";
 
-        uiMeshes.push(uiComponents.editorNameLabel("Editor: Texture", margin, margin));
+        uiMeshes.push(...uiComponents.editorSelector(margin+1, margin+1));
         uiMeshes.push(uiComponents.colorSelector((Rsed.visual.canvas.width - 101), (margin - 1)));
         uiMeshes.push(uiComponents.palaSelector((Rsed.visual.canvas.width - 105), (margin - 1)));
         uiMeshes.push(uiComponents.textSelector((Rsed.visual.canvas.width - 141), (margin - 1)));
@@ -9664,12 +9756,7 @@ Rsed.scenes["tilemap-editor"] = (function()
                 Rsed.ui.utils.terrainBrush.textureIdx = event.palaIdx;
             },
         }),
-        editorNameLabel: Rsed.ui.canvas.component.label({
-            on_grab: function()
-            {
-                Rsed.$currentScene = "texture-editor";
-            },
-        }),
+        editorSelector: Rsed.ui.canvas.component.editorSelector(),
         fpsIndicator: Rsed.ui.canvas.component.valueGraph({
             title: "FPS",
             labelOnly: true,
@@ -9815,7 +9902,7 @@ Rsed.scenes["tilemap-editor"] = (function()
             return;
         }
         
-        uiMeshes.push(uiComponents.editorNameLabel("Editor: Tilemap", margin, margin));
+        uiMeshes.push(...uiComponents.editorSelector(margin+1, margin+1));
         uiMeshes.push(uiComponents.activePala((Rsed.visual.canvas.width - margin), (margin - 1)));
         uiMeshes.push(uiComponents.footer(`Map size: ${Rsed.$currentProject.maasto.width} * ${Rsed.$currentProject.maasto.width}`, margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - 5)));
 

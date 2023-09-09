@@ -50,7 +50,7 @@
             <div class="button nonclick">
 
                 <div class="button nested"
-                     onclick="event.stopPropagation(); Rsed.player.play_with_opponent();"
+                     onclick="Rsed.player.play_with_opponent();"
                 >
 
                     Play
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="button nested"
-                     onclick="event.stopPropagation(); Rsed.player.play_test_drive();"
+                     onclick="Rsed.player.play_test_drive();"
                 >
 
                     Test
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="button nested"
-                     onclick="event.stopPropagation(); Rsed.player.record_ai_lap();"
+                     onclick="Rsed.player.record_ai_lap();"
                 >
 
                     Record
@@ -90,36 +90,12 @@
 
             </div>
 
-            <div class="spacer" style="width: 100%">
-            </div>
-
-            <div class="button"
-                 onclick="Rsed.$currentScene = 'terrain-editor';">
-
-                Terrain
-
-            </div>
-
-                <div class="button"
-                     onclick="Rsed.$currentScene = 'tilemap-editor';">
-
-                Tilemap
-
-            </div>
-
-                <div class="button"
-                     onclick="Rsed.$currentScene = 'texture-editor';">
-
-                Texture
-
-            </div>
-
             <div id="prop-dropdown" class="dropdown-menu">
             </div>
 
-            <div id="popup-notifications-container"></div>
-
         </section>
+
+        <div id="popup-notifications-container"></div>
 
         <div id="jsdos-container">
 
