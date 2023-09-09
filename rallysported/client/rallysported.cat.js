@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (09 September 2023 05:17:23 UTC)
+// VERSION: live (09 September 2023 07:00:06 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { The retro n-gon renderer (c) 2019-2023 Tarpeeksi Hyvae Soft }
 // FILES:
@@ -7905,8 +7905,12 @@ function rasterize_poly(ngon, renderState)
                     const colorIdx = (texture? texture.indices[~~u + vBase] : material.color);
 
                     if (
-                        (ngon.material.$isBillboard || ngon.material.$isProp) &&
-                        (colorIdx === 0)
+                        (colorIdx === 0) &&
+                        (
+                            ngon.material.allowAlphaReject ||
+                            ngon.material.$isBillboard ||
+                            ngon.material.$isProp
+                        )
                     ){
                         continue;
                     }
@@ -9324,8 +9328,10 @@ Rsed.scenes["texture-editor"] = (function()
         
         if (!texture)
         {
-            Rsed.throw_if(Rsed.$currentProject.isPlaceholder,
-                            "Expected project data to have been loaded already.");
+            Rsed.throw_if(
+                Rsed.$currentProject.isPlaceholder,
+                "Expected project data to have been loaded already."
+            );
 
             scene.set_texture(Rsed.$currentProject.palat.texture[3]);
         }
@@ -9659,6 +9665,9 @@ Rsed.scenes["texture-editor"] = (function()
                 width: symbol.width,
                 height: symbol.height,
                 texture: symbol.texture,
+                material: {
+                    allowAlphaReject: true,
+                },
             }));
 
             runningXOffs += (symbol.width + symbol.offsetX + letterSpacing);
