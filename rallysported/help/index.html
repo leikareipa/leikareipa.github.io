@@ -88,6 +88,7 @@
             .dokki-topic h2 > .idx
             {
                 display: initial !important;
+                color: inherit;
             }
         </style>
     </head>
@@ -99,7 +100,7 @@
                     <dokki-header>
                         <template #caption>
                             
-                User's manual for RallySportED (RallySportED for browsers)
+                User's manual for RallySportED
             
                         </template>
                         
@@ -107,10 +108,8 @@
                     <dokki-topics>
                         
 <dokki-topic title="Introduction">
-<p>Welcome to RallySportED, a contemporary toolset for modding the classic DOS racing game <a href="https://web.archive.org/web/19970805142345/http://www.cs.tut.fi/~k140734/Rally-Sport/index.html">Rally-Sport</a>! This browser version of the toolset allows you to create and play custom Rally-Sport tracks in your browser.</p>
-<p>RallySportED is © 2016–2022 <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a>. You can <a href="https://github.com/leikareipa/rallysported/">access its source code on GitHub</a>. Rally-Sport creator Jukka Jäkälä is not affiliated with RallySportED.</p>
-<dokki-image src="./img/rallysported.png" width="1440" height="810"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAAAsTAAALEwEAmpwYAAACtUlEQVQokZWOW3MaZRiAP0iIicSwsMvCAgvLYZfluGyAUCCAtgVKNKlpMsYhbdIUk8aOF71KrRoPU5uZjOP4n+qv8Cd44194nIbpjN7pxTPvO+/znsRk4rK3t06v51AqVajVHCqVyg2OM89d16VcLmOaJpZl3WCaFsWCxWDUpDNo0B00aXTWEaoqSKUEq6sCIf4/QdOPO1Tp3k9g9dW3tXfS869Gj8dzwzwXiLf803vnbtUv4XRjqG6CTD4xX3gzIAQ+3xKxWAwpGPzPHyZSNuVJmWAthlSJInwLc2Ekk4zHI1rdNsM7d2hvbrLgW2DRMz+44J1Hr/Die2+JRXkZr7yEzw4Q2EgQduIEHRXx8UGJznaVTx/v4g409qLLPNZW+GbUo781oL2t039Q4+5ugcY4x2ItQDwdIZVOEGhH0Voq47RCpxKm54QRgbMM7WcT7P06B+4ary2V7/MyL/Iy+4c7GE9dMo82UWcm2aMKxYOPKE6TGKMUa0GZjBWi1VRoNBWGjozwn2VY/8zitK5xmZO5yMtcZkM8bEYIzGzyX9SQZhaRaY3QkwLyrEhp2kc7ryBtaMQzIco9lVZBpn8rijjpaPxkh7i2ZF4VFF4XFK5shR+LYY47ET65rbFxP07poErs2GTlaZLK4Zj4SZXlWYpOw+CVG2WnEmXzVg5xbcj8YIa5KKp8bYd5YYd5WQxzWQrzna1waSt8m1X4KrfG85LMzt0ES2c60pM0a+dZMsMsww2T6faIRKOAOLwdoXOkUz1J4h7r1E+TlI8NtKnB+PMcv+/XebNV5ddWjvO0wkVK4sOJzgezLNJpBu2ejl62iZoGET2KcJ7HuPdzjOF1itGVzs4vCdyXBuKZxdaXZf466vPnwy5/PKjzWy3GqSFxlVeo7iZ5f5ZBemSgV1Os+v2s+Ff4G06HYo/rRkvAAAAAAElFTkSuQmCC"><template #caption>RallySportED running in Google Chrome</template>
-                        </dokki-image>
+<p><a href="https://www.tarpeeksihyvaesoft.com/rallysported">RallySportED</a> is a contemporary modding tool for the MS-DOS racing game <a href="https://web.archive.org/web/19970805142345/http://www.cs.tut.fi/~k140734/Rally-Sport/index.html">Rally-Sport</a>.</p>
+<p>RallySportED is © 2016–2023 <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a>. There is no affiliation with Rally-Sport creator Jukka Jäkälä.</p>
 <dokki-subtopic title="System requirements">
 <dokki-table headerless>
     <template #table>
@@ -124,12 +123,12 @@
         </tr>
         <tr>
             <th>Input</th>
-            <td>Mouse and keyboard<sup>3</sup></td>
+            <td>Mouse and keyboard</td>
         </tr>
         <tr>
             <th>Other</th>
             <td>
-                Saving content requires the ability to download files.
+                Saving requires the ability to download files.
             </td>
         </tr>
         <tr>
@@ -139,12 +138,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <sup>2</sup>RallySportED uses software 3D rendering that requires a relatively fast CPU. The faster the better.<br>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <sup>3</sup>There is limited support for touch controls, but full operation requires a mouse and keyboard.
+                <sup>2</sup>RallySportED uses software 3D rendering and so requires a fast CPU. The faster the better.<br>
             </td>
         </tr>
     </template>
@@ -153,278 +147,38 @@
 <dokki-table headerless>
     <template #table>
         <tr>
-            <th>Browser</th>
-            <th>Compatibility with RallySportED</th>
-        </tr>
-        <tr>
-            <td>
+            <th>
                 Google Chrome
-            </td>
+            </th>
             <td>
-                Best compatibility and performance. But for iOS and its derivatives, see <i>Apple Safari</i>.
+                Best compatibility and performance.<br><br>For Chrome on iOS, see <strong>Apple Safari</strong>.
             </td>
         </tr>
         <tr>
-            <td>
+            <th>
                 Mozilla Firefox
-            </td>
+            </th>
             <td>
-                Generally good compatibility, but may be lacking in performance.
+                Reasonable compatibility but poor performance.
             </td>
         </tr>
         <tr>
-            <td>
+            <th>
                 Apple Safari
-            </td>
+            </th>
             <td>
-                May or may not be compatible.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Microsoft Internet Explorer
-            </td>
-            <td>
-                Not compatible.
+                Works if you're lucky.
             </td>
         </tr>
     </template>
 </dokki-table>
 </dokki-subtopic></dokki-topic>
 
-<dokki-topic title="Program window">
-<p>The program window for this browser version of RallySportED consists of two main elements: the button bar, and the editor view. The screenshot below highlights the button bar in orange and the editor view in blue:</p>
-<dokki-image src="./img/rallysported-window-elements-highlighted.png" width="1440" height="810"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAAAsTAAALEwEAmpwYAAAC5klEQVQokU3O/U9aZxTA8ce31SwTxQ2KsNVqZutEyktlQ7jAfe6Fe4ELXF5aqwgqgsJam2XO2MW5tDXbT0uWdbY23bL9Oeuf9V1wXeoPn5znnPPknCOeP7T46ZsC37ZybBVNOpUC7XKOnbLJ7rt3t1Zku2TQMFQ2TXmpYUi2CpLDjsXjpsXBpsVBo4BwhvP4InHG5xXEtIJwKYhP3vn4f4n3tavcCT6K6vitDFFb46ZlI4Q3j3AmEO4UwjP4uIpwJRieSV4ausrz3qA3GDhx0yBomLgVg3nlPkLcyDPkGVwQZ+xTFe+yxdSCcZkLt4LwJBHXrxgsvT64LomYiuELreGv1nDGM0ypNcTYbA7hijEbKpO1O0SzTXSrTcxoMeJLMeJJMORRGJlRLuOwO8moL8XoQprhhRRjX0oc0sQVzzApKwhje4fVWp3y7tcEswaVzxW2FhSeWJsodotY3SK5vo72oM7dss1oTMUb0LkRMHCkdTxpnewdnfhXkkiqjJjo1Yk92uH2gzr3YknOgho/BFWOQpJaa4/Zfo257Raubp75nQqLG20WtwxmiyYTc5K5iCSa0ribUkkpJcSHvSrhjRy78QwnAZXvgpKTZZVGQsPRtbi1X2Gym8fdrOLsFJnullhqtvD0bSbTOr6gxJ/Ria6oJDQbsaHbPA2l+DkoeRaWPA9LzkKS04ikpWoUTI2Vms4XjSoz7TzjfQ1/ax9vp8q1vQyxZIFnikFxVWdV20Cc3inxY0ByGNE5CmkchXSOIzonEY3vQ/85XtbpB9IcrGhYeYOxno6ja+Lo55grl9Ez91hf6+GVbUS9mCe+nSTQUQm100T20/jbKp6mitnQeLtm8U8pxwslw8OlJE9uraJbaRwdyeSeZMbW+CxWxhM2cQVsxO2nf6C+OCf+yyuSv74ke/6SxbMLxMFrlh6/4bT3N8e9vzjs/olRf0XQ+h1pnzO9d8EHjy4Y713gvP+G0exvjORf8y/0u6ATEwLhjQAAAABJRU5ErkJggg=="><template #caption>RallySportED's program window, showing the button bar (orange highlight) and editor view (blue highlight)</template>
-                        </dokki-image>
-<dokki-subtopic title="Button bar">
-<p>The button bar provides various controls for accessing RallySportED's functionality. The following table describes each control:</p>
-<dokki-table headerless>
-    <template #caption>
-        The button bar's controls
-    </template>
-    <template #table>
-        <tr>
-            <th>Control</th>
-            <th>Description</th>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-cogs"></i>
-                Data
-            </td>
-            <td>
-                <p>
-                    Opens a menu that allows you to import and export the individual Rally-Sport asset files associated with the current track. This can be useful e.g. when you want to edit these data in an external program.
-                </p>
-                <dokki-tip>
-                    To download the track as a RallySportED-compatible ZIP file, use the <strong>Download</strong> control instead.
-                </dokki-tip>
-                <p>
-                    The table below describes the various Rally-Sport asset file types:
-                </p>
-                <dokki-table headerless>
-                    <template #caption>
-                        The asset types of Rally-Sport
-                    </template>
-                    <template #table>
-                        <tr>
-                            <th>Asset type</th>
-                            <th>Description</th>
-                            <th>Corresponding game file</th>
-                        </tr>
-                        <tr>
-                            <td>Maasto</td>
-                            <td>Terrain heightmap.</td>
-                            <td>MAASTO.<i>xxx</i></td>
-                        </tr>
-                        <tr>
-                            <td>Varimaa</td>
-                            <td>Terrain tilemap.</td>
-                            <td>VARIMAA.<i>xxx</i></td>
-                        </tr>
-                        <tr>
-                            <td>Palat</td>
-                            <td>Terrain texture atlas.</td>
-                            <td>PALAT.<i>xxx</i></td>
-                        </tr>
-                        <tr>
-                            <td>Text</td>
-                            <td>Mesh texture atlas.</td>
-                            <td>TEXT<i>x</i>.DTA</td>
-                        </tr>
-                        <tr>
-                            <td>Anims<sup>1</sup></td>
-                            <td>Animation frames (e.g. tire smoke).</td>
-                            <td>ANIMS.DTA</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <sup>1</sup>This asset type currently can't be edited directly in RallySportED, but you can still import/export its data.
-                            </td>
-                        </tr>
-                    </template>
-                </dokki-table>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-download"></i>
-                Download
-            </td>
-            <td>
-                Downloads the track's data as a RallySportED ZIP file. To load the data back into RallySportED, drag and drop the ZIP file onto the RallySportED window.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-i-cursor"></i>
-                Rename
-            </td>
-            <td>
-                Prompts you to give the track a new name. The name can have up to eight characters, and the characters must be in the range A&ndash;Z.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-car"></i>
-                Record
-            </td>
-            <td>
-                <p>
-                    Record a new CPU opponent for the track. The CPU opponent is the car you race against when you select <menu-path>Drive setup > Race type > Normal</menu-path> from Rally-Sport's in-game menu.
-                </p>
-                <p>
-                    When you press this button, RallySportED will launch the current track in Rally-Sport and record your driving for one lap, which will then be saved as the track's new CPU opponent.
-                </p>
-                <p>
-                    When you've finished the lap and the race is over, press <key-input>Space</key-input> to exit the game and save the data (you might need to wait for a few seconds before the game allows you to exit). Pressing <key-input>Esc</key-input> or exiting before the race is over will result in the data not being saved.
-                </p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-forward"></i>
-                Test
-            </td>
-            <td>
-                Play the track in Rally-Sport without the CPU opponent.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-play-circle"></i>
-                Play
-            </td>
-            <td>
-                Play the track in Rally-Sport against the CPU opponent.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-book-open"></i>
-                Help
-            </td>
-            <td>
-                Open the RallySportED user's manual.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-cubes"></i>
-                Terrain
-            </td>
-            <td>
-                Show the <a href="#editors-terrain-editor">terrain editor</a>.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-paint-roller"></i>
-                Tilemap
-            </td>
-            <td>
-                Show the <a href="#editors-tilemap-editor">tilemap editor</a>.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <i class="fas fa-sm fa-image"></i>
-                Textures
-            </td>
-            <td>
-                Show the <a href="#editors-texture-editor">texture editor</a>.
-            </td>
-        </tr>
-    </template>
-</dokki-table>
-</dokki-subtopic><dokki-subtopic title="Editor view">
-<p>The browser version of RallySportED consists of a number of editing tools, which will be displayed in the editor view. For example, in the screenshot shown <a href="#program-window">at the beginning of this section</a>, the editor view is displaying the <a href="#editors-terrain-editor">terrain editor</a>.</p>
-<p>You can read more about the individual editors in the <a href="#editors">Editors</a> section.</p>
-</dokki-subtopic></dokki-topic>
-
-<dokki-topic title="Editors">
-<p>As noted above, this version of RallySportED provides a number of tools for modifying track assets. Specifically, this toolset consists of a terrain editor, a texture editor, and a tilemap editor. This section will describe the individual editors in broad strokes.</p>
-<p>You can check out the <a href="#tutorial-creating-a-track">track-making tutorial</a> to learn how the editors come together in creating a new track.</p>
+<dokki-topic title="Controls">
 <dokki-subtopic title="Terrain editor">
-<p>With the terrain editor, you can modify a track's terrain. This includes painting the track's tilemap, altering its heightmap, and placing and moving its various track-side props (trees, billboards, etc.).</p>
-<p>The terrain editor closely replicates Rally-Sport's 3D rendering style, to the extent that the way the track appears in this editor more or less matches the way it looks in-game.</p>
-<dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa#scene:terrain-editor/ui:-menubar"   autofocus    ><template #caption>Preview the terrain editor</template>
-                    </dokki-iframe>
-<p>Move the camera using the <key-input>E</key-input> <key-input>S</key-input> <key-input>D</key-input> <key-input>F</key-input> keys. Click the terrain with the left and right mouse buttons to raise and lower the ground (heightmap). Click with the middle mouse button to paint the terrain (tilemap) using the currently-selected terrain texture. Hit <key-input>W</key-input> to reveal the edges of terrain tiles (and other polygons).</p>
-<p>The following information is provided in the bottom left corner of the terrain editor:</p>
-<dokki-table headerless>
-    <template #table>
-        <tr>
-            <th>Parameter</th>
-            <th>Description</th>
-        </tr>
-        <tr>
-            <td>
-                <span class="rsed-ui-text">
-                    Height
-                </span>
-            </td>
-            <td>
-                The height of the terrain under the mouse cursor.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="rsed-ui-text">
-                    Pala
-                </span>
-            </td>
-            <td>
-                The index in the terrain texture atlas of the texture under the mouse cursor.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="rsed-ui-text">
-                    X,Y
-                </span>
-            </td>
-            <td>
-                The X and Y coordinates of the terrain tile under the mouse cursor.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="rsed-ui-text">
-                    Prop
-                </span>
-            </td>
-            <td>
-                When hovering over a prop, the prop's name.
-            </td>
-        </tr>
-    </template>
-</dokki-table>
-<p>The top right corner of the editor shows the track's minimap, which indicates with a yellow rectangle the area of the track you're currently viewing. Clicking on the minimap moves the view to that location.</p>
-<p>To the left of the minimap is the brush indicator. It shows the currently-selected terrain texture and brush radius, which determine what happens when you click the terrain. Clicking on the brush indicator will open the terrain texture atlas, which you can also open with <key-input>A</key-input>.</p>
-<dokki-table headerless>
+<dokki-table>
     <template #caption>
-        Full keyboard controls for the terrain editor
+        Keyboard
     </template>
     <template #table>
         <tr>
@@ -493,9 +247,9 @@
         </tr>
     </template>
 </dokki-table>
-<dokki-table headerless>
+<dokki-table>
     <template #caption>
-        Full mouse controls for the terrain editor
+        Mouse
     </template>
     <template #table>
         <tr>
@@ -551,44 +305,9 @@
     </template>
 </dokki-table>
 </dokki-subtopic><dokki-subtopic title="Texture editor">
-<p>The texture editor lets you paint the textures of a track.</p>
-<dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa#scene:texture-editor/ui:-menubar"   autofocus    ><template #caption>Preview the texture editor</template>
-                    </dokki-iframe>
-<p>Move the view using the <key-input>E</key-input> <key-input>S</key-input> <key-input>D</key-input> <key-input>F</key-input> keys, and zoom with <mouse-input>Shift + Mouse wheel</mouse-input>. To select a texture for editing, you can either open the track texture atlas by pressing <key-input>A</key-input> or, while in the <a href="#editors-terrain-editor">terrain editor</a>, hover the mouse cursor over a texture and press <key-input>T</key-input> (this method also works with prop textures).</p>
-<p>Clicking on the texture in this editor view will paint the corresponding pixel using the current pen color. Clicking while pressing <key-input>Tab</key-input> assigns the corresponding pixel's color as the current pen color. You can also change the pen color by clicking on the color palette in the top right corner of the editor.</p>
-<p>The following information is provided in the bottom left corner of the editor:</p>
-<dokki-table headerless>
-    <template #table>
-        <tr>
-            <th>Parameter</th>
-            <th>Description</th>
-        </tr>
-        <tr>
-            <td>
-                <span class="rsed-ui-text">
-                    Size
-                </span>
-            </td>
-            <td>
-                The current texture's resolution.
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="rsed-ui-text">
-                    Clipboard
-                </span>
-            </td>
-            <td>
-                Indicates whether the texture clipboard contains a texture, and if so, its resolution.
-            </td>
-        </tr>
-    </template>
-</dokki-table>
-<p>The texture editor provides a texture clipboard, which allows you to copy the pixels of one texture over the pixels of another texture, provided that both textures are of the same resolution. To copy the current texture's pixel data into the clipboard, press <key-input>Ctrl + C</key-input>. To paste the contents of the clipboard onto the current texture, press <key-input>Ctrl + V</key-input>.</p>
-<dokki-table headerless>
+<dokki-table>
     <template #caption>
-        Full keyboard controls for the texture editor
+        Keyboard
     </template>
     <template #table>
         <tr>
@@ -625,9 +344,9 @@
         </tr>
     </template>
 </dokki-table>
-<dokki-table headerless>
+<dokki-table>
     <template #caption>
-        Full mouse controls for the texture editor
+        Mouse
     </template>
     <template #table>
         <tr>
@@ -653,34 +372,9 @@
     </template>
 </dokki-table>
 </dokki-subtopic><dokki-subtopic title="Tilemap editor">
-<p>You can edit a track's tilemap using the tilemap editor. Although you can modify the track's tilemap in the <a href="#editors-terrain-editor">terrain editor</a> also, the tilemap editor makes larger-scale painting easier.</p>
-<p>A track's tilemap determines which terrain texture is applied to which tile on the terrain. Each pixel of the tilemap in the tilemap editor represents a terrain tile, its color determined by the texture on that tile.</p>
-<dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa#scene:tilemap-editor/ui:-menubar"   autofocus    ><template #caption>Preview the tilemap editor</template>
-                    </dokki-iframe>
-<p>Clicking on the tilemap will paint the corresponding pixel using the currently-selected terrain texture. Pressing <key-input>A</key-input> will open the terrain texture atlas for selecting a different texture. You can move the view using the <key-input>E</key-input> <key-input>S</key-input> <key-input>D</key-input> <key-input>F</key-input> keys, and zoom with <mouse-input>Shift + Mouse wheel</mouse-input>.</p>
-<p>The following information is provided in the bottom left corner of the editor:</p>
-<dokki-table headerless>
-    <template #table>
-        <tr>
-            <th>Parameter</th>
-            <th>Description</th>
-        </tr>
-        <tr>
-            <td>
-                <span class="rsed-ui-text">
-                    Size
-                </span>
-            </td>
-            <td>
-                Shows the dimensions of the tilemap in track tile units. Small tracks are of size 64 &times; 64, while large tracks are 128 &times; 128.
-            </td>
-        </tr>
-    </template>
-</dokki-table>
-<p>In the top right corner of the tilemap editor is the brush indicator. It shows the currently-selected terrain texture and brush radius, which determine what happens when you click the tilemap. Clicking on the brush indicator will open the terrain texture atlas, which you can also open with <key-input>A</key-input>.</p>
-<dokki-table headerless>
+<dokki-table>
     <template #caption>
-        Full keyboard controls for the tilemap editor
+        Keyboard
     </template>
     <template #table>
         <tr>
@@ -705,9 +399,9 @@
         </tr>
     </template>
 </dokki-table>
-<dokki-table headerless>
+<dokki-table>
     <template #caption>
-        Full mouse controls for the tilemap editor
+        Mouse
     </template>
     <template #table>
         <tr>
@@ -737,7 +431,7 @@
 <dokki-subtopic title="Starting out">
 <p>Making a new track with <product-name></product-name> always starts with loading an existing track as a basis.</p>
 <p>So, to get started, load one of Rally-Sport's default tracks by using the <em>track</em> URL parameter. Like this: <a href="/rallysported/?track=demoa">rallysported/?track=demoa</a>.</p>
-<dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa"       ><template #caption>View a sample</template>
+<dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa" ><template #caption>View a sample</template>
                     </dokki-iframe>
 <p>When you're ready to start editing, hit the <key-input>L</key-input> key on your keyboard to bring up the terrain-leveling prompt, which asks you to input a height value to level the terrain to. Enter in &quot;0&quot; and select OK – you should now be looking at a fully flat terrain.</p>
 <p>Next, press the <key-input>A</key-input> key to bring up the texture-selection pane. It'll pop up on the right-hand side of the screen. In the pane, hover the mouse over the second thumbnail from the top left (grass) and click on it with the left mouse button. A solid yellow rectangle should appear around the thumbnail to indicate that this texture is now selected.</p>

@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (09 September 2023 07:00:06 UTC)
+// VERSION: live (09 September 2023 22:16:33 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { The retro n-gon renderer (c) 2019-2023 Tarpeeksi Hyvae Soft }
 // FILES:
@@ -22,6 +22,7 @@
 //	./src/game-content/maasto.js
 //	./src/game-content/kierros.js
 //	./src/game-content/palat.js
+//	./src/game-content/anims.js
 //	./src/game-content/props.js
 //	./src/game-content/wires.js
 //	./src/ui/utils/asset-mutator.js
@@ -39,10 +40,12 @@
 //	./src/ui/canvas/components/active-pala.js
 //	./src/ui/canvas/components/pala-selector.js
 //	./src/ui/canvas/components/text-selector.js
+//	./src/ui/canvas/components/anim-selector.js
 //	./src/ui/canvas/components/fps-indicator.js
 //	./src/ui/canvas/components/value-graph.js
 //	./src/ui/canvas/components/terrain-hover-info.js
 //	./src/ui/canvas/components/palat-pane.js
+//	./src/ui/canvas/components/anims-pane.js
 //	./src/ui/canvas/components/text-pane.js
 //	./src/ui/canvas/components/terrain-minimap.js
 //	./src/ui/canvas/components/color-selector.js
@@ -853,6 +856,7 @@ Rsed.project = async function(projectArgs = {})
         maasto,
         varimaa,
         palat,
+        anims,
         props,
         kierros
     } = await Rsed.project.parse_container_data(projectData.container, projectData.manifesto);
@@ -877,6 +881,7 @@ Rsed.project = async function(projectArgs = {})
         get maasto() {return maasto},
         get varimaa() {return varimaa},
         get palat() {return palat},
+        get anims() {return anims},
         get props() {return props},
         get kierros() {return kierros},
 
@@ -1849,6 +1854,14 @@ Rsed.project.parse_container_data = async function(data = [], manifesto)
         ), manifesto
     );
 
+    const anims = Rsed.gameContent.anims(
+        new Uint8Array(
+            dataContainer.dataBuffer,
+            dataContainer.byteOffset().anims,
+            dataContainer.byteSize().anims
+        )
+    );
+
     const props = await Rsed.gameContent.props(
         new Uint8Array(
             dataContainer.dataBuffer,
@@ -1870,6 +1883,7 @@ Rsed.project.parse_container_data = async function(data = [], manifesto)
         maasto,
         varimaa,
         palat,
+        anims,
         props,
         kierros
     };
@@ -2682,7 +2696,6 @@ Rsed.gameContent.palat = function(data = Uint8Array, manifesto = undefined)
 
     const palaSize = (palaWidth * palaHeight);
 
-    // Pre-compute the individual PALA textures.
     const prebakedPalaTextures = new Array(Rsed.constants.maxPalaCount).fill().map((pala, idx)=>generate_texture(idx));
 
     const publicInterface = Object.freeze(
@@ -2842,6 +2855,151 @@ Rsed.gameContent.palat = function(data = Uint8Array, manifesto = undefined)
                 // master data array.
                 const originalTexture = prebakedPalaTextures[palaId];
                 const newTexture = prebakedPalaTextures[palaId] = generate_texture(palaId, args);
+                broadcast_texture_change(newTexture, originalTexture);
+                return newTexture;
+            },
+        });
+    }
+    
+    return publicInterface;
+};
+
+function broadcast_texture_change(newTexture, previousTexture)
+{
+    window.dispatchEvent(new CustomEvent("rallysported:texture-changed", {
+        detail: {
+            from: previousTexture,
+            to: newTexture,
+        },
+    }));
+}
+/*
+ * 2023 Tarpeeksi Hyvae Soft
+ *
+ * Software: RallySportED-js
+ *
+ */
+
+"use strict";
+
+Rsed.gameContent.anims = function(data = Uint8Array)
+{
+    const palaWidth = Rsed.constants.palaWidth;
+    const palaHeight = Rsed.constants.palaHeight;
+
+    Rsed.assert?.(
+        (palaWidth === palaHeight),
+        "Expected ANIM width and height to be equal."
+    );
+
+    Rsed.assert?.(
+        ((palaWidth > 0) && (palaHeight > 0)),
+        "Expected ANIM width and height to be positive and non-zero."
+    );
+
+    const palaSize = (palaWidth * palaHeight);
+
+    const prebakedAnimTextures = new Array(Rsed.constants.maxPalaCount).fill().map((pala, idx)=>generate_texture(idx));
+
+    const publicInterface = Object.freeze(
+    {
+        width: palaWidth,
+        height: palaHeight,
+        texture: prebakedAnimTextures,
+
+        // Copies the given texture's data over the ANIMS texture at the given index.
+        // This causes the current texture to be re-generated; a reference to the
+        // new texture object is returned.
+        copy_texture_data: function(palaIdx = 0, srcTexture)
+        {
+            Rsed.throw_if_not_type("number", palaIdx);
+
+            // All PALA textures are expected to be the same resolution.
+            if ((srcTexture.width !== palaWidth) ||
+                (srcTexture.height !== palaHeight))
+            {
+                Rsed.throw("Invalid ANIM texture dimensions for copying.")
+            }
+
+            const dataIdx = (palaIdx * (palaWidth * palaHeight));
+            for (let i = 0; i < (palaWidth * palaHeight); i++)
+            {
+                data[dataIdx + i] = srcTexture.indices[i];
+            }
+
+            // Regenerate this texture to incorporate the changes we've made to the
+            // master data array.
+            const originalTexture = prebakedAnimTextures[palaIdx];
+            const newTexture = prebakedAnimTextures[palaIdx] = generate_texture(palaIdx, srcTexture.args);
+            broadcast_texture_change(newTexture, originalTexture);
+            return newTexture;
+        },
+    });
+
+    // Returns the given PALA's pixel data as a texture, whose arguments are set as given.
+    function generate_texture(palaId = 0, args = {})
+    {
+        const dataIdx = (palaId * palaSize);
+
+        // For attempts to access the PALA data out of bounds, return a dummy texture.
+        if ((dataIdx < 0) ||
+            ((dataIdx + palaSize) >= data.byteLength))
+        {
+            console.warn("Generating a dummy ANIM texture to avoid overflowing the source data buffer.");
+            
+            return Rsed.visual.texture(
+            {
+                ...args,
+                width: 1,
+                height: 1,
+                indices: [0],
+                args: args,
+            });
+        }
+
+        // A slice of the entire PALAT data representing the region in which this particular
+        // PALAT texture's pixels are.
+        const dataSlice = data.slice(dataIdx, (dataIdx + palaSize));
+
+        return Rsed.visual.texture(
+        {
+            ...args,
+            width: palaWidth,
+            height: palaHeight,
+            name: `ANIMS.DTA #${palaId}`,
+            indices: dataSlice,
+            assetId: palaId,
+            assetType: "anims",
+            replace_all_pixels: function(newColorIndices = [])
+            {
+                Rsed.assert?.(
+                    (Array.isArray(newColorIndices) &&
+                     (newColorIndices.length === (palaWidth * palaHeight))),
+                    "Incompatible source data for replacing a texture's pixels."
+                );
+
+                for (let i = 0; i < newColorIndices.length; i++)
+                {
+                    data[dataIdx + i] = newColorIndices[i];
+                }
+
+                // Regenerate this texture to incorporate the changes we've made to the
+                // pixels.
+                const originalTexture = prebakedAnimTextures[palaId];
+                const newTexture = prebakedAnimTextures[palaId] = generate_texture(palaId, args);
+                broadcast_texture_change(newTexture, originalTexture);
+                return newTexture;
+            },
+            set_pixel_at: function(x = 0, y = 0, newColorIdx = 0)
+            {
+                const texelIdx = (x + y * palaWidth);
+
+                data[dataIdx + texelIdx] = newColorIdx;
+
+                // Regenerate this texture to incorporate the changes we've made to the
+                // master data array.
+                const originalTexture = prebakedAnimTextures[palaId];
+                const newTexture = prebakedAnimTextures[palaId] = generate_texture(palaId, args);
                 broadcast_texture_change(newTexture, originalTexture);
                 return newTexture;
             },
@@ -3621,7 +3779,25 @@ Rsed.ui.utils.assetMutator = (function()
                 case "import":
                 {
                     Rsed.assert?.(edit.file instanceof File);
-                    Rsed.$currentProject.import_asset_file(edit.file, "anims");
+
+                    (async()=>{
+                        const newAnimsData = await project.read_asset_file(edit.file, "anims");
+                        const newAnims = Rsed.gameContent.anims(newAnimsData);
+                        const numNewAnims = Math.min(
+                            project.palat.texture.length,
+                            newAnims.texture.length
+                        );
+
+                        for (let i = 0; i < numNewAnims; i++)
+                        {
+                            Rsed.ui.utils.assetMutator.user_edit("texture", {
+                                command: "set-all-pixels",
+                                target: {texture: project.anims.texture[i]},
+                                data: Array.from(newAnims.texture[i].indices),
+                            });
+                        }
+                    })();
+
                     break;
                 }
                 default: Rsed.throw("Unknown edit action."); break;
@@ -4120,7 +4296,7 @@ Rsed.ui.utils.undoStack = (function()
 
             Rsed.throw_if_not_type("number", palaIdx);
 
-            if (!["props", "palat"].includes(textureType))
+            if (!["props", "palat", "anims"].includes(textureType))
             {
                 Rsed.throw("Unknown texture type.");
             }
@@ -4760,7 +4936,6 @@ Rsed.ui.utils.terrainBrush = (function()
         {
             Rsed.assert?.((newPalaIdx >= 0), "Attempted to set an invalid brush PALA index.");
             textureIdx = newPalaIdx;
-            Rsed.scenes["texture-editor"]?.set_texture(Rsed.$currentProject.palat.texture[newPalaIdx]);
         },
 
         get textureIdx()
@@ -5347,13 +5522,17 @@ window.onkeydown = function(event)
     {
         return;
     }
-
+    
     // For keys used by RallySportED to which the browser also coincidentally responds,
     // prevent the browser from doing so.
     switch (event.key)
     {
         case "s": // For Ctrl+S.
         case "Tab":
+        case "ArrowUp":
+        case "ArrowDown":
+        case "ArrowLeft":
+        case "ArrowRight":
         case " ": event.preventDefault(); break;
         default: break;
     }
@@ -6245,6 +6424,63 @@ Rsed.ui.canvas.component.textSelector = function({
     };
 }
 /*
+ * 2023 Tarpeeksi Hyvae Soft
+ * 
+ * Software: RallySportED-js
+ * 
+ */
+
+"use strict";
+
+Rsed.ui.canvas.component.animSelector = function({
+    on_grab = ()=>{},
+    on_hover = ()=>{},
+} = {})
+{
+    const self = Rsed.ui.canvas.component({on_grab, on_hover});
+
+    return function(x = 0, y = 0)
+    {
+        Rsed.assert?.(
+            ((typeof x === "number") &&
+             (typeof y === "number")),
+            "Expected numbers."
+        );
+
+        self.update();
+        
+        const sideLen = 32;
+        const animTexture = Rsed.$currentProject.anims.texture[35];
+        const ngons = [ngon(animTexture)];
+
+        {
+            const labelString = `ANIMS`;
+            const labelWidth = Rsed.ui.canvas.font.pixel_width(labelString);
+            const brushSizeLabel = Rsed.ui.canvas.component.label()(labelString, ~~(x - sideLen/2 - labelWidth/2), y + ~~(sideLen / 2)- Rsed.ui.canvas.font.nativeHeight + 2);
+            ngons.push(...brushSizeLabel.ngons);
+        }
+
+        return Rngon.mesh(ngons);
+
+        function ngon(texture)
+        {
+            return Rngon.ngon([
+                Rngon.vertex(x - sideLen, y),
+                Rngon.vertex(x          , y),
+                Rngon.vertex(x          , y + sideLen),
+                Rngon.vertex(x - sideLen, y + sideLen)], {
+                    texture,
+                    isInScreenSpace: true,
+                    $mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
+                        componentId: self.id,
+                        cursor: Rsed.ui.dom.cursorHandler.cursors.fingerHand,
+                    }),
+                }
+            );
+        }
+    };
+}
+/*
  * 2020-2022 Tarpeeksi Hyvae Soft
  * 
  * Software: RallySportED-js
@@ -6559,6 +6795,159 @@ Rsed.ui.canvas.component.palatPane = function({
             }
 
             if (++x >= numPalatPaneCols)
+            {
+                y++;
+                x = 0;
+            }
+        }
+
+        // Any n-gons we don't want to be occluded by other n-gons are moved to the end
+        // of the n-gon list, to be rendered last and so on top of the other n-gons.
+        if (raisedNgons)
+        {
+            for (const ngon of raisedNgons)
+            {
+                const idx = ngons.indexOf(ngon);
+                ngons.splice(idx, 1);
+                ngons.push(ngon);
+            }
+        }
+
+        return Rngon.mesh(ngons);
+
+        function ngon({
+            x,
+            y,
+            texture,
+            width,
+            height,
+            material = {}
+        } = {})
+        {
+            return Rngon.ngon([
+                Rngon.vertex(x        , y),
+                Rngon.vertex(x + width, y),
+                Rngon.vertex(x + width, y + height),
+                Rngon.vertex(x        , y + height)], {
+                    texture: texture,
+                    isInScreenSpace: true,
+                    ...material,
+                }
+            );
+        }
+    };
+}
+/*
+ * 2023 Tarpeeksi Hyvae Soft
+ * 
+ * Software: RallySportED-js
+ * 
+ */
+
+"use strict";
+
+Rsed.ui.canvas.component.animsPane = function({
+    indicateSelection = true,
+    on_grab = ()=>{},
+    on_hover = ()=>{},
+} = {})
+{
+    const self = Rsed.ui.canvas.component({on_grab, on_hover});
+    const thumbnailWidth = 10;
+    const thumbnailHeight = 10;
+
+    return function(offsetX = 0, offsetY = 0)
+    {
+        Rsed.assert?.(
+            ((typeof offsetX === "number") &&
+             (typeof offsetY === "number")),
+            "Expected numbers."
+        );
+
+        self.update();
+
+        const ngons = [];
+        const raisedNgons = [];
+        const numAnims = 64;
+        const numAnimsPaneCols = 16;
+        const numAnimsPaneRows = Math.ceil(numAnims / numAnimsPaneCols);
+        const animsPaneWidth = (numAnimsPaneCols * thumbnailWidth);
+        const animsPaneHeight = (numAnimsPaneRows * thumbnailHeight);
+        offsetX -= animsPaneWidth;
+
+        ngons.push(...Rsed.ui.canvas.component.$box({
+            x: offsetX,
+            y: offsetY,
+            width: animsPaneWidth+1, 
+            height: animsPaneHeight+1,
+            material: {
+                color: Rsed.visual.palette.GREEN,
+            },
+        }));
+
+        offsetX++;
+        offsetY++;
+
+        let x = 0;
+        let y = 0;
+        for (let animIdx = 0; animIdx < numAnims; animIdx++)
+        {
+            const isCurrentAnim = (indicateSelection && (Rsed.ui.utils.terrainBrush.textureIdx == animIdx));
+            const isHovered = (Rsed.ui.utils.inputState.current_mouse_hover()?.animIdx === animIdx);
+
+            ngons.push(ngon({
+                x: (offsetX + (x * thumbnailWidth)),
+                y: (offsetY + (y * thumbnailHeight)),
+                texture: Rsed.$currentProject.anims.texture[animIdx],
+                width: thumbnailWidth,
+                height: thumbnailHeight,
+                material: {
+                    $mousePickId: Rsed.ui.utils.mouse_picking_element("ui-component", {
+                        componentId: self.id,
+                        cursor: Rsed.ui.dom.cursorHandler.cursors.fingerHand,
+                        animIdx: animIdx,
+                    }),
+                },
+            }));
+
+            if (isHovered)
+            {
+                const labelString = `${animIdx}`;
+                const labelWidth = Rsed.ui.canvas.font.pixel_width(labelString);
+                const baseX = (offsetX + (x * thumbnailWidth));
+                const baseY = (offsetY + (y * thumbnailHeight));
+                const newNgons = [
+                    ...Rsed.ui.canvas.component.label()(labelString, (baseX - labelWidth - 1), (baseY - (thumbnailHeight / 2) - 1)).ngons,
+                    ...Rsed.ui.canvas.component.$box_with_shadow({
+                        x: baseX,
+                        y: baseY,
+                        width: thumbnailWidth, 
+                        height: thumbnailHeight,
+                    }),
+                ];
+
+                ngons.push(...newNgons);
+                raisedNgons.push(...newNgons);
+            }
+            else if (isCurrentAnim)
+            {
+                const newNgons = [
+                    ...Rsed.ui.canvas.component.$box({
+                        x: (offsetX + (x * thumbnailWidth)),
+                        y: (offsetY + (y * thumbnailHeight)),
+                        width: thumbnailWidth, 
+                        height: thumbnailHeight,
+                        material: {
+                            color: Rsed.visual.palette.HOTPINK,
+                        },
+                    }),
+                ];
+
+                ngons.push(...newNgons);
+                raisedNgons.push(...newNgons);
+            }
+
+            if (++x >= numAnimsPaneCols)
             {
                 y++;
                 x = 0;
@@ -8405,8 +8794,8 @@ Rsed.scenes["terrain-editor"] = (function()
 
         if (Rsed.browserMetadata.has_url_param("showFPS"))
         {
-            uiMeshes.push(uiComponents.fpsIndicator(margin, 13, Rsed.core.ticksPerSecond));
-            uiMeshes.push(uiComponents.frametimeGraph(margin, 22, (rendererStats.totalRenderTimeMs || 0)));
+            uiMeshes.push(uiComponents.fpsIndicator(margin, 33, Rsed.core.ticksPerSecond));
+            uiMeshes.push(uiComponents.frametimeGraph(margin, 42, (rendererStats.totalRenderTimeMs || 0)));
         }
 
         Rngon.render({
@@ -9135,7 +9524,9 @@ Rsed.scenes["texture-editor"] = (function()
         // PALA textures.
         showPalatPane: false,
         
-        showTextPanel: false,
+        showTextPane: false,
+        
+        showAnimsPane: false,
     };
 
     const uiComponents = {
@@ -9148,6 +9539,7 @@ Rsed.scenes["texture-editor"] = (function()
             {
                 sceneState.showPalatPane = !sceneState.showPalatPane;
                 sceneState.showTextPane = false;
+                sceneState.showAnimsPane = false;
                 Rsed.ui.utils.inputState.reset_mouse_grab();
             },
         }),
@@ -9156,6 +9548,16 @@ Rsed.scenes["texture-editor"] = (function()
             {
                 sceneState.showTextPane = !sceneState.showTextPane;
                 sceneState.showPalatPane = false;
+                sceneState.showAnimsPane = false;
+                Rsed.ui.utils.inputState.reset_mouse_grab();
+            },
+        }),
+        animSelector: Rsed.ui.canvas.component.animSelector({
+            on_grab: function()
+            {
+                sceneState.showAnimsPane = !sceneState.showAnimsPane;
+                sceneState.showPalatPane = false;
+                sceneState.showTextPane = false;
                 Rsed.ui.utils.inputState.reset_mouse_grab();
             },
         }),
@@ -9174,7 +9576,16 @@ Rsed.scenes["texture-editor"] = (function()
             indicateSelection: false,
             on_grab: function(event)
             {
-                Rsed.ui.utils.terrainBrush.textureIdx = event.palaIdx;
+                Rsed.scenes["texture-editor"].set_texture(Rsed.$currentProject.palat.texture[event.palaIdx]);
+                Rsed.ui.utils.inputState.reset_mouse_grab();
+            },
+        }),
+        animsPane: Rsed.ui.canvas.component.animsPane({
+            indicateSelection: false,
+            on_grab: function(event)
+            {
+                Rsed.scenes["texture-editor"].set_texture(Rsed.$currentProject.anims.texture[event.animIdx]);
+                Rsed.ui.utils.inputState.reset_mouse_grab();
             },
         }),
         textPane: Rsed.ui.canvas.component.textPane({
@@ -9269,11 +9680,13 @@ Rsed.scenes["texture-editor"] = (function()
                 {
                     sceneState.showPalatPane = !sceneState.showPalatPane;
                     sceneState.showTextPane = false;
+                    sceneState.showAnimsPane = false;
                 }
                 else if (key_is("t"))
                 {
                     sceneState.showTextPane = !sceneState.showTextPane;
                     sceneState.showPalatPane = false;
+                    sceneState.showAnimsPane = false;
                 }
                 else if (key_is("r"))
                 {
@@ -9344,22 +9757,26 @@ Rsed.scenes["texture-editor"] = (function()
         uiMeshes.push(uiComponents.colorSelector((Rsed.visual.canvas.width - 101), (margin - 1)));
         uiMeshes.push(uiComponents.palaSelector((Rsed.visual.canvas.width - 105), (margin - 1)));
         uiMeshes.push(uiComponents.textSelector((Rsed.visual.canvas.width - 141), (margin - 1)));
-        uiMeshes.push(uiComponents.resolutionLabel(`Texture size: ${texture.width} * ${texture.height}`, margin, (Rsed.visual.canvas.height - (Rsed.ui.canvas.font.nativeHeight * 2) - 9)));
+        uiMeshes.push(uiComponents.animSelector((Rsed.visual.canvas.width - 177), (margin - 1)));
+        uiMeshes.push(uiComponents.resolutionLabel(`Size: ${texture.width} * ${texture.height}`, margin, (Rsed.visual.canvas.height - (Rsed.ui.canvas.font.nativeHeight * 2) - 9)));
         uiMeshes.push(uiComponents.clipboardLabel(clipboardLabel, margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - 5)));
         
         if (Rsed.browserMetadata.has_url_param("showFPS"))
         {
-            uiMeshes.push(uiComponents.fpsIndicator(margin, 13, Rsed.core.ticksPerSecond));
+            uiMeshes.push(uiComponents.fpsIndicator(margin, 33, Rsed.core.ticksPerSecond));
         }
 
         if (sceneState.showPalatPane)
         {
             uiMeshes.push(uiComponents.palatPane((Rsed.visual.canvas.width - 6), 38));
         }
-
-        if (sceneState.showTextPane)
+        else if (sceneState.showTextPane)
         {
             uiMeshes.push(uiComponents.textPane((Rsed.visual.canvas.width - 6), 38));
+        }
+        else if (sceneState.showAnimsPane)
+        {
+            uiMeshes.push(uiComponents.animsPane((Rsed.visual.canvas.width - 6), 38));
         }
 
         Rngon.render({
@@ -9922,7 +10339,7 @@ Rsed.scenes["tilemap-editor"] = (function()
 
         if (Rsed.browserMetadata.has_url_param("showFPS"))
         {
-            uiMeshes.push(uiComponents.fpsIndicator(margin, 13, Rsed.core.ticksPerSecond));
+            uiMeshes.push(uiComponents.fpsIndicator(margin, 33, Rsed.core.ticksPerSecond));
         }
 
         Rngon.render({
