@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (10 September 2023 06:09:12 UTC)
+// VERSION: live (10 September 2023 07:16:44 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { The retro n-gon renderer (c) 2019-2023 Tarpeeksi Hyvae Soft }
 // FILES:
@@ -6694,8 +6694,8 @@ Rsed.ui.canvas.component.palatPane = function({
 } = {})
 {
     const self = Rsed.ui.canvas.component({on_grab, on_hover});
-    const thumbnailWidth = 10;
-    const thumbnailHeight = 10;
+    const thumbnailWidth = 8;
+    const thumbnailHeight = 8;
 
     return function(offsetX = 0, offsetY = 0)
     {
@@ -6709,8 +6709,8 @@ Rsed.ui.canvas.component.palatPane = function({
 
         const ngons = [];
         const raisedNgons = [];
-        const numPalat = Rsed.$currentProject.palat.texture.length;
-        const numPalatPaneCols = 17;
+        const numPalat = Math.min(252, Rsed.$currentProject.palat.texture.length);
+        const numPalatPaneCols = 14;
         const numPalatPaneRows = Math.ceil(numPalat / numPalatPaneCols);
         const palatPaneWidth = (numPalatPaneCols * thumbnailWidth);
         const palaPaneHeight = (numPalatPaneRows * thumbnailHeight);
@@ -6848,8 +6848,8 @@ Rsed.ui.canvas.component.animsPane = function({
 } = {})
 {
     const self = Rsed.ui.canvas.component({on_grab, on_hover});
-    const thumbnailWidth = 10;
-    const thumbnailHeight = 10;
+    const thumbnailWidth = 8;
+    const thumbnailHeight = 8;
 
     return function(offsetX = 0, offsetY = 0)
     {
