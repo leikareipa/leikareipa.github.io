@@ -109,7 +109,7 @@
                         
 <dokki-topic title="Introduction">
 <p><a href="https://www.tarpeeksihyvaesoft.com/rallysported">RallySportED</a> is a contemporary modding tool for the MS-DOS racing game <a href="https://web.archive.org/web/19970805142345/http://www.cs.tut.fi/~k140734/Rally-Sport/index.html">Rally-Sport</a>.</p>
-<p>RallySportED is © 2016–2023 <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a>. There is no affiliation with Rally-Sport creator Jukka Jäkälä.</p>
+<p>RallySportED is © 2016–2023 <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a>. No affiliation with Rally-Sport creator Jukka Jäkälä.</p>
 <dokki-subtopic title="System requirements">
 <dokki-table headerless>
     <template #table>
@@ -423,133 +423,23 @@
 </dokki-table>
 </dokki-subtopic></dokki-topic>
 
-<dokki-topic title="Tutorial: Creating a track">
-<dokki-warning>
-    This section is partially obsolete and is pending a full rewrite to reflect notable changes to the editor's workflow and feature-set.
-</dokki-warning>
-<p>Here's a runner-downer on how to create a new Rally-Sport track using RallySportED!</p>
-<dokki-subtopic title="Starting out">
-<p>Making a new track with <product-name></product-name> always starts with loading an existing track as a basis.</p>
-<p>So, to get started, load one of Rally-Sport's default tracks by using the <em>track</em> URL parameter. Like this: <a href="/rallysported/?track=demoa">rallysported/?track=demoa</a>.</p>
-<dokki-iframe src="https://www.tarpeeksihyvaesoft.com/rallysported/?track=demoa" ><template #caption>View a sample</template>
-                    </dokki-iframe>
-<p>When you're ready to start editing, hit the <key-input>L</key-input> key on your keyboard to bring up the terrain-leveling prompt, which asks you to input a height value to level the terrain to. Enter in &quot;0&quot; and select OK – you should now be looking at a fully flat terrain.</p>
-<p>Next, press the <key-input>A</key-input> key to bring up the texture-selection pane. It'll pop up on the right-hand side of the screen. In the pane, hover the mouse over the second thumbnail from the top left (grass) and click on it with the left mouse button. A solid yellow rectangle should appear around the thumbnail to indicate that this texture is now selected.</p>
-<dokki-tip>
-    Use the <key-input>G</key-input> key to show the currently-selected texture on the ground
-    on mouse hover.
-</dokki-tip>
-<p>
-    Press <key-input>Q</key-input> to open the tilemap view. In this view, press the <key-input>5</key-input>
-    key to select the largest brush size (you'll see a number change in the upper
-    right of the screen to reflect your selection), then click and hold the left
-    or right mouse button while dragging the cursor across the tilemap. You should
-    see the map fill up with green (the grass texture you selected earlier).
-</p>
-<dokki-image src="img/tut-paintview.png">
-    <template #caption>
-        Painting the track over with grass
-    </template>
-</dokki-image>
-<p>
-    Fill up all of the track with grass, then press the <key-input>Q</key-input> key to return
-    to the 3D view.
-</p>
-<dokki-tip>
-    The tilemap view always has an un-erasable white pixel somewhere on the track.
-    This pixel shows the location of the track's checkpoint, which your car needs
-    to pass over &ndash; or quite close to &ndash; for the lap to be counted as
-    valid. So you should always have the road pass over or very near this checkpoint.
-</dokki-tip>
-<p>
-    Once back in the 3D view, move the camera over to the finish line, then open
-    the texture pane again. While holding down the <key-input>Tab</key-input> key, hover the
-    mouse over the pane's textures until you find texture #96 (gravel). Click on
-    that texture to choose it. Set the brush radius to 1 (hit the <key-input>1</key-input> key).
-    With the middle mouse button, draw a line under the finish line.
-</p>
-<dokki-image src="img/tut-startmark.png">
-    <template #caption>
-        The finish line, with a line of gravel underneath
-    </template>
-</dokki-image>
-
-<dokki-subtopic title="Laying the road">
-<p>
-    Enter the tilemap view again (<key-input>Q</key-input>). You'll see the line of gravel marking
-    the location of the finish line. With the gravel texture still selected, press
-    the <key-input>2</key-input> key to set a slightly larger brush size. Starting from the finish
-    line, draw a road around the map, ending back at the finish. Make sure the road
-    passes over or near the white checkpoint pixel.
-</p>
-<dokki-image src="img/tut-roadlay.png">
-    <template #caption>
-        Having drawn a simple road
-    </template>
-</dokki-image>
-<p>
-    Returning to the 3D view (<key-input>Q</key-input>), you can see that there's now a road rambling
-    about your scenery. You can use the various angled gravel tiles (e.g. #99) to smooth
-    out its corners.
-</p>
-<dokki-tip>
-    Hit the <key-input>W</key-input> key in the 3D view to bring up a wireframe that indicates ground
-    tile edges.
-</dokki-tip>
-</dokki-subtopic>
-<dokki-subtopic title="Decorating the terrain">
-<p>
-    Now that there's a road going on, even if you didn't yet smooth out all the curves,
-    you can start adding some decorations to make the scenery more interesting to drive
-    in.
-</p>
-<dokki-image src="img/tut-curvesmooth.png">
-    <template #caption>
-        Not a very interesting track so far
-    </template>
-</dokki-image>
-<p>
-    The first thing to do is to manipulate the height of the terrain to create hills,
-    dips, and so on. Click around with the left and right mouse buttons in the 3D view
-    to move the terrain up and down. Maybe you feel there should be an outcrop
-    somewhere &ndash; just raise the terrain and paint those tiles with a rocky
-    texture.
-</p>
-<dokki-image src="img/tut-groundshape.png">
-    <template #caption>
-        Added some height and texture variation
-    </template>
-</dokki-image>
-<p>
-    Another kind of detail you can put in are spectators. Open the texture pane
-    (<key-input>A</key-input>) and select texture #240. Press <key-input>G</key-input> to show the currently-selected
-    texture on the ground on mouse hover, and hover the mouse over the terrain. You
-    should see a spectator pop up on the tile the cursor is hovering on. When you
-    apply the texture, a spectator will be stood there for good.
-</p>
-<dokki-image src="img/tut-billboards.png">
-    <template #caption>
-        Inserted a few spectators
-    </template>
-</dokki-image>
-</dokki-subtopic>
-<dokki-subtopic title="Test-driving the track">
-<p>
-    Having put in a few bits and bobs, you might now give the track a test drive!
-    Click the "Test drive" button on the menu bar at the top of the <product-name></product-name> page;
-    it'll launch the track in Rally-Sport inside DOSBox in the browser.
-</p>
-<dokki-image src="img/tut-playing.png">
-    <template #caption>
-        Racing the half-finished track in-game
-    </template>
-</dokki-image>
-<p>
-    There's no CPU opponent and no race countdown in the testing mode. If you
-    want to race against the CPU, select the "Play" button instead.
-</p>
-</dokki-subtopic>
-</dokki-subtopic></dokki-topic>
+<dokki-topic title="Farting up a sample track">
+<p>The following video shows a quick throwing together of a sample track.</p>
+<dokki-video headerless src="NaSuve7f7Cc"></dokki-video>
+<p>The steps in the video can be summarized like so:</p>
+<ol>
+<li>In the terrain editor, level the terrain to a height of 0 by hitting <key-input>L</key-input>.</li>
+<li>In the tilemap editor, paint the ground a solid grass with <mouse-input>Left click</mouse-input>.</li>
+<li>Back in the terrain editor, clear away some of the track props (trees, billboards, etc.) with <mouse-input>Shift + Left click</mouse-input> over the props.</li>
+<li>Use <mouse-input>Middle click</mouse-input> to paint a gravel road.</li>
+<li>Add some decorative props with <mouse-input>Shift + Left click</mouse-input>, and <mouse-input>Left click</mouse-input> over a prop to change its type.</li>
+<li>Record the CPU opponent's driving line.</li>
+<li>Adjust the terrain height with <mouse-input>Left click</mouse-input> and <mouse-input>Right click</mouse-input>, and more precisely with <key-input>Up</key-input> and <key-input>Down</key-input>.</li>
+<li>Use terrain tile #0 to add water.</li>
+<li>Use terrain tiles #248 and #249 to add bridges.</li>
+<li>Paint some textures in the texture editor.</li>
+</ol>
+</dokki-topic>
 
                     </dokki-topics>
                 </dokki-document>

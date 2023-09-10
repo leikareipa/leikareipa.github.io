@@ -1,7 +1,7 @@
 // WHAT: Concatenated JavaScript source files
 // PROGRAM: RallySportED-js
 // AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (09 September 2023 22:16:33 UTC)
+// VERSION: live (10 September 2023 04:38:07 UTC)
 // LINK: https://www.github.com/leikareipa/rallysported-js/
 // INCLUDES: { The retro n-gon renderer (c) 2019-2023 Tarpeeksi Hyvae Soft }
 // FILES:
@@ -370,8 +370,6 @@ Rsed.browserMetadata = (function()
     };
 
     const publicInterface = {
-        isMobile: Boolean(/android|mobi|(crios\/)/i.test(navigator.userAgent)),
-        
         browserName: (/Chrome/i.test(navigator.userAgent)? "Chrome" :
                       /CriOS/i.test(navigator.userAgent)? "Chrome" :
                       /Opera/i.test(navigator.userAgent)? "Opera" :
@@ -436,16 +434,6 @@ Rsed.browserMetadata = (function()
                 Rsed.ui.dom.popup_notification("This browser doesn't support saving projects to disk!",
                 {
                     notificationType: "warning",
-                });
-            }
-
-            // A crude test for whether the user's device might not have the required input
-            // devices available.
-            if (Rsed.browserMetadata.isMobile)
-            {
-                Rsed.ui.dom.popup_notification("This app has limited support for mobile devices.",
-                {
-                    timeoutMs: 7000,
                 });
             }
 
@@ -861,7 +849,7 @@ Rsed.project = async function(projectArgs = {})
         kierros
     } = await Rsed.project.parse_container_data(projectData.container, projectData.manifesto);
 
-    apply_manifesto();
+    apply_manifesto(projectData.manifesto);
 
     window.dispatchEvent(new CustomEvent("rallysported:all-textures-changed"));
 
@@ -872,12 +860,12 @@ Rsed.project = async function(projectArgs = {})
         args: projectArgs,
         isPlaceholder: false,
         wires,
-        manifesto: projectData.manifesto,
         trackId,
         palatId,
         loaderVersion,
         waterLevel,
 
+        get manifesto() {return up_to_date_manifesto_string()},
         get maasto() {return maasto},
         get varimaa() {return varimaa},
         get palat() {return palat},
@@ -971,7 +959,7 @@ Rsed.project = async function(projectArgs = {})
             
             return JSON.stringify({
                 container: containerInBase64,
-                manifesto: updated_manifesto_string(),
+                manifesto: up_to_date_manifesto_string(),
                 meta: {
                     internalName: this.internalName,
                     displayName: this.name,
@@ -1006,7 +994,7 @@ Rsed.project = async function(projectArgs = {})
             }
 
             zip.file(`${projectNameInZip}/${projectNameInZip}.DTA`, dataContainer.dataBuffer);
-            zip.file(`${projectNameInZip}/${projectNameInZip}.$FT`, updated_manifesto_string());
+            zip.file(`${projectNameInZip}/${projectNameInZip}.$FT`, up_to_date_manifesto_string());
             zip.file(`${projectNameInZip}/HITABLE.TXT`, hitable);
 
             return true;
@@ -1216,7 +1204,7 @@ Rsed.project = async function(projectArgs = {})
     
     return publicInterface;
 
-    function apply_manifesto()
+    function apply_manifesto(manifesto = "")
     {
         let numPropsAdded = 0;
 
@@ -1225,7 +1213,7 @@ Rsed.project = async function(projectArgs = {})
             "Can't apply manifestos to placeholder projects."
         );
 
-        const commands = projectData.manifesto.split("\n").filter(line=>line.trim().length);
+        const commands = manifesto.split("\n").filter(line=>line.trim().length);
 
         Rsed.assert?.(
             (commands.length >= 2),
@@ -1397,7 +1385,7 @@ Rsed.project = async function(projectArgs = {})
     // Returns an updated version of the project's manifesto string, reflecting the project's
     // current status - e.g. positions of track props, which may have been moved by the user
     // since the project was loaded in. The original manifesto string is not changed.
-    function updated_manifesto_string()
+    function up_to_date_manifesto_string()
     {
         const requiredLoaderVersion = 5;
         const manifesto = projectData.manifesto.split("\n").filter(line=>line.trim().length);
@@ -5035,6 +5023,12 @@ Rsed.ui.dom.html = (function()
             el.dataDropdownButton.classList.toggle("opened");
         },
 
+        close_data_dropdown: function()
+        {
+            el.dataDropdown.classList.remove("visible");
+            el.dataDropdownButton.classList.remove("opened");
+        },
+
         display_blue_screen: function(errorMessage = "")
         {
             if ((typeof errorMessage !== "string") ||
@@ -5332,6 +5326,7 @@ window.close_dropdowns = function()
     }
 
     document.querySelectorAll(".dropdown-menu").forEach(menu=>menu.classList.remove("show"));
+    Rsed.ui.dom.html.close_data_dropdown();
     Rsed.visual.canvas.domElement.style.pointerEvents = "";
     Rsed.ui.utils.inputState.set_is_prop_context_menu_open(false);
 
@@ -8628,20 +8623,17 @@ Rsed.scenes["terrain-editor"] = (function()
                 }
                 else if (key_is("l") && !repeat)
                 {
-                    const newHeight = parseInt(window.prompt("Level the terrain to a height of..."), 10);
+                    const height = 0;
 
-                    if (!isNaN(newHeight))
+                    for (let y = 0; y < Rsed.$currentProject.maasto.height; y++)
                     {
-                        for (let y = 0; y < Rsed.$currentProject.maasto.height; y++)
+                        for (let x = 0; x < Rsed.$currentProject.maasto.width; x++)
                         {
-                            for (let x = 0; x < Rsed.$currentProject.maasto.width; x++)
-                            {
-                                Rsed.ui.utils.assetMutator.user_edit("maasto", {
-                                    command: "set-height",
-                                    target: {x, y},
-                                    data: newHeight,
-                                });
-                            }
+                            Rsed.ui.utils.assetMutator.user_edit("maasto", {
+                                command: "set-height",
+                                target: {x, y},
+                                data: height,
+                            });
                         }
                     }
                 }
@@ -8779,13 +8771,9 @@ Rsed.scenes["terrain-editor"] = (function()
         }
 
         uiMeshes.push(uiComponents.minimap((Rsed.visual.canvas.width - margin), (margin - 1)));
-
-        if (!Rsed.browserMetadata.isMobile)
-        {
-            uiMeshes.push(...uiComponents.editorSelector(margin+1, margin+1));
-            uiMeshes.push(uiComponents.activePala((Rsed.visual.canvas.width - 72), (margin - 1)));
-            uiMeshes.push(...uiComponents.footerInfo(margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - margin)));
-        }
+        uiMeshes.push(...uiComponents.editorSelector(margin+1, margin+1));
+        uiMeshes.push(uiComponents.activePala((Rsed.visual.canvas.width - 72), (margin - 1)));
+        uiMeshes.push(...uiComponents.footerInfo(margin, (Rsed.visual.canvas.height - Rsed.ui.canvas.font.nativeHeight - margin)));
 
         if (sceneState.showPalatPane)
         {
@@ -9230,7 +9218,7 @@ Rsed.scenes["terrain-editor"].meshBuilder = {
                     // Visualize the brush texture as a tile hovering above the ground.
                     if (isTileUnderBrush)
                     {
-                        const hoverHeight = 15;
+                        const hoverHeight = (includeWireframe? 5 : 10);
 
                         trackMeshPolys.push(Rngon.ngon([
                             Rngon.vertex( vertX,             (height1 + hoverHeight),  vertZ),
