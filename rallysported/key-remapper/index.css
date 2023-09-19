@@ -58,7 +58,7 @@ body {
     flex-direction: row;
     gap: 1em;
     min-width: 23em;
-    padding: 1.7em;
+    padding: 1.75em;
 }
 
 #controls .control-setter:not(:first-child) {

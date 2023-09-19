@@ -10,10 +10,10 @@ export default {
         persist: "/rs-demo",
         run: "rally.bat",
     },
-    "^/?rally-sport/rs/?$": {
-        title: "Rally-Sport (RS)",
+    "^/?rallysported/corruptor/?$": {
+        title: "RallySportED / Corruptor",
         zip: "./content/rally-sport/rs/rallys.zip",
-        persist: "/rs-mutat",
+        persist: "/rs-corru",
         run: "?run",
     },
     "^/?dos-path-tracing-benchmark/?$": {

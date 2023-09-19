@@ -139,7 +139,7 @@ function get_rs_dosbox_url(mutationPayloads = "") {
         ? "http://localhost:8000/dosbox"
         : "https://www.tarpeeksihyvaesoft.com/dosbox";
 
-    return `${thsDosboxBaseUrl}/?run=['copy rallye.org rallye.exe',${mutationPayloads},'rally']#/rally-sport/rs/`;
+    return `${thsDosboxBaseUrl}/?run=['copy rallye.org rallye.exe',${mutationPayloads},'rally']#/rallysported/corruptor/`;
 }
 
 // Updates the 'src' attribute of the iframe in which we run Rally-Sport, debouncing
