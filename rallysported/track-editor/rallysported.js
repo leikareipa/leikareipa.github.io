@@ -1,67 +1,8 @@
-// WHAT: Concatenated JavaScript source files
-// PROGRAM: RallySportED-js
-// AUTHOR: Tarpeeksi Hyvae Soft
-// VERSION: live (10 September 2023 07:16:44 UTC)
-// LINK: https://www.github.com/leikareipa/rallysported-js/
-// INCLUDES: { The retro n-gon renderer (c) 2019-2023 Tarpeeksi Hyvae Soft }
-// FILES:
-//	./src/rallysported.js
-//	./src/ui/ui.js
-//	./src/ui/dom/popup-notification.js
-//	./src/misc/browser-metadata.js
-//	./src/misc/uuidgen.js
-//	./src/player/player.js
-//	./src/project/project.js
-//	./src/project/hitable.js
-//	./src/misc/constants.js
-//	./src/visual/texture.js
-//	./src/visual/palette.js
-//	./src/visual/canvas.js
-//	./src/game-content/game-content.js
-//	./src/game-content/varimaa.js
-//	./src/game-content/maasto.js
-//	./src/game-content/kierros.js
-//	./src/game-content/palat.js
-//	./src/game-content/anims.js
-//	./src/game-content/props.js
-//	./src/game-content/wires.js
-//	./src/ui/utils/asset-mutator.js
-//	./src/ui/utils/undo-stack.js
-//	./src/ui/utils/input-state.js
-//	./src/ui/utils/mouse-picking-element.js
-//	./src/ui/utils/terrain-brush.js
-//	./src/ui/dom/html.js
-//	./src/ui/dom/cursor-handler.js
-//	./src/ui/dom/window.js
-//	./src/ui/canvas/font.js
-//	./src/ui/canvas/component.js
-//	./src/ui/canvas/components/_primitives.js
-//	./src/ui/canvas/components/editor-selector.js
-//	./src/ui/canvas/components/active-pala.js
-//	./src/ui/canvas/components/pala-selector.js
-//	./src/ui/canvas/components/text-selector.js
-//	./src/ui/canvas/components/anim-selector.js
-//	./src/ui/canvas/components/fps-indicator.js
-//	./src/ui/canvas/components/value-graph.js
-//	./src/ui/canvas/components/terrain-hover-info.js
-//	./src/ui/canvas/components/palat-pane.js
-//	./src/ui/canvas/components/anims-pane.js
-//	./src/ui/canvas/components/text-pane.js
-//	./src/ui/canvas/components/terrain-minimap.js
-//	./src/ui/canvas/components/color-selector.js
-//	./src/ui/canvas/components/label.js
-//	./src/scene/scene.js
-//	./src/scene/camera-2d.js
-//	./src/scene/camera-3d.js
-//	./src/scene/rasterizer.js
-//	./src/scene/transform-clip-lighter.js
-//	./src/scene/terrain-editor/terrain-editor.js
-//	./src/scene/terrain-editor/mesh-builder.js
-//	./src/scene/texture-editor/texture-editor.js
-//	./src/scene/tilemap-editor/tilemap-editor.js
-//	./src/scene/loading-spinner/loading-spinner.js
-//	./src/core/core.js
-/////////////////////////////////////////////////
+// RallySportED
+// 2016-2023 Tarpeeksi Hyvae Soft
+// https://github.com/leikareipa/rallysported/
+// -------------------------------------------
+
 
 /*
  * Most recent known filename: js/rallysported.js
@@ -560,7 +501,7 @@ Rsed.player = (function()
                 if (output_listener.buffer.endsWith("C:\\>"))
                 {
                     // RSED-AI will report errors if the process failed.
-                    const succeeded = Boolean(output_listener.buffer.indexOf("ERROR:") < 0);
+                    const succeeded = Boolean(output_listener.buffer.indexOf("Error:") < 0);
                     
                     try
                     {
@@ -742,7 +683,7 @@ Rsed.player = (function()
     async function create_game_zip()
     {
         const zip = new JSZip();
-        const baseGameZip = await fetch("./js-dos/data/rallys-rsed.zip");
+        const baseGameZip = await fetch("./assets/data/rallys-rsed.zip");
 
         if (!baseGameZip.ok)
         {
@@ -751,6 +692,17 @@ Rsed.player = (function()
 
         await zip.loadAsync(baseGameZip.blob());
         await Rsed.$currentProject.insert_project_data_into_zip(zip);
+
+        // Insert the backend tools.
+        for (const toolName of [
+            "rsed_ai.exe",
+            "rsed_ld.exe",
+            "rai.bat",
+            "rload.bat"
+        ])
+        {
+            zip.file(toolName, (await fetch(`./${toolName}`)).blob());
+        }
 
         return await zip.generateAsync({
             type: "blob",
@@ -1387,7 +1339,7 @@ Rsed.project = async function(projectArgs = {})
     // since the project was loaded in. The original manifesto string is not changed.
     function up_to_date_manifesto_string()
     {
-        const requiredLoaderVersion = 5;
+        const requiredLoaderVersion = 6;
         const manifesto = projectData.manifesto.split("\n").filter(line=>line.trim().length);
         
         // We'll append the new manifesto string here.
@@ -1596,7 +1548,7 @@ Rsed.project = async function(projectArgs = {})
                 }
             })();
 
-            const serverResponse = await fetch(`./client/assets/tracks/${trackName}.json`);
+            const serverResponse = await fetch(`./assets/tracks/${trackName}.json`);
 
             if (serverResponse.status !== 200)
             {
@@ -1940,10 +1892,8 @@ Rsed.constants = Object.freeze(
     // etc.).
     propTileMargin: -3,
 
-    // The maximum number of props on a track. Increasing this above 14 may cause
-    // problems when the track is loaded in-game, as the prop data written into the
-    // executable by the RallySportED loader may overwrite vital areas of the executable.
-    maxPropCount: 14,
+    // The maximum number of props on a track.
+    maxPropCount: 25,
 
     // The maximum number of PALA textures we'll process from a Rally-Sport PALA file.
     // The game's original PALA files end with malformed data, so we want to ignore
@@ -2612,7 +2562,7 @@ Rsed.gameContent.kierros = function(data = Uint8Array)
 {
     const checkpoints = [];
     const bytesPerCheckpoint = 8;
-    const numCheckpoints = ((data.length / bytesPerCheckpoint) - 1);
+    const numCheckpoints = (data.length / bytesPerCheckpoint);
 
     for (let i = 0; i < numCheckpoints; i++)
     {
@@ -3475,7 +3425,7 @@ Rsed.gameContent.props = async function(textureAtlas = Uint8Array)
     {
         try
         {
-            const response = await fetch("./client/assets/track-props.json");
+            const response = await fetch("./assets/data/track-props.json");
             return await response.json();
         }
         catch (error)
@@ -3620,7 +3570,7 @@ Rsed.gameContent.wires = async function()
     async function fetch_wire_metadata_from_server()
     {
         return (
-            fetch("./client/assets/track-wires.json")
+            fetch("./assets/data/track-wires.json")
             .then(response=>
             {
                 if (response.status != 200) {
@@ -5115,15 +5065,15 @@ Rsed.ui.dom.cursorHandler = (function()
     let currentCursor = undefined;
 
     const cursors = {
-        arrow: "./client/assets/cursors/rsed-cursor-arrow.png",
-        openHand: "./client/assets/cursors/rsed-cursor-openhand.png",
-        openHand2: "./client/assets/cursors/rsed-cursor-openhand2.png",
-        fingerHand: "./client/assets/cursors/rsed-cursor-fingerhand.png",
-        closedHand: "./client/assets/cursors/rsed-cursor-closedhand.png",
-        pencilSmooth: "./client/assets/cursors/rsed-cursor-pencil-smooth.png",
-        blocked: "./client/assets/cursors/rsed-cursor-blocked.png",
-        eyedropper: "./client/assets/cursors/rsed-cursor-eyedropper.png",
-        pencil: "./client/assets/cursors/rsed-cursor-pencil.png",
+        arrow: "./assets/img/cursors/rsed-cursor-arrow.png",
+        openHand: "./assets/img/cursors/rsed-cursor-openhand.png",
+        openHand2: "./assets/img/cursors/rsed-cursor-openhand2.png",
+        fingerHand: "./assets/img/cursors/rsed-cursor-fingerhand.png",
+        closedHand: "./assets/img/cursors/rsed-cursor-closedhand.png",
+        pencilSmooth: "./assets/img/cursors/rsed-cursor-pencil-smooth.png",
+        blocked: "./assets/img/cursors/rsed-cursor-blocked.png",
+        eyedropper: "./assets/img/cursors/rsed-cursor-eyedropper.png",
+        pencil: "./assets/img/cursors/rsed-cursor-pencil.png",
         default: undefined,
     };
 

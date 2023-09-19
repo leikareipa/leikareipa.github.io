@@ -1,181 +1,7 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width">
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        
+# Controls
 
-        <link rel="stylesheet" href="https://www.tarpeeksihyvaesoft.com/assets/font-awesome-5-15-4/css/all.min.css">
-        <script defer src="https://www.tarpeeksihyvaesoft.com/dokki/distributable/dokki.js"></script>
+## Terrain editor
 
-        <script type="module">
-            import {keyInput, mouseInput} from "./js/input.js";
-            import {menuPath} from "./js/menu-path.js";
-            window.dokkiUserComponents = (window.dokkiUserComponents || []);
-            window.dokkiUserComponents.push(menuPath, keyInput, mouseInput);
-        </script>
-
-        <style>
-            em
-            {
-                color: var(--dokkiCSS-page-primary-fg-color);
-                background-color: var(--dokkiCSS-embedded-auxiliary-color);
-            }
-
-            .dokki-topic .menu-path,
-            .dokki-topic .key-combo
-            {
-                margin: 2px;
-                display: inline-flex;
-                align-items: baseline;
-                background-color: rgba(0, 0, 0, 0.04);
-                color: var(--dokkiCSS-page-primary-fg-color);
-                border-bottom: 1px solid var(--dokkiCSS-page-primary-line-color);
-                border-radius: 5px;
-            }
-
-            .dokki-topic .menu-path
-            {
-                border: none;
-            }
-
-            .dokki-topic .key-combo > .icon,
-            .dokki-topic .key-combo > .path,
-            .dokki-topic .menu-path > .icon,
-            .dokki-topic .menu-path > .path
-            {
-                padding: 0.1em 0.5em;
-            }
-
-            .dokki-topic .key-combo > .icon,
-            .dokki-topic .menu-path > .icon
-            {
-                padding-right: 0;
-            }
-
-            .dokki-topic .key-combo .separator,
-            .dokki-topic .menu-path .separator
-            {
-                color: var(--dokkiCSS-page-inert-fg-color);
-            }
-
-            .dokki-topic .menu-path .separator
-            {
-                margin: 0 0.5em;
-            }
-
-            .dokki-topic td:first-child > .menu-path:first-child,
-            .dokki-topic td:first-child > .key-combo:first-child
-            {
-                /* Tables hide their overflow and have no space between the first <td> and
-                 * the edge of the table, so we need to offset this element a little or its
-                 * left-falling shadow gets cut off.*/
-                margin-left: 2px;
-            }
-            
-            .dokki-table ul
-            {
-                padding-inline-start: 1.25em !important;
-                margin: 6px 0 !important;
-            }
-
-            .dokki-table ul li
-            {
-                line-height: 1;
-            }
-
-            .dokki-topic h1 > .idx,
-            .dokki-topic h2 > .idx
-            {
-                display: initial !important;
-                color: inherit;
-            }
-        </style>
-    </head>
-    <body>
-        
-    
-            <template id="dokki">
-                <dokki-document>
-                    <dokki-header>
-                        <template #caption>
-                            
-                User's manual for RallySportED
-            
-                        </template>
-                        
-                    </dokki-header>
-                    <dokki-topics>
-                        
-<dokki-topic title="Introduction">
-<p><a href="https://www.tarpeeksihyvaesoft.com/rallysported">RallySportED</a> is a contemporary modding tool for the MS-DOS racing game <a href="https://web.archive.org/web/19970805142345/http://www.cs.tut.fi/~k140734/Rally-Sport/index.html">Rally-Sport</a>.</p>
-<p>RallySportED is © 2016–2023 <a href="https://www.tarpeeksihyvaesoft.com">Tarpeeksi Hyvae Soft</a>. No affiliation with Rally-Sport creator Jukka Jäkälä.</p>
-<dokki-subtopic title="System requirements">
-<dokki-table headerless>
-    <template #table>
-        <tr>
-            <th>Platform</th>
-            <td>Modern browser with JavaScript enabled<sup>1</sup></td>
-        </tr>
-        <tr>
-            <th>CPU</th>
-            <td>Intel Haswell or equivalent<sup>2</sup></td>
-        </tr>
-        <tr>
-            <th>Input</th>
-            <td>Mouse and keyboard</td>
-        </tr>
-        <tr>
-            <th>Other</th>
-            <td>
-                Saving requires the ability to download files.
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <sup>1</sup>See <a href="#introduction-browser-compatibility">Browser compatibility</a> for details.<br>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <sup>2</sup>RallySportED uses software 3D rendering and so requires a fast CPU. The faster the better.<br>
-            </td>
-        </tr>
-    </template>
-</dokki-table>
-</dokki-subtopic><dokki-subtopic title="Browser compatibility">
-<dokki-table headerless>
-    <template #table>
-        <tr>
-            <th>
-                Google Chrome
-            </th>
-            <td>
-                Best compatibility and performance.<br><br>For Chrome on iOS, see <strong>Apple Safari</strong>.
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Mozilla Firefox
-            </th>
-            <td>
-                Reasonable compatibility but poor performance.
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Apple Safari
-            </th>
-            <td>
-                Works if you're lucky.
-            </td>
-        </tr>
-    </template>
-</dokki-table>
-</dokki-subtopic></dokki-topic>
-
-<dokki-topic title="Controls">
-<dokki-subtopic title="Terrain editor">
 <dokki-table>
     <template #caption>
         Keyboard
@@ -247,6 +73,7 @@
         </tr>
     </template>
 </dokki-table>
+
 <dokki-table>
     <template #caption>
         Mouse
@@ -304,7 +131,9 @@
         </tr>
     </template>
 </dokki-table>
-</dokki-subtopic><dokki-subtopic title="Texture editor">
+
+## Texture editor
+
 <dokki-table>
     <template #caption>
         Keyboard
@@ -344,6 +173,7 @@
         </tr>
     </template>
 </dokki-table>
+
 <dokki-table>
     <template #caption>
         Mouse
@@ -371,7 +201,9 @@
         </tr>
     </template>
 </dokki-table>
-</dokki-subtopic><dokki-subtopic title="Tilemap editor">
+
+## Tilemap editor
+
 <dokki-table>
     <template #caption>
         Keyboard
@@ -399,6 +231,7 @@
         </tr>
     </template>
 </dokki-table>
+
 <dokki-table>
     <template #caption>
         Mouse
@@ -421,29 +254,3 @@
         </tr>
     </template>
 </dokki-table>
-</dokki-subtopic></dokki-topic>
-
-<dokki-topic title="Farting up a sample track">
-<p>The following video shows a quick throwing together of a sample track.</p>
-<dokki-video headerless src="NaSuve7f7Cc"></dokki-video>
-<p>The steps in the video can be summarized like so:</p>
-<ol>
-<li>Start with Rally-Sport's <a href="/rallysported/?track=demoa">track #1</a> as a base (using the &quot;?track=&quot; URL parameter). Alternatively, you could drag and drop the ZIP file of a  RallySportED project you've downloaded previously.</li>
-<li>In the terrain editor, level the terrain to a height of 0 by hitting <key-input>L</key-input>.</li>
-<li>In the tilemap editor, paint the ground a solid grass with <mouse-input>Left click</mouse-input>.</li>
-<li>Back in the terrain editor, clear away some of the track props (trees, billboards, etc.) with <mouse-input>Shift + Left click</mouse-input> over the props.</li>
-<li>Use <mouse-input>Middle click</mouse-input> to paint a gravel road.</li>
-<li>Add some decorative props with <mouse-input>Shift + Left click</mouse-input>, and <mouse-input>Right click</mouse-input> over a prop to change its type.</li>
-<li>Record the CPU opponent's driving line.</li>
-<li>Adjust the terrain height with <mouse-input>Left click</mouse-input> and <mouse-input>Right click</mouse-input>, and more precisely with <key-input>Up</key-input> and <key-input>Down</key-input>.</li>
-<li>Use terrain tile #0 to add water.</li>
-<li>Use terrain tiles #248 and #249 to add bridges.</li>
-<li>Paint some textures in the texture editor.</li>
-</ol>
-</dokki-topic>
-
-                    </dokki-topics>
-                </dokki-document>
-            </template>
-        </body>
-</html>

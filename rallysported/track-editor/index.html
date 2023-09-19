@@ -6,14 +6,14 @@
         <meta name="description" content="Track editor for the classic DOS game Rally-Sport">
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="shortcut icon" href="./assets/img/favicon.ico">
         <link rel="stylesheet" type="text/css" href="index.css">
 
-        <script defer src="./client/assets/js/rngon.js"></script>
-        <script defer src="./client/assets/js/jszip.min.js"></script>
-        <script defer src="./client/assets/js/FileSaver.min.js"></script>
+        <script defer src="./assets/js/rngon.js"></script>
+        <script defer src="./assets/js/jszip.min.js"></script>
+        <script defer src="./assets/js/FileSaver.min.js"></script>
         <script defer src="./js-dos/js-dos.js"></script>
-        <script defer src="./client/rallysported.cat.js"></script>
+        <script defer src="./rallysported.js"></script>
     </head>
     <body ondrop="window.drop_handler(event);" ondragover="event.preventDefault();">
         
@@ -72,14 +72,6 @@
                     Record
 
                 </div>
-
-            </div>
-
-            <div class="button disabled hidden"
-                 title="Browse other RallySportED-made tracks"
-                 onclick="window.open('https://rallysport-content.herokuapp.com/tracks/', '_blank', 'noopener');">
-
-                More tracks
 
             </div>
 

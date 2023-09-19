@@ -17,7 +17,7 @@
 body
 {
     background-color: black;
-    cursor: url("./client/assets/cursors/rsed-cursor-arrow.png"), auto;
+    cursor: url("./assets/img/cursors/rsed-cursor-arrow.png"), auto;
     text-align: center;
     align-content: center;
     color: white;
@@ -30,7 +30,7 @@ body.playing,
 body.loading
 {
     overflow: hidden;
-    background-image: url(grass.png);
+    background-image: url("./assets/img/grass.png");
 }
 
 #data-dropdown
@@ -46,7 +46,7 @@ body.loading
     border: 1px solid black;
     padding: 0.75em;
     white-space: nowrap;
-    background-image: url(grass.png);
+    background-image: url("./assets/img/grass.png");
     color: #a2a2a2;
     border: 0.4ch solid lime;
     cursor: auto;
@@ -183,7 +183,7 @@ canvas
 
 #html
 {
-    background-image: url(grass.png);
+    background-image: url("./assets/img/grass.png");
     background-attachment: fixed;
     align-items: center;
     display: flex;
@@ -360,16 +360,16 @@ canvas
     overflow-y: auto;
     box-sizing: border-box;
     visibility: hidden;
-    background: url(grass.png);
+    background: url("./assets/img/grass.png");
     border-top-left-radius: 0;
     padding: 0.75em;
     border: 0.4ch solid lime;
-    cursor: url("./client/assets/cursors/rsed-cursor-arrow.png"), auto;
+    cursor: url("./assets/img/cursors/rsed-cursor-arrow.png"), auto;
 }
 
 #prop-dropdown > .item
 {
-    cursor: url("./client/assets/cursors/rsed-cursor-fingerhand.png"), auto;
+    cursor: url("./assets/img/cursors/rsed-cursor-fingerhand.png"), auto;
     color: white;
     padding: 0.25em 0.5em;
     white-space: nowrap;
