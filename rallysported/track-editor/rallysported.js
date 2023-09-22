@@ -20,7 +20,7 @@
 // Note that this object will be extended by the other source files of
 // RallySportED-js, as well.
 const Rsed = {
-    appName: "RallySportED",
+    appName: "RallySportED's track editor",
     appVersion: "dev",
     
     get $currentProject()
@@ -303,13 +303,6 @@ Rsed.ui.dom.popup_notification = function(string = "", args = {})
 // the app is running.
 Rsed.browserMetadata = (function()
 {
-    // The most recent URL hash parsed with parse_url_hash(); used as a cache
-    // to avoid re-parsing the hash when it hasn't changed between calls.
-    const latestUrlHash = {
-        string: "",
-        params: [],
-    };
-
     const publicInterface = {
         browserName: (/Chrome/i.test(navigator.userAgent)? "Chrome" :
                       /CriOS/i.test(navigator.userAgent)? "Chrome" :
@@ -322,49 +315,6 @@ Rsed.browserMetadata = (function()
         {
             const params = new URLSearchParams(window.location.search);
             return params.has(paramName);
-        },
-
-        has_hash_param: function(paramName = "")
-        {
-            const params = parse_url_hash();
-            return (params[paramName] !== undefined);
-        },
-
-        hash_param: function(paramName = "")
-        {
-            const params = parse_url_hash();
-            const param = params[paramName];
-
-            return {
-                isDefined: (param !== undefined),
-                value: function()
-                {
-                    if (!Array.isArray(param))
-                    {
-                        return false;
-                    }
-
-                    return this.value_at(0);
-                },
-                value_at: function(idx = 0)
-                {
-                    if (!Array.isArray(param))
-                    {
-                        return false;
-                    }
-
-                    return param[idx];
-                },
-                has: function(value = "")
-                {
-                    if (!Array.isArray(param))
-                    {
-                        return false;
-                    }
-
-                    return param.includes(value);
-                },
-            }
         },
 
         warn_of_incompatibilities: function()
@@ -383,60 +333,6 @@ Rsed.browserMetadata = (function()
     };
 
     return publicInterface;
-
-    function parse_url_hash()
-    {
-        // We expect a hash to be something like "#gui:-menubar/play:true/scene:texture-editor".
-        const hashString = window.location.hash.substring(1);
-
-        // Don't re-parse if the params don't seem to have changed.
-        if (latestUrlHash.string == hashString)
-        {
-            return latestUrlHash.params;
-        }
-
-        const keyValuePairs = hashString.split("/").filter(s=>s.length);
-        const params = {};
-
-        for (const pair of keyValuePairs)
-        {
-            let key, values;
-
-            // We support key/value pairs of type "xxxx:yyyy" and "xxxx" (the latter
-            // behaves as if it were "xxxx:true"). The first-from-left ":" character
-            // marks the boundary between the key and value; subsequent ":" characters
-            // are part of the value. "|" characters mark the boundaries between
-            // multiple values, e.g. "key:value1|value2|value3".
-            [key, ...values] = pair.split(":");
-            values = values.join(":").split("|").filter(s=>s.length);
-
-            if (!values.length)
-            {
-                values = [true];
-            }
-            else
-            {
-                // The value is always given as a string by the browser, but for
-                // proper boolean logic we want to convert certain strings into
-                // their logical representations; so e.g. "false" == true but we
-                // instead want ("false" <- false) != true.
-                for (let i = 0; i < values.length; i++)
-                {
-                    if (!values[i].length) values[i] = true;
-                    else if (values[i] == "false") values[i] = false;
-                    else if (values[i] == "true") values[i] = true;
-                    else if (!isNaN(values[i])) values[i] = Number(values[i]);
-                }
-            }
-
-            params[key] = values;
-        }
-
-        latestUrlHash.string = hashString;
-        latestUrlHash.params = params;
-
-        return params;
-    }
 })();
 "use strict";
 
@@ -1423,7 +1319,10 @@ Rsed.project = async function(projectArgs = {})
         {
             switch (projectArgs.dataLocality)
             {
-                case "server-rsc": return (await fetch_project_data_from_rsc_server())[0];
+                case "server-github": {
+                    projectArgs.contentId = await fetch_project_data_from_github();
+                    return await load_project_data_from_zip_file();
+                }
                 case "server-rsed": return (await fetch_project_data_from_rsed_server())[0];
                 case "client": return await load_project_data_from_zip_file();
                 case "inline": return Promise.resolve(projectArgs.data);
@@ -1536,15 +1435,15 @@ Rsed.project = async function(projectArgs = {})
             {
                 switch (projectArgs.contentId)
                 {
-                    case "demoa": return "demo-1";
-                    case "demob": return "demo-2";
-                    case "democ": return "demo-3";
-                    case "demod": return "demo-4";
-                    case "demoe": return "demo-5";
-                    case "demof": return "demo-6";
-                    case "demog": return "demo-7";
-                    case "demoh": return "demo-8";
-                    default: Rsed.throw("Unknown track name.");
+                    case "1": return "demo-1";
+                    case "2": return "demo-2";
+                    case "3": return "demo-3";
+                    case "4": return "demo-4";
+                    case "5": return "demo-5";
+                    case "6": return "demo-6";
+                    case "7": return "demo-7";
+                    case "8": return "demo-8";
+                    default: Rsed.throw(`Unknown track identifier '${projectArgs.contentId}'.`);
                 }
             })();
 
@@ -1565,26 +1464,27 @@ Rsed.project = async function(projectArgs = {})
             }
         }
 
-        // Loads the project's data from the Rally-Sport Content server. This
-        // server hosts custom, user-made tracks.
-        async function fetch_project_data_from_rsc_server()
+        async function fetch_project_data_from_github()
         {
             Rsed.throw_if_undefined(projectArgs.contentId);
 
-            const serverResponse = await fetch(`${Rsed.constants.rallySportContentURL}/tracks/?id=${projectArgs.contentId}&json=true`);
+            const url = `${Rsed.constants.rsedGitHubTracksURL}/${projectArgs.contentId}.zip`;
+
+            Rsed.log(`Cloning ${url}...`);
+            const serverResponse = await fetch(url);
 
             if (serverResponse.status !== 200)
             {
-                Rsed.throw("Failed to fetch the requested data from the Rally-Sport Content server.");
+                Rsed.throw(`Track "${projectArgs.contentId}" doesn't exist on RallySportED's GitHub.`);
             }
 
             try
             {
-                return await serverResponse.json()
+                return await serverResponse.blob()
             }
             catch (error)
             {
-                Rsed.throw("Received malformed JSON from the Rally-Sport Content server.");
+                Rsed.throw("Found malformed data in a RallySportED project cloned from GitHub.");
             }
         }
     }
@@ -1907,9 +1807,7 @@ Rsed.constants = Object.freeze(
     // How many colors there are in a given hard-coded Rally-Sport palette.
     paletteSize: 32,
 
-    // A URL pointing to the root of Rally-Sport Content, the service from which
-    // RallySportED-js will fetch track data.
-    rallySportContentURL: `https://rallysport-content.herokuapp.com`,
+    rsedGitHubTracksURL: "https://raw.githubusercontent.com/leikareipa/rallysported/master/goodies/modded-content/tracks",
 });
 /*
  * Most recent known filename: js/visual/texture.js
@@ -4944,17 +4842,10 @@ Rsed.ui.dom.html = (function()
 
         refresh: function()
         {
-            const title = (()=>{
-                if (Rsed?.$currentProject?.name?.length)
-                {
-                    return `${Rsed.$currentProject.areAllChangesSaved? "" : "*"}\
-                            ${Rsed.$currentProject.name}`;
-                }
-                else
-                {
-                    return Rsed.appName;
-                }
-            })();
+            const title = (
+                `${Rsed.$currentProject.areAllChangesSaved? "" : "*"}\
+                 ${Rsed.$currentProject.name.toUpperCase()}`
+            );
 
             document.title = `${title} - ${Rsed.appName}`;
             document.querySelector("#project-name .label").textContent = title;
@@ -5195,73 +5086,30 @@ window.onload = function(event)
     // The app doesn't need to be run if we're just testing its units.
     if (Rsed.unitTestRun) return;
 
-    // We'll modify RallySportED-js's default startup arguments with parameters
-    // the user provided via the address bar.
     const rsedStartupArgs = Rsed.core.default_startup_args();
-    
-    // Parse the user-supplied URL parameters.
+    const contentId = rsedStartupArgs.project.contentId = (window.location.hash || "#4").substring(1).toLowerCase();
+
+    if (contentId.match(/^[0-9]$/))
     {
-        const params = new URLSearchParams(window.location.search);
-
-        // The "track" and "fromContent" parameters specify which track the user wants
-        // to load. Generally, the "track" parameter is used to load the game's original
-        // demo tracks, while the "fromContent" parameter is used to load tracks (and,
-        // in the future, other content, like cars) from the Rally-Sport Content server.
-        let contentId = (
-            params.get("fromContent") ||
-            params.get("track")
-        );
-
-        if (!contentId)
-        {
-            window.history.replaceState(null, null, "?track=demod");
-            contentId = "demod";
-        }
+        rsedStartupArgs.project.dataLocality = "server-rsed";
+    }
+    else if (
+        (contentId.length >= 1) &&
+        (contentId.length <= 8)
+    ){
+        rsedStartupArgs.project.dataLocality = "server-github";
+    }
+    else
+    {
+        Rsed.throw("Malformed startup options.");
+    }
     
-        // Give the input a sanity check.
-        if ((contentId.length > 20) ||
-            !(/^[0-9a-zA-Z-.]+$/.test(contentId)))
-        {
-            Rsed.throw("Invalid track identifier.");
-            return;
-        }
-
-        // The RallySportED-js server hosts the original Rally-Sport demo tracks.
-        if (["demoa", "demob", "democ", "demod", "demoe", "demof", "demog", "demoh"].includes(contentId))
-        {
-            rsedStartupArgs.project.dataLocality = "server-rsed";
-        }
-        // The Rally-Sport Content server hosts custom Rally-Sport content.
-        else
-        {
-            rsedStartupArgs.project.dataLocality = "server-rsc";
-        }
-
-        rsedStartupArgs.project.contentId = contentId;
+    if (Rsed.browserMetadata.has_url_param("play"))
+    {
+        Rsed.player.runOnStartup = Rsed.browserMetadata.has_url_param("play");
     }
 
-    // Parse the URL hash.
-    {
-        if (Rsed.browserMetadata.has_hash_param("ui"))
-        {
-            rsedStartupArgs.ui.showMenubar = !Rsed.browserMetadata.hash_param("ui").has("-menubar");
-        }
-
-        if (Rsed.browserMetadata.has_hash_param("renderer"))
-        {
-            rsedStartupArgs.renderer.pixelatedUpscale = !Rsed.browserMetadata.hash_param("renderer").has("-pixelated");
-        }
-
-        if (Rsed.browserMetadata.has_hash_param("scene"))
-        {
-            rsedStartupArgs.scene = Rsed.browserMetadata.hash_param("scene").value();
-        }
-
-        if (Rsed.browserMetadata.has_hash_param("play"))
-        {
-            Rsed.player.runOnStartup = Rsed.browserMetadata.hash_param("play").value();
-        }
-    }
+    window.history.replaceState(null, null, `${window.location.origin}${window.location.pathname}#${contentId}`);
 
     Rsed.core.start(rsedStartupArgs);
 
@@ -10559,9 +10407,8 @@ Rsed.core = (function()
                 project:
                 {
                     // Whether the project's data files will be loaded from RallySportED-js's server
-                    // ("server-rsed"), from Rally-Sport Content's server ("server-rsc"), or provided
-                    // by the client (e.g. via file drag onto the browser).
-                    dataLocality: "server-rsed", // | "server-rsc" | "client"
+                    // ("server-rsed") or from RallySportED's track archive on GitHub ("server-github").
+                    dataLocality: "server-rsed", // | "server-github"
         
                     // An identifier for this project's data. For server-side projects, this will be
                     // e.g. a Rally-Sport Content track resource ID, and for client-side data a file
