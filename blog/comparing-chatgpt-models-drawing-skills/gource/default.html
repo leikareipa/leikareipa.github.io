@@ -1,0 +1,73 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="500" height="400"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+
+          // define the nodes and edges of the graph representing www.geocities.com
+          const nodes = [
+            { id: 'index.html', x: 400, y: 300 },
+            { id: 'about.html', x: 200, y: 100 },
+            { id: 'news.html', x: 600, y: 100 },
+            { id: 'contact.html', x: 200, y: 500 },
+            { id: 'blog.html', x: 600, y: 500 }
+          ];
+
+          const edges = [
+            { source: 'index.html', target: 'about.html' },
+            { source: 'index.html', target: 'news.html' },
+            { source: 'index.html', target: 'contact.html' },
+            { source: 'index.html', target: 'blog.html' },
+            { source: 'about.html', target: 'index.html' },
+            { source: 'news.html', target: 'index.html' },
+            { source: 'contact.html', target: 'index.html' },
+            { source: 'blog.html', target: 'index.html' }
+          ];
+
+          // simulate user activity by randomly traversing the graph in a realistic manner
+          let currentNode = nodes.find((n) => n.id === 'index.html');
+          for (let i = 0; i < 10000; i++) {
+            ctx.fillStyle = '#ffffff'; // set the fill style to white to erase previous pixels
+            ctx.fillRect(currentNode.x, currentNode.y, 1, 1); // erase the previous pixel
+
+            const nextNodes = edges.filter((e) => e.source === currentNode.id).map((e) => nodes.find((n) => n.id === e.target));
+            if (!nextNodes.length) {
+              currentNode = nodes.find((n) => n.id === 'index.html');
+            } else {
+              const popularNode = nextNodes.find((n) => n.id === 'about.html' || n.id === 'news.html');
+              currentNode = popularNode || nextNodes[Math.floor(Math.random() * nextNodes.length)];
+            }
+
+            const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+            ctx.fillStyle = color;
+            ctx.fillRect(currentNode.x, currentNode.y, 10, 10); // draw a pixel at the current node
+
+            ctx.strokeStyle = '#000000'; // set the stroke style to black to draw the link
+            ctx.lineWidth = 1; // set the width of the line
+            ctx.beginPath(); // start a new path
+            ctx.moveTo(currentNode.x, currentNode.y); // move to the current node
+            ctx.lineTo(currentNode.x + Math.random() * 10 - 5, currentNode.y + Math.random() * 10 - 5); // draw a line to the next node
+            ctx.stroke(); // stroke the path
+
+            ctx.fillStyle = '#000000'; // set the fill style to black to draw the text
+            ctx.font = '12px Arial'; // set the font and size of the text
+            ctx.textAlign = 'center' // center the text horizontally
+            ctx.textBaseline = 'middle'; // center the text vertically
+            ctx.fillText(currentNode.id, currentNode.x, currentNode.y - 10); // draw the text above the node
+          }
+        </script>
+    </body>
+</html>

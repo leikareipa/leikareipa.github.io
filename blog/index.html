@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="description" content="
+            Welcome to Tarpeeksi Hyvae Soft's blog! Here you'll find articles related to software
+            development as written by a life-long self-taught developer.
+        ">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="./+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <link rel="stylesheet" href="./+assets/blog.css">
+
+        <script type="module" src="./+assets/blog-post-abstract.js"></script>
+
+        <style>
+            body
+            {
+                --dokkiCSS-navibar-item-padding-vertical: 0.5em !important;
+                --dokkiCSS-topic-vertical-padding: 1.7em !important;
+            }
+
+            .dokki-tag-filter
+            {
+                margin-top: var(--dokkiCSS-embedded-vertical-padding) !important;
+            }
+
+            .dokki-tag-filter .button::after
+            {
+                display: none;
+            }
+
+            body[data-dokki-layout^="vertical"]  .dokki-tag-filter
+            {
+                margin-top: 0 !important;
+            }
+            
+            body[data-dokki-layout^="vertical"]  .dokki-topic#introduction
+            {
+                display: none;
+            }
+            
+            .dokki-topics
+            {
+                padding-top: calc(1 * var(--dokkiCSS-topic-vertical-padding));
+                max-width: calc(var(--dokkiCSS-topics-container-max-width) + var(--dokkiCSS-side-panel-width)) !important;
+            }
+
+            body[data-dokki-layout^="vertical"] .dokki-topic:first-child
+            {
+                padding-top: var(--dokkiCSS-topic-vertical-padding) !important;
+            }
+
+            .dokki-document .idx
+            {
+                display: none !important;
+            }
+
+            .dokki-topic.abstract.fake
+            {
+                box-shadow: none !important;
+            }
+
+            body[data-dokki-layout^="vertical"] .dokki-topic.abstract.fake:not(:last-child)
+            {
+                padding-bottom: 0 !important;
+            }
+
+            .dokki-topic.abstract .fields
+            {
+                margin-top: 0;
+            }
+
+            .dokki-topic.abstract .dokkiCSS-topic-title
+            {
+                margin-bottom: 0.85rem !important;
+            }
+
+            .dokki-topic.abstract .tags .dokki-tag
+            {
+                background-color: transparent !important;
+                padding: 0 !important;
+                font-size: initial !important;
+            }
+
+            .dokki-topic.abstract .tags .dokki-tag:hover
+            {
+                text-decoration: underline !important;
+            }
+
+            .dokki-topics .dokki-tag-filter
+            {
+                margin-top: 0;
+                margin-bottom: var(--dokkiCSS-embedded-vertical-padding);
+            }
+
+            .dokki-toolbar
+            {
+                display: none;
+            }
+
+            body[data-dokki-layout="horizontal-wide"] .dokki-document
+            {
+                left: 50% !important;
+                max-width: 1300px !important;
+            }
+
+            body[data-dokki-layout="horizontal"] .dokki-document
+            {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            body[data-dokki-layout="horizontal"] .dokki-header,
+            body[data-dokki-layout="horizontal-narrow"] .dokki-header
+            {
+                padding-left: var(--dokkiCSS-topic-horizontal-padding) !important;
+                padding-right: var(--dokkiCSS-topic-horizontal-padding) !important;
+            }
+
+            body:not([data-dokki-layout^="vertical"]) .dokki-header
+            {
+                margin-bottom: 0 !important;
+            }
+        </style>
+    </head>
+    <body>
+        <template id="dokki">
+
+            <dokki-document>
+
+                <dokki-header>
+                    
+                    <template #caption>
+                        Tarpeeksi Hyvae Soft's blog
+                    </template>
+                    
+                </dokki-header>
+
+                <dokki-topics>
+
+                    <dokki-topic dokki-ignore title="Introduction" inline-class="abstract dokki-ignore">
+                        <p>
+                            This is the blog of <a href="/">Tarpeeksi Hyvae Soft</a>,
+                            containing various writings by <a href="https://github.com/leikareipa/"> the person behind
+                            Tarpeeksi Hyvae Soft</a>, who's been a hobbyist developer for the last few decades.
+                        </p>
+                        <dokki-tag-cloud headerless/>
+                    </dokki-topic>
+
+                    <dokki-tag-filter entity-name="posts"></dokki-tag-filter>
+
+                    <blog-post-abstract
+                        date="Jun 11, 2023"
+                        :tags="['ai', 'stable diffusion', 'art']"
+                        title="Playing around with painterly Stable Diffusion"
+                        brief="
+                            It's well known that Stable Diffusion is adept at imitating various artists' styles.
+                            You can also take advantage of this when generating realistic images.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="April 23, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'documentation']"
+                        title="In an AI future, what should end-user documentation look like?"
+                        brief="
+                            Wearing the hat of technical writer for my software projects, the day usually
+                            starts with an attempt to predict the needs of the target audience, then aligning
+                            the documentation along those parameters. But now that stronger AI is on the horizon,
+                            this approach is starting to feel old-fashioned. It produces static content that
+                            can't adapt to the reader's needs. An obvious way forward is to use AI to project
+                            the documentation into the user's frame of mind, i.e. having the user issue queries
+                            to the AI about the software and the AI transforming the underlying documentation
+                            accordingly.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="April 9, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'assembly', 'javascript']"
+                        title="ChatGPT dealing with assembly code"
+                        brief="
+                            About a year ago, in the time before ChatGPT, I wrote a blog post comparing the
+                            pixel-plotting performance of 386 assembly and JavaScript. This time, let's look
+                            at whether ChatGPT &ndash; with GPT-3.5 and GPT-4 &ndash; can improve on the performance
+                            of the code from that post.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="April 2, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'gui', 'javascript']"
+                        title="GPT-4 implementing Minesweeper using a GUI framework it hadn't seen before"
+                        brief="
+                            I've been casually working on a custom front-end framework &ndash; tentatively
+                            called w95 &ndash; for building apps in the style of Windows 95. The w95 framework
+                            isn't currently public nor would GPT-4 have prior knowledge about it. Still, I
+                            found that just by feeding it the GUI code of a single window built using the
+                            framework, the AI learns enough about the framework to compose new applications
+                            with it
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="March 31, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'javascript']"
+                        title="Comparing ChatGPT models' drawing skills"
+                        brief="
+                            Let's benchmark and compare the visual abilities of the various ChatGPT
+                            models by prompting them with rendering tasks and eyeballing the output.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="March 29, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'javascript', 'typescript']"
+                        title="Low-hanging code optimizing with GPT"
+                        brief="
+                            In this post, I'll feed GPT-3.5 and GPT-4 some not-so-thoroughly-optimized but
+                            performance-critical JavaScript code (my own open-source work) and see
+                            whether the AI can help me optimize it without too much work on my part.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="March 17, 2023"
+                        :tags="['w95', 'rendering', 'gui', 'javascript', 'retro']"
+                        title="Integrating DOSBox into a faux Windows 95 web shell"
+                        brief="
+                            In previous blog posts, I've talked about my casual side project to implement a
+                            Windows 95-lookalike front-end framework that lives inside a canvas element.
+                            This time, I'll outline the steps to integrating a DOSBox web client (js-dos)
+                            into the framework.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="March 12, 2023"
+                        :tags="['w95', 'rendering', 'gui', 'javascript', 'retro']"
+                        title="Metarendering in a faux Windows 95 web shell"
+                        brief="
+                            In a previous blog post, I introduced a time-waster project of mine to reproduce
+                            the salient aspects of the Windows 95 UI  inside a HTML5 &lt;canvas&gt; and to derive
+                            from that a front-end framework for building web apps in that likeness. The
+                            project is coming along here and there. I recently worked on its metarendering,
+                            which I'll talk briefly about in this post.
+                        "
+                    ></blog-post-abstract>
+                    
+                    <blog-post-abstract
+                        date="Feb 21, 2023"
+                        :tags="['c++', 'gaming']"
+                        title="Adding workaround support for unsupported GPUs in MangoHud"
+                        brief="
+                            In a previous post, I went over the steps required to add support for
+                            older Radeons in MangoHud. But those steps are specific to AMD GPUs &ndash;
+                            what if you have an unsupported non-AMD GPU, like Intel's integrated graphics?
+                            In this post, I'll describe a patch to MangoHud in the vein of the previous
+                            one, this time covering unsupported GPUs in general.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Feb 11, 2023"
+                        :tags="['c++', 'gaming']"
+                        title="Adding support for older Radeons in MangoHud"
+                        brief="
+                            MangoHud is a popular Linux on-screen display for Vulkan and OpenGL that by default
+                            doesn't support older, pre-amdgpu Radeon GPUs. Luckily, we can easily implement a
+                            workaround fix for them.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Jan 31, 2023"
+                        :tags="['hardware']"
+                        title="Benefits of upgrading a Ryzen 5600X to a 5900X"
+                        brief="
+                            Competition between AMD and Intel has been pushing down CPU prices. I hopped on
+                            the bandwagon by swapping my Ryzen 5 5600X for a Ryzen 9 5900X. I'll take a
+                            moment in this post to talk about the benefits (and non-benefits) of the upgrade
+                            in some of my workflows.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Jan 1, 2023"
+                        :tags="['recruiting', 'ai', 'gpt', 'chatgpt']"
+                        title="Exploring the applicant&ndash;HR dynamic with ChatGPT"
+                        brief="
+                            ChatGPT is an advanced AI that can convincingly approximate the responses of a
+                            human to various contexts. In this post, we'll look to see whether we can learn
+                            something new about the patterns underlying the applicant&ndash;HR dynamic that
+                            a developer comes across when applying for work, by experimentally varying the
+                            inputs in a controlled environment to a stand-in HR, ChatGPT.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Dec 28, 2022"
+                        :tags="['retro','gaming']"
+                        title="Can Wine replace Windows as a platform for gaming with retro graphics cards?"
+                        brief="
+                            I have a collection of retro graphics cards from the late 1990s and early 2000s and was
+                            wondering, would Wine on Linux run games of that era well on these things? Could it
+                            be an alternative to a period-correct retro OS, maybe even smooth out some
+                            compatibility issues? To find out, I tested a bunch of the cards on a fresh
+                            installation of Ubuntu MATE 20.04 with kernel 5.15.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Dec 25, 2022"
+                        :tags="['electron','javascript']"
+                        title="Messing around with Electron"
+                        brief="
+                            I had reason recently to convert one of my software from a full-stack web app into a
+                            desktop application. Normally, I'd use C++ with Qt for building the desktop stuff, but
+                            didn't want to rewrite this JavaScript codebase. Instead, I was able to use Electron
+                            to easily glue the app's server and client together into a desktop-runnable bundle.
+                            In this post, I'll blurt out a few words about the experience, which was my first time
+                            with Electron.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Sep 28, 2022"
+                        :tags="['C++', 'inter-process communication', 'vcs']"
+                        title="Capturing DOSBox's frame buffer via shared memory"
+                        brief="
+                            VCS is a free program I wrote for doing high-quality video capture with Datapath's
+                            VisionRGB capture devices, aimed particularly at capturing retro PCs etc. For
+                            debugging purposes, I needed a convenient source of period-correct images to capture,
+                            so I implemented DOSBox capturing, where VCS reads from a shared memory buffer where
+                            DOSBox streams its output. This blog post describes that implementation in general
+                            outlines.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Sep 14, 2022"
+                        :tags="['Society', 'inflation']"
+                        title="Gawking at food prices"
+                        brief="
+                            Earlier this year, I wrote a handy app for keeping track of prices at Finnish
+                            K-Market stores. I've had the app logging data for the past six months, tracking
+                            prices at a particular K-Market. Let's see what those data look like.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Aug 25, 2022"
+                        :tags="['w95', 'user interface', 'front-end framework', 'retro']"
+                        title="The unexpectedly useful useless thing"
+                        brief="I've been spending time lately on what was supposed to be an intentionally useless
+                               project. Turns out it's far less useless than intended: it's been giving me a 
+                               deep dive into some of the underlying mechanics of modern front-end frameworks."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Jul 23, 2022"
+                        :tags="['Video streaming', 'linux']"
+                        title="Brief look at the state of video streaming on Linux compared to Windows"
+                        brief="Over the past year or so, I've been accumulating subscriptions to video streaming
+                               services. Though all of them provide a good selection of content, using
+                               them on my desktop Linux PC has felt like a bit of a waste due to their low video
+                               quality on that platform. To get a better feel for the Linux streaming quality
+                               landscape, I ran some tests on a few PC platforms."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Jul 18, 2022"
+                        :tags="['Historical', 'rendering', 'simulation']"
+                        title="How I wrote a cloud simulator/renderer"
+                        brief="About a decade ago, I wrote a desktop app for simulating the atmospheric formation of
+                               water clouds and rendering them into fairly realistic images. It was an interesting
+                               project, crossing the fields of physics, chemistry, and optics, among others. In this
+                               post, I'll describe a brief overview of the project's implementation &ndash; to the
+                               extent that I can remember."
+                    ></blog-post-abstract>
+                    
+                    <blog-post-abstract
+                        date="Jun 21, 2022"
+                        :tags="['JavaScript','rendering']"
+                        title="Implementing a paletted API for <canvas>"
+                        brief="Palettes were used liberally in the earlier days of computing but aren't too common
+                            nowadays. But you'll come across them if you fancy retro computing. I'd previously
+                            written a retro-themed 3D renderer for <canvas> and now wanted to add support for
+                            paletted rendering. So I wrote a drop-in replacement interface for <canvas> that
+                            provides a paletted API/UX for direct pixel manipulation. The rest of this post
+                            describes the implementation in brief terms."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Jun 7, 2022"
+                        :tags="['Documentation','JavaScript','Vue','webpack']"
+                        title="Integrating end-user-oriented documentation into Vue SFC files"
+                        brief="The single-file component (SFC) is a preferred pattern in Vue development, in
+                            which a UI component's template, styling and logic are all defined in a single
+                            file. The pattern also allows the inclusion of custom data, such as documentation.
+                            This post describes one way to integrate Markdown-formatted long-form documentation
+                            &ndash; introductory articles, tutorials, and the like &ndash; into SFC files."
+                    ></blog-post-abstract>
+                    
+                    <blog-post-abstract
+                        date="Feb 28, 2022"
+                        :tags="['C++', 'Python', 'documentation', 'Doxygen']"
+                        title="Improving the styling of Doxygen-generated docs"
+                        brief="In this post, I'll briefly discuss two different ways of improving the styling
+                            of Doxygen docs: first, by modifying the generated HTML; and second, by generating
+                            your own HTML from Doxygen's XML output."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Feb 20, 2022"
+                        :tags="['JavaScript', 'coding style', 'benchmark']"
+                        title="A few different ways of asserting in JavaScript"
+                        brief="Asserting is a staple of defensive programming, consisting of a run-time check
+                            of an operating condition followed by a noisy error if the condition isn't met.
+                            In this post, I'll present and evaluate a few different ways of asserting in
+                            JavaScript, with code samples and benchmark results."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Feb 16, 2022"
+                        :tags="['C', 'rendering', 'retro']"
+                        title="Creating a unifying C89 interface for legacy 3D rendering APIs"
+                        brief="The 1990s saw a proliferation of 3D accelerator cards on the home computing
+                            market. Along with this rush of products came a medley of 3D rendering APIs,
+                            as manufacturers explored the new possibilities and looked to advantage their
+                            own hardware."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Feb 4, 2022"
+                        :tags="['JavaScript', 'coding style']"
+                        title="JavaScript: Avoiding try/catch repetition with an action system"
+                        brief="Try/catch blocks are a common method of error-checking, but they also
+                            add a fair bit of verbosity to the code. In this post, I'll describe one
+                            method I've used to cut down on their clutteriness."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Feb 2, 2022"
+                        :tags="['C', 'C++', 'benchmark', 'retro']"
+                        title="Comparing retro C/C++ compilers' performance"
+                        brief="What's the fastest C/C++ compiler for your retro DOS and Win32 projects?
+                            To find out, I've compiled three C/C++ language benchmarks using a variety
+                            of DOS and Win32 compilers, then measured the executables' run-time performance
+                            on a bunch of platforms ranging from rather old to fairly modern. The rest of
+                            this post describes the results."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Jan 24, 2022"
+                        :tags="['JavaScript', 'rendering']"
+                        title="A path-tracing pixel shader in a JavaScript software renderer"
+                        brief="I recently implemented a path-tracing pixel shader in a JavaScript software renderer.
+                               In this post, I'll go over the gist of how it works."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Jan 21, 2022"
+                        :tags="['standards']"
+                        title="Running Google Lighthouse on old Wayback Machine captures"
+                        brief="How do decades-old web pages look to a modern quality assurance tool?"
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="Jan 7, 2022"
+                        :tags="['JavaScript', 'assembly', 'benchmark']"
+                        title="Comparing pixel-plotting performance in JavaScript and 386 assembly"
+                        brief="Something that's always intrigued me is the ability to write directly into video memory.
+                               In this post, we'll look at whether direct-to-VRAM IO with assembly is faster than writing
+                               into a canvas element with JavaScript."
+                    ></blog-post-abstract>
+
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

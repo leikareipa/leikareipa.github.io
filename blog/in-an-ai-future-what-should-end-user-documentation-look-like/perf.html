@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: white;
+            margin: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            height: 100vh;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Resolution</th>
+                <th>FPS</th>
+            </tr>
+        </thead>
+        <tbody id="fpsResults">
+        </tbody>
+    </table>
+    <script src="./rngon.js"></script>
+    <script>
+        const resolutions = [
+            { width: 640, height: 480 },
+            { width: 1280, height: 720 },
+            { width: 1920, height: 1080 },
+        ];
+
+        const quad = Rngon.ngon([
+            Rngon.vertex(-1, -1, 0),
+            Rngon.vertex(1, -1, 0),
+            Rngon.vertex(1, 1, 0),
+            Rngon.vertex(-1, 1, 0)], {
+                color: Rngon.color(255, 255, 0),
+        });
+
+        const mesh = Rngon.mesh([quad], {
+            rotation: Rngon.vector(0, 0, 45)
+        });
+
+        const fpsResults = document.getElementById("fpsResults");
+
+        setTimeout(()=>{
+            for (const resolution of resolutions) {
+                const fps = [];
+                for (let loop = 0; loop < 100; loop++) {
+                    const startTime = performance.now();
+                    const stats = Rngon.render({
+                        target: null,
+                        scene: [mesh],
+                        options: {
+                            cameraPosition: Rngon.vector(0, 0, -5),
+                            resolution: {
+                                width: resolution.width,
+                                height: resolution.height,
+                            },
+                        },
+                    });
+                    const endTime = performance.now();
+                    fps.push(1000 / ((endTime - startTime) || 1));
+                }
+                const avgFps = (fps.reduce((sum, v)=>(sum + v), 0) / fps.length);
+
+                const newRow = document.createElement("tr");
+                newRow.innerHTML = `
+                    <td>${resolution.width}x${resolution.height}</td>
+                    <td>${avgFps.toFixed(2)}</td>
+                `;
+                fpsResults.appendChild(newRow);
+            }
+        }, 200); 
+    </script>
+</body>
+</html>

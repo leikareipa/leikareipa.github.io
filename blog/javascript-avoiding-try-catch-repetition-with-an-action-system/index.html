@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/feedback-inline-button.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .console
+            {
+                padding: 3px 6px;
+                border: 1px solid;
+                font-size: 95%;
+            }
+
+            .console.log
+            {
+                border-color: lightgray;
+            }
+
+            .console.log + .console.log
+            {
+                border-top: none;
+            }
+
+            .console.error
+            {
+                color: black;
+                background-color: #fff0f0;
+                border-color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <template id="dokki">
+
+            <ths-feedback></ths-feedback>
+
+            <dokki-document>
+                    
+                <dokki-header>
+                    <template #caption>
+                        JavaScript: Avoiding try/catch repetition with an action system
+                    </template>
+                    <template #widgets>
+                        <blog-post-widgets/>
+                    </template>
+                </dokki-header>
+            
+                <dokki-topics>
+
+                    <post-date date="4 February 2022"></post-date>
+
+                    <dokki-topic title="JavaScript: Avoiding try/catch repetition with an action system" id="introduction">
+
+                        <p>
+                            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch">
+                            Try/catch blocks</a> are a common method of error-checking, but they also
+                            add a fair bit of verbosity to the code. In this post, I'll describe one
+                            method I've used to cut down on their clutteriness.
+                        </p>
+
+                        <dokki-subtopic title="Motivation" id="motivation">
+
+                            <p>
+                                The line of code below intends to convert a JSON string into a JavaScript object.
+                                However, because the string is missing quotes around property names, the call to
+                                <em>JSON.parse()</em> generates a syntax error.
+                            </p>
+
+                            <dokki-code headerless expanded syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        const object = JSON.parse('{a: 1, b: 2}')
+                                    </pre>
+                                </template>
+
+                                <template #output>
+                                    <dokki-output>
+                                        <div class="console error">
+                                            Uncaught SyntaxError: Unexpected token a in JSON at position 1
+                                        </div>
+                                    </dokki-output>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                We can guard against those kinds of errors by wrapping the code in a try/catch
+                                block:
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        try {
+                                            const object = JSON.parse('{a: 1, b: 2}');
+                                            // Do something with the object, as it was successfully parsed.
+                                        }
+                                        catch (error) {
+                                            // We can handle the error here.
+                                            console.log("Failed to convert");
+                                        }
+                                        finally {
+                                            // Some actions that we may want to perform regardless of errors.
+                                            console.log("Done");
+                                        }
+                                    </pre>
+                                </template>
+
+                                <template #output>
+                                    <dokki-output>
+                                        <div class="console log">Failed to convert</div>
+                                        <div class="console log">Done</div>
+                                    </dokki-output>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Although the code is now fortified against some of the errors that might occur
+                                from <em>JSON.parse()</em>, it's also much more verbose, and will keep becoming more
+                                so as we add more try/catch blocks.
+                            </p>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="The action system" id="the-action-system">
+
+                            <p>
+                                For one of my projects (<a href="/#lintulista">Lintulista</a>), I wanted to create
+                                a less cluttery method of try/catch error-checking &ndash; one that would (1) minimize
+                                repetitive in-place error-checking code, especially for async network operations;
+                                and (2) automatically notify the app's UI about successes and failures in a way that's
+                                relevant to the end-user.
+                            </p>
+
+                            <p>
+                                For those purposes, I created what I called the <i>action system</i>. The system gets
+                                its name from the fact that it bundles a set of related commands into an action, each
+                                action being wrapped in a try/catch(/finally) block and associated with a pre-defined,
+                                non-technical, user-facing error and/or success message. Essentially, the user-facing
+                                messages define the thematic context of the action, and the action's commands are
+                                selected so that e.g. if any single one of them fails, the action's error message is
+                                relevant to be shown.
+                            </p>
+
+                            <p>
+                                An example of an action would be logging in to your user account: one command queries
+                                your credentials, and another attempts to log you in with those credentials. If either
+                                command fails, the action of logging in can be considered to have failed; the action
+                                system then consumes the failure and dispatches the action's pre-defined user-facing
+                                error message. The code calling the action receives a return value indicating whether
+                                the action succeeded or failed, along with any data that the action itself returned.
+                            </p>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="An example of the action system" id="an-example-of-the-action-system">
+
+                            <p>
+                                The following sample code creates an action &ndash; <em>parse_json()</em> &ndash;
+                                for parsing a JSON string:
+                            </p>
+                            
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        import {AsyncAction} from './widgets/action-sample/action.js';
+            
+                                        const parse_json = AsyncAction({
+                                            success: "Parsed the JSON string",
+                                            failure: "Failed to parse the JSON string",
+                                            act({string}) {
+                                                return JSON.parse(string);
+                                            },
+                                            announcer: ({message})=>{
+                                                document.getElementById("message").textContent = message;
+                                            },
+                                            error: ({error})=>{
+                                                document.getElementById("error").textContent = error;
+                                            },
+                                        });
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                When <em>parse_json()</em> is called, the action system invokes the <em>act()</em>
+                                function that we passed to the <em>AsyncAction</em> factory. If that function throws,
+                                <em>error()</em> will be notified. Dependent on whether <em>act()</em> returns or
+                                throws, the <em>success</em> or <em>failure</em> string will be passed to
+                                <em>accouncer()</em>.
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        const object = await parse_json({string: '{a: 1, b: 2}'});
+                                    </pre>
+                                </template>
+                                
+                                <template #output>
+                                    <dokki-output>
+                                        <dokki-iframe headerless
+                                            height="135px"
+                                            srcdoc="
+                                            <style scoped>
+                                                html {
+                                                    height: 100%;
+                                                }
+                                                body {
+                                                    font-size: 95%;
+                                                    height: 100%;
+                                                    margin: 0;
+                                                    padding: 10px;
+                                                    background-color: white;
+                                                    text-align: center;
+                                                    display: grid;
+                                                    grid-template-rows: 1fr 1fr;
+                                                    box-sizing: border-box;
+                                                    font-family: sans-serif;
+                                                }
+                                                div {
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    padding: 6px;
+                                                }
+                                                div:empty {
+                                                    display: none;
+                                                }
+                                                div#error {
+                                                    background-color: #c84444;
+                                                    border-radius: 6px;
+                                                    color: white;
+                                                    font-weight: bold;
+                                                }
+                                                div#message {
+                                                    border: 1px solid dimgray;
+                                                    border-radius: 25px;
+                                                    border-bottom-right-radius: 0;
+                                                    margin-top: 6px;
+                                                    padding: 6px 24px;
+                                                    min-width: 300px;
+                                                    box-sizing: border-box;
+                                                    text-align: left;
+                                                    margin-left: auto;
+                                                    margin-right: auto;
+                                                }
+                                            </style>
+                                            <div id='error'></div>
+                                            <div id='message'></div>
+                                            <script type='module'>
+                                                import {AsyncAction} from './widgets/action-sample/action.js';
+                
+                                                const parse_json = AsyncAction({
+                                                    success: 'Parsed the JSON string',
+                                                    failure: 'Failed to parse the JSON string',
+                                                    async act({string}) {
+                                                        return JSON.parse(string);
+                                                    },
+                                                    announcer: ({message})=>{
+                                                        document.getElementById('message').textContent = message;
+                                                    },
+                                                    error: ({error})=>{
+                                                        document.getElementById('error').textContent = error;
+                                                    },
+                                                });
+                
+                                                parse_json({string: '{a: 1, b: 2}'});
+                                            </script>
+                                            "
+                                        ></dokki-iframe>
+                                    </dokki-output>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Because the input JSON string is invalid, the call to <em>parse_json()</em> generates
+                                an error. However, since the error-handling routines are already baked into
+                                <em>parse_json()</em>, the caller doesn't need to define them explicitly. The action
+                                system also took care of letting the UI know about the error &ndash; both with a
+                                technical error message and the action's pre-defined user-facing error string.
+                            </p>
+
+                            <p>
+                                (The parsing of a JSON string is generally not something you'd think of as an
+                                async action, but due to the implementation of the action system here, the call
+                                to <em>parse_json()</em> returns a Promise and so needs to be handled with e.g.
+                                <em>await</em>. In the original implementation for Lintulista, the call would've
+                                been <em>parse_json.async()</em> to make that fact clear, but here I've cut some
+                                corners for the purposes of demonstration.)
+                            </p>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="A fuller example of the action system" id="a-fuller-example-of-the-action-system">
+
+                            <p>
+                                The following is a slightly more involved example of the action system in
+                                use, with more in-code explanations too. It makes an async network request
+                                for a random number, then displays the response in the UI.
+                            </p>
+
+                            <p>
+                                We'll start by defining a set of UI elements to receive our data.
+                            </p>
+
+                            <dokki-code headerless syntax="html"
+                                code='
+                                <button id="act" onclick="window.location.reload();">
+                                    Fetch a random number
+                                </button>
+                                <div id="container">
+                                    <i id="spinner" class="fas fa-spin fa-cog"></i>
+                                    <div id="label" title="The action&#39;s user-facing message"></div>
+                                    <div id="canceled">The action was canceled</div>
+                                    <div id="result" title="The action&#39;s return value"></div>
+                                </div>'>
+                            </dokki-code>
+
+                            <p>
+                                Next, we'll create an action for async-fetching the random number via a (dummy)
+                                network. The action will update the UI depending on the network's response.
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        const fetch_random_number = AsyncAction({
+                                            success: "The action succeeded",
+                                            failure: "The action failed",
+                                            async act()
+                                            {
+                                                const valueInRange0to2 = await send_network_query();
+
+                                                // On 0, we cancel the action (by returning undefined).
+                                                // On 1, we successfully complete the action (by returning a value).
+                                                // On 2, we terminate the action with an error (by throwing).
+                                                switch (valueInRange0to2) {
+                                                    case 0: return;
+                                                    case 1: return Math.random();
+                                                    default: throw new Error("Simulated error");
+                                                }
+                                            },
+                                            // Gets called after the action has been attempted; regardless of
+                                            // whether the action succeeded, failed, or was canceled. Receives
+                                            // the arguments with which the action was invoked.
+                                            finally()
+                                            {
+                                                document.getElementById("spinner").style.display = "none";
+                                            },
+                                            // Gets called if the action is canceled. Receives the arguments with
+                                            // which the action was invoked.
+                                            canceled()
+                                            {
+                                                document.getElementById("canceled").style.display = "flex";
+                                            },
+                                            // If the action fails, receives the error that was thrown and the
+                                            // arguments with which the action was invoked. This won't be triggered
+                                            // for canceled actions.
+                                            error({error})
+                                            {
+                                                console.warn(error);
+                                            },
+                                            // Receives the 'success' or 'failure' message, depending on whether
+                                            // the action succeeded or failed, and the arguments with which the
+                                            // action was invoked. This won't be triggered for canceled actions.
+                                            announcer({message})
+                                            {
+                                                const labelEl = document.getElementById("label");
+                                                labelEl.classList.add((message === this.success)? "success" : "failure");
+                                                labelEl.textContent = message;
+                                            }
+                                        });
+
+                                        // Simulates an async network request that returns a pseudo-random
+                                        // integer in the range [0,2].
+                                        function send_network_query(latencyMs = 500)
+                                        {
+                                            const randomNumber = Math.round(Math.random() * 2);
+                                            return new Promise(resolve=>{
+                                                setTimeout(()=>resolve(randomNumber), latencyMs);
+                                            });
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                We can now invoke the action by calling <em>fetch_random_number()</em>:
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        const result = await fetch_random_number();
+                                        document.getElementById("result").textContent = `${result}`;
+
+                                        // If the action was canceled.
+                                        if (result === undefined) {
+                                        }
+
+                                        // If the action failed.
+                                        if (result === null) {
+                                        }
+
+                                        // If the action succeeded (note the non-strict equality).
+                                        if (result != null) {
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Before <em>fetch_random_number()</em> returns, the <em>announcer()</em> function
+                                will take care of updating the user-facing status message, and the <em>finally()</em>
+                                function will get rid of the async waiting spinner in the UI. The code calling
+                                the action doesn't need to care about any of those things, and can limit itself
+                                to testing the return value and branching accordingly.
+                            </p>
+
+                            <p>
+                                You can give the code a spin below. It chooses at random whether the network
+                                responds with a random number (success), an error (failure), or a cancelation
+                                of the action. In case of an error, a message will also be printed into the browser's
+                                developer console.
+                            </p>
+
+                            <dokki-iframe headerless src="./widgets/action-sample/" height="200px">
+
+                                <template #caption>
+                                    View the action sample
+                                </template>
+
+                            </dokki-iframe>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="The action system's implementation" id="action-system-implementation">
+
+                            <p>
+                                The source code for the <em>AsyncAction</em> implementation as used in this post is
+                                <a href="https://github.com/leikareipa/action-system-sample">
+                                available on GitHub</a>.
+                            </p>
+
+                            <p>
+                                The source code for the original action system as used in Lintulista is likewise
+                                <a href="https://github.com/leikareipa/lintulista-client/blob/master/source/action.js">
+                                available on GitHub</a>.
+                            </p>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Conclusion" id="conclusion">
+
+                            <p>
+                                It's not to say that the action system described here is without issues, but I think
+                                it's a reasonable try/catch wrapper overall. Exceptions thrown in deep async code might not
+                                get picked up correctly, though, and the stack traces may not always be the most
+                                useful (it's been a while since I worked on Lintulista, so the details escape me, but
+                                that's what I seem to remember).
+                            </p>
+
+                            <p>
+                                If you want to share ideas for improvement, feel free to
+                                <ths-inline-feedback-button>drop feedback</ths-inline-feedback-button> or post an
+                                issue report on GitHub (see <a href="#action-system-implementation">The action system's
+                                implementation</a>).
+                            </p>
+
+                        </dokki-subtopic>
+
+                    </dokki-topic>
+
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

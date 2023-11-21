@@ -1,0 +1,131 @@
+<html>
+    <head>
+        <style>
+            html, body, canvas {
+                width: 100vw;
+                height: 100vh;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas" width="200" height="300"></canvas>
+        <script>
+            // Set up canvas and pixel buffer
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            const pixelBufferWidth = canvas.width;
+            const pixelBufferHeight = canvas.height;
+            const pixelBuffer = new Uint8ClampedArray(pixelBufferWidth * pixelBufferHeight * 4);
+
+            // Set up fire color gradient
+            const colorGradient = [
+                { r: 7, g: 7, b: 7, a: 0 },
+                { r: 31, g: 7, b: 7, a: 255 },
+                { r: 47, g: 15, b: 7, a: 255 },
+                { r: 71, g: 15, b: 7, a: 255 },
+                { r: 87, g: 23, b: 7, a: 255 },
+                { r: 103, g: 31, b: 7, a: 255 },
+                { r: 119, g: 31, b: 7, a: 255 },
+                { r: 143, g: 39, b: 7, a: 255 },
+                { r: 159, g: 47, b: 7, a: 255 },
+                { r: 175, g: 63, b: 7, a: 255 },
+                { r: 191, g: 71, b: 7, a: 255 },
+                { r: 199, g: 71, b: 7, a: 255 },
+                { r: 223, g: 79, b: 7, a: 255 },
+                { r: 223, g: 87, b: 7, a: 255 },
+                { r: 223, g: 87, b: 7, a: 255 },
+                { r: 215, g: 95, b: 7, a: 255 },
+                { r: 215, g: 95, b: 7, a: 255 },
+                { r: 215, g: 103, b: 15, a: 255 },
+                { r: 207, g: 111, b: 15, a: 255 },
+                { r: 207, g: 119, b: 15, a: 255 },
+                { r: 207, g: 127, b: 15, a: 255 },
+                { r: 207, g: 135, b: 23, a: 255 },
+                { r: 199, g: 135, b: 23, a: 255 },
+                { r: 199, g: 143, b: 23, a: 255 },
+                { r: 199, g: 151, b: 31, a: 255 },
+                { r: 191, g: 159, b: 31, a: 255 },
+                { r: 191, g: 159, b: 31, a: 255 },
+                { r: 191, g: 167, b: 39, a: 255 },
+                { r: 191, g: 167, b: 39, a: 255 },
+                { r: 191, g: 175, b: 47, a: 255 },
+                { r: 183, g: 175, b: 47, a: 255 },
+                { r: 183, g: 183, b: 47, a: 255 },
+                { r: 183, g: 183, b: 55, a: 255 },
+                { r: 207, g: 207, b: 111, a: 255 },
+                { r: 223, g: 223, b: 159, a: 255 },
+                { r: 239, g: 239, b: 199, a: 255 },
+                { r: 255, g: 255, b: 255, a: 255 }
+            ];
+
+            // Initialize the pixel buffer with black pixels
+            for (let i = 0; i < pixelBuffer.length; i += 4) {
+                pixelBuffer[i] = 0;
+                pixelBuffer[i + 1] = 0;
+                pixelBuffer[i + 2] = 0;
+                pixelBuffer[i + 3] = 255;
+            }
+
+            // Define fire function to update the pixel buffer with the fire effect
+            function fire() {
+                // Clear the top row of the pixel buffer
+                for (let x = 0; x < pixelBufferWidth; x++) {
+                    const pixelIndex = x * 4;
+                    pixelBuffer[pixelIndex] = 0;
+                    pixelBuffer[pixelIndex + 1] = 0;
+                    pixelBuffer[pixelIndex + 2] = 0;
+                    pixelBuffer[pixelIndex + 3] = 0;
+                }
+
+                // Update each pixel in the buffer based on the pixels below and to the left/right of it
+                for (let y = 1; y < pixelBufferHeight; y++) {
+                    for (let x = 0; x < pixelBufferWidth; x++) {
+                        const pixelIndex = (y * pixelBufferWidth + x) * 4;
+                        const belowIndex = ((y + 1) * pixelBufferWidth + x) * 4;
+                        const leftIndex = (y * pixelBufferWidth + Math.max(x - 1, 0)) * 4;
+                        const rightIndex = (y * pixelBufferWidth + Math.min(x + 1, pixelBufferWidth - 1)) * 4;
+                        const belowR = pixelBuffer[belowIndex];
+                        const belowG = pixelBuffer[belowIndex + 1];
+                        const belowB = pixelBuffer[belowIndex + 2];
+                        const leftR = pixelBuffer[leftIndex];
+                        const leftG = pixelBuffer[leftIndex + 1];
+                        const leftB = pixelBuffer[leftIndex + 2];
+                        const rightR = pixelBuffer[rightIndex];
+                        const rightG = pixelBuffer[rightIndex + 1];
+                        const rightB = pixelBuffer[rightIndex + 2];
+                        const averageR = Math.floor((belowR + leftR + rightR) / 3);
+                        const averageG = Math.floor((belowG + leftG + rightG) / 3);
+                        const averageB = Math.floor((belowB + leftB + rightB) / 3);
+                        const decay = Math.floor(Math.random() * 3);
+                        const colorIndex = Math.floor(Math.random() * colorGradient.length);
+                        const color = colorGradient[colorIndex];
+                        pixelBuffer[pixelIndex] = Math.min(averageR + color.r + decay, 255);
+                        pixelBuffer[pixelIndex + 1] = Math.min(averageG + color.g + decay, 255);
+                        pixelBuffer[pixelIndex + 2] = Math.min(averageB + color.b + decay, 255);
+                        pixelBuffer[pixelIndex + 3] = color.a;
+                    }
+                }
+            }
+
+            // Define render function to draw the pixel buffer to the canvas
+            function render() {
+                const imageData = new ImageData(pixelBuffer, pixelBufferWidth, pixelBufferHeight);
+                ctx.putImageData(imageData, 0, 0);
+            }
+
+            // Set up animation loop to call fire and render functions
+            function animate() {
+                fire();
+                render();
+                requestAnimationFrame(animate);
+            }
+
+            // Start animation loop
+            animate();
+        </script>
+    </body>
+</html>

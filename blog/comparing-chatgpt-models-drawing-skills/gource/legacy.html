@@ -1,0 +1,73 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="400" height="300"></canvas>
+        <script>
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // fill the canvas with white
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // draw the node for www.geocities.com
+            const geocitiesNodeX = canvas.width / 2;
+            const geocitiesNodeY = canvas.height / 2;
+            drawNode(geocitiesNodeX, geocitiesNodeY, "blue");
+            drawText("www.geocities.com", geocitiesNodeX, geocitiesNodeY, 12, "black");
+
+            // draw a few related nodes
+            const relatedSites = [  "www.angelfire.com",  "www.tripod.com",  "www.homestead.com",  "www.xoom.com",  "www.fortunecity.com"];
+            const relatedNodes = [];
+            for (const site of relatedSites) {
+                const x = Math.floor(Math.random() * canvas.width / 4) + canvas.width / 2;
+                const y = Math.floor(Math.random() * canvas.height / 4) + canvas.height / 2;
+                drawNode(x, y, "red");
+                drawText(site, x, y, 12, "black");
+                relatedNodes.push({ x, y });
+            }
+
+            // draw connections between the related nodes and the www.geocities.com node
+            for (const node of relatedNodes) {
+                drawLine(geocitiesNodeX, geocitiesNodeY, node.x, node.y, "green");
+            }
+
+            // helper function to draw a node
+            function drawNode(x, y, color) {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+
+            // helper function to draw text
+            function drawText(text, x, y, fontSize, color) {
+                ctx.fillStyle = color;
+                ctx.font = fontSize + "px Arial";
+                ctx.fillText(text, x, y + fontSize / 2);
+            }
+
+            // helper function to draw a line between two points
+            function drawLine(x1, y1, x2, y2, color) {
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+        <script type="module" src="/blog/capturing-dosboxs-frame-buffer-via-shared-memory/js/diff.js"></script>
+
+        <style>
+            .x-diff {
+                display: block;
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                border-radius: var(--dokkiCSS-embedded-border-radius);
+                padding: 12px;
+                margin: 1.375rem 0;
+            }
+
+            .x-diff > p {
+                margin: 0;
+                margin-bottom: 0;
+                padding: 2px;
+            }
+
+            .x-diff > p.added {
+                background-color: rgba(0, 255, 0, 0.1);
+            }
+            
+            .x-diff > p.removed {
+                background-color: rgba(255, 0, 0, 0.1);
+            }
+
+            .x-diff > p.not-changed {
+                margin-left: 2ch;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Adding workaround support for unsupported GPUs in MangoHud
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="21 February 2023"></post-date>
+<dokki-topic title="Adding workaround support for unsupported GPUs in MangoHud">
+<p>In <a href="/blog/adding-support-for-older-radeons-in-mangohud/">a previous blog post</a>, I went over the steps required to add support for older Radeons in MangoHud. But those steps are specific to AMD GPUs – what if you have an unsupported non-AMD GPU, like Intel's integrated graphics?</p>
+<p>In this post, I'll again describe a patch to MangoHud that implements an override folder into which you can stream GPU statistics using some third-party method – e.g. via <a href="https://manpages.ubuntu.com/manpages/jammy/man1/intel_gpu_top.1.html">intel_gpu_top</a> in the case of Intel graphics – for MangoHud to read and display. It's quite similar to the patch I described in the previous post, but this time not limited to AMD GPUs, and appended with a few other improvements as well.</p>
+<dokki-subtopic title="The patch">
+<p>The patch modifies two of MangoHud's source files, <a href="https://github.com/flightlessmango/MangoHud/blob/v0.6.8/src/overlay.cpp">overlay.cpp</a> and <a href="https://github.com/flightlessmango/MangoHud/blob/v0.6.8/src/gpu.cpp">gpu.cpp</a>. The modifications are discussed below. Pay attention to the code snippets' line numbers, as they indicate where in the source file the code is inserted.</p>
+<p>The gist of the modifications is that they allow the user to feed in custom GPU statistics via the file system.</p>
+<h3>overlay.cpp</h3>
+<p>For convenience, we'll establish a global boolean to indicate whether the user has provided custom input:</p>
+
+                <dokki-code syntax="c++"headerless="true"line-num-starts-at="39">
+                    <template #code>
+                        <pre>bool forceCustomInput = false;
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>If custom input is provided, we'll force MangoHud's GPU state polling down the AMD GPU path:</p>
+
+                <dokki-code syntax="c++"headerless="true"line-num-starts-at="131">
+                    <template #code>
+                        <pre>// This call should come after all the other stat-fetching calls. The idea is that
+// it overrides any stats for which there's a custom input defined, regardless of
+// whether the GPU is AMD (we just use the AMD code path for convenience).
+if (forceCustomInput)
+    getAmdGpuInfo();
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Finally, this code actually determines whether the user has provided custom input, and makes MangoHud aware of it:</p>
+
+                <dokki-code syntax="c++"headerless="true"line-num-starts-at="769">
+                    <template #code>
+                        <pre>// Provide a folder via which the user can override GPU statistics. Note that
+// we're using the AMD GPU code path, but it's just for our convenience and
+// the implementation works (or should work) with non-AMD GPUs as well.
+for (const auto &amp;override: std::unordered_map&lt;std::string, FILE**&gt;{
+    {&quot;gpu_busy_percent&quot;, &amp;amdgpu.busy},
+    {&quot;mem_info_vram_total&quot;, &amp;amdgpu.vram_total},
+    {&quot;mem_info_vram_used&quot;, &amp;amdgpu.vram_used},
+    {&quot;mem_info_gtt_used&quot;, &amp;amdgpu.gtt_used},
+    {&quot;temp1_input&quot;, &amp;amdgpu.temp},
+    {&quot;freq1_input&quot;, &amp;amdgpu.core_clock},
+    {&quot;freq2_input&quot;, &amp;amdgpu.memory_clock},
+    {&quot;power1_average&quot;, &amp;amdgpu.power_usage},
+}){
+    FILE *const f = fopen((std::string(getenv(&quot;HOME&quot;)) + &quot;/.mangohud_input/&quot; + override.first).c_str(), &quot;r&quot;);
+    if (f) {
+        *override.second = f;
+        forceCustomInput = true;
+        params.enabled[OVERLAY_PARAM_ENABLED_gpu_stats] = true;
+    }
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Since MangoHud reads AMD GPU statistics from the file system (via <em>getAmdGpuInfo()</em>), we've repurposed the mechanism to allow the user to inject custom statistics files via the <strong>~/.mangohud_input/</strong> directory. For any such file found, the modified MangoHud will replace the statistic's usual value with the value from the custom file.</p>
+<p>For example, creating the file <strong>~/.mangohud_input/gpu_busy_percent</strong> and placing the value 11 in it, MangoHud's GPU usage indicator will show &quot;11&quot; while the rest of the GPU stats will be displayed as per usual. Modifying the file's value will be reflected in MangoHud's display.</p>
+<h3>gpu.cpp</h3>
+<p>A small modification is needed in <a href="https://github.com/flightlessmango/MangoHud/blob/v0.6.8/src/gpu.cpp#L76">gpu.cpp:76</a>:</p>
+<x-diff>
+    - if (metrics_path.empty()){\
+    + {
+</x-diff>
+<p>This allows us to call <em>getAmdGpuInfo()</em> a second time to fetch custom input. As far as I can see, regardless of what <em>metrics_path.empty()</em> evaluates to, the conditional block includes pointer checks that will evaluate the same way, so the first time we call <em>getAmdGpuInfo()</em> the conditional is unnecessary, and the second time it could prevent custom input from registering.</p>
+</dokki-subtopic><dokki-subtopic title="Notes">
+<p>The patch proposed here is a bit of a kludge and not intended as a permanent feature. It attempts to minimize the amount of code needed to be modified or added, while still delivering the intended functionality.</p>
+<p>I've tested the patch lightly, using AMD and Intel hardware. There are likely some issues and corner cases lurking around.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

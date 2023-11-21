@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <template id="dokki">
+
+            <ths-feedback></ths-feedback>
+
+            <dokki-document>
+                
+                <dokki-header>
+                    <template #caption>
+                        Creating a unifying C89 interface for legacy 3D rendering APIs
+                    </template>
+                    <template #widgets>
+                        <blog-post-widgets/>
+                    </template>
+                </dokki-header>
+            
+                <dokki-topics>
+
+                    <post-date date="16 February 2022"></post-date>
+
+                    <dokki-topic title="Creating a unifying C89 interface for legacy 3D rendering APIs" id="introduction">
+
+                        <p>
+                            The 1990s saw a proliferation of 3D accelerator cards on the home computing market.
+                            Along with this rush of products came a medley of 3D rendering APIs, as manufacturers
+                            explored the new possibilities and looked to advantage their own hardware. At this time,
+                            modern standards like Direct3D were still some way away from attaining the favor of
+                            vendors and developers.
+                        </p>
+
+                        <p>
+                            Below are (pseudo-ish) examples of rendering a solid-filled triangle using three different 3D APIs
+                            of the 1990s:
+                        </p>
+
+                        <dokki-code syntax="c" headerless>
+                            <template #caption>
+                                Rendering a triangle using Direct3D 5
+                            </template>
+                            <template #code>
+                                <pre>
+                                    // Set up for a solid fill.
+                                    IDirect3DDevice2_SetRenderState(
+                                        D3DDEVICE_5,
+                                        D3DRENDERSTATE_TEXTUREHANDLE,
+                                        NULL
+                                    );
+            
+                                    // Rasterize the triangle.
+                                    IDirect3DDevice2_BeginScene(D3DDEVICE_5);
+                                    D3DTLVERTEX v[3];
+                                    IDirect3DDevice2_DrawPrimitive(
+                                        D3DDEVICE_5,
+                                        D3DPT_TRIANGLELIST,
+                                        D3DVT_TLVERTEX,
+                                        v,
+                                        3,
+                                        NULL
+                                    );
+
+                                    // Display the rendering.
+                                    IDirect3DDevice2_EndScene(D3DDEVICE_5);
+                                    IDirectDrawSurface3_Flip(FRONT_BUFFER, NULL, DDFLIP_WAIT);
+                                </pre>
+                            </template>
+                        </dokki-code>
+
+                        <dokki-code syntax="c" headerless>
+                            <template #caption>
+                                Rendering a triangle using Glide 3
+                            </template>
+                            <template #code>
+                                <pre>
+                                    // Set up for a solid fill.
+                                    grColorCombine(
+                                        GR_COMBINE_FUNCTION_LOCAL,
+                                        GR_COMBINE_FACTOR_NONE,
+                                        GR_COMBINE_LOCAL_ITERATED,
+                                        GR_COMBINE_OTHER_NONE,
+                                        FXFALSE
+                                    );
+
+                                    // Rasterize the triangle.
+                                    vertex_struct v[3];
+                                    grDrawTriangle(&v[0], &v[1], &v[2]);
+
+                                    // Display the rendering.
+                                    grBufferSwap(FXTRUE);
+                                </pre>
+                            </template>
+                        </dokki-code>
+
+                        <dokki-code syntax="c" headerless>
+                            <template #caption>
+                                Rendering a triangle using Matrox Simple Interface
+                            </template>
+                            <template #code>
+                                <pre>
+                                    // Set up for a solid fill.
+                                    T_msiParameters msiParameters;
+                                    msiParameters.msiTexture.Enable = FALSE;
+                                    msiSetParameters(&msiParameters);
+
+                                    // Rasterize the triangle.
+                                    T_msiVertex v[3];
+                                    msiRenderTriangle(&v[0], &v[1], &v[2], 100);
+
+                                    // Display the rendering.
+                                    msiEndFrame(0, 0, FALSE);
+                                </pre>
+                            </template>
+                        </dokki-code>
+
+                        <p>
+                            The first of the above APIs, <a href="https://en.wikipedia.org/wiki/Direct3D">Direct3D</a> 5, made early strides in standardizing
+                            a cross-hardware home-market solution, gaining support from a large percentage of the available 3D cards &ndash; though still often optionally
+                            to a vendor's own API. The second API, <a href="https://en.wikipedia.org/wiki/Glide_(API)">Glide</a> 3, was
+                            compatible only with <a href="https://en.wikipedia.org/wiki/3dfx_Interactive">3dfx</a> Voodoo hardware, but
+                            held a strong position in the market due to wide adoption of the hardware and competitive performance. The third API,
+                            <a href="https://en.wikipedia.org/wiki/Matrox_Simple_Interface">Matrox Simple Interface</a>, was specific to the
+                            <a href="https://en.wikipedia.org/wiki/Matrox_Mystique">Matrox Mystique</a> line of cards.
+                        </p>
+
+                        <p>
+                            Although these examples indicate some shared characteristics between the APIs, they're also different
+                            enough to require you to write the same code in three different ways if you want it to run
+                            natively on the various hardware platforms.
+                        </p>
+
+                        <p>
+                            Out of curiosity, I decided to design and implement a unifying interface that would let
+                            a user write their retro 3D rendering code once and have it run natively across a variety of
+                            legacy 3D hardware and rendering APIs. This project became known as <a href="/#kelpo">Kelpo</a>,
+                            and is written in ANSI C89 for the Win32 platform.
+                        </p>
+
+                        <p>
+                            In this blog post, I'll go over the basics of how Kelpo works &ndash; first from the
+                            end-user's perspective and then from under the hood.
+                        </p>
+
+                        <dokki-image headerless
+                            src="./img/tr1-3b_glide3x_win98_voodoo1.png"
+                            width="640"
+                            height="480"
+                        >
+                            <template #caption>
+                                Kelpo using Glide 3 to render a scene from Tomb Raider (1996) on the 3dfx Voodoo (1997)
+                            </template>
+                        </dokki-image>
+                        
+                    </dokki-topic>
+                    
+                    <dokki-topic title="The end-user interface">
+
+                        <p>
+                            Kelpo exposes a minimalist rendering API to the end-user application.
+                        </p>
+
+                        <p>
+                            The code snippet
+                            below demonstrates the general life cycle of the interface:
+                        </p>
+
+                        <dokki-code syntax="c" headerless>
+                            <template #code>
+                                <pre>
+                                    const struct kelpo_interface_s *kelpo = NULL;
+
+                                    kelpo_create_interface(&kelpo, "opengl_1_1");
+
+                                    /* Render something until the program exits. */
+
+                                    kelpo_release_interface(kelpo);
+                                </pre>
+                            </template>
+                        </dokki-code>
+
+                        <p>
+                            First,
+                            an instance of the interface is initialized with a call to <em>kelpo_create_interface()</em>.
+                            The instance is then used to control Kelpo's rendering during the program's run-time.
+                            Finally, at the end of the program's execution, <em>kelpo_release_interface()</em> is used to
+                            free up any resources that were reserved for the interface.
+                        </p>
+
+                        <dokki-subtopic title="Sample usage" id="sample-usage">
+
+                            <p>
+                                The code listing below represents a simplified but complete end-user Kelpo application:
+                            </p>
+
+                            <dokki-code
+                                syntax="c"
+                                headerless
+                                code='
+                                #include <kelpo_interface/interface.h>
+                                #include <kelpo_interface/polygon/triangle/triangle.h>
+
+                                const struct kelpo_interface_s *kelpo = NULL;
+                                struct kelpo_polygon_triangle_s triangle = {0};
+
+                                kelpo_create_interface(&kelpo, "opengl_1_1");
+                                kelpo->window.open(0, 1920, 1080, 32);
+
+                                while (kelpo->window.process_messages(), !kelpo->window.is_closing())
+                                {
+                                    kelpo->rasterizer.clear_frame();
+                                    kelpo->rasterizer.draw_triangles(&triangle, 1);
+                                    kelpo->window.flip_surface();
+                                }
+
+                                kelpo_release_interface(kelpo);
+                                return (kelpo_error_peek() == KELPOERR_ALL_GOOD)? EXIT_SUCCESS : EXIT_FAILURE;
+                            '></dokki-code>
+
+                            <p>
+                                The application first includes the Kelpo interface headers, then requests a Kelpo
+                                interface that routes to an OpenGL 1.1 renderer, opens a window to render into, and
+                                enters into a rendering loop that exits when the window is closed. Commands like
+                                <em>kelpo->rasterizer.draw_triangles()</em> are mapped transparently by Kelpo to
+                                OpenGL 1.1 calls.
+                            </p>
+
+                            <p>
+                                The Kelpo codebase comes with a number of
+                                <a href="https://github.com/leikareipa/kelpo/tree/master/examples">sample applications</a>
+                                that you can browse through and test.
+                            </p>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Handling errors" id="error-handling">
+                        
+                            <p>
+                                All of Kelpo's interface functions return an integer value to indicate error (0) or
+                                success (1). So individual API calls can be wrapped in conditionals to check
+                                whether the call succeeded:
+                            </p>
+
+                            <dokki-code syntax="c" headerless>
+                                <template #code>
+                                    <pre>
+                                        if (!kelpo->window.open(0, 1920, 1080, 32))
+                                        {
+                                            fprintf(stderr, "Failed to open a Kelpo renderer window.\n");
+                                            goto cleanup;
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Kelpo also maintains a global error stack that contains all error
+                                codes that have occurred during Kelpo's execution. So rather than wrapping
+                                individual API calls into error-checking conditionals, you can execute multiple
+                                API calls and then query the error stack to see if any errors occurred:
+                            </p>
+
+                            <dokki-code syntax="c" headerless>
+                                <template #code>
+                                    <pre>
+                                        kelpo->window.open(0, 1920, 1080, 32);
+
+                                        if (kelpo_error_peek() != KELPOERR_ALL_GOOD)
+                                        {
+                                            fprintf(stderr, "Kelpo has reported an error.\n");
+                                            goto cleanup;
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                It's also possible to register a callback function for Kelpo to invoke
+                                whenever an error occurs:
+                            </p>
+
+                            <dokki-code syntax="c" headerless>
+                                <template #code>
+                                    <pre>
+                                        void custom_error_callback(enum kelpo_error_code_e kelpoErrorCode)
+                                        {
+                                            fprintf(stderr, kelpo_error_string(kelpoErrorCode));
+                                            return;
+                                        }
+
+                                        kelpo_error_callback(custom_error_callback);
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                        </dokki-subtopic>
+
+                    </dokki-topic>
+                        
+                    <dokki-topic title="The architecture">
+
+                        <p>
+                            In this section, we'll take a brief look at Kelpo's behind-the-scenes &ndash; how
+                            the interface is architectured and structured.
+                        </p>
+
+                        <dokki-subtopic title="Feature-set" id="feature-set">
+
+                            <p>
+                                To allow Kelpo to work across a variety of 3D hardware, it supports only a minimalist
+                                selection of rendering features, chosen so as to be as widely supported as possible
+                                by the target hardware.
+                            </p>
+
+                            <p>
+                                As such, Kelpo supports &ndash; and is limited to &ndash; the following features:
+                            </p>
+
+                            <ul>
+                                <li>Textured and untextured rasterization</li>
+                                <li>Texturing with nearest-neighbor and linear interpolation (with and without mipmapping)</li>
+                                <li>Texture resolution up to 256 &times; 256 (power-of-two) with 16-bit color depth</li>
+                                <li>Perspective-correct texture-mapping</li>
+                                <li>Depth-buffering</li>
+                                <li>Alpha-testing</li>
+                                <li>Full-screen rendering</li>
+                            </ul>
+
+                            <p>
+                                With some exceptions &ndash; for example, early Matrox 3D cards not supporting linear
+                                texture interpolation &ndash; this set of features is quite well supported across the board
+                                of 1990s consumer 3D hardware and rendering APIs.
+                            </p>
+                                
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="End-user interface" id="end-user-interface">
+
+                            <p>
+                                The code intended to be included in an end-user's application lives under <em>src/kelpo_interface/</em>.
+                            </p>
+
+                            <dokki-directory headerless>
+                                <template #structure>
+                                    'src': {
+                                        'kelpo_interface': {
+                                            'interface.c': {
+                                                '/content': 'code',
+                                                '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_interface/interface.c',
+                                            },
+                                            'interface.h': {
+                                                '/content': 'code',
+                                                '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_interface/interface.h',
+                                            },
+                                        },
+                                    }
+                                </template>
+                            </dokki-directory>
+
+                            <p>
+                                The <em>kelpo_interface_s</em> structure, defined in
+                                <a href="https://github.com/leikareipa/kelpo/blob/master/src/kelpo_interface/interface.h">
+                                interface.h</a>, is the heart of the Kelpo end-user API. It provides
+                                the end-user application functions for controlling Kelpo's facilities (cf.
+                                <a href="#sample-usage">Sample usage</a>):
+                            </p>
+
+                            <dokki-code syntax="c" headerless>
+                                <template #code>
+                                    <pre>
+                                        struct kelpo_interface_s
+                                        {
+                                            struct kelpo_interface_window_s
+                                            {
+                                                int (*process_messages)(void);
+                                                int (*flip_surface)(void);
+                                                /* ... */
+                                            } window;
+
+                                            struct kelpo_interface_rasterizer_s
+                                            {
+                                                int (*clear_frame)(void);
+                                                int (*upload_texture)(struct kelpo_polygon_texture_s *const texture);
+                                                /* ... */
+                                            } rasterizer;
+
+                                            struct kelpo_interface_metadata_s
+                                            {
+                                                unsigned rendererVersionMajor;
+                                                unsigned rendererVersionMinor;
+                                                /* ... */
+                                            } metadata;
+                                        };
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                The interface functions are grouped semantically into three categories:
+                                <strong>window</strong>, <strong>rasterizer</strong>, and <strong>metadata</strong>.
+                                The <strong>window</strong> group contains functions for manipulating the window into
+                                which Kelpo renders &ndash; flipping the screen buffer, processing user input, etc. The
+                                functions of the <strong>rasterizer</strong> group control Kelpo's renderer &ndash;
+                                managing textures, submitting polygons to be rasterized, etc. Finally,
+                                <strong>metadata</strong> provides general information about the renderer, like it's
+                                name and version number.
+                            </p>
+
+                            <p>
+                                As shown in the code listing above, the functions of the interface structure are
+                                pointers. Their actual implementations are provided by a renderer loaded from a DLL
+                                at run-time, as discussed in the next section.
+                            </p>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Renderers" id="renderers">
+
+                            <p>
+                                Kelpo's implementation of each supported rendering API are located under <em>src/kelpo_renderer/</em>.
+                                For example, the following are the source files used by the Glide 3 renderer:
+                            </p>
+                            
+                            <dokki-directory headerless>
+                                <template #structure>
+                                    'src': {
+                                        'kelpo_renderer': {
+                                            'renderer_glide_3.c': {
+                                                '/content': 'code',
+                                                '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/renderer_glide_3.c',
+                                            },
+                                            'rasterizer': {
+                                                'glide_3': {
+                                                    'rasterizer_glide_3.c': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/rasterizer/glide_3/rasterizer_glide_3.c',
+                                                    },
+                                                    'rasterizer_glide_3.h': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/rasterizer/glide_3/rasterizer_glide_3.h',
+                                                    },
+                                                },
+                                            },
+                                            'surface': {
+                                                'glide_3': {
+                                                    'surface_glide_3.c': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/surface/glide_3/surface_glide_3.c',
+                                                    },
+                                                    'surface_glide_3.h': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/surface/glide_3/surface_glide_3.h',
+                                                    },
+                                                },
+                                            },
+                                            'window': {
+                                                'win32': {
+                                                    'window_win32.c': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/window/win32/window_win32.c',
+                                                    },
+                                                    'window_win32.h': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/window/win32/window_win32.h',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    }
+                                </template>
+                            </dokki-directory>
+
+                            <p>
+                                In the above listing, <em>src/kelpo_renderer/renderer_glide_3.c</em> is the
+                                renderer's point of entry. It provides an <em>export_interface()</em> function that populates
+                                a Kelpo interface structure (cf. <a href="#end-user-interface">End-user interface</a>) with
+                                pointers to functions specific to the Glide 3 renderer:
+                            </p>
+
+                            <dokki-code
+                                syntax="c"
+                                headerless
+                                code='
+                                #include <kelpo_renderer/window/win32/window_win32.h>
+                                #include <kelpo_renderer/surface/glide_3/surface_glide_3.h>
+                                #include <kelpo_renderer/rasterizer/glide_3/rasterizer_glide_3.h>
+                                #include <kelpo_interface/interface.h>
+
+                                /* ... */
+
+                                int export_interface(struct kelpo_interface_s *const interface, const unsigned interfaceVersion)
+                                {
+                                    if (interfaceVersion != KELPO_INTERFACE_VERSION_MAJOR)
+                                    {
+                                        return 0;
+                                    }
+
+                                    interface->window.process_messages = kelpo_window__process_window_messages;
+                                    interface->window.flip_surface = kelpo_surface_glide_3__flip_surface;
+                                    /* ... */
+
+                                    interface->rasterizer.clear_frame = kelpo_rasterizer_glide_3__clear_frame;
+                                    interface->rasterizer.upload_texture = kelpo_rasterizer_glide_3__upload_texture;
+                                    /* ... */
+
+                                    return 1;
+                                }
+                                '
+                            ></dokki-code>
+
+                            <p>
+                                The renderer's code is compiled into a DLL file for distribution
+                                with the end-user application. The DLL can be imported into the application at run-time with
+                                the <em>kelpo_create_interface()</em> function (cf. <a href="#sample-usage">Sample usage</a>):
+                            </p>
+
+                            <dokki-code headerless syntax="c">
+                                <template #code>
+                                    <pre>
+                                        int kelpo_create_interface(
+                                            const struct kelpo_interface_s **dst,
+                                            const char *const rendererName
+                                        )
+                                        {
+                                            HMODULE dllHandle = NULL;
+                                            const char *dllFilename = NULL;
+                                            dll_import_fn_t get_kelpo_interface = NULL;
+
+                                            /* ... */
+
+                                            dllHandle = LoadLibraryA(dllFilename);
+
+                                            /* ... */
+
+                                            get_kelpo_interface = (dll_import_fn_t)GetProcAddress(dllHandle, "export_interface");
+                                            
+                                            /* ... */
+
+                                            get_kelpo_interface(*dst, KELPO_INTERFACE_VERSION_MAJOR);
+
+                                            /* ... */
+                                            
+                                            return 1;
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Each renderer's code is further divided into a <strong>rasterizer</strong> and a
+                                <strong>surface</strong> group. The following are the corresponding source files
+                                for the Glide 3 renderer:
+                            </p>
+
+                            <dokki-directory headerless>
+                                <template #structure>
+                                    'src': {
+                                        'kelpo_renderer': {
+                                            'rasterizer': {
+                                                'glide_3': {
+                                                    'rasterizer_glide_3.c': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/rasterizer/glide_3/rasterizer_glide_3.c',
+                                                    },
+                                                    'rasterizer_glide_3.h': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/rasterizer/glide_3/rasterizer_glide_3.h',
+                                                    },
+                                                },
+                                            },
+                                            'surface': {
+                                                'glide_3': {
+                                                    'surface_glide_3.c': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/surface/glide_3/surface_glide_3.c',
+                                                    },
+                                                    'surface_glide_3.h': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/surface/glide_3/surface_glide_3.h',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    }
+                                </template>
+                            </dokki-directory>
+
+                            <p>
+                                The <strong>rasterizer</strong> code is responsible for rendering polygons and managing
+                                related aspects (e.g. texture memory). The <strong>surface</strong> code handles the
+                                initiation and run-time controlling of a suitable render context for the rasterizer &ndash;
+                                e.g. a DirectDraw surface for a Direct3D renderer.
+                            </p>
+
+                            <p>
+                                Finally, Kelpo's generic Win32 windowing code interfaces with the active renderer's
+                                surface code to display the contents of the surface in Kelpo's window.
+                            </p>
+
+                            <dokki-directory headerless>
+                                <template #structure>
+                                    'src': {
+                                        'kelpo_renderer': {
+                                            'window': {
+                                                'win32': {
+                                                    'window_win32.c': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/window/win32/window_win32.c',
+                                                    },
+                                                    'window_win32.h': {
+                                                        '/content': 'code',
+                                                        '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_renderer/window/win32/window_win32.h',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    }
+                                </template>
+                            </dokki-directory>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Auxiliaries" id="auxiliaries">
+
+                            <p>
+                                In addition to the interface and renderer code, Kelpo comes with a number of optional
+                                rendering-related implementations that one can use for bootstrapping their
+                                Kelpo application. These include triangle-clipping, vertex transformation, matrix
+                                operations, and a generic LIFO stack.
+                            </p>
+
+                            <dokki-directory headerless>
+                                <template #structure>
+                                    'src': {
+                                        'kelpo_auxiliary': {
+                                            'vertex_lightmapper.c': {
+                                                '/content': 'code',
+                                                '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_auxiliary/vertex_lightmapper.c',
+                                            },
+                                            'vertex_lightmapper.h': {
+                                                '/content': 'code',
+                                                '/href': 'https://github.com/leikareipa/kelpo/blob/master/src/kelpo_auxiliary/vertex_lightmapper.h',
+                                            },
+                                        },
+                                    },
+                                </template>
+                            </dokki-directory>
+
+                            <p>
+                                Outside of the Kelpo codebase, I've created a <a href="https://github.com/leikareipa/kac-file-format/">
+                                complementary mesh file format for Kelpo</a>. The format is designed with the limitations of legacy rendering
+                                APIs in mind, and comes with an OBJ converter and a C89 importer for use in a Kelpo application.
+                                The OBJ converter will additionally convert the model's textures into Kelpo's 16-bit power-of-two
+                                format and generate mipmaps for them.
+                            </p>
+
+
+                        </dokki-subtopic>
+                    
+                    </dokki-topic>
+
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

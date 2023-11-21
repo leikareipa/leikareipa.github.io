@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/feedback-inline-button.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .aside-caption
+            {
+                font-size: 0.875em;
+                margin-top: 1ex;
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+            
+            .dokki-area.expression {
+                white-space: nowrap;
+                overflow: auto;
+            }
+
+            .dokki-area.expression:not(.simple) {
+                display: flex;
+                align-items: center;
+            }
+
+            .dokki-area.expression > * {
+                display: inline-flex;
+                margin: 0;
+            }
+
+            .dokki-area.expression .division {
+                display: inline-flex;
+                flex-direction: column;
+                text-align: center;
+                margin-left: 0.25em;
+                margin-right: 0.25em;
+            }
+
+            .dokki-area.expression .divident {
+                border-bottom: 1px solid;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        <template dokki-document>
+            <section title>
+                How I wrote a cloud simulator/renderer
+            </section>
+            <section widgets>
+                <blog-post-widgets/>
+            </section>
+            <section content>
+                <article src="content.md"></article>
+            </section>
+        </template>
+    </body>
+</html>

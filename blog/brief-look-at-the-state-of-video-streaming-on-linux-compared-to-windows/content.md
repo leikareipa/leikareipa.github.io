@@ -1,0 +1,179 @@
+<post-date date="23 July 2022"/>
+
+# Brief look at the state of video streaming on Linux compared to Windows
+
+Over the past year or so, I've been accumulating subscriptions to video streaming services. At the moment, I'm signed to Amazon Prime Video, Disney+, and HBO Max.
+
+Though all of these services provide a good selection of content, using them on my desktop Linux PC has felt like a bit of a waste due to their low video quality on that platform. The short of it is that Linux doesn't support the kind of digital rights management the services would like, so as a compromise they limit the video quality.
+
+To get a better feel for the Linux streaming quality landscape, I ran some tests across the three streaming services on a few PC platforms:
+
+- Native Linux PC
+- Native Windows PC
+- Virtual Windows in VirtualBox on the Linux PC
+- The native Windows PC viewed using a capture card
+
+All platforms had fast internet and capable hardware.
+
+For each platform, I streamed some movies and series off of the three streaming services using Google Chrome and made note of the video resolution given in *chrome://media-internals*.
+
+In my notation below, HD means 720p (or equivalent, depending on the aspect ratio), FHD means 1080p (ditto), and SD means less than HD (e.g. 480p).
+
+## Quality for movies
+
+<dokki-table headerless>
+    <template #table>
+        <tr>
+            <th rowspan="2">Service</th>
+            <th colspan="4">Stream quality in Google Chrome for movies</th>
+        </tr>
+        <tr>
+            <th>Linux (native)</th>
+            <th>Windows 10 (native)</th>
+            <th>Windows 10 (VirtualBox)</th>
+            <th>Windows 10 (capture card)</th>
+        </tr>
+        <tr>
+            <td>A. Prime Video<sup>1</sup></td>
+            <td class="sd">SD</td>
+            <td class="hd">HD</td>
+            <td class="sd">SD</td>
+            <td class="sd">SD</td>
+        </tr>
+        <tr>
+            <td>Disney+<sup>2</sup></td>
+            <td class="sd">SD</td>
+            <td class="hd">HD</td>
+            <td class="sd">SD</td>
+            <td class="sd">SD</td>
+        </tr>
+        <tr>
+            <td>HBO Max<sup>3</sup></td>
+            <td class="sd">SD</td>
+            <td class="sd">SD</td>
+            <td class="sd">SD</td>
+            <td class="sd">SD</td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td colspan="5"><sup>1</sup> Streaming <i>The Revenant</i> (2016).</td>
+            </tr>
+            <tr>
+                <td colspan="5"><sup>2</sup> Streaming <i>The Grand Budapest Hotel</i> (2014).</td>
+            </tr>
+            <tr>
+                <td colspan="5"><sup>3</sup> Streaming <i>Dune</i> (2021).</td>
+            </tr>
+        </tfoot>
+    </template>
+</dokki-table>
+
+On Linux, the stream quality for movies was consistently limited to SD, while HD quality was available only on native Windows.
+
+A notable outlier was HBO Max's Dune, which for some reason on this occasion was limited to SD (544p) on all platforms, despite being listed as 4K-capable.
+
+### The Revenant
+
+The movie <i>The Revenant</i> (2016) happened to be simultaneously available on all three streaming services, so I compared it across them.
+
+
+<dokki-table headerless>
+    <template #table>
+        <tr>
+            <th rowspan="2">Service</th>
+            <th colspan="3">Stream quality for <i>The Revenant</i> on Linux in Google Chrome</th>
+        </tr>
+        <tr>
+            <th>Resolution</th>
+            <th>Aspect ratio</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td>A. Prime Video</td>
+            <td>960 &times; 400</td>
+            <td>21:9</td>
+            <td>The image is zoomed in a little, which hides peripheral content.</td>
+        </tr>
+        <tr>
+            <td>Disney+</td>
+            <td>854 &times; 480</td>
+            <td>16:9</td>
+            <td>Same as on Amazon Prime Video but letterboxed on all sides to 16:9.</td>
+        </tr>
+        <tr>
+            <td>HBO Max</td>
+            <td>960 &times; 540</td>
+            <td>16:9</td>
+            <td>Cropped horizontally to 16:9 but not zoomed in, so more vertical content is visible.</td>
+        </tr>
+    </template>
+</dokki-table>
+
+Although all three services limited the experience to SD here on Linux, there also appeared to be some post-processing that varied from one service to the next.
+
+None of the services showed the movie's entire viewing area. Amazon Prime Video had slightly zoomed in the frame, which hid content at the periphery. Disney+ showed the same zoomed-in image as Amazon Prime Video but letterboxed to 16:9. HBO Max had chosen to crop off the horizontal edges to make the frame 16:9, but the image hadn't been zoomed in and so more vertical content was visible.
+
+The image had a slight greenish tint on Amazon Prime Video whereas both Disney+ and HBO Max shared a more purplish hue. I can't immediately confirm which is more correct, but my guess would be the latter.
+
+Although the video quality was always SD and so not particularly good, I think HBO Max's was the best in this case: you lost some horizontal content but gained a bit of vertical space, and the image was somewhat more defined. That said, the cropping did lose the most content out of the three; and only Amazon Prime Video provided a native 21:9 image out of the box.
+
+## Quality for series
+
+<dokki-table headerless>
+    <template #table>
+        <tr>
+            <th rowspan="2">Service</th>
+            <th colspan="4">Stream quality in Google Chrome for series</th>
+        </tr>
+        <tr>
+            <th>Linux (native)</th>
+            <th>Windows 10 (native)</th>
+            <th>Windows 10 (VirtualBox)</th>
+            <th>Windows 10 (capture card)</th>
+        </tr>
+        <tr>
+            <td>A. Prime Video<sup>1</sup></td>
+            <td class="sd">SD</td>
+            <td class="fhd">FHD</td>
+            <td class="fhd">FHD</td>
+            <td class="fhd">FHD</td>
+        </tr>
+        <tr>
+            <td>Disney+<sup>2</sup></td>
+            <td class="sd">SD</td>
+            <td class="hd">HD</td>
+            <td class="sd">SD</td>
+            <td class="sd">SD</td>
+        </tr>
+        <tr>
+            <td>HBO Max<sup>3</sup></td>
+            <td class="sd">SD</td>
+            <td class="hd">HD</td>
+            <td class="sd">SD</td>
+            <td class="sd">SD</td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td colspan="5"><sup>1</sup> Streaming <i>Goliath</i> (Amazon original).</td>
+            </tr>
+            <tr>
+                <td colspan="5"><sup>2</sup> Streaming <i>Obi-Wan Kenobi</i> (Disney original).</td>
+            </tr>
+            <tr>
+                <td colspan="5"><sup>3</sup> Streaming <i>Euphoria</i> (HBO original).</td>
+            </tr>
+        </tfoot>
+    </template>
+</dokki-table>
+
+All three services here limited their streams to SD on Linux, but consistently allowed HD on native Windows.
+
+Amazon Prime Video allowed FHD on both native and virtual Windows, as well as when viewing through a capture card. However, their SD quality (396p) was subjectively quite poor.
+
+## Conclusions
+
+Across the three services, streaming on Linux was consistently limited to SD. However, in the case of Amazon Prime Video, at least one original series (<i>Goliath</i>) was available in FHD when viewed in a Windows virtual machine.
+
+HD was generally available on native Windows, but FHD was usually not.
+
+Overall, I was a little surprised by the relatively low video quality seen across the board. I already knew that Linux was stuck in SD land, but even Windows appeared to be mostly limited to the aging HD standard.

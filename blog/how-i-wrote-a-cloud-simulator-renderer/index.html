@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/feedback-inline-button.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .aside-caption
+            {
+                font-size: 0.875em;
+                margin-top: 1ex;
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+            
+            .dokki-area.expression {
+                white-space: nowrap;
+                overflow: auto;
+            }
+
+            .dokki-area.expression:not(.simple) {
+                display: flex;
+                align-items: center;
+            }
+
+            .dokki-area.expression > * {
+                display: inline-flex;
+                margin: 0;
+            }
+
+            .dokki-area.expression .division {
+                display: inline-flex;
+                flex-direction: column;
+                text-align: center;
+                margin-left: 0.25em;
+                margin-right: 0.25em;
+            }
+
+            .dokki-area.expression .divident {
+                border-bottom: 1px solid;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                How I wrote a cloud simulator/renderer
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="18 July 2022"></post-date>
+<dokki-topic title="How I wrote a cloud simulator/renderer">
+<p>About a decade ago, I wrote a desktop app for simulating the atmospheric formation of water clouds and rendering them into fairly realistic images. It was an interesting project, crossing the fields of physics, chemistry, and optics, among others.</p>
+<p>In this post, I'll describe a brief overview of the project's implementation – to the extent that I can remember. I'll start with how I simulated the atmosphere, then go over the rendering part.</p>
+<dokki-subtopic title="Simulation">
+<p>Water clouds form when moisture in the air <a href="https://en.wikipedia.org/wiki/Condensation">condenses</a> into droplets, which is preceded by the air's relative humidity increasing due to a decrease in its temperature, which results from the air expanding as it rises.</p>
+<p>Simulating cloud formation is in other words concerned with realistically moving a body of air and modeling the resulting condensation.</p>
+<h3>Kinetics</h3>
+<p>Air is a fluid, so a fluid simulator can be used to model its kinetic behavior – how it moves when a force is applied to it.</p>
+<p>I'm not particularly mathematical, so I adopted the first fluid simulator that looked reasonable to me. That happened to be the fluid solver described in <a href="http://graphics.cs.cmu.edu/nsp/course/15-464/Fall09/papers/StamFluidforGames.pdf">Stam: Real-time fluid dynamics for games</a>.</p>
+<p>You can see a sample 2D JavaScript implementation of Stam's solver below. Its source code is <a href="./widgets/fluid/fluid.js">available here</a> (intended for demonstrational purposes, not of production quality).</p>
+<dokki-iframe src="./widgets/fluid/basic.html"       ><template #caption>Sample JavaScript port of Stam's fluid solver</template>
+                    </dokki-iframe>
+<p>In my opinion, the solver produces a fairly convincing fluidic effect.</p>
+<h3>Buoyancy</h3>
+<p>There are various forces that could move air, but a common one is <a href="https://en.wikipedia.org/wiki/Buoyancy">buoyancy</a>, in which a parcel of warm air experiences lift in a cooler environment.</p>
+<p>I'm not sure what the exact formula for air buoyancy is, but the following works empirically:</p>
+<dokki-area inline-class="expression simple">
+    B = T<sub>parcel</sub> - T<sub>environment</sub>
+</dokki-area>
+<p><em>B</em> is the air parcel's buoyancy (upward force) and <em>T</em> is temperature (in this case, °C).</p>
+<p>As the air parcel rises, its temperature cools, and the buoyancy subsides.</p>
+<h3>Relative humidity</h3>
+<p>The amount of water vapor air can hold is proportional to the temperature of the air (see <a href="https://en.wikipedia.org/wiki/Humidity#Relative_humidity">relative humidity</a>).</p>
+<p>As an air parcel cools, its relative humidity increases. Once the relative humidity exceeds 100%, the excess moisture begins to condense. Condensation slows the rate of cooling as the air rises further (see <a href="https://en.wikipedia.org/wiki/Lapse_rate#Moist_adiabatic_lapse_rate">moist adiabatic lapse rate</a>).</p>
+<p>The following may (or might not) be the correct way to compute an air parcel's relative humidity:</p>
+<dokki-area inline-class="expression">
+    C =
+    <div class="division">
+        <div class="divident">
+            M<sub>water</sub> ⋅ P<sub>waterVapor</sub>
+        </div>
+        <div>
+            M<sub>air</sub> ⋅ (P<sub>air</sub> - P<sub>waterVapor</sub>)
+        </div>
+    </div>
+</dokki-area>
+<dokki-area inline-class="expression">
+    RH =
+    100 ⋅
+    <div class="division">
+        <div class="divident">
+            V
+        </div>
+        <div>
+            C
+        </div>
+    </div>
+</dokki-area>
+<p><em>RH</em> is the relative humidity (%), <em>C</em> is the air parcel's maximum capacity (kg) of water vapor, <em>V</em> is the amount (kg) of water vapor in the air parcel, <em>P</em> is pressure (hPa), and <em>M</em> is a mole mass constant (kg).</p>
+<h3>Sample implementation</h3>
+<p>The sample simulation below applies buoyancy as a force to the Stam fluid solver and computes the resulting changes in the air's relative humidity – darker blue areas correspond to greater relative humidity. The sample's underlying source code is <a href="./widgets/fluid/atmosphere.js">available here</a> (intended for demonstrational purposes, not of production quality).</p>
+<dokki-iframe src="./widgets/fluid/buoyant.html"       ><template #caption>Sample atmospheric simulation (relative humidity)</template>
+                    </dokki-iframe>
+<p>The simulation runs in a 2D grid in which each grid cell represents an air parcel. Each parcel is associated with atmospheric variables like temperature and moisture, as well as corresponding velocity vectors from the fluid simulation.</p>
+<p>Every tick, the grid cells' variables are moved along the velocity field, and changes resulting from the movement are computed (e.g. a reduction in temperature due to the air rising). Basic evaporation is also empirically modeled (see the source code for details).</p>
+<h3>Output</h3>
+<p>The actual simulation runs on a 3D grid, producing as its output a 3D image of condensed moisture (= clouds).</p>
+<dokki-image src="./img/moisture-map.png" width="568" height="75"     headerless   thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAAsTAAALEwEAmpwYAAACRElEQVQokW2SXUhTYRzGV6hzTgVDCcoLZxOksKVRZKhdeFMmaKE3NimlC6VVQq4uhKwwDHahCV0E0hcU2JeJ3gQZJakjDUQqKAqRJDanbubZh9vO+cV559y0Hjic5zzn/z7v/0vDGhRFiZIYj4OqKLK8/o6eUTbFauJFNVAOhwWf63vL5IVuXL2vxcOSN3IiGPmvyMp/TTXroqyI21UsPhrmekIhzZo87icfoUljYKDiIo5L95guayX4eTZiFo5luiHDKEJON/6+Ud7lmqnVGilOzeZKxkEOp2RTtmU7bUmFdGwt4luJFcXhiZQfCkdasZZpJMNQmOCMk6XWh3zJrONuRjlVeiOmxCyO6nKo1BkoTt5BZeouWtKLmDY04H9h/6fPKoRhwP4d6ekoHtsrHOXtPM46xrk0EzUpeVToDBzXGShIzOREihGLfi8TxgZ8vW+QhiaRno/hfWknNOOMGaofK09G8HQN4j5pY9rQyK1tpaLc5nQT5rTdVOuNNKYXYEk1MZZTj2QbYKH1Aa6zd3Bf6yPw6WfMUB2I5/YQjqpORnLNdGgPcFlrol27H0vSHsGtWhP1CUZa9PuY2HmKxboufpe14ai8iX/kqzAThqKZgSDSszHmz/Tww2xjqvYG4zVXmapu533JeSbKrQwfamaotIkP+Q38yrfgrOpk/nQPy92DyMu+2FAECcso/lVkbwA8PphbApcE0iosSOBaAecfoa/2f8Tbbyc061pfG1Fl/JTjIVYBUEOjfLO2IX7NKLp+fwHywcPVwyQaDgAAAABJRU5ErkJggg=="><template #caption>3D simulation grid flattened on the Z axis showing the distribution of condensed moisture in a cloud</template>
+                        </dokki-image>
+</dokki-subtopic><dokki-subtopic title="Rendering">
+<p>Clouds look the way they do due to refractive interaction of sunlight with the cloud droplets. Each time a ray intersects a droplet in a cloud, the direction of the ray may become altered:</p>
+<dokki-image headerless>
+    <template #caption>
+        A simplified view of a light ray changing direction as a result of intersecting water droplets inside a cloud
+    </template>
+    <template #content>
+        <svg width="375" height="185" viewBox="0 0 300 150" style="background-color: white;">
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5"
+                    markerWidth="13" markerHeight="13"
+                    orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" ></path>
+            </marker>
+            <polyline points="-5,95 47.5,95 100,95 150,70 200,45 252.5,45 305,45" fill="none" stroke-width="1" stroke="black" stroke-linejoin="round" marker-mid="url(#arrow)"></polyline>
+            <circle cx="50" cy="50" r="10" stroke="black" stroke-width="1" fill="white"></circle>
+            <circle cx="100" cy="95" r="10" stroke="black" stroke-width="1" fill="white"></circle>
+            <circle cx="130" cy="20" r="10" stroke="black" stroke-width="1" fill="white"></circle>
+            <circle cx="160" cy="130" r="10" stroke="black" stroke-width="1" fill="white"></circle>
+            <circle cx="200" cy="45" r="10" stroke="black" stroke-width="1" fill="white"></circle>
+            <circle cx="270" cy="100" r="10" stroke="black" stroke-width="1" fill="white"></circle>
+        </svg>
+    </template>
+</dokki-image>
+<p>The job of the renderer, then, is to take the moisture (droplet) grid produced by the simulator and model the behavior or light inside it to produce images bearing the likeness of real clouds. The diagram below demonstrates the overall concept. A light ray originates from a viewer (black circle), enters a cloud (box), bounces around inside the cloud, then exits and scatters into the sky (blue arc).</p>
+<dokki-image headerless>
+    <template #caption>
+        A view ray (originating from the black circle) intersects a cloud (box), scatters inside the cloud (dashed line), and exits the cloud to hit the sky (blue arc)
+    </template>
+    <template #content>
+        <svg width="375" height="280" viewBox="0 0 320 160" style="background-color: white;">
+            <polyline points="35,140 90,140" fill="none" stroke-width="1" stroke="black" stroke-linejoin="round"></polyline>
+            <polyline points="90,140 110,100 120,120 140,140 150,160 160,120 180,100 220,80 250,40" fill="none" stroke-width="1" stroke="black" stroke-linejoin="round" stroke-dasharray="4"></polyline>
+            <polyline points="250,40 290,-13" fill="none" stroke-width="1" stroke="black" stroke-linejoin="round"></polyline>
+            <circle cx="35" cy="140" r="5.5" stroke="black" stroke-width="1"></circle>
+            <rect x="90" y="40" width="200" height="150" fill="none" stroke-width="1.5" stroke="dimgray"></rect>
+            <path d="M 0 0 A 220 100 0 0 1 320 0" stroke="#1e88e5" stroke-width="3" fill="transparent"></path>
+        </svg>
+    </template>
+</dokki-image>
+<p>For rendering these light paths, I wrote a volumetric <a href="https://en.wikipedia.org/wiki/Path_tracing">path tracer</a>.</p>
+<h3>Rendering the sky dome</h3>
+<p>The sky gets its blue gradient appearance from sunlight being distributed across it by <a href="https://en.wikipedia.org/wiki/Rayleigh_scattering">Rayleigh scattering</a>.</p>
+<p><a href="https://cgg.mff.cuni.cz/projects/SkylightModelling/HosekWilkie_SkylightModel_SIGGRAPH2012_Preprint_lowres.pdf">Hosek &amp; Wilkie give a visually convincing model of Rayleigh scattering</a>, as well as <a href="https://cgg.mff.cuni.cz/projects/SkylightModelling/">an open-source reference implementation</a>. (A <a href="https://cgg.mff.cuni.cz/publications/skymodel-2021/">newer version of the model</a> is also available, but I'm not familiar with it.)</p>
+<p>The two sample images below use the Hosek &amp; Wilkie model to replicate the appearance of the sky at two different times of day (the color of the ground is not part of the model):</p>
+<dokki-image src="./img/sky-15-45-moist.png" width="700" height="350"     headerless   thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAIAAAA7N+mxAAAACXBIWXMAAAsTAAALEwEAmpwYAAACW0lEQVQokWOQdS0Tsy8QssrhM8vgMUnjNUkTMM8Qsc6RcihQdK9Q9GySdW2Qca6TdqqVca6Td61X9mjS8G3TDeoyiZzAYBDRphnYoOxdLe9eLuNSKuNSKudWruxVpRVQbxTRph/epxncoxHYpR7QqR7QqRXYpRfaaxQ50SJ+un3aXAaP/JkO6ZMsE3tNYzqNItuMIttMotst4rrtUvrdcqY5ZM63Sp1jkTjLLGGGWcIMi8SZNqlzHDIXuOUt8S1dxZDavT6meUVozaKA8nk+xbO9i2b5Fs8OLJ8XUbsovmVleOPmgOoNvhVrvUtXe5Wu9ilb7V+5Lrh2Y2TT1oTO3Qwdq4/WL95fPmdn4dStuRM3Zk/YkDtxQ8HkzWUzt9Uu2Fsy92TO9OOZk4+kTziU2n8wbcLBzEmHc6cdK5x1qmLhOYZNl++uPHltwcELM3efnrL1+MTNRydtPjJ167FZu04uPHB+5v5HE3c+7N16t2vT7Y4Nt9o33OzYeKtny50JOx5M2/uY4ev/V2//PXv24+H9T3duvrlx7eXVq88vX39x+dary/fe3bzy8fe5d/9Pv/p74vnvY09/Hnny48iTH0ef/Dj+7Oepl78Yuma3d81t65rb2jmntWNOS8fslvZZzRDUOrOlauKkiglTKiZMrpgwpbx/MgSV9U8u65tU1jeJQcNdR91NS91NE440QEhLw11bw01b2lhBQl9GQl9aQk9aQk8KhPSlJfSlJfVlpQzlGXQ85XQ8ZHU8ZLU9ZCBIB4I8ZbXdZWQNeSV1uKR0IYgTxuCS0uOW1uMBAM7gESVot3NsAAAAAElFTkSuQmCC"><template #caption>Two sample sky renderings using the Hosek–Wilkie model showing the sun at a height of 15° (left) and 45° (right)</template>
+                        </dokki-image>
+<h3>Rendering clouds</h3>
+<p>As noted above, clouds are made of droplets, and light is scattered by those droplets in specific ways (see <a href="https://en.wikipedia.org/wiki/Mie_scattering">Mie scattering</a> for details).</p>
+<p>Referring back to me not being mathematically oriented, I didn't actually properly compute the droplet scattering parameters. Instead, I simply used the <a href="http://www.philiplaven.com/mieplot.htm">MiePlot</a> software to get a visual idea of the distributions of scattering for various wavelengths of light, then implemented them in-code as fixed probabilities – a ray would have an <em>X</em>% chance of being scattered in a particular direction, and depending on the scattering angle, its color might be slightly modulated.</p>
+<dokki-image src="./img/mie-plot-graph.png" width="428" height="427"     headerless   thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABsElEQVQ4jZWV227CMAyG+/4Ps8NjcDOmHS5AlDHQJBildKPQNHHyTw51l2btNipZOfqTHR+aOOfAn4wyt9aCiLxorb3Ims/i+zImMpGRFYwxHWWZh8J3QrBrxiTc4AssMZDXAoiBNoK2FsqhKAm0Dxie2QjqgfFhaOUQMDaAiL5dFoUumIPBe2eg5jtNgIa8cexy/C4h2FkCvBjAsQUEuC7IRO+dDEaQCNnBICs1ipqQbiuM5iUW7xWIziC2mKibBS2w837+PRye0wLXNxOMRyss5juUNeEtrzDdVAA4ENZ7wc/jvEcWiSSsmC/CwLv0E9PXAtjvobI9DLsPwnKnsMwVTsrgVFMjBmWlz8AYJsBx+oHHyQ5quYbOcjhYD3zJFFa5wrEP2OuyObv8lBa4up3i7n6DyWyHzUFjtj5hvm1cbtzsuPxbUIqKoMhCWYvVvsbD6oh1rvy76aGg2J60abOfOCUMyIRpI/Vt+9PGDSS27zK8Z+PE/nnPNPptLcdld2np2UbaWh5qDiE8XseBRPP92b76Suxf7SuEXtIP5ettsOGhKPOolEJd1529oV/AF+ftJVPFngQyAAAAAElFTkSuQmCC"><template #caption>A diagram produced originally by MiePlot showing the logarithmic polar distribution of light scattering from a spherical droplet (most scattering is forward)</template>
+                        </dokki-image>
+<p>Due to the nature of the scattering involved, the number of potential light paths inside a cloud is vast. It's very unlikely that a given ray originating from the viewer's eye finds its way straight into the sun though a cloud. Most scattering will be into the sky dome, with the occasional ray finding the sun. As a result, the rendering will take a very long time to converge.</p>
+<p>To speed up the rendering, I added a separate <a href="https://en.wikipedia.org/wiki/Photon_mapping">photon mapping</a> phase, which precedes the path tracing phase and in which rays are cast from the sun toward the clouds, depositing the sun's light into any droplets they intersect, producing a 3D cloud lightmap.</p>
+<dokki-image headerless>
+    <template #caption>
+        Two sun rays in the photon mapping phase depositing light inside droplets
+    </template>
+    <template #content>
+        <svg width="375" height="375" viewBox="0 0 300 300" style="background-color: white;">
+            <defs>
+                <linearGradient id="two-color-droplet" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color: #ffc107;"></stop>
+                <stop offset="50%" style="stop-color: #ffc107;"></stop>
+                <stop offset="50%" style="stop-color: #1e88e5;"></stop>
+                <stop offset="100%" style="stop-color: #1e88e5;"></stop>
+                </linearGradient>
+            </defs>
+            <polyline points="130,0 130,60 100,115 160,160 90,200 90,305" fill="none" stroke-width="2.5" stroke="#ffc107" stroke-linejoin="round"></polyline>
+            <polyline points="200,0 200,85 160,160 220,220 220,305" fill="none" stroke-width="2.5" stroke="#1e88e5" stroke-linejoin="round"></polyline>
+            <circle cx="50" cy="90" r="10" stroke="black" stroke-width="1" fill="none"></circle>
+            <circle cx="100" cy="115" r="10" stroke="black" stroke-width="1" fill="#ffc107"></circle>
+            <circle cx="130" cy="60" r="10" stroke="black" stroke-width="1" fill="#ffc107"></circle>
+            <circle cx="160" cy="160" r="10.5" stroke="black" stroke-width="1" fill="black"></circle>
+            <circle cx="160" cy="160" r="10" fill="url(#two-color-droplet)" ></circle>
+            <circle cx="200" cy="85" r="10" stroke="black" stroke-width="1" fill="#1e88e5"></circle>
+            <circle cx="270" cy="180" r="10" stroke="black" stroke-width="1" fill="none"></circle>
+            <circle cx="220" cy="220" r="10" stroke="black" stroke-width="1" fill="#1e88e5"></circle>
+            <circle cx="144" cy="250" r="10" stroke="black" stroke-width="1" fill="none"></circle>
+            <circle cx="240" cy="35" r="10" stroke="black" stroke-width="1" fill="none"></circle>
+            <circle cx="90" cy="200" r="10" stroke="black" stroke-width="1" fill="#ffc107"></circle>
+        </svg>
+    </template>
+</dokki-image>
+<p>Then, during the path tracing phase, the lightmap is used to accumulate sunlight onto the view rays when they intersect droplets that were lit by the sun.</p>
+<dokki-image headerless>
+    <template #caption>
+        A view ray (traveling from left to right) accumulating deposited sunlight from droplets it intersects
+    </template>
+    <template #content>
+        <svg width="375" height="188" viewBox="0 45 300 150" style="background-color: white;">
+            <marker id="arrow3" viewBox="0 0 10 10" refX="5" refY="5"
+                    markerWidth="12" markerHeight="12"
+                    orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" ></path>
+            </marker>
+            <marker id="arrow2" viewBox="0 0 10 10" refX="5" refY="5"
+                    markerWidth="4.8" markerHeight="4.8"
+                    orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" ></path>
+            </marker>
+            <polyline points="-5,130 50,130 100,130" fill="none" stroke-width="1" stroke="black" stroke-linejoin="round" marker-mid="url(#arrow3)"></polyline>
+            <polyline points="100,130 150,107.5 200,85" fill="none" stroke-width="2.5" stroke="#ffc107" stroke-linejoin="round" marker-mid="url(#arrow2)"></polyline>
+            <polyline points="200,85 305,85" fill="none" stroke-width="2.5" stroke="#ffc107" stroke-linejoin="round"></polyline>
+            <polyline points="200,85 252.5,85 305,85" fill="none" stroke-width="2.5" stroke="#1e88e5" stroke-linejoin="round" stroke-dasharray="10" marker-mid="url(#arrow2)"></polyline>
+            <circle cx="50" cy="90" r="10" stroke="black" stroke-width="1" fill="none"></circle>
+            <circle cx="100" cy="130" r="10" stroke="black" stroke-width="1" fill="#ffc107"></circle>
+            <circle cx="130" cy="60" r="10" stroke="black" stroke-width="1" fill="#ffc107"></circle>
+            <circle cx="160" cy="160" r="11" stroke="black" stroke-width="1" fill="#1e88e5"></circle>
+            <circle cx="200" cy="85" r="10" stroke="black" stroke-width="1" fill="#1e88e5"></circle>
+            <circle cx="270" cy="180" r="10" stroke="black" stroke-width="1" fill="none"></circle>
+            <circle cx="220" cy="220" r="10" stroke="black" stroke-width="1" fill="#1e88e5"></circle>
+            <circle cx="144" cy="250" r="10" stroke="black" stroke-width="1" fill="none"></circle>
+        </svg>
+    </template>
+</dokki-image>
+</dokki-subtopic><dokki-subtopic title="Some results">
+<p>Below are a couple of the renderings I made back then.</p>
+<p>Due to hardware/performance limitations, none of the images are fully converged, and their resolution is fairly low.</p>
+<dokki-image src="./img/ifu-1.png" width="512" height="353"     headerless   thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAIAAACgpqunAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADYUlEQVQokQFWA6n8AAA/gQA6fwE3fQE0egAxeAEudgEtdQApcwAibwEpcgErdAEtdQEudgAxdwA1eQA3fAA7fwFBgQFFhQFJiAABQ4UCQIIAOH4AM3oANHoBMXgAKnQPOXtAZZILNXkAKHMAK3UAL3cBNXoAN3wAOn8APoEAQIMARYcDTIoAAUWHADmAFE2IIVWMADd8Unecgpmum625193UiJ+zDT9+N2COHEyFAC95ATp+AECCCEiFGlaMDVGNA02MABlbklSAo6m6wtDX06u9xrfEx8XOysvSzdHY09fd156vuIeapneQpGOFpHeSqImfrnyUpX2UpGyKojpumACisrjHzcna3tff5Nzt7+Tk6N7K0s7U2tPX3dbX3di6xMSFl6GToqquubqwurifq62Pn6SNnqSOn6Z9lKMAyM7HxczIzdPO3+Pb6u3j4+fe2+Ha2N7Y09rUztXPnKmtlqSmpbCvmqeomqeniJicgZKWgJGVhZaagJScAMnPx87Ty9LXztTYz9zg193h2eXp39bc1NXa0rjBv5Oho5ynpZ2npJOfnoqYmH+PkX2Nj3eIi3eIjXOIkgDEy8TJzsbM0cfJzsbN0crR1s/N08zQ1c27wr6XpKWRnp6TnpuLmJWFkpF8i4pygoR0goRuf4JqfoRpf4kAwse+x8vAub+3rbWws7mztby1uL+4w8nBjZqae4mJgI2Lf4uJdoSEcH9/bXx6Z3Z3Znd3YXR2YHV7Y3mEAK6zpq+1qqKqo5OclI2UjImRi5aelpaemm17eWNwbWl1cmJvbFFgXUxcWlFgXVBhX1BiYk1gYlFna190fAB/hnt5g3xodXBcZ19YYVZeZFhkbGBmbmVjbGRkbmhXYltEUEkzQDgsOjIzQjw0REA6TEo+UVNgcXODkJIAOkY9NUE3Mj4zMTwxLTcrLjgrMz4yO0M2QEg9QUxESVhXTV1gTV1eQlFQP05LTFpYc357e4aEkpqUk5yWAD5SWjdMUCM1MxstKRotKx0yMiA2OitIVik/RjZJTUpcYWV3gHuKkG18gWt3dW95coCIgISMhYKJgHuFfwB3ho11h5JOaHk9VmQ2UmIvUGU0WG9JdZMxUmg4WnI+VWFicHFue3tXZ2tKV1U+SD5JU0hVX1ZMVUtQW1TNppPxilmoRwAAAABJRU5ErkJggg==">
+                        </dokki-image>
+<dokki-image src="./img/ifu-2.png" width="512" height="512"     headerless   thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEO0lEQVQ4jUWPeTDbaRzGv2o3kS3FrCNEsti6wqLW0BWLOoIKKhXiivuIIKm24qpSq45pKbU7naklB0kkJIqShLiaVUVZpY6ys7Hb3c7s7Ox//X/n9ytj5jPfed73fZ7nfV8AugwSJRA/BHFiiBECVQhRAxA5ABH9EH5KBLpDFUC0EGLFEDeI+K9JARhyuC5DVIIEaINwVQyxIsREFZwRLYQY0VksUQpJMkiWA6SPQqoCqaCfVsQPIqar4jPiBpHeBDRGR2MpCkgbAaNsFWQqEZU6gr5iGGm9JkX+kihBuhIlyDJJBvRhJJY6gpgzlZCtAkzBhHHeM6OcMWApIWMUbVFAisKIoTjHUBijArmHiWYylMBSGeWMGeePYwsnwZwz/QV7Cls0+dlpy7kclVGWErkhWQFJciTGUhlln2QwhRO44udmpVOWZWqwq5yx5WnMytSmpdOfFz4/lz8BrHFswbhfvZbWsdAgXfGt10LO+KeABWf6ywq1DVdjXzlDvDULrnULRP6CX+M8uX4+tGUhumOpamhNOre1u7t7/PvRx38NGv36DxK9Z82sFW+WdFvnxJ+7WDvvVr9IblgEn+blrB6demH552cvtPNLL1+9+vjf+/eGg9+O9vb33+4d7O3svPnLcKCaWS7o0fo0Ll1q1vu3LAe2vgxqX4HQrg1O99jD7kcdXQ86OtufikSrrzd2dt/uv9v78LdBs6AXKdX6tY1f13+5L9IGtq2Gd65RH63H9LyO690ARt+b5CfrzHvivMqa7LLy8urazif96rlF1bRuWrfUOyCravuxsbtfM/9CpJxqH13NEWwz+7ezBDss4Q6wZXsl8sNi8XZBQ8/14hsJrHwmm1vX3tna/biho6emtauIf6/kzoOuvqHajt4x5XDz0DxH8a5SdXhTdQiNU0dNU4d92q2mXlEiuyYqoyg+lxOazAqmJYQlJYfQ00KTmN+lsCnMsrBMbsH9vib5SqvuuE1naJ8zgGDN8FA62dTWVnG3jVZUHZHNjc7lRWaVfktLJQdT3IIoLsHhEbncVH5L1dMR2fY/kq0P0s0/pZt/SDeP4Va/uvTxSFhhnV98GiWlgMJk+9LSfeKzyNEMMpUekMELyqsr+2nsrlx/R7ZYLdTyBRq+UFMlUN8emAZ8DNc+7gYp4aZdVKF9OAsfmm5NYeBD0/FhmYTIXFJcBYnGs6OWWkcU20SW2EaV2lI5+OhyfEwFPpYHlr5XzL1DzLwoF7yCzbwoCJ5BpuTLpuRAU4+A8+7+5939zcgBFzwvm39DsfAOtvD+3sInxNI3zPJSOOCcPXDO7jgnN5yTq4mji4njRRPHr0/nJ4GAQ6YLzskVcTq7IRFnD8CSHLGkrxCIJCyRiOKAIRKwRAesgwPGARUnEFEPCfU7YklOgCHYYQh4jL0tig2KNcbOCpkIVqdYn5wSbFHwGAL+f+lexg9LDj4sAAAAAElFTkSuQmCC">
+                        </dokki-image>
+<p>The second image shows a mushroom cloud with unnaturally high heat and moisture parameters, causing the simulation grid to be partly visible.</p>
+</dokki-subtopic><dokki-subtopic title="Conclusions">
+<p>This post has outlined the process I used to create a cloud simulator/renderer. For brevity, I've left out some details (like non-convective lift, cloud evaporation, and droplet weight), but what's included is hopefully enough to get an interested person started. You're welcome to <ths-inline-feedback-button>send feedback</ths-inline-feedback-button> for improvements or comments.</p>
+<p>A big problem I had when working on this app was its inhibitive computational cost. The number of potential light paths inside a cloud is massive, the atmospheric simulation wasn't fast to run either, and there were a large number of empirical parameters to adjust in both the simulator and the renderer (I wasn't an expert on the topic, so I did plenty of trial and error). It was hard to appreciate the effects of even smaller changes to the model when they required overnight runs to complete.</p>
+<p>So the first thing I'd look to improve is probably the performance. One interesting paper I later came across was <a href="https://arxiv.org/abs/1709.05418">one in which the authors used neural nets</a> for a considerable speedup to cloud rendering.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

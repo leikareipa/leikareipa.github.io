@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/feedback-inline-button.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <template id="dokki">
+
+            <ths-feedback></ths-feedback>
+
+            <dokki-document>
+                    
+                <dokki-header>
+                    <template #caption>
+                        Comparing pixel-plotting performance in JavaScript and 386 assembly
+                    </template>
+                    <template #widgets>
+                        <blog-post-widgets/>
+                    </template>
+                </dokki-header>
+            
+                <dokki-topics>
+
+                    <post-date date="7 January 2022"></post-date>
+
+                    <dokki-topic title="Comparing pixel-plotting performance in JavaScript and 386 assembly" id="introduction">
+
+                        <p>
+                            Something that's always intrigued me is the ability to write directly into video memory
+                            on legacy VGA PCs. Especially when programming with assembly, there's essentially nothing
+                            between you and the monitor: write a value into an array and a pixel will light up on the screen,
+                            no questions asked.
+                        </p>
+
+                        <p>
+                            With programming being much more abstract nowadays, I wonder, how much faster would it be
+                            to draw pixels directly into video memory with assembly compared to plotting them onto a
+                            HTML5 canvas with JavaScript? To find out, I carried out a few benchmarks, and will go over the
+                            results in this post.
+                        </p>
+
+                        <p>
+                            If you don't want to read through the whole post, you can <a href="#conclusion">jump
+                            directly to the final results</a>. In short, I found assembly to be up to five times faster
+                            &ndash; although when compared to a legacy PC from the late 1990s, JavaScript on
+                            a modern system was 14 times faster.
+                        </p>
+
+                        <dokki-subtopic title="The test setup" id="test-setup">
+
+                            <p>
+                                I ran three benchmarks, loosely designed to mimic a real-life rendering process:
+                                writing into an off-screen pixel buffer, plotting a basic per-pixel gradient, and
+                                drawing pixels onto the screen.
+                            </p>
+
+                            <p>
+                                The benchmarks were run across three different PC platforms:
+                            </p>
+
+                            <dokki-table headerless>
+                                <table>
+                                    <tr>
+                                        <th>Platform</th>
+                                        <th>Details</th>
+                                    </tr>
+                                    <tr>
+                                        <td>P1</td>
+                                        <td>A modern system with an AMD Zen 3 CPU (running in Eco mode) on the AMD B550 chipset.<br>A high-end consumer-level 3D graphics card from 2014 (NVIDIA GeForce GTX 980).</td>
+                                    </tr>
+                                    <tr>
+                                        <td>P2</td>
+                                        <td>An older system using an Intel Haswell CPU on the Intel B85 chipset.<br>A professional-grade 2D graphics card from 1996 (Matrox Millennium).</td>
+                                    </tr>
+                                    <tr>
+                                        <td>P3</td>
+                                        <td>A legacy system with an AMD K6-2 CPU on a VIA MVP3 chipset.<br>A consumer-level 3D graphics card from 1999 (3dfx Voodoo3 2000).</td>
+                                    </tr>
+                                </table>
+                            </dokki-table>
+
+                            <p>
+                                386 assembly was chosen as the assembly language. The assembly code was run on all three platforms under native 16-bit real-mode DOS, having
+                                been assembled using <a href="https://flatassembler.net/">flat assembler</a> into
+                                COM executables. The code wasn't optimized for any particular platform.
+                            </p>
+
+                            <p>
+                                The JavaScript code was run on the P1 platform in the Google Chrome browser (major version 96).
+                            </p>
+
+                            <p>The benchmarks were timed using <em>INT 1Ah,0</em> in assembly, and <em>performance.now()</em> in JavaScript. The numbers reported in this post are approximate to within 100 or so milliseconds.</p>
+
+                            <p>
+                                Rendering was done in VGA mode 13h (320 &times; 200 pixels) in assembly, and into a
+                                &lt;canvas&gt; element (320 &times; 200 pixels) in JavaScript.
+                            </p>
+
+                            <dokki-warning>
+                                Performance benchmarking is notoriously difficult to do correctly, especially across different
+                                operating environments. I've done my best to ensure that the results are at least reasonably
+                                meaningful; but in any case they represent one view into this topic rather than the whole
+                                ground truth.
+                            </dokki-warning>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Plotting a solid fill" id="plotting-a-solid-fill">
+
+                            <p>
+                                We'll start with a simple benchmark of filling an off-screen pixel buffer with a solid color
+                                (magenta) to measure raw memory access throughput. We'll run 100 000 iterations of the fill
+                                to get meaningfully long run-times (single iterations would generally be sub-millisecond).
+                            </p>
+                            
+                            <p>
+                                In JavaScript, a &lt;canvas&gt; element's underlying pixel data is represented as an array of 8-bit
+                                values, each pixel being four consecutive bytes (red, green, blue, and alpha). We'll get a
+                                baseline performance reading by filling the array one color channel at a time using
+                                <em>operator =</em>:
+                            </p>
+
+                            <dokki-code headerless
+                                        syntax="JavaScript"
+                                        code='
+                                        <canvas id="canvas" width="320" height="200"></canvas>
+                                        <script>
+                                            const context = canvas.getContext("2d");
+                                            const image = context.getImageData(0, 0, 320, 200);
+                                            for (let loops = 0; loops < 100000; loops++) {
+                                                for (let idx = 0; idx < (320 * 200 * 4); idx += 4) {
+                                                    image.data[idx] = 255;
+                                                    image.data[idx+1] = 0;
+                                                    image.data[idx+2] = 255;
+                                                    image.data[idx+3] = 255;
+                                                }
+                                            }
+                                        </script>
+                                        '>
+                            </dokki-code>
+                            
+                            <p><strong>Performance</strong>: 6900 milliseconds.</p>
+
+                            <p>
+                                We can improve the baseline throughput by casting the 8-bit pixel array into a 32-bit <em>Uint32Array</em>
+                                view, packing the fill color's four bytes into a single 32-bit value, then duplicating the packed
+                                value into all of the pixel buffer's elements with <em>Uint32Array.prototype.fill()</em>:
+                            </p>
+
+                            <dokki-code headerless syntax="JavaScript">
+                                <template #code>
+                                    <pre>
+                                        const view32 = new Uint32Array(image.data.buffer);
+                                        const pixel = (255 | (0 << 8) | (255 << 16) | (255 << 24));
+                                        for (let loops = 0; loops < 100000; loops++) {
+                                            view32.fill(pixel);
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p><strong>Performance</strong>: 1390 ms.</p>
+
+                            <p>The performance can be improved further by replacing <em>Uint32Array</em> with <em>BigUint64Array</em> and bundling two 32-bit pixels into a single 64-bit value:</p>
+
+                            <dokki-code headerless syntax="JavaScript">
+                                <template #code>
+                                    <pre>
+                                        const view64 = new BigUint64Array(image.data.buffer);
+                                        const pixel = BigInt(255 | (0 << 8) | (255 << 16) | (255 << 24));
+                                        for (let loops = 0; loops < 100000; loops++) {
+                                            view64.fill(pixel + (pixel << 32n));
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p><strong>Performance</strong>: 710 ms.</p>
+
+                            <p>
+                                A downside of casting the pixel array into a higher-bitcount view is that the resulting
+                                code is then dependent on the system's endianness.
+                            </p>
+
+                            <p>
+                                A yet faster approach &ndash; and one that isn't affected by endianness &ndash; is to use
+                                <em>TypedArray.prototype.copyWithin()</em> to self-replicate the buffer's data in
+                                increasingly large steps:
+                            </p>
+
+                            <dokki-code headerless syntax="JavaScript">
+                                <template #code>
+                                    <pre>
+                                        for (let loops = 0; loops < 100000; loops++) {
+                                            image.data.set([255, 0, 255, 255]);
+                                            let copyLength = 4;
+                                            while (copyLength < image.data.length) {
+                                                image.data.copyWithin(copyLength, 0, copyLength);
+                                                copyLength *= 2;
+                                            }
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p><strong>Performance</strong>: 400 ms.</p>
+
+                            <p>
+                                The <em>copyWithin()</em> method was the fastest I was able to come up with for JavaScript.
+                            </p>
+
+                            <p>
+                                One other, semi-applicable JavaScript method is <em>CanvasRenderingContext2D.fillRect()</em>,
+                                which is very fast when filling the entire canvas (70 ms); but you can't
+                                access the resulting pixel buffer unless you also call <em>CanvasRenderingContext2D.getImageData()</em>,
+                                which increases the total run-time to 12 seconds or so.
+                            </p>
+
+                            <p>
+                                For assembly, since each pixel in VGA mode 13h takes up one byte (that being a palette index), we can
+                                store four pixels in the 32-bit <em>EAX</em> register and use the <em>REP STOSD</em> instruction
+                                to duplicate them over the whole pixel buffer. It should be about the fastest way to
+                                do such a fill in 386 assembly:
+                            </p>
+                        
+                            <dokki-code headerless title="386 assembly"
+                                        syntax="x86asm">
+                                <template #code>
+                                    <pre>
+                                        org 100h
+
+                                        ; Fill a local pixel buffer with a solid color.
+                                        mov ebx,100000
+                                        mov eax,00100100_00100100_00100100_00100100b
+                                        fill:
+                                            mov ecx,((320*200)/4)
+                                            mov di,buffer
+                                            rep stosd
+                                            dec ebx
+                                            jnz fill
+
+                                        ret
+
+                                        align 4
+                                        buffer rb (320*200)
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p><strong>Performance</strong>: 220 ms (P2), 380 ms (P1), 32400 ms (P3).</p>
+
+                            <p>
+                                Newer Intel and AMD CPUs come with a specially-optimized <em>REP STOSB</em> that may be preferable over
+                                <em>REP STOSD</em>. On the P2 platform, I did find <em>REP STOSD</em> and <em>REP STOSB</em> to perform
+                                the same, so it seemed that an optimized <em>REP STOSB</em> was in action. However, on the P1,
+                                <em>REP STOSB</em> was four times slower than <em>REP STOSD</em>, which would be expected in the
+                                case that no special optimizations are taking place.
+                            </p>
+
+                            <p>
+                                The overall results of this benchmark show 386 assembly achieving a peak performance twice as high
+                                as JavaScript.
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    A summary of the results in this section
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Language</th>
+                                        <th>Details</th>
+                                        <th>Time (milliseconds)</th>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>Platform: P2</td>
+                                        <td>220</td>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>Platform: P1</td>
+                                        <td>380</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>TypedArray.copyWithin</td>
+                                        <td>400</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>TypedArray.fill (64-bit)</td>
+                                        <td>710</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>TypedArray.fill (32-bit)</td>
+                                        <td>1390</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>operator =</td>
+                                        <td>6900</td>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>Platform: P3</td>
+                                        <td>32400</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+                            
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Plotting a gradient" id="plotting-a-gradient">
+
+                            <p>
+                                In a typical rendering scenario, you'll be plotting things more complex than solid
+                                color fills. So in this second benchmark, we'll draw into an off-screen buffer a simple
+                                gradient in which the shade of a pixel depends on its coordinates in the buffer.
+                            </p>
+
+                            <p>
+                                For this task in JavaScript, I found both the <em>copyWithin()</em> and the 64-bit <em>fill()</em>
+                                methods to perform relatively poorly (4390 and 2760 ms, respectively). The 32-bit <em>fill()</em>
+                                provided the best performance:
+                            </p>
+
+                            <dokki-code headerless
+                                        syntax="JavaScript"
+                                        code='
+                                        <canvas id="canvas" width="320" height="200"></canvas>
+                                        <script>
+                                            const context = canvas.getContext("2d");
+                                            const image = canvas.getContext("2d").getImageData(0, 0, 320, 200);
+                                            const view32 = new Uint32Array(image.data.buffer);
+                                            for (let loops = 0; loops < 100000; loops++) {
+                                                for (let y = 0; y < 200; y++) {
+                                                    let idx = (y * 320);
+                                                    const shade = (idx / 256);
+                                                    const pixel = (shade | (shade << 8) | (shade << 16) | (255 << 24));
+                                                    const subView = new Uint32Array(view32.buffer, (idx * 4), 320);
+                                                    subView.fill(pixel);
+                                                }
+                                            }
+                                        </script>
+                                        '>
+                            </dokki-code>
+
+                            <p><strong>Performance</strong>: 2270 ms.</p>
+
+                            <p>I optimized the above code for the fact that the gradient is horizontal, so we need to compute the shade only once per vertical row and can then <em>fill()</em> the row's pixels with that shade.</p>
+
+                            <p>
+                                The same simple optimization can be applied in assembly, where we use <em>REP STOSD</em> to
+                                fill the pixel buffer in horizontal rows with a shade value computed once per row (the
+                                computations could be reduced to a few shifts and an addition):
+                            </p>
+                        
+                            <dokki-code headerless title="386 assembly"
+                                        syntax="x86asm">
+                                <template #code>
+                                    <pre>
+                                        org 100h
+
+                                        ; Draw a horizontal gradient into a VGA 13h-sized pixel buffer.
+                                        ; The gradient consists of the first 16 colors in the palette.
+                                        xor cx,cx
+                                        mov ebx,100000
+                                        again:
+                                            mov di,buffer
+                                            mov dl,200
+                                            row:
+                                                ; Calculate the shade color index ((Y * 320) / 4096).
+                                                movzx ax,dl
+                                                mov cl,dl
+                                                shl cx,2
+                                                add ax,cx
+                                                shr ax,6
+                                                ; Pack 4 copies of the gradient color into eax.
+                                                mov cl,al
+                                                mov ah,cl
+                                                shl eax,16
+                                                mov al,cl
+                                                mov ah,cl
+                                                ; Fill this row with the gradient color.
+                                                mov ecx,(320/4)
+                                                rep stosd
+                                                dec dl
+                                                jnz row
+                                            dec ebx
+                                            jnz again
+
+                                        ret
+
+                                        align 4
+                                        buffer rb (320*200)
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p><strong>Performance</strong>: 440 ms (P1), 550 ms (P2), 32400 ms (P3).</p>
+
+                            <p>
+                                The results for assembly line up with expectations, as the platform fastest on
+                                paper, P1, was now also the fastest in practice. Likewise, P2 being about 60 times
+                                faster than P3 coincides with a much earlier benchmark I've done in which P2 was
+                                at least 50 times faster than P3 in floating-point performance.
+                            </p>
+
+                            <p>
+                                The overall results of this benchmark show 386 assembly performing up to five times
+                                faster than JavaScript.
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    A summary of the results in this section
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Language</th>
+                                        <th>Details</th>
+                                        <th>Time (milliseconds)</th>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>Platform: P1</td>
+                                        <td>440</td>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>Platform: P2</td>
+                                        <td>550</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>TypedArray.fill (32-bit)</td>
+                                        <td>2270</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>TypedArray.fill (64-bit)</td>
+                                        <td>2760</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>TypedArray.copyWithin</td>
+                                        <td>4390</td>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>Platform: P3</td>
+                                        <td>32400</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+                        
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Drawing to the screen" id="drawing-to-the-screen">
+
+                            <p>
+                                In this final benchmark, it's finally time to display something on screen rather than just
+                                plotting things into off-screen buffers. To that end, we'll transfer pixels from an off-screen
+                                buffer onto a corresponding display surface &ndash; a &lt;canvas&gt; element in
+                                JavaScript, and the VGA video memory in assembly.
+                            </p>
+
+                            <p>
+                                In JavaScript, the <em>CanvasRenderingContext2D.putImageData()</em> function transfers
+                                a pixel buffer onto the canvas:
+                            </p>
+
+                            <dokki-code headerless
+                                        syntax="JavaScript"
+                                        code='
+                                        <canvas id="canvas" width="320" height="200"></canvas>
+                                        <script>
+                                            const context = canvas.getContext("2d");
+                                            const image = context.getImageData(0, 0, 320, 200);
+                                            for (let loops = 0; loops < 100000; loops++) {
+                                                context.putImageData(image, 0, 0);
+                                            }
+                                        </script>
+                                        '>
+                            </dokki-code>
+
+                            <p><strong>Performance</strong>: 750 ms.</p>
+
+                            <p>
+                                In assembly, we can transfer the buffer's contents into video memory using <em>REP MOVSD</em>:
+                            </p>
+
+                            <dokki-code headerless syntax="x86asm">
+                                <template #code>
+                                    <pre>
+                                        org 100h
+
+                                        ; Enter VGA mode 13h.
+                                        mov ax,13h
+                                        int 10h
+
+                                        ; Copy a local pixel buffer into video memory.
+                                        mov ax,0a000h
+                                        mov es,ax
+                                        mov ebx,100000
+                                        transfer:
+                                            mov si,buffer
+                                            xor di,di
+                                            mov ecx,((320*200)/4)
+                                            rep movsd
+                                            dec ebx
+                                            jnz transfer
+
+                                        ret
+
+                                        align 4
+                                        buffer rb (320*200)
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p><strong>Performance</strong>: 99300 ms (P1), 109300 ms (P3), 192300 ms (P2).</p>
+
+                            <p>
+                                As to be expected, the oldest video card (in P2) was the slowest of the bunch, while the card in P3
+                                &ndash; being about three years newer than the one in P2 &ndash; was twice as fast. However, the newest
+                                video card (in P1) wasn't really any faster than the one in P3, despite the latter being 15 years
+                                older. I'm guessing this is due to modern video cards implementing only a bare minimum for legacy VGA support.
+                            </p>
+
+                            <p>
+                                The overall results of this benchmark are fairly striking: JavaScript was at least a hundred times faster
+                                than the direct video memory writes of 386 assembly. Some of the difference could be speculatively explained
+                                by noting that the only modern video card (in P1) may have had crippled performance due to limited
+                                legacy VGA support (we might extrapolate from the results of P2 and P3 that P1 might otherwise have posted
+                                a result somewhere under 10 seconds). Another factor is that while the data transfers in assembly
+                                interacted directly with video memory, JavaScript's <em>putImageData()</em> is of an abstract interface
+                                whose call times may or may not include any painting into video memory.
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    A summary of the results in this section
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Language</th>
+                                        <th>Details</th>
+                                        <th>Time (milliseconds)</th>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>Context.putImageData</td>
+                                        <td>750</td>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>Platform: P1</td>
+                                        <td>99300</td>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>Platform: P3</td>
+                                        <td>109300</td>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>Platform: P2</td>
+                                        <td>192300</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Conclusion" id="conclusion">
+
+                            <p>
+                                From the above benchmarks we can derive an overall performance metric as follows.
+                                Let's say our application has a time budget of 10 milliseconds for
+                                rendering a frame. First, we'd subtract from those ten milliseconds the amount of time required to
+                                copy the pixel buffer onto the screen (<a href="#drawing-to-the-screen">benchmark 3</a>),
+                                then divide the remaining time by the time required to fill the pixel buffer
+                                (<a href="#plotting-a-gradient">benchmark 2</a>), and finally multiply the result by the number
+                                of pixels in the buffer (320 * 200 = 64 000) to get a value that represents
+                                an estimate of the number of pixels we'd be able to plot per frame.
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    Overall results
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Language</th>
+                                        <th>Platform</th>
+                                        <th>Performance (million pixels per frame)</th>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>P1</td>
+                                        <td>131</td>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>P2</td>
+                                        <td>94</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JavaScript</td>
+                                        <td>P1</td>
+                                        <td>28</td>
+                                    </tr>
+                                    <tr>
+                                        <td>386 assembly</td>
+                                        <td>P3</td>
+                                        <td>2</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                            <p>
+                                By that metric, 386 assembly was about five times faster than JavaScript when rendering a
+                                simple gradient. Recalling from <a href="#drawing-to-the-screen">benchmark 3</a>, most of
+                                that difference didn't come from direct access to video memory but from what appeared to
+                                be speedier access to system memory and faster execution of simple computations.
+                            </p>
+
+                            <p>
+                                It's worth noting in closing that the assemblic benchmarks were limited to 32-bit 386 instructions.
+                                Wider instructions &ndash; which a modern JavaScript engine likely benefits from &ndash;
+                                would almost certainly increase the performance. 
+                            </p>
+
+                        </dokki-subtopic>
+
+                    </dokki-topic>
+                        
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

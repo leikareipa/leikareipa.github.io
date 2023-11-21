@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/feedback-inline-button.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                The unexpectedly useful useless thing
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="25 August 2022"></post-date>
+<dokki-topic title="The unexpectedly useful useless thing">
+<p>I've been spending time lately working on an intentionally useless project – useless in the sense that it has no target audience and I don't even need it myself. The point is that it's an interesting topic to explore, its code a fun challenge to write, and it being fundamentally useless is liberating – it's just pointless fun.</p>
+<p>But it didn't take long for this project to morph into something more useful: it's been giving me an unintended deep dive into some of the underlying mechanics of modern front-end frameworks.</p>
+<dokki-subtopic title="The useless">
+<p>The project started simply as an aimless recreation of the GUI of Windows 95 in a &lt;canvas&gt; element, but quickly became a front-end framework for building in-canvas UIs in the style of Windows 95. After all, if you have a standalone GUI, you need some sample applications to show it off, and now you're building a framework.</p>
+<p>All UI elements – buttons, menus, scrollers, etc. – are implemented from scratch as reusable widgets. The widgets are rendered using a <a href="https://github.com/leikareipa/retro-ngon/">software &lt;canvas&gt; rasterizer I wrote earlier</a>. State mutations trigger selective re-rendering of only the affected widgets.</p>
+<p>It's very much work in progress, but here's a few screen captures.</p>
+<dokki-image src="./img/calculator.png" width="558" height="272"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACdUlEQVQokUWRy27bVhCG+S5BHiOBgQRZGcgzFEEeoPvAi7SL7OxFAbsG2oYSRVKkxNshz+FNFGWpcRcJEiVpIUM9jRe5PMXBV1BddDEYYObDP/j/sb77/iVPnng8evQbd++e8fDhJUdH59y7d87jx7+ay8uUFy9s/fy5p58+9Tg+ts2dO6c8ePAzR0cX3L9/zvHxL5ydBTx79hPWbJYQBAE//BhychKgpKKulyjVEse5EaKgKJQOgrmezWacnkbm5CQkywqapqeqOqJIUBQS359ivXv3li+fP7PbfSBNQ6ZhSJLElFXJ7e0/Zv/3ns1mrdfrtf729Sv7/V9Gyhh/OiWKowN3c7Pj0+0n2rbF6vqet9stm83vZGlG5ntEYUid52y3783uz48su06LPNfbDx+5fnVthMgp5nPiWUhV5Lx5/Zr9zQ4pC6zNYkEnJcv+ir6/InUD8iRHpgKRJGYexoRhpBel0n2p6Ja9Wa02iCBCJIIizcmiOUmUYttjrOu6pvI96rYnTSSpaEizmlwoFkqaaZATzBJ9VZW6CQLqtjMiU6SiJhMVWVZSy5w4Udj2BOtVWdK6E6pmRZZW5AOYNci8ZFEpkySKJBN6KaXufJ+6XRohhoM1QxeioiklUta4ro913TTUYcCiWyFlhZQNRdGgVM1i0Zo4VsyiVK+qUrfRnLZbmmE3CPzH1jRNdRAfjV2sP8qSxncp2zVJXBLHDVJVlFLRKGlUPsSQ65WUug0Hy71Jkpo0HQRLpFSHx1SqxHc9rPl0imO/xPWm2LZzyMFxnENNHMe4E4fxeKy9yURPRiM8zzej0TD7n3PGYzzX5eLign8Bdzxcv190aosAAAAASUVORK5CYII="><template #caption>The Windows 95 calculator as seen in Windows 95 (left) and in the work-in-progress canvas UI (right)</template>
+                        </dokki-image>
+<dokki-image src="./img/w95-calculator-usage.gif" width="276" height="272"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,R0lGODlhFAAUAIcAAL6+vr+/v/z8/MDAwP39/b29vT8/m76+vy4ujsbGwra2tri4uMDAv7CwsLy8vMHBwLCvr7CwsbKyr8PDw6ampN/f36enqKampf///z4+nKioqLy7uysrjaWlpeDg4KSlpcnJyby9veTl5bu8vOLh4b+/v7KyssjIyLq6uvz7+7S2tri6urGxsamoqLC7u76+u7i4t76/vausrMjPz6qqqre3uqamr8nOzsfGxqytrbq9vebq6rS0s66urb29u+Xn57a1tcHAv8HBwMXGxbm6u7S4uKqqrbS1tbi5uaiosLa1tLe3t8DAubGxsre3tbGxrsDAwbu7s7e3s7W4t7y8vaSkn1VVp8jIxKOjolJSn9nZ2dTU1OPj419frGhorJmZmF5epVpaqqysrqCgt1xcqllZpGtrm5iYmpubvG9vp6empru5ubCxsZycq7Cqqra1trGoqMzAwMG9vb61ta+xscrNzcvLy8HBwcHDw6Wjo76/wM7AwMrGxrrAwLu9veLi4rKbm4uLrrSxsZOTre7u7rSpqcbFxaipqc+Dg7KtrbCwsqystLmzs7a3t6itrbS0w8enp9WgoKutrbKxsrq8vcPDv+vr656eqsfJycXFwa+ztL++0c+0tM/Dw9uUlL29vLa2tK+vrKmpxLO4uMfKyq+vscC9vbmsrNKGhsmrq7uVlcC7u8+4uMLDwK2tq8nJzMPExKOjqrqpqbGrqsXBwqiotMDAx7GxrT09mre3vLi40by8uaSku8LCwsLCwcrKy7Gxwzc3kra2sryur7m5xrm1tb+/xeHg4MC4uK+ensXF0ePl5bSuraKirsi2tri4tKqqu7u7tLGxuNDFxrOzya+vrbKyrbCkoriioqSktrGxya6uxa6urqiou7CvsKurua+vuLa2w7i4vkhIoLy9uoiIncHBusTEw7y80by+w7KyxK6uyaytyamou6Khu6yTkry8sra7v769w6idnbOoqLa3urq60r29wXp6ko+PspaWrn9/nYCAjGxsgqKiwQAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQEAwAAACwAAAAAFAAUAAAI/wDRpAlDpouVDAYSKjSAa5w/ffn2jTFTBoyXLBwQaNyIgEOwcvzw9RNzBsYXBViqXEnAsmWCTLnE3TNygsGAADipHNjJc2eABwzO9ZiwAIDRo0iTOujFrQAXDASiRhWQQgABqlcxELK0ZAKILVo8VKjg4ceOZcdE7PhDQoQIEg0AqGGxAcAGFLCGYaOnA5ksBSPkzEHyYUCIOnbuMHgw5Nq7eVOYJZPRSBAcOh1A8NmD4sErYz7SxVMhr96UIEqQ6HmjYQYkRI6CEMsWZZ07eOzaSXE2i1KgNhRwFHEBoYATa02kPIkgRYK3Izl4mGhg4QYrT5NaKdtmDp06JvbCkbGbVmzIoxoXSJ1SRSOGtGYSwNmw9i1JNSAteCQxcuGEqVU8BOBLDQtAsQAMUCDhRBAKRKDIAhbMkAoqkjxgCy/RUNNNFNpAIwwtEBAxiA3BjUJcAaDc0sQzyynBQgMq5HCECmxocAMnkWhSySaiMKELMLv8EsAKnTCCRxxrfIBJIYAc8sIil4RSSyyulHKIDInkYYIbLXRgiA59ABCADy8U8MInBTjgQAF+hFDACAPkEBAAOw=="><template #caption>Sample usage of the calculator app with the work-in-progress canvas UI</template>
+                        </dokki-image>
+<dokki-image src="./img/w95-opengl-test.gif" width="320" height="240"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,R0lGODlhFAAPAIYAAAAAAAIAAAICAoaGtDExMX5+diMkJAEBASMjIwBB/wAAAgA//QA//CAgjAAAAwA//gBA/yQkJAMDAwAOOAACCQABBQBC/wA44iAgIAEDCiUlJQAVVQAUUgACCAARRgA44QAVVAASSAA55AA11AAPPgEBAAABBAA21zIyMh0dHUlJSS0tLQEBAwA55gAyyQBD/zs7OwEEDAA++QAEEgA55SMjJAA87wEEDwEDCwEEDgAOOgAMMgEBAgAOOTMzMwIBAHd3dgICAaSksxsbG25ujZGRoH19e3h4dW5uZ35+nKiosXp6dXFxa5eXpJaWtoyMsqWlsmZmpYaGrYiIgpSUtyoqK42Nq4SEgmtrZ1xcrYODtFxcoV1dq46Ot35+dxcXiZKSunh4ckhIoSMjjUpKoX19dZycwFdXqIqKth4eiyEhjYWFtCwskgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQEAwAAACwAAAAAFAAPAAAH14BUUVlcYmRnbGlqDYwNY19bTUlEUFZPUl1gZmhrA56fWk5KQkVXWExIU15hZQWur65LQEdGVQC3uLm6uEM+ABIHADxBAcXGPwLJEgAaBAACuAo7PRPVOjO4wRHOwbcUFwkMCwwJIAAOAMEI3LgUIgkPEA8WG+fpAOv3tx0f4Q8LCTjYU8fuVoUR4RYsgOABgIJ7+boBqHDiBYQECSyEcAixIAATLmTYoHGhBQmO6lD8OsDyQIwbOXBkyMCiBEtoEVbs2qkLg4oUGhAIRWCgqNEaQyNggBEIADs="><template #caption>A rotating cube rendered in a mock OpenGL window. The cube is drawn using a software rasterizer rather than OpenGL, but the in-code rendering API emulates the fixed-function OpenGL API.</template>
+                        </dokki-image>
+</dokki-subtopic><dokki-subtopic title="The useful">
+<p>From a utilitarian view, I can't think of any uses for an in-canvas retro Windows UI. I'm sure some exist, but it's a solution looking for a problem.</p>
+<p>But from a developer's view, since I'm building a front-end framework from scratch, I'm getting to experience some of the problems that other, more useful web frameworks have had to solve. Tackling the same problems gives me a more tangible understanding for why things are the way they are in these other frameworks.</p>
+<p>For example, one of the earliest (if not unpredictable) problems I came across was the negative effect on performance of updating all widgets each frame – about 100 times per second, depending on the browser's refresh rate. Even with relatively few widgets on the screen, the garbage collection overhead alone was too high.</p>
+<p>An obvious way to improve this is to cache the data and update the cache only when needed, given that most widgets don't change very often. The resulting architecture ended up being (for now) much like <a href="https://reactjs.org/docs/hooks-intro.html">Hooks in React</a>: each widget is defined by a render function that takes in a set of prop variables and returns an instance of the widget reflecting the state of the input, functioning as a cached instance of the widget. When a relevant input variable changes, the render function is called again to get an updated instance.</p>
+<p>While props provide outside input into the widget render function, some widgets also need an internal state that persists across re-renders but is unique to that base instance of the widget – e.g. a button that keeps track of how many times it's been pressed. In React, this can be achieved with the <a href="https://reactjs.org/docs/hooks-reference.html#usestate">useState()</a> function, and I've borrowed that idea into my framework as well (for now).</p>
+<p>Under the hood, each call to the state function accesses the head of a flat array containing the globally combined state of all widget instances, and afterwards advances the array head pointer so that a subsequent call to the state function accesses the next element. If the element exists, the function returns the existing value, and otherwise it assigns the element a default value. Provided that all render functions are always called in a predictable order and that the state function is never called conditionally, a particular call to the state function from inside a particular call to a render function will always hit the same state array element, and you get your unique persistent state.</p>
+<p>Especially for those who're new to React, Hooks like <em>useState()</em> can feel a bit abstract and fragile: they work somewhat magically and have unintuitive rules about where they can and can't be called. Invoking them conditionally, for example, is a no-no, but it's not inherently obvious. I'm not quite new to React, but having now implemented similar functionality in my own framework, Hooks feel less abstract – I've got a more practical understanding of what they're doing behind the scenes and how their implementation dictates limits on their use.</p>
+</dokki-subtopic><dokki-subtopic title="Conclusion">
+<p>This project was started simply as a way to get me some useless software-developing fun, but it quickly turned into a useful exploration of some of the under-the-hood mechanics of modern web frameworks. (Some consider React in particular a library rather than a framework, and they may be right, but that's beside the point.)</p>
+<p>Although it's already failed to be useless, I'll keep working on the project here and there, and will probably blog about implementation details along the way. I have a feeling there's a lot of more useful stuff to learn with it.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

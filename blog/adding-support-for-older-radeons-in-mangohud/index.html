@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            table .dokki-area:last-child
+            {
+                margin-bottom: 0 !important;
+            }
+
+            .note
+            {
+                padding: 1rem;
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                border-radius: var(--dokkiCSS-embedded-border-radius);
+                margin-bottom: 2rem;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Adding support for older Radeons in MangoHud
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="11 February 2023"></post-date>
+<dokki-topic title="Adding support for older Radeons in MangoHud">
+<div class="note">
+    An updated version of this post <a href="/blog/adding-workaround-support-for-unsupported-gpus-in-mangohud/">is available</a>.
+</div>
+<p><a href="https://github.com/flightlessmango/MangoHud/">MangoHud</a> is an on-screen display for Vulkan and OpenGL under Linux. You'd use it in games etc. to display run-time statistics like frame rate and hardware temperature.</p>
+<p>Unfortunately, MangoHud <a href="https://github.com/flightlessmango/MangoHud/issues/233">doesn't support pre-amdgpu Radeon GPUs</a>. For example, my decade-old Radeon HD 7970 just about qualifies for amdgpu and generally works with MangoHud, but my slightly older Radeon HD 5770 that falls back on the <a href="https://linux.die.net/man/4/radeon">radeon</a> driver shows nothing in MangoHud.</p>
+<p>Luckily, the seemingly unsupported Radeons' statistics are available on the system through other means, and MangoHud can easily be modified to display them.</p>
+<p>With the HD 5770, I used <a href="https://github.com/clbr/radeontop">radeontop</a> to access the card's run-time performance metrics. Since MangoHud reads Radeon statistics from the file system (<strong>/sys/class/drm/.../</strong>), I passed radeontop's outpt via stdout <span style="white-space: nowrap;">(<em>$ radeontop -d -</em>)</span> into a simple program I wrote to parse and save the data to disk in the format that MangoHud expects.</p>
+<p>I then patched MangoHud's <a href="https://github.com/flightlessmango/MangoHud/blob/v0.6.8/src/overlay.cpp#L760">overlay.cpp:760</a> to allow overriding the default statistics file locations:</p>
+
+                <dokki-code syntax="c++"headerless="true">
+                    <template #code>
+                        <pre>for (const auto &amp;override: std::unordered_map&lt;std::string, FILE**&gt;{
+    {&quot;gpu_busy_percent&quot;, &amp;amdgpu.busy},
+    {&quot;mem_info_vram_total&quot;, &amp;amdgpu.vram_total},
+    {&quot;mem_info_vram_used&quot;, &amp;amdgpu.vram_used},
+    {&quot;mem_info_gtt_used&quot;, &amp;amdgpu.gtt_used},
+    {&quot;temp1_input&quot;, &amp;amdgpu.temp},
+    {&quot;freq1_input&quot;, &amp;amdgpu.core_clock},
+    {&quot;freq2_input&quot;, &amp;amdgpu.memory_clock},
+    {&quot;power1_average&quot;, &amp;amdgpu.power_usage},
+}){
+    FILE *const f = fopen((std::string(getenv(&quot;HOME&quot;)) + &quot;/.mangohud_override/&quot; + override.first).c_str(), &quot;r&quot;);
+    if (f) {
+        *override.second = f;
+    }
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>With the patch, if MangoHud finds a particular statistic file under <strong>~/.mangohud_override/</strong>, it'll read from it and ignore the usual location. A nicer way to implement this would be to allow the path to be set via MangoHud's config file, but good enough.</p>
+<p>Statistics for the old HD 5770 are then available in MangoHud:</p>
+<dokki-video platform="youtube" src="vfqxiOpDCmg"     headerless  >
+                    </dokki-video>
+<p>I did find that there's a bug either in the radeon driver or the Linux kernel that causes the amount of VRAM to be misreported when it's close to saturation – the value overflows to a massive number. The problem doesn't seem specific to radeontop, as CoreCtrl also reports it.</p>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

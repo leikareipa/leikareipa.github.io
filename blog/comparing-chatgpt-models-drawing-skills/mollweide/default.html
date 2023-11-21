@@ -1,0 +1,95 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="1000" height="1000"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+          const width = canvas.width;
+          const height = canvas.height;
+          const imageData = ctx.createImageData(width, height);
+          const pixelBuffer = imageData.data;
+
+          // Define the colors for the black and white squares of the chessboard
+          const blackColor = [0, 0, 0, 255];
+          const whiteColor = [255, 255, 255, 255];
+
+          // Define the size of each tile in the chessboard
+          const tileSize = Math.floor(width / 14);
+
+          // Iterate over each pixel in the pixel buffer
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              // Determine the row and column of the current tile in the chessboard
+              const tileRow = Math.floor(y / tileSize);
+              const tileCol = Math.floor(x / tileSize);
+
+              // Determine the color of the current pixel based on the chessboard pattern
+              const isBlack = (tileRow + tileCol) % 2 === 0;
+              const color = isBlack ? blackColor : whiteColor;
+
+              // Calculate the index of the current pixel in the pixel buffer
+              const index = (y * width + x) * 4;
+
+              // Set the color of the current pixel in the pixel buffer
+              pixelBuffer[index] = color[0];
+              pixelBuffer[index + 1] = color[1];
+              pixelBuffer[index + 2] = color[2];
+              pixelBuffer[index + 3] = color[3];
+            }
+          }
+
+          // Define the Mollweide projection function
+          function mollweideProjection(x, y) {
+            // Scale the pixel coordinates to the range [-π, π]
+            const theta = ((x / width) - 0.5) * Math.PI * 2;
+            const phi = ((y / height) - 0.5) * Math.PI * 2;
+
+            // Apply the Mollweide projection
+            const k = Math.sqrt(2) / Math.sqrt(1 + Math.cos(phi) * Math.cos(theta / 2));
+            const projX = (2 / Math.PI) * k * Math.cos(phi) * Math.sin(theta / 2);
+            const projY = (2 / Math.PI) * k * Math.sin(phi);
+            return { x: projX, y: projY };
+          }
+
+          // Iterate over each pixel in the pixel buffer again, applying the Mollweide projection
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              // Calculate the coordinates of the current pixel in the Mollweide projection
+              const projCoord = mollweideProjection(x, y);
+              const projX = projCoord.x * width / 2 + width / 2;
+              const projY = projCoord.y * height / 2 + height / 2;
+
+              // Calculate the index of the current pixel in the pixel buffer
+              const index = (y * width + x) * 4;
+
+              // If the projected coordinates are out of bounds, set the color of the current pixel to transparent
+              if (projX < 0 || projX >= width || projY < 0 || projY >= height) {
+                pixelBuffer[index + 3] = 0;
+              }
+              // Otherwise, set the color of the current pixel to the color at the projected coordinates
+              else {
+                const projIndex = (Math.floor(projY) * width + Math.floor(projX)) * 4;
+                pixelBuffer[index] = pixelBuffer[projIndex];
+                pixelBuffer[index + 1] = pixelBuffer[projIndex + 1];
+                pixelBuffer[index + 2] = pixelBuffer[projIndex + 2];
+                pixelBuffer[index + 3] = pixelBuffer[projIndex + 3];
+              }
+            }
+          }
+
+          ctx.putImageData(imageData, 0, 0);
+        </script>
+    </body>
+</html>

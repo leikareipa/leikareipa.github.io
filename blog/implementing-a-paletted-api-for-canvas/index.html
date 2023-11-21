@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/feedback-inline-button.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Implementing a paletted API for &lt;canvas&gt;
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="21 June 2022"></post-date>
+<dokki-topic title="Implementing a paletted API for &lt;canvas&gt;">
+<p><a href="https://en.wikipedia.org/wiki/Palette_(computing)">Palettes</a> were used liberally in the earlier days of computing but aren't too common nowadays. But you'll come across them if you fancy retro computing.</p>
+<p>I'd previously written a <a href="https://github.com/leikareipa/retro-ngon">retro-themed 3D renderer for &lt;canvas&gt;</a> and now wanted to add support for paletted rendering. So I wrote a drop-in replacement interface for &lt;canvas&gt; that provides a paletted API/UX for direct pixel manipulation.</p>
+<dokki-image src="./img/conch.png" width="1024" height="439"     headerless   thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB3UlEQVQokW2SXUhTYRjHz/HUptjOLFpizsH63E1rQhSIRRBEOHcjlmaIkUIgdjOsBtXAPjbEipOLlim1Gh1bqTuI2MRplOBNC6t5U9BNUBDRTXT/i202d1wX//fleZ//83seeB9BEAQKJUkSNpuNioqNuveMRFHM3rIsY7Vac7Go9whrzWazGU+jG5drr95YUOh07sHT2IC0TsrVloh64D+YxbKZO7eCaKMPUSP3Odt1ugjY1tqMFnvMi+gQyu1+dmy3r4Wudr7q9zE7/og3z0OkpkZYfj3OqWZ3Pl9Xd4CXE1Fm1Lu81cJ8nHtGbHgAk6m8oPHKdLt37WTyaZj5aD8/lib5noqzqAYJ+bvz5r5LvSRVhXRihN+fkrzTQsxFrrHf5cjmSzKs7CEI7Kt1En8QYHk2wp8vr/g8rTB1s4fjxw7nzJJEwNfD4tggP9MJfr2fYGGoF+X8GWTZVDxhdaUFTfGRHhvg23yYYMdRYhdO4K6vzZu9HU2k1CBfk/eYCXkJtNQT9p5ElHKfowPWVFcRH7zM0pMrDF9sw996iOvdTTjsW1eBnS18GL1BQjlHX/sRAl0NtHsO/n9tMiovM+LYVkOZ0cCG0vVFe5iR3VpJ1ZZNlBokjIaCyVb0F3YXMJrMNF/fAAAAAElFTkSuQmCC"><template #caption>A reference full-color image next to a 256-color paletted image, rendered on corresponding canvas elements</template>
+                        </dokki-image>
+<p>The rest of this post <a href="#implementing-a-paletted-api-for-canvas-architecture-in-a-nutshell">describes the implementation in brief terms</a>, <a href="#implementing-a-paletted-api-for-canvas-end-user-api">gives some simple samples of usage</a>, and <a href="#implementing-a-paletted-api-for-canvas-performance-concerns">discusses a few performance matters</a>.</p>
+<dokki-subtopic title="Architecture in a nutshell">
+<p>The implementation of the paletted &lt;canvas&gt; consists of three new classes, which extend or replace existing canvas-related functionality. The sections below briefly describe those classes.</p>
+<p>For reference, you can <a href="https://github.com/leikareipa/paletted-canvas">access the full source code on GitHub</a>.</p>
+<h3>HTMLCanvasElement <i class="fas fa-fw fa-long-arrow-alt-right"></i> HTMLPalettedCanvasElement</h3>
+<p>The implementation extends <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement">HTMLCanvasElement</a> with the custom class <em>HTMLPalettedCanvasElement</em>, whose main purpose is to override <em>HTMLCanvasElement.getContext()</em> to return a paletted rendering context.</p>
+<p>With this class registered as a customized built-in element using <a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define">CustomElementRegistry.define()</a>, the user can transform any existing &lt;canvas&gt; into a paletted version by adding the <em>is</em> attribute:</p>
+
+                <dokki-code syntax="html"headerless="true">
+                    <template #code>
+                        <pre>&lt;!-- Regular canvas (HTMLCanvasElement). --&gt;
+&lt;canvas&gt;&lt;/canvas&gt;
+
+&lt;!-- Paletted canvas (HTMLPalettedCanvasElement). --&gt;
+&lt;canvas is=&quot;paletted-canvas&quot;&gt;&lt;/canvas&gt;
+</pre>
+                    </template>
+                </dokki-code>
+            
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>// In JavaScript:
+const canvasEl = document.createElement(&quot;canvas&quot;, {is: &quot;paletted-canvas&quot;});
+
+(canvasEl instanceof HTMLCanvasElement) === true
+(canvasEl instanceof HTMLPalettedCanvasElement) === true
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>One downside of this approach is that <a href="https://caniuse.com/custom-elementsv1">customized built-in elements aren't supported at all in Safari</a> without <a href="https://github.com/ungap/custom-elements">a polyfill</a>. Although supported across the board in other major browsers, it seems a little unclear whether this feature will stick around in the future.</p>
+<h3>CanvasRenderingContext2D <i class="fas fa-fw fa-long-arrow-alt-right"></i> CanvasRenderingContextIndexed</h3>
+<p>The custom class <em>CanvasRenderingContextIndexed</em> is a translation layer on top of the standard <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D">CanvasRenderingContext2D</a>, replicating relevant parts of the latter's interface to allow paletted rendering operations on the parent &lt;canvas&gt;.</p>
+<p>Most notably, the class provides a version of <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/putImageData">CanvasRenderingContext2D.putImageData()</a> that takes as its argument a paletted image. The function converts the image into 32-bit color using the currently active palette, then displays it on the canvas using the <em>putImageData()</em> of an underlying instance of <em>CanvasRenderingContext2D</em>.</p>
+<h3>ImageData <i class="fas fa-fw fa-long-arrow-alt-right"></i> IndexedImageData</h3>
+<p>For storing and managing indexed image data, a custom <em>IndexedImageData</em> was implemented, giving the user an <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData">ImageData</a>-like interface.</p>
+<p>Notably, <em>IndexedImageData</em> associates image data with a palette, and provides functionality with which the user can manipulate the palette's data.</p>
+</dokki-subtopic><dokki-subtopic title="End-user API">
+<h3>Creating a paletted &lt;canvas&gt;</h3>
+<p>As was noted above, a paletted &lt;canvas&gt; element can be created by specifying the <em>is</em> attribute:</p>
+
+                <dokki-code syntax="html"headerless="true">
+                    <template #code>
+                        <pre>&lt;canvas is=&quot;paletted-canvas&quot;&gt;&lt;/canvas&gt;
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Alternatively, the element can be created in JavaScript like so:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>const canvasEl = document.createElement(&quot;canvas&quot;, {is: &quot;paletted-canvas&quot;});
+</pre>
+                    </template>
+                </dokki-code>
+            
+<h3>Manipulating the contents of a paletted &lt;canvas&gt;</h3>
+<p>As with a regular &lt;canvas&gt;, the <em>getContext()</em> function is used to retrieve the canvas's rendering context:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>const context = canvasEl.getContext();
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Drawing into it is likewise much as it is with a regular &lt;canvas&gt;, except a palette needs to be defined, and each pixel in the data buffer is a palette index rather than four RGBA values.</p>
+<p>The following sample code fills the canvas with the color at index #0 in the palette (blue):</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>const image = context.createImageData();
+image.palette = [[0, 100, 255]];
+image.data.fill(0);
+context.putImageData(image);
+</pre>
+                    </template>
+                </dokki-code>
+            
+<div style="
+    width: 307px;
+    height: 190px;
+    background-color: rgb(0, 100, 255);
+"></div>
+<p>If we modify the palette color at index #0, then repaint the image, we get a version that uses the new color:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>image.palette[0] = [255, 0, 200];
+context.putImageData(image);
+</pre>
+                    </template>
+                </dokki-code>
+            
+<div style="
+    width: 307px;
+    height: 190px;
+    background-color: rgb(255, 0, 200);
+"></div>
+<h3>More samples</h3>
+<p>Here's a few simple samples of manipulating a paletted &lt;canvas&gt; for one effect or another.</p>
+<h4>Horizontal spinner</h4>
+<dokki-iframe height="35px" headerless src="./widgets/horizontal-spinner.html"></dokki-iframe>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>&lt;canvas is=&quot;paletted-canvas&quot; width=&quot;32&quot; height=&quot;1&quot;&gt;&lt;/canvas&gt;
+
+// Create a palette with a gradient between blue and white (using the alpha channel
+// to modulate lightness).
+image.palette = (
+    new Array(canvasEl.width)
+    .fill()
+    .map((e, idx)=&gt;([0, 100, 255, (127 + (127 * Math.cos(idx / 5)))]))
+);
+
+image.data = Array.from(image.palette.keys());
+
+// Each frame, shift the palette right by one step to animate the gradient.
+(function render_loop() {
+    image.palette = [image.palette.pop(), ...image.palette];
+    context.putImageData(image);
+    window.requestAnimationFrame(render_loop);
+})();
+</pre>
+                    </template>
+                </dokki-code>
+            
+<h4>Unintuitive clock</h4>
+<dokki-iframe height="35px" headerless src="./widgets/clock.html"></dokki-iframe>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>&lt;canvas is=&quot;paletted-canvas&quot; width=&quot;11&quot; height=&quot;1&quot;&gt;&lt;/canvas&gt;
+
+// Create a palette with 10 shades of blue, representing the values 0-9.
+image.palette = (
+    new Array(10)
+    .fill()
+    .map((el, idx)=&gt;([0, 100, 255, (255 * (idx / 10))]))
+);
+
+// Each frame, get the current epoch time such that the nth digit corresponds to
+// the nth horizontal pixel, then assign each pixel one of the 10 shades of color
+// depending on the digit's value (0-9).
+(function render_loop() {
+    image.data = Date.now().toString().split(&quot;&quot;).slice(0, 11).reverse();
+    context.putImageData(image);
+    window.requestAnimationFrame(render_loop);
+})();
+</pre>
+                    </template>
+                </dokki-code>
+            
+</dokki-subtopic><dokki-subtopic title="Performance concerns">
+<p>A paletted &lt;canvas&gt; will generally have a higher raster throughput when compared to a regular &lt;canvas&gt;, since palette indices tend to be smaller (e.g. 8 bits) than full-color pixels (32 bits). The performance bottleneck will most likely be in converting the indexed image into a full-color image for display.</p>
+<p>The simplest way to convert an indexed image into 32-bit color is of course to iterate over each pixel in the indexed image and copy the corresponding palette data into the destination image's pixel buffer:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>// fullColorImage == ImageData
+// indexedImage == IndexedImageData
+
+for (let i = 0; i &lt; indexedImage.data.length; i++) {
+    fullColorImage.data[i * 4 + 0] = indexedImage.palette[indexedImage.data[i]][0];
+    fullColorImage.data[i * 4 + 1] = indexedImage.palette[indexedImage.data[i]][1];
+    fullColorImage.data[i * 4 + 2] = indexedImage.palette[indexedImage.data[i]][2];
+    fullColorImage.data[i * 4 + 3] = indexedImage.palette[indexedImage.data[i]][3];
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The above can be sped up a bit by copying 32 bits at a time (assumes a little-endian system):</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>const fullColor32bit = new Uint32Array(fullColor.data.buffer);
+
+for (let i = 0; i &lt; indexedImage.data.length; i++) {
+    const paletteColor = indexedImage.palette[indexedImage.data[i]];
+    fullColor32bit[i] = (
+        (paletteColor[3] &lt;&lt; 24) |
+        (paletteColor[2] &lt;&lt; 16) |
+        (paletteColor[1] &lt;&lt; 8) |
+        paletteColor[0]
+    );
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>A further optimization is to pre-compute the 32-bit value for each palette entry:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>// When the user sets the palette.
+palette.dword = new Uint32Array(palette.map(color=&gt;(
+    (color[3] &lt;&lt; 24) |
+    (color[2] &lt;&lt; 16) |
+    (color[1] &lt;&lt; 8) |
+    color[0]
+)));
+
+// ...
+
+// When the user calls putImageData().
+for (let i = 0; i &lt; indexedImage.data.length; i++) {
+    fullColor32bit[i] = indexedImage.palette.dword[indexedImage.data[i]];
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>With the above, I found the paletted &lt;canvas&gt; to perform more or less at the speed of a regular &lt;canvas&gt; (see <a href="https://github.com/leikareipa/paletted-canvas/tree/master/test/integration/reference-vs-paletted">test/integration/reference-vs-paletted</a>).</p>
+<p>A yet further optimization is to use the pre-computed 32-bit palette values directly: e.g. <em>image[5] = palette[0]</em> instead of <em>image[5] = 0</em>, where <em>image</em> is a 32-bit view directly to the underlying <em>CanvasRenderingContext2D</em> pixel buffer. This allows the implementation to skip entirely the step of converting the indexed image into full color in order to display it (since the act of writing into the indexed image has already transfered over the full color data) while still allowing the end-user API to resemble a paletted system. However, a downside is that changing the palette requires all pixel values in the indexed image to be updated in a separate step (so it's not really an indexed image), and overall the UX of this approach feels less genuine.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

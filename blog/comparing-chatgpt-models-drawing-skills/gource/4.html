@@ -1,0 +1,91 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="700" height="400"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          const websites = [
+              {id: 1, name: 'GeoCities', x: 300, y: 200},
+              {id: 2, name: 'Hollywood', x: 150, y: 100},
+              {id: 3, name: 'SiliconValley', x: 450, y: 100},
+              {id: 4, name: 'TimesSquare', x: 150, y: 300},
+              {id: 5, name: 'WallStreet', x: 450, y: 300},
+              {id: 6, name: 'MovieSite', x: 100, y: 50},
+              {id: 7, name: 'TVShowSite', x: 200, y: 50},
+              {id: 8, name: 'TechBlog', x: 400, y: 50},
+              {id: 9, name: 'SoftwareSite', x: 500, y: 50},
+              {id: 10, name: 'GameForum', x: 100, y: 250},
+              {id: 11, name: 'MusicSite', x: 200, y: 250},
+              {id: 12, name: 'StockTips', x: 400, y: 250},
+              {id: 13, name: 'InvestmentSite', x: 500, y: 250},
+          ];
+
+          const links = [
+              {source: 1, target: 2},
+              {source: 1, target: 3},
+              {source: 1, target: 4},
+              {source: 1, target: 5},
+              {source: 2, target: 6},
+              {source: 2, target: 7},
+              {source: 3, target: 8},
+              {source: 3, target: 9},
+              {source: 4, target: 10},
+              {source: 4, target: 11},
+              {source: 5, target: 12},
+              {source: 5, target: 13},
+          ];
+
+          function drawNode(node, color) {
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, 10, 0, 2 * Math.PI);
+              ctx.fillStyle = color;
+              ctx.fill();
+              ctx.closePath();
+
+              ctx.font = '16px Arial';
+              ctx.fillStyle = 'black';
+              ctx.fillText(node.name, node.x + 15, node.y + 5);
+          }
+
+          function drawLink(link) {
+              const sourceNode = websites.find(node => node.id === link.source);
+              const targetNode = websites.find(node => node.id === link.target);
+
+              ctx.beginPath();
+              ctx.moveTo(sourceNode.x, sourceNode.y);
+              ctx.lineTo(targetNode.x, targetNode.y);
+              ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+              ctx.closePath();
+          }
+
+          function draw() {
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+              links.forEach(link => {
+                  drawLink(link);
+              });
+
+              websites.forEach(website => {
+                  drawNode(website, 'rgba(255, 0, 0, 1)');
+              });
+          }
+
+          draw();
+        </script>
+    </body>
+</html>

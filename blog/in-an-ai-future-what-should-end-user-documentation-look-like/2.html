@@ -1,0 +1,89 @@
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Snowfall</title>
+      <style>
+          html, body {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+  <body>
+    <canvas id="canvas" style="width: 100vw; height: 100vh; background-color: transparent;"></canvas>
+    <script src="./rngon.js"></script>
+    <script>
+        // 1. Load your isometric tiles as separate images
+        const tileTextures = [
+            Rngon.texture({
+                "width":16,
+                "height":16,
+                "channels":"rgba:5+5+5+1",
+                "encoding":"base64",
+                "pixels":"Q4VDheKAQ4VDheaN5o0FgsSB4oDEgeKAY4FjgWOBY4HigOaN5o3igEOF5o3mjeaN4oDEgQWCY4FjgeKABYLigEOF5o1DhUOF4oDmjeKA5o3igOaN4oAFguKAY4FjgeKA4oDigOKA5o3igOaN5o1jgeKA5o1jgWOB4oAFguKABYJDheaNx4LmjceCBYJjgQWCY4HmjWOB5o3mjeaNY4FjgeKA5o3EgUOF5o3mjQWCY4EFguKA4oAFgmOBY4HmjeaN4oDigOKA4oBjgWOB5o3igOKA5o1jgeKA4oDigGOBxIHigAWCxIHEgeaN4oBjgeKA5o1jgeaNY4FjgeaNY4HigOaN5o3mjeKA4oBjgWOB4oDigGOB4oDigOaN5o1jgQWCY4FjgeKA5o3mjWOBY4HigOKABYJjgWOB4oBDheaN4oDmjeaN4oBjgWOBY4FjgeaN5o1jgeaN5o1jgeaNY4HEgWOB4oBjgeKA5o1jgWOBY4HmjeKA5o1jgWOB4oDmjeaNY4HigGOB5o3EgeKA4oDmjeKAx4LigGOBY4EFgsSBxIFjgWOBY4FjgeaN5o1jgeKA5o3igOaNxIHigOKAxIHmjWOBBYLmjWOB4oDigOKAY4HmjWOB5o3igMSB4oDEgeKAY4HigOKAY4HigOKAY4FjgeaNY4FjgeaN4oDigMSB4oA="
+            }),
+            Rngon.texture({
+                "width":16,
+                "height":16,
+                "channels":"rgba:5+5+5+1",
+                "encoding":"base64",
+                "pixels":"C4ELgaiAC4ELgXCBcIGSgXCBqIBwgaiALYEtgS2BLYGogHCBcIGogAuBcIFwgXCBqIBwgZKBLYEtgaiAkoGogAuBcIELgQuBqIBwgaiAcIGogHCBqICSgaiALYEtgaiAqICogKiAcIGogHCBcIEtgaiAcIEtgS2BqICSgaiAkoELgXCBGYJwgRmCkoEtgZKBLYFwgS2BcIFwgXCBLYEtgaiAcIFwgQuBcIFwgZKBLYGSgaiAqICSgS2BLYFwgXCBqICogKiAqIAtgS2BcIGogKiAcIEtgaiAqICogC2BcIGogJKBcIFwgXCBqIAtgaiAcIEtgXCBLYEtgXCBLYGogHCBcIFwgaiAqIAtgS2BqICogC2BqICogHCBcIEtgZKBLYEtgaiAcIFwgS2BLYGogKiAkoEtgS2BqIALgXCBqIBwgXCBqIAtgS2BLYEtgXCBcIEtgXCBcIEtgXCBLYFwgS2BqIAtgaiAcIEtgS2BLYFwgaiAcIEtgS2BqIBwgXCBLYGogC2BcIFwgaiAqIBwgaiAGYKogC2BLYGSgXCBcIEtgS2BLYEtgXCBcIEtgaiAcIGogHCBcIGogKiAcIFwgS2BkoFwgS2BqICogKiALYFwgS2BcIGogHCBqIBwgaiALYGogKiALYGogKiALYEtgXCBLYEtgXCBqICogHCBqIA="
+            }),
+            // ...
+        ];
+
+        // 2. Create a 2D array representing your tilemap
+        const tilemap = [
+            [0, 1, 0, 1],
+            [1, 0, 1, 0],
+            [0, 1, 0, 1],
+            [1, 0, 1, 0],
+        ];
+
+        // 4. Generate n-gons for each tile
+        const tileSize = 8; // Adjust this value to match your tile size
+        const nGons = [];
+        for (let y = 0; y < tilemap.length; y++) {
+            for (let x = 0; x < tilemap[y].length; x++) {
+                const tileIdx = tilemap[y][x];
+                const isoX = (x - y) * tileSize / 2;
+                const isoY = (x + y) * tileSize / 4;
+                const vertices = [
+                    Rngon.vertex(isoX, isoY),
+                    Rngon.vertex(isoX + tileSize / 2, isoY + tileSize / 4),
+                    Rngon.vertex(isoX, isoY + tileSize / 2),
+                    Rngon.vertex(isoX - tileSize / 2, isoY + tileSize / 4),
+                ];
+                const ngon = Rngon.ngon(vertices, {
+                    texture: tileTextures[tileIdx],
+                    textureMapping: "ortho",
+                });
+                nGons.push(ngon);
+            }
+        }
+
+        // 5. Create a mesh containing all the n-gons
+        const mesh = Rngon.mesh(nGons);
+
+        // 6. Render the scene
+        (function render() {
+            Rngon.render({
+                target: "canvas",
+                scene: [mesh],
+                options: {
+                    cameraPosition: Rngon.vector(0, 8, -25),
+                    resolution: 1,
+                },
+            });
+            
+            window.requestAnimationFrame(render);
+        })();
+    </script>
+  </body>
+</html>
+

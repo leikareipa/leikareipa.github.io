@@ -1,0 +1,260 @@
+<post-date date="28 December 2022"/>
+
+# Can Wine replace Windows as a platform for gaming with retro graphics cards?
+
+I have a collection of retro graphics cards from the late 1990s and early 2000s and was wondering, would Wine on Linux run games of that era well on these things? Could it be an alternative to a period-correct retro OS, maybe even smooth out some compatibility issues?
+
+To find out, I tested a bunch of the cards on a fresh installation of Ubuntu MATE 20.04 with kernel 5.15 and Wine 5/7.
+
+> Test system specs
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>CPU</th>
+            <td>AMD Athlon X2 5050e</td>
+        </tr>
+        <tr>
+            <th>RAM</th>
+            <td>2 GB DDR2 (dual channel)</td>
+        </tr>
+        <tr>
+            <th>Motherboard</th>
+            <td>ASRock AM2NF3-VSTA</td>
+        </tr>
+        <tr>
+            <th>OS</th>
+            <td>Ubuntu MATE 20.04<br>Kernel 5.15<br>Wine 5/7</td>
+        </tr>
+    </table>
+</dokki-table>
+
+## Results
+
+Half of the cards were too old/unsupported to have functioning hardware acceleration under Linux, and all of the NVIDIA cards that did have working hardware acceleration had major issues with Direct3D-based games. ATI's Radeon 9600 was a positive exception.
+
+> Overview of the results
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Graphics card</th>
+            <th>Year</th>
+            <th>Bus</th>
+            <th>Driver</th>
+            <th>Renderer</th>
+            <th>glxgears</th>
+            <th colspan="2">Game compatibility using Wine 5/7</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Direct3D</th>
+            <th>OpenGL</th>
+        </tr>
+        <tr>
+            <td>ATI Rage 128 Pro</td>
+            <td>1999</td>
+            <td>AGP</td>
+            <td><a href="https://linux.die.net/man/4/r128">r128</a></td>
+            <td class="bad">Software</td>
+            <td>190 FPS</td>
+            <td class="bad">Slow</td>
+            <td class="bad">Slow</td>
+        </tr>
+        <tr>
+            <td>Matrox G400</td>
+            <td>1999</td>
+            <td>AGP</td>
+            <td><a href="https://linux.die.net/man/4/mga">mga</a></td>
+            <td class="bad">Software</td>
+            <td>200 FPS</td>
+            <td class="bad">Slow</td>
+            <td class="bad">Slow</td>
+        </tr>
+        <tr>
+            <td>NVIDIA GeForce 256</td>
+            <td>1999</td>
+            <td>AGP</td>
+            <td><a href="https://linux.die.net/man/4/nouveau">nouveau</a>/nv10</td>
+            <td class="bad">Software</td>
+            <td>250 FPS</td>
+            <td class="bad">Xorg crash</td>
+            <td class="bad">Xorg crash</td>
+        </tr>
+        <tr>
+            <td>Matrox G550</td>
+            <td>2001</td>
+            <td>AGP</td>
+            <td>mga</td>
+            <td class="bad">Software</td>
+            <td>175 FPS</td>
+            <td class="bad">Slow</td>
+            <td class="bad">Slow</td>
+        </tr>
+        <tr>
+            <td>NVIDIA GeForce2 Ti</td>
+            <td>2001</td>
+            <td>AGP</td>
+            <td>nouveau/nv15</td>
+            <td class="good">Hardware</td>
+            <td>445 FPS</td>
+            <td class="bad">Major issues</td>
+            <td class="good">Playable</td>
+        </tr>
+        <tr>
+            <td>NVIDIA GeForce4 Ti 4200 8x</td>
+            <td>2002</td>
+            <td>AGP</td>
+            <td>nouveau/nv28</td>
+            <td class="good">Hardware</td>
+            <td>790 FPS</td>
+            <td class="bad">Major issues</td>
+            <td class="good">Playable</td>
+        </tr>
+        <tr>
+            <td>NVIDIA Quadro4 980 XGL</td>
+            <td>2002</td>
+            <td>AGP</td>
+            <td>nouveau/nv28</td>
+            <td class="good">Hardware</td>
+            <td>880 FPS</td>
+            <td class="bad">Major issues</td>
+            <td class="good">Playable</td>
+        </tr>
+        <tr>
+            <td>ATI Radeon 9600</td>
+            <td>2003</td>
+            <td>AGP</td>
+            <td><a href="https://linux.die.net/man/4/radeon">radeon</a>/r300<sup>1</sup></td>
+            <td class="good">Hardware</td>
+            <td>1910 FPS</td>
+            <td class="good">Playable</td>
+            <td class="good">Playable</td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td colspan="8">
+                    <sup>1</sup>Using the <em>radeon.agpmode=8</em> kernel boot parameter.
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</dokki-table>
+
+Typical issues with Direct3D-based games on NVIDIA hardware were a complete failure to launch ([sample of Richard Burns Rally](https://www.youtube.com/watch?v=XKPNemG689Y)) and garbled output ([sample of Half-Life 2](https://www.youtube.com/watch?v=zTQw-s3ezt4)).
+
+> Game compatibility matrix using Wine 5/7
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Game</th>
+            <th colspan="6">Driver</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>r128</th>
+            <th>mga</th>
+            <th>nv10</th>
+            <th>nv15</th>
+            <th>nv28</th>
+            <th>r300</th>
+        </tr>
+        <tr>
+            <td>Delta Force 2</td>
+            <td></td>
+            <td></td>
+            <td class="bad">Crash</td>
+            <td class="bad">No 3D</td>
+            <td class="bad">No 3D</td>
+            <td class="bad">No 3D</td>
+        </tr>
+        <tr>
+            <td>Half-Life 2 (2004 retail)</td>
+            <td></td>
+            <td class="bad">Slow</td>
+            <td></td>
+            <td></td>
+            <td class="bad"><a href="https://www.youtube.com/watch?v=zTQw-s3ezt4">Garbled</a></td>
+            <td class="bad">Crash</td>
+        </tr>
+        <tr>
+            <td>Homeworld</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="good"><a href="https://www.youtube.com/watch?v=2rrGVDXXACA">Playable</a><sup>1</sup></td>
+            <td class="good">Playable</td>
+        </tr>
+        <tr>
+            <td>Medal of Honor: Allied Assault</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="good"><a href="https://www.youtube.com/watch?v=MXsp7n13xqA">Playable</a><sup>2</sup></td>
+            <td class="good">Playable<sup>2</sup></td>
+            <td class="good">Playable</td>
+        </tr>
+        <tr>
+            <td>Operation Flashpoint</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="bad">Garbled</td>
+            <td class="bad">Garbled</td>
+            <td class="good">Playable</td>
+        </tr>
+        <tr>
+            <td>Quake 3 Arena (demo)</td>
+            <td class="bad">Slow</td>
+            <td class="bad">Slow</td>
+            <td class="bad">Crash</td>
+            <td class="good">Playable</td>
+            <td class="good">Playable</td>
+            <td class="good">Playable</td>
+        </tr>
+        <tr>
+            <td>Richard Burns Rally</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="bad">No 3D</td>
+            <td class="bad"><a href="https://www.youtube.com/watch?v=XKPNemG689Y">No 3D</a></td>
+            <td class="good">Runs</td>
+        </tr>
+        <tr>
+            <td>Star Wars: Knights of the Old Republic</td>
+            <td></td>
+            <td class="bad">Slow</td>
+            <td></td>
+            <td class="bad">Glitches</td>
+            <td class="bad"><a href="https://www.youtube.com/watch?v=99n6QtktcKU">Glitches</a></td>
+            <td class="good">Playable</td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td colspan="7">
+                    <sup>1</sup>Using the OpenGL renderer. Occasional incorrect texture mipmap levels.
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <sup>2</sup>Setting texture quality to high resulted in a system freeze.
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</dokki-table>
+
+## Bottom line
+
+Not really.
+
+Of the graphics cards tested, all pre-2000 models were limited to software rendering.
+
+The post-2000 NVIDIA cards were generally usable with OpenGL-native games but not with Direct3D games.
+
+The one positive exception was the RV350 series Radeon 9600, which ran both OpenGL and Direct3D games relatively well &ndash; at least to the extent that major glitches weren't the norm.

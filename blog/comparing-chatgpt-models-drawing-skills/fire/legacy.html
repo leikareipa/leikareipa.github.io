@@ -1,0 +1,102 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="200" height="300"></canvas>
+        <script>
+          const canvas = document.getElementById("canvas");
+          canvas.width = 1000;
+          canvas.height = 60;
+          const ctx = canvas.getContext("2d");
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+          function animateFire(imgData) {
+            const bufferLength = imgData.width * imgData.height * 4;
+
+            // Create a temporary buffer to store the fire effect
+            const fireBuffer = new Uint8ClampedArray(bufferLength);
+
+            // Initialize the bottom row of the fire buffer to random values
+            for (let i = (imgData.height - 1) * imgData.width * 4; i < bufferLength; i += 4) {
+              fireBuffer[i] = Math.floor(Math.random() * 256);
+              fireBuffer[i + 1] = fireBuffer[i + 2] = 0;
+              fireBuffer[i + 3] = 255;
+            }
+
+            // Update the fire buffer in each animation frame
+            function updateFireBuffer() {
+              for (let y = 0; y < imgData.height - 1; y++) {
+                for (let x = 0; x < imgData.width; x++) {
+                  const pixelIndex = (y * imgData.width + x) * 4;
+                  const belowPixelIndex = ((y + 1) * imgData.width + x) * 4;
+
+                  // Average the values of the current pixel and the two pixels below it
+                  fireBuffer[pixelIndex] =
+                    (fireBuffer[belowPixelIndex] +
+                      fireBuffer[belowPixelIndex + 4] +
+                      fireBuffer[belowPixelIndex + 8]) /
+                    3;
+
+                  // Add some randomness to the fire effect
+                  fireBuffer[pixelIndex] +=
+                    Math.floor(Math.random() * 30) - 1;
+
+                  // Clamp the value to a valid range
+                  fireBuffer[pixelIndex] = Math.max(0, fireBuffer[pixelIndex] - 20);
+
+                  // Set the other color channels to 0
+                  fireBuffer[pixelIndex + 1] = fireBuffer[pixelIndex + 2] = 0;
+                  fireBuffer[pixelIndex + 3] = 255;
+                }
+              }
+            }
+
+            // Copy the fire buffer to the pixel buffer
+            function renderFireBuffer() {
+              for (let i = 0; i < bufferLength; i += 4) {
+                // Map the fire intensity to a color gradient
+                const color = fireBuffer[i];
+                if (color < 50) {
+                  imgData.data[i] = color * 5;
+                  imgData.data[i + 1] = color * 2;
+                  imgData.data[i + 2] = 0;
+                } else if (color < 100) {
+                  imgData.data[i] = 255;
+                  imgData.data[i + 1] = color * 2.5;
+                  imgData.data[i + 2] = 0;
+                } else {
+                  imgData.data[i] = 255;
+                  imgData.data[i + 1] = 255;
+                  imgData.data[i + 2] = color * 2.5 - 255;
+                }
+
+                // Set the alpha channel to 255
+                imgData.data[i + 3] = 255;
+              }
+              ctx.putImageData(imgData, 0, 0);
+            }
+
+            // Animate the fire effect
+            function animate() {
+              updateFireBuffer();
+              renderFireBuffer();
+              requestAnimationFrame(animate);
+            }
+
+            animate();
+          }
+
+          animateFire(imgData);
+        </script>
+    </body>
+</html>

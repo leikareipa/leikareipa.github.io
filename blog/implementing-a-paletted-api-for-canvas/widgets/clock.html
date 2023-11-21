@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script
+            src="https://unpkg.com/@ungap/custom-elements@1.1.0/es.js"
+            crossorigin='anonymous'
+            integrity="sha384-djkakNr+bZ2OLmcKXPSyikmrr3zTeMscpMn7qdvrGPZS/TVW0LvCrnc2f83ozyoa"
+        ></script>
+        <script src="./paletted-canvas.js"></script>
+        <style>
+            body {
+                margin: 0;
+                display: flex;
+            }
+            canvas {
+                width: 100vw;
+                height: 100vh;
+                image-rendering: pixelated;
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas is="paletted-canvas" width="11" height="1">
+            <div class="unsupported" style="color: red;">
+                Error: The paletted &lt;canvas&gt; could not be displayed
+            </div>
+        </canvas>
+        <script>
+            const canvasEl = document.querySelector("canvas");
+            const context = canvasEl.getContext();
+            const image = context.createImageData();
+            image.palette = new Array(10)
+                .fill()
+                .map((el, idx)=>([0, 100, 255, (255 * (idx / 10))]));
+            
+            (function render_loop(numTicks = 1) {
+                image.data = Date.now().toString().split("").slice(0, 11).reverse();
+                context.putImageData(image);
+                window.requestAnimationFrame(()=>render_loop(++numTicks));
+            })();
+        </script>
+    </body>
+</html>

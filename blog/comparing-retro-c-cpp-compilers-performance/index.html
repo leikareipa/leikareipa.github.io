@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/feedback-inline-button.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table em
+            {
+                margin-right: 4px;
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                padding: 3px 5px;
+                font-size: 90%;
+                border-radius: 3px;
+                white-space: nowrap;
+                font-style: normal;
+            }
+        </style>
+    </head>
+    <body>
+        <template id="dokki">
+
+            <ths-feedback></ths-feedback>
+
+            <dokki-document>
+                
+                <dokki-header>
+                    <template #caption>
+                        Comparing retro C/C++ compilers' performance
+                    </template>
+                    <template #widgets>
+                        <blog-post-widgets/>
+                    </template>
+                </dokki-header>
+            
+                <dokki-topics>
+
+                    <post-date date="2 February 2022"></post-date>
+
+                    <dokki-topic title="Comparing retro C/C++ compilers' performance" id="introduction">
+
+                        <p>
+                            What's the fastest C/C++ compiler for your retro DOS and Win32 projects?
+                        </p>
+
+                        <p>
+                            To find out, I've compiled three C/C++ language benchmarks using a variety of DOS and
+                            Win32 compilers, then measured the executables' run-time performance on a bunch of
+                            platforms ranging from rather old to fairly modern. The rest of this post describes
+                            the results.
+                        </p>
+
+                        <p>
+                            The findings reported here are actually a few years old at the time of writing, but
+                            I originally released them in scattered bits and pieces. Since there's been a
+                            reasonable amount of interest, I've bundled them into this single post for
+                            easier reference. And since it's been a few years, it's possible I've misplaced a
+                            detail or two, so feel free to <ths-inline-feedback-button>
+                            send feedback</ths-inline-feedback-button>.
+                        </p>
+                        
+                        <dokki-tip>
+                            As with any performance benchmark, it's possible that the results reported here have missed
+                            an edge case, fallen for some pitfall, etc. So you should take the figures and conclusions
+                            with a grain of salt.
+                        </dokki-tip>
+
+                        <p>
+                            If you want, you can <a href="#conclusion">jump directly to the final results</a>,
+                            or you can keep reading to find out how the results were arrived at.
+                        </p>
+
+                    </dokki-topic>
+
+                    <dokki-topic title="16-bit real-mode DOS" id="real-mode-dos">
+
+                        <p>
+                            For DOS, I used a 16-bit software rasterizer running in VGA 13h
+                            spinning a textured sphere in the middle of the screen.
+                            <a href="https://github.com/leikareipa/dccb">Its C source code</a> is available,
+                            and you can preview the benchmark in action below:
+                        </p>
+
+                        <dokki-iframe src="/dosbox/#dos-c-compiler-benchmark/microsoft-c-cpp-8"
+                                    height="500px">
+
+                            <template #caption>
+                                Preview the benchmark in DOSBox
+                            </template>
+
+                        </dokki-iframe>
+
+                        <p>
+                            According to the overall results (which are averages across all of the
+                            individual benchmark runs), Microsoft Visual C++ 1.5 tended to compile the fastest
+                            executable, followed by Open Watcom C/C++ 1.9 and Digital Mars C/C++ 8. The pure
+                            C compilers &ndash; which are generally older than the C/C++ ones &ndash; tended
+                            to produce the slowest programs.
+                        </p>
+
+                        <dokki-table headerless>
+                            <template #caption>
+                                Overall results for 16-bit DOS
+                            </template>
+                            <template #table>
+                                <tr>
+                                    <th>Score (%)</th>
+                                    <th>Compiler</th>
+                                </tr>
+                                <tr>
+                                    <td>96</td>
+                                    <td>Microsoft Visual C++ 1.5</td>
+                                </tr>
+                                <tr>
+                                    <td>91</td>
+                                    <td>Open Watcom C/C++ 1.9</td>
+                                </tr>
+                                <tr>
+                                    <td>84</td>
+                                    <td>Digital Mars C/C++ 8</td>
+                                </tr>
+                                <tr>
+                                    <td>70</td>
+                                    <td>Microsoft C 5</td>
+                                </tr>
+                                <tr>
+                                    <td>70</td>
+                                    <td>Borland Turbo C 2</td>
+                                </tr>
+                                <tr>
+                                    <td>64</td>
+                                    <td>HI-TECH Pacific C 7</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-lacking">56<sup>*</sup></td>
+                                    <td class="data-lacking">Borland C++ 2</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-lacking">54<sup>*</sup></td>
+                                    <td class="data-lacking">Microsoft QuickC 1</td>
+                                </tr>
+                                <tr>
+                                    <td class="data-lacking">25<sup>*</sup></td>
+                                    <td class="data-lacking">Mix Power C 2.2</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <sup>*</sup>Tested in DOSBox only.
+                                    </td>
+                                </tr>
+                            </template>
+                        </dokki-table>
+
+                        <p>
+                            The individual results show some trading of places depending on the platform.
+                            While third place was consistently held by Digital Mars
+                            C/C++ 8, Visual C++ 1.5 was faster than Open Watcom C/C++ 1.9 on
+                            older platforms but vice versa on newer ones; that being especially evident
+                            when comparing between DOSBox and the Intel Xeon E3. 
+                        </p>
+
+                        <dokki-table headerless>
+                            <template #caption>
+                                Individual results by platform
+                            </template>
+                            <template #table>
+                                <tr>
+                                    <th>Platform</th>
+                                    <th>Results<sup>*</sup></th>
+                                </tr>
+                                <tr>
+                                    <td>DOSBox</td>
+                                    <td class="with-inline-table">
+                                        <dokki-table>
+                                            <template #table>
+                                                <tr>
+                                                    <th>FPS</th>
+                                                    <th>Compiler</th>
+                                                    <th>Command-line options</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>57</td>
+                                                    <td>Microsoft Visual C++ 1.5</td>
+                                                    <td>
+                                                        <em>/f-</em>
+                                                        <em>/AL</em>
+                                                        <em>/Ox</em>
+                                                        <em>/G3</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>41</td>
+                                                    <td>Digital Mars C/C++ 8</td>
+                                                    <td>
+                                                        <em>-mld</em>
+                                                        <em>-a2</em>
+                                                        <em>-5</em>
+                                                        <em>-f</em>
+                                                        <em>-o+speed</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>37</td>
+                                                    <td>Open Watcom C/C++ 1.9</td>
+                                                    <td>
+                                                        <em>-bcl=dos</em>
+                                                        <em>-ml</em>
+                                                        <em>-oneatx</em>
+                                                        <em>-oh</em>
+                                                        <em>-ei</em>
+                                                        <em>-zp2</em>
+                                                        <em>-5</em>
+                                                        <em>-fpi87</em>
+                                                        <em>-fp5</em>
+                                                        <em>-sg</em>
+                                                        <em>-k16384</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>33</td>
+                                                    <td>Borland Turbo C 2</td>
+                                                    <td>
+                                                        <em>-a</em>
+                                                        <em>-1</em>
+                                                        <em>-f87</em>
+                                                        <em>-ml</em>
+                                                        <em>-Z</em>
+                                                        <em>-G </em>
+                                                        <em>-O</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>32</td>
+                                                    <td>Borland C++ 2</td>
+                                                    <td>
+                                                        <em>-a</em>
+                                                        <em>-1</em>
+                                                        <em>-f87</em>
+                                                        <em>-ml</em>
+                                                        <em>-Z</em>
+                                                        <em>-G </em>
+                                                        <em>-O</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>32</td>
+                                                    <td>Microsoft C 5</td>
+                                                    <td>
+                                                        <em>/AL</em>
+                                                        <em>/FPi87</em>
+                                                        <em>/O</em>
+                                                        <em>/G2</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>31</td>
+                                                    <td>Microsoft QuickC 1</td>
+                                                    <td>
+                                                        <em>/AL</em>
+                                                        <em>/FPi87</em>
+                                                        <em>/O</em>
+                                                        <em>/G2</em>
+                                                        <em>/Gs</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>30</td>
+                                                    <td>HI-TECH Pacific C 7</td>
+                                                    <td>
+                                                        <em>-2</em>
+                                                        <em>-7</em>
+                                                        <em>-AL16,16,4</em>
+                                                        <em>-Bl</em>
+                                                        <em>-Zg</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>14</td>
+                                                    <td>Mix Power C 2.2</td>
+                                                    <td>
+                                                        <em>/2</em>
+                                                        <em>/a</em>
+                                                        <em>/e</em>
+                                                        <em>/f87</em>
+                                                        <em>/ml</em>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </dokki-table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Pentium 90</td>
+                                    <td class="with-inline-table">
+                                        <dokki-table>
+                                            <template #table>
+                                                <tr>
+                                                    <th>FPS</th>
+                                                    <th>Compiler</th>
+                                                    <th>Command-line options</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>26</td>
+                                                    <td>Microsoft Visual C++ 1.5</td>
+                                                    <td>
+                                                        <em>/f-</em>
+                                                        <em>/AL</em>
+                                                        <em>/Ox</em>
+                                                        <em>/G3</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>26</td>
+                                                    <td>Open Watcom C/C++ 1.9</td>
+                                                    <td>
+                                                        <em>-bcl=dos</em>
+                                                        <em>-ml</em>
+                                                        <em>-oneatx</em>
+                                                        <em>-oh</em>
+                                                        <em>-ei</em>
+                                                        <em>-zp2</em>
+                                                        <em>-5</em>
+                                                        <em>-fpi87</em>
+                                                        <em>-fp5</em>
+                                                        <em>-sg</em>
+                                                        <em>-k16384</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>24</td>
+                                                    <td>Digital Mars C/C++ 8</td>
+                                                    <td>
+                                                        <em>-mld</em>
+                                                        <em>-a2</em>
+                                                        <em>-5</em>
+                                                        <em>-f</em>
+                                                        <em>-o+speed</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>22</td>
+                                                    <td>Microsoft C 5</td>
+                                                    <td>
+                                                        <em>/AL</em>
+                                                        <em>/FPi87</em>
+                                                        <em>/O</em>
+                                                        <em>/G2</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>19</td>
+                                                    <td>Borland Turbo C 2</td>
+                                                    <td>
+                                                        <em>-a</em>
+                                                        <em>-1</em>
+                                                        <em>-f87</em>
+                                                        <em>-ml</em>
+                                                        <em>-Z</em>
+                                                        <em>-G </em>
+                                                        <em>-O</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>17</td>
+                                                    <td>HI-TECH Pacific C 7</td>
+                                                    <td>
+                                                        <em>-2</em>
+                                                        <em>-7</em>
+                                                        <em>-AL16,16,4</em>
+                                                        <em>-Bl</em>
+                                                        <em>-Zg</em>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </dokki-table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>AMD K6-2 300</td>
+                                    <td class="with-inline-table">
+                                        <dokki-table>
+                                            <template #table>
+                                                <tr>
+                                                    <th>FPS</th>
+                                                    <th>Compiler</th>
+                                                    <th>Command-line options</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>105</td>
+                                                    <td>Open Watcom C/C++ 1.9</td>
+                                                    <td>
+                                                        <em>-bcl=dos</em>
+                                                        <em>-ml</em>
+                                                        <em>-oneatx</em>
+                                                        <em>-oh</em>
+                                                        <em>-ei</em>
+                                                        <em>-zp2</em>
+                                                        <em>-5</em>
+                                                        <em>-fpi87</em>
+                                                        <em>-fp5</em>
+                                                        <em>-sg</em>
+                                                        <em>-k16384</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>102</td>
+                                                    <td>Microsoft Visual C++ 1.5</td>
+                                                    <td>
+                                                        <em>/f-</em>
+                                                        <em>/AL</em>
+                                                        <em>/Ox</em>
+                                                        <em>/G3</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>95</td>
+                                                    <td>Digital Mars C/C++ 8</td>
+                                                    <td>
+                                                        <em>-mld</em>
+                                                        <em>-a2</em>
+                                                        <em>-5</em>
+                                                        <em>-f</em>
+                                                        <em>-o+speed</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>78</td>
+                                                    <td>Borland Turbo C 2</td>
+                                                    <td>
+                                                        <em>-a</em>
+                                                        <em>-1</em>
+                                                        <em>-f87</em>
+                                                        <em>-ml</em>
+                                                        <em>-Z</em>
+                                                        <em>-G </em>
+                                                        <em>-O</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>77</td>
+                                                    <td>Microsoft C 5</td>
+                                                    <td>
+                                                        <em>/AL</em>
+                                                        <em>/FPi87</em>
+                                                        <em>/O</em>
+                                                        <em>/G2</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>65</td>
+                                                    <td>HI-TECH Pacific C 7</td>
+                                                    <td>
+                                                        <em>-2</em>
+                                                        <em>-7</em>
+                                                        <em>-AL16,16,4</em>
+                                                        <em>-Bl</em>
+                                                        <em>-Zg</em>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </dokki-table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Intel Xeon E3</td>
+                                    <td class="with-inline-table">
+                                        <dokki-table>
+                                            <template #table>
+                                                <tr>
+                                                    <th>FPS</th>
+                                                    <th>Compiler</th>
+                                                    <th>Command-line options</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>364</td>
+                                                    <td>Open Watcom C/C++ 1.9</td>
+                                                    <td>
+                                                        <em>-bcl=dos</em>
+                                                        <em>-ml</em>
+                                                        <em>-oneatx</em>
+                                                        <em>-oh</em>
+                                                        <em>-ei</em>
+                                                        <em>-zp2</em>
+                                                        <em>-5</em>
+                                                        <em>-fpi87</em>
+                                                        <em>-fp5</em>
+                                                        <em>-sg</em>
+                                                        <em>-k16384</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>318</td>
+                                                    <td>Microsoft Visual C++ 1.5</td>
+                                                    <td>
+                                                        <em>/f-</em>
+                                                        <em>/AL</em>
+                                                        <em>/Ox</em>
+                                                        <em>/G3</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>299</td>
+                                                    <td>Digital Mars C/C++ 8</td>
+                                                    <td>
+                                                        <em>-mld</em>
+                                                        <em>-a2</em>
+                                                        <em>-5</em>
+                                                        <em>-f</em>
+                                                        <em>-o+speed</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>279</td>
+                                                    <td>Borland Turbo C 2</td>
+                                                    <td>
+                                                        <em>-a</em>
+                                                        <em>-1</em>
+                                                        <em>-f87</em>
+                                                        <em>-ml</em>
+                                                        <em>-Z</em>
+                                                        <em>-G </em>
+                                                        <em>-O</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>274</td>
+                                                    <td>HI-TECH Pacific C 7</td>
+                                                    <td>
+                                                        <em>-2</em>
+                                                        <em>-7</em>
+                                                        <em>-AL16,16,4</em>
+                                                        <em>-Bl</em>
+                                                        <em>-Zg</em>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>244</td>
+                                                    <td>Microsoft C 5</td>
+                                                    <td>
+                                                        <em>/AL</em>
+                                                        <em>/FPi87</em>
+                                                        <em>/O</em>
+                                                        <em>/G2</em>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </dokki-table>
+                                    </td>
+                                    <tr>
+                                        <td colspan="3">
+                                            <sup>*</sup>Frames per second (FPS). Higher is better.</td>
+                                    </tr>
+                                </tr>
+                            </template>
+                        </dokki-table>
+
+                    </dokki-topic>
+
+                    <dokki-topic title="32-bit Windows" id="32-bit-windows">
+
+                        <p>
+                            For 32-bit Windows, I ran two benchmarks: a rasterizer and a path tracer.
+                        </p>
+
+                        <dokki-subtopic title="Rasterizer" id="win32-rasterizer">
+
+                            <p>
+                                The rasterizer benchmark was adopted from <a href="#real-mode-dos">the one used
+                                for DOS</a> but with modifications to make it run on Windows.
+                            </p>
+
+                            <p>
+                                (The Open Watcom C/C++ 1.9 compiler was supposed to be included in this benchmark, but
+                                the executable it produced would always crash, so I left it out. I found out later
+                                that the solution was to increase the stack size via a compiler flag. You'll find Win32
+                                results with this compiler in the <a href="#win32-path-tracer">path tracer benchmark</a>.)
+                            </p>
+
+                            <p>
+                                The overall results show MinGW 4.7.1 in the lead, Digital Mars C/C++ 8 taking second
+                                place, and Microsoft Visual C++ 6 coming in third.
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    Overall results for the Win32 rasterizer
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Score (%)</th>
+                                        <th>Compiler</th>
+                                    </tr>
+                                    <tr>
+                                        <td>100</td>
+                                        <td>MinGW 4.7.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>86</td>
+                                        <td>Digital Mars C/C++ 8</td>
+                                    </tr>
+                                    <tr>
+                                        <td>78</td>
+                                        <td>Microsoft Visual C++ 6</td>
+                                    </tr>
+                                    <tr>
+                                        <td>67</td>
+                                        <td>Microsoft Visual C++ 7 (non-optimizing)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>58</td>
+                                        <td>Borland C++ 5.5</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                            <p>
+                                In the individual results, it's interesting to see the difference between the
+                                non-optimizing Visual C++ 7 and the optimizing Visual C++ 6 compilers: the more
+                                modern the platform, the better the optimizing compiler does.
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    Individual results by platform
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Platform</th>
+                                        <th>Results<sup>*</sup></th>
+                                    </tr>
+                                    <tr>
+                                        <td>AMD K6-2 300</td>
+                                        <td class="with-inline-table">
+                                            <dokki-table>
+                                                <template #table>
+                                                    <tr>
+                                                        <th>FPS</th>
+                                                        <th>Compiler</th>
+                                                        <th>Command-line options</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>156</td>
+                                                        <td>MinGW 4.7.1</td>
+                                                        <td>
+                                                            <em>-O3</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>142</td>
+                                                        <td>Digital Mars C/C++ 8</td>
+                                                        <td>
+                                                            <em>-mn</em>
+                                                            <em>-a8</em>
+                                                            <em>-5</em>
+                                                            <em>-cpp</em>
+                                                            <em>-c</em>
+                                                            <em>-f</em>
+                                                            <em>-o+speed</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>126</td>
+                                                        <td>Microsoft Visual C++ 7 (non-opt.)</td>
+                                                        <td class="data-lacking">
+                                                            Not available
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>119</td>
+                                                        <td>Microsoft Visual C++ 6</td>
+                                                        <td class="data-lacking">
+                                                            Not available
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>118</td>
+                                                        <td>Borland C++ 5.5</td>
+                                                        <td>
+                                                            <em>-5</em>
+                                                            <em>-P</em>
+                                                            <em>-f</em>
+                                                            <em>-O2</em>
+                                                            <em>-O</em>
+                                                            <em>-tWC</em>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </dokki-table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>AMD Athlon 64</td>
+                                        <td class="with-inline-table">
+                                            <dokki-table>
+                                                <template #table>
+                                                    <tr>
+                                                        <th>FPS</th>
+                                                        <th>Compiler</th>
+                                                        <th>Command-line options</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>1309</td>
+                                                        <td>MinGW 4.7.1</td>
+                                                        <td>
+                                                            <em>-O3</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>1135</td>
+                                                        <td>Digital Mars C/C++ 8</td>
+                                                        <td>
+                                                            <em>-mn</em>
+                                                            <em>-a8</em>
+                                                            <em>-5</em>
+                                                            <em>-cpp</em>
+                                                            <em>-c</em>
+                                                            <em>-f</em>
+                                                            <em>-o+speed</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>926</td>
+                                                        <td>Microsoft Visual C++ 6</td>
+                                                        <td class="data-lacking">
+                                                            Not available
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>746</td>
+                                                        <td>Borland C++ 5.5</td>
+                                                        <td>
+                                                            <em>-5</em>
+                                                            <em>-P</em>
+                                                            <em>-f</em>
+                                                            <em>-O2</em>
+                                                            <em>-O</em>
+                                                            <em>-tWC</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>727</td>
+                                                        <td>Microsoft Visual C++ 7 (non-opt.)</td>
+                                                        <td class="data-lacking">
+                                                            Not available
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </dokki-table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Intel Xeon E3</td>
+                                        <td class="with-inline-table">
+                                            <dokki-table>
+                                                <template #table>
+                                                    <tr>
+                                                        <th>FPS</th>
+                                                        <th>Compiler</th>
+                                                        <th>Command-line options</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>8209</td>
+                                                        <td>MinGW 4.7.1</td>
+                                                        <td>
+                                                            <em>-O3</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>7033</td>
+                                                        <td>Microsoft Visual C++ 6</td>
+                                                        <td class="data-lacking">
+                                                            Not available
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>6690</td>
+                                                        <td>Digital Mars C/C++ 8</td>
+                                                        <td>
+                                                            <em>-mn</em>
+                                                            <em>-a8</em>
+                                                            <em>-5</em>
+                                                            <em>-cpp</em>
+                                                            <em>-c</em>
+                                                            <em>-f</em>
+                                                            <em>-o+speed</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>5227</td>
+                                                        <td>Microsoft Visual C++ 7 (non-opt.)</td>
+                                                        <td class="data-lacking">
+                                                            Not available
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3503</td>
+                                                        <td>Borland C++ 5.5</td>
+                                                        <td>
+                                                            <em>-5</em>
+                                                            <em>-P</em>
+                                                            <em>-f</em>
+                                                            <em>-O2</em>
+                                                            <em>-O</em>
+                                                            <em>-tWC</em>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </dokki-table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <sup>*</sup>Frames per second (FPS). Higher is better.</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Path tracer" id="win32-path-tracer">
+
+                            <p>
+                                The path tracing benchmark used the
+                                <a href="https://www.kevinbeason.com/smallpt/">smallpt</a> path tracer with the
+                                following settings:
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    Renderer settings for smallpt
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Platform</th>
+                                        <th>Resolution</th>
+                                        <th>Samples per pixel</th>
+                                    </tr>
+                                    <tr>
+                                        <td>AMD K6-2 300</td>
+                                        <td>40 &times; 30</td>
+                                        <td>512</td>
+                                    </tr>
+                                    <tr>
+                                        <td>AMD Athlon 64</td>
+                                        <td>40 &times; 30</td>
+                                        <td>2048</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Intel Xeon E3</td>
+                                        <td>40 &times; 30</td>
+                                        <td>4096</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                            <p>
+                                The overall results indicate that MinGW 4.7.1 generated the fastest executable, followed
+                                by those of Digital Mars C/C++ 8 and Open Watcom C/C++ 1.9. However, the one
+                                by Digital Mars rendered only partially correctly, producing an unwanted white line at the
+                                top of the image.
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    Overall results for the Win32 path tracer
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Score (%)</th>
+                                        <th>Compiler</th>
+                                    </tr>
+                                    <tr>
+                                        <td>99</td>
+                                        <td>MinGW 4.7.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>82</td>
+                                        <td>Digital Mars C/C++ 8</td>
+                                    </tr>
+                                    <tr>
+                                        <td>63</td>
+                                        <td>Open Watcom C/C++ 1.9</td>
+                                    </tr>
+                                    <tr>
+                                        <td>56</td>
+                                        <td>Borland C++ 5.5</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                            <p>
+                                The individual results generally agree that MinGW 4.7.1 was the fastest across the board.
+                                Although it seemed that Digital Mars C/C++ 8 was catching up on older platforms, it should
+                                be noted again that the rendering its executable produced had artifacting.
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    Individual results by platform
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Platform</th>
+                                        <th>Results<sup>*</sup></th>
+                                    </tr>
+                                    <tr>
+                                        <td>AMD K6-2 300</td>
+                                        <td class="with-inline-table">
+                                            <dokki-table>
+                                                <template #table>
+                                                    <tr>
+                                                        <th>Seconds</th>
+                                                        <th>Compiler</th>
+                                                        <th>Command-line options</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>49</td>
+                                                        <td>Digital Mars C/C++ 8</td>
+                                                        <td>
+                                                            <em>-mn</em>
+                                                            <em>-a8</em>
+                                                            <em>-5</em>
+                                                            <em>-cpp</em>
+                                                            <em>-c</em>
+                                                            <em>-f</em>
+                                                            <em>-o+speed</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>50</td>
+                                                        <td>MinGW 4.7.1</td>
+                                                        <td>
+                                                            <em>-O3</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>55</td>
+                                                        <td>Open Watcom C/C++ 1.9</td>
+                                                        <td>
+                                                            <em>-oneatx</em>
+                                                            <em>-oh</em>
+                                                            <em>-oi+</em>
+                                                            <em>-ei</em>
+                                                            <em>-zp8</em>
+                                                            <em>-5</em>
+                                                            <em>-fpi87</em>
+                                                            <em>-fp5</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>62</td>
+                                                        <td>Borland C++ 5.5</td>
+                                                        <td>
+                                                            <em>-5</em>
+                                                            <em>-P</em>
+                                                            <em>-f</em>
+                                                            <em>-O2</em>
+                                                            <em>-O</em>
+                                                            <em>-tWC</em>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </dokki-table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>AMD Athlon 64</td>
+                                        <td class="with-inline-table">
+                                            <dokki-table>
+                                                <template #table>
+                                                    <tr>
+                                                        <th>Seconds</th>
+                                                        <th>Compiler</th>
+                                                        <th>Command-line options</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>21</td>
+                                                        <td>MinGW 4.7.1</td>
+                                                        <td>
+                                                            <em>-O3</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>30</td>
+                                                        <td>Digital Mars C/C++ 8</td>
+                                                        <td>
+                                                            <em>-mn</em>
+                                                            <em>-a8</em>
+                                                            <em>-5</em>
+                                                            <em>-cpp</em>
+                                                            <em>-c</em>
+                                                            <em>-f</em>
+                                                            <em>-o+speed</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>38</td>
+                                                        <td>Open Watcom C/C++ 1.9</td>
+                                                        <td>
+                                                            <em>-oneatx</em>
+                                                            <em>-oh</em>
+                                                            <em>-oi+</em>
+                                                            <em>-ei</em>
+                                                            <em>-zp8</em>
+                                                            <em>-5</em>
+                                                            <em>-fpi87</em>
+                                                            <em>-fp5</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>43</td>
+                                                        <td>Borland C++ 5.5</td>
+                                                        <td>
+                                                            <em>-5</em>
+                                                            <em>-P</em>
+                                                            <em>-f</em>
+                                                            <em>-O2</em>
+                                                            <em>-O</em>
+                                                            <em>-tWC</em>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </dokki-table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Intel Xeon E3</td>
+                                        <td class="with-inline-table">
+                                            <dokki-table>
+                                                <template #table>
+                                                    <tr>
+                                                        <th>Seconds</th>
+                                                        <th>Compiler</th>
+                                                        <th>Command-line options</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>9</td>
+                                                        <td>MinGW 4.7.1</td>
+                                                        <td>
+                                                            <em>-O3</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>12</td>
+                                                        <td>Digital Mars C/C++ 8</td>
+                                                        <td>
+                                                            <em>-mn</em>
+                                                            <em>-a8</em>
+                                                            <em>-5</em>
+                                                            <em>-cpp</em>
+                                                            <em>-c</em>
+                                                            <em>-f</em>
+                                                            <em>-o+speed</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>20</td>
+                                                        <td>Open Watcom C/C++ 1.9</td>
+                                                        <td>
+                                                            <em>-oneatx</em>
+                                                            <em>-oh</em>
+                                                            <em>-oi+</em>
+                                                            <em>-ei</em>
+                                                            <em>-zp8</em>
+                                                            <em>-5</em>
+                                                            <em>-fpi87</em>
+                                                            <em>-fp5</em>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>22</td>
+                                                        <td>Borland C++ 5.5</td>
+                                                        <td>
+                                                            <em>-5</em>
+                                                            <em>-P</em>
+                                                            <em>-f</em>
+                                                            <em>-O2</em>
+                                                            <em>-O</em>
+                                                            <em>-tWC</em>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </dokki-table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <sup>*</sup>Seconds to render. Lower is better.</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                        </dokki-topic>
+
+                    </dokki-topic>
+
+                    <dokki-topic title="Conclusion" id="conclusion">
+
+                        <p>
+                            For DOS, the most performant compiler was generally Open Watcom C/C++ 1.9 &ndash;
+                            the caveat being that Microsoft Visual C++ 1.5 was noticeably faster in DOSBox, and
+                            showed potential to be faster on pre-Pentium platforms in general. Out of
+                            the pure C compilers, Borland Turbo C 2 and Microsoft C 5 were the top performers,
+                            although some 20% slower than the two C/C++ compilers just mentioned.
+                        </p>
+                        
+                        <p>
+                            For 32-bit Windows, MinGW 4.7.1 was essentially the most performant compiler
+                            across the board and by a notable margin. Seeing as both Digital Mars C/C++ 8 and Open
+                            Watcom C/C++ 1.9 &ndash; the two next-fastest compilers &ndash; had issues of one
+                            kind or another, it's hard to recommend anything but the MinGW (of which version
+                            4.7.1 should work with both Windows 95 and 98; later versions dropped support for 95).
+                        </p>
+                    </dokki-topic>
+
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

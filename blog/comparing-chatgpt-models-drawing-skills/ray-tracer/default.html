@@ -1,0 +1,71 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="640" height="320"></canvas>
+        <script>
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            const imageData = ctx.createImageData(width, height);
+            const pixels = imageData.data;
+                    
+            // Define the colors of the spheres
+            const RED_COLOR = [255, 0, 0];
+            const BLUE_COLOR = [0, 0, 255];
+
+            // Define the positions and radii of the spheres
+            const redSphere = { position: [width / 2, height / 2], radius: 100 };
+            const blueSphere = { position: [width / 4, height / 2], radius: 75 };
+
+            // Iterate over each pixel in the image
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    // Calculate the distance from the current pixel to each sphere
+                    const distanceToRed = Math.sqrt(
+                    (x - redSphere.position[0]) ** 2 + (y - redSphere.position[1]) ** 2);
+                    const distanceToBlue = Math.sqrt(
+                    (x - blueSphere.position[0]) ** 2 + (y - blueSphere.position[1]) ** 2);
+
+                    // Determine the color of the current pixel based on its distance to the spheres
+                    let color = [0, 0, 0];
+                    if (distanceToRed < redSphere.radius) {
+                        color = RED_COLOR;
+                    }
+                    if (distanceToBlue < blueSphere.radius) {
+                        // Add the reflection of the red sphere on the blue sphere
+                        if (distanceToRed < redSphere.radius) {
+                            color = [
+                            Math.floor((color[0] + RED_COLOR[0]) / 2),
+                            Math.floor((color[1] + RED_COLOR[1]) / 2),
+                            Math.floor((color[2] + RED_COLOR[2]) / 2),
+                            ];
+                        } else {
+                            color = BLUE_COLOR;
+                        }
+                    }
+
+                    // Set the pixel color in the pixel buffer
+                    const index = (y * width + x) * 4;
+                    pixels[index] = color[0];
+                    pixels[index + 1] = color[1];
+                    pixels[index + 2] = color[2];
+                    pixels[index + 3] = 255; // Set alpha to opaque
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+        </script>
+    </body>
+</html>
