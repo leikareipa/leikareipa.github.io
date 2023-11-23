@@ -10,7 +10,7 @@ You can find the raw source code produced by ChatGPT [here](https://github.com/l
 
 ## DOOM-style screen melt
 
-<b>Prompt</b>&mdash;<i>Write JavaScript code that applies onto a pixel buffer an animated screen melt effect, as seen in the 1990s DOS game DOOM. The pixel buffer has four bytes per pixel: red, green, blue, alpha.</i>
+<p class="label-a">"Write JavaScript code that applies onto a pixel buffer an animated screen melt effect, as seen in the 1990s DOS game DOOM. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
 
 > GPT-3.5 Default
 ![{iframe}{inline-class:prompt-input}](./melt/default.html)
@@ -29,7 +29,7 @@ GPT-4 required a fair few requests to produce code that didn't leave lots of pix
 
 ## Snowfall
 
-<b>Prompt</b>&mdash;<i>Write JavaScript code that draws animated snowfall that accumulates on the ground. The pixel buffer has four bytes per pixel: red, green, blue, alpha.</i>
+<p class="label-a">"Write JavaScript code that draws animated snowfall that accumulates on the ground. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
 
 > GPT-3.5 Default
 ![{iframe}](./snowfall/default.html)
@@ -48,9 +48,9 @@ GPT-4's first version didn't have continuous snowfall, just a set of 100 flakes 
 
 ## Ray-tracing likeness
 
-<b>Prompt</b>&mdash;<i>Imagine you're a rudimentary ray tracer from the 1990s and you're asked to render a scene containing two spheres, one &ndash; red &ndash; in the middle of your view and another &ndash; blue &ndash; to the left of it. A reflection of the red sphere is visible on the blue sphere. Write JavaScript code that draws into a pixel buffer what your output might be. You don't need to show me the ray tracing code, just a representation of the output image. The pixel buffer has four bytes per pixel: red, green, blue, alpha.</i>
+<p class="label-a">"Imagine you're a rudimentary ray tracer from the 1990s and you're asked to render a scene containing two spheres, one &ndash; red &ndash; in the middle of your view and another &ndash; blue &ndash; to the left of it. A reflection of the red sphere is visible on the blue sphere. Write JavaScript code that draws into a pixel buffer what your output might be. You don't need to show me the ray tracing code, just a representation of the output image. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
 
-<b>Prompt</b>&mdash;<i>Feel free to make changes to the code to more realistically represent the image that you as the ray tracer would produce.</i>
+<p class="label-a">"Feel free to make changes to the code to more realistically represent the image that you as the ray tracer would produce."</p>
 
 > GPT-3.5 Default
 ![{iframe}](./ray-tracer/default.html)
@@ -69,7 +69,7 @@ When asked to make changes for a more realistic representation, GPT-4 added sphe
 
 ## Checkerboard with Mollweide projection
 
-<b>Prompt</b>&mdash;<i>Write JavaScript code that draws into a pixel buffer a chessboard pattern and then applies Mollweide projection to it. The pixel buffer has four bytes per pixel: red, green, blue, alpha.</i>
+<p class="label-a">"Write JavaScript code that draws into a pixel buffer a chessboard pattern and then applies Mollweide projection to it. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
 
 > GPT-3.5 Default
 ![{iframe}](./mollweide/default.html)
@@ -88,9 +88,9 @@ GPT-4 first generated an inverse Mollweide but was able to fix it when asked. Th
 
 ## Visualizing the internet in the style of Gource
 
-<b>Prompt</b>&mdash;<i>Write JavaScript code that draws into a pixel buffer a representation of the early Internet in the style of Gource. The pixel buffer has four bytes per pixel: red, green, blue, alpha.</i>
+<p class="label-a">"Write JavaScript code that draws into a pixel buffer a representation of the early Internet in the style of Gource. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
 
-<b>Prompt</b>&mdash;<i>Could you use this graph to plot a representation of www.geocities.com from the late 1990s as best as you can?</i>
+<p class="label-a">"Could you use this graph to plot a representation of www.geocities.com from the late 1990s as best as you can?"</p>
 
 > GPT-3.5 Default
 ![{iframe}](./gource/default.html)
@@ -107,7 +107,7 @@ GPT-4 generated the result seen here on its first attempt. It wasn't able to ens
 
 ## Starfield
 
-<b>Prompt</b>&mdash;<i>Write JavaScript code that draws an animated starfield effect (a field of stars moving in 3D space) into a pixel buffer. The pixel buffer has four bytes per pixel: red, green, blue, alpha.</i>
+<p class="label-a">"Write JavaScript code that draws an animated starfield effect (a field of stars moving in 3D space) into a pixel buffer. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
 
 > GPT-3.5 Default
 ![{iframe}](./starfield/default.html)
@@ -126,7 +126,7 @@ GPT-4 was the only model that produced a working version on the first go.
 
 ## Fire
 
-<b>Prompt</b>&mdash;<i>Write JavaScript code that plots an animated fire effect into a pixel buffer. The pixel buffer has four bytes per pixel: red, green, blue, alpha.</i>
+<p class="label-a">"Write JavaScript code that plots an animated fire effect into a pixel buffer. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
 
 > GPT-3.5 Default
 ![{iframe}](./fire/default.html)
@@ -145,7 +145,7 @@ GPT-4's code had the RGB channels flipped, but I unflipped them by hand rather t
 
 ## An effect of your choice
 
-<b>Prompt</b>&mdash;<i>I'm a very experienced graphics developer specializing in 2D image processing. I have an image in a pixel buffer (RGBA, 256x256). Write JavaScript code that applies an interesting visual effect to the pixel buffer. The effect should be something that someone like me likely doesn't often see &ndash; something interesting.</i>
+<p class="label-a">"I'm a very experienced graphics developer specializing in 2D image processing. I have an image in a pixel buffer (RGBA, 256x256). Write JavaScript code that applies an interesting visual effect to the pixel buffer. The effect should be something that someone like me likely doesn't often see &ndash; something interesting."</p>
 
 > GPT-3.5 Default
 ![{iframe}](./interesting/default.html)
