@@ -1,0 +1,93 @@
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Snowfall</title>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+              background-color: black;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+  <body>
+      <canvas id="snowfall" width="400" height="400"></canvas>
+      <script>
+        class Snowflake {
+            constructor(x, y, radius, speed) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.speed = speed;
+            }
+
+            fall(canvasHeight) {
+                this.y += this.speed;
+                if (this.y > canvasHeight - this.groundHeight) {
+                    this.y = canvasHeight - this.groundHeight;
+                    return true; // Indicates that the snowflake has landed
+                }
+                return false;
+            }
+
+            draw(ctx) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+            }
+        }
+
+        const canvas = document.getElementById('snowfall');
+        const ctx = canvas.getContext('2d');
+        let snowflakes = [];
+        let groundHeight = 0;
+
+        function createSnowflakes() {
+            for (let i = 0; i < 100; i++) {
+                let x = Math.random() * canvas.width;
+                let y = Math.random() * -canvas.height;
+                let radius = Math.random() * 3 + 2;
+                let speed = Math.random() * 1 + 0.5;
+                snowflakes.push(new Snowflake(x, y, radius, speed));
+            }
+        }
+
+        function updateAndDraw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = snowflakes.length - 1; i >= 0; i--) {
+                let landed = snowflakes[i].fall(canvas.height - groundHeight);
+                snowflakes[i].draw(ctx);
+                if (landed) {
+                    snowflakes.splice(i, 1);
+                }
+            }
+
+            if (snowflakes.length < 100) {
+                createSnowflakes();
+            }
+
+            // Draw the ground
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
+
+            // Increase ground height for accumulated snow
+            if (groundHeight < 50 && Math.random() < 0.1) { // Adjust these values as needed
+                groundHeight += 0.5;
+            }
+
+            requestAnimationFrame(updateAndDraw);
+        }
+
+        createSnowflakes();
+        requestAnimationFrame(updateAndDraw);
+      </script>
+  </body>
+</html>

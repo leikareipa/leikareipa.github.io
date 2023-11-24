@@ -1,0 +1,120 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <script>
+          const canvas = document.getElementById("canvas");
+          const ctx = canvas.getContext("2d");
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+          class Star {
+            constructor(bufferWidth, bufferHeight) {
+              this.bufferWidth = bufferWidth;
+              this.bufferHeight = bufferHeight;
+              this.x = 0;
+              this.y = 0;
+              this.z = 0;
+              this.init();
+            }
+
+            init() {
+              this.x = (Math.random() * 2 - 1) * this.bufferWidth;
+              this.y = (Math.random() * 2 - 1) * this.bufferHeight;
+              this.z = Math.random() * this.bufferWidth;
+            }
+
+            update() {
+              this.z -= 4;
+              if (this.z <= 0) {
+                this.init();
+              }
+            }
+
+            project() {
+              const x = (this.x / this.z) * this.bufferWidth + this.bufferWidth / 2;
+              const y = (this.y / this.z) * this.bufferHeight + this.bufferHeight / 2;
+              const size = (1 - this.z / this.bufferWidth) * 2;
+
+              return { x, y, size };
+            }
+          }
+
+          function createStars(numStars, bufferWidth, bufferHeight) {
+            const stars = [];
+            for (let i = 0; i < numStars; i++) {
+              stars.push(new Star(bufferWidth, bufferHeight));
+            }
+            return stars;
+          }
+
+          function drawStar(pixelBuffer, bufferWidth, x, y, size, color) {
+            const minX = Math.floor(Math.max(x - size / 2, 0));
+            const maxX = Math.floor(Math.min(x + size / 2, bufferWidth - 1));
+            const minY = Math.floor(Math.max(y - size / 2, 0));
+            const maxY = Math.floor(Math.min(y + size / 2, bufferWidth - 1));
+
+            for (let i = minY; i <= maxY; i++) {
+              for (let j = minX; j <= maxX; j++) {
+                const index = (i * bufferWidth + j) * 4;
+                pixelBuffer[index] = color.r;
+                pixelBuffer[index + 1] = color.g;
+                pixelBuffer[index + 2] = color.b;
+                pixelBuffer[index + 3] = color.a;
+              }
+            }
+          }
+
+          function animateStarfield(imageData, numStars) {
+            const stars = createStars(numStars, imageData.width, imageData.height);
+            const clearColor = { r: 0, g: 0, b: 0, a: 255 };
+            const starColor = { r: 255, g: 255, b: 255, a: 255 };
+
+            function update() {
+              for (const star of stars) {
+                star.update();
+              }
+            }
+
+            function draw() {
+              // Clear the buffer
+              for (let i = 0; i < imageData.data.length; i += 4) {
+                imageData.data[i] = clearColor.r;
+                imageData.data[i + 1] = clearColor.g;
+                imageData.data[i + 2] = clearColor.b;
+                imageData.data[i + 3] = clearColor.a;
+              }
+
+              // Draw stars
+              for (const star of stars) {
+                const { x, y, size } = star.project();
+                drawStar(imageData.data, imageData.width, x, y, size, starColor);
+              }
+
+              ctx.putImageData(imageData, 0, 0);
+            }
+
+            function loop() {
+              update();
+              draw();
+              requestAnimationFrame(loop);
+            }
+
+            loop();
+          }
+
+          animateStarfield(imgData, 3000);
+        </script>
+    </body>
+</html>

@@ -245,8 +245,7 @@ body[data-dokki-layout="vertical-narrow"] .dokki-topic em
 .label-a
 {
     padding: 1em;
-    background: #ffffe8;
-    background: rgba(0, 0, 0, 0.04);
+    background-color: var(--dokkiCSS-embedded-auxiliary-color);
     max-width: calc(100% - 26px);
     border-radius: 10px;
     font-style: italic;

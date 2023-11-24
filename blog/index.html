@@ -33,6 +33,11 @@
                 display: none;
             }
 
+            .dokki-tag > .count
+            {
+                display: none !important;
+            }
+
             body[data-dokki-layout^="vertical"]  .dokki-tag-filter
             {
                 margin-top: 0 !important;
@@ -152,6 +157,16 @@
                     </dokki-topic>
 
                     <dokki-tag-filter entity-name="posts"></dokki-tag-filter>
+
+                    <blog-post-abstract
+                        date="Nov 24, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'javascript']"
+                        title="Comparing ChatGPT models' drawing skills, part 2"
+                        brief="
+                            OpenAI released the Turbo version of GPT-4 a short while back, so let's pit it
+                            against the original GPT-4 from Q1 2023 in some visual programming tasks.
+                        "
+                    ></blog-post-abstract>
 
                     <blog-post-abstract
                         date="Jun 11, 2023"
@@ -338,17 +353,6 @@
                             so I implemented DOSBox capturing, where VCS reads from a shared memory buffer where
                             DOSBox streams its output. This blog post describes that implementation in general
                             outlines.
-                        "
-                    ></blog-post-abstract>
-
-                    <blog-post-abstract
-                        date="Sep 14, 2022"
-                        :tags="['Society', 'inflation']"
-                        title="Gawking at food prices"
-                        brief="
-                            Earlier this year, I wrote a handy app for keeping track of prices at Finnish
-                            K-Market stores. I've had the app logging data for the past six months, tracking
-                            prices at a particular K-Market. Let's see what those data look like.
                         "
                     ></blog-post-abstract>
 

@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chessboard with Visual Effect</title>
+    <style>
+        html, body, canvas {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script src="../parrot.js"></script>
+    <script>
+      do_with_parrot((parrot)=>{
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function applyChromaticAberration(pixelBuffer, width, height, offset) {
+            const newBuffer = new Uint8ClampedArray(pixelBuffer.length);
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const idx = (y * width + x) * 4;
+
+                    // Calculate the offset positions
+                    let redX = x + offset;
+                    let blueX = x - offset;
+
+                    // Boundary checks
+                    redX = Math.max(0, Math.min(width - 1, redX));
+                    blueX = Math.max(0, Math.min(width - 1, blueX));
+
+                    const redIdx = (y * width + redX) * 4;
+                    const blueIdx = (y * width + blueX) * 4;
+
+                    // Copying red, green, blue, and alpha channels
+                    newBuffer[idx] = pixelBuffer[redIdx]; // Red channel from the offset redX position
+                    newBuffer[idx + 1] = pixelBuffer[idx + 1]; // Green channel remains the same
+                    newBuffer[idx + 2] = pixelBuffer[blueIdx + 2]; // Blue channel from the offset blueX position
+                    newBuffer[idx + 3] = pixelBuffer[idx + 3]; // Alpha channel remains the same
+                }
+            }
+
+            return newBuffer;
+        }
+
+        function animateChromaticAberration(originalPixelBuffer, width, height, canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            let time = 0;
+
+            function update() {
+                // Calculate the offset for a pulsating effect
+                const offset = Math.sin(time) * 5; // Adjust the multiplier for more/less aberration
+
+                // Apply the chromatic aberration effect
+                const processedBuffer = applyChromaticAberration(originalPixelBuffer, width, height, offset);
+                const imageData = new ImageData(processedBuffer, width, height);
+
+                // Draw the processed image
+                ctx.putImageData(imageData, 0, 0);
+
+                // Increment time for the next frame
+                time += 0.1; // Adjust for faster/slower pulsation
+
+                // Request the next frame
+                requestAnimationFrame(update);
+            }
+
+            update();
+        }
+
+        // Example usage
+        // Ensure your original pixel buffer, width, height, and canvas ID are correctly set
+        animateChromaticAberration(parrot.data, parrot.width, parrot.height, 'canvas');
+      });
+    </script>
+</body>
+</html>
