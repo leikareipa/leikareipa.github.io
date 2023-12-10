@@ -6,7 +6,7 @@ OpenAI released the Turbo version of GPT-4 a short while back, so let's pit it a
 
 For full context, see the original blog post, [comparing ChatGPT models' drawing skills](/blog/comparing-chatgpt-models-drawing-skills/).
 
-> My subjective visual grading of the output of each model
+> My subjective assessment of task fulfilment
 <dokki-table headerless>
     <table>
         <tr>
@@ -17,6 +17,11 @@ For full context, see the original blog post, [comparing ChatGPT models' drawing
             <th></th>
             <th>GPT-4 (Q1 2023)</th>
             <th>GPT-4 Turbo</th>
+        </tr>
+        <tr>
+            <th>Average</th>
+            <th>90%</th>
+            <th>70%</th>
         </tr>
         <tr>
             <td>DOOM melt</td>
@@ -54,14 +59,9 @@ For full context, see the original blog post, [comparing ChatGPT models' drawing
             <td>60%</td>
         </tr>
         <tr>
-            <td>Special</td>
+            <td>Effect of choice</td>
             <td>90%</td>
             <td>30%</td>
-        </tr>
-        <tr>
-            <th>Average</th>
-            <th>90%</th>
-            <th>70%</th>
         </tr>
     </table>
 </dokki-table>
