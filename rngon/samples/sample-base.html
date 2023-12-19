@@ -71,6 +71,7 @@
                 const defaultRenderOptions = {
                     resolution: 0.25,
                     useDepthBuffer: true,
+                    useBackfaceCulling: true,
                     cameraDirection: Rngon.vector(0, 0, 0),
                     cameraPosition: Rngon.vector(0, 0, -170),
                 };
@@ -92,7 +93,7 @@
                 // Load the render sample.
                 const sampleId = (new URLSearchParams(window.location.search).get("sample") || "textured-cube-model");
                 const {sample} = await import(`./${sampleId}/${sampleId}.js`);
-                await sample.initialize(structuredClone(defaultRenderOptions));
+                await sample.initialize?.(structuredClone(defaultRenderOptions));
 
                 // The render sample will now have finished loading, so we can remove the
                 // loading indicator.
