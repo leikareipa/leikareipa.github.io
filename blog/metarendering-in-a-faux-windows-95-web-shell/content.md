@@ -10,7 +10,7 @@ To render the UI elements, the framework uses a software \<canvas\> renderer tha
 
 In Windows 95, as in most operating systems no doubt, apps have the ability to render something themselves; for example, a game might render a 3D scene for the player to explore. This is where metarendering comes in: the UI renderer integrates apps' own renderings into the UI, and optionally provides the facilities for custom rendering.
 
-Here's a sample animation of an app created using the framework rendering a spinning cube (borrowed from [one of the retro n-gon renderer's render samples](https://www.tarpeeksihyvaesoft.com/rngon/samples/?sample=textured-cube-model)) within its window:
+Here's a sample animation of an app created using the framework rendering a spinning cube (borrowed from [one of the retro n-gon renderer's render samples](https://www.tarpeeksihyvaesoft.com/retro-ngon/samples/?sample=textured-cube-model)) within its window:
 
 ![{image}{headerless}{no-border-rounding}](./img/w95.gif)
 

@@ -10,7 +10,7 @@ I'll take a moment in this post to talk about the benefits (and non-benefits) of
 
 I've previously written a [retro-oriented single-threaded software 3D rasterizer in JavaScript](https://www.github.com/leikareipa/retro-ngon/).
 
-Below are results from [one of its benchmarks](https://www.tarpeeksihyvaesoft.com/rngon/tests/performance/quake-1.html?scale=0.5) running on the 5900X and the 5600X at a render resolution of 1720 &times; 639 in Google Chrome 109.
+Below are results from [one of its benchmarks](https://www.tarpeeksihyvaesoft.com/retro-ngon/tests/performance/quake-1.html?scale=0.5) running on the 5900X and the 5600X at a render resolution of 1720 &times; 639 in Google Chrome 109.
 
 <dokki-table headerless>
     <table>
