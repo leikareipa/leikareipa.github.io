@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Test app for w95</title>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="../../distributable/w95-api.js"></script>
+        <script src="../../distributable/w95-assets.js"></script>
+        <script src="../../distributable/w95-widgets.js"></script>
+        <link href="../../distributable/w95.css" rel="stylesheet">
+        <style>
+            #w95-debug-layer {
+                visibility: hidden;
+            }
+            canvas.composite {
+                opacity: 0.8;
+            }
+            canvas.composite[style*="z-index: 0"] {
+                filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
+            }
+        </style>
+    </head>
+    <body data-w95-scale="2">
+        <div id="w95-debug-layer"></div>
+        <script type="module">
+            import testApp from "./app.js";
+            import {dither_shader} from "./dither-shader.js";
+
+            w95.registry.set("num-windows-spawned", 0);
+            w95.registry.set("is-debug-enabled", false);
+            w95.shell.display.screenShader = dither_shader;
+            w95.shell.boot();
+            w95.shell.run([w95.shell.desktop(), testApp]);
+        </script>
+    </body>
+</html>
