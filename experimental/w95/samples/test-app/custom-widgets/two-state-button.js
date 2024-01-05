@@ -42,7 +42,7 @@ w95.widget("twoStateButton", function({
                         const app = w95.windowManager.get_parent_app(widget);
                         w95.debug?.assert(app?._type === "app");
                         
-                        const canvasEl = document.body.querySelector(`canvas[data-w95-app-id='${app?.uuid}']`);
+                        const canvasEl = document.body.querySelector(`canvas[data-w95-app-id='${app?.id}']`);
                         canvasEl?.classList.toggle("composite");
 
                         isPressed.set(!isPressed.now);

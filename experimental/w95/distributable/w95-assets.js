@@ -3682,13 +3682,13 @@ const win95Icons = {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!***************************!*\
-  !*** ./src/api/assets.js ***!
-  \***************************/
+/*!**********************************!*\
+  !*** ./src/api/assets/assets.js ***!
+  \**********************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_api_assets_icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../src/api/assets/icons/win95-icons.js */ "./src/api/assets/icons/win95-icons.js");
-/* harmony import */ var _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/fonts/ms-sans-serif-8-regular.js */ "./src/api/assets/fonts/ms-sans-serif-8-regular.js");
-/* harmony import */ var _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assets/fonts/ms-sans-serif-8-bold.js */ "./src/api/assets/fonts/ms-sans-serif-8-bold.js");
+/* harmony import */ var _icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./icons/win95-icons.js */ "./src/api/assets/icons/win95-icons.js");
+/* harmony import */ var _fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fonts/ms-sans-serif-8-regular.js */ "./src/api/assets/fonts/ms-sans-serif-8-regular.js");
+/* harmony import */ var _fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fonts/ms-sans-serif-8-bold.js */ "./src/api/assets/fonts/ms-sans-serif-8-bold.js");
 /*
  * 2023 Tarpeeksi Hyvae Soft
  *
@@ -3700,18 +3700,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-w95.icon = _src_api_assets_icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__.win95Icons;
+w95.icon = _icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__.win95Icons;
 
 w95.font.sansSerif = {
     8: {
-        regular: _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular,
-        bold: _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold,
+        regular: _fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular,
+        bold: _fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold,
     },
 };
 
 // Default font.
-w95.font.regular = _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular;
-w95.font.bold = _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold;
+w95.font.regular = _fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular;
+w95.font.bold = _fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold;
 
 })();
 

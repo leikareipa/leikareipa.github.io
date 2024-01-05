@@ -10,7 +10,7 @@ import "./custom-widgets/two-state-button.js";
 import "./custom-widgets/rotating-cube.js";
 import "./custom-widgets/statistics.js";
 import "./custom-widgets/name-query.js";
-import "./custom-widgets/serious-warning.js";
+import "./custom-widgets/custom-warning.js";
 
 export default {
     Meta: {
@@ -29,14 +29,17 @@ export default {
         const y = w95.state(~~((w95.shell.display.height / 2) - (height.now / 2)));
     
         const isNameQueryDialogOpen = w95.state(false);
+        const isCustomWarningDialogOpen = w95.state(false);
+        const isQuestionDialogOpen = w95.state(false);
         const isWarningDialogOpen = w95.state(false);
+        const isErrorDialogOpen = w95.state(false);
     
         const sliderValue = w95.state(5);
         const lineEditText = w95.state("Left empty");
         const userName = w95.state("");
         const widgetDisable = w95.state(false);
         const tabIndex = w95.state(1);
-        const radioGroupIndex = w95.state(0);
+        const radioGroupIndex = w95.state(1);
         const dropdownIndex = w95.state(2);
     
         return {
@@ -78,7 +81,7 @@ export default {
                                 w95.widget.progressBar({
                                     x: 10,
                                     y: 15,
-                                    width: 162,
+                                    width: "pw - 20",
                                     progress: (sliderValue.now * 10),
                                     isDisabled: widgetDisable.now,
                                     showLabel: true,
@@ -86,7 +89,7 @@ export default {
                                 w95.widget.progressBar({
                                     x: 10,
                                     y: 35,
-                                    width: 162,
+                                    width: "pw - 20",
                                     progress: (sliderValue.now * 10),
                                     isDisabled: widgetDisable.now,
                                     styleHints: [
@@ -96,7 +99,7 @@ export default {
                                 w95.widget.horizontalSlider({
                                     x: 10,
                                     y: 60,
-                                    width: 162,
+                                    width: "pw - 20",
                                     minValue: 0,
                                     maxValue: 10,
                                     value: sliderValue.now,
@@ -117,7 +120,7 @@ export default {
                                 w95.widget.dropdownBox({
                                     x: 10,
                                     y: 15,
-                                    width: 162,
+                                    width: "pw - 20",
                                     isDisabled: widgetDisable.now,
                                     itemIndex: dropdownIndex.now,
                                     items: {
@@ -144,7 +147,7 @@ export default {
                                 w95.widget.lineEdit({
                                     x: 10,
                                     y: 45,
-                                    width: 162,
+                                    width: "pw - 20",
                                     text: lineEditText.now,
                                     isDisabled: widgetDisable.now,
                                     newText(text) {
@@ -188,22 +191,23 @@ export default {
                                     itemIndex: radioGroupIndex.now,
                                     newItemIndex(idx) {
                                         radioGroupIndex.set(idx);
+                                        w95.shell.display.scale = (idx + 1);
                                     },
                                     items: {
-                                        "A": {
+                                        "1x": {
                                             isDisabled: widgetDisable.now,
                                         },
-                                        "B": {
+                                        "2x": {
                                             x: 40,
                                             y: 0,
                                             isDisabled: widgetDisable.now,
                                         },
-                                        "C": {
+                                        "3x": {
                                             x: 80,
                                             y: 0,
                                             isDisabled: widgetDisable.now,
                                         },
-                                        "D": {
+                                        "4x": {
                                             x: 120,
                                             y: 0,
                                             isDisabled: widgetDisable.now,
@@ -222,13 +226,13 @@ export default {
                                 w95.widget.spawnButton({
                                     x: 10,
                                     y: 15,
-                                    width: 162,
+                                    width: "pw - 20",
                                     isDisabled: widgetDisable.now,
                                 }),
                                 w95.widget.twoStateButton({
                                     x: 10,
                                     y: 45,
-                                    width: 162,
+                                    width: "pw - 20",
                                     isDisabled: widgetDisable.now,
                                 }),
                             ],
@@ -243,7 +247,7 @@ export default {
                                 w95.widget.tabControl({
                                     x: 10,
                                     y: 15,
-                                    width: 162,
+                                    width: "pw - 20",
                                     height: 157,
                                     isDisabled: widgetDisable.now,
                                     tabIndex: tabIndex.now,
@@ -320,14 +324,14 @@ export default {
                             title: "Scroll area",
                             x: 10,
                             y: 323,
-                            width: width.now-28,
-                            height: Math.max(100, (height.now - 360)),
+                            width: (width.now - 28),
+                            height: Math.max(120, (height.now - 360)),
                             children: [
                                 w95.widget.scrollArea({
                                     x: 10,
                                     y: 15,
-                                    width: width.now-48,
-                                    height: Math.max(69, (height.now - 360 - 31)),
+                                    width: "pw - 20",
+                                    height: "ph - 31",
                                     isDisabled: widgetDisable.now,
                                     backgroundColor: w95.palette.named.white,
                                     children: [
@@ -391,15 +395,35 @@ export default {
                                     menu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuItem({
-                                                text: "String query",
+                                                text: "Error",
                                                 onClick() {
-                                                    isNameQueryDialogOpen.set(true);
+                                                    isErrorDialogOpen.set(true);
+                                                },
+                                            }),
+                                            w95.widget.menuItem({
+                                                text: "Question",
+                                                onClick() {
+                                                    isQuestionDialogOpen.set(true);
                                                 },
                                             }),
                                             w95.widget.menuItem({
                                                 text: "Warning",
                                                 onClick() {
                                                     isWarningDialogOpen.set(true);
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                text: "Custom warning",
+                                                onClick() {
+                                                    isCustomWarningDialogOpen.set(true);
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                text: "String query",
+                                                onClick() {
+                                                    isNameQueryDialogOpen.set(true);
                                                 },
                                             }),
                                         ],
@@ -436,11 +460,71 @@ export default {
                                 isNameQueryDialogOpen.set(false);
                             },
                         }, {hideIf: !isNameQueryDialogOpen.now}),
-                        w95.widget.seriousWarning({
+                        w95.widget.customWarning({
                             onReject() {
-                                isWarningDialogOpen.set(false);
+                                isCustomWarningDialogOpen.set(false);
                             },
+                        }, {hideIf: !isCustomWarningDialogOpen.now}),
+                        w95.shell.popup({
+                            icon: w95.icon.warning,
+                            title: "Warning",
+                            text: "Something went wrong, but I'm not sure what.",
+                            buttons: [
+                                w95.widget.button({
+                                    x: 0,
+                                    width: 75,
+                                    text: "OK",
+                                    onClick() {
+                                        isWarningDialogOpen.set(false);
+                                    },
+                                }),
+                                w95.widget.button({
+                                    x: 81,
+                                    width: 75,
+                                    text: "Cancel",
+                                    onClick() {
+                                        isWarningDialogOpen.set(false);
+                                    },
+                                }),
+                            ],
                         }, {hideIf: !isWarningDialogOpen.now}),
+                        w95.shell.popup({
+                            icon: w95.icon.question,
+                            title: "Question",
+                            text: "He prodded a fork into the kidney and slapped it over: then fitted the\nteapot on the tray. Its hump bumped as he took it up. Everything on it?",
+                            buttons: [
+                                w95.widget.button({
+                                    x: 0,
+                                    width: 75,
+                                    text: "Yes",
+                                    onClick() {
+                                        isQuestionDialogOpen.set(false);
+                                    },
+                                }),
+                                w95.widget.button({
+                                    x: 81,
+                                    width: 75,
+                                    text: "No",
+                                    onClick() {
+                                        isQuestionDialogOpen.set(false);
+                                    },
+                                }),
+                            ],
+                        }, {hideIf: !isQuestionDialogOpen.now}),
+                        w95.shell.popup({
+                            icon: w95.icon.error,
+                            title: "Error",
+                            text: "The NTVDM CPU has encountered an illegal instruction.",
+                            buttons: [
+                                w95.widget.button({
+                                    width: 75,
+                                    text: "OK",
+                                    onClick() {
+                                        isErrorDialogOpen.set(false);
+                                    },
+                                }),
+                            ],
+                        }, {hideIf: !isErrorDialogOpen.now}),
                     ],
                 });
             },
@@ -451,5 +535,5 @@ export default {
 function set_color_count(widget, count) {
     const parentApp = w95.windowManager.get_parent_app(widget);
     w95.debug?.assert(parentApp?._type === "app");
-    w95.registry.set(`${parentApp.uuid}-display-color-count`, count);
+    w95.registry.set(`${parentApp.id}-display-color-count`, count);
 }

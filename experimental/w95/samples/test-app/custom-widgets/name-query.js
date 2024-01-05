@@ -55,7 +55,7 @@ w95.widget("nameQuery", function({
                     w95.widget.lineEdit({
                         x: 49,
                         y: 12,
-                        width: 174,
+                        width: "pw - 60",
                         text: name.now,
                         autofocus: true,
                         newText(text) {
@@ -63,20 +63,27 @@ w95.widget("nameQuery", function({
                         },
                         onSubmit: accept,
                     }),
-                    w95.widget.button({
-                        x: 240 - 71 - 11 - 6 - 71 - 6,
+                    w95.widget.horizontalLayout({
                         y: 46,
-                        width: 71,
-                        text: "OK",
-                        isDisabled: (!name.now.length && !acceptedName.now.length),
-                        onClick: accept,
-                    }),
-                    w95.widget.button({
-                        x: 240 - 71 - 11 - 6,
-                        y: 46,
-                        width: 71,
-                        text: "Cancel",
-                        onClick: reject,
+                        width: "pw - 11",
+                        styleHints:  [
+                            w95.styleHint.alignHRight,
+                        ],
+                        children: [
+                            w95.widget.button({
+                                x: 0,
+                                width: 71,
+                                text: "OK",
+                                isDisabled: (!name.now.length && !acceptedName.now.length),
+                                onClick: accept,
+                            }),
+                            w95.widget.button({
+                                x: 77,
+                                width: 71,
+                                text: "Cancel",
+                                onClick: reject,
+                            }),
+                        ]
                     }),
                 ],
                 onClose() {
