@@ -4355,8 +4355,6 @@ w95.widget("titleBar", function({
  */
 
 w95.widget("window", function({
-    x = 0,
-    y = 0,
     width = 100,
     height = 100,
     title = "",
@@ -4376,12 +4374,10 @@ w95.widget("window", function({
     onKeyDown = undefined,
     resize = undefined,
     move = undefined,
-    maximize = undefined,
+    maximized = undefined,
     close = undefined,
 } = {})
 {
-    w95.debug?.assert(typeof x === "number");
-    w95.debug?.assert(typeof y === "number");
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof title === "string");
@@ -4399,7 +4395,7 @@ w95.widget("window", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onKeyDown));
     w95.debug?.assert(["undefined", "function"].includes(typeof resize));
     w95.debug?.assert(["undefined", "function"].includes(typeof move));
-    w95.debug?.assert(["undefined", "function"].includes(typeof maximize));
+    w95.debug?.assert(["undefined", "function"].includes(typeof maximized));
     w95.debug?.assert(["undefined", "function"].includes(typeof close));
 
     isBlurred = w95.state(isBlurred);
@@ -4415,8 +4411,9 @@ w95.widget("window", function({
     let menuBarWidget = undefined;
 
     return {
-        get x() { return x },
-        get y() { return y },
+        // The window's parent app automatically provides the values for X and Y.
+        get x() { return 0 },
+        get y() { return 0 },
         get width() { return width },
         get height() { return height },
         get menuBar() { return menuBarWidget },
@@ -4462,7 +4459,7 @@ w95.widget("window", function({
                     title,
                     icon,
                     onClose: ()=>{
-                        close?.(this);
+                        w95.windowManager.release_window(this);
                     },
                 }, {hideIf: isPlain}),
     
@@ -4480,28 +4477,36 @@ w95.widget("window", function({
             ];
         },
         Message: {
-            resizeTo(newWidth = 0, newHeight = 0) {
-                w95.debug?.assert(typeof newWidth === "number");
-                w95.debug?.assert(typeof newHeight === "number");
-                resize?.(newWidth, newHeight);
+            resizeTo(width = 0, height = 0) {
+                w95.debug?.assert(["number", "undefined"].includes(typeof width));
+                w95.debug?.assert(["number", "undefined"].includes(typeof height));
+                resize?.({width, height, isRelative: false});
             },
             resizeBy(deltaWidth = 0, deltaHeight = 0) {
-                w95.debug?.assert(typeof deltaWidth === "number");
-                w95.debug?.assert(typeof deltaHeight === "number");
-                resize?.(deltaWidth, deltaHeight, {isRelative: true});
+                w95.debug?.assert(["number", "undefined"].includes(typeof deltaWidth));
+                w95.debug?.assert(["number", "undefined"].includes(typeof deltaHeight));
+                resize?.({width: deltaWidth, height: deltaHeight, isRelative: true});
             },
-            moveTo(newX = 0, newY = 0) {
-                w95.debug?.assert(typeof newX === "number");
-                w95.debug?.assert(typeof newY === "number");
-                move?.(newX, newY);
+            moveTo(x = 0, y = 0) {
+                w95.debug?.assert(typeof x === "number");
+                w95.debug?.assert(typeof y === "number");
+                w95.windowManager.move_window_to(this, {x, y});
             },
-            moveBy(deltaX = 0, deltaY = 0) {
-                w95.debug?.assert(typeof deltaX === "number");
-                w95.debug?.assert(typeof deltaY === "number");
-                move?.(deltaX, deltaY, {isRelative: true});
+            moveBy(x = 0, y = 0) {
+                w95.debug?.assert(typeof x === "number");
+                w95.debug?.assert(typeof y === "number");
+                w95.windowManager.move_window(this, {x, y});
             },
             maximize() {
-                maximize?.();
+                const maxRect = (maximized?.() || {
+                    x: 0,
+                    y: 0,
+                    width: w95.shell.display.width,
+                    height: w95.shell.display.height,
+                    isRelative: false,
+                });
+                w95.windowManager.move_window_to(this, maxRect);
+                resize?.(maxRect);
             },
             blur() {
                 isBlurred.set(true);

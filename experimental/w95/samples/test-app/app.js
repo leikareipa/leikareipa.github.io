@@ -23,10 +23,8 @@ export default {
         `,
     },
     App() {
-        const width = w95.state(404);
-        const height = w95.state(500);
-        const x = w95.state(~~((w95.shell.display.width / 2) - (width.now / 2)));
-        const y = w95.state(~~((w95.shell.display.height / 2) - (height.now / 2)));
+        const appWidth = w95.state(404);
+        const appHeight = w95.state(500);
     
         const isNameQueryDialogOpen = w95.state(false);
         const isCustomWarningDialogOpen = w95.state(false);
@@ -43,32 +41,28 @@ export default {
         const dropdownIndex = w95.state(2);
     
         return {
-            get x() { return x.now },
-            get y() { return y.now },
-            get width() { return width.now },
-            get height() { return height.now },
+            get width() { return appWidth.now },
+            get height() { return appHeight.now },
+            Opened() {
+                // Center the window on the screen.
+                this.move({
+                    x: ~~((w95.shell.display.width / 2) - (appWidth.now / 2)),
+                    y: ~~((w95.shell.display.height / 2) - (appHeight.now / 2)),
+                });
+            },
             Form() {
                 return w95.widget.window({
-                    $name: "main-window",
-                    x: x.now,
-                    y: y.now,
-                    width: width.now,
-                    height: height.now,
+                    width: appWidth.now,
+                    height: appHeight.now,
                     title: `${userName.now.length? `${userName.now} - ` : ""}Test app for w95`,
-                    move(newX, newY, {isRelative}) {
-                        x.set(newX + (isRelative? x.now : 0));
-                        y.set(newY + (isRelative? y.now : 0));
+                    resize({height, isRelative}) {
+                        (height? appHeight.set(Math.max(100, (isRelative? (appHeight.now + height) : height))) : 0);
                     },
-                    resize(newWidth, newHeight, {isRelative}) {
-                        height.set(Math.max(100, (newHeight + (isRelative? height.now : 0))));
-                    },
-                    maximize() {
-                        y.set(0);
-                        height.set(w95.shell.display.height);
-                    },
-                    close(window) {
-                        w95.debug?.assert(window?._type === "window");
-                        w95.windowManager.release_window(window);
+                    maximized() {
+                        return {
+                            y: 0,
+                            height: w95.shell.display.height,
+                        };
                     },
                     children: [
                         w95.widget.groupBox({
@@ -324,8 +318,8 @@ export default {
                             title: "Scroll area",
                             x: 10,
                             y: 323,
-                            width: (width.now - 28),
-                            height: Math.max(120, (height.now - 360)),
+                            width: (appWidth.now - 28),
+                            height: Math.max(120, (appHeight.now - 360)),
                             children: [
                                 w95.widget.scrollArea({
                                     x: 10,
@@ -371,7 +365,7 @@ export default {
                             ]
                         }),
                         w95.widget.menuBar({
-                            width: (width.now - 8),
+                            width: (appWidth.now - 8),
                             children: [
                                 w95.widget.menuItem({
                                     text: "Edit",
@@ -448,7 +442,7 @@ export default {
                             ],
                         }),
                         w95.widget.nameQuery({
-                            x: ((width.now / 2) - 120),
+                            x: ((appWidth.now / 2) - 120),
                             y: 60,
                             width: 240,
                             height: 105,
@@ -536,4 +530,5 @@ function set_color_count(widget, count) {
     const parentApp = w95.windowManager.get_parent_app(widget);
     w95.debug?.assert(parentApp?._type === "app");
     w95.registry.set(`${parentApp.id}-display-color-count`, count);
+    parentApp.rerasterize();
 }

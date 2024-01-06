@@ -44,27 +44,29 @@ function app(appMeta, appId, app_render_fn = ()=>({})) {
     w95.debug?.assert(typeof app_render_fn === "function");
 
     const intf = {
-        get rootWidget() {
-            return intf.$childWidgets[0];
-        },
-        get appObject() {
-            return intf.rootWidget.$childWidgets[0];
-        },
-        get window() {
-            return (
-                intf                // The interface wrapper for the app.
-                .$childWidgets[0]   // The app object.
-                .$childWidgets[0]   // The app's window wrapper.
-                .$childWidgets[0]   // The app's root window.
-            );
-        },
         get id() { return appId },
         get _type() { return "app" },
+        get width() { return intf.window.width },
+        get height() { return intf.window.height },
+        get rootWidget() { return intf.$childWidgets[0] },
+        get appObject() { return intf.rootWidget.$childWidgets[0] },
+        get window() { return intf.appObject.$childWidgets[0] },
+        x: 0,
+        y: 0,
+        move(args) {
+            w95.windowManager.move_window(intf.window, args);
+        },
+        rerender() {
+            intf.rootWidget._rerenderRequested = true;
+        },
+        rerasterize() {
+            intf.rootWidget._rerasterRequested = true;
+        },
         // A polygonal mesh of the app's root window and all its descendant widgets.
         // Note that the polygons are in actuality allowed to be n-sided, from points
         // to lines to multi-sided polygons. All of the mesh's polygons are convex.
         mesh() {
-            return (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.transformed_recursive_mesh)(intf.window);
+            return (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.transformed_recursive_mesh)(intf.window, intf.x, intf.y);
         },
         // Checks to see whether any widgets in the app need re-rendering, and returns
         // a list of the re-rendered widgets.
@@ -83,7 +85,6 @@ function app(appMeta, appId, app_render_fn = ()=>({})) {
             (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.recurse_descendant_widgets)(intf, (widget, parent)=>{
                 if (widget._rerenderRequested) {
                     w95.state.move_head(widget._stateStartIdx);
-
                     widget._rerender(parent);
                     rerenderedWidgets.push(widget);
 
@@ -91,7 +92,11 @@ function app(appMeta, appId, app_render_fn = ()=>({})) {
                     // all now been re-rendered.
                     return true;
                 }
-            });
+                else if (widget._rerasterRequested) {
+                    rerenderedWidgets.push(widget);
+                    widget._rerasterRequested = false;
+                }
+            }, true);
 
             return rerenderedWidgets;
         },
@@ -521,8 +526,8 @@ const popupWidget = (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.create_widget)(fu
             const screenMidX = ~~((w95.shell.display.width / 2) - (width / 2));
             const screenMidY = ~~((w95.shell.display.height / 2) - height);
             const parentApp = w95.windowManager.get_parent_app(this);
-            x.set(screenMidX - parentApp.window.x);
-            y.set(screenMidY - parentApp.window.y);
+            x.set(screenMidX - parentApp.x);
+            y.set(screenMidY - parentApp.y);
         },
         Closed() {
             x.set(Infinity);
@@ -997,10 +1002,10 @@ const shell = {
                     if (app._dirtyRegion) {
                         const region = app._dirtyRegion[0];
                         region.isStatic = (
-                            (app.window.x === region.x) &&
-                            (app.window.y === region.y) &&
-                            (app.window.width === region.width) &&
-                            (app.window.height === region.height)
+                            (app.x === region.x) &&
+                            (app.y === region.y) &&
+                            (app.width === region.width) &&
+                            (app.height === region.height)
                         );
                     }
 
@@ -1018,10 +1023,10 @@ const shell = {
 
                     app._dirtyRegion = [
                         rect_clamped_to_screen({
-                            x: app.window.x,
-                            y: app.window.y,
-                            width: app.window.width,
-                            height: app.window.height,
+                            x: app.x,
+                            y: app.y,
+                            width: app.width,
+                            height: app.height,
                         })
                     ];
 
@@ -1388,7 +1393,6 @@ function render_widget(
             ? widgetOptions()
             : widgetOptions
     );
-
     const expandedArgs = (
         (typeof renderArgs === "function")
             ? renderArgs()
@@ -1427,6 +1431,7 @@ function render_widget(
         widgetInterface._hideMesh = (expandedArgs.hideIf || false);
         widgetInterface._stateStartIdx = stateStartIdx;
         widgetInterface._rerenderRequested = false;
+        widgetInterface._rerasterRequested = false;
         widgetInterface._autofocus = widgetInterface.autofocus;
         widgetInterface._zIndex = (()=>{
             switch (widgetInterface._type) {
@@ -1437,7 +1442,7 @@ function render_widget(
                 default:            return 4;
             }
         })();
-
+        
         if (w95.shell.display.debugLayer) {
             const domSkeleton = widgetInterface._domSkeleton = document.createElement(`${widgetInterface._type.replace("_", "-")}-w95`);
             domSkeleton.style.width = `${widgetInterface.width * w95.shell.display.scale}px`;
@@ -1512,7 +1517,10 @@ function render_widget(
             }
         }
 
-        w95.state.mount(widgetInterface, ()=>{widgetInterface._rerenderRequested = true});
+        w95.state.mount(
+            widgetInterface,
+            ()=>{widgetInterface._rerenderRequested = true},
+        );
 
         // The renderer doesn't support sub-pixel rasterization, so we'll want all
         // vertex coordinates to be rounded consistently.
@@ -1574,7 +1582,7 @@ function render_widget(
     return widgetInterface;
 }
 
-function transformed_recursive_mesh(widget) {
+function transformed_recursive_mesh(widget, x = 0, y = 0) {
     w95.debug?.assert(typeof widget === "object");
 
     return recursively_concat_child_meshes(widget);
@@ -1582,14 +1590,14 @@ function transformed_recursive_mesh(widget) {
     function recursively_concat_child_meshes(
         widget,
         clipRect = {
-            left: widget.x,
-            top: widget.y,
-            right: (widget.x + widget.width),
-            bottom: (widget.y + widget.height),
+            left: widget.x + x,
+            top: widget.y + y,
+            right: (widget.x + x + widget.width),
+            bottom: (widget.y + y + widget.height),
         },
         dstArray = [],
-        baseX = 0,
-        baseY = 0
+        baseX = x,
+        baseY = y
     ){
         w95.debug?.assert(widget?._what === "w95-widget");
         w95.debug?.assert(typeof clipRect === "object");
@@ -1692,7 +1700,7 @@ function transformed_recursive_mesh(widget) {
     }
 }
 
-function recurse_descendant_widgets(parent, callback_fn = (child, parent, at)=>{}, at = {x:0, y:0}) {
+function recurse_descendant_widgets(parent, callback_fn = (child, parent, at)=>{}, skipHidden = false, at = {x:0, y:0}) {
     if (!parent) {
         return;
     }
@@ -1700,7 +1708,7 @@ function recurse_descendant_widgets(parent, callback_fn = (child, parent, at)=>{
     w95.debug?.assert(typeof parent === "object");
 
     for (const child of (parent.$childWidgets || [])) {
-        const callbackResult = callback_fn(child, parent, {x:at.x+child.x, y:at.y+child.y});
+        const callbackResult = ((skipHidden && child._hideMesh) || callback_fn(child, parent, {x:at.x+child.x, y:at.y+child.y}));
 
         switch (callbackResult) {
             // Don't recurse the children of this widget.
@@ -1712,7 +1720,7 @@ function recurse_descendant_widgets(parent, callback_fn = (child, parent, at)=>{
             default: break;
         }
 
-        recurse_descendant_widgets(child, callback_fn, {x:at.x+child.x, y:at.y+child.y});
+        recurse_descendant_widgets(child, callback_fn, skipHidden, {x:at.x+child.x, y:at.y+child.y});
     }
 }
 
@@ -1784,8 +1792,8 @@ const windowManager = {
                 if (widget.isActivePopupMenu) {
                     popupWidget = widget;
                     popupWidgetCoordinates = {
-                        x: (at.x + app.window.x),
-                        y: (at.y + app.window.y),
+                        x: (at.x + app.x),
+                        y: (at.y + app.y),
                     };
                     return null;
                 }
@@ -1807,8 +1815,8 @@ const windowManager = {
             if (widget.isActiveDialog) {
                 dialogWidget = widget;
                 widgetAt = {
-                    x: (at.x + app.window.x),
-                    y: (at.y + app.window.y),
+                    x: (at.x + app.x),
+                    y: (at.y + app.y),
                 };
                 return null;
             }
@@ -1937,7 +1945,7 @@ const windowManager = {
 
             w95.shell.display.debugLayer?.append(appInstance.rootWidget._domSkeleton);
 
-            appInstance.appObject.Opened?.();
+            appInstance.appObject.Opened?.call(appInstance);
         });
 
         if (runningApps.length) {
@@ -1964,6 +1972,41 @@ const windowManager = {
 
         return undefined;
     },
+    move_window_to(windowWidget, {x, y}) {
+        const app = w95.windowManager.get_parent_app(windowWidget);
+        w95.debug?.assert(app?._type === "app");
+
+        w95.windowManager.move_window(windowWidget, {
+            x: ((x !== undefined)? (x - app.x) : undefined),
+            y: ((y !== undefined)? (y - app.y) : undefined),
+        });
+    },
+    move_window(windowWidget, {x, y}) {
+        w95.debug?.assert(windowWidget._type === "window");
+        w95.debug?.assert(["undefined", "number"].includes(typeof x));
+        w95.debug?.assert(["undefined", "number"].includes(typeof y));
+
+        const app = w95.windowManager.get_parent_app(windowWidget);
+        w95.debug?.assert(app?._type === "app");
+
+        (x? app.x += x : 0);
+        (y? app.y += y : 0);
+        app.rerasterize();
+    },
+    resize_window(windowWidget, {x, y, width, height}) {
+        w95.debug?.assert(windowWidget._type === "window");
+        w95.debug?.assert(["undefined", "number"].includes(typeof x));
+        w95.debug?.assert(["undefined", "number"].includes(typeof y));
+        w95.debug?.assert(["undefined", "number"].includes(typeof width));
+        w95.debug?.assert(["undefined", "number"].includes(typeof height));
+
+        const app = w95.windowManager.get_parent_app(windowWidget);
+        w95.debug?.assert(app?._type === "app");
+
+        (width? app.width = width : 0);
+        (height? app.height = height : 0);
+        w95.windowManager.move_window_to(app.window, {x, y});
+    },
     root_widget: function(widget) {
         w95.debug?.assert(widget._what === "w95-widget");
 
@@ -1987,7 +2030,7 @@ const windowManager = {
 
         const focusedWidget = find_focused_widget();
         const grabbedWidget = find_grabbed_widget();
-        const intersectedWindow = find_intersected_window();
+        const [intersectedWindow, intersectedApp] = find_intersected_window();
 
         let intersectedWidgets;
         if (intersectedWindow?._type === "dialog") {
@@ -1996,12 +2039,16 @@ const windowManager = {
             w95.debug?.assert(typeof intersectedWindow._intersectedAt.y === "number");
             intersectedWidgets = find_intersected_widgets(
                 intersectedWindow,
-                (intersectedWindow._intersectedAt.x - intersectedWindow.x),
-                (intersectedWindow._intersectedAt.y - intersectedWindow.y)
+                intersectedWindow._intersectedAt.x,
+                intersectedWindow._intersectedAt.y
             );
         }
         else {
-            intersectedWidgets = find_intersected_widgets(intersectedWindow);
+            intersectedWidgets = find_intersected_widgets(
+                intersectedWindow,
+                (intersectedApp?.x || 0),
+                (intersectedApp?.y || 0)
+            );
         }
 
         switch (event.constructor) {
@@ -2023,7 +2070,7 @@ const windowManager = {
                             at: widget._intersectedAt,
                         });
                     }
-                }));
+                }, true));
 
                 if (grabbedWidget) {
                     grabbedWidget.Event?.[event.type]?.({
@@ -2100,28 +2147,34 @@ const windowManager = {
 
         function find_intersected_window() {
             if (w95.windowManager.isPopupMenuActive) {
-                return runningApps[0]?.window;
+                return [runningApps[0]?.window, runningApps[0]];
             }
 
             for (const app of runningApps) {
                 const {widget:dialogWidget, at} = w95.windowManager.get_active_dialog(app);
+                const appRect = {
+                    x: app.x,
+                    y: app.y,
+                    width: app.window.width,
+                    height: app.window.height,
+                };
                 
                 if (
                     dialogWidget &&
                     (
-                        is_point_inside_rectangle(intersectionPoint, app.window) ||
+                        is_point_inside_rectangle(intersectionPoint, appRect) ||
                         is_point_inside_rectangle(intersectionPoint, {...dialogWidget, ...at})
                     )
                 ){
                     dialogWidget._intersectedAt = at;
-                    return dialogWidget;
+                    return [dialogWidget, app];
                 }
-                else if (is_point_inside_rectangle(intersectionPoint, app.window)) {
-                    return app.window;
+                else if (is_point_inside_rectangle(intersectionPoint, appRect)) {
+                    return [app.window, app];
                 }
             }
 
-            return undefined;
+            return [undefined, undefined];
         }
 
         function find_grabbed_widget() {
@@ -2130,12 +2183,12 @@ const windowManager = {
                 if (widget.isGrabbed || widget.isBorderGrabbed) {
                     grabbedWidget = widget;
                     grabbedWidget._intersectedAt = {
-                        x: ~~(intersectionPoint.x - p.window.x - at.x),
-                        y: ~~(intersectionPoint.y - p.window.y - at.y),
+                        x: ~~(intersectionPoint.x - at.x),
+                        y: ~~(intersectionPoint.y - at.y),
                     };
                     return null;
                 }
-            }));
+            }, true));
             return grabbedWidget;
         }
 
@@ -2153,7 +2206,7 @@ const windowManager = {
                         focusedWidget = widget;
                         return null;
                     }
-                });
+                }, true);
             }
 
             return focusedWidget;
@@ -2399,7 +2452,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-05.00:44:40"}`,
+    version: `BETA ${"2024-01-06.15:09:06"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {
