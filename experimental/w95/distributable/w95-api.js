@@ -2183,8 +2183,8 @@ const windowManager = {
                 if (widget.isGrabbed || widget.isBorderGrabbed) {
                     grabbedWidget = widget;
                     grabbedWidget._intersectedAt = {
-                        x: ~~(intersectionPoint.x - at.x),
-                        y: ~~(intersectionPoint.y - at.y),
+                        x: ~~(intersectionPoint.x - p.x - at.x),
+                        y: ~~(intersectionPoint.y - p.y - at.y),
                     };
                     return null;
                 }
@@ -2452,7 +2452,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-06.15:09:06"}`,
+    version: `BETA ${"2024-01-07.01:26:58"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {

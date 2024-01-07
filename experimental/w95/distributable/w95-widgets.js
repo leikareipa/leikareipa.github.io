@@ -269,13 +269,17 @@ w95.widget("button", function({
             },
             mouseup({at}) {
                 if (isDisabled) {
+                    isPressed.set(false);
                     return;
+                }
+
+                if (isHovered.now && isPressed.now) {
+                    onClick?.({at, widget:this});
                 }
                 
                 isPressed.set(false);
-                const retval = onMouseUp?.({at, widget:this});
-                (!isHovered.now || onClick?.({at, widget:this}));
-                return (retval ?? true);
+
+                return (onMouseUp?.({at, widget:this}) ?? true);
             } 
         },
     };
@@ -1107,6 +1111,7 @@ w95.widget("frame", function({
     onMouseDown = undefined,
     onMouseUp = undefined,
     onClick = undefined,
+    onDoubleClick = undefined,
     onMouseMove = undefined,
     onMouseLeave = undefined,
     onMouseEnter = undefined,
@@ -1124,6 +1129,7 @@ w95.widget("frame", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseDown));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseUp));
     w95.debug?.assert(["undefined", "function"].includes(typeof onClick));
+    w95.debug?.assert(["undefined", "function"].includes(typeof onDoubleClick));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseMove));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseLeave));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseEnter));
@@ -1186,6 +1192,9 @@ w95.widget("frame", function({
                 }
 
                 return onMouseDown?.({at, widget:this});
+            },
+            dblclick({at}) {
+                return onDoubleClick?.({at, widget: this});
             },
             mouseup({at}) {
                 isPressed.set(false);
@@ -3038,9 +3047,11 @@ w95.widget("menuItem", function({
                 }
 
                 const menuItem = (menu && this.$childWidgets[1])
+
                 if (menuItem) {
                     this.Message.toggle();
                 }
+
                 return true;
             },
             mouseup() {
@@ -3049,8 +3060,10 @@ w95.widget("menuItem", function({
                 }
                 
                 if (!isTopLevel) {
+                    isHovered.set(false);
                     w95.windowManager.root_widget(this)?.menuBar?.Message.closeMenus();
                 }
+
                 parentMenuWidget?.Message.checkItem(this);
                 return (onClick?.(this) ?? true);
             },
@@ -4286,9 +4299,7 @@ w95.widget("titleBar", function({
                     width: 16,
                     height: 14,
                     icon: w95.icon.titleBarMaximize,
-                    onClick({widget}) {
-                        w95.windowManager.root_widget(widget).Message?.maximize();
-                    },
+                    onClick: maximize_parent,
                 }, {hideIf: isDialog}),
                 
                 // Minimize.
@@ -4324,7 +4335,8 @@ w95.widget("titleBar", function({
                         );
 
                         return true;
-                    }
+                    },
+                    onDoubleClick: maximize_parent,
                 }),
             ];
         },
@@ -4336,6 +4348,11 @@ w95.widget("titleBar", function({
             },
         },
     };
+
+    function maximize_parent() {
+        w95.debug?.assert(parentWidget.now._what === "w95-widget");
+        parentWidget.now.Message?.maximize?.();
+    }
 });
 
 
