@@ -25,6 +25,7 @@ export default {
     App() {
         const appWidth = w95.state(404);
         const appHeight = w95.state(500);
+        const domEl = w95.state(document.createElement("div"))
     
         const isNameQueryDialogOpen = w95.state(false);
         const isCustomWarningDialogOpen = w95.state(false);
@@ -38,6 +39,7 @@ export default {
         const userName = w95.state("");
         const widgetDisable = w95.state(false);
         const tabIndex = w95.state(1);
+        const tab2Index = w95.state(0);
         const radioGroupIndex = w95.state(1);
         const dropdownIndex = w95.state(2);
     
@@ -45,17 +47,36 @@ export default {
             get width() { return appWidth.now },
             get height() { return appHeight.now },
             Opened() {
+                domEl.now.innerHTML = `
+                    <table>
+                        <tr><td>Final Fantasy VII (1997)</td></tr>
+                        <tr><td>Metal Gear Solid (1998)</td></tr>
+                        <tr><td>The Legend of Zelda: Ocarina of Time (1998)</td></tr>
+                        <tr><td>GoldenEye 007 (1997)</td></tr>
+                        <tr><td>Destruction Derby (1995)</td></tr>
+                    </table>
+                    <br>
+                    <div class="main">
+                        <img src="construction.gif">
+                        <a target="_blank" href="https://www.google.com">Under construction</a>
+                        <img src="construction.gif">
+                    </div>
+                `;
+
                 // Center the window on the screen.
                 this.move({
                     x: ~~((w95.shell.display.width / 2) - (appWidth.now / 2)),
                     y: Math.max(0, ~~((w95.shell.display.height / 2) - (appHeight.now / 2))),
                 });
             },
+            Closed() {
+                domEl.now.remove();
+            },
             Form() {
                 return w95.widget.window({
                     width: appWidth.now,
                     height: appHeight.now,
-                    title: `${userName.now.length? `${userName.now} - ` : ""}Test app for w95`,
+                    title: `${userName.now.length? `${userName.now} - ` : ""}Developer's test app for w95`,
                     resize({height, isRelative}) {
                         (height? appHeight.set(Math.max(100, (isRelative? (appHeight.now + height) : height))) : 0);
                     },
@@ -261,7 +282,7 @@ export default {
                                         tabIndex.set(idx);
                                     },
                                     tabs: {
-                                        "Statistics": {
+                                        "Stats": {
                                             children: [
                                                 statistics({
                                                     width: 158,
@@ -322,59 +343,100 @@ export default {
                                                 }),
                                             ]
                                         },
+                                        "HTML": {
+                                            children: [
+                                                w95.widget.frame({ 
+                                                    width: "pw",
+                                                    height: "ph",
+                                                    shape: w95.frameShape.input,
+                                                    children: [
+                                                        w95.widget.domElement({
+                                                            x: 2,
+                                                            y: 2,
+                                                            width: "pw - 4",
+                                                            height: "ph - 4",
+                                                            element: domEl.now,
+                                                            className: "html-page",
+                                                            isDisabled: widgetDisable.now,
+                                                        }),
+                                                    ],
+                                                }),
+                                            ]
+                                        },
                                     },
                                 }),
                             ]
                         }),
-                        w95.widget.groupBox({
-                            title: "Scroll area",
+                        w95.widget.tabControl({
                             x: 10,
-                            y: 323,
+                            y: 322,
                             width: (appWidth.now - 28),
-                            height: Math.max(120, (appHeight.now - 360)),
-                            children: [
-                                w95.widget.scrollArea({
-                                    x: 10,
-                                    y: 15,
-                                    width: "pw - 20",
-                                    height: "ph - 31",
-                                    isDisabled: widgetDisable.now,
-                                    backgroundColor: w95.palette.named.white,
+                            height: Math.max(120, (appHeight.now - 359)),
+                            isDisabled: widgetDisable.now,
+                            tabIndex: tab2Index.now,
+                            newTabIndex(idx) {
+                                tab2Index.set(idx);
+                            },
+                            tabs: {
+                                "Scroll area": {
                                     children: [
-                                        w95.widget.label({
-                                            x: 7,
-                                            y: 7,
+                                        w95.widget.scrollArea({
+                                            x: 3,
+                                            y: 3,
+                                            width: "pw - 6",
+                                            height: "ph - 6",
                                             isDisabled: widgetDisable.now,
-                                            text: `Stately, plump Buck Mulligan came from the stairhead, bearing a bowl of lather on which a mirror and a razor lay crossed. A yellow dressinggown, ungirdled, was sustained gently behind him by the mild morning air. He held the bowl aloft and intoned:
-    
-                                                --Introibo ad altare Dei.
-                                                
-                                                Halted, he peered down the dark winding stairs and called up coarsely:
-                                                
-                                                --Come up, Kinch. Come up, you fearful Jesuit.
-                                                
-                                                Solemnly he came forward and mounted the round gunrest. He faced about and blessed gravely thrice the tower, the surrounding country and the awaking mountains. Then, catching sight of Stephen Dedalus, he bent towards him and made rapid crosses in the air, gurgling in his throat and shaking his head. Stephen Dedalus, displeased and sleepy, leaned his arms on the top of the staircase and looked coldly at the shaking gurgling face that blessed him, equine in its length, and at the light untonsured hair, grained and hued like pale oak.
-                                                
-                                                Buck Mulligan peeped an instant under the mirror and then covered the bowl smartly.
-    
-                                                --Back to barracks, he said sternly.
-    
-                                                He added in a preacher's tone:
-    
-                                                --For this, O dearly beloved, is the genuine Christine: body and soul and blood and ouns. Slow music, please. Shut your eyes, gents. One moment. A little trouble about those white corpuscles. Silence, all.
-    
-                                                He peered sideways up and gave a long low whistle of call then paused awhile in rapt attention, his even white teeth glistening here and there with gold points. Chrysostomos. Two strong shrill whistles answered through the calm.
-                                            `.replace(/  +/g, ""),
-                                        }),
-                                        w95.widget.bitmap({
-                                            x: 114,
-                                            y: 31,
-                                            image: w95.icon.windowsLogo16x16,
-                                            isDisabled: widgetDisable.now,
+                                            backgroundColor: w95.palette.named.white,
+                                            children: [
+                                                w95.widget.label({
+                                                    x: 7,
+                                                    y: 7,
+                                                    isDisabled: widgetDisable.now,
+                                                    text: `Stately, plump Buck Mulligan came from the stairhead, bearing a bowl of lather on which a mirror and a razor lay crossed. A yellow dressinggown, ungirdled, was sustained gently behind him by the mild morning air. He held the bowl aloft and intoned:
+            
+                                                        --Introibo ad altare Dei.
+                                                        
+                                                        Halted, he peered down the dark winding stairs and called up coarsely:
+                                                        
+                                                        --Come up, Kinch. Come up, you fearful Jesuit.
+                                                        
+                                                        Solemnly he came forward and mounted the round gunrest. He faced about and blessed gravely thrice the tower, the surrounding country and the awaking mountains. Then, catching sight of Stephen Dedalus, he bent towards him and made rapid crosses in the air, gurgling in his throat and shaking his head. Stephen Dedalus, displeased and sleepy, leaned his arms on the top of the staircase and looked coldly at the shaking gurgling face that blessed him, equine in its length, and at the light untonsured hair, grained and hued like pale oak.
+                                                        
+                                                        Buck Mulligan peeped an instant under the mirror and then covered the bowl smartly.
+            
+                                                        --Back to barracks, he said sternly.
+            
+                                                        He added in a preacher's tone:
+            
+                                                        --For this, O dearly beloved, is the genuine Christine: body and soul and blood and ouns. Slow music, please. Shut your eyes, gents. One moment. A little trouble about those white corpuscles. Silence, all.
+            
+                                                        He peered sideways up and gave a long low whistle of call then paused awhile in rapt attention, his even white teeth glistening here and there with gold points. Chrysostomos. Two strong shrill whistles answered through the calm.
+                                                    `.replace(/  +/g, ""),
+                                                }),
+                                                w95.widget.bitmap({
+                                                    x: 114,
+                                                    y: 31,
+                                                    image: w95.icon.windowsLogo16x16,
+                                                    isDisabled: widgetDisable.now,
+                                                }),
+                                            ],
                                         }),
                                     ],
-                                }),
-                            ]
+                                },
+                                "Text edit": {
+                                    children: [
+                                        w95.widget.label({
+                                            width: "pw",
+                                            height: "ph",
+                                            text: "TODO",
+                                            styleHints: [
+                                                w95.styleHint.alignVCenter,
+                                                w95.styleHint.alignHCenter,
+                                            ],
+                                        }),
+                                    ],
+                                },
+                            },
                         }),
                         w95.widget.menuBar({
                             width: (appWidth.now - 8),

@@ -647,21 +647,30 @@ w95.widget("domElement", function({
     width = undefined,
     height = undefined,
     element = undefined,
+    className = undefined,
+    isDisabled = false,
     addToDom = true,
 } = {})
 {
     w95.debug?.assert(typeof x === "number");
     w95.debug?.assert(typeof y === "number");
-    w95.debug?.assert(["undefined", "number"].includes(typeof width));
-    w95.debug?.assert(["undefined", "number"].includes(typeof height));
+    w95.debug?.assert(typeof isDisabled === "boolean");
     w95.debug?.assert(typeof addToDom === "boolean");
     w95.debug?.assert(element instanceof HTMLElement);
+    w95.debug?.assert(["undefined", "string"].includes(typeof className));
+    w95.debug?.assert(["undefined", "number"].includes(typeof width));
+    w95.debug?.assert(["undefined", "number"].includes(typeof height));
 
     if (addToDom && !document.body.contains(element)) {
         document.body.prepend(element);
     }
 
-    element.classList.add("w95-dom-element");
+    element.classList.add(...[
+        "w95-dom-element",
+        className
+    ].filter(n=>(typeof n !== "undefined")));
+
+    element.classList[isDisabled? "add" : "remove"]("disabled");
 
     if (!width || !height) {
         const elRect = element.getBoundingClientRect();
@@ -674,41 +683,22 @@ w95.widget("domElement", function({
         w95.debug?.assert(height > 0);
     }
 
-    function relay_event_to_dom({event}) {
-        element.dispatchEvent(new event.constructor(event.type, event));
-    }
-    
     return {
         get x() { return x },
         get y() { return y },
         get width() { return width },
         get height() { return height },
         get dom() { return element },
-        Event: {
-            mousemove: relay_event_to_dom,
-            mouseup: relay_event_to_dom,
-            mousedown: relay_event_to_dom,
-            mouseenter() {
-                if (!w95.windowManager.root_widget(this).isBlurred && !w95.windowManager.isPopupMenuActive) {
-                    w95.shell.display.canvas.style.pointerEvents = "none";
-                }
-            }
+        Mounted() {
+            // Make sure the DOM element's Z index is in line with the Z index
+            // of the canvas of this widget's parent app.
+            w95.windowManager.update_z_indices();
         },
-        Message: {
-            parentWindowRaised() {
-                // Raise this widget's DOM element.
-                {
-                    const allDomEls = w95.shell.display.domElements;
-
-                    const minZ = Math.min(...allDomEls.map(e=>e.style.zIndex)); 
-                    for (const el of allDomEls) {
-                        el.style.zIndex -= minZ;
-                    }
-
-                    const maxZ = Math.max(...allDomEls.map(e=>e.style.zIndex));
-                    element.style.zIndex = (1 + maxZ);
-                }
-            }
+        Opened() {
+            element.classList.remove("hidden");
+        },
+        Closed() {
+            element.classList.add("hidden");
         },
         Form() {
             return Rngon.ngon([
@@ -718,6 +708,22 @@ w95.widget("domElement", function({
                 Rngon.vertex(0, height)], {
                     color: Rngon.color(0, 0, 0, 0),
             });
+        },
+        Event: {
+            mousedown() {
+                return true;
+            },
+            mouseup() {
+                return true;
+            },
+            mousemove() {
+                return true;
+            },
+        },
+        Message: {
+            setZIndex(idx) {
+                element.style.zIndex = idx;
+            },
         },
     };
 });
@@ -892,6 +898,13 @@ w95.widget("dropdownBoxList", function({
         get height() { return height.now },
         get listItems() { return this.$form["_listItemsContainer"].$childWidgets },
         get isActivePopupMenu() { return isOpen },
+        Opened() {
+            // Suppress any DOM widgets while the dropdown is open.
+            w95.windowManager.update_z_indices(true);
+        },
+        Closed() {
+            w95.windowManager.update_z_indices();
+        },
         Form() {
             const itemWidgets = Object.keys(items).map((k, idx)=>w95.widget.dropdownBoxItem({
                 ...items[k],
@@ -3244,6 +3257,9 @@ w95.widget("menu", function({
         get isOpen() { return isOpen.now },
         get isActivePopupMenu() { return isOpen.now },
         Mounted() {
+            // Suppress any DOM widgets while the menu is open.
+            w95.windowManager.update_z_indices(isOpen.now);
+
             const menuItems = this.$form["_menuItemsContainer"].$childWidgets;
             w95.debug?.assert(menuItems.every(item=>["menuItem", "menuSeparator"].includes(item._type)));
 

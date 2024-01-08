@@ -18,6 +18,26 @@ canvas {
     height: 100%;
 }
 
+.w95-dom-element {
+    position: absolute;
+    background-color: white;
+    cursor: auto;
+    visibility: hidden;
+    overflow: auto;
+    color: black;
+    pointer-events: auto;
+    filter: none;
+}
+
+.w95-dom-element.hidden {
+    display: none;
+}
+
+.w95-dom-element.disabled {
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
 #w95-debug-layer * {
     z-index: 1;
     pointer-events: none;

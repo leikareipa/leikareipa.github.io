@@ -933,10 +933,6 @@ const shell = {
             debugLayerEl = document.getElementById("w95-debug-layer");
         }
 
-        ["mousemove", "mousedown", "mouseup", "dblclick"].forEach(eventType=>{
-            window.addEventListener(eventType, w95.windowManager.user_input);
-        });
-
         ["keydown", "keyup", "keypress"].forEach(eventType=>{
             window.addEventListener(eventType, w95.windowManager.user_input);
         });
@@ -1588,13 +1584,17 @@ function transformed_recursive_mesh(widget, x = 0, y = 0) {
         const selfMesh = transformed_ngons(widget._mesh, clipRect, baseX, baseY);
         
         if (widget.dom) {
-            widget.dom.style.left = `${(baseX * w95.shell.display.scale)}px`;
-            widget.dom.style.top = `${(baseY * w95.shell.display.scale)}px`;
+            widget.dom.style.left = `${baseX * w95.shell.display.scale}px`;
+            widget.dom.style.top = `${baseY * w95.shell.display.scale}px`;
+            widget.dom.style.width = `${widget.width * w95.shell.display.scale}px`;
+            widget.dom.style.height = `${widget.height * w95.shell.display.scale}px`;
+            widget.dom.style.fontSize = `${Math.max(50, ((w95.shell.display.scale - 1) * 100))}%`;
+            widget.dom.style.visibility = "visible";
         }
 
         if (widget._domSkeleton) {
-            widget._domSkeleton.style.left = `${(baseX * w95.shell.display.scale)}px`;
-            widget._domSkeleton.style.top = `${(baseY * w95.shell.display.scale)}px`;
+            widget._domSkeleton.style.left = `${baseX * w95.shell.display.scale}px`;
+            widget._domSkeleton.style.top = `${baseY * w95.shell.display.scale}px`;
         }
 
         const startIdx = dstArray.length;
@@ -1814,7 +1814,8 @@ const windowManager = {
             raisedIdx = 0;
         }
 
-        runningApps.forEach((app, idx)=>app._canvas.style.zIndex = -idx);
+        w95.windowManager.update_z_indices();
+
         runningApps.forEach((app, idx)=>app.window?.Message?.[(!noFocus && (idx == raisedIdx))? "focus" : "blur"]?.());
 
         const parentApp = w95.windowManager.get_parent_app(windowWidget);
@@ -1824,6 +1825,21 @@ const windowManager = {
             w95.debug?.assert(activeDialog?._type === "dialog");
             activeDialog.Message.focus();
         }
+    },
+    update_z_indices(suppressDomElements = false) {
+        runningApps.forEach((app, idx)=>{
+            suppressDomElements = suppressDomElements || app.window.isBlurred || Boolean(
+                w95.windowManager.get_active_dialog(app).widget ||
+                w95.windowManager.get_active_popup_menu(app).widget
+            );
+            app._canvas.style.zIndex = -(idx * 2);
+            w95.$recurseDescendantWidgets(app.window, (w)=>{
+                if (w._type === "domElement") {
+                    w.Message.setZIndex(-(idx * 2) - (suppressDomElements? 1 : -1));
+                    return null;
+                }
+            });
+        });
     },
     // Ask the window manager to close and release the given window (and its app).
     release_window: function(windowWidget) {
@@ -1911,6 +1927,10 @@ const windowManager = {
             canvas.dataset.w95App = appInstance.name;
             canvas.dataset.w95AppId = appInstance.id;
             document.body.append(canvas);
+
+            ["mousemove", "mousedown", "mouseup", "dblclick"].forEach(eventType=>{
+                canvas.addEventListener(eventType, w95.windowManager.user_input);
+            });
 
             w95.shell.display.debugLayer?.append(appInstance.rootWidget._domSkeleton);
 
@@ -2421,7 +2441,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-08.14:22:14"}`,
+    version: `BETA ${"2024-01-08.22:54:16"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {
