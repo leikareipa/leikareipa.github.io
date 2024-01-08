@@ -561,7 +561,7 @@ function draw_rectangular_poly(renderContext, ngon) {
     const clipRect = ngon._clipRect;
     const ngonStartY = Math.max(clipRect.top, ngon.vertices[0].y);
     const ngonEndY = Math.min(clipRect.bottom, ngon.vertices[2].y);
-    const yOffset = (ngon.vertices[0].y - ngonStartY);
+    const yOffset = (ngonStartY - ngon.vertices[0].y);
 
     if (!texture)
     {
@@ -597,8 +597,7 @@ function draw_rectangular_poly(renderContext, ngon) {
     {
         const spanStartX = Math.max(clipRect.left, ngon.vertices[0].x);
         const spanEndX = Math.min(clipRect.right, ngon.vertices[1].x);
-        const spanWidth = (ngon.vertices[1].x - ngon.vertices[0].x);
-        const xOffset = (ngon.vertices[0].x - spanStartX);
+        const xOffset = (spanStartX - ngon.vertices[0].x);
         
         const depth = ngon.vertices[0].z;
         const texels = texture.pixels;
@@ -606,14 +605,12 @@ function draw_rectangular_poly(renderContext, ngon) {
         for (let y = ngonStartY; y < ngonEndY; y++)
         {
             let pixelBufferIdx = ((y * renderWidth) + spanStartX);
-            let texelIdx = ~~(((y - ngonStartY - yOffset) * spanWidth) - xOffset);
+            let texelIdx = (4 * ~~(((y - ngonStartY + yOffset) * texture.width) + xOffset));
 
             for (let x = spanStartX; x < spanEndX; x++)
-            {
-                const ti = (~~texelIdx * 4);    
-
+            { 
                 if (
-                    (!material.allowAlphaReject || (texels[ti + 3] === 255)) &&
+                    (!material.allowAlphaReject || (texels[texelIdx + 3] === 255)) &&
                     (depthBuffer[pixelBufferIdx] > depth)
                 ){
                     let red;
@@ -626,9 +623,9 @@ function draw_rectangular_poly(renderContext, ngon) {
                         blue  = material.color.blue;
                     }
                     else {
-                        red   = (texels[ti + 0] * material.color.unitRange.red);
-                        green = (texels[ti + 1] * material.color.unitRange.green);
-                        blue  = (texels[ti + 2] * material.color.unitRange.blue);
+                        red   = (texels[texelIdx + 0] * material.color.unitRange.red);
+                        green = (texels[texelIdx + 1] * material.color.unitRange.green);
+                        blue  = (texels[texelIdx + 2] * material.color.unitRange.blue);
                     }
                     
                     if (material.isDisabled) {
@@ -652,7 +649,7 @@ function draw_rectangular_poly(renderContext, ngon) {
                 }
 
                 pixelBufferIdx++;
-                texelIdx++;
+                texelIdx += 4;
             }
         }
     }
@@ -823,9 +820,8 @@ const rngonRenderPipeline = {
 
         for (const ngon of renderContext.screenSpaceNgons) {
             for (const vertex of ngon.vertices) {
-                vertex.x = ~~vertex.x;
-                vertex.y = ~~vertex.y;
-                vertex.z = ~~vertex.z;
+                vertex.x = Math.floor(vertex.x);
+                vertex.y = Math.floor(vertex.y);
             }
 
             if (!ngon._clipRect) {
@@ -2425,7 +2421,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-08.13:11:41"}`,
+    version: `BETA ${"2024-01-08.14:22:14"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {
