@@ -5,12 +5,12 @@
  * 
  */
 
-import "./custom-widgets/spawn-button.js";
-import "./custom-widgets/two-state-button.js";
-import "./custom-widgets/rotating-cube.js";
-import "./custom-widgets/statistics.js";
-import "./custom-widgets/name-query.js";
-import "./custom-widgets/custom-warning.js";
+import {spawnButton} from  "./custom-widgets/spawn-button.js";
+import {twoStateButton} from  "./custom-widgets/two-state-button.js";
+import {rotatingCube} from  "./custom-widgets/rotating-cube.js";
+import {statistics} from  "./custom-widgets/statistics.js";
+import {nameQuery} from  "./custom-widgets/name-query.js";
+import {customWarning} from  "./custom-widgets/custom-warning.js";
 
 export default {
     Meta: {
@@ -34,6 +34,7 @@ export default {
     
         const sliderValue = w95.state(5);
         const lineEditText = w95.state("Left empty");
+        const numEditText = w95.state("123");
         const userName = w95.state("");
         const widgetDisable = w95.state(false);
         const tabIndex = w95.state(1);
@@ -47,7 +48,7 @@ export default {
                 // Center the window on the screen.
                 this.move({
                     x: ~~((w95.shell.display.width / 2) - (appWidth.now / 2)),
-                    y: ~~((w95.shell.display.height / 2) - (appHeight.now / 2)),
+                    y: Math.max(0, ~~((w95.shell.display.height / 2) - (appHeight.now / 2))),
                 });
             },
             Form() {
@@ -141,11 +142,22 @@ export default {
                                 w95.widget.lineEdit({
                                     x: 10,
                                     y: 45,
-                                    width: "pw - 20",
+                                    width: "pw - 76",
                                     text: lineEditText.now,
                                     isDisabled: widgetDisable.now,
                                     newText(text) {
                                         lineEditText.set(text);
+                                    },
+                                }),
+                                w95.widget.lineEdit({
+                                    x: "pw - 58",
+                                    y: 45,
+                                    width: "pw - 134",
+                                    validator: /[0-9]/,
+                                    text: numEditText.now,
+                                    isDisabled: widgetDisable.now,
+                                    newText(text) {
+                                        numEditText.set(text);
                                     },
                                 }),
                             ]
@@ -217,13 +229,13 @@ export default {
                             width: 182,
                             height: 85,
                             children: [
-                                w95.widget.spawnButton({
+                                spawnButton({
                                     x: 10,
                                     y: 15,
                                     width: "pw - 20",
                                     isDisabled: widgetDisable.now,
                                 }),
-                                w95.widget.twoStateButton({
+                                twoStateButton({
                                     x: 10,
                                     y: 45,
                                     width: "pw - 20",
@@ -251,7 +263,7 @@ export default {
                                     tabs: {
                                         "Statistics": {
                                             children: [
-                                                w95.widget.statistics({
+                                                statistics({
                                                     width: 158,
                                                     height: 131,
                                                 }),
@@ -303,7 +315,7 @@ export default {
                                         },
                                         "3D": {
                                             children: [
-                                                w95.widget.rotatingCube({
+                                                rotatingCube({
                                                     width: 158,
                                                     height: 133,
                                                     isDisabled: widgetDisable.now,
@@ -441,7 +453,7 @@ export default {
                                 }),
                             ],
                         }),
-                        w95.widget.nameQuery({
+                        nameQuery({
                             x: ((appWidth.now / 2) - 120),
                             y: 60,
                             width: 240,
@@ -454,7 +466,7 @@ export default {
                                 isNameQueryDialogOpen.set(false);
                             },
                         }, {hideIf: !isNameQueryDialogOpen.now}),
-                        w95.widget.customWarning({
+                        customWarning({
                             onReject() {
                                 isCustomWarningDialogOpen.set(false);
                             },

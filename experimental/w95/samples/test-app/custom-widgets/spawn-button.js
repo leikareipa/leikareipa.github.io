@@ -7,7 +7,7 @@
 
 import testApp from "../app.js";
 
-w95.widget("spawnButton", function({
+export const spawnButton = w95.widget(function({
     x = 0,
     y = 0,
     width = 100,

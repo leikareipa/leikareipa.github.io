@@ -22,7 +22,7 @@ const renderOptions = {
     ],
 };
 
-w95.widget("rotatingCube", function({
+export const rotatingCube = w95.widget(function({
     x = 0,
     y = 0,
     width = 100,

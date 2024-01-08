@@ -430,7 +430,7 @@ w95.widget("desktopIcon", function({
     width = 60,
     height = 60,
     text = "",
-    icon = undefined,
+    icon = w95.icon.applicationIcon32x32,
     onActivate = undefined,
 } = {})
 {
@@ -439,13 +439,13 @@ w95.widget("desktopIcon", function({
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof text === "string");
+    w95.debug?.assert(typeof icon === "object");
     w95.debug?.assert(["undefined", "object"].includes(typeof icon));
     w95.debug?.assert(["undefined", "function"].includes(typeof onActivate));
+    w95.debug?.assert((icon.width === 32) && (icon.height === 32));
 
     const hasFocus = w95.state(false);
 
-    const iconWidth = 32;
-    const iconHeight = 32;
     const labelWidth = (w95.font.stringWidth(text) + 2);
     const labelHeight = w95.font.regular.lineHeight;
 
@@ -473,11 +473,9 @@ w95.widget("desktopIcon", function({
                     ],
                 }),
                 w95.widget.bitmap({
-                    x: ((width / 2) - (iconWidth / 2)),
+                    x: ((width / 2) - (icon.width / 2)),
                     y: 0,
                     image: icon,
-                    width: iconWidth,
-                    height: iconHeight,
                     styleHints: [
                         (hasFocus.now? w95.styleHint.focused : w95.styleHint.void),
                     ],
@@ -2442,7 +2440,7 @@ w95.widget("label", function({
         get text() { return text },
         Form() {
             return [
-                ...text_mesh(), 
+                ...text_mesh(),
                 ...background_mesh(),
                 ...styleHints.includes(w95.styleHint.underlined)? [
                     Rngon.ngon([
@@ -2605,6 +2603,7 @@ w95.widget("lineEdit", function({
     isEditable = false,
     isDisabled = false,
     autofocus = false,
+    validator = /./,
     styleHints = [
         w95.styleHint.alignVCenter,
     ],
@@ -2618,6 +2617,7 @@ w95.widget("lineEdit", function({
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof isEditable === "boolean");
     w95.debug?.assert(typeof text === "string");
+    w95.debug?.assert(validator instanceof RegExp);
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "function"].includes(typeof onSubmit));
     w95.debug?.assert(["undefined", "function"].includes(typeof newText));
@@ -2632,7 +2632,8 @@ w95.widget("lineEdit", function({
     const borderWidth = 2;
     const horPadding = 5;
     const visibleText = text.slice(viewBufferStart.now, viewBufferEnd.now);
-    const cursorXOffset = w95.font.stringWidth(text.slice(viewBufferStart.now, cursorPosition.now));
+    const font = w95.font.regular;
+    const cursorXOffset = w95.font.stringWidth(text.slice(viewBufferStart.now, cursorPosition.now), font);
 
     return {
         get x() { return x },
@@ -2731,10 +2732,18 @@ w95.widget("lineEdit", function({
             }
         },
         Event: {
-            mousedown() {
+            mousedown({at}) {
                 if (isDisabled) {
                     return;
                 }
+                
+                const clickCharIdx = visibleText.split("").findIndex((ch, idx)=>{
+                    const spaceWidth = 3;
+                    const chCode = ch.charCodeAt(0);
+                    const chWidth = ((chCode === 32)? spaceWidth : font[chCode].width);
+                    return (w95.font.stringWidth(visibleText.substring(0, idx), font) > (at.x - (chWidth / 2) - horPadding));
+                });
+                set_cursor_position(viewBufferStart.now + ((clickCharIdx < 0)? visibleText.length : clickCharIdx));
 
                 return true;
             },
@@ -2848,6 +2857,12 @@ w95.widget("lineEdit", function({
 
     function enter_text(newText = "") {
         w95.debug?.assert(typeof newText === "string");
+
+        newText = newText.split("").filter(ch=>validator.test(ch)).join("");
+
+        if (!newText.length) {
+            return text;
+        }
 
         const updatedText = [text.slice(0, cursorPosition.now), newText, text.slice(cursorPosition.now)].join("");
         

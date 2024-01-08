@@ -340,67 +340,6 @@ function desktopApp(icons = []) {
 
 /***/ }),
 
-/***/ "./src/core/line-rasterizer.js":
-/*!*************************************!*\
-  !*** ./src/core/line-rasterizer.js ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   straight_line_rasterizer: () => (/* binding */ straight_line_rasterizer)
-/* harmony export */ });
-/*
- * 2023 Tarpeeksi Hyvae Soft
- * 
- * Software: Custom retro n-gon line rasterizer for w95.
- * 
- */
-
-function straight_line_rasterizer(renderState, vert1, vert2, color) {
-    if (color.alpha < 255) {
-        return;
-    }
-    
-    const depthBuffer = (renderState.useDepthBuffer? renderState.depthBuffer.data : null);
-    const pixelBuffer = new Uint32Array(renderState.pixelBuffer.data.buffer);
-    const renderWidth = renderState.pixelBuffer.width;
-    const renderHeight = renderState.pixelBuffer.height;
-    const farPlane = renderState.farPlaneDistance;
- 
-    const depth = (vert1.z / farPlane);
-    const startX = ~~Math.max(0, Math.min((renderWidth - 1), vert1.x));
-    const startY = ~~Math.max(0, Math.min((renderHeight - 1), vert1.y));
-    const endX = ~~Math.max(0, Math.min((renderWidth - 1), vert2.x));
-    const endY = ~~Math.max(0, Math.min((renderHeight - 1), vert2.y));
-    const isHorizontal = (startY === endY);
-    
-    const color32 = (
-        (255 << 24) +
-        (color.blue << 16) +
-        (color.green << 8) +
-        ~~color.red
-    );
-
-    let start = (isHorizontal? startX : startY);
-    const end = (isHorizontal? endX : endY);
-
-    let pixelIdx = (startX + startY * renderWidth);
-    const idxIncrement = (isHorizontal? 1 : renderWidth);
-
-    while (start++ < end) {
-        if (depthBuffer[pixelIdx] > depth) {
-            pixelBuffer[pixelIdx] = color32;
-            depthBuffer[pixelIdx] = depth;
-        }
-        pixelIdx += idxIncrement;
-    }
-};
-
-
-/***/ }),
-
 /***/ "./src/core/palette.js":
 /*!*****************************!*\
   !*** ./src/core/palette.js ***!
@@ -575,61 +514,60 @@ const popupWidget = (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.create_widget)(fu
 
 /***/ }),
 
-/***/ "./src/core/raster-shader-bitmap.js":
-/*!******************************************!*\
-  !*** ./src/core/raster-shader-bitmap.js ***!
-  \******************************************/
+/***/ "./src/core/rasterizer.js":
+/*!********************************!*\
+  !*** ./src/core/rasterizer.js ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   raster_shader_for_bitmaps: () => (/* binding */ raster_shader_for_bitmaps)
+/* harmony export */   rasterizer: () => (/* binding */ rasterizer)
 /* harmony export */ });
 /*
  * 2023 Tarpeeksi Hyvae Soft
  * 
- * Software: Custom retro n-gon renderer raster shader for w95.
+ * Software: w95
  * 
  */
 
-function raster_shader_for_bitmaps({
-    renderContext,
-    ngon,
-    leftEdges,
-    rightEdges,
-    numLeftEdges,
-    numRightEdges,
-})
+function rasterizer(renderContext)
 {
-    if (!renderContext.useDepthBuffer)
-    {
-        return false;
-    }
+    const fallbackRasterizer = Rngon.default.render.pipeline.rasterizer;
 
-    const pixelBuffer32 = renderContext.pixelBuffer32;
+    for (const ngon of renderContext.screenSpaceNgons)
+    {
+        switch (ngon.vertices.length)
+        {
+            case 0: continue;
+            case 1: fallbackRasterizer.point(renderContext, ngon.vertices[0], ngon.material.color); break;
+            case 2: draw_straight_line(renderContext, ngon); break;
+            default: draw_rectangular_poly(renderContext, ngon); break;
+        }
+    }
+    
+    return;
+}
+
+function draw_rectangular_poly(renderContext, ngon) {
     const depthBuffer = renderContext.depthBuffer.data;
-    const pixelBufferImage = renderContext.pixelBuffer;
-    const pixelBufferWidth = pixelBufferImage.width;
+    const pixelBuffer32 = renderContext.pixelBuffer32;
+    const renderWidth = renderContext.resolution.width;
+
     const material = ngon.material;
     const texture = (material.texture || null);
 
-    let curLeftEdgeIdx = 0;
-    let curRightEdgeIdx = 0;
-    let leftEdge = leftEdges[curLeftEdgeIdx];
-    let rightEdge = rightEdges[curRightEdgeIdx];
-    
-    if (!numLeftEdges || !numRightEdges) return;
-
-    // Note: We assume the n-gon's vertices to be sorted by increasing Y.
-    const ngonStartY = leftEdges[0].top;
-    const ngonEndY = leftEdges[numLeftEdges-1].bottom;
+    const clipRect = ngon._clipRect;
+    const ngonStartY = Math.max(clipRect.top, ngon.vertices[0].y);
+    const ngonEndY = Math.min(clipRect.bottom, ngon.vertices[2].y);
+    const yOffset = (ngon.vertices[0].y - ngonStartY);
 
     if (!texture)
     {
-        const spanStartX = Math.min(pixelBufferWidth, Math.max(0, Math.round(leftEdge.x)));
-        const spanEndX = Math.min(pixelBufferWidth, Math.max(0, Math.ceil(rightEdge.x)));
-        const depth = (leftEdge.depth / leftEdge.invW);
+        const spanStartX = Math.max(clipRect.left, ngon.vertices[0].x);
+        const spanEndX = Math.min(clipRect.right, ngon.vertices[1].x);
+        const depth = ngon.vertices[0].z;
 
         const {red, green, blue, alpha} = material.color;
 
@@ -637,7 +575,7 @@ function raster_shader_for_bitmaps({
         {
             for (let x = spanStartX; x < spanEndX; x++)
             {
-                const pixelBufferIdx = (x + y * pixelBufferWidth);
+                const pixelBufferIdx = (x + y * renderWidth);
 
                 if (depthBuffer[pixelBufferIdx] <= depth)
                 {
@@ -654,102 +592,115 @@ function raster_shader_for_bitmaps({
                 depthBuffer[pixelBufferIdx] = depth;
             }
         }
-
-        return true;
     }
     else if (material.blit)
     {
-        const spanStartX = Math.min(pixelBufferWidth, Math.max(0, Math.round(leftEdge.x)));
-        const spanEndX = Math.min(pixelBufferWidth, Math.max(0, Math.ceil(rightEdge.x)));
-        const spanWidth = (spanEndX - spanStartX);
-        const spanHeight = (ngonEndY - ngonStartY);
-        const depth = (leftEdge.depth / leftEdge.invW);
-
-        // Scale the texture to fit the polygon rectangle.
-        const tx = (texture.width / spanWidth);
-        const ty = (texture.height / spanHeight);
-
+        const spanStartX = Math.max(clipRect.left, ngon.vertices[0].x);
+        const spanEndX = Math.min(clipRect.right, ngon.vertices[1].x);
+        const spanWidth = (ngon.vertices[1].x - ngon.vertices[0].x);
+        const xOffset = (ngon.vertices[0].x - spanStartX);
+        
+        const depth = ngon.vertices[0].z;
         const texels = texture.pixels;
-
-        if (material.allowAlphaReject)
+      
+        for (let y = ngonStartY; y < ngonEndY; y++)
         {
-            for (let y = ngonStartY; y < ngonEndY; y++)
+            let pixelBufferIdx = ((y * renderWidth) + spanStartX);
+            let texelIdx = ~~(((y - ngonStartY - yOffset) * spanWidth) - xOffset);
+
+            for (let x = spanStartX; x < spanEndX; x++)
             {
-                let pixelBufferIdx = ((y * pixelBufferWidth) + spanStartX);
-                let texelIdx = (~~((y - ngonStartY) * ty) * texture.width);
+                const ti = (~~texelIdx * 4);    
 
-                for (let x = spanStartX; x < spanEndX; x++)
-                {
-                    const ti = (~~texelIdx * 4);
-
-                    if (
-                        (texels[ti + 3] === 255) &&
-                        (depthBuffer[pixelBufferIdx] > depth)
-                    ){
-                        let red   = (texels[ti + 0] * material.color.unitRange.red);
-                        let green = (texels[ti + 1] * material.color.unitRange.green);
-                        let blue  = (texels[ti + 2] * material.color.unitRange.blue);
-                        
-                        if (material.grayscale) {
-                            red = green = blue = ((red * 0.5) + (green * 0.3) + (blue * 0.2));
-                        }
-        
-                        if (material.invertedColor) {
-                            red = (255 - red);
-                            green = (255 - green);
-                            blue = (255 - blue);
-                        }
+                if (
+                    (!material.allowAlphaReject || (texels[ti + 3] === 255)) &&
+                    (depthBuffer[pixelBufferIdx] > depth)
+                ){
+                    let red   = (texels[ti + 0] * material.color.unitRange.red);
+                    let green = (texels[ti + 1] * material.color.unitRange.green);
+                    let blue  = (texels[ti + 2] * material.color.unitRange.blue);
+                    
+                    if (material.grayscale) {
+                        red = green = blue = ((red * 0.5) + (green * 0.3) + (blue * 0.2));
+                    }
     
-                        pixelBuffer32[pixelBufferIdx] = (
-                            (255 << 24) +
-                            (blue << 16) +
-                            (green << 8) +
-                            ~~red
-                        );
-    
-                        depthBuffer[pixelBufferIdx] = depth;
+                    if (material.invertedColor) {
+                        red = (255 - red);
+                        green = (255 - green);
+                        blue = (255 - blue);
                     }
 
-                    pixelBufferIdx++;
-                    texelIdx += tx;
+                    pixelBuffer32[pixelBufferIdx] = (
+                        (255 << 24) +
+                        (blue << 16) +
+                        (green << 8) +
+                        ~~red
+                    );
+
+                    depthBuffer[pixelBufferIdx] = depth;
                 }
+
+                pixelBufferIdx++;
+                texelIdx++;
             }
-
-            return true;
-        }
-        else
-        {
-            for (let y = ngonStartY; y < ngonEndY; y++)
-            {
-                let pixelBufferIdx = ((y * pixelBufferWidth) + spanStartX);
-                let texelIdx = (~~((y - ngonStartY) * ty) * texture.width);
-
-                for (let x = spanStartX; x < spanEndX; x++)
-                {
-                    if (depthBuffer[~~pixelBufferIdx] > depth)
-                    {
-                        const ti = (~~texelIdx * 4);
-                        pixelBuffer32[pixelBufferIdx] = (
-                            (255 << 24) +
-                            (texels[ti + 2] << 16) +
-                            (texels[ti + 1] << 8) +
-                            ~~texels[ti + 0]
-                        );
-        
-                        depthBuffer[pixelBufferIdx] = depth;
-                    }
-
-                    pixelBufferIdx++;
-                    texelIdx += tx;
-                }
-            }
-     
-            return true;
         }
     }
-
-    return false;
 }
+
+function draw_straight_line(renderContext, ngon) {
+    w95.debug?.assert(ngon.vertices.length === 2);
+
+    const color = ngon.material.color;
+    if (color.alpha < 255) {
+        return;
+    }
+
+    const resolution = renderContext.resolution;
+    const vert1 = ngon.vertices[0];
+    const vert2 = ngon.vertices[1];
+    if (
+        ((vert1.x < 0) && (vert2.x < 0)) ||
+        ((vert1.y < 0) && (vert2.y < 0)) ||
+        ((vert1.x >= resolution.width) && (vert2.x >= resolution.width)) ||
+        ((vert1.y >= resolution.height) && (vert2.y >= resolution.height))
+    ){
+        return;
+    }
+    
+    const depthBuffer = (renderContext.useDepthBuffer? renderContext.depthBuffer.data : null);
+    const pixelBuffer = new Uint32Array(renderContext.pixelBuffer.data.buffer);
+    const renderWidth = renderContext.pixelBuffer.width;
+    const clipRect = ngon._clipRect;
+
+    const depth = vert1.z;
+    const startX = Math.max(clipRect.left, vert1.x);
+    const startY = Math.max(clipRect.top, vert1.y);
+    const endX = Math.min(clipRect.right, vert2.x);
+    const endY = Math.min(clipRect.bottom, vert2.y);
+    const isHorizontal = (startY === endY);
+
+    const color32 = (
+        (255 << 24) +
+        (color.blue << 16) +
+        (color.green << 8) +
+        ~~color.red
+    );
+
+    let start = (isHorizontal? startX : startY);
+    const end = (isHorizontal? endX : endY);
+
+    let pixelIdx = (startX + startY * renderWidth);
+    const idxIncrement = (isHorizontal? 1 : renderWidth);
+
+    while (start++ < end) {
+        if (depthBuffer[pixelIdx] > depth) {
+            pixelBuffer[pixelIdx] = color32;
+            depthBuffer[pixelIdx] = depth;
+        }
+        pixelIdx += idxIncrement;
+    }
+};
+
 
 
 /***/ }),
@@ -818,18 +769,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   shell: () => (/* binding */ shell)
 /* harmony export */ });
-/* harmony import */ var _core_raster_shader_bitmap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/raster-shader-bitmap.js */ "./src/core/raster-shader-bitmap.js");
-/* harmony import */ var _core_line_rasterizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/line-rasterizer.js */ "./src/core/line-rasterizer.js");
-/* harmony import */ var _core_tick_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/tick.js */ "./src/core/tick.js");
-/* harmony import */ var _core_desktop_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/desktop.js */ "./src/core/desktop.js");
-/* harmony import */ var _core_popup_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../core/popup.js */ "./src/core/popup.js");
+/* harmony import */ var _core_rasterizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/rasterizer.js */ "./src/core/rasterizer.js");
+/* harmony import */ var _core_tick_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/tick.js */ "./src/core/tick.js");
+/* harmony import */ var _core_desktop_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/desktop.js */ "./src/core/desktop.js");
+/* harmony import */ var _core_popup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/popup.js */ "./src/core/popup.js");
 /*
  * 2022-2023 Tarpeeksi Hyvae Soft
  *
  * Software: w95
  * 
  */
-
 
 
 
@@ -854,12 +803,34 @@ const rngonRenderOptions = {
 };
 
 const rngonRenderPipeline = {
-    rasterPath: _core_raster_shader_bitmap_js__WEBPACK_IMPORTED_MODULE_0__.raster_shader_for_bitmaps,
+    rasterizer: _core_rasterizer_js__WEBPACK_IMPORTED_MODULE_0__.rasterizer,
     transformClipLighter: function({renderContext, mesh}) {
         // The n-gons are pre-transformed, so we just need to insert them into the
         // renderer context. Note that we expect the entire UI to consist of a single
         // mesh.
         renderContext.screenSpaceNgons = mesh.ngons.filter(ngon=>ngon.vertices.length);
+
+        for (const ngon of renderContext.screenSpaceNgons) {
+            for (const vertex of ngon.vertices) {
+                vertex.x = ~~vertex.x;
+                vertex.y = ~~vertex.y;
+                vertex.z = ~~vertex.z;
+            }
+
+            if (!ngon._clipRect) {
+                ngon._clipRect = {
+                    top: 0,
+                    left: 0,
+                    right: renderContext.resolution.width,
+                    bottom: renderContext.resolution.height,
+                }
+            }
+
+            ngon._clipRect.top = ~~Math.max(ngon._clipRect.top, 0);
+            ngon._clipRect.bottom = ~~Math.min(ngon._clipRect.bottom, renderContext.resolution.height);
+            ngon._clipRect.left = ~~Math.max(ngon._clipRect.left, 0);
+            ngon._clipRect.right = ~~Math.min(ngon._clipRect.right, renderContext.resolution.width);
+        }
     },
     // Wipe only dirty regions, rather than the entire render surface.
     surfaceWiper(renderContext) {
@@ -938,8 +909,8 @@ const shell = {
             rngonRenderPipeline.pixelShader = pixel_shader_fn;
         },
     },
-    desktop: _core_desktop_js__WEBPACK_IMPORTED_MODULE_3__.desktopApp,
-    popup: _core_popup_js__WEBPACK_IMPORTED_MODULE_4__.popupWidget,
+    desktop: _core_desktop_js__WEBPACK_IMPORTED_MODULE_2__.desktopApp,
+    popup: _core_popup_js__WEBPACK_IMPORTED_MODULE_3__.popupWidget,
     refresh() {
         window.dispatchEvent(new Event("resize"));
     },
@@ -970,8 +941,6 @@ const shell = {
                 widget.Message?.fitToDisplay?.();
             }));
         });
-
-        Rngon.default.render.pipeline.rasterizer.line = _core_line_rasterizer_js__WEBPACK_IMPORTED_MODULE_1__.straight_line_rasterizer;
 
         window.requestAnimationFrame(render_loop);
 
@@ -1077,7 +1046,7 @@ const shell = {
             }
 
             forceAllWidgetsToUpdate = false;
-            (0,_core_tick_js__WEBPACK_IMPORTED_MODULE_2__.signal_system_tick)(timeDeltaMs);
+            (0,_core_tick_js__WEBPACK_IMPORTED_MODULE_1__.signal_system_tick)(timeDeltaMs);
             w95.windowManager.post_tick_inspect();
             window.requestAnimationFrame((newTimestamp)=>render_loop(newTimestamp, (newTimestamp - timestamp), numTicks + 1));
 
@@ -1667,12 +1636,12 @@ function transformed_recursive_mesh(widget, x = 0, y = 0) {
         }));
 
         // Into world space.
-        transformedNgons.forEach(n=>{
-            for (const vertex of n.vertices) {
+        for (const ngon of transformedNgons) {
+            for (const vertex of ngon.vertices) {
                 vertex.x += worldX;
                 vertex.y += worldY;
             }
-        });
+        }
 
         // If clipping is allowed.
         if (clipRect) {
@@ -1684,16 +1653,9 @@ function transformed_recursive_mesh(widget, x = 0, y = 0) {
                 ))
             ));
 
-            // Clip the remaining n-gons against the clipping rect.
-            transformedNgons.forEach(n=>{
-                for (const vertex of n.vertices) {
-                    if (vertex.x >= clipRect.right) vertex.x = clipRect.right;
-                    else if (vertex.x < clipRect.left) vertex.x = clipRect.left;
-
-                    if (vertex.y > clipRect.bottom) vertex.y = clipRect.bottom;
-                    else if (vertex.y < clipRect.top) vertex.y = clipRect.top;
-                }
-            });
+            for (const ngon of transformedNgons) {
+                ngon._clipRect = clipRect;
+            }
         }
 
         return transformedNgons;
@@ -2452,7 +2414,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-07.01:26:58"}`,
+    version: `BETA ${"2024-01-08.11:35:50"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {

@@ -5,7 +5,7 @@
  * 
  */
 
-w95.widget("statistics", function({
+export const statistics = w95.widget(function({
     x = 0,
     y = 0,
     width = 100,

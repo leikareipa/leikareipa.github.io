@@ -5,7 +5,7 @@
  * 
  */
 
-w95.widget("customWarning", function({
+export const customWarning = w95.widget(function({
     onReject = undefined,
 } = {})
 {
