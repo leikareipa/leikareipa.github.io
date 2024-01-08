@@ -20,6 +20,7 @@ w95.widget("bitmap", function({
     image = Rngon.texture(),
     width = (image?.width || 0),
     height = (image?.height || 0),
+    color = w95.palette.named.white,
     isDisabled = false,
     styleHints = [],
     onMouseDown = undefined,
@@ -33,6 +34,7 @@ w95.widget("bitmap", function({
     w95.debug?.assert(typeof y === "number");
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
+    w95.debug?.assert(typeof color === "object");
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "object"].includes(typeof image));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseDown));
@@ -58,15 +60,10 @@ w95.widget("bitmap", function({
                     Rngon.vertex(0, height),
                 ], {
                     texture: image,
-                    color: (
-                        styleHints.includes(w95.styleHint.focused)
-                            ? Rngon.color(128, 128, 255)
-                            : w95.palette.named.white
-                    ),
+                    color,
                     allowAlphaReject: true,
                     invertedColor: styleHints.includes(w95.styleHint.inverted),
-                    grayscale: isDisabled,
-                    blit: true,
+                    isDisabled,
                 }),
             ];
         },
@@ -166,12 +163,6 @@ w95.widget("button", function({
         get text() { return text },
         Form() {
             return [
-                w95.widget.panel({
-                    width,
-                    height,
-                    color: backgroundColor,
-                }),
-                
                 w95.widget.frame({
                     width,
                     height,
@@ -190,6 +181,7 @@ w95.widget("button", function({
                         ...styleHints,
                         (isVisuallyPressed? w95.styleHint.inverted : 0),
                     ],
+                    backgroundColor,
                     children: (
                         styleHints.includes(w95.styleHint.vertical)
                             ? [
@@ -239,9 +231,23 @@ w95.widget("button", function({
                                 }),
     
                                 w95.widget.bitmap({
+                                    x: 1+~~((text? iconSpacing : icon? ((width / 2) - (icon.width / 2)) : 0) + ~~isVisuallyPressed),
+                                    y: 1+~~((icon? ((height / 2) - (icon.height / 2)) : 0) + ~~isVisuallyPressed),
+                                    image: icon,
+                                    color: w95.palette.widget.disabled2,
+                                }, {
+                                    hideIf: (!icon || !isDisabled),
+                                }),
+
+                                w95.widget.bitmap({
                                     x: ~~((text? iconSpacing : icon? ((width / 2) - (icon.width / 2)) : 0) + ~~isVisuallyPressed),
                                     y: ~~((icon? ((height / 2) - (icon.height / 2)) : 0) + ~~isVisuallyPressed),
                                     image: icon,
+                                    color: (
+                                        isDisabled
+                                            ? w95.palette.widget.disabled1
+                                            : w95.palette.widget.foreground
+                                    ),
                                 }, {
                                     hideIf: !icon,
                                 }),
@@ -353,6 +359,7 @@ w95.widget("checkbox", function({
                             x: 3,
                             y: 3,
                             image: w95.icon.checkmark,
+                            color: w95.palette.widget.foreground,
                         }, {
                             hideIf: !isChecked
                         }),
@@ -476,6 +483,11 @@ w95.widget("desktopIcon", function({
                     x: ((width / 2) - (icon.width / 2)),
                     y: 0,
                     image: icon,
+                    color: (
+                        hasFocus.now
+                            ? Rngon.color(128, 128, 255)
+                            : w95.palette.named.white
+                    ),
                     styleHints: [
                         (hasFocus.now? w95.styleHint.focused : w95.styleHint.void),
                     ],
@@ -2567,7 +2579,6 @@ w95.widget("label", function({
                     color: textColor,
                     allowAlphaReject: true,
                     invertedColor: styleHints.includes(w95.styleHint.inverted),
-                    blit: true,
                 });
     
                 x += (glyph.width + letterSpacing);
@@ -3768,8 +3779,7 @@ w95.widget("renderSurface", function({
                         height: Rngon.context[id].pixelBuffer.height,
                         pixels: Rngon.context[id].pixelBuffer.data,
                     },
-                    grayscale: isDisabled,
-                    blit: true,
+                    isDisabled,
                 }),
                 background
             ];
@@ -4286,7 +4296,7 @@ w95.widget("titleBar", function({
                     x: (icon? (5 + icon.width) : 3),
                     y: 0,
                     width: (width - (icon? (5 + icon.width) : 3)) - (isDialog? 22 : 56),
-                    height: height,
+                    height,
                     text: title,
                     color: isBlurred
                         ? w95.palette.window.titleBar.inactiveForeground
@@ -4304,6 +4314,7 @@ w95.widget("titleBar", function({
                     width: 16,
                     height: 14,
                     icon: w95.icon.titleBarClose,
+                    isDisabled: !onClose,
                     onClick: onClose,
                 }),
     
@@ -4323,12 +4334,15 @@ w95.widget("titleBar", function({
                     y: 2,
                     width: 16,
                     height: 14,
+                    isDisabled: true, // Minimizing windows hasn't been implemented yet.
                     icon: w95.icon.titleBarMinimize,
                 }, {hideIf: isDialog}),
 
                 // Grabber.
                 w95.widget.frame({
-                    width,
+                    x: (icon? (5 + icon.width) : 3),
+                    y: 0,
+                    width: (width - (icon? (5 + icon.width) : 3)) - (isDialog? 22 : 56),
                     height,
                     isGrabbable: true,
                     shape: w95.frameShape.none,

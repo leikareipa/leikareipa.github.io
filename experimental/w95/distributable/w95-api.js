@@ -593,7 +593,7 @@ function draw_rectangular_poly(renderContext, ngon) {
             }
         }
     }
-    else if (material.blit)
+    else
     {
         const spanStartX = Math.max(clipRect.left, ngon.vertices[0].x);
         const spanEndX = Math.min(clipRect.right, ngon.vertices[1].x);
@@ -616,11 +616,22 @@ function draw_rectangular_poly(renderContext, ngon) {
                     (!material.allowAlphaReject || (texels[ti + 3] === 255)) &&
                     (depthBuffer[pixelBufferIdx] > depth)
                 ){
-                    let red   = (texels[ti + 0] * material.color.unitRange.red);
-                    let green = (texels[ti + 1] * material.color.unitRange.green);
-                    let blue  = (texels[ti + 2] * material.color.unitRange.blue);
+                    let red;
+                    let green;
+                    let blue;
+
+                    if (texture.boolean) {
+                        red   = material.color.red;
+                        green = material.color.green;
+                        blue  = material.color.blue;
+                    }
+                    else {
+                        red   = (texels[ti + 0] * material.color.unitRange.red);
+                        green = (texels[ti + 1] * material.color.unitRange.green);
+                        blue  = (texels[ti + 2] * material.color.unitRange.blue);
+                    }
                     
-                    if (material.grayscale) {
+                    if (material.isDisabled) {
                         red = green = blue = ((red * 0.5) + (green * 0.3) + (blue * 0.2));
                     }
     
@@ -2414,7 +2425,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-08.11:35:50"}`,
+    version: `BETA ${"2024-01-08.13:11:41"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {
