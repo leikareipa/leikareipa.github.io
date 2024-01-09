@@ -1582,19 +1582,19 @@ function transformed_recursive_mesh(widget, x = 0, y = 0) {
         baseX += widget.x;
         baseY += widget.y;
         const selfMesh = transformed_ngons(widget._mesh, clipRect, baseX, baseY);
-        
+
         if (widget.dom) {
-            widget.dom.style.left = `${baseX * w95.shell.display.scale}px`;
-            widget.dom.style.top = `${baseY * w95.shell.display.scale}px`;
-            widget.dom.style.width = `${widget.width * w95.shell.display.scale}px`;
-            widget.dom.style.height = `${widget.height * w95.shell.display.scale}px`;
+            widget.dom.style.left = `${Math.floor(baseX) * w95.shell.display.scale}px`;
+            widget.dom.style.top = `${Math.floor(baseY) * w95.shell.display.scale}px`;
+            widget.dom.style.width = `${Math.floor(widget.width) * w95.shell.display.scale}px`;
+            widget.dom.style.height = `${Math.floor(widget.height) * w95.shell.display.scale}px`;
             widget.dom.style.fontSize = `${Math.max(50, ((w95.shell.display.scale - 1) * 100))}%`;
             widget.dom.style.visibility = "visible";
         }
 
         if (widget._domSkeleton) {
-            widget._domSkeleton.style.left = `${baseX * w95.shell.display.scale}px`;
-            widget._domSkeleton.style.top = `${baseY * w95.shell.display.scale}px`;
+            widget._domSkeleton.style.left = `${Math.floor(baseX) * w95.shell.display.scale}px`;
+            widget._domSkeleton.style.top = `${Math.floor(baseY) * w95.shell.display.scale}px`;
         }
 
         const startIdx = dstArray.length;
@@ -2441,7 +2441,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-08.22:54:16"}`,
+    version: `BETA ${"2024-01-09.01:11:29"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {

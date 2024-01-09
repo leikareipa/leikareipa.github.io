@@ -224,7 +224,7 @@ export default {
                                         "1x": {
                                             isDisabled: widgetDisable.now,
                                         },
-                                        "2x": {
+                                        "\b2x\b": {
                                             x: 40,
                                             y: 0,
                                             isDisabled: widgetDisable.now,
@@ -424,6 +424,7 @@ export default {
                                     ],
                                 },
                                 "Text edit": {
+                                    isDisabled: true,
                                     children: [
                                         w95.widget.label({
                                             width: "pw",
@@ -573,6 +574,7 @@ export default {
                                     x: 81,
                                     width: 75,
                                     text: "No",
+                                    isDisabled: true,
                                     onClick() {
                                         isQuestionDialogOpen.set(false);
                                     },

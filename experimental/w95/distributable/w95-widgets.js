@@ -369,7 +369,7 @@ w95.widget("checkbox", function({
                     x: (checkBoxSideLen + labelSpacing),
                     y: 0,
                     width: (label.length? w95.font.stringWidth(label) : 0),
-                    height: height,
+                    height,
                     text: label,
                     color,
                     isDisabled,
@@ -3523,7 +3523,7 @@ w95.widget("radioGroupItem", function({
     const isHovered = w95.state(false);
     const width = w95.state(1);
 
-    const height = (w95.font.regular.lineHeight + 1);
+    const height = (w95.font.regular.lineHeight + isDisabled);
 
     return {
         get x() { return x },
@@ -3560,8 +3560,13 @@ w95.widget("radioGroupItem", function({
                         }),
                         w95.widget.label({
                             x: 18,
-                            height: (height - 1),
+                            height,
                             text: label,
+                            isDisabled,
+                            styleHints: [
+                                w95.styleHint.alignVCenter,
+                                w95.styleHint.action,
+                            ],
                         })
                     ],
                 }),
@@ -4186,7 +4191,7 @@ w95.widget("tabControl", function({
                         width: labelWidth + (isActiveTab? 4 : 0),
                         height: tabButtonHeight + (isActiveTab? 2 : 0),
                         text: tabLabel,
-                        isDisabled: (isDisabled && (idx !== tabIndex)),
+                        isDisabled: ((isDisabled || tabs[tabLabel].isDisabled) && (idx !== tabIndex)),
                         shape: w95.buttonShape.tabControl,
                         styleHints: [
                             (isFirstTab? w95.styleHint.first : w95.styleHint.void),
