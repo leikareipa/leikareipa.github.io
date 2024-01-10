@@ -514,16 +514,60 @@ const popupWidget = (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.create_widget)(fu
 
 /***/ }),
 
-/***/ "./src/core/rasterizer.js":
-/*!********************************!*\
-  !*** ./src/core/rasterizer.js ***!
-  \********************************/
+/***/ "./src/core/registry.js":
+/*!******************************!*\
+  !*** ./src/core/registry.js ***!
+  \******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   rasterizer: () => (/* binding */ rasterizer)
+/* harmony export */   registry: () => (/* binding */ registry)
+/* harmony export */ });
+/*
+ * 2023 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
+const _registry = {};
+
+const registry = {
+    get(key) {
+        w95.debug?.assert(typeof key === "string");
+        return _registry[key];
+    },
+    set(key, value) {
+        w95.debug?.assert(typeof key === "string");
+        if (_registry[key] !== value) {
+            _registry[key] = value;
+            w95.shell.refresh();
+        }
+        return _registry[key];
+    },
+    increment(key) {
+        w95.debug?.assert(typeof key === "string");
+        w95.debug?.assert(typeof _registry[key] === "number");
+        return this.set(key, (this.get(key) + 1));
+    },
+};
+
+
+/***/ }),
+
+/***/ "./src/core/render.js":
+/*!****************************!*\
+  !*** ./src/core/render.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   renderOptions: () => (/* binding */ renderOptions),
+/* harmony export */   renderPipeline: () => (/* binding */ renderPipeline)
 /* harmony export */ });
 /*
  * 2023 Tarpeeksi Hyvae Soft
@@ -532,7 +576,20 @@ __webpack_require__.r(__webpack_exports__);
  * 
  */
 
-function rasterizer(renderContext)
+// Custom render::pipeline for the retro n-gon renderer.
+const renderPipeline = {
+    rasterizer: rasterize,
+    transformClipLighter: transform_clip_light,
+    surfaceWiper: surface_wipe,
+};
+
+// Custom render::options for the retro n-gon renderer.
+const renderOptions = {
+    useFullInterpolation: false,
+    farPlane: 1,
+};
+
+function rasterize(renderContext)
 {
     const fallbackRasterizer = Rngon.default.render.pipeline.rasterizer;
 
@@ -709,49 +766,69 @@ function draw_straight_line(renderContext, ngon) {
     }
 };
 
+function transform_clip_light({renderContext, mesh}) {
+    // The n-gons are pre-transformed, so we just need to insert them into the
+    // renderer context. Note that we expect the entire UI to consist of a single
+    // mesh.
+    renderContext.screenSpaceNgons = mesh.ngons.filter(ngon=>ngon.vertices.length);
 
-
-/***/ }),
-
-/***/ "./src/core/registry.js":
-/*!******************************!*\
-  !*** ./src/core/registry.js ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   registry: () => (/* binding */ registry)
-/* harmony export */ });
-/*
- * 2023 Tarpeeksi Hyvae Soft
- *
- * Software: w95
- * 
- */
-
-const _registry = {};
-
-const registry = {
-    get(key) {
-        w95.debug?.assert(typeof key === "string");
-        return _registry[key];
-    },
-    set(key, value) {
-        w95.debug?.assert(typeof key === "string");
-        if (_registry[key] !== value) {
-            _registry[key] = value;
-            w95.shell.refresh();
+    for (const ngon of renderContext.screenSpaceNgons) {
+        for (const vertex of ngon.vertices) {
+            vertex.x = Math.floor(vertex.x);
+            vertex.y = Math.floor(vertex.y);
         }
-        return _registry[key];
-    },
-    increment(key) {
-        w95.debug?.assert(typeof key === "string");
-        w95.debug?.assert(typeof _registry[key] === "number");
-        return this.set(key, (this.get(key) + 1));
-    },
-};
+
+        if (!ngon._clipRect) {
+            ngon._clipRect = {
+                top: 0,
+                left: 0,
+                right: renderContext.resolution.width,
+                bottom: renderContext.resolution.height,
+            }
+        }
+
+        ngon._clipRect.top = ~~Math.max(ngon._clipRect.top, 0);
+        ngon._clipRect.bottom = ~~Math.min(ngon._clipRect.bottom, renderContext.resolution.height);
+        ngon._clipRect.left = ~~Math.max(ngon._clipRect.left, 0);
+        ngon._clipRect.right = ~~Math.min(ngon._clipRect.right, renderContext.resolution.width);
+    }
+}
+
+function surface_wipe(renderContext) {
+    const depthBuffer = renderContext.depthBuffer;
+    const pixelBuffer = renderContext.pixelBuffer32;
+    const app = w95.windowManager.apps.find(a=>a.id === renderContext.contextName);
+
+    if (app._dirtyRegion) {
+        for (const region of app._dirtyRegion) {
+            let idx = (region.x + region.y * depthBuffer.width);
+            const yOffs = (depthBuffer.width - region.width);
+
+            if (region.isStatic) {
+                for (let y = 0; y < region.height; y++) {
+                    for (let x = 0; x < region.width; x++) {
+                        depthBuffer.data[idx++] = Infinity;
+                    }
+                    idx += yOffs;
+                }
+            }
+            else {
+                for (let y = 0; y < region.height; y++) {
+                    for (let x = 0; x < region.width; x++) {
+                        pixelBuffer[idx] = 0;
+                        depthBuffer.data[idx] = Infinity;
+                        idx++;
+                    }
+                    idx += yOffs;
+                }
+            }
+        }
+    }
+    // If there's no specific dirty region, wipe the entire surface.
+    else {
+        Rngon.default.render.pipeline.surfaceWiper(renderContext);
+    }
+}
 
 
 /***/ }),
@@ -777,7 +854,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   shell: () => (/* binding */ shell)
 /* harmony export */ });
-/* harmony import */ var _core_rasterizer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/rasterizer.js */ "./src/core/rasterizer.js");
+/* harmony import */ var _core_render_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/render.js */ "./src/core/render.js");
 /* harmony import */ var _core_tick_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/tick.js */ "./src/core/tick.js");
 /* harmony import */ var _core_desktop_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/desktop.js */ "./src/core/desktop.js");
 /* harmony import */ var _core_popup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/popup.js */ "./src/core/popup.js");
@@ -805,78 +882,6 @@ const geometry = {
     renderTime: 0,
 };
 
-const rngonRenderOptions = {
-    useFullInterpolation: false,
-    farPlane: 1,
-};
-
-const rngonRenderPipeline = {
-    rasterizer: _core_rasterizer_js__WEBPACK_IMPORTED_MODULE_0__.rasterizer,
-    transformClipLighter: function({renderContext, mesh}) {
-        // The n-gons are pre-transformed, so we just need to insert them into the
-        // renderer context. Note that we expect the entire UI to consist of a single
-        // mesh.
-        renderContext.screenSpaceNgons = mesh.ngons.filter(ngon=>ngon.vertices.length);
-
-        for (const ngon of renderContext.screenSpaceNgons) {
-            for (const vertex of ngon.vertices) {
-                vertex.x = Math.floor(vertex.x);
-                vertex.y = Math.floor(vertex.y);
-            }
-
-            if (!ngon._clipRect) {
-                ngon._clipRect = {
-                    top: 0,
-                    left: 0,
-                    right: renderContext.resolution.width,
-                    bottom: renderContext.resolution.height,
-                }
-            }
-
-            ngon._clipRect.top = ~~Math.max(ngon._clipRect.top, 0);
-            ngon._clipRect.bottom = ~~Math.min(ngon._clipRect.bottom, renderContext.resolution.height);
-            ngon._clipRect.left = ~~Math.max(ngon._clipRect.left, 0);
-            ngon._clipRect.right = ~~Math.min(ngon._clipRect.right, renderContext.resolution.width);
-        }
-    },
-    // Wipe only dirty regions, rather than the entire render surface.
-    surfaceWiper(renderContext) {
-        const depthBuffer = renderContext.depthBuffer;
-        const pixelBuffer = renderContext.pixelBuffer32;
-        const app = w95.windowManager.apps.find(a=>a.id === renderContext.contextName);
-
-        if (app._dirtyRegion) {
-            for (const region of app._dirtyRegion) {
-                let idx = (region.x + region.y * depthBuffer.width);
-                const yOffs = (depthBuffer.width - region.width);
-
-                if (region.isStatic) {
-                    for (let y = 0; y < region.height; y++) {
-                        for (let x = 0; x < region.width; x++) {
-                            depthBuffer.data[idx++] = Infinity;
-                        }
-                        idx += yOffs;
-                    }
-                }
-                else {
-                    for (let y = 0; y < region.height; y++) {
-                        for (let x = 0; x < region.width; x++) {
-                            pixelBuffer[idx] = 0;
-                            depthBuffer.data[idx] = Infinity;
-                            idx++;
-                        }
-                        idx += yOffs;
-                    }
-                }
-            }
-        }
-        // If there's no specific dirty region, wipe the entire surface.
-        else {
-            Rngon.default.render.pipeline.surfaceWiper(renderContext);
-        }
-    },
-};
-
 const shell = {
     display: {
         get debugLayer() {
@@ -891,7 +896,7 @@ const shell = {
         set scale(newScale) {
             w95.debug?.assert(Number.isInteger(newScale));
             renderScale = newScale;
-            rngonRenderOptions.resolution = (1 / renderScale);
+            _core_render_js__WEBPACK_IMPORTED_MODULE_0__.renderOptions.resolution = (1 / renderScale);
             document.body.style.cursor = `url(${w95.icon[`cursorArrow${renderScale}x`] || w95.icon["cursorArrow2x"]}), auto`;
             w95.shell.refresh();
         },
@@ -913,7 +918,7 @@ const shell = {
         },
         set screenShader(pixel_shader_fn) {
             w95.debug?.assert(typeof pixel_shader_fn === "function");
-            rngonRenderPipeline.pixelShader = pixel_shader_fn;
+            _core_render_js__WEBPACK_IMPORTED_MODULE_0__.renderPipeline.pixelShader = pixel_shader_fn;
         },
     },
     desktop: _core_desktop_js__WEBPACK_IMPORTED_MODULE_2__.desktopApp,
@@ -946,118 +951,6 @@ const shell = {
         });
 
         window.requestAnimationFrame(render_loop);
-
-        function render_loop(timestamp, timeDeltaMs, numTicks = 0) {
-            geometry.renderTime = 0;
-            geometry.updatedApps = (
-                (!numTicks || forceAllWidgetsToUpdate)
-                    ? w95.windowManager.apps
-                    : w95.windowManager.apps.filter(app=>app.update().length)
-            );
-
-            if (forceAllWidgetsToUpdate) {
-                for (const app of w95.windowManager.apps) {
-                    delete app._dirtyRegion;
-                    app.update(true);
-                }
-            }
-
-            if (geometry.updatedApps.length) {
-                geometry.ngons = 0;
-
-                const popupParentApp = (
-                    !w95.windowManager.isPopupMenuActive ||
-                    w95.windowManager.get_parent_app(w95.windowManager.get_active_popup_menu().popupWidget)
-                );
-
-                for (const app of geometry.updatedApps) {
-                    if (app._dirtyRegion) {
-                        const region = app._dirtyRegion[0];
-                        region.isStatic = (
-                            (app.x === region.x) &&
-                            (app.y === region.y) &&
-                            (app.width === region.width) &&
-                            (app.height === region.height)
-                        );
-                    }
-
-                    const isDialogOpen = Boolean(w95.windowManager.get_active_dialog(app).widget);
-                    const appMesh = Rngon.mesh(app.mesh());
-                    geometry.ngons += appMesh.ngons.length;
-                    rngonRenderOptions.context = app.id;
-
-                    Rngon.render({
-                        target: app._canvas,
-                        meshes: [appMesh],
-                        options: rngonRenderOptions,
-                        pipeline: rngonRenderPipeline,
-                    });
-
-                    app._dirtyRegion = [
-                        rect_clamped_to_screen({
-                            x: app.x,
-                            y: app.y,
-                            width: app.width,
-                            height: app.height,
-                        })
-                    ];
-
-                    // Certain widgets can overflow the app window's rectangle.
-                    if (isDialogOpen) {
-                        const {widget, at} = w95.windowManager.get_active_dialog(app);
-                        w95.debug?.assert(widget?._type === "dialog");
-                        w95.debug?.assert(typeof at === "object");
-
-                        const rect = rect_clamped_to_screen({
-                            x: at.x,
-                            y: at.y,
-                            width: widget.width,
-                            height: widget.height,
-                        });
-
-                        if (!is_rect_fully_inside_other(rect, app._dirtyRegion[0])) {
-                            app._dirtyRegion.push(rect);
-                        }
-                    }
-                    else if (popupParentApp && (popupParentApp === app)) {
-                        const {popupWidget, at} = w95.windowManager.get_active_popup_menu();
-                        w95.debug?.assert(popupWidget?._what === "w95-widget");
-                        w95.debug?.assert(typeof at === "object");
-
-                        const rect = rect_clamped_to_screen({
-                            x: at.x,
-                            y: at.y,
-                            width: popupWidget.width,
-                            height: popupWidget.height,
-                        });
-
-                        if (!is_rect_fully_inside_other(rect, app._dirtyRegion[0])) {
-                            app._dirtyRegion.push(rect);
-                        }
-                    }
-                }
-
-                if (w95.shell.display.debugLayer) {
-                    for (const app of geometry.updatedApps) {
-                        w95.$recurseDescendantWidgets(app.rootWidget, (widget, parent)=>{
-                            parent._domSkeleton.append(widget._domSkeleton);
-                        });
-                    }
-                }
-
-                geometry.renderTimeMs = (performance.now() - timestamp);
-            }
-
-            forceAllWidgetsToUpdate = false;
-            (0,_core_tick_js__WEBPACK_IMPORTED_MODULE_1__.signal_system_tick)(timeDeltaMs);
-            w95.windowManager.post_tick_inspect();
-            window.requestAnimationFrame((newTimestamp)=>render_loop(newTimestamp, (newTimestamp - timestamp), numTicks + 1));
-
-            refreshRate.push(1000 / (timeDeltaMs || 1000));
-            if (refreshRate.length > 20) {
-                refreshRate.shift();
-            }
-        }
     },
     run(applications, {singleInstance = false} = {}) {
         w95.windowManager.govern(applications, {singleInstance});
@@ -1087,6 +980,118 @@ function enforce_universal_canvas_properties()
     for (const canvas of document.body.getElementsByTagName("canvas")) {
         canvas.style.width = `${w95.shell.display.width * w95.shell.display.scale}px`;
         canvas.style.height = `${w95.shell.display.height * w95.shell.display.scale}px`;
+    }
+}
+
+function render_loop(timestamp, timeDeltaMs, numTicks = 0) {
+    geometry.renderTime = 0;
+    geometry.updatedApps = (
+        (!numTicks || forceAllWidgetsToUpdate)
+            ? w95.windowManager.apps
+            : w95.windowManager.apps.filter(app=>app.update().length)
+    );
+
+    if (forceAllWidgetsToUpdate) {
+        for (const app of w95.windowManager.apps) {
+            delete app._dirtyRegion;
+            app.update(true);
+        }
+    }
+
+    if (geometry.updatedApps.length) {
+        geometry.ngons = 0;
+
+        const popupParentApp = (
+            !w95.windowManager.isPopupMenuActive ||
+            w95.windowManager.get_parent_app(w95.windowManager.get_active_popup_menu().popupWidget)
+        );
+
+        for (const app of geometry.updatedApps) {
+            if (app._dirtyRegion) {
+                const region = app._dirtyRegion[0];
+                region.isStatic = (
+                    (app.x === region.x) &&
+                    (app.y === region.y) &&
+                    (app.width === region.width) &&
+                    (app.height === region.height)
+                );
+            }
+
+            const isDialogOpen = Boolean(w95.windowManager.get_active_dialog(app).widget);
+            const appMesh = Rngon.mesh(app.mesh());
+            geometry.ngons += appMesh.ngons.length;
+            _core_render_js__WEBPACK_IMPORTED_MODULE_0__.renderOptions.context = app.id;
+
+            Rngon.render({
+                target: app._canvas,
+                meshes: [appMesh],
+                options: _core_render_js__WEBPACK_IMPORTED_MODULE_0__.renderOptions,
+                pipeline: _core_render_js__WEBPACK_IMPORTED_MODULE_0__.renderPipeline,
+            });
+
+            app._dirtyRegion = [
+                rect_clamped_to_screen({
+                    x: app.x,
+                    y: app.y,
+                    width: app.width,
+                    height: app.height,
+                })
+            ];
+
+            // Certain widgets can overflow the app window's rectangle.
+            if (isDialogOpen) {
+                const {widget, at} = w95.windowManager.get_active_dialog(app);
+                w95.debug?.assert(widget?._type === "dialog");
+                w95.debug?.assert(typeof at === "object");
+
+                const rect = rect_clamped_to_screen({
+                    x: at.x,
+                    y: at.y,
+                    width: widget.width,
+                    height: widget.height,
+                });
+
+                if (!is_rect_fully_inside_other(rect, app._dirtyRegion[0])) {
+                    app._dirtyRegion.push(rect);
+                }
+            }
+            else if (popupParentApp && (popupParentApp === app)) {
+                const {popupWidget, at} = w95.windowManager.get_active_popup_menu();
+                w95.debug?.assert(popupWidget?._what === "w95-widget");
+                w95.debug?.assert(typeof at === "object");
+
+                const rect = rect_clamped_to_screen({
+                    x: at.x,
+                    y: at.y,
+                    width: popupWidget.width,
+                    height: popupWidget.height,
+                });
+
+                if (!is_rect_fully_inside_other(rect, app._dirtyRegion[0])) {
+                    app._dirtyRegion.push(rect);
+                }
+            }
+        }
+
+        if (w95.shell.display.debugLayer) {
+            for (const app of geometry.updatedApps) {
+                w95.$recurseDescendantWidgets(app.rootWidget, (widget, parent)=>{
+                    parent._domSkeleton.append(widget._domSkeleton);
+                });
+            }
+        }
+
+        geometry.renderTimeMs = (performance.now() - timestamp);
+    }
+
+    forceAllWidgetsToUpdate = false;
+    (0,_core_tick_js__WEBPACK_IMPORTED_MODULE_1__.signal_system_tick)(timeDeltaMs);
+    w95.windowManager.post_tick_inspect();
+    window.requestAnimationFrame((newTimestamp)=>render_loop(newTimestamp, (newTimestamp - timestamp), numTicks + 1));
+
+    refreshRate.push(1000 / (timeDeltaMs || 1000));
+    if (refreshRate.length > 20) {
+        refreshRate.shift();
     }
 }
 
@@ -1476,6 +1481,8 @@ function render_widget(
                     parent.$form[widgetInterface.$name] = rerenderedInterface;
                 }
             }
+
+            return rerenderedInterface;
         };
 
         // Allow 'this' inside Message and Event handler functions to refer to the widget interface.
@@ -1555,6 +1562,8 @@ function render_widget(
 }
 
 function transformed_recursive_mesh(widget, x = 0, y = 0) {
+    w95.debug?.assert(typeof x === "number");
+    w95.debug?.assert(typeof y === "number");
     w95.debug?.assert(typeof widget === "object");
 
     return recursively_concat_child_meshes(widget);
@@ -1562,10 +1571,10 @@ function transformed_recursive_mesh(widget, x = 0, y = 0) {
     function recursively_concat_child_meshes(
         widget,
         clipRect = {
-            left: widget.x + x,
-            top: widget.y + y,
-            right: (widget.x + x + widget.width),
-            bottom: (widget.y + y + widget.height),
+            left: ((widget.x || 0) + x),
+            top: ((widget.y || 0) + y),
+            right: ((widget.x || 0) + x + (widget.width || 0)),
+            bottom: ((widget.y || 0) + y + (widget.height || 0)),
         },
         dstArray = [],
         baseX = x,
@@ -1577,17 +1586,21 @@ function transformed_recursive_mesh(widget, x = 0, y = 0) {
         w95.debug?.assert(typeof baseY === "number");
         w95.debug?.assert(Array.isArray(dstArray));
 
-        widget._clipRect = clipRect;
+        const widgetX = (widget.x || 0);
+        const widgetY = (widget.y || 0);
+        const widgetWidth = (widget.width || 0);
+        const widgetHeight = (widget.height || 0);
 
-        baseX += widget.x;
-        baseY += widget.y;
+        widget._clipRect = clipRect;
+        baseX += widgetX;
+        baseY += widgetY;
         const selfMesh = transformed_ngons(widget._mesh, clipRect, baseX, baseY);
 
         if (widget.dom) {
             widget.dom.style.left = `${Math.floor(baseX) * w95.shell.display.scale}px`;
             widget.dom.style.top = `${Math.floor(baseY) * w95.shell.display.scale}px`;
-            widget.dom.style.width = `${Math.floor(widget.width) * w95.shell.display.scale}px`;
-            widget.dom.style.height = `${Math.floor(widget.height) * w95.shell.display.scale}px`;
+            widget.dom.style.width = `${Math.floor(widgetWidth) * w95.shell.display.scale}px`;
+            widget.dom.style.height = `${Math.floor(widgetHeight) * w95.shell.display.scale}px`;
             widget.dom.style.fontSize = `${Math.max(50, ((w95.shell.display.scale - 1) * 100))}%`;
             widget.dom.style.visibility = "visible";
         }
@@ -1611,8 +1624,8 @@ function transformed_recursive_mesh(widget, x = 0, y = 0) {
                         : {
                             left: Math.max(clipRect.left, baseX),
                             top: Math.max(clipRect.top, baseY),
-                            right: Math.min(clipRect.right, (baseX + widget.width)),
-                            bottom: Math.min(clipRect.bottom, (baseY + widget.height)),
+                            right: Math.min(clipRect.right, (baseX + widgetWidth)),
+                            bottom: Math.min(clipRect.bottom, (baseY + widgetHeight)),
                         }
                 );
                 recursively_concat_child_meshes(child, subClipRect, dstArray, baseX, baseY);
@@ -2441,7 +2454,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-09.01:11:29"}`,
+    version: `BETA ${"2024-01-10.00:09:40"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {

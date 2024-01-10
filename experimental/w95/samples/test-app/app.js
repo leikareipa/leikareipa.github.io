@@ -11,6 +11,7 @@ import {rotatingCube} from  "./custom-widgets/rotating-cube.js";
 import {statistics} from  "./custom-widgets/statistics.js";
 import {nameQuery} from  "./custom-widgets/name-query.js";
 import {customWarning} from  "./custom-widgets/custom-warning.js";
+import {embeddedIframe} from  "./custom-widgets/embedded-iframe.js";
 
 export default {
     Meta: {
@@ -434,6 +435,26 @@ export default {
                                                 w95.styleHint.alignVCenter,
                                                 w95.styleHint.alignHCenter,
                                             ],
+                                        }),
+                                    ],
+                                },
+                                "Embedded <iframe>": {
+                                    children: [
+                                        w95.widget.frame({
+                                            x: 3,
+                                            y: 3,
+                                            width: "pw - 6",
+                                            height: "ph - 6",
+                                            shape: w95.frameShape.input,
+                                            children: [
+                                                embeddedIframe({
+                                                    x: 2,
+                                                    y: 2,
+                                                    width: "pw - 4",
+                                                    height: "ph - 4",
+                                                    isDisabled: widgetDisable.now,
+                                                }),
+                                            ]
                                         }),
                                     ],
                                 },

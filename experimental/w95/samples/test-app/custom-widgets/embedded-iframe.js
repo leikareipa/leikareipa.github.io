@@ -5,9 +5,7 @@
  * 
  */
 
-import testApp from "../app.js";
-
-export const spawnButton = w95.widget(function({
+export const embeddedIframe = w95.widget(function({
     x = 0,
     y = 0,
     width = 100,
@@ -19,25 +17,25 @@ export const spawnButton = w95.widget(function({
     w95.debug?.assert(typeof y === "number");
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
+    w95.debug?.assert(typeof isDisabled === "boolean");
+
+    const iframeEl = w95.state(document.createElement("iframe"));
 
     return {
         get x() { return x },
         get y() { return y },
         get width() { return width },
         get height() { return height },
+        Opened() {
+            (iframeEl.now.src? 0 : iframeEl.now.src = "https://en.wikipedia.org/wiki/Windows_95");
+        },
         Form() {
             return [
-                w95.widget.button({
-                    x: 0,
-                    y: 0,
+                w95.widget.domElement({
                     width,
                     height,
+                    element: iframeEl.now,
                     isDisabled,
-                    text: `Spawned: ${w95.registry.get("num-windows-spawned")}`,
-                    onClick() {
-                        w95.registry.increment("num-windows-spawned");
-                        w95.shell.run(testApp);
-                    },
                 }),
             ];
         },
