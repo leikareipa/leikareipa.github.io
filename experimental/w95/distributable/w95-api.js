@@ -670,7 +670,7 @@ function draw_rectangular_poly(renderContext, ngon) {
             for (let x = spanStartX; x < spanEndX; x++)
             { 
                 if (
-                    (!material.allowAlphaReject || (texels[texelIdx + 3] === 255)) &&
+                    (!material.allowAlphaReject || (texels[texelIdx + 3] > 127)) &&
                     (depthBuffer[pixelBufferIdx] > depth)
                 ){
                     let red;
@@ -900,7 +900,7 @@ const shell = {
             w95.debug?.assert(Number.isInteger(newScale));
             renderScale = newScale;
             _core_render_js__WEBPACK_IMPORTED_MODULE_0__.renderOptions.resolution = (1 / renderScale);
-            document.body.style.cursor = `url(${w95.icon[`cursorArrow${renderScale}x`] || w95.icon["cursorArrow2x"]}), auto`;
+            generate_scaled_cursor(w95.icon.cursorArrow, renderScale);
             w95.shell.refresh();
         },
         get width() {
@@ -960,6 +960,22 @@ const shell = {
         enforce_universal_canvas_properties();
     },
 };
+
+async function generate_scaled_cursor(icon, scale) {
+    const img = document.createElement("img");
+    img.src = icon.dataUrl;
+    img.onload = ()=>{
+        const canvas = document.createElement("canvas");
+        canvas.width = (icon.width * scale);
+        canvas.height = (icon.height * scale);
+
+        const ctx = canvas.getContext("2d");
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        document.body.style.cursor = `url(${canvas.toDataURL()}), auto`;
+    }
+}
 
 function is_rect_fully_inside_other(rect1, rect2) {
     return (
@@ -1600,10 +1616,12 @@ function transformed_recursive_mesh(widget, x = 0, y = 0) {
         const selfMesh = transformed_ngons(widget._mesh, clipRect, baseX, baseY);
 
         if (widget.dom) {
+            const clipWidth = Math.min(widget.width, (widget._clipRect.right -widget._clipRect.left));
+            const clipHeight = Math.min(widget.height, (widget._clipRect.bottom - widget._clipRect.top));
             widget.dom.style.left = `${Math.floor(baseX) * w95.shell.display.scale}px`;
             widget.dom.style.top = `${Math.floor(baseY) * w95.shell.display.scale}px`;
-            widget.dom.style.width = `${Math.floor(widgetWidth) * w95.shell.display.scale}px`;
-            widget.dom.style.height = `${Math.floor(widgetHeight) * w95.shell.display.scale}px`;
+            widget.dom.style.width = `${Math.floor(clipWidth) * w95.shell.display.scale}px`;
+            widget.dom.style.height = `${Math.floor(clipHeight) * w95.shell.display.scale}px`;
             widget.dom.style.fontSize = `${Math.max(50, ((w95.shell.display.scale - 1) * 100))}%`;
             widget.dom.style.visibility = "visible";
         }
@@ -2457,7 +2475,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-10.00:32:24"}`,
+    version: `BETA ${"2024-01-10.21:49:58"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {

@@ -36,6 +36,7 @@ export default {
     
         const sliderValue = w95.state(5);
         const lineEditText = w95.state("Left empty");
+        const textEditText = w95.state("Left empty\noris it?");
         const numEditText = w95.state("123");
         const userName = w95.state("");
         const widgetDisable = w95.state(false);
@@ -43,6 +44,8 @@ export default {
         const tab2Index = w95.state(0);
         const radioGroupIndex = w95.state(1);
         const dropdownIndex = w95.state(2);
+        const isCheckChecked = w95.state(false);
+        const groupItemCheckIdx = w95.state(0);
     
         return {
             get width() { return appWidth.now },
@@ -58,9 +61,9 @@ export default {
                     </table>
                     <br>
                     <div class="main">
-                        <img src="construction.gif">
+                        <img src="./assets/construction.gif">
                         <a target="_blank" href="https://www.google.com">Under construction</a>
-                        <img src="construction.gif">
+                        <img src="./assets/construction.gif">
                     </div>
                 `;
 
@@ -69,9 +72,6 @@ export default {
                     x: ~~((w95.shell.display.width / 2) - (appWidth.now / 2)),
                     y: Math.max(0, ~~((w95.shell.display.height / 2) - (appHeight.now / 2))),
                 });
-            },
-            Closed() {
-                domEl.now.remove();
             },
             Form() {
                 return w95.widget.window({
@@ -225,7 +225,7 @@ export default {
                                         "1x": {
                                             isDisabled: widgetDisable.now,
                                         },
-                                        "\b2x\b": {
+                                        "2x": {
                                             x: 40,
                                             y: 0,
                                             isDisabled: widgetDisable.now,
@@ -427,15 +427,6 @@ export default {
                                 "Text edit": {
                                     isDisabled: true,
                                     children: [
-                                        w95.widget.label({
-                                            width: "pw",
-                                            height: "ph",
-                                            text: "TODO",
-                                            styleHints: [
-                                                w95.styleHint.alignVCenter,
-                                                w95.styleHint.alignHCenter,
-                                            ],
-                                        }),
                                     ],
                                 },
                                 "Embedded <iframe>": {
@@ -464,54 +455,56 @@ export default {
                             width: (appWidth.now - 8),
                             children: [
                                 w95.widget.menuItem({
-                                    text: "Edit",
+                                    label: "File",
                                     isTopLevel: true,
                                     isDisabled: widgetDisable.now,
                                     menu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuItem({
-                                                text: "Copy",
-                                            }),
-                                            w95.widget.menuItem({
-                                                text: "Paste",
+                                                label: "Exit",
+                                                onClick(widget) {
+                                                    const parentApp = w95.windowManager.get_parent_app(widget);
+                                                    w95.debug?.assert(parentApp?._type === "app");
+                                                    w95.windowManager.release_window(parentApp.window);
+                                                },
                                             }),
                                         ],
                                     }),
                                 }),
                                 w95.widget.menuItem({
-                                    text: "Dialogs",
+                                    label: "Dialogs",
                                     isTopLevel: true,
                                     isDisabled: widgetDisable.now,
                                     menu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuItem({
-                                                text: "Error",
+                                                label: "Error",
                                                 onClick() {
                                                     isErrorDialogOpen.set(true);
                                                 },
                                             }),
                                             w95.widget.menuItem({
-                                                text: "Question",
+                                                label: "Question",
                                                 onClick() {
                                                     isQuestionDialogOpen.set(true);
                                                 },
                                             }),
                                             w95.widget.menuItem({
-                                                text: "Warning",
+                                                label: "Warning",
                                                 onClick() {
                                                     isWarningDialogOpen.set(true);
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuItem({
-                                                text: "Custom warning",
+                                                label: "Custom warning",
                                                 onClick() {
                                                     isCustomWarningDialogOpen.set(true);
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuItem({
-                                                text: "String query",
+                                                label: "String query",
                                                 onClick() {
                                                     isNameQueryDialogOpen.set(true);
                                                 },
@@ -520,17 +513,66 @@ export default {
                                     }),
                                 }),
                                 w95.widget.menuItem({
-                                    text: "Help",
+                                    label: "Other",
                                     isTopLevel: true,
                                     isDisabled: widgetDisable.now,
                                     menu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuItem({
-                                                text: "Help topics",
+                                                label: "Check this",
+                                                isCheckable: true,
+                                                isChecked: isCheckChecked.now,
+                                                newCheckState(isChecked) {
+                                                    isCheckChecked.set(isChecked);
+                                                },
                                             }),
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuItem({
-                                                text: "About Calculator",
+                                                label: "Group item 1",
+                                                group: "a",
+                                                isCheckable: true,
+                                                isChecked: (groupItemCheckIdx.now === 0),
+                                                newCheckState(isChecked) {
+                                                    if (isChecked) {
+                                                        groupItemCheckIdx.set(0);
+                                                    }
+                                                },
+                                            }),
+                                            w95.widget.menuItem({
+                                                label: "Group item 2",
+                                                group: "a",
+                                                isCheckable: true,
+                                                isChecked: (groupItemCheckIdx.now === 1),
+                                                newCheckState(isChecked) {
+                                                    if (isChecked) {
+                                                        groupItemCheckIdx.set(1);
+                                                    }
+                                                },
+                                            }),
+                                            w95.widget.menuItem({
+                                                label: "Group item 3",
+                                                group: "a",
+                                                isCheckable: true,
+                                                isChecked: (groupItemCheckIdx.now === 2),
+                                                newCheckState(isChecked) {
+                                                    if (isChecked) {
+                                                        groupItemCheckIdx.set(2);
+                                                    }
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: "Out of service",
+                                                isDisabled: true,
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: "Operating system",
+                                                icon: w95.icon.windowsLogo16x16,
+                                            }),
+                                            w95.widget.menuItem({
+                                                label: "Program application",
+                                                icon: w95.icon.applicationIcon16x16,
                                             }),
                                         ],
                                     }),
