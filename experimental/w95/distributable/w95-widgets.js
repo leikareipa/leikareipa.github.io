@@ -1111,6 +1111,56 @@ w95.widget("dropdownBox", function({
 
 /***/ }),
 
+/***/ "./src/api/widgets/dynamic-wrapper/widget.js":
+/*!***************************************************!*\
+  !*** ./src/api/widgets/dynamic-wrapper/widget.js ***!
+  \***************************************************/
+/***/ (() => {
+
+/*
+ * 2023 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
+w95.widget("dynamicWrapper", function({
+    widget = undefined,
+} = {})
+{
+    const x = w95.state(0);
+    const y = w95.state(0);
+    const width = w95.state(0);
+    const height = w95.state(0);
+
+    return {
+        get x() { return x.now },
+        get y() { return y.now },
+        get width() { return width.now },
+        get height() { return height.now },
+        Form() {
+            return [widget];
+        },
+        Message: {
+            move(newX, newY) {
+                w95.debug?.assert(typeof newX === "number");
+                w95.debug?.assert(typeof newY === "number");
+                x.set(newX);
+                y.set(newY);
+            },
+            resize(newWidth, newHeight) {
+                w95.debug?.assert(typeof newWidth === "number");
+                w95.debug?.assert(typeof newHeight === "number");
+                width.set(newWidth);
+                height.set(newHeight);
+            },
+        },
+    };
+});
+
+
+/***/ }),
+
 /***/ "./src/api/widgets/frame/widget.js":
 /*!*****************************************!*\
   !*** ./src/api/widgets/frame/widget.js ***!
@@ -2138,7 +2188,7 @@ w95.widget("horizontalLayout", function({
             if (styleHints.includes(w95.styleHint.alignHCenter)) {
                 adjustedX.set(x + ~~(width / 2 - ((maxChildX - minChildX) / 2)));
             }
-            else if (styleHints.includes(w95.styleHint.alignHRight)) {
+            else if (styleHints.includes(w95.styleHint.alignRight)) {
                 adjustedX.set(x + width - maxChildX);
             }
         },
@@ -2455,6 +2505,10 @@ w95.widget("label", function({
         styleHints.includes(w95.styleHint.action)
     );
 
+    if (styleHints.includes(w95.styleHint.underlined)) {
+        height++;
+    }
+
     // Prevent the label with disabled styling from shifting up/right.
     if (isDisabledAction) {
         width += !(width & 1);
@@ -2473,8 +2527,8 @@ w95.widget("label", function({
                 ...background_mesh(),
                 ...styleHints.includes(w95.styleHint.underlined)? [
                     Rngon.ngon([
-                        Rngon.vertex(0, height),
-                        Rngon.vertex(width, height),
+                        Rngon.vertex(0, (height - 1)),
+                        Rngon.vertex(width, (height - 1)),
                     ], {
                         color,
                     })
@@ -2548,7 +2602,7 @@ w95.widget("label", function({
             }
         }
 
-        if (styleHints.includes(w95.styleHint.alignHRight)) {
+        if (styleHints.includes(w95.styleHint.alignRight)) {
             const left = (width - textWidth);
             for (const ngon of ngons) {
                 for (const vert of ngon.vertices) {
@@ -2604,6 +2658,41 @@ w95.widget("label", function({
             });
         }
     }
+});
+
+
+/***/ }),
+
+/***/ "./src/api/widgets/layout-spacer/widget.js":
+/*!*************************************************!*\
+  !*** ./src/api/widgets/layout-spacer/widget.js ***!
+  \*************************************************/
+/***/ (() => {
+
+/*
+ * 2023 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
+w95.widget("layoutSpacer", function({
+    width = 0,
+    height = 0,
+} = {})
+{
+    w95.debug?.assert(typeof width === "number");
+    w95.debug?.assert(typeof height === "number");
+
+    return {
+        get x() { return 0 },
+        get y() { return 0 },
+        get width() { return width },
+        get height() { return height },
+        Form() {
+            return [];
+        },
+    };
 });
 
 
@@ -3971,8 +4060,10 @@ w95.widget("scrollArea", function({
             return [
                 w95.widget.frame({
                     $name: "_background",
-                    width: (width - (!horizontal.isVisible.now * scrollButtonSize) - padding),
-                    height: (height - (!vertical.isVisible.now * scrollButtonSize)),
+                    x: padding,
+                    y: padding,
+                    width: (width - (vertical.isVisible.now * scrollButtonSize) - padding - padding),
+                    height: (height - (horizontal.isVisible.now * scrollButtonSize) - padding - padding),
                     shape: w95.frameShape.none,
                     backgroundColor: (
                         isDisabled
@@ -3981,7 +4072,11 @@ w95.widget("scrollArea", function({
                     ),
                     onClick,
                     onDoubleClick,
-                    onMouseDown,
+                    onMouseDown({at, widget}) {
+                        at.x += horizontal.scrollPos.now;
+                        at.y += vertical.scrollPos.now;
+                        onMouseDown?.({at, widget});
+                    },
                     onMouseUp,
                     onMouseEnter,
                     onMouseLeave,
@@ -3992,8 +4087,8 @@ w95.widget("scrollArea", function({
                     $name: "_contents",
                     x: (padding - horizontal.scrollPos.now),
                     y: (padding - vertical.scrollPos.now),
-                    width: Math.max(width, horizontal.contentLength.now),
-                    height: Math.max(height, vertical.contentLength.now),
+                    width: horizontal.contentLength.now,
+                    height: vertical.contentLength.now,
                     shape: w95.frameShape.none,
                     children,
                 }),
@@ -4313,7 +4408,7 @@ w95.widget("tabControl", function({
 /***/ (() => {
 
 /*
- * 2022 Tarpeeksi Hyvae Soft
+ * 2023 Tarpeeksi Hyvae Soft
  *
  * Software: w95
  * 
@@ -4325,14 +4420,11 @@ w95.widget("textEdit", function({
     text = "",
     width = 100,
     height = 21,
+    font = w95.font,
     isEditable = false,
     isDisabled = false,
     autofocus = false,
-    validator = /./,
-    styleHints = [
-        w95.styleHint.alignVCenter,
-    ],
-    onSubmit = undefined,
+    styleHints = [],
     newText = undefined,
 } = {})
 {
@@ -4342,29 +4434,29 @@ w95.widget("textEdit", function({
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof isEditable === "boolean");
     w95.debug?.assert(typeof text === "string");
-    w95.debug?.assert(validator instanceof RegExp);
     w95.debug?.assert(Array.isArray(styleHints));
-    w95.debug?.assert(["undefined", "function"].includes(typeof onSubmit));
     w95.debug?.assert(["undefined", "function"].includes(typeof newText));
 
+    // This widget doesn't support rich text, so let's strip away any formatting
+    // characters that w95.widget.label uses (e.g. "\b" for bold text).
+    text = text.replace(/(?![\n])[\x00-\x1f]/g, "");
+
+    font = (styleHints.includes(w95.styleHint.bold)? font.bold : font.regular);
+
+    const cursorPos = w95.state(0);
     const showCursor = w95.state(true);
-    const cursorPosition = w95.state(text.length);
-    const cursorPositionY = w95.state(0);
-    const viewBufferStart = w95.state(0);
-    const viewBufferEnd = w95.state(text.length);
     const hasFocus = w95.state(false);
 
-    const lines = text.split("\n");
-    const currentLine = lines[cursorPositionY.now];
-    const cursorX = w95.font.stringWidth(currentLine.substring(0, cursorPosition.now));
+    cursorPos.onChange = ()=>showCursor.set(true);
 
+    const lines = text.split("\n");
+    const cursorPos2d = {};
+    cursorPos2d.x = text.slice(0, cursorPos.now).split("\n").at(-1).length;
+    cursorPos2d.y = (text.slice(0, cursorPos.now).split("\n").length - 1);
+    cursorPos2d.globalX = (1 + w95.font.stringWidth(lines[cursorPos2d.y].slice(0, cursorPos2d.x), font));
+    cursorPos2d.globalY = (1 + (cursorPos2d.y * font.lineHeight));
+    
     let cursorBlinkTimeout;
-    const borderWidth = 5;
-    const horPadding = 5;
-    const padding = 5;
-    const visibleText = text.slice(viewBufferStart.now, viewBufferEnd.now);
-    const font = w95.font.regular;
-    const cursorXOffset = w95.font.stringWidth(text.slice(viewBufferStart.now, cursorPosition.now), font);
 
     return {
         get x() { return x },
@@ -4384,75 +4476,60 @@ w95.widget("textEdit", function({
             clearTimeout(cursorBlinkTimeout);
         },
         Form() {
-            return w95.widget.frame({ 
+            return w95.widget.scrollArea({
                 width,
                 height,
-                shape: w95.frameShape.input,
+                frameShape: w95.frameShape.input,
                 backgroundColor: (
                     isDisabled
                         ? w95.palette.window.background
                         : w95.palette.named.white
                 ),
                 children: [
-                    w95.widget.scrollArea({
-                        width: "pw",
-                        height: "ph",
-                        frameShape: w95.frameShape.none,
-                        children: [
-                            w95.widget.label({
-                                x: 2,
-                                text,
-                                color: (
-                                    isDisabled
-                                        ? w95.palette.widget.disabled1
-                                        : w95.palette.widget.foreground
-                                ),
-                            }),
-                            w95.widget.label({
-                                x: 100,
-                                y: 100,
-                                text: "A",
-                                color: (
-                                    isDisabled
-                                        ? w95.palette.widget.disabled1
-                                        : w95.palette.widget.foreground
-                                ),
-                            }),
+                    w95.widget.label({
+                        x: 2,
+                        text,
+                        color: (
+                            isDisabled
+                                ? w95.palette.widget.disabled1
+                                : w95.palette.widget.foreground
+                        ),
+                    }),
 
-                            // Text cursor.
-                            Rngon.ngon([
-                                Rngon.vertex((padding + cursorX - 1), (cursorPositionY.now * font.lineHeight) + padding),
-                                Rngon.vertex((padding + cursorX - 1), (cursorPositionY.now * font.lineHeight) + (padding + font.lineHeight)),
-                            ], {
-                                color: (
-                                    (showCursor.now && hasFocus.now)
-                                        ? w95.palette.widget.foreground
-                                        : w95.palette.named.transparent
-                                ),
-                            }),
-                        ],
-                        onMouseDown({at}) {
-                            if (isDisabled) {
-                                return;
-                            }
-            
-                            const y = Math.min((lines.length - 1), ~~((at.y - padding) / font.lineHeight));
-                            const line = lines[y];
-                            
-                            const clickCharIdx = line.split("").findIndex((ch, idx)=>{
-                                console.log(ch, idx)
-                                const spaceWidth = 3;
-                                const chCode = ch.charCodeAt(0);
-                                const chWidth = ((chCode === 32)? spaceWidth : (font[chCode]?.width || 0));
-                                return (w95.font.stringWidth(line.substring(0, idx), font) > (at.x - (chWidth / 2) - padding));
-                            });
-            
-                            set_cursor_position(((clickCharIdx < 0)? line.length : clickCharIdx), y);
-            
-                            return true;
-                        },
+                    // Text cursor.
+                    Rngon.ngon([
+                        Rngon.vertex(cursorPos2d.globalX, cursorPos2d.globalY),
+                        Rngon.vertex(cursorPos2d.globalX, (cursorPos2d.globalY + font.lineHeight - 1)),
+                    ], {
+                        color: (
+                            (showCursor.now && hasFocus.now)
+                                ? w95.palette.widget.foreground
+                                : w95.palette.named.transparent
+                        ),
                     }),
                 ],
+                onMouseDown: ({at})=>{
+                    if (isDisabled) {
+                        return;
+                    }
+    
+                    const y = Math.min(~~(at.y / font.lineHeight), (lines.length - 1));
+                    const clickedLine = lines[y];
+                    const x = clickedLine.split("").findIndex((ch, idx)=>{
+                        const spaceWidth = 3;
+                        const chCode = ch.charCodeAt(0);
+                        const chWidth = ((chCode === 32)? spaceWidth : (font[chCode]?.width || 0));
+                        return (w95.font.stringWidth(clickedLine.substring(0, idx), font) > ~~(at.x - (chWidth / 2)));
+                    });
+
+                    const clampedX = ((x < 0)? clickedLine.length : x);
+                    const startOfClickedLine = lines.slice(0, y).reduce((len, line)=>(len + line.length + 1), 0);
+
+                    cursorPos.set(startOfClickedLine + clampedX);
+                    this.Message.focus();
+    
+                    return true;
+                },
             });
         },
         Message: {
@@ -4467,35 +4544,9 @@ w95.widget("textEdit", function({
                 showCursor.set(true);
                 hasFocus.set(true);
             },
-            replaceText(newText) {
-                w95.debug?.assert(typeof newText === "string");
-
-                if (text === newText) {
-                    return;
-                }
-
-                viewBufferStart.set(0);
-                viewBufferEnd.set(newText.length);
-
-                set_cursor_position(0);
-                text = remove_text(text.length);
-                text = enter_text(newText);
-
-                showCursor.set(true);
-                set_cursor_position(text.length);
-                
-                newText?.(text, this);
-            },
-            submit() {
-                if (onSubmit) {
-                    onSubmit({text, widget:this});
-                    this.Message.blur();
-                }
-            }
         },
         Event: {
             keypress(event) {
-                console.log("WSD")
                 w95.debug?.assert(event instanceof KeyboardEvent);
                 w95.debug?.assert(typeof event.key === "string");
 
@@ -4505,7 +4556,8 @@ w95.widget("textEdit", function({
                     return;
                 }
 
-                updatedText = enter_text(event.key);
+                updatedText = (updatedText.slice(0, cursorPos.now) + event.key + updatedText.slice(cursorPos.now));
+                cursorPos.set(cursorPos.now + 1);
 
                 if (text !== updatedText) {
                     text = updatedText;
@@ -4525,28 +4577,46 @@ w95.widget("textEdit", function({
                 let updatedText = text;
 
                 if (event.key == "Backspace") {
-                    updatedText = remove_text(-1);
+                    if (cursorPos.now) {
+                        updatedText = (updatedText.slice(0, (cursorPos.now - 1)) + updatedText.slice(cursorPos.now));
+                        cursorPos.set(cursorPos.now - 1);
+                    }
                 }
                 else if (event.key == "Delete") {
-                    updatedText = remove_text(1);
+                    if (cursorPos.now < text.length) {
+                        updatedText = (updatedText.slice(0, cursorPos.now) + updatedText.slice(cursorPos.now + 1));
+                    }
                 }
                 else if (event.key == "Escape") {
                     this.Message.blur();
                 }
                 else if (["Enter", "Return"].includes(event.key)) {
-                    updatedText = enter_text("\n");
+                    updatedText = (updatedText.slice(0, cursorPos.now) + "\n" + updatedText.slice(cursorPos.now));
+                    cursorPos.set(cursorPos.now + 1);
                 }
                 else if (event.key == "ArrowLeft") {
-                    set_cursor_position(cursorPosition.now - 1);
+                    cursorPos.set(Math.max(0, (cursorPos.now - 1)));
                 }
                 else if (event.key == "ArrowRight") {
-                    set_cursor_position(cursorPosition.now + 1);
+                    cursorPos.set(Math.min(text.length, (cursorPos.now + 1)));
                 }
                 else if (event.key == "ArrowUp") {
-                    set_cursor_position(cursorPosition.now, (cursorPositionY.now - 1));
+                    if (cursorPos2d.y === 0) {
+                        cursorPos.set(0);
+                    }
+                    else {
+                        const toPrevLineStart = lines.slice(0, (cursorPos2d.y - 1)).reduce((len, line)=>(len + line.length + 1), 0);
+                        cursorPos.set(toPrevLineStart + Math.min(cursorPos2d.x, lines[cursorPos2d.y - 1].length));
+                    }
                 }
                 else if (event.key == "ArrowDown") {
-                    set_cursor_position(cursorPosition.now, (cursorPositionY.now + 1));
+                    if (cursorPos2d.y === (lines.length - 1)) {
+                        cursorPos.set(text.length);
+                    }
+                    else {
+                        const toNextLineStart = lines.slice(0, (cursorPos2d.y + 1)).reduce((len, line)=>(len + line.length + 1), 0);
+                        cursorPos.set(toNextLineStart + Math.min(cursorPos2d.x, lines[cursorPos2d.y + 1].length));
+                    }
                 }
 
                 if (text !== updatedText) {
@@ -4557,81 +4627,6 @@ w95.widget("textEdit", function({
                 return;
             }
         },
-    };
-
-    function remove_text(count = 0) {
-        w95.debug?.assert(typeof count === "number");
-
-        let updatedText = text;
-
-        switch (Math.sign(count)) {
-            case 1: {
-                lines[cursorPositionY.now] = (currentLine.slice(0, cursorPosition.now) + currentLine.slice(cursorPosition.now + count));
-                updatedText = lines.join("\n");
-                break;
-            }
-            case -1: {
-                if (cursorPosition.now <= 0) {
-                    break;
-                }
-
-                const oldCursorPos = cursorPosition.now;
-                const newCursorPos = set_cursor_position(oldCursorPos + count);
-
-                lines[cursorPositionY.now] = (currentLine.slice(0, newCursorPos) + currentLine.slice(oldCursorPos));
-                updatedText = lines.join("\n");
-
-                break;
-            }
-            default: break;
-        }
-
-        showCursor.set(true);
-
-        return updatedText;
-    };
-
-    function enter_text(newText = "") {
-        w95.debug?.assert(typeof newText === "string");
-
-        lines[cursorPositionY.now] = [
-            currentLine.slice(0, cursorPosition.now),
-            newText,
-            currentLine.slice(cursorPosition.now)
-        ].join("");
-
-        const updatedText = lines.join("\n");
-        
-        showCursor.set(true);
-        set_cursor_position(cursorPosition.now + newText.length);
-
-        return updatedText;
-    };
-
-    function set_cursor_position(x = 0, y = cursorPositionY.now) {
-        w95.debug?.assert(typeof x === "number");
-        showCursor.set(true);
-
-        if (y < 0) {
-            x = 0;
-            y = 0;
-        }
-        else if (y >= lines.length) {
-            y = (lines.length - 1);
-            x = currentLine.length;
-        }
-        else if ((x < 0) && (y > 0)) {
-            y--;
-            x = (lines[y].length + x + 1);
-        }
-        else if ((y < (lines.length - 1)) && (x > lines[y].length)) {
-            y++;
-            x = 0;
-        }
-
-        cursorPositionY.set(Math.max(0, Math.min(y, (lines.length - 1))));
-        cursorPosition.set(Math.max(0, Math.min(x, lines[cursorPositionY.now].length)));
-        return cursorPosition.now;
     };
 });
 
@@ -4798,6 +4793,107 @@ w95.widget("titleBar", function({
         w95.debug?.assert(parentWidget.now._what === "w95-widget");
         parentWidget.now.Message?.maximize?.();
     }
+});
+
+
+/***/ }),
+
+/***/ "./src/api/widgets/vertical-layout/widget.js":
+/*!***************************************************!*\
+  !*** ./src/api/widgets/vertical-layout/widget.js ***!
+  \***************************************************/
+/***/ (() => {
+
+/*
+ * 2023 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
+w95.widget("verticalLayout", function({
+    x = 0,
+    y = 0,
+    height = 100,
+    padding = 3,
+    styleHints = [],
+    children = [],
+} = {})
+{
+    w95.debug?.assert(typeof x === "number");
+    w95.debug?.assert(typeof y === "number");
+    w95.debug?.assert(typeof height === "number");
+    w95.debug?.assert(Array.isArray(styleHints));
+    w95.debug?.assert(Array.isArray(children));
+
+    const adjustedX = w95.state(x);
+    const adjustedY = w95.state(y);
+    const adjustedWidth = w95.state(0);
+    const adjustedHeight = w95.state(height, {repaintOnChange: false});
+    
+    return {
+        get x() { return adjustedX.now },
+        get y() { return adjustedY.now },
+        get width() { return adjustedWidth.now },
+        get height() { return adjustedHeight.now },
+        Mounted() {
+            const childContents = this.$childWidgets.map(w=>w.$childWidgets[0]);
+            const maxChildWidth = childContents.reduce((max, w)=>Math.max(max, (w.x + w.width)), 0);
+            adjustedWidth.set(maxChildWidth);
+
+            // Vertical alignment.
+            {
+                const contentHeight = this.$childWidgets.reduce((height, wrapper)=>{
+                    const widget = wrapper.$childWidgets[0];
+                    return (height + widget.height + padding);
+                }, (-padding * !!children.length));
+
+                if (styleHints.includes(w95.styleHint.alignVCenter)) {
+                    adjustedY.set(y + ~~(height / 2 - (contentHeight / 2)));
+                }
+                else if (styleHints.includes(w95.styleHint.alignBottom)) {
+                    adjustedY.set(y + height - contentHeight);
+                    adjustedHeight.set(contentHeight);
+                }
+            }
+
+            // Horizontal alignment.
+            {
+                if (styleHints.includes(w95.styleHint.alignRight)) {
+                    adjustedX.set(x - adjustedWidth.now);
+                }
+
+                let runningHeight = 0;
+                
+                for (const wrapper of this.$childWidgets) {
+                    const widget = wrapper.$childWidgets[0];
+
+                    if (widget._type !== "layoutSpacer") {
+                        wrapper.Message.resize(widget.width, widget.height);
+
+                        if (styleHints.includes(w95.styleHint.alignRight)) {
+                            wrapper.Message.move((adjustedWidth.now - widget.width), runningHeight);
+                        }
+                        else if (styleHints.includes(w95.styleHint.alignLeft)) {
+                            wrapper.Message.move(0, runningHeight);
+                        }
+                        else {
+                            wrapper.Message.move(0, runningHeight);
+                        }
+                    }
+                        
+                    runningHeight += (widget.height + padding);
+                }
+            }
+        },
+        Form() {
+            return children.map(c=>(
+                w95.widget.dynamicWrapper({
+                    widget: c,
+                })
+            ));
+        },
+    };
 });
 
 
@@ -5140,6 +5236,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _dialog_widget_js__WEBPACK_IMPORTED_MODULE_28___default = /*#__PURE__*/__webpack_require__.n(_dialog_widget_js__WEBPACK_IMPORTED_MODULE_28__);
 /* harmony import */ var _horizontal_layout_widget_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./horizontal-layout/widget.js */ "./src/api/widgets/horizontal-layout/widget.js");
 /* harmony import */ var _horizontal_layout_widget_js__WEBPACK_IMPORTED_MODULE_29___default = /*#__PURE__*/__webpack_require__.n(_horizontal_layout_widget_js__WEBPACK_IMPORTED_MODULE_29__);
+/* harmony import */ var _vertical_layout_widget_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./vertical-layout/widget.js */ "./src/api/widgets/vertical-layout/widget.js");
+/* harmony import */ var _vertical_layout_widget_js__WEBPACK_IMPORTED_MODULE_30___default = /*#__PURE__*/__webpack_require__.n(_vertical_layout_widget_js__WEBPACK_IMPORTED_MODULE_30__);
+/* harmony import */ var _dynamic_wrapper_widget_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./dynamic-wrapper/widget.js */ "./src/api/widgets/dynamic-wrapper/widget.js");
+/* harmony import */ var _dynamic_wrapper_widget_js__WEBPACK_IMPORTED_MODULE_31___default = /*#__PURE__*/__webpack_require__.n(_dynamic_wrapper_widget_js__WEBPACK_IMPORTED_MODULE_31__);
+/* harmony import */ var _layout_spacer_widget_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./layout-spacer/widget.js */ "./src/api/widgets/layout-spacer/widget.js");
+/* harmony import */ var _layout_spacer_widget_js__WEBPACK_IMPORTED_MODULE_32___default = /*#__PURE__*/__webpack_require__.n(_layout_spacer_widget_js__WEBPACK_IMPORTED_MODULE_32__);
+
+
+
+
 
 
 

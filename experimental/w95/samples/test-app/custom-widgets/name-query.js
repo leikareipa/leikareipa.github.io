@@ -67,7 +67,7 @@ export const nameQuery = w95.widget(function({
                         y: 46,
                         width: "pw - 11",
                         styleHints:  [
-                            w95.styleHint.alignHRight,
+                            w95.styleHint.alignRight,
                         ],
                         children: [
                             w95.widget.button({

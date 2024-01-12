@@ -295,39 +295,44 @@ function desktopApp(icons = []) {
                         ],
                         children: [
                             ...icons,
-                            w95.widget.label({
-                                x: 15,
-                                y: 15,
-                                color: w95.palette.named.white,
-                                text: `w95 (${w95.version})`,
-                                styleHints: [
-                                    w95.styleHint.alignHRight,
+                            w95.widget.verticalLayout({
+                                x: "pw - 20",
+                                height: "ph - 40",
+                                styleHints:  [
+                                    w95.styleHint.alignBottom,
+                                    w95.styleHint.alignRight,
                                 ],
-                            }),
-                            w95.widget.label({
-                                x: 15,
-                                y: (18 + w95.font.regular.lineHeight),
-                                color: w95.palette.named.offWhite,
-                                text: "A Windows 95 themed web UI framework",
-                            }),
-                            w95.widget.label({
-                                x: 15,
-                                y: (21 + (w95.font.regular.lineHeight * 2)),
-                                color: w95.palette.named.offWhite,
-                                text: "https://github.com/leikareipa/w95",
-                                styleHints: [
-                                    w95.styleHint.underlined,
+                                children: [
+                                    w95.widget.label({
+                                        color: w95.palette.named.white,
+                                        text: `\bw95\b ${w95.version}`,
+                                        styleHints: [
+                                            w95.styleHint.alignRight,
+                                        ],
+                                    }),
+                                    w95.widget.label({
+                                        color: w95.palette.named.offWhite,
+                                        text: "A Windows 95 themed web UI framework",
+                                    }),
+                                    w95.widget.label({
+                                        color: w95.palette.named.offWhite,
+                                        text: "https://github.com/leikareipa/w95",
+                                        styleHints: [
+                                            w95.styleHint.underlined,
+                                        ],
+                                        onMouseDown() {
+                                            window.open("https://github.com/leikareipa/w95", "_blank");
+                                            return true;
+                                        },
+                                    }),
+                                    w95.widget.layoutSpacer({
+                                        height: ~~(w95.font.regular.lineHeight / 1.5),
+                                    }),
+                                    w95.widget.label({
+                                        color: w95.palette.named.offWhite,
+                                        text: "This software is not associated with Microsoft.",
+                                    }),
                                 ],
-                                onMouseDown() {
-                                    window.open("https://github.com/leikareipa/w95", "_blank");
-                                    return true;
-                                },
-                            }),
-                            w95.widget.label({
-                                x: (width.now - 232),
-                                y: (height.now - 15 - w95.font.regular.lineHeight),
-                                color: w95.palette.named.offWhite,
-                                text: "This software is not associated with Microsoft.",
                             }),
                         ],
                         onMouseDown({widget}) {
@@ -1636,7 +1641,14 @@ function transformed_recursive_mesh(widget, x = 0, y = 0) {
         if (!widget._hideMesh) {
             dstArray.unshift(...selfMesh);
 
-            const hasUnlimitedClipRect = (!clipRect || widget.isActivePopupMenu || widget.isActiveDialog);
+            const hasUnlimitedClipRect = (
+                !clipRect ||
+                widget.isActivePopupMenu ||
+                widget.isActiveDialog ||
+                widget._type === "verticalLayout" ||
+                widget._type === "horizontalLayout" ||
+                widget._type === "dynamicWrapper"
+            );
 
             for (const child of widget.$childWidgets) {
                 const subClipRect = (
@@ -2475,7 +2487,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-10.21:49:58"}`,
+    version: `BETA ${"2024-01-12.00:29:19"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {
@@ -2529,10 +2541,12 @@ const w95 = {
             "noBorder",
             "bold",
             "underlined",
-            "alignHCenter",
             "alignVCenter",
-            "alignHLeft",
-            "alignHRight",
+            "alignTop",
+            "alignBottom",
+            "alignHCenter",
+            "alignLeft",
+            "alignRight",
             "vertical",
             "horizontal",
             "solid",

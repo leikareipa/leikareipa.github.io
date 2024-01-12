@@ -24,8 +24,8 @@ export default {
         `,
     },
     App() {
-        const appWidth = w95.state(404);
-        const appHeight = w95.state(500);
+        const appWidth = w95.state(392);
+        const appHeight = w95.state(Math.max(422, ~~(w95.shell.display.height * 0.8)));
         const domEl = w95.state(document.createElement("div"))
     
         const isNameQueryDialogOpen = w95.state(false);
@@ -36,7 +36,7 @@ export default {
     
         const sliderValue = w95.state(5);
         const lineEditText = w95.state("Left empty");
-        const textEditText = w95.state("Left empty\noris it?");
+        const textEditText = w95.state("Text editing, with some bugs remaining.\n\n(Multi-line.)");
         const numEditText = w95.state("123");
         const userName = w95.state("");
         const widgetDisable = w95.state(false);
@@ -90,23 +90,23 @@ export default {
                     children: [
                         w95.widget.groupBox({
                             title: `Sliders & progress (${(sliderValue.now * 10)}%)`,
-                            x: 10,
-                            y: 208,
+                            x: 6,
+                            y: 185,
                             width: 182,
-                            height: 105,
+                            height: 80,
                             children: [
                                 w95.widget.progressBar({
                                     x: 10,
                                     y: 15,
-                                    width: "pw - 20",
+                                    width: "pw / 2 - 15",
                                     progress: (sliderValue.now * 10),
                                     isDisabled: widgetDisable.now,
                                     showLabel: true,
                                 }),
                                 w95.widget.progressBar({
-                                    x: 10,
-                                    y: 35,
-                                    width: "pw - 20",
+                                    x: 94,
+                                    y: 15,
+                                    width: "pw / 2 - 13",
                                     progress: (sliderValue.now * 10),
                                     isDisabled: widgetDisable.now,
                                     styleHints: [
@@ -115,7 +115,7 @@ export default {
                                 }),
                                 w95.widget.horizontalSlider({
                                     x: 10,
-                                    y: 60,
+                                    y: 36,
                                     width: "pw - 20",
                                     minValue: 0,
                                     maxValue: 10,
@@ -129,8 +129,8 @@ export default {
                         }),
                         w95.widget.groupBox({
                             title: "Fields",
-                            x: 10,
-                            y: 28,
+                            x: 6,
+                            y: 22,
                             width: 182,
                             height: 85,
                             children: [
@@ -186,28 +186,15 @@ export default {
                         }),
                         w95.widget.groupBox({
                             title: "Toggleables",
-                            x: 10,
-                            y: 123,
+                            x: 6,
+                            y: 112,
                             width: 182,
-                            height: 75,
+                            height: 68,
                             children: [
                                 w95.widget.checkbox({
                                     x: 10,
-                                    y: 18,
-                                    label: "Debug", 
-                                    isChecked: w95.registry.get("is-debug-enabled"),
-                                    isDisabled: (widgetDisable.now || !Boolean(w95.shell.display.debugLayer)),
-                                    newCheckState(isChecked) {
-                                        if (w95.shell.display.debugLayer) {
-                                            w95.shell.display.debugLayer.style.visibility = (isChecked? "visible" : "hidden");
-                                        }
-                                        w95.registry.set("is-debug-enabled", isChecked);
-                                    },
-                                }),
-                                w95.widget.checkbox({
-                                    x: 71,
-                                    y: 18,
-                                    label: "Disable widgets", 
+                                    y: 16,
+                                    label: "Disable all widgets", 
                                     isChecked: widgetDisable.now,
                                     newCheckState(isChecked) {
                                         widgetDisable.set(isChecked);
@@ -215,7 +202,7 @@ export default {
                                 }),
                                 w95.widget.radioGroup({
                                     x: 10,
-                                    y: 44,
+                                    y: 38,
                                     itemIndex: radioGroupIndex.now,
                                     newItemIndex(idx) {
                                         radioGroupIndex.set(idx);
@@ -233,7 +220,7 @@ export default {
                                         "3x": {
                                             x: 80,
                                             y: 0,
-                                            isDisabled: widgetDisable.now,
+                                            isDisabled: true,
                                         },
                                         "4x": {
                                             x: 120,
@@ -246,44 +233,44 @@ export default {
                         }),
                         w95.widget.groupBox({
                             title: "Buttons",
-                            x: 204,
-                            y: 28,
+                            x: 196,
+                            y: 22,
                             width: 182,
-                            height: 85,
+                            height: 55,
                             children: [
                                 spawnButton({
                                     x: 10,
                                     y: 15,
-                                    width: "pw - 20",
+                                    width: "pw - 95",
                                     isDisabled: widgetDisable.now,
                                 }),
                                 twoStateButton({
-                                    x: 10,
-                                    y: 45,
-                                    width: "pw - 20",
+                                    x: 105,
+                                    y: 15,
+                                    width: "pw - 115",
                                     isDisabled: widgetDisable.now,
                                 }),
                             ],
                         }),
                         w95.widget.groupBox({
                             title: "Tab widget",
-                            x: 204,
-                            y: 123,
+                            x: 196,
+                            y: 82,
                             width: 182,
-                            height: 190,
+                            height: 183,
                             children: [
                                 w95.widget.tabControl({
                                     x: 10,
                                     y: 15,
                                     width: "pw - 20",
-                                    height: 157,
+                                    height: "ph - 27",
                                     isDisabled: widgetDisable.now,
                                     tabIndex: tabIndex.now,
                                     newTabIndex(idx) {
                                         tabIndex.set(idx);
                                     },
                                     tabs: {
-                                        "Stats": {
+                                        "Status": {
                                             children: [
                                                 statistics({
                                                     width: 158,
@@ -295,17 +282,17 @@ export default {
                                             children: [
                                                 w95.widget.label({
                                                     x: 9,
-                                                    y: 9,
+                                                    y: 7,
                                                     text: "1.) Use the \b#no-debug\b URL\nhash to disable the DOM\ndebug layer.",
                                                 }),
                                                 w95.widget.label({
                                                     x: 9,
-                                                    y: 57,
+                                                    y: 55,
                                                     text: "2.) For more info, see the w95\ncode repository on GitHub.*",
                                                 }),
                                                 w95.widget.label({
                                                     x: 84,
-                                                    y: 70,
+                                                    y: 68,
                                                     text: "on GitHub",
                                                     color: (
                                                         widgetDisable.now
@@ -324,23 +311,14 @@ export default {
                                                 }),
                                                 w95.widget.horizontalRule({
                                                     x: 7,
-                                                    y: 96,
+                                                    y: 91,
                                                     width: 144
                                                 }),
                                                 w95.widget.label({
                                                     x: 7,
-                                                    y: 101,
+                                                    y: 96,
                                                     color: w95.palette.named.darkGray,
                                                     text: "* This software is not associat-\ned with Microsoft.",
-                                                }),
-                                            ]
-                                        },
-                                        "3D": {
-                                            children: [
-                                                rotatingCube({
-                                                    width: 158,
-                                                    height: 133,
-                                                    isDisabled: widgetDisable.now,
                                                 }),
                                             ]
                                         },
@@ -364,15 +342,24 @@ export default {
                                                 }),
                                             ]
                                         },
+                                        "3D": {
+                                            children: [
+                                                rotatingCube({
+                                                    width: 158,
+                                                    height: 133,
+                                                    isDisabled: widgetDisable.now,
+                                                }),
+                                            ]
+                                        },
                                     },
                                 }),
                             ]
                         }),
                         w95.widget.tabControl({
-                            x: 10,
-                            y: 322,
-                            width: (appWidth.now - 28),
-                            height: Math.max(120, (appHeight.now - 359)),
+                            x: 6,
+                            y: 271,
+                            width: (appWidth.now - 20),
+                            height: Math.max(110, (appHeight.now - 307)),
                             isDisabled: widgetDisable.now,
                             tabIndex: tab2Index.now,
                             newTabIndex(idx) {
@@ -390,8 +377,8 @@ export default {
                                             backgroundColor: w95.palette.named.white,
                                             children: [
                                                 w95.widget.label({
-                                                    x: 7,
-                                                    y: 7,
+                                                    x: 2,
+                                                    y: 0,
                                                     isDisabled: widgetDisable.now,
                                                     text: `Stately, plump Buck Mulligan came from the stairhead, bearing a bowl of lather on which a mirror and a razor lay crossed. A yellow dressinggown, ungirdled, was sustained gently behind him by the mild morning air. He held the bowl aloft and intoned:
             
@@ -415,8 +402,8 @@ export default {
                                                     `.replace(/  +/g, ""),
                                                 }),
                                                 w95.widget.bitmap({
-                                                    x: 114,
-                                                    y: 31,
+                                                    x: 109,
+                                                    y: 24,
                                                     image: w95.icon.windowsLogo16x16,
                                                     isDisabled: widgetDisable.now,
                                                 }),
@@ -425,8 +412,19 @@ export default {
                                     ],
                                 },
                                 "Text edit": {
-                                    isDisabled: true,
                                     children: [
+                                        w95.widget.textEdit({
+                                            x: 3,
+                                            y: 3,
+                                            width: "pw - 6",
+                                            height: "ph - 6",
+                                            text: textEditText.now,
+                                            autofocus: true,
+                                            isDisabled: widgetDisable.noww,
+                                            newText(text) {
+                                                textEditText.set(text);
+                                            },
+                                        }),
                                     ],
                                 },
                                 "Embedded <iframe>": {

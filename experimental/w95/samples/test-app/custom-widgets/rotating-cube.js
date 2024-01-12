@@ -79,7 +79,7 @@ export const rotatingCube = w95.widget(function({
                     text: `${Math.round(w95.shell.display.refreshRate)} FPS`,
                     color: w95.palette.named.white,
                     styleHints: [
-                        w95.styleHint.alignHRight,
+                        w95.styleHint.alignRight,
                         w95.styleHint.bold,
                     ]
                 }, {hideIf: isDisabled}),

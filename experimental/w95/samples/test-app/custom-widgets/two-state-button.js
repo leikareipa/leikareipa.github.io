@@ -33,7 +33,7 @@ export const twoStateButton = w95.widget(function({
                 w95.widget.button({
                     width,
                     height,
-                    text: "Compositing",
+                    text: "Composite",
                     isDisabled,
                     styleHints: [
                         (isPressed.now? w95.styleHint.lowered : w95.styleHint.raised),
