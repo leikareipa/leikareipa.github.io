@@ -33,6 +33,7 @@ export const spawnButton = w95.widget(function({
                     width,
                     height,
                     isDisabled,
+                    icon: w95.icon.applicationIcon16x16,
                     text: `Spawned: ${w95.registry.get("num-windows-spawned")}`,
                     onClick() {
                         w95.registry.increment("num-windows-spawned");

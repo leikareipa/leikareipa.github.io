@@ -24,7 +24,7 @@ export default {
         `,
     },
     App() {
-        const appWidth = w95.state(392);
+        const appWidth = w95.state(400);
         const appHeight = w95.state(Math.max(422, ~~(w95.shell.display.height * 0.8)));
         const domEl = w95.state(document.createElement("div"))
     
@@ -235,7 +235,7 @@ export default {
                             title: "Buttons",
                             x: 196,
                             y: 22,
-                            width: 182,
+                            width: 190,
                             height: 55,
                             children: [
                                 spawnButton({
@@ -245,9 +245,9 @@ export default {
                                     isDisabled: widgetDisable.now,
                                 }),
                                 twoStateButton({
-                                    x: 105,
+                                    x: 113,
                                     y: 15,
-                                    width: "pw - 115",
+                                    width: "pw - 123",
                                     isDisabled: widgetDisable.now,
                                 }),
                             ],
@@ -256,7 +256,7 @@ export default {
                             title: "Tab widget",
                             x: 196,
                             y: 82,
-                            width: 182,
+                            width: 190,
                             height: 183,
                             children: [
                                 w95.widget.tabControl({
@@ -273,7 +273,7 @@ export default {
                                         "Status": {
                                             children: [
                                                 statistics({
-                                                    width: 158,
+                                                    width: "pw",
                                                     height: 131,
                                                 }),
                                             ],
@@ -311,14 +311,14 @@ export default {
                                                 }),
                                                 w95.widget.horizontalRule({
                                                     x: 7,
-                                                    y: 91,
-                                                    width: 144
+                                                    y: 90,
+                                                    width: "pw - 14"
                                                 }),
                                                 w95.widget.label({
                                                     x: 7,
-                                                    y: 96,
+                                                    y: 95,
                                                     color: w95.palette.named.darkGray,
-                                                    text: "* This software is not associat-\ned with Microsoft.",
+                                                    text: "* This software is not associated\nwith Microsoft.",
                                                 }),
                                             ]
                                         },
@@ -345,8 +345,8 @@ export default {
                                         "3D": {
                                             children: [
                                                 rotatingCube({
-                                                    width: 158,
-                                                    height: 133,
+                                                    width: "pw",
+                                                    height: "ph",
                                                     isDisabled: widgetDisable.now,
                                                 }),
                                             ]
@@ -556,6 +556,19 @@ export default {
                                                     if (isChecked) {
                                                         groupItemCheckIdx.set(2);
                                                     }
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: "Show debug layer",
+                                                isDisabled: !Boolean(w95.shell.display.debugLayer),
+                                                isCheckable: true,
+                                                isChecked: w95.registry.get("is-debug-enabled"),
+                                                newCheckState(isChecked) {
+                                                    if (w95.shell.display.debugLayer) {
+                                                        w95.shell.display.debugLayer.style.visibility = (isChecked? "visible" : "hidden");
+                                                    }
+                                                    w95.registry.set("is-debug-enabled", isChecked);
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),

@@ -236,17 +236,20 @@ w95.widget("button", function({
                                     image: icon,
                                     color: w95.palette.widget.disabled2,
                                 }, {
-                                    hideIf: (!icon || !isDisabled),
+                                    hideIf: ((!icon || !icon.boolean) || !isDisabled),
                                 }),
 
                                 w95.widget.bitmap({
                                     x: ~~((text? iconSpacing : icon? ((width / 2) - (icon.width / 2)) : 0) + ~~isVisuallyPressed),
                                     y: ~~((icon? ((height / 2) - (icon.height / 2)) : 0) + ~~isVisuallyPressed),
                                     image: icon,
+                                    isDisabled,
                                     color: (
-                                        isDisabled
-                                            ? w95.palette.widget.disabled1
-                                            : w95.palette.widget.foreground
+                                        !icon?.boolean
+                                            ? w95.palette.named.white
+                                            : isDisabled
+                                                ? w95.palette.widget.disabled1
+                                                : w95.palette.widget.foreground
                                     ),
                                 }, {
                                     hideIf: !icon,

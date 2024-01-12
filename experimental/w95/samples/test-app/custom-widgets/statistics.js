@@ -49,8 +49,8 @@ export const statistics = w95.widget(function({
                     title: "Display",
                     x: 7,
                     y: 5,
-                    width: width-14,
-                    height: 56,
+                    width: "pw - 14",
+                    height: 54,
                     children: [
                         w95.widget.label({
                             text: `${display.width} x ${display.height} (${display.scale}x), ${Math.round(display.refreshRate || 1)} Hz`,
@@ -68,9 +68,9 @@ export const statistics = w95.widget(function({
                 w95.widget.groupBox({
                     title: `Repaint (${repaintCount.now})`,
                     x: 7,
-                    y: 67,
-                    width: width-14,
-                    height: 56,
+                    y: 63,
+                    width: "pw - 14",
+                    height: 54,
                     children: [
                         w95.widget.label({
                             text: `${apps.now} app${(apps.now === 1)? "" : "s"}, ${ngons.now} prims, ${Math.round(renderTime.now)} ms`,
