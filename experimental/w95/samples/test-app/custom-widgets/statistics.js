@@ -5,7 +5,7 @@
  * 
  */
 
-export const statistics = w95.widget(function({
+export const statistics = w95.widget(function statistics({
     x = 0,
     y = 0,
     width = 100,
@@ -18,11 +18,11 @@ export const statistics = w95.widget(function({
     w95.debug?.assert(typeof height === "number");
 
     const clockCounter = w95.state(1);
-    const tickCounter = w95.state(1, {repaintOnChange: false});
-    const ngons = w95.state(0, {repaintOnChange: false});
-    const apps = w95.state(0, {repaintOnChange: false});
-    const repaintCount = w95.state(0, {repaintOnChange: false});
-    const renderTime = w95.state(0, {repaintOnChange: false});
+    const tickCounter = w95.keep(1);
+    const ngons = w95.keep(0);
+    const apps = w95.keep(0);
+    const repaintCount = w95.keep(0);
+    const renderTime = w95.keep(0);
 
     return {
         get x() { return x },

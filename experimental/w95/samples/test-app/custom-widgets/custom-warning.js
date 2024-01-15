@@ -5,11 +5,12 @@
  * 
  */
 
-export const customWarning = w95.widget(function({
+export const customWarning = w95.widget(function customWarning({
+    parent = undefined,
     onReject = undefined,
 } = {})
 {
-    w95.debug?.assert(typeof onAccept === "undefined");
+    w95.debug?.assert(parent?._what === "w95-widget");
     w95.debug?.assert(typeof onReject === "function");
 
     const isYesDisabled = w95.state(false);
@@ -22,6 +23,7 @@ export const customWarning = w95.widget(function({
         get height() { return 0 },
         Form() {
             return w95.shell.popup({
+                parent,
                 icon: w95.icon.warning,
                 title: "Warning",
                 text: "Oops! That was a mistake. The best option now would be\nto click Cancel to go back in time.\n\nWhat do you say?",

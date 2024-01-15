@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(0, 128, 128);
+    background-color: black;
     color: whitesmoke;
     width: 100vw;
     height: 100vh;
@@ -16,6 +16,10 @@ canvas {
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+canvas[data-w95-app="Desktop"] {
+    background-color: teal;
 }
 
 .w95-dom-element {
@@ -36,6 +40,11 @@ canvas {
 .w95-dom-element.disabled {
     pointer-events: none;
     filter: grayscale(1);
+}
+
+#w95-debug-layer {
+    width: 100%;
+    height: 100%;
 }
 
 #w95-debug-layer * {

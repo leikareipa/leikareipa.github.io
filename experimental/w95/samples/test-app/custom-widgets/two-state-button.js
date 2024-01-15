@@ -6,7 +6,7 @@
  */
 
 
-export const twoStateButton = w95.widget(function({
+export const twoStateButton = w95.widget(function twoStateButton({
     x = 0,
     y = 0,
     width = 100,

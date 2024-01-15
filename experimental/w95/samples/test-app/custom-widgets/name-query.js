@@ -5,7 +5,7 @@
  * 
  */
 
-export const nameQuery = w95.widget(function({
+export const nameQuery = w95.widget(function nameQuery({
     x = 0,
     y = 0,
     width = 100,

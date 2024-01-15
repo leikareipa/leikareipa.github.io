@@ -39,6 +39,7 @@
             import testApp from "./app.js";
             import {dither_shader} from "./dither-shader.js";
             
+            const taskbar = w95.shell.taskbar();
             const desktop = w95.shell.desktop([
                 w95.widget.desktopIcon({
                     x: 5,
@@ -53,9 +54,10 @@
 
             w95.registry.set("num-windows-spawned", 0);
             w95.registry.set("is-debug-enabled", false);
+            w95.registry.set("render-scale", ~~document.body.dataset.w95Scale);
             w95.shell.display.screenShader = dither_shader;
             w95.shell.boot();
-            w95.shell.run([desktop, testApp]);
+            w95.shell.run([desktop, taskbar, testApp]);
         </script>
     </body>
 </html>

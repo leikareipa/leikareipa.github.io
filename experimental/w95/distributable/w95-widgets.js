@@ -62,7 +62,7 @@ w95.widget("bitmap", function({
                     texture: image,
                     color,
                     allowAlphaReject: true,
-                    invertedColor: styleHints.includes(w95.styleHint.inverted),
+                    isColorInverted: styleHints.includes(w95.styleHint.inverted),
                     isDisabled,
                 }),
             ];
@@ -113,6 +113,7 @@ w95.widget("button", function({
     color = w95.palette.widget.foreground,
     backgroundColor = w95.palette.widget.background,
     isDisabled = false,
+    isElided = false,
     shape = w95.buttonShape.regular,
     styleHints = [],
     onClick = undefined,
@@ -129,6 +130,8 @@ w95.widget("button", function({
     w95.debug?.assert(typeof text === "string");
     w95.debug?.assert(typeof shape === "string");
     w95.debug?.assert(typeof color === "object");
+    w95.debug?.assert(typeof isDisabled === "boolean");
+    w95.debug?.assert(typeof isElided === "boolean");
     w95.debug?.assert(typeof backgroundColor === "object");
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "object"].includes(typeof icon));
@@ -142,14 +145,16 @@ w95.widget("button", function({
     const isHovered = w95.state(false);
 
     const iconSpacing = 4;
+    const isLeftAligned = styleHints.includes(w95.styleHint.alignLeft);
+    const isTabButton = (shape === w95.buttonShape.tabControl);
     const isVisuallyPressed = (
         styleHints.includes(w95.styleHint.lowered) ||
         (
             isPressed.now &&
             isHovered.now &&
             !isDisabled &&
-            !styleHints.includes(w95.styleHint.raised) &&
-            (shape !== w95.buttonShape.tabControl)
+            !isTabButton &&
+            !styleHints.includes(w95.styleHint.raised)
         )
     );
 
@@ -182,80 +187,51 @@ w95.widget("button", function({
                         (isVisuallyPressed? w95.styleHint.inverted : 0),
                     ],
                     backgroundColor,
-                    children: (
-                        styleHints.includes(w95.styleHint.vertical)
-                            ? [
-                                w95.widget.label({
-                                    x: ~~isVisuallyPressed,
-                                    y: ~~((icon? ((height / 2) - (w95.font.regular.lineHeight / 2) + (icon.height / 2) + 1) : 0) + ~~isVisuallyPressed),
-                                    width,
-                                    height,
-                                    text,
-                                    color,
-                                    isDisabled,
-                                    styleHints: [
-                                        w95.styleHint.action,
-                                        w95.styleHint.alignHCenter,
-                                        styleHints.includes(w95.styleHint.bold)? w95.styleHint.bold : 0,
-                                    ],
-                                }, {
-                                    hideIf: !text.length,
-                                }),
-    
-                                w95.widget.bitmap({
-                                    x: ~~((icon? ((width / 2) - (icon.width / 2)) : 0) + ~~isVisuallyPressed),
-                                    y: ~~((icon? ((height / 2) - (icon.height / 2) - (w95.font.regular.lineHeight / 2)) : 0) + ~~isVisuallyPressed),
-                                    image: icon,
-                                    styleHints,
-                                }, {
-                                    hideIf: !icon,
-                                }),
-                            ]
-                            : [
-                                w95.widget.label({
-                                    x: ~~((icon? (icon.width + iconSpacing) : 0) + ~~(isVisuallyPressed || styleHints.includes(w95.styleHint.lowered))),
-                                    y: ~~(isVisuallyPressed || styleHints.includes(w95.styleHint.lowered)),
-                                    width: (width - (icon? (icon.width + iconSpacing) : 0)),
-                                    height: height,
-                                    text,
-                                    color,
-                                    isDisabled,
-                                    styleHints: [
-                                        w95.styleHint.action,
-                                        w95.styleHint.alignHCenter,
-                                        w95.styleHint.alignVCenter,
-                                        styleHints.includes(w95.styleHint.bold)? w95.styleHint.bold : 0,
-                                    ],
-                                }, {
-                                    hideIf: !text.length,
-                                }),
-    
-                                w95.widget.bitmap({
-                                    x: 1+~~((text? iconSpacing : icon? ((width / 2) - (icon.width / 2)) : 0) + ~~isVisuallyPressed),
-                                    y: 1+~~((icon? ((height / 2) - (icon.height / 2)) : 0) + ~~isVisuallyPressed),
-                                    image: icon,
-                                    color: w95.palette.widget.disabled2,
-                                }, {
-                                    hideIf: ((!icon || !icon.boolean) || !isDisabled),
-                                }),
+                    children: [
+                        w95.widget.label({
+                            x: ~~((icon? (icon.width + (iconSpacing * (isLeftAligned + 1))) : 0) + ~~(isVisuallyPressed || styleHints.includes(w95.styleHint.lowered))),
+                            y: ~~(isVisuallyPressed || styleHints.includes(w95.styleHint.lowered)),
+                            width: ((width - (icon? (icon.width + iconSpacing) : 0)) - (isLeftAligned * (iconSpacing * 2))),
+                            height: height,
+                            text,
+                            color,
+                            isElided,
+                            isDisabled,
+                            styleHints: [
+                                w95.styleHint.action,
+                                w95.styleHint.alignVCenter,
+                                isLeftAligned? 0 : w95.styleHint.alignHCenter,
+                                styleHints.includes(w95.styleHint.bold)? w95.styleHint.bold : 0,
+                            ],
+                        }, {
+                            hideIf: !text.length,
+                        }),
 
-                                w95.widget.bitmap({
-                                    x: ~~((text? iconSpacing : icon? ((width / 2) - (icon.width / 2)) : 0) + ~~isVisuallyPressed),
-                                    y: ~~((icon? ((height / 2) - (icon.height / 2)) : 0) + ~~isVisuallyPressed),
-                                    image: icon,
-                                    isDisabled,
-                                    color: (
-                                        !icon?.boolean
-                                            ? w95.palette.named.white
-                                            : isDisabled
-                                                ? w95.palette.widget.disabled1
-                                                : w95.palette.widget.foreground
-                                    ),
-                                }, {
-                                    hideIf: !icon,
-                                }),
-                            ]
-                    ),
+                        w95.widget.bitmap({
+                            x: 1+~~((text? iconSpacing : icon? ((width / 2) - (icon.width / 2)) : 0) + ~~isVisuallyPressed),
+                            y: 1+~~((icon? ((height / 2) - (icon.height / 2)) : 0) + ~~isVisuallyPressed),
+                            image: icon,
+                            color: w95.palette.widget.disabled2,
+                        }, {
+                            hideIf: ((!icon || !icon.boolean) || !isDisabled),
+                        }),
+
+                        w95.widget.bitmap({
+                            x: ~~((text? iconSpacing : icon? ((width / 2) - (icon.width / 2)) : 0) + ~~isVisuallyPressed),
+                            y: ~~((icon? ((height / 2) - (icon.height / 2)) : 0) + ~~isVisuallyPressed),
+                            image: icon,
+                            isDisabled,
+                            color: (
+                                !icon?.boolean
+                                    ? w95.palette.named.white
+                                    : isDisabled
+                                        ? w95.palette.widget.disabled1
+                                        : w95.palette.widget.foreground
+                            ),
+                        }, {
+                            hideIf: !icon,
+                        }),
+                    ],
                 }),
             ];
         },
@@ -289,7 +265,7 @@ w95.widget("button", function({
                 isPressed.set(false);
 
                 return (onMouseUp?.({at, widget:this}) ?? true);
-            } 
+            }
         },
     };
 });
@@ -479,7 +455,7 @@ w95.widget("desktopIcon", function({
                     color: w95.palette.named.white,
                     backgroundColor: (
                         hasFocus.now
-                            ? w95.palette.named.darkBlue
+                            ? w95.palette.named.navy
                             : w95.palette.named.teal
                     ),
                     styleHints: [
@@ -850,7 +826,7 @@ w95.widget("dropdownBoxItem", function({
                     Rngon.vertex(width.now, height),
                     Rngon.vertex(0, height),
                 ], {
-                    color: w95.palette.named.darkBlue,
+                    color: w95.palette.named.navy,
                 }),
             ];
         }
@@ -905,11 +881,11 @@ w95.widget("dropdownBoxList", function({
         get height() { return height.now },
         get listItems() { return this.$form["_listItemsContainer"].$childWidgets },
         get isActivePopupMenu() { return isOpen },
-        Opened() {
+        Mounted() {
             // Suppress any DOM widgets while the dropdown is open.
             w95.windowManager.update_z_indices(true);
         },
-        Closed() {
+        BeforeRelease() {
             w95.windowManager.update_z_indices();
         },
         Form() {
@@ -1214,10 +1190,10 @@ w95.widget("frame", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseLeave));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseEnter));
     
-    const isPressed = w95.state(false, {repaintOnChange: false});
-    const isHovered = w95.state(false, {repaintOnChange: false});
-    const borderGrab = w95.state({}, {repaintOnChange: false});
-    const parentWidget = w95.state(undefined, {repaintOnChange: false});
+    const isPressed = w95.keep(false);
+    const isHovered = w95.keep(false);
+    const borderGrab = w95.keep({});
+    const parentWidget = w95.keep(undefined);
 
     let isBorderGrabbed = false;
     update_border_grab_status();
@@ -2312,7 +2288,7 @@ w95.widget("horizontalSlider", function({
     const stepSize = ((width - sliderWidth) / numSteps);
 
     const sliderX = w95.state(clamped_slider_pos((width - sliderWidth) * ((value - minValue) / (maxValue - minValue))));
-    const clickPosExcess = w95.state(0, {repaintOnChange: false});
+    const clickPosExcess = w95.keep(0);
 
     const numTicks = Math.min((width / 10), numSteps);
     const ticks = w95.state(
@@ -2462,6 +2438,7 @@ w95.widget("label", function({
     width = undefined,
     height = undefined,
     isDisabled = false,
+    isElided = false,
     styleHints = [],
     letterSpacing = 1,
     wordSpacing = 3,
@@ -2484,6 +2461,8 @@ w95.widget("label", function({
     w95.debug?.assert(typeof wordSpacing === "number");
     w95.debug?.assert(typeof letterSpacing === "number");
     w95.debug?.assert(typeof lineSpacing === "number");
+    w95.debug?.assert(typeof isDisabled === "boolean");
+    w95.debug?.assert(typeof isElided === "boolean");
     w95.debug?.assert(typeof font === "object");
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "number"].includes(typeof width));
@@ -2495,6 +2474,8 @@ w95.widget("label", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseEnter));
 
     let fontVariant = (styleHints.includes(w95.styleHint.bold)? font.bold : font.regular);
+    let isUnderlined = (styleHints.includes(w95.styleHint.underlined));
+    const originalColor = color;
 
     if (typeof width === "undefined") {
         width = w95.font.stringWidth(text, font, fontVariant);
@@ -2503,12 +2484,33 @@ w95.widget("label", function({
         height = w95.font.stringHeight(text, fontVariant);
     }
 
+    if (
+        isElided &&
+        text.length &&
+        (w95.font.stringWidth(text, font, fontVariant) > width)
+    ){
+        const eliderString = "...";
+        const eliderWidth = w95.font.stringWidth(eliderString, font, fontVariant);
+
+        if (eliderWidth < width) {
+            // Not the most efficient way to do this, but good enough for now.
+            do {
+                text = text.slice(0, -1);
+            } while (width < (eliderWidth + w95.font.stringWidth(text, font, fontVariant)));
+
+            text += eliderString;
+        }
+        else {
+            text = "";
+        }
+    }
+
     const isDisabledAction = (
         isDisabled &&
         styleHints.includes(w95.styleHint.action)
     );
 
-    if (styleHints.includes(w95.styleHint.underlined)) {
+    if (isUnderlined) {
         height++;
     }
 
@@ -2528,14 +2530,6 @@ w95.widget("label", function({
             return [
                 ...text_mesh(),
                 ...background_mesh(),
-                ...styleHints.includes(w95.styleHint.underlined)? [
-                    Rngon.ngon([
-                        Rngon.vertex(0, (height - 1)),
-                        Rngon.vertex(width, (height - 1)),
-                    ], {
-                        color,
-                    })
-                ] : [],
             ];
         },
         Event: {
@@ -2617,48 +2611,95 @@ w95.widget("label", function({
         return ngons;
 
         function to_ngons(text, textColor = color, x = 0, y = 0) {
-            return text.split("").map(char=>{
-                const charCode = char.charCodeAt(0);
+            const ngons = [];
+            const textChars = text.split("");
 
-                // \b (control character that switches between bold and regular font).
+            for (let i = 0; i < textChars.length; i++) {
+                const charCode = textChars[i].charCodeAt(0);
+
+                // \b (toggle bold font on/off).
                 if (charCode === 8) {
                     fontVariant = ((fontVariant === font.regular)? font.bold : font.regular);
-                    return Rngon.ngon([]);
+                    continue;
+                }
+
+                // \v (toggle underlining on/off).
+                if (charCode === 11) {
+                    isUnderlined = !isUnderlined;
+                    continue;
+                }
+
+                // \r (set text color).
+                if (charCode === 13) {
+                    const colorName = text.slice((i + 2), text.indexOf("}", (i + 2)));
+                    textColor = (colorName.length? w95.palette.named[colorName] : originalColor);
+                    i += (2 + colorName.length);
+                    continue;
                 }
     
                 // Space.
                 if (charCode === 32) {
-                    x += (wordSpacing * letterSpacing);
-                    return Rngon.ngon([]);
+                    const spaceWidth = (wordSpacing * letterSpacing);
+
+                    if (isUnderlined) {
+                        ngons.push(
+                            Rngon.ngon([
+                                Rngon.vertex( x              , (y + fontVariant.lineHeight)),
+                                Rngon.vertex((x + spaceWidth), (y + fontVariant.lineHeight)),
+                            ], {
+                                color: textColor,
+                                isColorInverted: styleHints.includes(w95.styleHint.inverted),
+                            }),
+                        );
+                    }
+                    
+                    x += spaceWidth;
+
+                    continue;
                 }
     
                 // Newline.
                 if (charCode === 10) {
                     x = 0;
                     y += lineSpacing;
-                    return Rngon.ngon([]);
+                    continue;
                 }
     
                 const glyph = (fontVariant[charCode] || fontVariant[63]);
     
                 x += glyph.leftSpacing;
-    
-                const ngon = Rngon.ngon([
-                    Rngon.vertex( x,                 y                ), 
-                    Rngon.vertex((x + glyph.width),  y                ),
-                    Rngon.vertex((x + glyph.width), (y + glyph.height)),
-                    Rngon.vertex( x,                (y + glyph.height)),
-                ], {
-                    texture: glyph,
-                    color: textColor,
-                    allowAlphaReject: true,
-                    invertedColor: styleHints.includes(w95.styleHint.inverted),
-                });
+
+                ngons.push(
+                    Rngon.ngon([
+                        Rngon.vertex( x,                 y                ), 
+                        Rngon.vertex((x + glyph.width),  y                ),
+                        Rngon.vertex((x + glyph.width), (y + glyph.height)),
+                        Rngon.vertex( x,                (y + glyph.height)),
+                    ], {
+                        texture: glyph,
+                        color: textColor,
+                        allowAlphaReject: true,
+                        isColorInverted: styleHints.includes(w95.styleHint.inverted),
+                        underlined: true,
+                    }),
+                );
+
+                if (isUnderlined) {
+                    ngons.push(
+                        Rngon.ngon([
+                            Rngon.vertex( x                               , (y + fontVariant.lineHeight)),
+                            Rngon.vertex((x + glyph.width + letterSpacing), (y + fontVariant.lineHeight)),
+                        ], {
+                            color: textColor,
+                            isColorInverted: styleHints.includes(w95.styleHint.inverted),
+                        }),
+                    );
+                }
     
                 x += (glyph.width + letterSpacing);
-    
-                return ngon;
-            });
+            }
+
+            return ngons;
         }
     }
 });
@@ -3123,7 +3164,7 @@ w95.widget("menuItem", function({
     w95.debug?.assert(["function", "undefined"].includes(typeof newCheckState));
     w95.debug?.assert(!isCheckable || !icon);
 
-    const parentMenuWidget = w95.state(undefined, {repaintOnChange: false});
+    const parentMenuWidget = w95.keep(undefined);
     const x = w95.state(0);
     const y = w95.state(0);
     const isHovered = w95.state(false);
@@ -3146,16 +3187,17 @@ w95.widget("menuItem", function({
         get width() { return width.now },
         get height() { return height },
         get group() { return group },
+        get subMenu() { return (menu && this.$childWidgets[1]) },
+        get isOpen() { return this.subMenu?.isOpen },
         get isChecked() { return isChecked },
         get isCheckabled() { return isCheckable },
         get isHovered() { return isHovered.now },
-        get isOpen() { return (menu && this.$childWidgets[1])?.isOpen },
         Form() {
             return [
                 w95.widget.panel({
                     width: width.now,
                     height,
-                    color: w95.palette.named.darkBlue,
+                    color: w95.palette.named.navy,
                 }, {
                     hideIf: (!isHovered.now && !isTopLevel) || (isTopLevel && !isActive.now) || isDisabled,
                 }),
@@ -3206,9 +3248,7 @@ w95.widget("menuItem", function({
                     return;
                 }
 
-                const menuItem = (menu && this.$childWidgets[1])
-
-                if (menuItem) {
+                if (this.subMenu) {
                     this.Message.toggle();
                 }
 
@@ -3251,19 +3291,16 @@ w95.widget("menuItem", function({
                 y.set(newY);
             },
             open() {
-                const menuItem = (menu && this.$childWidgets[1]);
-                menuItem?.Message.open();
+                this.subMenu?.Message.open();
                 isActive.set(true);
             },
             close() {
-                const menuItem = (menu && this.$childWidgets[1]);
-                menuItem?.Message.close();
+                this.subMenu?.Message.close();
                 isHovered.set(false);
                 isActive.set(false);
             },
             toggle() {
-                const menuItem = (menu && this.$childWidgets[1]);
-                this.Message[menuItem?.isOpen? "close" : "open"]();
+                this.Message[this.subMenu?.isOpen? "close" : "open"]();
             },
             setChecked(is) {
                 w95.debug?.assert(typeof is === "boolean");
@@ -3528,7 +3565,7 @@ w95.widget("progressBar", function({
     y = 0,
     width = 100,
     height = 13,
-    color = w95.palette.named.darkBlue,
+    color = w95.palette.named.navy,
     progress = 0,
     isDisabled = false,
     styleHints = [
@@ -4117,7 +4154,7 @@ w95.widget("scrollArea", function({
                             y: scrollButtonSize,
                             width: scrollButtonSize,
                             height: (vertical.viewportSize.now - (scrollButtonSize * 2)),
-                            backgroundColor: w95.palette.named.offWhite,
+                            backgroundColor: w95.palette.named.offwhite,
                             shape: w95.frameShape.none,
                             onMouseDown({at}) {
                                 if (isDisabled) {
@@ -4198,7 +4235,7 @@ w95.widget("scrollArea", function({
                             y: 0,
                             width: (horizontal.viewportSize.now - (scrollButtonSize * 2)),
                             height: scrollButtonSize,
-                            backgroundColor: w95.palette.named.offWhite,
+                            backgroundColor: w95.palette.named.offwhite,
                             shape: w95.frameShape.none,
                             onMouseDown({at}) {
                                 if (isDisabled) {
@@ -4636,6 +4673,72 @@ w95.widget("textEdit", function({
 
 /***/ }),
 
+/***/ "./src/api/widgets/time/widget.js":
+/*!****************************************!*\
+  !*** ./src/api/widgets/time/widget.js ***!
+  \****************************************/
+/***/ (() => {
+
+/*
+ * 2022-2023 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
+w95.widget("time", function({
+    x = 0,
+    y = 0,
+    width = undefined,
+    height = w95.font.regular.lineHeight,
+    showSeconds = false,
+    styleHints = [],
+} = {})
+{
+    w95.debug?.assert(typeof x === "number");
+    w95.debug?.assert(typeof y === "number");
+    w95.debug?.assert(["undefined", "number"].includes(typeof width));
+    w95.debug?.assert(typeof height === "number");
+    w95.debug?.assert(typeof showSeconds === "boolean");
+    w95.debug?.assert(Array.isArray(styleHints));
+
+    const timeString = w95.state(time_string(w95.clock.now));
+    const clockTickCallback = w95.state((newTime)=>timeString.set(time_string(newTime)));
+
+    width = (width || w95.font.stringWidth(timeString));
+
+    return {
+        get x() { return x },
+        get y() { return y },
+        get width() { return width },
+        get height() { return height },
+        Mounted() {
+            w95.clock.listen(clockTickCallback.now);
+        },
+        BeforeRelease() {
+            w95.clock.unlisten(clockTickCallback.now);
+        },
+        Form() {
+            return w95.widget.label({
+                text: timeString.now,
+                width,
+                height,
+                styleHints,
+            });
+        }
+    };
+
+    function time_string(timestamp) {
+        return timestamp.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: (showSeconds? "2-digit" : undefined),
+        }).replace(/^0/, "");
+    }
+});
+
+/***/ }),
+
 /***/ "./src/api/widgets/title-bar/widget.js":
 /*!*********************************************!*\
   !*** ./src/api/widgets/title-bar/widget.js ***!
@@ -4671,7 +4774,7 @@ w95.widget("titleBar", function({
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "function"].includes(typeof onClose));
 
-    const parentWidget = w95.state(undefined, {repaintOnChange: false});
+    const parentWidget = w95.keep(undefined);
 
     const isDialog = styleHints.includes(w95.styleHint.dialog);
 
@@ -4832,7 +4935,7 @@ w95.widget("verticalLayout", function({
     const adjustedX = w95.state(x);
     const adjustedY = w95.state(y);
     const adjustedWidth = w95.state(0);
-    const adjustedHeight = w95.state(height, {repaintOnChange: false});
+    const adjustedHeight = w95.keep(height);
     
     return {
         get x() { return adjustedX.now },
@@ -4840,13 +4943,14 @@ w95.widget("verticalLayout", function({
         get width() { return adjustedWidth.now },
         get height() { return adjustedHeight.now },
         Mounted() {
-            const childContents = this.$childWidgets.map(w=>w.$childWidgets[0]);
-            const maxChildWidth = childContents.reduce((max, w)=>Math.max(max, (w.x + w.width)), 0);
+            const wrappers = this.$childWidgets.filter(w=>!w.$childWidgets[0]._hideMesh);
+            
+            const maxChildWidth = wrappers.map(w=>w.$childWidgets[0]).reduce((max, w)=>Math.max(max, (w.x + w.width)), 0);
             adjustedWidth.set(maxChildWidth);
 
             // Vertical alignment.
             {
-                const contentHeight = this.$childWidgets.reduce((height, wrapper)=>{
+                const contentHeight = wrappers.reduce((height, wrapper)=>{
                     const widget = wrapper.$childWidgets[0];
                     return (height + widget.height + padding);
                 }, (-padding * !!children.length));
@@ -4868,7 +4972,7 @@ w95.widget("verticalLayout", function({
 
                 let runningHeight = 0;
                 
-                for (const wrapper of this.$childWidgets) {
+                for (const wrapper of wrappers) {
                     const widget = wrapper.$childWidgets[0];
 
                     if (widget._type !== "layoutSpacer") {
@@ -4980,6 +5084,8 @@ w95.widget("window", function({
         get menuBar() { return menuBarWidget },
         get isBlurred() { return isBlurred.now },
         get isDesktop() { return isDesktop },
+        get title() { return title },
+        get icon() { return icon },
         Mounted() {
             const windowContents = this.$form["_contents"].$childWidgets;
             const menuBarIdx = windowContents.findIndex(widget=>widget._type === "menuBar");
@@ -5066,6 +5172,7 @@ w95.widget("window", function({
                     height: w95.shell.display.height,
                     isRelative: false,
                 });
+                maxRect.height -= ((w95.windowManager.taskbar?.height - 2) || 0);
                 w95.windowManager.move_window_to(this, maxRect);
                 resize?.(maxRect);
             },
@@ -5245,6 +5352,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _dynamic_wrapper_widget_js__WEBPACK_IMPORTED_MODULE_31___default = /*#__PURE__*/__webpack_require__.n(_dynamic_wrapper_widget_js__WEBPACK_IMPORTED_MODULE_31__);
 /* harmony import */ var _layout_spacer_widget_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./layout-spacer/widget.js */ "./src/api/widgets/layout-spacer/widget.js");
 /* harmony import */ var _layout_spacer_widget_js__WEBPACK_IMPORTED_MODULE_32___default = /*#__PURE__*/__webpack_require__.n(_layout_spacer_widget_js__WEBPACK_IMPORTED_MODULE_32__);
+/* harmony import */ var _time_widget_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./time/widget.js */ "./src/api/widgets/time/widget.js");
+/* harmony import */ var _time_widget_js__WEBPACK_IMPORTED_MODULE_33___default = /*#__PURE__*/__webpack_require__.n(_time_widget_js__WEBPACK_IMPORTED_MODULE_33__);
+
 
 
 

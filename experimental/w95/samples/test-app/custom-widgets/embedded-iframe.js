@@ -5,7 +5,7 @@
  * 
  */
 
-export const embeddedIframe = w95.widget(function({
+export const embeddedIframe = w95.widget(function embeddedIframe({
     x = 0,
     y = 0,
     width = 100,

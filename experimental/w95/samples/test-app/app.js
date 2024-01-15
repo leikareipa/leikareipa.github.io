@@ -42,11 +42,10 @@ export default {
         const widgetDisable = w95.state(false);
         const tabIndex = w95.state(1);
         const tab2Index = w95.state(0);
-        const radioGroupIndex = w95.state(1);
         const dropdownIndex = w95.state(2);
         const isCheckChecked = w95.state(false);
         const groupItemCheckIdx = w95.state(0);
-    
+
         return {
             get width() { return appWidth.now },
             get height() { return appHeight.now },
@@ -70,7 +69,7 @@ export default {
                 // Center the window on the screen.
                 this.move({
                     x: ~~((w95.shell.display.width / 2) - (appWidth.now / 2)),
-                    y: Math.max(0, ~~((w95.shell.display.height / 2) - (appHeight.now / 2))),
+                    y: Math.max(0, ~~((w95.shell.display.height / 2) - (appHeight.now / 2) - ((w95.registry.get("taskbar-height") || 0) / 2))),
                 });
             },
             Form() {
@@ -203,9 +202,9 @@ export default {
                                 w95.widget.radioGroup({
                                     x: 10,
                                     y: 38,
-                                    itemIndex: radioGroupIndex.now,
+                                    itemIndex: (w95.registry.get("render-scale") - 1),
                                     newItemIndex(idx) {
-                                        radioGroupIndex.set(idx);
+                                        w95.registry.set("render-scale", (idx + 1)),
                                         w95.shell.display.scale = (idx + 1);
                                     },
                                     items: {
@@ -283,7 +282,7 @@ export default {
                                                 w95.widget.label({
                                                     x: 9,
                                                     y: 7,
-                                                    text: "1.) Use the \b#no-debug\b URL\nhash to disable the DOM\ndebug layer.",
+                                                    text: "1.) Use the #no-debug URL\nhash to disable the DOM\ndebug layer.",
                                                 }),
                                                 w95.widget.label({
                                                     x: 9,
@@ -296,7 +295,7 @@ export default {
                                                     text: "on GitHub",
                                                     color: (
                                                         widgetDisable.now
-                                                            ? w95.palette.named.darkGray
+                                                            ? w95.palette.named.dimgray
                                                             : w95.palette.named.blue
                                                     ),
                                                     styleHints: [
@@ -317,7 +316,6 @@ export default {
                                                 w95.widget.label({
                                                     x: 7,
                                                     y: 95,
-                                                    color: w95.palette.named.darkGray,
                                                     text: "* This software is not associated\nwith Microsoft.",
                                                 }),
                                             ]
@@ -384,9 +382,9 @@ export default {
             
                                                         --Introibo ad altare Dei.
                                                         
-                                                        Halted, he peered down the dark winding stairs and called up coarsely:
+                                                        Halted, \bhe p\veer\bed down\v the dark winding stairs and called up coarsely:
                                                         
-                                                        --Come up, Kinch. Come up, you fearful Jesuit.
+                                                        --Come up, Kinch. \r{red}Come up\r{}, you fearful Jesuit.
                                                         
                                                         Solemnly he came forward and mounted the round gunrest. He faced about and blessed gravely thrice the tower, the surrounding country and the awaking mountains. Then, catching sight of Stephen Dedalus, he bent towards him and made rapid crosses in the air, gurgling in his throat and shaking his head. Stephen Dedalus, displeased and sleepy, leaned his arms on the top of the staircase and looked coldly at the shaking gurgling face that blessed him, equine in its length, and at the light untonsured hair, grained and hued like pale oak.
                                                         
@@ -604,11 +602,13 @@ export default {
                             },
                         }, {hideIf: !isNameQueryDialogOpen.now}),
                         customWarning({
+                            parent: this,
                             onReject() {
                                 isCustomWarningDialogOpen.set(false);
                             },
                         }, {hideIf: !isCustomWarningDialogOpen.now}),
                         w95.shell.popup({
+                            parent: this,
                             icon: w95.icon.warning,
                             title: "Warning",
                             text: "Something went wrong, but I'm not sure what.",
@@ -632,6 +632,7 @@ export default {
                             ],
                         }, {hideIf: !isWarningDialogOpen.now}),
                         w95.shell.popup({
+                            parent: this,
                             icon: w95.icon.question,
                             title: "Question",
                             text: "He prodded a fork into the kidney and slapped it over: then fitted the\nteapot on the tray. Its hump bumped as he took it up. Everything on it?",
@@ -656,6 +657,7 @@ export default {
                             ],
                         }, {hideIf: !isQuestionDialogOpen.now}),
                         w95.shell.popup({
+                            parent: this,
                             icon: w95.icon.error,
                             title: "Error",
                             text: "The NTVDM CPU has encountered an illegal instruction.",

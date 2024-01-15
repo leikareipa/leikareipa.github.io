@@ -46,6 +46,7 @@ function app(appMeta, appId, app_render_fn = ()=>({})) {
     const intf = {
         get id() { return appId },
         get _type() { return "app" },
+        get _what() { return "w95-widget" },
         get width() { return intf.window.width },
         get height() { return intf.window.height },
         get rootWidget() { return intf.$childWidgets[0] },
@@ -54,13 +55,13 @@ function app(appMeta, appId, app_render_fn = ()=>({})) {
         x: 0,
         y: 0,
         move(args) {
-            w95.windowManager.move_window(intf.window, args);
+            w95.windowManager.move_window_to(intf.window, args);
         },
         rerender() {
-            intf.rootWidget._rerenderRequested = true;
+            intf.rootWidget._remountRequested = true;
         },
         rerasterize() {
-            intf.rootWidget._rerasterRequested = true;
+            intf.rootWidget._rerenderRequested = true;
         },
         // A polygonal mesh of the app's root window and all its descendant widgets.
         // Note that the polygons are in actuality allowed to be n-sided, from points
@@ -71,30 +72,30 @@ function app(appMeta, appId, app_render_fn = ()=>({})) {
         // Checks to see whether any widgets in the app need re-rendering, and returns
         // a list of the re-rendered widgets.
         update(entireApp = false) {
-            w95.state.use(intf.state);
+            w95.state.use(intf.state, intf);
 
             if (entireApp) {
                 const w = intf.$childWidgets[0].$childWidgets[0];
                 w95.state.move_head(w._stateStartIdx);
-                w._rerender(intf.$childWidgets[0]);
+                w._remount(intf.$childWidgets[0]);
                 return [];
             }
             
             const rerenderedWidgets = [];
 
             (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.recurse_descendant_widgets)(intf, (widget, parent)=>{
-                if (widget._rerenderRequested) {
+                if (widget._remountRequested) {
                     w95.state.move_head(widget._stateStartIdx);
-                    widget._rerender(parent);
+                    widget._remount(parent);
                     rerenderedWidgets.push(widget);
 
                     // Return true to skip recursing this widget's children, since they've
                     // all now been re-rendered.
                     return true;
                 }
-                else if (widget._rerasterRequested) {
+                else if (widget._rerenderRequested) {
                     rerenderedWidgets.push(widget);
-                    widget._rerasterRequested = false;
+                    widget._rerenderRequested = false;
                 }
             }, true);
 
@@ -119,7 +120,12 @@ function app(appMeta, appId, app_render_fn = ()=>({})) {
     // replaces that element in the array with a new root window object. So static
     // references to elements in the array will eventually become stale.
     intf.state = app_render_fn.state = [];
-    const renderedChildWidgets = [(0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.render_widget)(app_render_fn)];
+    const renderedChildWidgets = [
+        (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.mount_widget)({
+            mount_fn: app_render_fn,
+            parentWidget: intf,
+        }
+    )];
     Object.defineProperty(intf, "$childWidgets", {value: renderedChildWidgets});
 
     for (const key of Object.keys(intf.rootWidget.Meta)) {
@@ -277,6 +283,7 @@ function desktopApp(icons = []) {
                 get y() { return 0 },
                 get width() { return width.now },
                 get height() { return height.now },
+                get isDesktop() { return true },
                 Message: {
                     fitToDisplay() {
                         width.set(w95.shell.display.width);
@@ -296,26 +303,26 @@ function desktopApp(icons = []) {
                         children: [
                             ...icons,
                             w95.widget.verticalLayout({
-                                x: "pw - 20",
-                                height: "ph - 40",
+                                x: "pw - 15",
+                                height: "ph - 15 - (w95.registry.get('taskbar-height') || 0)",
                                 styleHints:  [
                                     w95.styleHint.alignBottom,
                                     w95.styleHint.alignRight,
                                 ],
                                 children: [
                                     w95.widget.label({
-                                        color: w95.palette.named.white,
+                                        color: w95.palette.named.offwhite,
                                         text: `\bw95\b ${w95.version}`,
                                         styleHints: [
                                             w95.styleHint.alignRight,
                                         ],
                                     }),
                                     w95.widget.label({
-                                        color: w95.palette.named.offWhite,
+                                        color: w95.palette.named.offwhite,
                                         text: "A Windows 95 themed web UI framework",
                                     }),
                                     w95.widget.label({
-                                        color: w95.palette.named.offWhite,
+                                        color: w95.palette.named.offwhite,
                                         text: "https://github.com/leikareipa/w95",
                                         styleHints: [
                                             w95.styleHint.underlined,
@@ -324,13 +331,6 @@ function desktopApp(icons = []) {
                                             window.open("https://github.com/leikareipa/w95", "_blank");
                                             return true;
                                         },
-                                    }),
-                                    w95.widget.layoutSpacer({
-                                        height: ~~(w95.font.regular.lineHeight / 1.5),
-                                    }),
-                                    w95.widget.label({
-                                        color: w95.palette.named.offWhite,
-                                        text: "This software is not associated with Microsoft.",
                                     }),
                                 ],
                             }),
@@ -374,20 +374,8 @@ __webpack_require__.r(__webpack_exports__);
 const palette = {
     named: {
         transparent: Rngon.color(0, 0, 0, 0),
-        blue: Rngon.color(0, 0, 255),
-        darkBlue: Rngon.color(0, 0, 128),
-        red: Rngon.color(255, 0, 0),
-        darkRed: Rngon.color(128, 0, 0),
-        green: Rngon.color(0, 255, 0),
-        darkGreen: Rngon.color(0, 128, 0),
-        cyan: Rngon.color(0, 255, 255),
-        white: Rngon.color(255, 255, 255),
-        offWhite: Rngon.color(230, 230, 230),
-        lightGray: Rngon.color(192, 192, 192),
-        gray: Rngon.color(128, 128, 128),
-        darkGray: Rngon.color(64, 64, 64),
-        black: Rngon.color(0, 0, 0),
-        teal: Rngon.color(0, 128, 128),
+        offwhite: Rngon.color(230, 230, 230),
+        ...Object.keys(Rngon.color).reduce((colors, key)=>({...colors, [key]:Rngon.color[key]}), {}),
     },
     window: {
         background: Rngon.color(192, 192, 192),
@@ -439,6 +427,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const popupWidget = (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.create_widget)(function({
+    parent = undefined,
     title = "",
     text = "",
     icon = w95.icon.error,
@@ -446,39 +435,28 @@ const popupWidget = (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.create_widget)(fu
     onReject = undefined,
 } = {})
 {
+    w95.debug?.assert(parent?._what === "w95-widget");
     w95.debug?.assert(typeof title === "string");
     w95.debug?.assert(typeof text === "string");
     w95.debug?.assert(["function", "undefined"].includes(typeof onReject));
     w95.debug?.assert(Array.isArray(buttons));
 
-    // Hack: Put the dialog fully out of view to prevent it from flickering for
-    // a split second before we position it in Opened().
-    const x = w95.state(Infinity);
-    const y = w95.state(Infinity);
-
     const textWidth = w95.font.stringWidth(text);
     const textHeight = Math.max((2 * w95.font.regular.lineHeight), w95.font.stringHeight(text));
     const width = Math.max(250, (74 + textWidth));
-    const height = 87 + textHeight;
+    const height = (87 + textHeight);
+
+    const x = w95.state(0, true);
+    const y = w95.state(0, true);
     
     return {
         get x() { return x.now },
         get y() { return y.now },
         get width() { return width },
         get height() { return height },
-        Opened() {
-            // Center the dialog on the screen. The dialog is positioned relative
-            // to its parent, so we need to transform it into screen coordinates.
-            // We're assuming the dialog is a direct child of the app's window.
-            const screenMidX = ~~((w95.shell.display.width / 2) - (width / 2));
-            const screenMidY = ~~((w95.shell.display.height / 2) - height);
-            const parentApp = w95.windowManager.get_parent_app(this);
-            x.set(screenMidX - parentApp.x);
-            y.set(screenMidY - parentApp.y);
-        },
-        Closed() {
-            x.set(Infinity);
-            y.set(Infinity);
+        Mounted() {
+            x.set(parent? ((parent.width / 2) - (width / 2)) : 0);
+            y.set(parent? ((parent.height / 2) - height) : 0);
         },
         Form() {
             return w95.widget.dialog({
@@ -673,7 +651,7 @@ function draw_rectangular_poly(renderContext, ngon) {
             let texelIdx = (4 * ~~(((y - ngonStartY + yOffset) * texture.width) + xOffset));
 
             for (let x = spanStartX; x < spanEndX; x++)
-            { 
+            {
                 if (
                     (!material.allowAlphaReject || (texels[texelIdx + 3] > 127)) &&
                     (depthBuffer[pixelBufferIdx] > depth)
@@ -697,7 +675,7 @@ function draw_rectangular_poly(renderContext, ngon) {
                         red = green = blue = ((red * 0.5) + (green * 0.3) + (blue * 0.2));
                     }
     
-                    if (material.invertedColor) {
+                    if (material.isColorInverted) {
                         red = (255 - red);
                         green = (255 - green);
                         blue = (255 - blue);
@@ -865,13 +843,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_render_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/render.js */ "./src/core/render.js");
 /* harmony import */ var _core_tick_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/tick.js */ "./src/core/tick.js");
 /* harmony import */ var _core_desktop_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/desktop.js */ "./src/core/desktop.js");
-/* harmony import */ var _core_popup_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/popup.js */ "./src/core/popup.js");
+/* harmony import */ var _core_taskbar_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/taskbar.js */ "./src/core/taskbar.js");
+/* harmony import */ var _core_popup_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../core/popup.js */ "./src/core/popup.js");
 /*
  * 2022-2023 Tarpeeksi Hyvae Soft
  *
  * Software: w95
  * 
  */
+
 
 
 
@@ -930,7 +910,8 @@ const shell = {
         },
     },
     desktop: _core_desktop_js__WEBPACK_IMPORTED_MODULE_2__.desktopApp,
-    popup: _core_popup_js__WEBPACK_IMPORTED_MODULE_3__.popupWidget,
+    taskbar: _core_taskbar_js__WEBPACK_IMPORTED_MODULE_3__.taskbarApp,
+    popup: _core_popup_js__WEBPACK_IMPORTED_MODULE_4__.popupWidget,
     refresh() {
         window.dispatchEvent(new Event("resize"));
     },
@@ -1102,6 +1083,17 @@ function render_loop(timestamp, timeDeltaMs, numTicks = 0) {
                 w95.$recurseDescendantWidgets(app.rootWidget, (widget, parent)=>{
                     parent._domSkeleton.append(widget._domSkeleton);
                 });
+
+                // App wrappers (rootWidget and appObject) don't have their position
+                // and dimensions available during the widget render cycle, so we
+                // need to shoehorn that information into the debug layer here.
+                for (const widget of [app.rootWidget, app.appObject]) {
+                    const domSkeleton = widget._domSkeleton;
+                    domSkeleton.style.width = `${app.width * w95.shell.display.scale}px`;
+                    domSkeleton.style.height = `${app.height * w95.shell.display.scale}px`;
+                    domSkeleton.style.left = `${app.x * w95.shell.display.scale}px`;
+                    domSkeleton.style.top = `${app.y * w95.shell.display.scale}px`;
+                }
             }
         }
 
@@ -1132,6 +1124,7 @@ function render_loop(timestamp, timeDeltaMs, numTicks = 0) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   StateVariable: () => (/* binding */ StateVariable),
+/* harmony export */   keep: () => (/* binding */ keep),
 /* harmony export */   state: () => (/* binding */ state)
 /* harmony export */ });
 /*
@@ -1196,22 +1189,40 @@ const _state = {
     idx: 0,
 };
 
-function state(initialValue, {repaintOnChange = true} = {}) {
+function keep(initialValue) {
+    return state(initialValue, null);
+}
+
+// The 'effect' value dictates what happens when the state is mutated:
+//
+//   null       = nothing
+//   true       = the widget's parent is re-rendered
+//   undefined  = the widget's parent is re-mounted and then re-rendered
+//   ()=>!false = the widget's parent is re-mounted and then re-rendered
+//   ()=>false  = the mutation is undone and no re-mounting or re-rendering is done
+function state(initialValue, effect) {
+    w95.debug?.assert(
+        (effect === null) ||
+        (effect === true) ||
+        ["function", "undefined"].includes(typeof effect)
+    );
+
     const idx = _state.idx++;
     //console.debug(`State/query: [${idx}]`);
 
     if (!_state.activeStore[idx]) {
         //console.debug(`State/init: [${idx}] => ${initialValue}`);
-        _state.activeStore[idx] = new StateVariable(initialValue, repaintOnChange);
+        _state.activeStore[idx] = new StateVariable(initialValue, effect);
     }
 
     return _state.activeStore[idx];
 };
 
-state.use = function(stateStore) {
+state.use = function(stateStore, parentApp) {
     w95.debug?.assert(Array.isArray(stateStore));
     _state.activeStore = stateStore;
     _state.idx = 0;
+    _state.app = parentApp;
 };
 
 state.move_head = function(val) {
@@ -1222,46 +1233,410 @@ state.head = function() {
     return _state.idx;
 };
 
-state.mount = function(widgetInterface, render_fn) {
+state.mount = function(widgetInterface, mount_fn, render_fn) {
     w95.debug?.assert(typeof widgetInterface === "object");
-    w95.debug?.assert(typeof render_fn === "function");
+    w95.debug?.assert(typeof mount_fn === "function");
 
     //console.debug(`State/mount: ${widgetInterface._type} <=`, Array.from(state.activeStore.slice(widgetInterface._stateStartIdx, state.activestate.idx)));
 
     for (let i = widgetInterface._stateStartIdx; i < _state.idx; i++) {
-        _state.activeStore[i].repaint_parent_widget = render_fn;
+        _state.activeStore[i].remount_parent_widget = mount_fn;
+        _state.activeStore[i].rerender_parent_widget = render_fn;
+        _state.activeStore[i].widget = widgetInterface;
+        _state.activeStore[i].app = _state.app;
     }
 
-    return;
+    return; 
 }
 
 // Wraps a regular JavaScript value (e.g. string or number) in an interface that
 // provides explicit properties for reading and modifying the value; triggering
 // a re-rendering of the parent widget whenever the value is modified.
-function StateVariable(initialValue, repaintOnChange = true)
+function StateVariable(initialValue, effect)
 {
     this.now = initialValue;
-
     this.set = function(newValue) {
         //console.debug(`State/set: [${idx}] => ${newValue}`);
         if (newValue !== this.now) {
-            const oldValue = this.now;
+            const previous = this.now;
             this.now = newValue;
-            
-            if (this.onChange?.(this.now, oldValue) === false) {
-                this.now = oldValue;
-            }
-            else if (repaintOnChange) {
-                this.repaint_parent_widget();
+
+            switch (effect) {
+                case null: return;
+                case true: return this.rerender_parent_widget();
+                default: {
+                    switch (effect?.({
+                        now: this.now,
+                        previous,
+                        app: this.app,
+                        widget: this.widget
+                    })){
+                        case false: return (this.now = previous);
+                        default: return this.remount_parent_widget();
+                    }
+                }
             }
         }
     };
 
-    // The w95 state system will assign the parent widget's render function to
-    // this callback.
-    this.repaint_parent_widget = function() {
+    this.remount_parent_widget = function() {
+        w95.debug?.throw("No parent widget mount function assigned.");
+    };
+    this.rerender_parent_widget = function() {
         w95.debug?.throw("No parent widget render function assigned.");
     };
+}
+
+
+/***/ }),
+
+/***/ "./src/core/taskbar.js":
+/*!*****************************!*\
+  !*** ./src/core/taskbar.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   taskbarApp: () => (/* binding */ taskbarApp)
+/* harmony export */ });
+/* harmony import */ var _core_widget_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/widget.js */ "./src/core/widget.js");
+/*
+ * 2022-2023 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
+
+
+const taskbarButton = (0,_core_widget_js__WEBPACK_IMPORTED_MODULE_0__.create_widget)(function taskbarButton({
+    x = 0,
+    y = 0,
+    width = 10,
+    height = 22,
+    text = "",
+    icon = w95.icon.applicationIcon16x16,
+    isPressed = false,
+    isHidden = true,
+} = {})
+{
+    w95.debug?.assert(typeof x === "number");
+    w95.debug?.assert(typeof y === "number");
+    w95.debug?.assert(typeof width === "number");
+    w95.debug?.assert(typeof height === "number");
+    w95.debug?.assert(typeof text === "string");
+    w95.debug?.assert(typeof isPressed === "boolean");
+    w95.debug?.assert(typeof isHidden === "boolean");
+    w95.debug?.assert(typeof icon === "object");
+
+    x = w95.state(x);
+    width = w95.state(width);
+    isHidden = w95.state(isHidden);
+    icon = w95.state(icon);
+    text = w95.state(text);
+    isPressed = w95.state(isPressed);
+    const app = w95.state(undefined);
+
+    const iconSpacing = 4;
+
+    return {
+        get x() { return x.now },
+        get y() { return y },
+        get width() { return width.now },
+        get height() { return height },
+        Form() {
+            return w95.widget.frame({
+                width: width.now,
+                height,
+                shape: w95.frameShape.none,
+                children: [
+                    w95.widget.panel({
+                        x: 2,
+                        y: 2,
+                        width: (width.now - 4),
+                        height: (height - 4),
+                        color: (
+                            isPressed.now
+                                ? w95.palette.named.offwhite
+                                : w95.palette.widget.background
+                        ),
+                    }),
+    
+                    ...frame(),
+    
+                    w95.widget.bitmap({
+                        x: (iconSpacing + ~~isPressed.now),
+                        y: (3 + ~~isPressed.now),
+                        image: icon.now,
+                    }),
+                    w95.widget.label({
+                        x: (iconSpacing + icon.now.width + iconSpacing + ~~isPressed.now),
+                        y: ~~isPressed.now,
+                        width: (width.now - icon.now.width - (iconSpacing * 3)),
+                        height: height,
+                        text: text.now,
+                        isElided: true,
+                        styleHints: [
+                            w95.styleHint.action,
+                            w95.styleHint.alignVCenter,
+                            isPressed.now? w95.styleHint.bold : 0,
+                        ],
+                    }, {hideIf: !text.now.length}),
+                ],
+            }, {hideIf: isHidden.now});
+        },
+        Event: {
+            mousedown() {
+                w95.debug?.assert(app.now._type === "app");
+                w95.windowManager.raise_window(isPressed.now? w95.windowManager.desktop : app.now.window);
+                return true;
+            },
+        },
+        Message: {
+            setX(newX) {
+                w95.debug?.assert(typeof newX === "number");
+                x.set(newX);
+            },
+            setWidth(newWidth) {
+                w95.debug?.assert(typeof newWidth === "number");
+                width.set(newWidth);
+            },
+            setHidden(is) {
+                w95.debug?.assert(typeof is === "boolean");
+                isHidden.set(is);
+            },
+            setText(newText) {
+                w95.debug?.assert(typeof newText === "string");
+                text.set(newText);
+            },
+            setIcon(newIcon) {
+                w95.debug?.assert(typeof newIcon === "object");
+                icon.set(newIcon);
+            },
+            setIsPressed(is) {
+                w95.debug?.assert(typeof is === "boolean");
+                isPressed.set(is);
+            },
+            setParentApp(newApp) {
+                w95.debug?.assert(newApp._type === "app");
+                app.set(newApp);
+            },
+        },
+    };
+
+    function frame() {
+        const palette = (()=>{
+            let light = w95.palette.frame.light;
+            let lighter = w95.palette.frame.lighter;
+            let darker = w95.palette.frame.darker;
+            let dark = w95.palette.frame.dark;
+
+            if (isPressed.now) {
+                [light, lighter, darker, dark] = [dark, darker, lighter, light];
+            }
+
+            return {
+                light,
+                lighter,
+                darker,
+                dark
+            };
+        })();
+
+        return [
+            // Top inner border.
+            Rngon.ngon([
+                Rngon.vertex(1, 1),
+                Rngon.vertex((width.now - 2), 1),
+            ], {
+                color: palette.lighter,
+            }),
+    
+            // Right inner border.
+            Rngon.ngon([
+                Rngon.vertex((width.now - 2), 1),
+                Rngon.vertex((width.now - 2), (height - 1)),
+            ], {
+                color: palette.darker,
+            }),
+    
+            // Bottom inner border.
+            Rngon.ngon([
+                Rngon.vertex(1, (height - 2)),
+                Rngon.vertex((width.now - 1), (height - 2)),
+            ], {
+                color: palette.darker,
+            }),
+    
+            // Left inner border.
+            Rngon.ngon([
+                Rngon.vertex(1, 1),
+                Rngon.vertex(1, (height - 1)),
+            ], {
+                color: palette.lighter,
+            }),
+    
+            // Right outer border.
+            Rngon.ngon([
+                Rngon.vertex((width.now - 1), 0),
+                Rngon.vertex((width.now - 1), height),
+            ], {
+                color: palette.dark,
+            }),
+    
+            // Bottom outer border.
+            Rngon.ngon([
+                Rngon.vertex(0, (height - 1)),
+                Rngon.vertex(width.now, (height - 1)),
+            ], {
+                color: palette.dark,
+            }),
+    
+            // Top outer border.
+            Rngon.ngon([
+                Rngon.vertex(0, 0),
+                Rngon.vertex(width.now, 0),
+            ], {
+                color: palette.light,
+            }),
+    
+            // Left outer border.
+            Rngon.ngon([
+                Rngon.vertex(0, 0),
+                Rngon.vertex(0, height),
+            ], {
+                color: palette.light,
+            }),
+        ];
+    }
+});
+
+function taskbarApp() {
+    return {
+        Meta: {
+            name: "Taskbar",
+            version: "0.1",
+            author: "Tarpeeksi Hyvae Soft",
+            description: `
+                This app renders a screen-wide borderless window to emulate the
+                Windows 95 desktop.
+            `,
+        },
+        App() {
+            w95.registry.set("taskbar-height", 30);
+
+            const width = w95.state(w95.shell.display.width + 4);
+            const height = w95.state(w95.registry.get("taskbar-height"), ()=>w95.registry.set("taskbar-height", height.now));
+
+            const y = w95.state((w95.shell.display.height - height.now), ({app})=>app.move({y: y.now + 2}));
+            
+            const runningApps = w95.state([]);
+            const appButtons = w95.state(new Array(25).fill().map(e=>taskbarButton()));
+
+            const tick = w95.state(0);
+
+            const minButtonWidth = 25;
+            const maxButtonWidth = 163;
+            const buttonAreaWidth = (width.now - 72);
+
+            return {
+                get width() { return width },
+                get height() { return height },
+                get isTaskbar() { return true },
+                get buttons() { return this.$childWidgets[0].$childWidgets[1].$form._buttons.$childWidgets },
+                Opened() {
+                    this.move({x: -2, y: y.now + 2});
+                },
+                Mounted() {
+                    // Reorganize the button row with the currently-active buttons.
+                    {
+                        const buttonWidth = Math.min(
+                            maxButtonWidth,
+                            Math.max(
+                                minButtonWidth,
+                                ~~(buttonAreaWidth / runningApps.now.length)
+                            )
+                        );
+
+                        this.buttons.forEach(b=>b.Message.setHidden(true));
+                        
+                        runningApps.now.forEach((app, idx)=>{
+                            const button = this.buttons[idx];
+                            const dialog = w95.windowManager.get_active_dialog(app).widget;
+                            button.Message.setParentApp(app);
+                            button.Message.setIsPressed(Boolean(
+                                (app === w95.windowManager.apps[0]) &&
+                                (!app.window.isBlurred || (dialog && !dialog.isBlurred))
+                            ));
+                            button.Message.setHidden(false);
+                            button.Message.setX(buttonWidth * idx);
+                            button.Message.setWidth(buttonWidth - 3);
+                            button.Message.setText(app.window.title);
+                            button.Message.setIcon(app.window.icon);
+                        });
+                    }
+                },
+                Message: {
+                    fitToDisplay() {
+                        width.set(w95.shell.display.width + 4);
+                        y.set((w95.shell.display.height - height.now));
+                    },
+                    addApp(app) {
+                        w95.debug?.assert(app?._type === "app");
+                        if (runningApps.now.length < appButtons.now.length) {
+                            runningApps.set([...runningApps.now, app]);
+                        }
+                    },
+                    removeApp(app) {
+                        w95.debug?.assert(app?._type === "app");
+                        runningApps.set(runningApps.now.filter(a=>(a !== app)));
+                    },
+                    refresh() {
+                        tick.set(tick.now + 1);
+                    },
+                },
+                Form() {
+                    return w95.widget.window({
+                        width: width.now,
+                        height: height.now,
+                        styleHints: [
+                            w95.styleHint.plain,
+                        ],
+                        children: [
+                            // Time.
+                            w95.widget.frame({
+                                x: "pw - 59",
+                                y: 4,
+                                width: 58,
+                                height: 22,
+                                children: [
+                                    w95.widget.time({
+                                        width: "pw",
+                                        height: "ph",
+                                        styleHints: [
+                                            w95.styleHint.alignHCenter,
+                                            w95.styleHint.alignVCenter,
+                                        ],
+                                    }),
+                                ],
+                            }),
+                            w95.widget.frame({
+                                $name: "_buttons",
+                                x: 1,
+                                y: 4,
+                                width: buttonAreaWidth,
+                                shape: w95.frameShape.none,
+                                height: "ph - 8",
+                                children: appButtons.now,
+                            }),
+                        ],
+                    });
+                },
+            };
+        },
+    }
 }
 
 
@@ -1323,8 +1698,8 @@ function signal_system_tick(timeDeltaMs) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   create_widget: () => (/* binding */ create_widget),
+/* harmony export */   mount_widget: () => (/* binding */ mount_widget),
 /* harmony export */   recurse_descendant_widgets: () => (/* binding */ recurse_descendant_widgets),
-/* harmony export */   render_widget: () => (/* binding */ render_widget),
 /* harmony export */   transformed_recursive_mesh: () => (/* binding */ transformed_recursive_mesh),
 /* harmony export */   widget_contains_child: () => (/* binding */ widget_contains_child)
 /* harmony export */ });
@@ -1344,24 +1719,29 @@ __webpack_require__.r(__webpack_exports__);
 // Call with create_widget(function) to create an unnamed widget that does
 // not get appended to w95.widget[].
 function create_widget(...args) {
-    let widgetName, widget_render_fn;
+    let widgetName, widget_mount_fn;
 
     if (typeof args[0] === "string") {
         widgetName = args[0];
-        widget_render_fn = args[1];
+        widget_mount_fn = args[1];
     }
     else {
-        widget_render_fn = args[0];
+        widget_mount_fn = args[0];
         _debug_js__WEBPACK_IMPORTED_MODULE_0__.debug?.assert(args[1] === undefined);
     }
 
-    _debug_js__WEBPACK_IMPORTED_MODULE_0__.debug?.assert(typeof widget_render_fn === "function");
+    _debug_js__WEBPACK_IMPORTED_MODULE_0__.debug?.assert(typeof widget_mount_fn === "function");
 
-    widget_render_fn._name = widgetName;
-    const mounter_fn = (...args)=>(parentWidth, parentHeight)=>render_widget(widget_render_fn, parentWidth, parentHeight, ...args);
+    widget_mount_fn._name = widgetName;
+    const mounter_fn = (mountOptions, renderOptions)=>(parentWidget)=>mount_widget({
+        mount_fn: widget_mount_fn,
+        parentWidget,
+        mountOptions,
+        renderOptions,
+    });
     
     if (widgetName === undefined) {
-        widget_render_fn._name = "undefined";
+        widget_mount_fn._name = "anonymous";
         return mounter_fn;
     }
     else {
@@ -1370,54 +1750,55 @@ function create_widget(...args) {
     }
 }
 
-function render_widget(
-    widget_fn = ()=>({}),
-    parentWidth,
-    parentHeight,
-    widgetOptions = ()=>({}),
-    renderArgs = ()=>({}),
+function mount_widget({
+    mount_fn = undefined,
+    mountOptions = {},
+    renderOptions = {},
+    parentWidget = undefined,
+} = {}
 ){
-    w95.debug?.assert(typeof widget_fn === "function");
-    w95.debug?.assert(["function", "object"].includes(typeof widgetOptions));
-    w95.debug?.assert(["function", "undefined"].includes(typeof widgetOptions.Mounted));
-    w95.debug?.assert(["function", "undefined"].includes(typeof widgetOptions.Closed));
-    w95.debug?.assert(["function", "undefined"].includes(typeof widgetOptions.Opened));
-    w95.debug?.assert(["function", "undefined"].includes(typeof widgetOptions.BeforeRelease));
-    w95.debug?.assert(["function", "undefined"].includes(typeof widgetOptions.Form));
-    w95.debug?.assert(["function", "undefined"].includes(typeof widgetOptions.App));
-    w95.debug?.assert(["function", "undefined"].includes(typeof widgetOptions.Event));
-    w95.debug?.assert(["function", "undefined"].includes(typeof widgetOptions.Message));
-    w95.debug?.assert(["function", "object"].includes(typeof renderArgs));
+    w95.debug?.assert(typeof mount_fn === "function");
+    w95.debug?.assert((typeof parentWidget === "undefined") || (parentWidget._what === "w95-widget"));
+    w95.debug?.assert(["function", "object"].includes(typeof renderOptions));
+    w95.debug?.assert(["function", "object"].includes(typeof mountOptions));
+    w95.debug?.assert(["function", "undefined"].includes(typeof mountOptions.Mounted));
+    w95.debug?.assert(["function", "undefined"].includes(typeof mountOptions.Closed));
+    w95.debug?.assert(["function", "undefined"].includes(typeof mountOptions.Opened));
+    w95.debug?.assert(["function", "undefined"].includes(typeof mountOptions.BeforeRelease));
+    w95.debug?.assert(["function", "undefined"].includes(typeof mountOptions.Form));
+    w95.debug?.assert(["function", "undefined"].includes(typeof mountOptions.App));
+    w95.debug?.assert(["function", "undefined"].includes(typeof mountOptions.Event));
+    w95.debug?.assert(["function", "undefined"].includes(typeof mountOptions.Message));
 
     const expandedOptions = (
-        (typeof widgetOptions === "function")
-            ? widgetOptions()
-            : widgetOptions
+        (typeof mountOptions === "function")
+            ? mountOptions()
+            : mountOptions
     );
     const expandedArgs = (
-        (typeof renderArgs === "function")
-            ? renderArgs()
-            : renderArgs
+        (typeof renderOptions === "function")
+            ? renderOptions()
+            : renderOptions
     );
 
     ["x", "y", "width", "height"].forEach(key=>{
         if (typeof expandedOptions[key] === "string") {
             expandedOptions[key] = eval(
                 expandedOptions[key]
-                    .replace("pw", parentWidth)
-                    .replace("ph", parentHeight)
+                    .replace("pw", parentWidget.width)
+                    .replace("ph", parentWidget.height)
             );
         }
     });
 
-    if (widget_fn.state) {
-        w95.state.use(widget_fn.state);
+    if (mount_fn.state) {
+        w95.state.use(mount_fn.state, parentWidget);
     }
 
     const stateStartIdx = w95.state.head();
     
     // Render the widget.
-    const widgetInterface = widget_fn(expandedOptions);
+    const widgetInterface = mount_fn(expandedOptions);
     {
         w95.debug?.assert(typeof widgetInterface === "object");
 
@@ -1427,12 +1808,12 @@ function render_widget(
 
         Object.defineProperty(widgetInterface, "$name", {value: expandedOptions.$name});
         widgetInterface._what = "w95-widget";
-        widgetInterface._type = (widget_fn.name || widget_fn._name);
+        widgetInterface._type = (mount_fn.name || mount_fn._name);
         widgetInterface._mesh = widgetForm.filter(g=>(g?.$constructor === "Ngon"));
         widgetInterface._hideMesh = (expandedArgs.hideIf || false);
         widgetInterface._stateStartIdx = stateStartIdx;
+        widgetInterface._remountRequested = false;
         widgetInterface._rerenderRequested = false;
-        widgetInterface._rerasterRequested = false;
         widgetInterface._autofocus = widgetInterface.autofocus;
         widgetInterface._zIndex = (()=>{
             switch (widgetInterface._type) {
@@ -1443,35 +1824,8 @@ function render_widget(
                 default:            return 4;
             }
         })();
-        
-        if (w95.shell.display.debugLayer) {
-            const domSkeleton = widgetInterface._domSkeleton = document.createElement(`${widgetInterface._type.replace("_", "-")}-w95`);
-            domSkeleton.style.width = `${widgetInterface.width * w95.shell.display.scale}px`;
-            domSkeleton.style.height = `${widgetInterface.height * w95.shell.display.scale}px`;
-            domSkeleton.style.left = `${widgetInterface.x * w95.shell.display.scale}px`;
-            domSkeleton.style.top = `${widgetInterface.y * w95.shell.display.scale}px`;
-            domSkeleton.classList.add("rerendered");
-            if (widgetInterface._hideMesh) {
-                domSkeleton.classList.add("hidden");
-            }
-            if (widgetInterface.hasFocus) {
-                domSkeleton.classList.add("focused");
-            }
-            if (widgetInterface.$name) {
-                domSkeleton.dataset.name = widgetInterface.$name;
-            }
 
-            if (["label", "button"].includes(widgetInterface._type)) {
-                domSkeleton.innerText = widgetInterface.text;
-            }
-
-            clearInterval(domSkeleton.$rerenderInterval);
-            domSkeleton.$rerenderInterval = setTimeout(()=>{
-                domSkeleton.classList.remove("rerendered");
-            }, 500);
-        }
-
-        widgetInterface._rerender = function(parent) {
+        widgetInterface._remount = function(parent) {
             w95.debug?.assert(parent._what === "w95-widget");
 
             if (w95.shell.display.debugLayer) {
@@ -1482,7 +1836,12 @@ function render_widget(
             widgetInterface.BeforeRelease?.();
             recurse_descendant_widgets(widgetInterface, (child)=>child.BeforeRelease?.());
 
-            const rerenderedInterface = render_widget(widget_fn, parentWidth, parentHeight, widgetOptions, renderArgs);
+            const rerenderedInterface = mount_widget({
+                mount_fn,
+                parentWidget,
+                mountOptions,
+                renderOptions,
+            });
             w95.debug?.assert(typeof rerenderedInterface === "object");
 
             w95.debug?.assert(rerenderedInterface.$descendants.length == widgetInterface.$descendants.length);
@@ -1492,6 +1851,13 @@ function render_widget(
 
                 if (w1._hideMesh !== w2._hideMesh) {
                     w1._hiddenStatusChanged = w1._hideMesh;
+                }
+
+                if (
+                    (w1._type === "window") &&
+                    (w1.title !== w2.title)
+                ){
+                    w1._windowTitleChanged = true;
                 }
             }
 
@@ -1522,6 +1888,7 @@ function render_widget(
 
         w95.state.mount(
             widgetInterface,
+            ()=>{widgetInterface._remountRequested = true},
             ()=>{widgetInterface._rerenderRequested = true},
         );
 
@@ -1537,21 +1904,9 @@ function render_widget(
         // Render the widget's descendants. This will recurse down the widget's entire descendant
         // tree.
         {
-            const childWidgetRenderFuncs = widgetForm.filter(g=>(typeof g === "function"));
-            const childWidgets = childWidgetRenderFuncs.map(c=>c(widgetInterface.width, widgetInterface.height));
+            const childWidgetMountFuncs = widgetForm.filter(g=>(typeof g === "function"));
+            const childWidgets = childWidgetMountFuncs.map(c=>c(widgetInterface));
             Object.defineProperty(widgetInterface, "$childWidgets", {value: childWidgets});
-
-            if (w95.shell.display.debugLayer) {
-                if (childWidgets.length && childWidgets.every(w=>w._hideMesh)) {
-                    widgetInterface._domSkeleton.classList.add("hidden");
-                }
-
-                if (widgetInterface._domSkeleton.classList.contains("hidden")) {
-                    recurse_descendant_widgets(widgetInterface, (child)=>{
-                        child._domSkeleton.classList.add("hidden");
-                    });
-                }
-            }
         }
 
         // Compile lists of the widget's descendants.
@@ -1578,9 +1933,50 @@ function render_widget(
             Object.defineProperty(widgetInterface, "$form", {value: namedDescendants});
             Object.defineProperty(widgetInterface, "$descendants", {value: descendants});
         }
+        
+        if (w95.shell.display.debugLayer) {
+            const domSkeleton = widgetInterface._domSkeleton = document.createElement(`${widgetInterface._type.replace("_", "-")}-w95`);
+            
+            domSkeleton.style.width = `${widgetInterface.width * w95.shell.display.scale}px`;
+            domSkeleton.style.height = `${widgetInterface.height * w95.shell.display.scale}px`;
+            domSkeleton.style.left = `${widgetInterface.x * w95.shell.display.scale}px`;
+            domSkeleton.style.top = `${widgetInterface.y * w95.shell.display.scale}px`;
+            domSkeleton.classList.add("rerendered");
+
+            if (widgetInterface._hideMesh) {
+                domSkeleton.classList.add("hidden");
+            }
+
+            if (widgetInterface.hasFocus) {
+                domSkeleton.classList.add("focused");
+            }
+
+            if (widgetInterface.$name) {
+                domSkeleton.dataset.name = widgetInterface.$name;
+            }
+
+            if (["label", "button"].includes(widgetInterface._type)) {
+                domSkeleton.innerText = widgetInterface.text;
+            }
+
+            clearInterval(domSkeleton.$rerenderInterval);
+            domSkeleton.$rerenderInterval = setTimeout(()=>{
+                domSkeleton.classList.remove("rerendered");
+            }, 500);
+
+            if (widgetInterface.$childWidgets.length && widgetInterface.$childWidgets.every(w=>w._hideMesh)) {
+                widgetInterface._domSkeleton.classList.add("hidden");
+            }
+
+            if (widgetInterface._domSkeleton.classList.contains("hidden")) {
+                recurse_descendant_widgets(widgetInterface, (child)=>{
+                    child._domSkeleton.classList.add("hidden");
+                });
+            }
+        }
     }
 
-    widgetInterface.Mounted?.();
+    widgetInterface.Mounted?.({parentWidget});
 
     return widgetInterface;
 }
@@ -1785,6 +2181,8 @@ __webpack_require__.r(__webpack_exports__);
 
 const runningApps = [];
 let numAppsLaunched = 0;
+let desktop = undefined;
+let taskbar = undefined;
 
 const windowManager = {
     // Returns as an array all of the apps that are currently running under this window manager.
@@ -1796,6 +2194,12 @@ const windowManager = {
     },
     get isDialogActive() {
         return runningApps.some(app=>w95.windowManager.get_active_dialog(app).widget);
+    },
+    get desktop() {
+        return desktop?.window;
+    },
+    get taskbar() {
+        return taskbar?.window;
     },
     // Returns the current active popup menu (e.g. the drop-down list of a combo box).
     get_active_popup_menu: function() {
@@ -1871,6 +2275,8 @@ const windowManager = {
             w95.debug?.assert(activeDialog?._type === "dialog");
             activeDialog.Message.focus();
         }
+
+        taskbar?.appObject.Message.refresh();
     },
     update_z_indices(suppressDomElements = false) {
         runningApps.forEach((app, idx)=>{
@@ -1900,19 +2306,23 @@ const windowManager = {
         }
 
         const targetApp = runningApps[targetAppIdx];
+        taskbar?.appObject.Message.removeApp(targetApp);
         targetApp.appObject.Closed?.();
         targetApp.release();
         targetApp._canvas.remove();
         targetApp.rootWidget._domSkeleton?.remove();
         runningApps.splice(targetAppIdx, 1);
 
-        if (runningApps.length) {
-            w95.windowManager.raise_window(runningApps.at(-1).window);
+        if (runningApps.length > (!!taskbar + !!desktop)) {
+            w95.windowManager.raise_window(runningApps.filter(a=>![taskbar, desktop].includes(a))[0].window);
+        }
+        else if (desktop) {
+            w95.windowManager.raise_window(desktop.window);
         }
     },
     post_tick_inspect: function() {
-        // If a new dialog has popped up, blur its parent window.
         for (const app of runningApps) {
+            // If a new dialog has popped up, blur its parent window.
             if (!app.window.isBlurred) {
                 w95.$recurseDescendantWidgets(app, w=>{
                     if (w.isActiveDialog) {
@@ -1922,6 +2332,11 @@ const windowManager = {
                         return null;
                     }
                 });
+            }
+
+            if (app.window._windowTitleChanged) {
+                taskbar?.appObject.Message.refresh();
+                app.window._windowTitleChanged = false;
             }
         }
 
@@ -1957,7 +2372,7 @@ const windowManager = {
         [applications].flat().forEach(a=>{
             const appInstance = (0,_core_app_js__WEBPACK_IMPORTED_MODULE_0__.app)(a.Meta, numAppsLaunched++, ()=>({
                 ...a,
-                App: (...args)=>()=>(0,_core_widget_js__WEBPACK_IMPORTED_MODULE_1__.render_widget)(a.App, ...args)
+                App: (mountOptions)=>()=>(0,_core_widget_js__WEBPACK_IMPORTED_MODULE_1__.mount_widget)({mount_fn: a.App, mountOptions})
             }));
 
             if (singleInstance && runningApps.some(a=>a.name === appInstance.name)) {
@@ -1979,8 +2394,16 @@ const windowManager = {
             });
 
             w95.shell.display.debugLayer?.append(appInstance.rootWidget._domSkeleton);
-
+            taskbar = (appInstance.appObject.isTaskbar? appInstance : taskbar);
+            desktop = (appInstance.appObject.isDesktop? appInstance : desktop);
             appInstance.appObject.Opened?.call(appInstance);
+
+            if (
+                !appInstance.appObject.isTaskbar &&
+                !appInstance.appObject.isDesktop
+            ){
+                taskbar?.appObject.Message.addApp(appInstance);
+            }
         });
 
         if (runningApps.length) {
@@ -2116,18 +2539,18 @@ const windowManager = {
                 else {
                     switch (event.type) {
                         case "mousedown": {
-                            if (!intersectedWidgets.some(w=>w._type == "menu")) {
-                                runningApps.forEach(app=>app.window?.menuBar?.Message.closeMenus());
+                            if (!intersectedWidgets.some(w=>w._type === "menuItem")) {
+                                runningApps[0]?.window.menuBar?.Message.closeMenus();
                             }
 
-                            runningApps.forEach(p=>(0,_core_widget_js__WEBPACK_IMPORTED_MODULE_1__.recurse_descendant_widgets)(p.window, (widget)=>{
+                            (0,_core_widget_js__WEBPACK_IMPORTED_MODULE_1__.recurse_descendant_widgets)(runningApps[0]?.window, (widget)=>{
                                 if (
-                                    (["menu", "dropdownBoxList"].includes(widget._type)) &&
+                                    (widget._type === "dropdownBoxList") &&
                                     !intersectedWidgets.some(w=>w === widget)
                                 ){ 
                                     widget.Message.close();
                                 }
-                            }));
+                            });
 
                             focusedWidget?.Message.blur();
 
@@ -2457,7 +2880,7 @@ __webpack_require__.r(__webpack_exports__);
 
 if (true) {
     console.log(
-        "This is a %cnon-production build %cof w95.",
+        "This is a %cdebug build %cof w95.",
         "font-weight: bold;",
         "font-weight: normal;"
     );
@@ -2483,11 +2906,12 @@ const w95 = {
     registry: _core_registry_js__WEBPACK_IMPORTED_MODULE_9__.registry,
     palette: _core_palette_js__WEBPACK_IMPORTED_MODULE_3__.palette,
     state: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.state,
+    keep: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.keep,
     debug: _core_debug_js__WEBPACK_IMPORTED_MODULE_4__.debug,
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-12.01:35:11"}`,
+    version: `BETA ${"2024-01-15.19:23:10"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {
@@ -2505,7 +2929,17 @@ const w95 = {
                     const charCode = char.charCodeAt(0);
                     const glyph = (fontVariant[charCode] || fontVariant[63]);
 
-                    // \b (control character that switches between bold and regular font).
+                    // \v (toggle underlining on/off).
+                    if (charCode === 11) {
+                        return len;
+                    }
+
+                    // \r (set text color).
+                    if (charCode === 13) {
+                        return len;
+                    }
+
+                    // \b (toggle bold font on/off).
                     if (charCode === 8) {
                         fontVariant = ((fontVariant === font.regular)? font.bold : font.regular);
                         return len;
