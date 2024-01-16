@@ -1190,10 +1190,10 @@ w95.widget("frame", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseLeave));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseEnter));
     
-    const isPressed = w95.keep(false);
-    const isHovered = w95.keep(false);
-    const borderGrab = w95.keep({});
-    const parentWidget = w95.keep(undefined);
+    const isPressed = w95.state(false, w95.noEffect);
+    const isHovered = w95.state(false, w95.noEffect);
+    const borderGrab = w95.state({}, w95.noEffect);
+    const parentWidget = w95.state(undefined, w95.noEffect);
 
     let isBorderGrabbed = false;
     update_border_grab_status();
@@ -2288,7 +2288,7 @@ w95.widget("horizontalSlider", function({
     const stepSize = ((width - sliderWidth) / numSteps);
 
     const sliderX = w95.state(clamped_slider_pos((width - sliderWidth) * ((value - minValue) / (maxValue - minValue))));
-    const clickPosExcess = w95.keep(0);
+    const clickPosExcess = w95.state(0, w95.noEffect);
 
     const numTicks = Math.min((width / 10), numSteps);
     const ticks = w95.state(
@@ -2475,7 +2475,6 @@ w95.widget("label", function({
 
     let fontVariant = (styleHints.includes(w95.styleHint.bold)? font.bold : font.regular);
     let isUnderlined = (styleHints.includes(w95.styleHint.underlined));
-    const originalColor = color;
 
     if (typeof width === "undefined") {
         width = w95.font.stringWidth(text, font, fontVariant);
@@ -2613,6 +2612,7 @@ w95.widget("label", function({
         function to_ngons(text, textColor = color, x = 0, y = 0) {
             const ngons = [];
             const textChars = text.split("");
+            const originalColor = textColor;
 
             for (let i = 0; i < textChars.length; i++) {
                 const charCode = textChars[i].charCodeAt(0);
@@ -2632,7 +2632,9 @@ w95.widget("label", function({
                 // \r (set text color).
                 if (charCode === 13) {
                     const colorName = text.slice((i + 2), text.indexOf("}", (i + 2)));
-                    textColor = (colorName.length? w95.palette.named[colorName] : originalColor);
+                    if (!isDisabled) {
+                        textColor = (colorName.length? w95.palette.named[colorName] : originalColor);
+                    }
                     i += (2 + colorName.length);
                     continue;
                 }
@@ -3164,7 +3166,7 @@ w95.widget("menuItem", function({
     w95.debug?.assert(["function", "undefined"].includes(typeof newCheckState));
     w95.debug?.assert(!isCheckable || !icon);
 
-    const parentMenuWidget = w95.keep(undefined);
+    const parentMenuWidget = w95.state(undefined, w95.noEffect);
     const x = w95.state(0);
     const y = w95.state(0);
     const isHovered = w95.state(false);
@@ -4774,7 +4776,7 @@ w95.widget("titleBar", function({
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "function"].includes(typeof onClose));
 
-    const parentWidget = w95.keep(undefined);
+    const parentWidget = w95.state(undefined, w95.noEffect);
 
     const isDialog = styleHints.includes(w95.styleHint.dialog);
 
@@ -4935,7 +4937,7 @@ w95.widget("verticalLayout", function({
     const adjustedX = w95.state(x);
     const adjustedY = w95.state(y);
     const adjustedWidth = w95.state(0);
-    const adjustedHeight = w95.keep(height);
+    const adjustedHeight = w95.state(height, w95.noEffect);
     
     return {
         get x() { return adjustedX.now },

@@ -69,8 +69,8 @@ function app(appMeta, appId, app_render_fn = ()=>({})) {
         mesh() {
             return (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.transformed_recursive_mesh)(intf.window, intf.x, intf.y);
         },
-        // Checks to see whether any widgets in the app need re-rendering, and returns
-        // a list of the re-rendered widgets.
+        // Checks to see whether any widgets in the app need re-mounting, and returns
+        // a list of the re-mounted widgets.
         update(entireApp = false) {
             w95.state.use(intf.state, intf);
 
@@ -81,25 +81,25 @@ function app(appMeta, appId, app_render_fn = ()=>({})) {
                 return [];
             }
             
-            const rerenderedWidgets = [];
+            const remountedWidgets = [];
 
             (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.recurse_descendant_widgets)(intf, (widget, parent)=>{
                 if (widget._remountRequested) {
                     w95.state.move_head(widget._stateStartIdx);
                     widget._remount(parent);
-                    rerenderedWidgets.push(widget);
+                    remountedWidgets.push(widget);
 
                     // Return true to skip recursing this widget's children, since they've
-                    // all now been re-rendered.
+                    // all now been re-mounted.
                     return true;
                 }
                 else if (widget._rerenderRequested) {
-                    rerenderedWidgets.push(widget);
+                    remountedWidgets.push(widget);
                     widget._rerenderRequested = false;
                 }
             }, true);
 
-            return rerenderedWidgets;
+            return remountedWidgets;
         },
         release() {
             intf.rootWidget.BeforeRelease?.();
@@ -446,8 +446,8 @@ const popupWidget = (0,_widget_js__WEBPACK_IMPORTED_MODULE_0__.create_widget)(fu
     const width = Math.max(250, (74 + textWidth));
     const height = (87 + textHeight);
 
-    const x = w95.state(0, true);
-    const y = w95.state(0, true);
+    const x = w95.state(0, w95.reRenderOnly);
+    const y = w95.state(0, w95.reRenderOnly);
     
     return {
         get x() { return x.now },
@@ -1124,7 +1124,6 @@ function render_loop(timestamp, timeDeltaMs, numTicks = 0) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   StateVariable: () => (/* binding */ StateVariable),
-/* harmony export */   keep: () => (/* binding */ keep),
 /* harmony export */   state: () => (/* binding */ state)
 /* harmony export */ });
 /*
@@ -1189,21 +1188,17 @@ const _state = {
     idx: 0,
 };
 
-function keep(initialValue) {
-    return state(initialValue, null);
-}
-
 // The 'effect' value dictates what happens when the state is mutated:
 //
-//   null       = nothing
-//   true       = the widget's parent is re-rendered
+//   null       = nothing (aliased by w95.noEffect)
+//   true       = the widget's parent is re-rendered (aliased by w95.reRenderOnly)
 //   undefined  = the widget's parent is re-mounted and then re-rendered
 //   ()=>!false = the widget's parent is re-mounted and then re-rendered
 //   ()=>false  = the mutation is undone and no re-mounting or re-rendering is done
 function state(initialValue, effect) {
     w95.debug?.assert(
-        (effect === null) ||
-        (effect === true) ||
+        (effect === w95.noEffect) ||
+        (effect === w95.reRenderOnly) ||
         ["function", "undefined"].includes(typeof effect)
     );
 
@@ -1262,8 +1257,8 @@ function StateVariable(initialValue, effect)
             this.now = newValue;
 
             switch (effect) {
-                case null: return;
-                case true: return this.rerender_parent_widget();
+                case w95.noEffect: return;
+                case w95.reRenderOnly: return this.rerender_parent_widget();
                 default: {
                     switch (effect?.({
                         now: this.now,
@@ -2906,12 +2901,11 @@ const w95 = {
     registry: _core_registry_js__WEBPACK_IMPORTED_MODULE_9__.registry,
     palette: _core_palette_js__WEBPACK_IMPORTED_MODULE_3__.palette,
     state: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.state,
-    keep: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.keep,
     debug: _core_debug_js__WEBPACK_IMPORTED_MODULE_4__.debug,
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-15.19:23:10"}`,
+    version: `BETA ${"2024-01-16.00:47:44"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     font:  {
         stringWidth(text = "", font = w95.font, initialFontVariant = w95.font.regular, letterSpacing = 1, wordSpacing = 3) {
@@ -3012,6 +3006,8 @@ const w95 = {
         tabControl: "tabControl",
         flat: "flat",
     },
+    noEffect: null,
+    reRenderOnly: true,
 };
 
 })();

@@ -18,11 +18,11 @@ export const statistics = w95.widget(function statistics({
     w95.debug?.assert(typeof height === "number");
 
     const clockCounter = w95.state(1);
-    const tickCounter = w95.keep(1);
-    const ngons = w95.keep(0);
-    const apps = w95.keep(0);
-    const repaintCount = w95.keep(0);
-    const renderTime = w95.keep(0);
+    const tickCounter = w95.state(1, w95.noEffect);
+    const ngons = w95.state(0, w95.noEffect);
+    const apps = w95.state(0, w95.noEffect);
+    const repaintCount = w95.state(0, w95.noEffect);
+    const renderTime = w95.state(0, w95.noEffect);
 
     return {
         get x() { return x },
