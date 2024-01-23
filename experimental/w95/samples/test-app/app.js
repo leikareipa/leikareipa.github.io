@@ -24,8 +24,18 @@ export default {
         `,
     },
     App() {
-        const appWidth = w95.state(400);
-        const appHeight = w95.state(Math.max(422, ~~(w95.shell.display.height * 0.8)));
+        const width = w95.state(400);
+        const height = w95.state(Math.max(422, ~~(w95.shell.display.height * 0.8)));
+
+        const x = w95.state(
+            ~~((w95.shell.display.width - width.now) / 2),
+            w95.reRenderOnly
+        );
+        const y = w95.state(
+            Math.max(0, ~~((w95.shell.display.height - height.now - (w95.registry.get("taskbar-height") || 0)) / 2)),
+            w95.reRenderOnly
+        );
+
         const domEl = w95.state(document.createElement("div"))
     
         const isNameQueryDialogOpen = w95.state(false);
@@ -47,8 +57,10 @@ export default {
         const groupItemCheckIdx = w95.state(0);
 
         return {
-            get width() { return appWidth.now },
-            get height() { return appHeight.now },
+            get x() { return x.now },
+            get y() { return y.now },
+            get width() { return width.now },
+            get height() { return height.now },
             Opened() {
                 domEl.now.innerHTML = `
                     <table>
@@ -65,26 +77,20 @@ export default {
                         <img src="./assets/construction.gif">
                     </div>
                 `;
-
-                // Center the window on the screen.
-                this.move({
-                    x: ~~((w95.shell.display.width / 2) - (appWidth.now / 2)),
-                    y: Math.max(0, ~~((w95.shell.display.height / 2) - (appHeight.now / 2) - ((w95.registry.get("taskbar-height") || 0) / 2))),
-                });
             },
             Form() {
                 return w95.widget.window({
-                    width: appWidth.now,
-                    height: appHeight.now,
+                    parent: this,
                     title: `${userName.now.length? `${userName.now} - ` : ""}Developer's test app for w95`,
-                    resize({height, isRelative}) {
-                        (height? appHeight.set(Math.max(100, (isRelative? (appHeight.now + height) : height))) : 0);
+                    resize(deltaWidth, deltaHeight) {
+                        height.set(Math.max(100, (height.now + deltaHeight)));
                     },
-                    maximized() {
-                        return {
-                            y: 0,
-                            height: w95.shell.display.height,
-                        };
+                    move(deltaX, deltaY) {
+                        x.set(x.now + deltaX);
+                        y.set(y.now + deltaY);
+                    },
+                    close() {
+                        w95.windowManager.release_window(this)
                     },
                     children: [
                         w95.widget.groupBox({
@@ -356,8 +362,8 @@ export default {
                         w95.widget.tabControl({
                             x: 6,
                             y: 271,
-                            width: (appWidth.now - 20),
-                            height: Math.max(110, (appHeight.now - 307)),
+                            width: (width.now - 20),
+                            height: Math.max(110, (height.now - 307)),
                             isDisabled: widgetDisable.now,
                             tabIndex: tab2Index.now,
                             newTabIndex(idx) {
@@ -448,7 +454,7 @@ export default {
                             },
                         }),
                         w95.widget.menuBar({
-                            width: (appWidth.now - 8),
+                            width: (width.now - 8),
                             children: [
                                 w95.widget.menuItem({
                                     label: "File",
@@ -459,9 +465,7 @@ export default {
                                             w95.widget.menuItem({
                                                 label: "Exit",
                                                 onClick(widget) {
-                                                    const parentApp = w95.windowManager.get_parent_app(widget);
-                                                    w95.debug?.assert(parentApp?._type === "app");
-                                                    w95.windowManager.release_window(parentApp.window);
+                                                    w95.windowManager.release_window(widget.$app.window);
                                                 },
                                             }),
                                         ],
@@ -589,7 +593,7 @@ export default {
                             ],
                         }),
                         nameQuery({
-                            x: ((appWidth.now / 2) - 120),
+                            x: ((width.now / 2) - 120),
                             y: 60,
                             width: 240,
                             height: 105,
@@ -679,8 +683,6 @@ export default {
 };
 
 function set_color_count(widget, count) {
-    const parentApp = w95.windowManager.get_parent_app(widget);
-    w95.debug?.assert(parentApp?._type === "app");
-    w95.registry.set(`${parentApp.id}-display-color-count`, count);
-    parentApp.rerasterize();
+    w95.registry.set(`${widget.$app.id}-display-color-count`, count);
+    widget.$app.rerasterize();
 }

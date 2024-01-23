@@ -5,7 +5,6 @@
  * 
  */
 
-
 export const twoStateButton = w95.widget(function twoStateButton({
     x = 0,
     y = 0,
@@ -39,12 +38,8 @@ export const twoStateButton = w95.widget(function twoStateButton({
                         (isPressed.now? w95.styleHint.lowered : w95.styleHint.raised),
                     ],
                     onMouseDown({widget}) {
-                        const app = w95.windowManager.get_parent_app(widget);
-                        w95.debug?.assert(app?._type === "app");
-                        
-                        const canvasEl = document.body.querySelector(`canvas[data-w95-app-id='${app?.id}']`);
+                        const canvasEl = document.body.querySelector(`canvas[data-w95-app-id='${widget.$app.id}']`);
                         canvasEl?.classList.toggle("composite");
-
                         isPressed.set(!isPressed.now);
                     },
                 }),

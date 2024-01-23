@@ -38,7 +38,7 @@ export const statistics = w95.widget(function statistics({
             renderTime.set(0);
             repaintCount.set(0);
         },
-        BeforeRelease() {
+        BeforeUnmount() {
             w95.tick.unlisten(tickListener);
             w95.clock.unlisten(clockListener);
         },

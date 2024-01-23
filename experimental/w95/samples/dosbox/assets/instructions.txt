@@ -1,0 +1,12 @@
+Welcome to w95's DOSBox sample!
+
+This sample demonstrates the integration of DOSBox (using the js-dos web wrapper) into the w95 UI.
+
+Double-click one of the DOSBox shortcut icons on the top left of your screen to start the corresponding DOS program.
+
+
+Notes:
+------
+- Due to limitations in the version of js-dos used, there can be only one active instance of DOSBox at a time.
+
+- You may run into occasional issues, like the DOSBox image shrinking, keyboard input freezing, and/or general lagginess in the w95 UI while DOSBox is running.

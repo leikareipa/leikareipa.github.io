@@ -21,6 +21,7 @@ w95.widget("bitmap", function({
     width = (image?.width || 0),
     height = (image?.height || 0),
     color = w95.palette.named.white,
+    children = [],
     isDisabled = false,
     styleHints = [],
     onMouseDown = undefined,
@@ -35,6 +36,7 @@ w95.widget("bitmap", function({
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof color === "object");
+    w95.debug?.assert(Array.isArray(children));
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "object"].includes(typeof image));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseDown));
@@ -53,6 +55,7 @@ w95.widget("bitmap", function({
                 return [];
             }
             return [
+                ...children,
                 Rngon.ngon([
                     Rngon.vertex(0, 0),
                     Rngon.vertex(width, 0),
@@ -113,7 +116,7 @@ w95.widget("button", function({
     color = w95.palette.widget.foreground,
     backgroundColor = w95.palette.widget.background,
     isDisabled = false,
-    isElided = false,
+    elide = false,
     shape = w95.buttonShape.regular,
     styleHints = [],
     onClick = undefined,
@@ -131,7 +134,7 @@ w95.widget("button", function({
     w95.debug?.assert(typeof shape === "string");
     w95.debug?.assert(typeof color === "object");
     w95.debug?.assert(typeof isDisabled === "boolean");
-    w95.debug?.assert(typeof isElided === "boolean");
+    w95.debug?.assert(typeof elide === "boolean");
     w95.debug?.assert(typeof backgroundColor === "object");
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "object"].includes(typeof icon));
@@ -195,7 +198,7 @@ w95.widget("button", function({
                             height: height,
                             text,
                             color,
-                            isElided,
+                            elide,
                             isDisabled,
                             styleHints: [
                                 w95.styleHint.action,
@@ -408,7 +411,7 @@ w95.widget("checkbox", function({
 /***/ (() => {
 
 /*
- * 2023 Tarpeeksi Hyvae Soft
+ * 2023-2024 Tarpeeksi Hyvae Soft
  *
  * Software: w95
  * 
@@ -417,10 +420,11 @@ w95.widget("checkbox", function({
 w95.widget("desktopIcon", function({
     x = 0,
     y = 0,
-    width = 60,
+    width = 74,
     height = 60,
     text = "",
     icon = w95.icon.applicationIcon32x32,
+    styleHints = [],
     onActivate = undefined,
 } = {})
 {
@@ -430,52 +434,69 @@ w95.widget("desktopIcon", function({
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof text === "string");
     w95.debug?.assert(typeof icon === "object");
+    w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "object"].includes(typeof icon));
     w95.debug?.assert(["undefined", "function"].includes(typeof onActivate));
     w95.debug?.assert((icon.width === 32) && (icon.height === 32));
 
     const hasFocus = w95.state(false);
 
-    const labelWidth = (w95.font.stringWidth(text) + 2);
-    const labelHeight = w95.font.regular.lineHeight;
+    const labelWidth = Math.min(width, (w95.font.stringWidth(text) + 2));
 
     return {
         get x() { return x },
         get y() { return y },
-        get width() { return width },
-        get height() { return height },
+        get width() { return this.$form.layout.width },
+        get height() { return this.$form.layout.height },
+        Mounted() {
+            height = this.$childWidgets.reduce((sum, w)=>(sum + w.height), 0);
+        },
         Form() {
-            return [
-                w95.widget.label({
-                    x: ((width / 2) - (labelWidth / 2)),
-                    y: (height - labelHeight * 1.75),
-                    width: labelWidth,
-                    height: labelHeight,
-                    text,
-                    color: w95.palette.named.white,
-                    backgroundColor: (
-                        hasFocus.now
-                            ? w95.palette.named.navy
-                            : w95.palette.named.teal
-                    ),
-                    styleHints: [
-                        w95.styleHint.alignHCenter,
-                    ],
-                }),
-                w95.widget.bitmap({
-                    x: ((width / 2) - (icon.width / 2)),
-                    y: 0,
-                    image: icon,
-                    color: (
-                        hasFocus.now
-                            ? Rngon.color(128, 128, 255)
-                            : w95.palette.named.white
-                    ),
-                    styleHints: [
-                        (hasFocus.now? w95.styleHint.focused : w95.styleHint.void),
-                    ],
-                }),
-            ];
+            return w95.widget.verticalLayout({
+                $name: "layout",
+                height,
+                padding: 4,
+                styleHints:  [
+                    w95.styleHint.alignHCenter,
+                ],
+                children: [
+                    w95.widget.layoutSpacer({
+                        width,
+                    }),
+                    w95.widget.bitmap({
+                        image: icon,
+                        color: (
+                            hasFocus.now
+                                ? Rngon.color(128, 128, 255)
+                                : w95.palette.named.white
+                        ),
+                        styleHints: [
+                            (hasFocus.now? w95.styleHint.focused : w95.styleHint.void),
+                        ],
+                        children: [
+                            w95.widget.bitmap({
+                                y: (icon.height - w95.icon.shortcutArrow.height),
+                                image: w95.icon.shortcutArrow,
+                            }, {hideIf: !styleHints.includes(w95.styleHint.shortcut)}),
+                        ],
+                    }),
+    
+                    w95.widget.label({
+                        width: labelWidth,
+                        text,
+                        wordWrap: true,
+                        color: w95.palette.named.white,
+                        backgroundColor: (
+                            hasFocus.now
+                                ? w95.palette.named.navy
+                                : w95.palette.named.teal
+                        ),
+                        styleHints: [
+                            w95.styleHint.alignHCenter,
+                        ],
+                    }),
+                ]
+            });
         },
         Message: {
             blur() {
@@ -591,7 +612,7 @@ w95.widget("dialog", function({
             ];
         },
         Message: {
-            moveBy(deltaX = 0, deltaY = 0) {
+            move(deltaX = 0, deltaY = 0) {
                 w95.debug?.assert(typeof deltaX === "number");
                 w95.debug?.assert(typeof deltaY === "number");
                 move?.(deltaX, deltaY, {isRelative: true});
@@ -616,14 +637,12 @@ w95.widget("dialog", function({
 /***/ (() => {
 
 /*
- * 2023 Tarpeeksi Hyvae Soft
+ * 2023-2024 Tarpeeksi Hyvae Soft
  *
  * Software: w95
  * 
  */
 
-// NOTE: This component is known to be broken since widget rasterization
-// was moved to using multiple canvases. It needs fixing.
 w95.widget("domElement", function({
     x = 0,
     y = 0,
@@ -672,11 +691,6 @@ w95.widget("domElement", function({
         get width() { return width },
         get height() { return height },
         get dom() { return element },
-        Mounted() {
-            // Make sure the DOM element's Z index is in line with the Z index
-            // of the canvas of this widget's parent app.
-            w95.windowManager.update_z_indices();
-        },
         Opened() {
             element.classList.remove("hidden");
         },
@@ -692,20 +706,9 @@ w95.widget("domElement", function({
                     color: Rngon.color(0, 0, 0, 0),
             });
         },
-        Event: {
-            mousedown() {
-                return true;
-            },
-            mouseup() {
-                return true;
-            },
-            mousemove() {
-                return true;
-            },
-        },
         Message: {
-            setZIndex(idx) {
-                element.style.zIndex = idx;
+            setIsSuppressed(isSuppressed) {
+                element.style.zIndex = (this.$app._canvas.style.zIndex - (isSuppressed? 1 : -1));
             },
         },
     };
@@ -777,6 +780,7 @@ w95.widget("dropdownBoxItem", function({
         },
         Event: {
             mousedown() {
+                isHighlighted.set(true);
                 return true;
             },
             mouseup() {
@@ -881,13 +885,6 @@ w95.widget("dropdownBoxList", function({
         get height() { return height.now },
         get listItems() { return this.$form["_listItemsContainer"].$childWidgets },
         get isActivePopupMenu() { return isOpen },
-        Mounted() {
-            // Suppress any DOM widgets while the dropdown is open.
-            w95.windowManager.update_z_indices(true);
-        },
-        BeforeRelease() {
-            w95.windowManager.update_z_indices();
-        },
         Form() {
             const itemWidgets = Object.keys(items).map((k, idx)=>w95.widget.dropdownBoxItem({
                 ...items[k],
@@ -925,9 +922,8 @@ w95.widget("dropdownBoxList", function({
 
             if (highlightedIdx.now === undefined) {
                 this.Message.select(this.listItems[itemIndex]);
-            }
-            else {
-                highlight_item(itemIndex, this.listItems);
+                highlightedIdx.set(itemIndex);
+                this.listItems[itemIndex].Message.highlight(true);
             }
 
             this.listItems.forEach(child=>child.Message.setParent(this));
@@ -939,6 +935,7 @@ w95.widget("dropdownBoxList", function({
                 const idx = this.listItems.findIndex(item=>item.text === dropdownItemWidget.text);
                 highlightedIdx.set(idx);
                 newItemIndex?.(dropdownItemWidget, idx);
+                this.Message.close();
             },
             close() {
                 onCloseRequested?.();
@@ -1122,14 +1119,14 @@ w95.widget("dynamicWrapper", function({
         },
         Message: {
             move(newX, newY) {
-                w95.debug?.assert(typeof newX === "number");
-                w95.debug?.assert(typeof newY === "number");
+                w95.debug?.assert(Number.isInteger(newX));
+                w95.debug?.assert(Number.isInteger(newY));
                 x.set(newX);
                 y.set(newY);
             },
             resize(newWidth, newHeight) {
-                w95.debug?.assert(typeof newWidth === "number");
-                w95.debug?.assert(typeof newHeight === "number");
+                w95.debug?.assert(Number.isInteger(newWidth));
+                w95.debug?.assert(Number.isInteger(newHeight));
                 width.set(newWidth);
                 height.set(newHeight);
             },
@@ -1190,13 +1187,18 @@ w95.widget("frame", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseLeave));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseEnter));
     
+    const borderGrab = w95.state({});
     const isPressed = w95.state(false, w95.noEffect);
     const isHovered = w95.state(false, w95.noEffect);
-    const borderGrab = w95.state({}, w95.noEffect);
     const parentWidget = w95.state(undefined, w95.noEffect);
 
-    let isBorderGrabbed = false;
-    update_border_grab_status();
+    const isBorderGrabbed = Boolean(
+        isResizable && (
+            borderGrab.now.left ||
+            borderGrab.now.right ||
+            borderGrab.now.top ||
+            borderGrab.now.bottom
+    ));
     
     return {
         get x() { return x },
@@ -1206,9 +1208,6 @@ w95.widget("frame", function({
         get isHovered() { return isHovered.now },
         get isGrabbed() { return (isGrabbable && isPressed.now) }, 
         get isBorderGrabbed() { return (isResizable && isBorderGrabbed) },
-        Mounted() {
-             borderGrab.onChange = update_border_grab_status;
-        },
         Form() {
             return [
                 ...children,
@@ -1266,18 +1265,18 @@ w95.widget("frame", function({
                     w95.debug?.assert(typeof event?.movementY === "number");
 
                     if (borderGrab.now.right || borderGrab.now.bottom) {
-                        parentWidget.now.Message.resizeBy(
+                        parentWidget.now.Message.resize(
                             borderGrab.now.right? (event.movementX / w95.shell.display.scale) : 0,
                             borderGrab.now.bottom? (event.movementY / w95.shell.display.scale) : 0,
                         );
                     }
 
                     if (borderGrab.now.left || borderGrab.now.top) {
-                        parentWidget.now.Message.resizeBy(
+                        parentWidget.now.Message.resize(
                             borderGrab.now.left? (-event.movementX / w95.shell.display.scale) : 0,
                             borderGrab.now.top? (-event.movementY / w95.shell.display.scale) : 0,
                         );
-                        parentWidget.now.Message.moveBy(
+                        parentWidget.now.Message.move(
                             borderGrab.now.left? (event.movementX / w95.shell.display.scale) : 0,
                             borderGrab.now.top? (event.movementY / w95.shell.display.scale) : 0,
                         );
@@ -1288,16 +1287,6 @@ w95.widget("frame", function({
             },
         },
     };
-
-    function update_border_grab_status() {
-        isBorderGrabbed = Boolean(
-            isResizable && (
-                borderGrab.now.left ||
-                borderGrab.now.right ||
-                borderGrab.now.top ||
-                borderGrab.now.bottom
-        ));
-    }
 
     function frame_mesh() {
         if (
@@ -2438,12 +2427,10 @@ w95.widget("label", function({
     width = undefined,
     height = undefined,
     isDisabled = false,
-    isElided = false,
+    elide = false,
+    wordWrap = false,
     styleHints = [],
-    letterSpacing = 1,
-    wordSpacing = 3,
     font = w95.font.sansSerif[8],
-    lineSpacing = w95.font.regular.lineHeight,
     color = w95.palette.widget.foreground,
     backgroundColor = w95.palette.named.transparent,
     onMouseDown = undefined,
@@ -2458,11 +2445,9 @@ w95.widget("label", function({
     w95.debug?.assert(typeof text === "string");
     w95.debug?.assert(typeof color === "object");
     w95.debug?.assert(typeof backgroundColor === "object");
-    w95.debug?.assert(typeof wordSpacing === "number");
-    w95.debug?.assert(typeof letterSpacing === "number");
-    w95.debug?.assert(typeof lineSpacing === "number");
     w95.debug?.assert(typeof isDisabled === "boolean");
-    w95.debug?.assert(typeof isElided === "boolean");
+    w95.debug?.assert(typeof elide === "boolean");
+    w95.debug?.assert(typeof wordWrap === "boolean");
     w95.debug?.assert(typeof font === "object");
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "number"].includes(typeof width));
@@ -2480,28 +2465,22 @@ w95.widget("label", function({
         width = w95.font.stringWidth(text, font, fontVariant);
     }
     if (typeof height === "undefined") {
-        height = w95.font.stringHeight(text, fontVariant);
+        height = w95.font.stringHeight(text, font, fontVariant);
     }
 
     if (
-        isElided &&
+        wordWrap &&
+        (w95.font.stringWidth(text, font, fontVariant) > width)
+    ){
+        word_wrap_text();
+    }
+
+    if (
+        elide &&
         text.length &&
         (w95.font.stringWidth(text, font, fontVariant) > width)
     ){
-        const eliderString = "...";
-        const eliderWidth = w95.font.stringWidth(eliderString, font, fontVariant);
-
-        if (eliderWidth < width) {
-            // Not the most efficient way to do this, but good enough for now.
-            do {
-                text = text.slice(0, -1);
-            } while (width < (eliderWidth + w95.font.stringWidth(text, font, fontVariant)));
-
-            text += eliderString;
-        }
-        else {
-            text = "";
-        }
+        elide_text();
     }
 
     const isDisabledAction = (
@@ -2567,9 +2546,62 @@ w95.widget("label", function({
         );
     }
 
+    function word_wrap_text() {
+        const words = text.split(" ");
+
+        const lines = [];
+        let lineIdx = 0;
+
+        while (words.length) {
+            const nextCutIdx = words.findIndex((word, idx)=>(
+                w95.font.stringWidth(words.slice(0, (idx + 1)).join(" "), font, fontVariant) >= width
+            ));
+
+            // The entire text fits and so doesn't need wrapping.
+            if (nextCutIdx < 0) {
+                lines[lineIdx] = words.join(" ");
+                break;
+            }
+            // Not even the first word fits, so chop it up.
+            else if (nextCutIdx === 0) {
+                const interWordCutIdx = words[0].split("").findIndex((word, idx)=>(
+                    w95.font.stringWidth(words[0].substring(0, (idx + 1)), font, fontVariant) >= width
+                ));
+                lines[lineIdx] = words[0].substring(0, interWordCutIdx);
+                words[0] = words[0].substring(interWordCutIdx);
+            }
+            // Some of the words fit.
+            else {
+                lines[lineIdx] = words.splice(0, nextCutIdx).join(" ");
+            }
+
+            lineIdx++;
+        }
+
+        text = lines.join("\n");
+        width = w95.font.stringWidth(text, font, fontVariant);
+        height = w95.font.stringHeight(text, font, fontVariant);
+    }
+
+    function elide_text() {
+        const eliderString = "...";
+        const eliderWidth = w95.font.stringWidth(eliderString, font, fontVariant);
+
+        if (eliderWidth < width) {
+            // Not the most efficient way to do this, but good enough for now.
+            do {
+                text = text.slice(0, -1);
+            } while (width < (eliderWidth + w95.font.stringWidth(text, font, fontVariant)));
+
+            text += eliderString;
+        }
+        else {
+            text = "";
+        }
+    }
+
     function text_mesh() {
         const ngons = [];
-        const textWidth = w95.font.stringWidth(text, font, fontVariant);
         const textHeight = w95.font.stringHeight(text, font, fontVariant);
 
         if (isDisabledAction) {
@@ -2580,17 +2612,8 @@ w95.widget("label", function({
             ngons.push(...to_ngons(text, (isDisabled? w95.palette.widget.disabled1 : color)));
         }
 
-        if (styleHints.includes(w95.styleHint.alignHCenter)) {
-            const center = Math.round((width / 2) - (textWidth / 2));
-            for (const ngon of ngons) {
-                for (const vert of ngon.vertices) {
-                    vert.x += center;
-                }
-            }
-        }
-
         if (styleHints.includes(w95.styleHint.alignVCenter)) {
-            const center = Math.floor((height / 2) - (textHeight / 2));
+            const center = Math.floor((height - textHeight) / 2);
             for (const ngon of ngons) {
                 for (const vert of ngon.vertices) {
                     vert.y += center;
@@ -2598,107 +2621,129 @@ w95.widget("label", function({
             }
         }
 
-        if (styleHints.includes(w95.styleHint.alignRight)) {
-            const left = (width - textWidth);
-            for (const ngon of ngons) {
-                for (const vert of ngon.vertices) {
-                    vert.x += left;
-                }
-            }
-        }
-
         return ngons;
 
         function to_ngons(text, textColor = color, x = 0, y = 0) {
+            const startX = x;
             const ngons = [];
-            const textChars = text.split("");
-            const originalColor = textColor;
+            const letterSpacing = 1;
+            const initialColor = textColor;
+            let prevColor = textColor
 
-            for (let i = 0; i < textChars.length; i++) {
-                const charCode = textChars[i].charCodeAt(0);
+            for (const line of text.split("\n")) {
+                const lineWidth = w95.font.stringWidth(line, font, fontVariant);
+                const lineNgons = [];
+                const chars = line.split("");
 
-                // \b (toggle bold font on/off).
-                if (charCode === 8) {
-                    fontVariant = ((fontVariant === font.regular)? font.bold : font.regular);
-                    continue;
-                }
-
-                // \v (toggle underlining on/off).
-                if (charCode === 11) {
-                    isUnderlined = !isUnderlined;
-                    continue;
-                }
-
-                // \r (set text color).
-                if (charCode === 13) {
-                    const colorName = text.slice((i + 2), text.indexOf("}", (i + 2)));
-                    if (!isDisabled) {
-                        textColor = (colorName.length? w95.palette.named[colorName] : originalColor);
-                    }
-                    i += (2 + colorName.length);
-                    continue;
-                }
+                for (let i = 0; i < chars.length; i++) {
+                    const charCode = chars[i].charCodeAt(0);
     
-                // Space.
-                if (charCode === 32) {
-                    const spaceWidth = (wordSpacing * letterSpacing);
-
+                    // \b (toggle bold font on/off).
+                    if (charCode === 8) {
+                        fontVariant = ((fontVariant === font.regular)? font.bold : font.regular);
+                        continue;
+                    }
+    
+                    // \v (toggle underlining on/off).
+                    if (charCode === 11) {
+                        isUnderlined = !isUnderlined;
+                        continue;
+                    }
+    
+                    // \r (set text color, e.g. "\r{red}this is in red\r{} back to normal color").
+                    if (charCode === 13) {
+                        const colorName = line.slice((i + 2), line.indexOf("}", (i + 2)));
+                        if (!isDisabled) {
+                            // If a color name is given.
+                            if (colorName.length > 1) {
+                                prevColor = textColor;
+                                textColor = w95.palette.named[colorName];
+                            }
+                            else {
+                                textColor = ((colorName === "-")? initialColor : prevColor);
+                            }
+                        }
+                        i += (2 + colorName.length);
+                        continue;
+                    }
+        
+                    // Space.
+                    if (charCode === 32) {
+                        const spaceWidth = fontVariant.spaceWidth;
+    
+                        if (isUnderlined) {
+                            lineNgons.push(
+                                Rngon.ngon([
+                                    Rngon.vertex( x              , (y + fontVariant.lineHeight)),
+                                    Rngon.vertex((x + spaceWidth), (y + fontVariant.lineHeight)),
+                                ], {
+                                    color: textColor,
+                                    isColorInverted: styleHints.includes(w95.styleHint.inverted),
+                                }),
+                            );
+                        }
+                        
+                        x += spaceWidth;
+    
+                        continue;
+                    }
+        
+                    const glyph = (fontVariant[charCode] || fontVariant[63]);
+        
+                    x += glyph.leftSpacing;
+    
+                    lineNgons.push(
+                        Rngon.ngon([
+                            Rngon.vertex( x,                 y                ), 
+                            Rngon.vertex((x + glyph.width),  y                ),
+                            Rngon.vertex((x + glyph.width), (y + glyph.height)),
+                            Rngon.vertex( x,                (y + glyph.height)),
+                        ], {
+                            texture: glyph,
+                            color: textColor,
+                            allowAlphaReject: true,
+                            isColorInverted: styleHints.includes(w95.styleHint.inverted),
+                            underlined: true,
+                        }),
+                    );
+    
                     if (isUnderlined) {
-                        ngons.push(
+                        lineNgons.push(
                             Rngon.ngon([
-                                Rngon.vertex( x              , (y + fontVariant.lineHeight)),
-                                Rngon.vertex((x + spaceWidth), (y + fontVariant.lineHeight)),
+                                Rngon.vertex( x                               , (y + fontVariant.lineHeight)),
+                                Rngon.vertex((x + glyph.width + letterSpacing), (y + fontVariant.lineHeight)),
                             ], {
                                 color: textColor,
                                 isColorInverted: styleHints.includes(w95.styleHint.inverted),
                             }),
                         );
                     }
-                    
-                    x += spaceWidth;
-
-                    continue;
+        
+                    x += (glyph.width + letterSpacing);
                 }
-    
-                // Newline.
-                if (charCode === 10) {
-                    x = 0;
-                    y += lineSpacing;
-                    continue;
-                }
-    
-                const glyph = (fontVariant[charCode] || fontVariant[63]);
-    
-                x += glyph.leftSpacing;
 
-                ngons.push(
-                    Rngon.ngon([
-                        Rngon.vertex( x,                 y                ), 
-                        Rngon.vertex((x + glyph.width),  y                ),
-                        Rngon.vertex((x + glyph.width), (y + glyph.height)),
-                        Rngon.vertex( x,                (y + glyph.height)),
-                    ], {
-                        texture: glyph,
-                        color: textColor,
-                        allowAlphaReject: true,
-                        isColorInverted: styleHints.includes(w95.styleHint.inverted),
-                        underlined: true,
-                    }),
-                );
+                x = startX;
+                y += fontVariant.lineHeight;
 
-                if (isUnderlined) {
-                    ngons.push(
-                        Rngon.ngon([
-                            Rngon.vertex( x                               , (y + fontVariant.lineHeight)),
-                            Rngon.vertex((x + glyph.width + letterSpacing), (y + fontVariant.lineHeight)),
-                        ], {
-                            color: textColor,
-                            isColorInverted: styleHints.includes(w95.styleHint.inverted),
-                        }),
-                    );
+                if (styleHints.includes(w95.styleHint.alignHCenter)) {
+                    const center = Math.round((width - lineWidth) / 2);
+                    for (const ngon of lineNgons) {
+                        for (const vert of ngon.vertices) {
+                            vert.x += center;
+                        }
+                    }
                 }
-    
-                x += (glyph.width + letterSpacing);
+
+                if (styleHints.includes(w95.styleHint.alignRight)) {
+                    const left = (width - lineWidth);
+                    for (const ngon of lineNgons) {
+                        for (const vert of ngon.vertices) {
+                            vert.x += left;
+                        }
+                    }
+                }
+
+                ngons.push(...lineNgons);
             }
 
             return ngons;
@@ -2795,7 +2840,8 @@ w95.widget("lineEdit", function({
     const borderWidth = 2;
     const horPadding = 5;
     const visibleText = text.slice(viewBufferStart.now, viewBufferEnd.now);
-    const font = w95.font.regular;
+    const font = w95.font;
+    const fontVariant = font.regular;
     const cursorXOffset = w95.font.stringWidth(text.slice(viewBufferStart.now, cursorPosition.now), font);
 
     return {
@@ -2812,7 +2858,7 @@ w95.widget("lineEdit", function({
                 }
             }, 500);
         },
-        BeforeRelease() {
+        BeforeUnmount() {
             clearTimeout(cursorBlinkTimeout);
         },
         Form() {
@@ -2901,9 +2947,8 @@ w95.widget("lineEdit", function({
                 }
                 
                 const clickCharIdx = visibleText.split("").findIndex((ch, idx)=>{
-                    const spaceWidth = 3;
                     const chCode = ch.charCodeAt(0);
-                    const chWidth = ((chCode === 32)? spaceWidth : font[chCode].width);
+                    const chWidth = ((chCode === 32)? fontVariant.spaceWidth : fontVariant[chCode].width);
                     return (w95.font.stringWidth(visibleText.substring(0, idx), font) > (at.x - (chWidth / 2) - horPadding));
                 });
                 set_cursor_position(viewBufferStart.now + ((clickCharIdx < 0)? visibleText.length : clickCharIdx));
@@ -3115,7 +3160,7 @@ w95.widget("menuBar", function({
                 }
             },
             closeMenus() {
-                this.$childWidgets.forEach(menuItem=>menuItem.Message.close());
+                this.$childWidgets.filter(w=>w.isOpen).forEach(w=>w.Message.close());
             },
         },
     };
@@ -3421,9 +3466,6 @@ w95.widget("menu", function({
         get isOpen() { return isOpen.now },
         get isActivePopupMenu() { return isOpen.now },
         Mounted() {
-            // Suppress any DOM widgets while the menu is open.
-            w95.windowManager.update_z_indices(isOpen.now);
-
             const menuItems = this.$form["_menuItemsContainer"].$childWidgets;
             w95.debug?.assert(menuItems.every(item=>["menuItem", "menuSeparator"].includes(item._type)));
 
@@ -3951,7 +3993,7 @@ w95.widget("renderSurface", function({
                 w95.tick.listen(tick = tick.bind(this));
             }
         },
-        BeforeRelease() {
+        BeforeUnmount() {
             if (onTick) {
                 w95.tick.unlisten(tick);
             }
@@ -4028,6 +4070,8 @@ w95.widget("scrollArea", function({
     isDisabled = false,
     frameShape = w95.frameShape.input,
     children = [],
+    alwaysShowVerticalScroll = false,
+    alwaysShowHorizontalScroll = false,
     backgroundColor = undefined,
     onMouseDown = undefined,
     onMouseUp = undefined,
@@ -4043,6 +4087,8 @@ w95.widget("scrollArea", function({
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof frameShape === "string");
+    w95.debug?.assert(typeof alwaysShowVerticalScroll === "boolean");
+    w95.debug?.assert(typeof alwaysShowHorizontalScroll === "boolean");
     w95.debug?.assert(Array.isArray(children));
     w95.debug?.assert(["undefined", "object"].includes(typeof backgroundColor));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseDown));
@@ -4060,20 +4106,22 @@ w95.widget("scrollArea", function({
     const scrollButtonSize = 16;
 
     const vertical = {
+        hasExcess: w95.state(false),
         scrollPos: w95.state(0),
         handlePos: w95.state(0),
         handleSize: w95.state(16),
         contentLength: w95.state(10),
-        isVisible: w95.state(false),
+        isVisible: w95.state(alwaysShowVerticalScroll),
         viewportSize: w95.state(height),
     };
 
     const horizontal = {
+        hasExcess: w95.state(false),
         scrollPos: w95.state(0),
         handlePos: w95.state(0),
         handleSize: w95.state(16),
         contentLength: w95.state(10),
-        isVisible: w95.state(false),
+        isVisible: w95.state(alwaysShowHorizontalScroll),
         viewportSize: w95.state(width),
     };
 
@@ -4087,13 +4135,15 @@ w95.widget("scrollArea", function({
              const contentsFrame = this.$form["_contents"];
 
              const horizontalScrollExcess = (horizontal.contentLength.now - horizontal.viewportSize.now);
-             horizontal.isVisible.set(horizontalScrollExcess > 0);
+             horizontal.hasExcess.set(horizontalScrollExcess > 0);
+             horizontal.isVisible.set(alwaysShowHorizontalScroll || horizontal.hasExcess.now);
              horizontal.viewportSize.set(width - (padding * 2) - (vertical.isVisible.now? scrollButtonSize : 0));
              horizontal.contentLength.set(Math.max(...contentsFrame.$descendants.map(d=>(d.at.x + d.widget.width))));
              horizontal.handleSize.set(Math.max(scrollButtonSize, (horizontal.viewportSize.now - horizontalScrollExcess - (scrollButtonSize * 2))));
 
              const verticalScrollExcess = (vertical.contentLength.now - vertical.viewportSize.now);
-             vertical.isVisible.set(verticalScrollExcess > 0);
+             vertical.hasExcess.set(verticalScrollExcess > 0);
+             vertical.isVisible.set(alwaysShowVerticalScroll || vertical.hasExcess.now);
              vertical.viewportSize.set(height - (padding * 2) - (horizontal.isVisible.now? scrollButtonSize : 0));
              vertical.contentLength.set(Math.max(...contentsFrame.$descendants.map(d=>(d.at.y + d.widget.height))));
              vertical.handleSize.set(Math.max(scrollButtonSize, (vertical.viewportSize.now - verticalScrollExcess - (scrollButtonSize * 2))));
@@ -4190,7 +4240,7 @@ w95.widget("scrollArea", function({
                                 clickPosExcess.set(at.y + scrollButtonSize + 1);
                                 return true;
                             },
-                        }),
+                        }, {hideIf: !vertical.hasExcess.now }),
                         w95.widget.button({
                             x: 0,
                             y: 0,
@@ -4198,7 +4248,7 @@ w95.widget("scrollArea", function({
                             height: scrollButtonSize,
                             icon: w95.icon.arrowUp,
                             shape: w95.buttonShape.dropdown,
-                            isDisabled,
+                            isDisabled: (isDisabled || !vertical.hasExcess.now),
                             onClick() {
                                 scroll("vertical", -1);
                                 return true;
@@ -4211,7 +4261,7 @@ w95.widget("scrollArea", function({
                             height: scrollButtonSize,
                             icon: w95.icon.arrowDown,
                             shape: w95.buttonShape.dropdown,
-                            isDisabled,
+                            isDisabled: (isDisabled || !vertical.hasExcess.now),
                             onClick() {
                                 scroll("vertical", 1);
                                 return true;
@@ -4271,14 +4321,14 @@ w95.widget("scrollArea", function({
                                 clickPosExcess.set(at.x + scrollButtonSize + 1);
                                 return true;
                             },
-                        }),
+                        }, {hideIf: !horizontal.hasExcess.now }),
                         w95.widget.button({
                             x: 0,
                             y: 0,
                             width: scrollButtonSize,
                             height: scrollButtonSize,
                             icon: w95.icon.arrowLeft,
-                            isDisabled,
+                            isDisabled: (isDisabled || !horizontal.hasExcess.now),
                             onClick() {
                                 scroll("horizontal", -1);
                             },
@@ -4289,7 +4339,7 @@ w95.widget("scrollArea", function({
                             width: scrollButtonSize,
                             height: scrollButtonSize,
                             icon: w95.icon.arrowRight,
-                            isDisabled,
+                            isDisabled: (isDisabled || !horizontal.hasExcess.now),
                             onClick() {
                                 scroll("horizontal", 1);
                             },
@@ -4462,11 +4512,12 @@ w95.widget("textEdit", function({
     text = "",
     width = 100,
     height = 21,
-    font = w95.font,
+    font = w95.font.courier[8],
     isEditable = false,
     isDisabled = false,
     autofocus = false,
     styleHints = [],
+    highlighter = undefined,
     newText = undefined,
 } = {})
 {
@@ -4477,26 +4528,26 @@ w95.widget("textEdit", function({
     w95.debug?.assert(typeof isEditable === "boolean");
     w95.debug?.assert(typeof text === "string");
     w95.debug?.assert(Array.isArray(styleHints));
+    w95.debug?.assert(["undefined", "function"].includes(typeof highlighter));
     w95.debug?.assert(["undefined", "function"].includes(typeof newText));
 
     // This widget doesn't support rich text, so let's strip away any formatting
     // characters that w95.widget.label uses (e.g. "\b" for bold text).
     text = text.replace(/(?![\n])[\x00-\x1f]/g, "");
 
-    font = (styleHints.includes(w95.styleHint.bold)? font.bold : font.regular);
+    const displayText = (highlighter?.(text) || text);
+    const fontVariant = (styleHints.includes(w95.styleHint.bold)? font.bold : font.regular);
 
     const cursorPos = w95.state(0);
     const showCursor = w95.state(true);
     const hasFocus = w95.state(false);
-
-    cursorPos.onChange = ()=>showCursor.set(true);
 
     const lines = text.split("\n");
     const cursorPos2d = {};
     cursorPos2d.x = text.slice(0, cursorPos.now).split("\n").at(-1).length;
     cursorPos2d.y = (text.slice(0, cursorPos.now).split("\n").length - 1);
     cursorPos2d.globalX = (1 + w95.font.stringWidth(lines[cursorPos2d.y].slice(0, cursorPos2d.x), font));
-    cursorPos2d.globalY = (1 + (cursorPos2d.y * font.lineHeight));
+    cursorPos2d.globalY = (1 + (cursorPos2d.y * fontVariant.lineHeight));
     
     let cursorBlinkTimeout;
 
@@ -4514,7 +4565,7 @@ w95.widget("textEdit", function({
                 }
             }, 500);
         },
-        BeforeRelease() {
+        BeforeUnmount() {
             clearTimeout(cursorBlinkTimeout);
         },
         Form() {
@@ -4530,7 +4581,8 @@ w95.widget("textEdit", function({
                 children: [
                     w95.widget.label({
                         x: 2,
-                        text,
+                        text: displayText,
+                        font,
                         color: (
                             isDisabled
                                 ? w95.palette.widget.disabled1
@@ -4541,7 +4593,7 @@ w95.widget("textEdit", function({
                     // Text cursor.
                     Rngon.ngon([
                         Rngon.vertex(cursorPos2d.globalX, cursorPos2d.globalY),
-                        Rngon.vertex(cursorPos2d.globalX, (cursorPos2d.globalY + font.lineHeight - 1)),
+                        Rngon.vertex(cursorPos2d.globalX, (cursorPos2d.globalY + fontVariant.lineHeight - 1)),
                     ], {
                         color: (
                             (showCursor.now && hasFocus.now)
@@ -4555,12 +4607,11 @@ w95.widget("textEdit", function({
                         return;
                     }
     
-                    const y = Math.min(~~(at.y / font.lineHeight), (lines.length - 1));
+                    const y = Math.min(~~(at.y / fontVariant.lineHeight), (lines.length - 1));
                     const clickedLine = lines[y];
                     const x = clickedLine.split("").findIndex((ch, idx)=>{
-                        const spaceWidth = 3;
                         const chCode = ch.charCodeAt(0);
-                        const chWidth = ((chCode === 32)? spaceWidth : (font[chCode]?.width || 0));
+                        const chWidth = ((chCode === 32)? fontVariant.spaceWidth : (fontVariant[chCode]?.width || 0));
                         return (w95.font.stringWidth(clickedLine.substring(0, idx), font) > ~~(at.x - (chWidth / 2)));
                     });
 
@@ -4717,7 +4768,7 @@ w95.widget("time", function({
         Mounted() {
             w95.clock.listen(clockTickCallback.now);
         },
-        BeforeRelease() {
+        BeforeUnmount() {
             w95.clock.unlisten(clockTickCallback.now);
         },
         Form() {
@@ -4843,6 +4894,7 @@ w95.widget("titleBar", function({
                     y: 2,
                     width: 16,
                     height: 14,
+                    isDisabled: true, // Maximizing windows hasn't been implemented yet.
                     icon: w95.icon.titleBarMaximize,
                     onClick: maximize_parent,
                 }, {hideIf: isDialog}),
@@ -4877,7 +4929,7 @@ w95.widget("titleBar", function({
                         w95.debug?.assert(parentWidget.now._what === "w95-widget");
                         w95.debug?.assert(["window", "dialog"].includes(parentWidget.now._type));
         
-                        parentWidget.now.Message?.moveBy?.(
+                        parentWidget.now.Message?.move?.(
                             (event.movementX / w95.shell.display.scale),
                             (event.movementY / w95.shell.display.scale),
                         );
@@ -4954,14 +5006,17 @@ w95.widget("verticalLayout", function({
             {
                 const contentHeight = wrappers.reduce((height, wrapper)=>{
                     const widget = wrapper.$childWidgets[0];
-                    return (height + widget.height + padding);
-                }, (-padding * !!children.length));
+                    return (height + widget.height + ((widget._type === "layoutSpacer")? 0 : padding));
+                }, (-padding * !!children.filter(w=>(w._type !== "layoutSpacer")).length));
 
                 if (styleHints.includes(w95.styleHint.alignVCenter)) {
                     adjustedY.set(y + ~~(height / 2 - (contentHeight / 2)));
                 }
-                else if (styleHints.includes(w95.styleHint.alignBottom)) {
-                    adjustedY.set(y + height - contentHeight);
+                else {
+                    if (styleHints.includes(w95.styleHint.alignBottom)) {
+                        adjustedY.set(y + height - contentHeight);
+                    }
+
                     adjustedHeight.set(contentHeight);
                 }
             }
@@ -4986,12 +5041,15 @@ w95.widget("verticalLayout", function({
                         else if (styleHints.includes(w95.styleHint.alignLeft)) {
                             wrapper.Message.move(0, runningHeight);
                         }
+                        else if (styleHints.includes(w95.styleHint.alignHCenter)) {
+                            wrapper.Message.move(~~((adjustedWidth.now - widget.width) / 2), runningHeight);
+                        }
                         else {
                             wrapper.Message.move(0, runningHeight);
                         }
                     }
-                        
-                    runningHeight += (widget.height + padding);
+
+                    runningHeight += (widget.height + (widget.height? padding : 0));
                 }
             }
         },
@@ -5022,8 +5080,7 @@ w95.widget("verticalLayout", function({
  */
 
 w95.widget("window", function({
-    width = 100,
-    height = 100,
+    parent = undefined,
     title = "",
     backgroundColor = w95.palette.window.background,
     icon = w95.icon.applicationIcon16x16,
@@ -5041,12 +5098,11 @@ w95.widget("window", function({
     onKeyDown = undefined,
     resize = undefined,
     move = undefined,
-    maximized = undefined,
+    maximize = undefined,
     close = undefined,
 } = {})
 {
-    w95.debug?.assert(typeof width === "number");
-    w95.debug?.assert(typeof height === "number");
+    w95.debug?.assert(parent?._type === "App");
     w95.debug?.assert(typeof title === "string");
     w95.debug?.assert(typeof icon === "object");
     w95.debug?.assert(typeof isBlurred === "boolean");
@@ -5062,8 +5118,11 @@ w95.widget("window", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onKeyDown));
     w95.debug?.assert(["undefined", "function"].includes(typeof resize));
     w95.debug?.assert(["undefined", "function"].includes(typeof move));
-    w95.debug?.assert(["undefined", "function"].includes(typeof maximized));
+    w95.debug?.assert(["undefined", "function"].includes(typeof maximize));
     w95.debug?.assert(["undefined", "function"].includes(typeof close));
+
+    const width = parent.width;
+    const height = parent.height;
 
     isBlurred = w95.state(isBlurred);
 
@@ -5078,7 +5137,6 @@ w95.widget("window", function({
     let menuBarWidget = undefined;
 
     return {
-        // The window's parent app automatically provides the values for X and Y.
         get x() { return 0 },
         get y() { return 0 },
         get width() { return width },
@@ -5127,9 +5185,7 @@ w95.widget("window", function({
                     isBlurred: isBlurred.now,
                     title,
                     icon,
-                    onClose: ()=>{
-                        w95.windowManager.release_window(this);
-                    },
+                    onClose: (close? ()=>close.call(this) : undefined),
                 }, {hideIf: isPlain}),
     
                 w95.widget.frame({
@@ -5146,37 +5202,18 @@ w95.widget("window", function({
             ];
         },
         Message: {
-            resizeTo(width = 0, height = 0) {
-                w95.debug?.assert(["number", "undefined"].includes(typeof width));
-                w95.debug?.assert(["number", "undefined"].includes(typeof height));
-                resize?.({width, height, isRelative: false});
-            },
-            resizeBy(deltaWidth = 0, deltaHeight = 0) {
+            resize(deltaWidth = 0, deltaHeight = 0) {
                 w95.debug?.assert(["number", "undefined"].includes(typeof deltaWidth));
                 w95.debug?.assert(["number", "undefined"].includes(typeof deltaHeight));
-                resize?.({width: deltaWidth, height: deltaHeight, isRelative: true});
+                resize?.call(this, deltaWidth, deltaHeight);
             },
-            moveTo(x = 0, y = 0) {
-                w95.debug?.assert(typeof x === "number");
-                w95.debug?.assert(typeof y === "number");
-                w95.windowManager.move_window_to(this, {x, y});
-            },
-            moveBy(x = 0, y = 0) {
-                w95.debug?.assert(typeof x === "number");
-                w95.debug?.assert(typeof y === "number");
-                w95.windowManager.move_window(this, {x, y});
+            move(deltaX = 0, deltaY = 0) {
+                w95.debug?.assert(typeof deltaX === "number");
+                w95.debug?.assert(typeof deltaY === "number");
+                move?.call(this, deltaX, deltaY);
             },
             maximize() {
-                const maxRect = (maximized?.() || {
-                    x: 0,
-                    y: 0,
-                    width: w95.shell.display.width,
-                    height: w95.shell.display.height,
-                    isRelative: false,
-                });
-                maxRect.height -= ((w95.windowManager.taskbar?.height - 2) || 0);
-                w95.windowManager.move_window_to(this, maxRect);
-                resize?.(maxRect);
+                maximize?.call(this);
             },
             blur() {
                 isBlurred.set(true);

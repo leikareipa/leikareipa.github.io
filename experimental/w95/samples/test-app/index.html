@@ -8,6 +8,19 @@
         <script src="../../distributable/w95-widgets.js"></script>
         <link href="../../distributable/w95.css" rel="stylesheet">
         <style>
+            #desktop {
+                background-image: url("./assets/woman-2x.png");
+                background-repeat: repeat;
+            }
+            body[data-w95-scale="1"] #desktop {
+                background-image: url("./assets/woman-1x.png");
+            }
+            body[data-w95-scale="2"] #desktop {
+                background-image: url("./assets/woman-2x.png");
+            }
+            body[data-w95-scale="4"] #desktop {
+                background-image: url("./assets/woman-4x.png");
+            }
             #w95-debug-layer {
                 visibility: hidden;
             }
