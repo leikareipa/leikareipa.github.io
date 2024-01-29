@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/api/assets/fonts/courier-8-regular.js":
-/*!***************************************************!*\
-  !*** ./src/api/assets/fonts/courier-8-regular.js ***!
-  \***************************************************/
+/***/ "./src/assets/fonts/courier-8-regular.js":
+/*!***********************************************!*\
+  !*** ./src/assets/fonts/courier-8-regular.js ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1986,10 +1986,10 @@ const courier8Regular = {
 
 /***/ }),
 
-/***/ "./src/api/assets/fonts/fixedsys-9-regular.js":
-/*!****************************************************!*\
-  !*** ./src/api/assets/fonts/fixedsys-9-regular.js ***!
-  \****************************************************/
+/***/ "./src/assets/fonts/fixedsys-9-regular.js":
+/*!************************************************!*\
+  !*** ./src/assets/fonts/fixedsys-9-regular.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -4024,10 +4024,10 @@ const fixedsys9Regular = {
 
 /***/ }),
 
-/***/ "./src/api/assets/fonts/ms-sans-serif-8-bold.js":
-/*!******************************************************!*\
-  !*** ./src/api/assets/fonts/ms-sans-serif-8-bold.js ***!
-  \******************************************************/
+/***/ "./src/assets/fonts/ms-sans-serif-8-bold.js":
+/*!**************************************************!*\
+  !*** ./src/assets/fonts/ms-sans-serif-8-bold.js ***!
+  \**************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -6062,10 +6062,10 @@ const msSansSerif8Bold = {
 
 /***/ }),
 
-/***/ "./src/api/assets/fonts/ms-sans-serif-8-regular.js":
-/*!*********************************************************!*\
-  !*** ./src/api/assets/fonts/ms-sans-serif-8-regular.js ***!
-  \*********************************************************/
+/***/ "./src/assets/fonts/ms-sans-serif-8-regular.js":
+/*!*****************************************************!*\
+  !*** ./src/assets/fonts/ms-sans-serif-8-regular.js ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -8100,10 +8100,10 @@ const msSansSerif8Regular = {
 
 /***/ }),
 
-/***/ "./src/api/assets/icons/win95-icons.js":
-/*!*********************************************!*\
-  !*** ./src/api/assets/icons/win95-icons.js ***!
-  \*********************************************/
+/***/ "./src/assets/icons/win95-icons.js":
+/*!*****************************************!*\
+  !*** ./src/assets/icons/win95-icons.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -8113,7 +8113,7 @@ __webpack_require__.r(__webpack_exports__);
 // A selection of icons of Microsoft Windows 95.
 //
 // The reproduction of these icons here is assumed to be under fair use and IS NOT UNDER
-// THE LICENSE OF THE SOURCE CODE.
+// THE LICENSE OF THE W95 SOURCE CODE.
 const win95Icons = {
     cursorArrow: {
         width: 11,
@@ -8341,15 +8341,15 @@ const win95Icons = {
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!**********************************!*\
-  !*** ./src/api/assets/assets.js ***!
-  \**********************************/
+/*!***********************!*\
+  !*** ./src/assets.js ***!
+  \***********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./icons/win95-icons.js */ "./src/api/assets/icons/win95-icons.js");
-/* harmony import */ var _fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fonts/ms-sans-serif-8-regular.js */ "./src/api/assets/fonts/ms-sans-serif-8-regular.js");
-/* harmony import */ var _fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fonts/ms-sans-serif-8-bold.js */ "./src/api/assets/fonts/ms-sans-serif-8-bold.js");
-/* harmony import */ var _fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fonts/courier-8-regular.js */ "./src/api/assets/fonts/courier-8-regular.js");
-/* harmony import */ var _fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./fonts/fixedsys-9-regular.js */ "./src/api/assets/fonts/fixedsys-9-regular.js");
+/* harmony import */ var _assets_icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./assets/icons/win95-icons.js */ "./src/assets/icons/win95-icons.js");
+/* harmony import */ var _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/fonts/ms-sans-serif-8-regular.js */ "./src/assets/fonts/ms-sans-serif-8-regular.js");
+/* harmony import */ var _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assets/fonts/ms-sans-serif-8-bold.js */ "./src/assets/fonts/ms-sans-serif-8-bold.js");
+/* harmony import */ var _assets_fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./assets/fonts/courier-8-regular.js */ "./src/assets/fonts/courier-8-regular.js");
+/* harmony import */ var _assets_fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./assets/fonts/fixedsys-9-regular.js */ "./src/assets/fonts/fixedsys-9-regular.js");
 /*
  * 2023 Tarpeeksi Hyvae Soft
  *
@@ -8363,30 +8363,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-w95.icon = _icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__.win95Icons;
+w95.icon = _assets_icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__.win95Icons;
 
 w95.font.sansSerif = {
     8: {
-        regular: _fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular,
-        bold: _fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold,
+        regular: _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular,
+        bold: _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold,
     },
 };
 w95.font.courier = {
     8: {
-        regular: _fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_3__.courier8Regular,
-        bold: _fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_3__.courier8Regular,
+        regular: _assets_fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_3__.courier8Regular,
+        bold: _assets_fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_3__.courier8Regular,
     },
 };
 w95.font.fixedsys = {
     9: {
-        regular: _fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_4__.fixedsys9Regular,
-        bold: _fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_4__.fixedsys9Regular,
+        regular: _assets_fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_4__.fixedsys9Regular,
+        bold: _assets_fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_4__.fixedsys9Regular,
     },
 };
 
 // Default font.
-w95.font.regular = _fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular;
-w95.font.bold = _fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold;
+w95.font.regular = _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular;
+w95.font.bold = _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold;
 
 })();
 

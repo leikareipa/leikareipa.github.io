@@ -1,3 +1,7 @@
+// The program icon of DOSBox.
+//
+// The reproduction of the icon here is assumed to be under fair use and IS NOT UNDER
+// THE LICENSE OF THE W95 SOURCE CODE.
 export const icons = {
     app32: Rngon.texture({
         width:32,

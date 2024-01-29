@@ -9,25 +9,16 @@
         <link href="../../distributable/w95.css" rel="stylesheet">
         <style>
             #desktop {
-                background-image: url("./assets/woman-2x.png");
-                background-repeat: repeat;
-            }
-            body[data-w95-scale="1"] #desktop {
-                background-image: url("./assets/woman-1x.png");
-            }
-            body[data-w95-scale="2"] #desktop {
-                background-image: url("./assets/woman-2x.png");
-            }
-            body[data-w95-scale="4"] #desktop {
-                background-image: url("./assets/woman-4x.png");
+                background-image: url("./assets/woman.png");
+                background-size: 614px 1024px;
             }
             #w95-debug-layer {
                 visibility: hidden;
             }
-            canvas.composite {
+            canvas.w95.composite {
                 opacity: 0.8;
             }
-            canvas.composite[style*="z-index: 0"] {
+            canvas.w95.composite[style*="z-index: 0"] {
                 filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
             }
             iframe {
@@ -68,7 +59,9 @@
             w95.registry.set("num-windows-spawned", 0);
             w95.registry.set("is-debug-enabled", false);
             w95.registry.set("render-scale", ~~document.body.dataset.w95Scale);
+
             w95.shell.display.screenShader = dither_shader;
+
             w95.shell.boot();
             w95.shell.run([desktop, taskbar, testApp]);
         </script>

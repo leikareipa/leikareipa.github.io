@@ -1,3 +1,10 @@
+/*
+ * 2024 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
 export const icons = {
     app16: Rngon.texture({
         width:16,

@@ -32,7 +32,7 @@ export default {
             w95.reRenderOnly
         );
         const y = w95.state(
-            Math.max(0, ~~((w95.shell.display.height - height.now - (w95.registry.get("taskbar-height") || 0)) / 2)),
+            ~~(0.5 * (w95.shell.display.visibleHeight - height.now)),
             w95.reRenderOnly
         );
 
@@ -99,13 +99,13 @@ export default {
                             y: 185,
                             width: 182,
                             height: 80,
+                            isDisabled: widgetDisable.now,
                             children: [
                                 w95.widget.progressBar({
                                     x: 10,
                                     y: 15,
                                     width: "pw / 2 - 15",
                                     progress: (sliderValue.now * 10),
-                                    isDisabled: widgetDisable.now,
                                     showLabel: true,
                                 }),
                                 w95.widget.progressBar({
@@ -113,7 +113,6 @@ export default {
                                     y: 15,
                                     width: "pw / 2 - 13",
                                     progress: (sliderValue.now * 10),
-                                    isDisabled: widgetDisable.now,
                                     styleHints: [
                                         w95.styleHint.dashed,
                                     ],
@@ -125,7 +124,6 @@ export default {
                                     minValue: 0,
                                     maxValue: 10,
                                     value: sliderValue.now,
-                                    isDisabled: widgetDisable.now,
                                     newValue(value) {
                                         sliderValue.set(value);
                                     },
@@ -138,12 +136,12 @@ export default {
                             y: 22,
                             width: 182,
                             height: 85,
+                            isDisabled: widgetDisable.now,
                             children: [
                                 w95.widget.dropdownBox({
                                     x: 10,
                                     y: 15,
                                     width: "pw - 20",
-                                    isDisabled: widgetDisable.now,
                                     itemIndex: dropdownIndex.now,
                                     items: {
                                         "2 Color": {
@@ -171,7 +169,6 @@ export default {
                                     y: 45,
                                     width: "pw - 76",
                                     text: lineEditText.now,
-                                    isDisabled: widgetDisable.now,
                                     newText(text) {
                                         lineEditText.set(text);
                                     },
@@ -182,7 +179,6 @@ export default {
                                     width: "pw - 134",
                                     validator: /[0-9]/,
                                     text: numEditText.now,
-                                    isDisabled: widgetDisable.now,
                                     newText(text) {
                                         numEditText.set(text);
                                     },
@@ -242,18 +238,17 @@ export default {
                             y: 22,
                             width: 190,
                             height: 55,
+                            isDisabled: widgetDisable.now,
                             children: [
                                 spawnButton({
                                     x: 10,
                                     y: 15,
                                     width: "pw - 95",
-                                    isDisabled: widgetDisable.now,
                                 }),
                                 twoStateButton({
                                     x: 113,
                                     y: 15,
                                     width: "pw - 123",
-                                    isDisabled: widgetDisable.now,
                                 }),
                             ],
                         }),
@@ -263,13 +258,13 @@ export default {
                             y: 82,
                             width: 190,
                             height: 183,
+                            isDisabled: widgetDisable.now,
                             children: [
                                 w95.widget.tabControl({
                                     x: 10,
                                     y: 15,
                                     width: "pw - 20",
                                     height: "ph - 27",
-                                    isDisabled: widgetDisable.now,
                                     tabIndex: tabIndex.now,
                                     newTabIndex(idx) {
                                         tabIndex.set(idx);
@@ -377,7 +372,6 @@ export default {
                                             y: 3,
                                             width: "pw - 6",
                                             height: "ph - 6",
-                                            isDisabled: widgetDisable.now,
                                             backgroundColor: w95.palette.named.white,
                                             children: [
                                                 w95.widget.label({
@@ -424,7 +418,6 @@ export default {
                                             height: "ph - 6",
                                             text: textEditText.now,
                                             autofocus: true,
-                                            isDisabled: widgetDisable.noww,
                                             newText(text) {
                                                 textEditText.set(text);
                                             },
@@ -462,6 +455,13 @@ export default {
                                     isDisabled: widgetDisable.now,
                                     menu: w95.widget.menu({
                                         children: [
+                                            w95.widget.menuItem({
+                                                label: "Cloud it",
+                                                onClick() {
+                                                    w95.shell.wallpaper = "./assets/clouds.gif";
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
                                             w95.widget.menuItem({
                                                 label: "Exit",
                                                 onClick(widget) {

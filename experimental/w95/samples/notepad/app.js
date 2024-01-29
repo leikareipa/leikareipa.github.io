@@ -25,7 +25,7 @@ export default function(filename = "") {
                 w95.reRenderOnly
             );
             const y = w95.state(
-                ~~(0.5 * (w95.shell.display.height - height.now - (w95.registry.get("taskbar-height") || 0))),
+                ~~(0.5 * (w95.shell.display.visibleHeight - height.now)),
                 w95.reRenderOnly
             );
 

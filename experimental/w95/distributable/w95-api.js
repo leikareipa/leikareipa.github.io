@@ -850,6 +850,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+let booted = false;
+let wallpaper = "";
 let renderScale = 1;
 let screen_shader_fn = undefined;
 let debugLayerEl = undefined;
@@ -875,10 +877,13 @@ const shell = {
         },
         set scale(newScale) {
             w95.debug?.assert(Number.isInteger(newScale));
+
+            _core_render_js__WEBPACK_IMPORTED_MODULE_0__.renderOptions.resolution = (1 / newScale);
             document.body.dataset.w95Scale = newScale;
             renderScale = newScale;
-            _core_render_js__WEBPACK_IMPORTED_MODULE_0__.renderOptions.resolution = (1 / renderScale);
-            generate_scaled_cursor(w95.icon.cursorArrow, renderScale);
+
+            generate_scaled_cursor(w95.icon.cursorArrow, newScale);
+            w95.shell.wallpaper = wallpaper;
             w95.shell.refresh();
         },
         get width() {
@@ -887,6 +892,9 @@ const shell = {
         },
         get height() {
             return Math.floor((window.innerHeight - (window.innerHeight & 1)) / renderScale);
+        },
+        get visibleHeight() {
+            return (w95.shell.display.height - (w95.registry.get("taskbar-height") || 0) + 2);
         },
         get refreshRate() {
             return (refreshRate.reduce((sum, r)=>(sum + r), 0) / (refreshRate.length || 1));
@@ -902,6 +910,34 @@ const shell = {
             _core_render_js__WEBPACK_IMPORTED_MODULE_0__.renderPipeline.pixelShader = pixel_shader_fn;
         },
     },
+    get wallpaper() {
+        return wallpaper;
+    },
+    set wallpaper(url) {
+        w95.debug?.assert(booted, "Must call `w95.shell.boot()` before assigning `w95.shell.wallpaper`.");
+        w95.debug?.assert(["undefined", "string"].includes(typeof url));
+
+        if (typeof url === "undefined") {
+            return;
+        }
+
+        const canvasEl = document.getElementById("desktop");
+        if (!canvasEl) {
+            return;
+        }
+        
+        // Figure out the resolution of the image, so we can set the proper
+        // scaling on it.
+        const image = new Image();
+        image.src = url;
+        image.onload = function() {
+            wallpaper = image.src;
+            canvasEl.style.backgroundImage = `url(${wallpaper})`;
+            canvasEl.style.backgroundSize = `${image.width * w95.shell.display.scale}px ${image.height * w95.shell.display.scale}px`;
+            canvasEl.width = 0; // Force the canvas to reflow its background. Otherwise, if there's no initial bg image, it won't update.
+            w95.shell.refresh();
+        };
+    },
     desktop: _core_desktop_js__WEBPACK_IMPORTED_MODULE_2__.desktopApp,
     taskbar: _core_taskbar_js__WEBPACK_IMPORTED_MODULE_3__.taskbarApp,
     popup: _core_popup_js__WEBPACK_IMPORTED_MODULE_4__.popupWidget,
@@ -909,6 +945,10 @@ const shell = {
         window.dispatchEvent(new Event("resize"));
     },
     boot() {
+        w95.debug?.assert(!booted);
+
+        booted = true;
+
         w95.shell.display.scale = ~~(document.body.dataset.w95Scale || 1);
 
         if (false) {}
@@ -922,6 +962,16 @@ const shell = {
 
         ["keydown", "keyup", "keypress"].forEach(eventType=>{
             window.addEventListener(eventType, w95.windowManager.user_input);
+        });
+
+        window.addEventListener("load", ()=>{
+            const canvasEl = w95.windowManager.desktop?.$app._canvas;
+            if (canvasEl) {
+                const style = window.getComputedStyle(canvasEl);
+                if (style.backgroundImage.startsWith("url(")) {
+                    wallpaper = style.backgroundImage.match(/^url\("(.*?)"\)/)[1];
+                }
+            }
         });
 
         window.addEventListener("resize", ()=>{
@@ -1003,7 +1053,7 @@ function rect_clamped_to_screen(rect) {
 
 function enforce_universal_canvas_properties()
 {
-    for (const canvas of document.body.getElementsByTagName("canvas")) {
+    for (const canvas of document.body.querySelectorAll("canvas.w95")) {
         canvas.style.width = `${w95.shell.display.width * w95.shell.display.scale}px`;
         canvas.style.height = `${w95.shell.display.height * w95.shell.display.scale}px`;
     }
@@ -1799,6 +1849,8 @@ function mount_widget({
             : renderOptions
     );
 
+    expandedOptions.isDisabled = (parentWidget?._disabled || expandedOptions.isDisabled);
+
     ["x", "y", "width", "height"].forEach(key=>{
         if (typeof expandedOptions[key] === "string") {
             expandedOptions[key] = ~~eval(
@@ -1835,6 +1887,7 @@ function mount_widget({
         widgetInterface._remountRequested = false;
         widgetInterface._rerenderRequested = false;
         widgetInterface._autofocus = widgetInterface.autofocus;
+        widgetInterface._disabled = mountOptions.isDisabled;
         widgetInterface._zIndex = (()=>{
             switch (widgetInterface._type) {
                 case "dialog":      return 0;
@@ -1846,8 +1899,6 @@ function mount_widget({
         })();
 
         widgetInterface._remount = function(parent) {
-            w95.debug?.assert(parent._what === "w95-widget");
-
             if (w95.shell.display.debugLayer) {
                 widgetInterface._domSkeleton.remove();
                 recurse_descendant_widgets(widgetInterface, (child)=>child._domSkeleton.remove());
@@ -1882,6 +1933,7 @@ function mount_widget({
             }
 
             // Update cached references to this widget.
+            if (parent)
             {
                 const childIdx = parent.$childWidgets.indexOf(widgetInterface);
                 w95.debug?.assert(childIdx >= 0);
@@ -2398,6 +2450,7 @@ const windowManager = {
                 : runningApps.unshift(appInstance);
 
             const canvas = appInstance._canvas = document.createElement("canvas");
+            canvas.classList.add("w95");
             canvas.dataset.w95App = appInstance.Meta.name;
             canvas.dataset.w95AppId = appInstance.id;
             document.body.append(canvas);
@@ -2744,10 +2797,10 @@ const windowManager = {
 
 /***/ }),
 
-/***/ "./src/w95.css":
-/*!*********************!*\
-  !*** ./src/w95.css ***!
-  \*********************/
+/***/ "./src/core/w95.css":
+/*!**************************!*\
+  !*** ./src/core/w95.css ***!
+  \**************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -2862,27 +2915,27 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!************************!*\
-  !*** ./src/api/api.js ***!
-  \************************/
+/*!********************!*\
+  !*** ./src/api.js ***!
+  \********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   w95: () => (/* binding */ w95)
 /* harmony export */ });
-/* harmony import */ var _core_rngon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/rngon.js */ "./src/core/rngon.js");
+/* harmony import */ var _core_rngon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/rngon.js */ "./src/core/rngon.js");
 /* harmony import */ var _core_rngon_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_core_rngon_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _w95_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../w95.css */ "./src/w95.css");
-/* harmony import */ var _core_widget_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/widget.js */ "./src/core/widget.js");
-/* harmony import */ var _core_palette_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/palette.js */ "./src/core/palette.js");
-/* harmony import */ var _core_debug_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../core/debug.js */ "./src/core/debug.js");
-/* harmony import */ var _core_clock_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../core/clock.js */ "./src/core/clock.js");
-/* harmony import */ var _core_state_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../core/state.js */ "./src/core/state.js");
-/* harmony import */ var _core_tick_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../core/tick.js */ "./src/core/tick.js");
-/* harmony import */ var _core_shell_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../core/shell.js */ "./src/core/shell.js");
-/* harmony import */ var _core_registry_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../core/registry.js */ "./src/core/registry.js");
-/* harmony import */ var _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../core/window-manager.js */ "./src/core/window-manager.js");
+/* harmony import */ var _core_w95_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./core/w95.css */ "./src/core/w95.css");
+/* harmony import */ var _core_widget_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./core/widget.js */ "./src/core/widget.js");
+/* harmony import */ var _core_palette_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./core/palette.js */ "./src/core/palette.js");
+/* harmony import */ var _core_debug_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./core/debug.js */ "./src/core/debug.js");
+/* harmony import */ var _core_clock_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./core/clock.js */ "./src/core/clock.js");
+/* harmony import */ var _core_state_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./core/state.js */ "./src/core/state.js");
+/* harmony import */ var _core_tick_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./core/tick.js */ "./src/core/tick.js");
+/* harmony import */ var _core_shell_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./core/shell.js */ "./src/core/shell.js");
+/* harmony import */ var _core_registry_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./core/registry.js */ "./src/core/registry.js");
+/* harmony import */ var _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./core/window-manager.js */ "./src/core/window-manager.js");
 /*
- * 2022 Tarpeeksi Hyvae Soft
+ * 2022-2024 Tarpeeksi Hyvae Soft
  *
  * Software: w95
  * 
@@ -2920,8 +2973,11 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-01-23.02:05:59"}`,
+    version: `BETA ${"2024-01-29.16:22:43"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
+    $mesh(widget) {
+        return Rngon.mesh((0,_core_widget_js__WEBPACK_IMPORTED_MODULE_2__.transformed_recursive_mesh)(widget));
+    },
     font: {
         stringWidth(text = "", font = w95.font, initialFontVariant = font.regular, letterSpacing = 1, wordSpacing = 3) {
             w95.debug?.assert(typeof text === "string");
@@ -3009,6 +3065,7 @@ const w95 = {
             "transparent",
             "first",
             "shortcut",
+            "noDisable",
         ].reduce((acc, flag)=>({...acc, ...{[flag]: flag}}), {})
     },
     frameShape: {

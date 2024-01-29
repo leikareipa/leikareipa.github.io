@@ -1,10 +1,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/api/widgets/bitmap/widget.js":
-/*!******************************************!*\
-  !*** ./src/api/widgets/bitmap/widget.js ***!
-  \******************************************/
+/***/ "./src/widgets/bitmap.js":
+/*!*******************************!*\
+  !*** ./src/widgets/bitmap.js ***!
+  \*******************************/
 /***/ (() => {
 
 /*
@@ -17,7 +17,7 @@
 w95.widget("bitmap", function({
     x = 0,
     y = 0,
-    image = Rngon.texture(),
+    image = w95.icon.applicationIcon32x32,
     width = (image?.width || 0),
     height = (image?.height || 0),
     color = w95.palette.named.white,
@@ -93,10 +93,10 @@ w95.widget("bitmap", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/button/widget.js":
-/*!******************************************!*\
-  !*** ./src/api/widgets/button/widget.js ***!
-  \******************************************/
+/***/ "./src/widgets/button.js":
+/*!*******************************!*\
+  !*** ./src/widgets/button.js ***!
+  \*******************************/
 /***/ (() => {
 
 /*
@@ -109,10 +109,10 @@ w95.widget("bitmap", function({
 w95.widget("button", function({
     x = 0,
     y = 0,
-    width = 100,
+    width = 200,
     height = 22,
-    text = "",
     icon = undefined,
+    text = (icon? "" : "Button"),
     color = w95.palette.widget.foreground,
     backgroundColor = w95.palette.widget.background,
     isDisabled = false,
@@ -276,10 +276,10 @@ w95.widget("button", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/checkbox/widget.js":
-/*!********************************************!*\
-  !*** ./src/api/widgets/checkbox/widget.js ***!
-  \********************************************/
+/***/ "./src/widgets/checkbox.js":
+/*!*********************************!*\
+  !*** ./src/widgets/checkbox.js ***!
+  \*********************************/
 /***/ (() => {
 
 /*
@@ -292,7 +292,7 @@ w95.widget("button", function({
 w95.widget("checkbox", function({
     x = 0,
     y = 0,
-    label = "",
+    label = "Checkbox",
     isChecked = false,
     isDisabled = false,
     color = w95.palette.widget.foreground,
@@ -404,10 +404,10 @@ w95.widget("checkbox", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/desktop-icon/widget.js":
-/*!************************************************!*\
-  !*** ./src/api/widgets/desktop-icon/widget.js ***!
-  \************************************************/
+/***/ "./src/widgets/desktopIcon.js":
+/*!************************************!*\
+  !*** ./src/widgets/desktopIcon.js ***!
+  \************************************/
 /***/ (() => {
 
 /*
@@ -422,10 +422,11 @@ w95.widget("desktopIcon", function({
     y = 0,
     width = 74,
     height = 60,
-    text = "",
+    text = "Desktop icon",
     icon = w95.icon.applicationIcon32x32,
     styleHints = [],
     onActivate = undefined,
+    isDisabled = false,
 } = {})
 {
     w95.debug?.assert(typeof x === "number");
@@ -487,12 +488,15 @@ w95.widget("desktopIcon", function({
                         wordWrap: true,
                         color: w95.palette.named.white,
                         backgroundColor: (
-                            hasFocus.now
-                                ? w95.palette.named.navy
-                                : w95.palette.named.teal
+                            isDisabled
+                                ? w95.palette.widget.background
+                                : hasFocus.now
+                                    ? w95.palette.named.navy
+                                    : w95.palette.named.teal
                         ),
                         styleHints: [
                             w95.styleHint.alignHCenter,
+                            w95.styleHint.action,
                         ],
                     }),
                 ]
@@ -520,10 +524,10 @@ w95.widget("desktopIcon", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/dialog/widget.js":
-/*!******************************************!*\
-  !*** ./src/api/widgets/dialog/widget.js ***!
-  \******************************************/
+/***/ "./src/widgets/dialog.js":
+/*!*******************************!*\
+  !*** ./src/widgets/dialog.js ***!
+  \*******************************/
 /***/ (() => {
 
 /*
@@ -536,9 +540,10 @@ w95.widget("desktopIcon", function({
 w95.widget("dialog", function({
     x = 0,
     y = 0,
-    width = 250,
-    height = 150,
-    title = "",
+    width = 200,
+    height = 100,
+    title = "Dialog",
+    isBlurred = false,
     backgroundColor = w95.palette.window.background,
     children = [],
     move = undefined,
@@ -555,7 +560,7 @@ w95.widget("dialog", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof move));
     w95.debug?.assert(["undefined", "function"].includes(typeof onClose));
 
-    const isBlurred = w95.state(false);
+    isBlurred = w95.state(isBlurred);
 
     return {
         get x() { return x },
@@ -630,10 +635,10 @@ w95.widget("dialog", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/dom-element/widget.js":
-/*!***********************************************!*\
-  !*** ./src/api/widgets/dom-element/widget.js ***!
-  \***********************************************/
+/***/ "./src/widgets/domElement.js":
+/*!***********************************!*\
+  !*** ./src/widgets/domElement.js ***!
+  \***********************************/
 /***/ (() => {
 
 /*
@@ -717,10 +722,150 @@ w95.widget("domElement", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/dropdown-box/dropdown-box-item/widget.js":
-/*!******************************************************************!*\
-  !*** ./src/api/widgets/dropdown-box/dropdown-box-item/widget.js ***!
-  \******************************************************************/
+/***/ "./src/widgets/dropdownBox.js":
+/*!************************************!*\
+  !*** ./src/widgets/dropdownBox.js ***!
+  \************************************/
+/***/ (() => {
+
+/*
+ * 2022-2023 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
+// TODOs:
+//
+// - When the box's drop-down list of items is opened, highlight the currently-
+//   selected item. This should also scroll the item into view if it isn't already.
+//
+// - When the box has focus, highlight the input field.
+
+w95.widget("dropdownBox", function({
+    x = 0,
+    y = 0,
+    width = 200,
+    height = 21,
+    isDisabled = false,
+    items = {},
+    itemIndex = 0,
+    newItemIndex = undefined,
+} = {})
+{
+    w95.debug?.assert(typeof x === "number");
+    w95.debug?.assert(typeof y === "number");
+    w95.debug?.assert(typeof width === "number");
+    w95.debug?.assert(typeof height === "number");
+    w95.debug?.assert(typeof items === "object");
+    w95.debug?.assert(["number", "string"].includes(typeof itemIndex));
+    w95.debug?.assert(["undefined", "function"].includes(typeof newItemIndex));
+
+    if (typeof itemIndex === "string") {
+        itemIndex = Object.keys(items).findIndex(key=>(key === itemIndex));
+        w95.debug?.assert(itemIndex >= 0);
+    }
+
+    const text = w95.state("");
+    const isOpen = w95.state(false);
+    
+    const toggleOpen = (
+        isOpen.now
+            ? ()=>isOpen.set(false)
+            : ()=>isOpen.set(true)
+    );
+
+    const dropdownButtonSize = 16;
+
+    return {
+        get x() { return x },
+        get y() { return y },
+        get width() { return width },
+        get height() { return height },
+        get text() { return text.now },
+        Form() {
+            return [
+                // The currently-selected item.
+                w95.widget.frame({
+                    width,
+                    height,
+                    shape: w95.frameShape.input,
+                    backgroundColor: (
+                        isDisabled
+                            ? w95.palette.window.background
+                            : w95.palette.named.white
+                    ),
+                    children: [
+                        w95.widget.label({
+                            x: 5,
+                            y: 2,
+                            width: (width - dropdownButtonSize - 7),
+                            height: (height - 4),
+                            text: text.now,
+                            color: (
+                                isDisabled
+                                    ? w95.palette.widget.disabled1
+                                    : w95.palette.widget.foreground
+                            ),
+                            styleHints: [
+                                w95.styleHint.alignVCenter,
+                            ],
+                        }),
+                    ],
+                    onMouseDown: (isDisabled? undefined : toggleOpen),
+                }),
+
+                w95.widget.button({
+                    x: (width - dropdownButtonSize - 2),
+                    y: 2,
+                    width: dropdownButtonSize,
+                    height: (height - 4),
+                    icon: w95.icon.arrowDown,
+                    isDisabled,
+                    shape: w95.buttonShape.dropdown,
+                    onMouseDown: toggleOpen,
+                }),
+    
+                w95.widget.dropdownBoxList({
+                    y: height,
+                    width,
+                    items,
+                    itemIndex,
+                    isOpen: isOpen.now,
+                    newItemIndex(item, idx) {
+                        w95.debug?.assert(item._type === "dropdownBoxItem");
+                        text.set(item.text);
+                        isOpen.set(false);
+                        if (itemIndex !== idx) {
+                            newItemIndex?.(idx);
+                        }
+                    },
+                    onCloseRequested() {
+                        isOpen.set(false);
+                    },
+                }, {
+                    hideIf: !isOpen.now,
+                }),
+            ];
+        },
+        Message: {
+            open() {
+                isOpen.set(true);
+            },
+            close() {
+                isOpen.set(false);
+            },
+        },
+    };
+});
+
+
+/***/ }),
+
+/***/ "./src/widgets/dropdownBoxItem.js":
+/*!****************************************!*\
+  !*** ./src/widgets/dropdownBoxItem.js ***!
+  \****************************************/
 /***/ (() => {
 
 /*
@@ -842,10 +987,10 @@ w95.widget("dropdownBoxItem", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/dropdown-box/dropdown-box-list/widget.js":
-/*!******************************************************************!*\
-  !*** ./src/api/widgets/dropdown-box/dropdown-box-list/widget.js ***!
-  \******************************************************************/
+/***/ "./src/widgets/dropdownBoxList.js":
+/*!****************************************!*\
+  !*** ./src/widgets/dropdownBoxList.js ***!
+  \****************************************/
 /***/ (() => {
 
 /*
@@ -876,7 +1021,7 @@ w95.widget("dropdownBoxList", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof newItemIndex));
 
     const height = w95.state(100);
-    const highlightedIdx = w95.state(undefined);
+    const highlightedIdx = w95.state(undefined, ({widget})=>widget.listItems.forEach((w, idx)=>w.Message.highlight(idx === highlightedIdx.now)));
 
     return {
         get x() { return x },
@@ -890,7 +1035,7 @@ w95.widget("dropdownBoxList", function({
                 ...items[k],
                 text: k,
                 onMouseEnter: ()=>{
-                    highlight_item(idx, this.listItems);
+                    highlightedIdx.set(idx);
                 },
             }));
 
@@ -907,26 +1052,29 @@ w95.widget("dropdownBoxList", function({
         },
         Mounted() {
             w95.debug?.assert(this.listItems.every(item=>item._type === "dropdownBoxItem"));
+
+            const borderWidth = 1;
     
             // Size the menu to its contents.
             const totalChildHeight = (1 + this.listItems.reduce((sum, c)=>(sum + (c.height - 1)), 0));
-            this.listItems.forEach(child=>child.Message.resize((width - 1)));
-            height.set(totalChildHeight);
+            this.listItems.forEach(child=>child.Message.resize((width - (borderWidth * 2))));
+            height.set(totalChildHeight + (borderWidth * 2));
     
             // Arrange the menu contents vertically.
-            let yOffs = 0;
+            let yOffs = borderWidth;
             for (const listItem of this.listItems) {
-                listItem.Message.moveTo(0, yOffs);
+                listItem.Message.moveTo(borderWidth, yOffs);
                 yOffs += (listItem.height - 1);
             }
 
             if (highlightedIdx.now === undefined) {
                 this.Message.select(this.listItems[itemIndex]);
-                highlightedIdx.set(itemIndex);
-                this.listItems[itemIndex].Message.highlight(true);
             }
 
             this.listItems.forEach(child=>child.Message.setParent(this));
+        },
+        Closed() {
+            highlightedIdx.set(itemIndex);
         },
         Message: {
             select(dropdownItemWidget) {
@@ -944,153 +1092,13 @@ w95.widget("dropdownBoxList", function({
     };
 });
 
-function highlight_item(itemIdx, itemWidgets) {
-    for (let i = 0; i < itemWidgets.length; i++) {
-        itemWidgets[i].Message.highlight(i === itemIdx);
-    }
-}
 
 /***/ }),
 
-/***/ "./src/api/widgets/dropdown-box/widget.js":
-/*!************************************************!*\
-  !*** ./src/api/widgets/dropdown-box/widget.js ***!
-  \************************************************/
-/***/ (() => {
-
-/*
- * 2022-2023 Tarpeeksi Hyvae Soft
- *
- * Software: w95
- * 
- */
-
-// TODOs:
-//
-// - When the box's drop-down list of items is opened, highlight the currently-
-//   selected item. This should also scroll the item into view if it isn't already.
-//
-// - When the box has focus, highlight the input field.
-
-w95.widget("dropdownBox", function({
-    x = 0,
-    y = 0,
-    width = 155,
-    height = 21,
-    isDisabled = false,
-    items = {},
-    itemIndex = 0,
-    newItemIndex = undefined,
-} = {})
-{
-    w95.debug?.assert(typeof x === "number");
-    w95.debug?.assert(typeof y === "number");
-    w95.debug?.assert(typeof width === "number");
-    w95.debug?.assert(typeof height === "number");
-    w95.debug?.assert(typeof items === "object");
-    w95.debug?.assert(typeof itemIndex === "number");
-    w95.debug?.assert(["undefined", "function"].includes(typeof newItemIndex));
-
-    const text = w95.state("");
-    const isOpen = w95.state(false);
-    
-    const toggleOpen = (
-        isOpen.now
-            ? ()=>isOpen.set(false)
-            : ()=>isOpen.set(true)
-    );
-
-    const dropdownButtonSize = 16;
-
-    return {
-        get x() { return x },
-        get y() { return y },
-        get width() { return width },
-        get height() { return height },
-        get text() { return text.now },
-        Form() {
-            return [
-                // The currently-selected item.
-                w95.widget.frame({
-                    width,
-                    height,
-                    shape: w95.frameShape.input,
-                    backgroundColor: (
-                        isDisabled
-                            ? w95.palette.window.background
-                            : w95.palette.named.white
-                    ),
-                    children: [
-                        w95.widget.label({
-                            x: 5,
-                            y: 2,
-                            width: (width - dropdownButtonSize - 7),
-                            height: (height - 4),
-                            text: text.now,
-                            color: (
-                                isDisabled
-                                    ? w95.palette.widget.disabled1
-                                    : w95.palette.widget.foreground
-                            ),
-                            styleHints: [
-                                w95.styleHint.alignVCenter,
-                            ],
-                        }),
-                    ],
-                    onMouseDown: (isDisabled? undefined : toggleOpen),
-                }),
-
-                w95.widget.button({
-                    x: (width - dropdownButtonSize - 2),
-                    y: 2,
-                    width: dropdownButtonSize,
-                    height: (height - 4),
-                    icon: w95.icon.arrowDown,
-                    isDisabled,
-                    shape: w95.buttonShape.dropdown,
-                    onMouseDown: toggleOpen,
-                }),
-    
-                w95.widget.dropdownBoxList({
-                    y: height,
-                    width,
-                    items,
-                    itemIndex,
-                    isOpen: isOpen.now,
-                    newItemIndex(item, idx) {
-                        w95.debug?.assert(item._type === "dropdownBoxItem");
-                        text.set(item.text);
-                        isOpen.set(false);
-                        if (itemIndex !== idx) {
-                            newItemIndex?.(idx);
-                        }
-                    },
-                    onCloseRequested() {
-                        isOpen.set(false);
-                    },
-                }, {
-                    hideIf: !isOpen.now,
-                }),
-            ];
-        },
-        Message: {
-            open() {
-                isOpen.set(true);
-            },
-            close() {
-                isOpen.set(false);
-            },
-        },
-    };
-});
-
-
-/***/ }),
-
-/***/ "./src/api/widgets/dynamic-wrapper/widget.js":
-/*!***************************************************!*\
-  !*** ./src/api/widgets/dynamic-wrapper/widget.js ***!
-  \***************************************************/
+/***/ "./src/widgets/dynamicWrapper.js":
+/*!***************************************!*\
+  !*** ./src/widgets/dynamicWrapper.js ***!
+  \***************************************/
 /***/ (() => {
 
 /*
@@ -1137,10 +1145,10 @@ w95.widget("dynamicWrapper", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/frame/widget.js":
-/*!*****************************************!*\
-  !*** ./src/api/widgets/frame/widget.js ***!
-  \*****************************************/
+/***/ "./src/widgets/frame.js":
+/*!******************************!*\
+  !*** ./src/widgets/frame.js ***!
+  \******************************/
 /***/ (() => {
 
 /*
@@ -1153,7 +1161,7 @@ w95.widget("dynamicWrapper", function({
 w95.widget("frame", function({
     x = 0,
     y = 0,
-    width = 100,
+    width = 200,
     height = 100,
     shape = w95.frameShape.box,
     isResizable = false,
@@ -2049,10 +2057,10 @@ w95.widget("frame", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/group-box/widget.js":
-/*!*********************************************!*\
-  !*** ./src/api/widgets/group-box/widget.js ***!
-  \*********************************************/
+/***/ "./src/widgets/groupBox.js":
+/*!*********************************!*\
+  !*** ./src/widgets/groupBox.js ***!
+  \*********************************/
 /***/ (() => {
 
 /*
@@ -2065,10 +2073,11 @@ w95.widget("frame", function({
 w95.widget("groupBox", function({
     x = 0,
     y = 0,
-    width = 100,
+    width = 200,
     height = 100,
-    title = "",
+    title = "Group box",
     children = [],
+    isDisabled = false,
 } = {})
 {
     w95.debug?.assert(typeof x === "number");
@@ -2076,6 +2085,7 @@ w95.widget("groupBox", function({
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof title === "string");
+    w95.debug?.assert(typeof isDisabled === "boolean");
     w95.debug?.assert(Array.isArray(children));
 
     title = ` ${title} `;
@@ -2096,10 +2106,14 @@ w95.widget("groupBox", function({
                 }),
                 w95.widget.label({
                     x: 7,
-                    y: 0,
+                    y: ~~isDisabled,
                     width: w95.font.stringWidth(title),
-                    backgroundColor: w95.palette.window.background,
                     text: title,
+                    isDisabled,
+                    backgroundColor: w95.palette.window.background,
+                    styleHints: [
+                        w95.styleHint.action
+                    ],
                 }),
             ];
         },
@@ -2109,10 +2123,10 @@ w95.widget("groupBox", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/horizontal-layout/widget.js":
-/*!*****************************************************!*\
-  !*** ./src/api/widgets/horizontal-layout/widget.js ***!
-  \*****************************************************/
+/***/ "./src/widgets/horizontalLayout.js":
+/*!*****************************************!*\
+  !*** ./src/widgets/horizontalLayout.js ***!
+  \*****************************************/
 /***/ (() => {
 
 /*
@@ -2169,10 +2183,10 @@ w95.widget("horizontalLayout", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/horizontal-rule/widget.js":
-/*!***************************************************!*\
-  !*** ./src/api/widgets/horizontal-rule/widget.js ***!
-  \***************************************************/
+/***/ "./src/widgets/horizontalRule.js":
+/*!***************************************!*\
+  !*** ./src/widgets/horizontalRule.js ***!
+  \***************************************/
 /***/ (() => {
 
 /*
@@ -2185,7 +2199,7 @@ w95.widget("horizontalLayout", function({
 w95.widget("horizontalRule", function({
     x = 0,
     y = 0,
-    width = 100,
+    width = 200,
 } = {})
 {
     w95.debug?.assert(typeof x === "number");
@@ -2225,10 +2239,10 @@ w95.widget("horizontalRule", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/horizontal-slider/widget.js":
-/*!*****************************************************!*\
-  !*** ./src/api/widgets/horizontal-slider/widget.js ***!
-  \*****************************************************/
+/***/ "./src/widgets/horizontalSlider.js":
+/*!*****************************************!*\
+  !*** ./src/widgets/horizontalSlider.js ***!
+  \*****************************************/
 /***/ (() => {
 
 /*
@@ -2241,7 +2255,7 @@ w95.widget("horizontalRule", function({
 w95.widget("horizontalSlider", function({
     x = 0,
     y = 0,
-    width = 100,
+    width = 200,
     value = 5,
     minValue = 0,
     maxValue = 10,
@@ -2407,10 +2421,10 @@ w95.widget("horizontalSlider", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/label/widget.js":
-/*!*****************************************!*\
-  !*** ./src/api/widgets/label/widget.js ***!
-  \*****************************************/
+/***/ "./src/widgets/label.js":
+/*!******************************!*\
+  !*** ./src/widgets/label.js ***!
+  \******************************/
 /***/ (() => {
 
 /*
@@ -2423,7 +2437,7 @@ w95.widget("horizontalSlider", function({
 w95.widget("label", function({
     x = 0,
     y = 0,
-    text = "",
+    text = "Label",
     width = undefined,
     height = undefined,
     isDisabled = false,
@@ -2457,6 +2471,8 @@ w95.widget("label", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseMove));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseLeave));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseEnter));
+
+    isDisabled = (isDisabled && !styleHints.includes(w95.styleHint.noDisable));
 
     let fontVariant = (styleHints.includes(w95.styleHint.bold)? font.bold : font.regular);
     let isUnderlined = (styleHints.includes(w95.styleHint.underlined));
@@ -2754,10 +2770,10 @@ w95.widget("label", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/layout-spacer/widget.js":
-/*!*************************************************!*\
-  !*** ./src/api/widgets/layout-spacer/widget.js ***!
-  \*************************************************/
+/***/ "./src/widgets/layoutSpacer.js":
+/*!*************************************!*\
+  !*** ./src/widgets/layoutSpacer.js ***!
+  \*************************************/
 /***/ (() => {
 
 /*
@@ -2789,10 +2805,10 @@ w95.widget("layoutSpacer", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/line-edit/widget.js":
-/*!*********************************************!*\
-  !*** ./src/api/widgets/line-edit/widget.js ***!
-  \*********************************************/
+/***/ "./src/widgets/lineEdit.js":
+/*!*********************************!*\
+  !*** ./src/widgets/lineEdit.js ***!
+  \*********************************/
 /***/ (() => {
 
 /*
@@ -2805,11 +2821,12 @@ w95.widget("layoutSpacer", function({
 w95.widget("lineEdit", function({
     x = 0,
     y = 0,
-    text = "",
-    width = 100,
+    text = "Line edit",
+    width = 200,
     height = 21,
     isEditable = false,
     isDisabled = false,
+    leftPadding = 0,
     autofocus = false,
     validator = /./,
     styleHints = [
@@ -2842,7 +2859,7 @@ w95.widget("lineEdit", function({
     const visibleText = text.slice(viewBufferStart.now, viewBufferEnd.now);
     const font = w95.font;
     const fontVariant = font.regular;
-    const cursorXOffset = w95.font.stringWidth(text.slice(viewBufferStart.now, cursorPosition.now), font);
+    const cursorXOffset = (leftPadding + w95.font.stringWidth(text.slice(viewBufferStart.now, cursorPosition.now), font));
 
     return {
         get x() { return x },
@@ -2875,9 +2892,9 @@ w95.widget("lineEdit", function({
                 ),
                 children: [
                     w95.widget.label({
-                        x: horPadding,
+                        x: (horPadding + leftPadding),
                         y: borderWidth,
-                        width: (width - horPadding - borderWidth),
+                        width: (width - horPadding - borderWidth - leftPadding),
                         height: (height - borderWidth - borderWidth),
                         text: visibleText,
                         color: (
@@ -2949,7 +2966,7 @@ w95.widget("lineEdit", function({
                 const clickCharIdx = visibleText.split("").findIndex((ch, idx)=>{
                     const chCode = ch.charCodeAt(0);
                     const chWidth = ((chCode === 32)? fontVariant.spaceWidth : fontVariant[chCode].width);
-                    return (w95.font.stringWidth(visibleText.substring(0, idx), font) > (at.x - (chWidth / 2) - horPadding));
+                    return (w95.font.stringWidth(visibleText.substring(0, idx), font) > (at.x - (chWidth / 2) - horPadding - leftPadding));
                 });
                 set_cursor_position(viewBufferStart.now + ((clickCharIdx < 0)? visibleText.length : clickCharIdx));
 
@@ -3094,17 +3111,125 @@ w95.widget("lineEdit", function({
     };
 
     function string_fits_widget(text) {
-        return ((w95.font.stringWidth(text) + (horPadding * 2)) <= width);
+        return ((w95.font.stringWidth(text) + (horPadding * 2) + leftPadding) <= width);
     }
 });
 
 
 /***/ }),
 
-/***/ "./src/api/widgets/menu-bar/widget.js":
-/*!********************************************!*\
-  !*** ./src/api/widgets/menu-bar/widget.js ***!
-  \********************************************/
+/***/ "./src/widgets/menu.js":
+/*!*****************************!*\
+  !*** ./src/widgets/menu.js ***!
+  \*****************************/
+/***/ (() => {
+
+/*
+ * 2022 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
+w95.widget("menu", function({
+    children = [],
+} = {})
+{
+    w95.debug?.assert(Array.isArray(children));
+
+    const x = w95.state(0);
+    const y = w95.state(17);
+    const width = w95.state(40);
+    const height = w95.state(10);
+    const isOpen = w95.state(false);
+
+    return {
+        get x() { return x.now },
+        get y() { return y.now },
+        get width() { return width.now },
+        get height() { return height.now },
+        get isOpen() { return isOpen.now },
+        get isActivePopupMenu() { return isOpen.now },
+        Mounted() {
+            const menuItems = this.$form["_menuItemsContainer"].$childWidgets;
+            const nonSeparatorItems = menuItems.filter(w=>w._type !== "menuSeparator");
+            w95.debug?.assert(menuItems.every(item=>["menuItem", "menuSeparator"].includes(item._type)));
+            w95.debug?.assert(nonSeparatorItems.every(item=>(item._type === "menuItem")));
+
+            for (const child of menuItems) {
+                child.Message?.setParentMenuWidget?.(this);
+            }
+    
+            // Size the menu to its contents.
+            const maxChildWidth = nonSeparatorItems.reduce((max, c)=>Math.max(max, c.width), 0);
+            const totalChildHeight = menuItems.reduce((sum, c)=>(sum + (c.height - 0)), 0);
+            width.set(maxChildWidth + 6);
+            height.set(totalChildHeight + 6);
+            menuItems.forEach(child=>child.Message.resize(maxChildWidth));
+    
+            // Arrange the menu contents vertically.
+            let yOffs = 3;
+            for (const menuItem of menuItems) {
+                menuItem.Message.moveTo(3, yOffs);
+                yOffs += menuItem.height;
+            }
+        },
+        Form() {
+            return [
+                w95.widget.panel({
+                    width: width.now,
+                    height: height.now,
+                    color: w95.palette.widget.background,
+                }, {
+                    hideIf: !isOpen.now,
+                }),
+    
+                w95.widget.frame({
+                    $name:  "_menuItemsContainer",
+                    width: width.now,
+                    height: height.now,
+                    shape: w95.frameShape.dialog,
+                    children,
+                }, {
+                    hideIf: !isOpen.now,
+                }),
+            ];
+        },
+        Event: {
+            mousedown() {
+                return true;
+            },
+        },
+        Message: {
+            open() {
+                isOpen.set(true);
+            },
+            close() {
+                isOpen.set(false);
+            },
+            checkItem(menuItem) {
+                w95.debug?.assert(menuItem?._type === "menuItem");
+
+                const menuItems = this.$form["_menuItemsContainer"].$childWidgets;
+                w95.debug?.assert(menuItems.includes(menuItem));
+
+                const sameGroupItems = menuItems.filter(w=>((w !== menuItem) && w.isCheckable && (w.group === menuItem.group)));
+                for (const child of sameGroupItems) {
+                    child.Message.setChecked(false);
+                }
+                menuItem.Message.setChecked(!menuItem.isChecked);
+            },
+        },
+    };
+});
+
+
+/***/ }),
+
+/***/ "./src/widgets/menuBar.js":
+/*!********************************!*\
+  !*** ./src/widgets/menuBar.js ***!
+  \********************************/
 /***/ (() => {
 
 /*
@@ -3117,9 +3242,14 @@ w95.widget("lineEdit", function({
 w95.widget("menuBar", function({
     x = 0,
     y = 0,
-    width = 320,
+    width = 200,
     height = 18,
-    children = [],
+    children = [
+        w95.widget.menuItem({
+            isTopLevel: true,
+            label: "File"
+        }),
+    ],
 } = {})
 {
     w95.debug?.assert(typeof x === "number");
@@ -3169,10 +3299,10 @@ w95.widget("menuBar", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/menu-item/widget.js":
-/*!*********************************************!*\
-  !*** ./src/api/widgets/menu-item/widget.js ***!
-  \*********************************************/
+/***/ "./src/widgets/menuItem.js":
+/*!*********************************!*\
+  !*** ./src/widgets/menuItem.js ***!
+  \*********************************/
 /***/ (() => {
 
 /*
@@ -3183,7 +3313,7 @@ w95.widget("menuBar", function({
  */
 
 w95.widget("menuItem", function({
-    label = "",
+    label = "Menu item",
     group = undefined,
     menu = undefined,
     icon = undefined,
@@ -3198,6 +3328,7 @@ w95.widget("menuItem", function({
 } = {})
 {
     w95.debug?.assert(typeof label === "string");
+    w95.debug?.assert(label.length);
     w95.debug?.assert(typeof isTopLevel === "boolean");
     w95.debug?.assert(typeof isCheckable === "boolean");
     w95.debug?.assert(typeof isChecked === "boolean");
@@ -3367,10 +3498,10 @@ w95.widget("menuItem", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/menu-separator/widget.js":
-/*!**************************************************!*\
-  !*** ./src/api/widgets/menu-separator/widget.js ***!
-  \**************************************************/
+/***/ "./src/widgets/menuSeparator.js":
+/*!**************************************!*\
+  !*** ./src/widgets/menuSeparator.js ***!
+  \**************************************/
 /***/ (() => {
 
 /*
@@ -3388,7 +3519,7 @@ w95.widget("menuSeparator", function()
 {
     const x = w95.state(0);
     const y = w95.state(0);
-    const width = w95.state(0);
+    const width = w95.state(200);
     const height = 8;
 
     return {
@@ -3433,116 +3564,10 @@ w95.widget("menuSeparator", function()
 
 /***/ }),
 
-/***/ "./src/api/widgets/menu/widget.js":
-/*!****************************************!*\
-  !*** ./src/api/widgets/menu/widget.js ***!
-  \****************************************/
-/***/ (() => {
-
-/*
- * 2022 Tarpeeksi Hyvae Soft
- *
- * Software: w95
- * 
- */
-
-w95.widget("menu", function({
-    children = [],
-} = {})
-{
-    w95.debug?.assert(Array.isArray(children));
-
-    const x = w95.state(0);
-    const y = w95.state(17);
-    const width = w95.state(40);
-    const height = w95.state(10);
-    const isOpen = w95.state(false);
-
-    return {
-        get x() { return x.now },
-        get y() { return y.now },
-        get width() { return width.now },
-        get height() { return height.now },
-        get isOpen() { return isOpen.now },
-        get isActivePopupMenu() { return isOpen.now },
-        Mounted() {
-            const menuItems = this.$form["_menuItemsContainer"].$childWidgets;
-            w95.debug?.assert(menuItems.every(item=>["menuItem", "menuSeparator"].includes(item._type)));
-
-            for (const child of menuItems) {
-                child.Message?.setParentMenuWidget?.(this);
-            }
-    
-            // Size the menu to its contents.
-            const maxChildWidth = menuItems.reduce((max, c)=>Math.max(max, c.width), 0);
-            const totalChildHeight = menuItems.reduce((sum, c)=>(sum + (c.height - 0)), 0);
-            width.set(maxChildWidth + 6);
-            height.set(totalChildHeight + 6);
-            menuItems.forEach(child=>child.Message.resize(maxChildWidth));
-    
-            // Arrange the menu contents vertically.
-            let yOffs = 3;
-            for (const menuItem of menuItems) {
-                menuItem.Message.moveTo(3, yOffs);
-                yOffs += menuItem.height;
-            }
-        },
-        Form() {
-            return [
-                w95.widget.panel({
-                    width: width.now,
-                    height: height.now,
-                    color: w95.palette.widget.background,
-                }, {
-                    hideIf: !isOpen.now,
-                }),
-    
-                w95.widget.frame({
-                    $name:  "_menuItemsContainer",
-                    width: width.now,
-                    height: height.now,
-                    shape: w95.frameShape.dialog,
-                    children,
-                }, {
-                    hideIf: !isOpen.now,
-                }),
-            ];
-        },
-        Event: {
-            mousedown() {
-                return true;
-            },
-        },
-        Message: {
-            open() {
-                isOpen.set(true);
-            },
-            close() {
-                isOpen.set(false);
-            },
-            checkItem(menuItem) {
-                w95.debug?.assert(menuItem?._type === "menuItem");
-
-                const menuItems = this.$form["_menuItemsContainer"].$childWidgets;
-                w95.debug?.assert(menuItems.includes(menuItem));
-
-                const sameGroupItems = menuItems.filter(w=>((w !== menuItem) && w.isCheckable && (w.group === menuItem.group)));
-                for (const child of sameGroupItems) {
-                    child.Message.setChecked(false);
-                }
-                menuItem.Message.setChecked(!menuItem.isChecked);
-            },
-        },
-    };
-});
-
-
-/***/ }),
-
-/***/ "./src/api/widgets/panel/widget.js":
-/*!*****************************************!*\
-  !*** ./src/api/widgets/panel/widget.js ***!
-  \*****************************************/
+/***/ "./src/widgets/panel.js":
+/*!******************************!*\
+  !*** ./src/widgets/panel.js ***!
+  \******************************/
 /***/ (() => {
 
 /*
@@ -3555,9 +3580,9 @@ w95.widget("menu", function({
 w95.widget("panel", function({
     x = 0,
     y = 0,
-    width = 100,
-    height = 100,
-    color = w95.palette.widget.foreground,
+    width = 200,
+    height = 22,
+    color = w95.palette.named.navy,
 } = {})
 {
     w95.debug?.assert(typeof x === "number");
@@ -3591,10 +3616,10 @@ w95.widget("panel", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/progress-bar/widget.js":
-/*!************************************************!*\
-  !*** ./src/api/widgets/progress-bar/widget.js ***!
-  \************************************************/
+/***/ "./src/widgets/progressBar.js":
+/*!************************************!*\
+  !*** ./src/widgets/progressBar.js ***!
+  \************************************/
 /***/ (() => {
 
 /*
@@ -3607,10 +3632,10 @@ w95.widget("panel", function({
 w95.widget("progressBar", function({
     x = 0,
     y = 0,
-    width = 100,
+    width = 200,
     height = 13,
     color = w95.palette.named.navy,
-    progress = 0,
+    progress = 50,
     isDisabled = false,
     styleHints = [
         w95.styleHint.solid,
@@ -3696,10 +3721,93 @@ w95.widget("progressBar", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/radio-group/radio-group-item/widget.js":
-/*!****************************************************************!*\
-  !*** ./src/api/widgets/radio-group/radio-group-item/widget.js ***!
-  \****************************************************************/
+/***/ "./src/widgets/radioGroup.js":
+/*!***********************************!*\
+  !*** ./src/widgets/radioGroup.js ***!
+  \***********************************/
+/***/ (() => {
+
+/*
+ * 2023 Tarpeeksi Hyvae Soft
+ *
+ * Software: w95
+ * 
+ */
+
+w95.widget("radioGroup", function({
+    x = 0,
+    y = 0,
+    items = {
+        "Item 1": {},
+        "Item 2": {
+            y: 18,
+            isDisabled: true,
+        },
+    },
+    isDisabled = false,
+    itemIndex = 0,
+    newItemIndex = undefined,
+} = {})
+{
+    w95.debug?.assert(typeof x === "number");
+    w95.debug?.assert(typeof y === "number");
+    w95.debug?.assert(typeof items === "object");
+    w95.debug?.assert(typeof itemIndex === "number");
+    w95.debug?.assert(typeof isDisabled === "boolean");
+    w95.debug?.assert(["undefined", "function"].includes(typeof newItemIndex));
+
+    const width = w95.state(200);
+    const height = w95.state(100);
+
+    return {
+        get x() { return x },
+        get y() { return y },
+        get width() { return width.now },
+        get height() { return height.now },
+        Mounted() {
+            width.set(Math.max(...this.$descendants.map(d=>(d.at.x + d.widget.width))));
+            height.set(Math.max(...this.$descendants.map(d=>(d.at.y + d.widget.height))));
+        },
+        Form() {
+            const itemWidgets = Object.keys(items).reduce((array, key, idx)=>{
+                const item = items[key];
+                array.push(
+                    w95.widget.radioGroupItem({
+                        x: (item.hasOwnProperty("x")? item.x : 0),
+                        y: (item.hasOwnProperty("y")? item.y : (idx * 26)),
+                        label: key,
+                        isChecked: (itemIndex === idx),
+                        isDisabled: item.isDisabled,
+                        onCheck() {
+                            if (itemIndex !== idx) {
+                                newItemIndex?.(idx);
+                            }
+                        },
+                    })
+                );
+
+                return array;
+            }, []);
+
+            return [
+                w95.widget.frame({
+                    width: width.now,
+                    height: height.now,
+                    shape: w95.frameShape.none,
+                    children: itemWidgets,
+                }),
+            ];
+        },
+    };
+});
+
+
+/***/ }),
+
+/***/ "./src/widgets/radioGroupItem.js":
+/*!***************************************!*\
+  !*** ./src/widgets/radioGroupItem.js ***!
+  \***************************************/
 /***/ (() => {
 
 /*
@@ -3712,7 +3820,7 @@ w95.widget("progressBar", function({
 w95.widget("radioGroupItem", function({
     x = 0,
     y = 0,
-    label = "",
+    label = "Radio item",
     isChecked = false,
     isDisabled = false,
     onCheck = undefined,
@@ -3824,85 +3932,10 @@ w95.widget("radioGroupItem", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/radio-group/widget.js":
-/*!***********************************************!*\
-  !*** ./src/api/widgets/radio-group/widget.js ***!
-  \***********************************************/
-/***/ (() => {
-
-/*
- * 2023 Tarpeeksi Hyvae Soft
- *
- * Software: w95
- * 
- */
-
-w95.widget("radioGroup", function({
-    x = 0,
-    y = 0,
-    items = {},
-    itemIndex = 0,
-    newItemIndex = undefined,
-} = {})
-{
-    w95.debug?.assert(typeof x === "number");
-    w95.debug?.assert(typeof y === "number");
-    w95.debug?.assert(typeof items === "object");
-    w95.debug?.assert(typeof itemIndex === "number");
-    w95.debug?.assert(["undefined", "function"].includes(typeof newItemIndex));
-
-    const width = w95.state(1);
-    const height = w95.state(1);
-
-    return {
-        get x() { return x },
-        get y() { return y },
-        get width() { return width.now },
-        get height() { return height.now },
-        Mounted() {
-            width.set(Math.max(...this.$descendants.map(d=>(d.at.x + d.widget.width))));
-            height.set(Math.max(...this.$descendants.map(d=>(d.at.y + d.widget.height))));
-        },
-        Form() {
-            const itemWidgets = Object.keys(items).reduce((array, key, idx)=>{
-                const item = items[key];
-                array.push(
-                    w95.widget.radioGroupItem({
-                        x: (item.hasOwnProperty("x")? item.x : 0),
-                        y: (item.hasOwnProperty("y")? item.y : (idx * 26)),
-                        label: key,
-                        isChecked: (itemIndex === idx),
-                        isDisabled: item.isDisabled,
-                        onCheck() {
-                            if (itemIndex !== idx) {
-                                newItemIndex?.(idx);
-                            }
-                        },
-                    })
-                );
-
-                return array;
-            }, []);
-
-            return [
-                w95.widget.frame({
-                    width: width.now,
-                    height: height.now,
-                    shape: w95.frameShape.none,
-                    children: itemWidgets,
-                }),
-            ];
-        },
-    };
-});
-
-
-/***/ }),
-
-/***/ "./src/api/widgets/render-surface/widget.js":
-/*!**************************************************!*\
-  !*** ./src/api/widgets/render-surface/widget.js ***!
-  \**************************************************/
+/***/ "./src/widgets/renderSurface.js":
+/*!**************************************!*\
+  !*** ./src/widgets/renderSurface.js ***!
+  \**************************************/
 /***/ (() => {
 
 /*
@@ -4049,10 +4082,10 @@ w95.widget("renderSurface", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/scroll-area/widget.js":
-/*!***********************************************!*\
-  !*** ./src/api/widgets/scroll-area/widget.js ***!
-  \***********************************************/
+/***/ "./src/widgets/scrollArea.js":
+/*!***********************************!*\
+  !*** ./src/widgets/scrollArea.js ***!
+  \***********************************/
 /***/ (() => {
 
 /*
@@ -4065,7 +4098,7 @@ w95.widget("renderSurface", function({
 w95.widget("scrollArea", function({
     x = 0,
     y = 0,
-    width = 100,
+    width = 200,
     height = 100,
     isDisabled = false,
     frameShape = w95.frameShape.input,
@@ -4389,10 +4422,10 @@ w95.widget("scrollArea", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/tab-control/widget.js":
-/*!***********************************************!*\
-  !*** ./src/api/widgets/tab-control/widget.js ***!
-  \***********************************************/
+/***/ "./src/widgets/tabControl.js":
+/*!***********************************!*\
+  !*** ./src/widgets/tabControl.js ***!
+  \***********************************/
 /***/ (() => {
 
 /*
@@ -4405,10 +4438,15 @@ w95.widget("scrollArea", function({
 w95.widget("tabControl", function({
     x = 0,
     y = 0,
-    width = 300,
-    height = 200,
+    width = 200,
+    height = 100,
     isDisabled = false,
-    tabs = {},
+    tabs = {
+        "Tab control": {},
+        "Besides": {
+            isDisabled: true,
+        },
+    },
     tabIndex = 0,
     newTabIndex = undefined,
 } = {})
@@ -4493,10 +4531,10 @@ w95.widget("tabControl", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/text-edit/widget.js":
-/*!*********************************************!*\
-  !*** ./src/api/widgets/text-edit/widget.js ***!
-  \*********************************************/
+/***/ "./src/widgets/textEdit.js":
+/*!*********************************!*\
+  !*** ./src/widgets/textEdit.js ***!
+  \*********************************/
 /***/ (() => {
 
 /*
@@ -4509,10 +4547,10 @@ w95.widget("tabControl", function({
 w95.widget("textEdit", function({
     x = 0,
     y = 0,
-    text = "",
-    width = 100,
-    height = 21,
+    text = "Text edit",
     font = w95.font.courier[8],
+    width = 200,
+    height = 100,
     isEditable = false,
     isDisabled = false,
     autofocus = false,
@@ -4538,7 +4576,7 @@ w95.widget("textEdit", function({
     const displayText = (highlighter?.(text) || text);
     const fontVariant = (styleHints.includes(w95.styleHint.bold)? font.bold : font.regular);
 
-    const cursorPos = w95.state(0);
+    const cursorPos = w95.state(0, ()=>showCursor.set(true));
     const showCursor = w95.state(true);
     const hasFocus = w95.state(false);
 
@@ -4726,10 +4764,10 @@ w95.widget("textEdit", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/time/widget.js":
-/*!****************************************!*\
-  !*** ./src/api/widgets/time/widget.js ***!
-  \****************************************/
+/***/ "./src/widgets/time.js":
+/*!*****************************!*\
+  !*** ./src/widgets/time.js ***!
+  \*****************************/
 /***/ (() => {
 
 /*
@@ -4742,9 +4780,10 @@ w95.widget("textEdit", function({
 w95.widget("time", function({
     x = 0,
     y = 0,
-    width = undefined,
+    width = 200,
     height = w95.font.regular.lineHeight,
     showSeconds = false,
+    isDisabled = false,
     styleHints = [],
 } = {})
 {
@@ -4777,6 +4816,7 @@ w95.widget("time", function({
                 width,
                 height,
                 styleHints,
+                isDisabled,
             });
         }
     };
@@ -4792,10 +4832,10 @@ w95.widget("time", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/title-bar/widget.js":
-/*!*********************************************!*\
-  !*** ./src/api/widgets/title-bar/widget.js ***!
-  \*********************************************/
+/***/ "./src/widgets/titleBar.js":
+/*!*********************************!*\
+  !*** ./src/widgets/titleBar.js ***!
+  \*********************************/
 /***/ (() => {
 
 /*
@@ -4808,12 +4848,12 @@ w95.widget("time", function({
 w95.widget("titleBar", function({
     x = 0,
     y = 0,
-    width = 100,
-    height = 100,
-    title = "",
+    width = 200,
+    height = 18,
+    title = "Title bar",
     icon = w95.icon.applicationIcon16x16,
     styleHints = [],
-    isBlurred = true,
+    isBlurred = false,
     onClose = undefined,
 } = {})
 {
@@ -4874,6 +4914,7 @@ w95.widget("titleBar", function({
                     styleHints: [
                         w95.styleHint.bold,
                         w95.styleHint.alignVCenter,
+                        w95.styleHint.noDisable,
                     ],
                 }, {hideIf: !title.length}),
     
@@ -4958,10 +4999,10 @@ w95.widget("titleBar", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/vertical-layout/widget.js":
-/*!***************************************************!*\
-  !*** ./src/api/widgets/vertical-layout/widget.js ***!
-  \***************************************************/
+/***/ "./src/widgets/verticalLayout.js":
+/*!***************************************!*\
+  !*** ./src/widgets/verticalLayout.js ***!
+  \***************************************/
 /***/ (() => {
 
 /*
@@ -4974,6 +5015,7 @@ w95.widget("titleBar", function({
 w95.widget("verticalLayout", function({
     x = 0,
     y = 0,
+    width = undefined,
     height = 100,
     padding = 3,
     styleHints = [],
@@ -4988,7 +5030,7 @@ w95.widget("verticalLayout", function({
 
     const adjustedX = w95.state(x);
     const adjustedY = w95.state(y);
-    const adjustedWidth = w95.state(0);
+    const adjustedWidth = w95.state(width || 0);
     const adjustedHeight = w95.state(height, w95.noEffect);
     
     return {
@@ -4999,8 +5041,10 @@ w95.widget("verticalLayout", function({
         Mounted() {
             const wrappers = this.$childWidgets.filter(w=>!w.$childWidgets[0]._hideMesh);
             
-            const maxChildWidth = wrappers.map(w=>w.$childWidgets[0]).reduce((max, w)=>Math.max(max, (w.x + w.width)), 0);
-            adjustedWidth.set(maxChildWidth);
+            if (!width) {
+                const maxChildWidth = wrappers.map(w=>w.$childWidgets[0]).reduce((max, w)=>Math.max(max, (w.x + w.width)), 0);
+                adjustedWidth.set(maxChildWidth);
+            }
 
             // Vertical alignment.
             {
@@ -5010,7 +5054,7 @@ w95.widget("verticalLayout", function({
                 }, (-padding * !!children.filter(w=>(w._type !== "layoutSpacer")).length));
 
                 if (styleHints.includes(w95.styleHint.alignVCenter)) {
-                    adjustedY.set(y + ~~(height / 2 - (contentHeight / 2)));
+                    adjustedY.set(y + ~~((height - contentHeight) / 2));
                 }
                 else {
                     if (styleHints.includes(w95.styleHint.alignBottom)) {
@@ -5066,10 +5110,10 @@ w95.widget("verticalLayout", function({
 
 /***/ }),
 
-/***/ "./src/api/widgets/window/widget.js":
-/*!******************************************!*\
-  !*** ./src/api/widgets/window/widget.js ***!
-  \******************************************/
+/***/ "./src/widgets/window.js":
+/*!*******************************!*\
+  !*** ./src/widgets/window.js ***!
+  \*******************************/
 /***/ (() => {
 
 /*
@@ -5321,78 +5365,78 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!************************************!*\
-  !*** ./src/api/widgets/widgets.js ***!
-  \************************************/
+/*!************************!*\
+  !*** ./src/widgets.js ***!
+  \************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _button_widget_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./button/widget.js */ "./src/api/widgets/button/widget.js");
-/* harmony import */ var _button_widget_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_button_widget_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _bitmap_widget_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bitmap/widget.js */ "./src/api/widgets/bitmap/widget.js");
-/* harmony import */ var _bitmap_widget_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_bitmap_widget_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _panel_widget_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./panel/widget.js */ "./src/api/widgets/panel/widget.js");
-/* harmony import */ var _panel_widget_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_panel_widget_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _window_widget_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./window/widget.js */ "./src/api/widgets/window/widget.js");
-/* harmony import */ var _window_widget_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_window_widget_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _frame_widget_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./frame/widget.js */ "./src/api/widgets/frame/widget.js");
-/* harmony import */ var _frame_widget_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_frame_widget_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _label_widget_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./label/widget.js */ "./src/api/widgets/label/widget.js");
-/* harmony import */ var _label_widget_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_label_widget_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _title_bar_widget_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./title-bar/widget.js */ "./src/api/widgets/title-bar/widget.js");
-/* harmony import */ var _title_bar_widget_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_title_bar_widget_js__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _line_edit_widget_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./line-edit/widget.js */ "./src/api/widgets/line-edit/widget.js");
-/* harmony import */ var _line_edit_widget_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_line_edit_widget_js__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _text_edit_widget_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./text-edit/widget.js */ "./src/api/widgets/text-edit/widget.js");
-/* harmony import */ var _text_edit_widget_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_text_edit_widget_js__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _horizontal_rule_widget_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./horizontal-rule/widget.js */ "./src/api/widgets/horizontal-rule/widget.js");
-/* harmony import */ var _horizontal_rule_widget_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_horizontal_rule_widget_js__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _menu_widget_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./menu/widget.js */ "./src/api/widgets/menu/widget.js");
-/* harmony import */ var _menu_widget_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_menu_widget_js__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _menu_item_widget_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./menu-item/widget.js */ "./src/api/widgets/menu-item/widget.js");
-/* harmony import */ var _menu_item_widget_js__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_menu_item_widget_js__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _menu_separator_widget_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./menu-separator/widget.js */ "./src/api/widgets/menu-separator/widget.js");
-/* harmony import */ var _menu_separator_widget_js__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_menu_separator_widget_js__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _menu_bar_widget_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./menu-bar/widget.js */ "./src/api/widgets/menu-bar/widget.js");
-/* harmony import */ var _menu_bar_widget_js__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_menu_bar_widget_js__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _dropdown_box_widget_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./dropdown-box/widget.js */ "./src/api/widgets/dropdown-box/widget.js");
-/* harmony import */ var _dropdown_box_widget_js__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_dropdown_box_widget_js__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var _dropdown_box_dropdown_box_item_widget_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./dropdown-box/dropdown-box-item/widget.js */ "./src/api/widgets/dropdown-box/dropdown-box-item/widget.js");
-/* harmony import */ var _dropdown_box_dropdown_box_item_widget_js__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_dropdown_box_dropdown_box_item_widget_js__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _dropdown_box_dropdown_box_list_widget_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./dropdown-box/dropdown-box-list/widget.js */ "./src/api/widgets/dropdown-box/dropdown-box-list/widget.js");
-/* harmony import */ var _dropdown_box_dropdown_box_list_widget_js__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_dropdown_box_dropdown_box_list_widget_js__WEBPACK_IMPORTED_MODULE_16__);
-/* harmony import */ var _progress_bar_widget_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./progress-bar/widget.js */ "./src/api/widgets/progress-bar/widget.js");
-/* harmony import */ var _progress_bar_widget_js__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_progress_bar_widget_js__WEBPACK_IMPORTED_MODULE_17__);
-/* harmony import */ var _render_surface_widget_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./render-surface/widget.js */ "./src/api/widgets/render-surface/widget.js");
-/* harmony import */ var _render_surface_widget_js__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_render_surface_widget_js__WEBPACK_IMPORTED_MODULE_18__);
-/* harmony import */ var _desktop_icon_widget_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./desktop-icon/widget.js */ "./src/api/widgets/desktop-icon/widget.js");
-/* harmony import */ var _desktop_icon_widget_js__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(_desktop_icon_widget_js__WEBPACK_IMPORTED_MODULE_19__);
-/* harmony import */ var _dom_element_widget_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./dom-element/widget.js */ "./src/api/widgets/dom-element/widget.js");
-/* harmony import */ var _dom_element_widget_js__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(_dom_element_widget_js__WEBPACK_IMPORTED_MODULE_20__);
-/* harmony import */ var _group_box_widget_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./group-box/widget.js */ "./src/api/widgets/group-box/widget.js");
-/* harmony import */ var _group_box_widget_js__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(_group_box_widget_js__WEBPACK_IMPORTED_MODULE_21__);
-/* harmony import */ var _checkbox_widget_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./checkbox/widget.js */ "./src/api/widgets/checkbox/widget.js");
-/* harmony import */ var _checkbox_widget_js__WEBPACK_IMPORTED_MODULE_22___default = /*#__PURE__*/__webpack_require__.n(_checkbox_widget_js__WEBPACK_IMPORTED_MODULE_22__);
-/* harmony import */ var _tab_control_widget_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./tab-control/widget.js */ "./src/api/widgets/tab-control/widget.js");
-/* harmony import */ var _tab_control_widget_js__WEBPACK_IMPORTED_MODULE_23___default = /*#__PURE__*/__webpack_require__.n(_tab_control_widget_js__WEBPACK_IMPORTED_MODULE_23__);
-/* harmony import */ var _scroll_area_widget_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./scroll-area/widget.js */ "./src/api/widgets/scroll-area/widget.js");
-/* harmony import */ var _scroll_area_widget_js__WEBPACK_IMPORTED_MODULE_24___default = /*#__PURE__*/__webpack_require__.n(_scroll_area_widget_js__WEBPACK_IMPORTED_MODULE_24__);
-/* harmony import */ var _radio_group_widget_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./radio-group/widget.js */ "./src/api/widgets/radio-group/widget.js");
-/* harmony import */ var _radio_group_widget_js__WEBPACK_IMPORTED_MODULE_25___default = /*#__PURE__*/__webpack_require__.n(_radio_group_widget_js__WEBPACK_IMPORTED_MODULE_25__);
-/* harmony import */ var _radio_group_radio_group_item_widget_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./radio-group/radio-group-item/widget.js */ "./src/api/widgets/radio-group/radio-group-item/widget.js");
-/* harmony import */ var _radio_group_radio_group_item_widget_js__WEBPACK_IMPORTED_MODULE_26___default = /*#__PURE__*/__webpack_require__.n(_radio_group_radio_group_item_widget_js__WEBPACK_IMPORTED_MODULE_26__);
-/* harmony import */ var _horizontal_slider_widget_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./horizontal-slider/widget.js */ "./src/api/widgets/horizontal-slider/widget.js");
-/* harmony import */ var _horizontal_slider_widget_js__WEBPACK_IMPORTED_MODULE_27___default = /*#__PURE__*/__webpack_require__.n(_horizontal_slider_widget_js__WEBPACK_IMPORTED_MODULE_27__);
-/* harmony import */ var _dialog_widget_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./dialog/widget.js */ "./src/api/widgets/dialog/widget.js");
-/* harmony import */ var _dialog_widget_js__WEBPACK_IMPORTED_MODULE_28___default = /*#__PURE__*/__webpack_require__.n(_dialog_widget_js__WEBPACK_IMPORTED_MODULE_28__);
-/* harmony import */ var _horizontal_layout_widget_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./horizontal-layout/widget.js */ "./src/api/widgets/horizontal-layout/widget.js");
-/* harmony import */ var _horizontal_layout_widget_js__WEBPACK_IMPORTED_MODULE_29___default = /*#__PURE__*/__webpack_require__.n(_horizontal_layout_widget_js__WEBPACK_IMPORTED_MODULE_29__);
-/* harmony import */ var _vertical_layout_widget_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./vertical-layout/widget.js */ "./src/api/widgets/vertical-layout/widget.js");
-/* harmony import */ var _vertical_layout_widget_js__WEBPACK_IMPORTED_MODULE_30___default = /*#__PURE__*/__webpack_require__.n(_vertical_layout_widget_js__WEBPACK_IMPORTED_MODULE_30__);
-/* harmony import */ var _dynamic_wrapper_widget_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./dynamic-wrapper/widget.js */ "./src/api/widgets/dynamic-wrapper/widget.js");
-/* harmony import */ var _dynamic_wrapper_widget_js__WEBPACK_IMPORTED_MODULE_31___default = /*#__PURE__*/__webpack_require__.n(_dynamic_wrapper_widget_js__WEBPACK_IMPORTED_MODULE_31__);
-/* harmony import */ var _layout_spacer_widget_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./layout-spacer/widget.js */ "./src/api/widgets/layout-spacer/widget.js");
-/* harmony import */ var _layout_spacer_widget_js__WEBPACK_IMPORTED_MODULE_32___default = /*#__PURE__*/__webpack_require__.n(_layout_spacer_widget_js__WEBPACK_IMPORTED_MODULE_32__);
-/* harmony import */ var _time_widget_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./time/widget.js */ "./src/api/widgets/time/widget.js");
-/* harmony import */ var _time_widget_js__WEBPACK_IMPORTED_MODULE_33___default = /*#__PURE__*/__webpack_require__.n(_time_widget_js__WEBPACK_IMPORTED_MODULE_33__);
+/* harmony import */ var _widgets_button_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./widgets/button.js */ "./src/widgets/button.js");
+/* harmony import */ var _widgets_button_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_widgets_button_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _widgets_bitmap_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./widgets/bitmap.js */ "./src/widgets/bitmap.js");
+/* harmony import */ var _widgets_bitmap_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_widgets_bitmap_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _widgets_panel_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./widgets/panel.js */ "./src/widgets/panel.js");
+/* harmony import */ var _widgets_panel_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_widgets_panel_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _widgets_window_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./widgets/window.js */ "./src/widgets/window.js");
+/* harmony import */ var _widgets_window_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_widgets_window_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _widgets_frame_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./widgets/frame.js */ "./src/widgets/frame.js");
+/* harmony import */ var _widgets_frame_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_widgets_frame_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _widgets_label_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./widgets/label.js */ "./src/widgets/label.js");
+/* harmony import */ var _widgets_label_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_widgets_label_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _widgets_titleBar_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./widgets/titleBar.js */ "./src/widgets/titleBar.js");
+/* harmony import */ var _widgets_titleBar_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_widgets_titleBar_js__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _widgets_lineEdit_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./widgets/lineEdit.js */ "./src/widgets/lineEdit.js");
+/* harmony import */ var _widgets_lineEdit_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_widgets_lineEdit_js__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _widgets_textEdit_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./widgets/textEdit.js */ "./src/widgets/textEdit.js");
+/* harmony import */ var _widgets_textEdit_js__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_widgets_textEdit_js__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _widgets_horizontalRule_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./widgets/horizontalRule.js */ "./src/widgets/horizontalRule.js");
+/* harmony import */ var _widgets_horizontalRule_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_widgets_horizontalRule_js__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _widgets_menu_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./widgets/menu.js */ "./src/widgets/menu.js");
+/* harmony import */ var _widgets_menu_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_widgets_menu_js__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _widgets_menuItem_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./widgets/menuItem.js */ "./src/widgets/menuItem.js");
+/* harmony import */ var _widgets_menuItem_js__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_widgets_menuItem_js__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _widgets_menuSeparator_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./widgets/menuSeparator.js */ "./src/widgets/menuSeparator.js");
+/* harmony import */ var _widgets_menuSeparator_js__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_widgets_menuSeparator_js__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _widgets_menuBar_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./widgets/menuBar.js */ "./src/widgets/menuBar.js");
+/* harmony import */ var _widgets_menuBar_js__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_widgets_menuBar_js__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var _widgets_dropdownBox_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./widgets/dropdownBox.js */ "./src/widgets/dropdownBox.js");
+/* harmony import */ var _widgets_dropdownBox_js__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_widgets_dropdownBox_js__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _widgets_dropdownBoxItem_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./widgets/dropdownBoxItem.js */ "./src/widgets/dropdownBoxItem.js");
+/* harmony import */ var _widgets_dropdownBoxItem_js__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_widgets_dropdownBoxItem_js__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _widgets_dropdownBoxList_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./widgets/dropdownBoxList.js */ "./src/widgets/dropdownBoxList.js");
+/* harmony import */ var _widgets_dropdownBoxList_js__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_widgets_dropdownBoxList_js__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var _widgets_progressBar_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./widgets/progressBar.js */ "./src/widgets/progressBar.js");
+/* harmony import */ var _widgets_progressBar_js__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_widgets_progressBar_js__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _widgets_renderSurface_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./widgets/renderSurface.js */ "./src/widgets/renderSurface.js");
+/* harmony import */ var _widgets_renderSurface_js__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_widgets_renderSurface_js__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var _widgets_desktopIcon_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./widgets/desktopIcon.js */ "./src/widgets/desktopIcon.js");
+/* harmony import */ var _widgets_desktopIcon_js__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(_widgets_desktopIcon_js__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var _widgets_domElement_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./widgets/domElement.js */ "./src/widgets/domElement.js");
+/* harmony import */ var _widgets_domElement_js__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(_widgets_domElement_js__WEBPACK_IMPORTED_MODULE_20__);
+/* harmony import */ var _widgets_groupBox_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./widgets/groupBox.js */ "./src/widgets/groupBox.js");
+/* harmony import */ var _widgets_groupBox_js__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(_widgets_groupBox_js__WEBPACK_IMPORTED_MODULE_21__);
+/* harmony import */ var _widgets_checkbox_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./widgets/checkbox.js */ "./src/widgets/checkbox.js");
+/* harmony import */ var _widgets_checkbox_js__WEBPACK_IMPORTED_MODULE_22___default = /*#__PURE__*/__webpack_require__.n(_widgets_checkbox_js__WEBPACK_IMPORTED_MODULE_22__);
+/* harmony import */ var _widgets_tabControl_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./widgets/tabControl.js */ "./src/widgets/tabControl.js");
+/* harmony import */ var _widgets_tabControl_js__WEBPACK_IMPORTED_MODULE_23___default = /*#__PURE__*/__webpack_require__.n(_widgets_tabControl_js__WEBPACK_IMPORTED_MODULE_23__);
+/* harmony import */ var _widgets_scrollArea_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./widgets/scrollArea.js */ "./src/widgets/scrollArea.js");
+/* harmony import */ var _widgets_scrollArea_js__WEBPACK_IMPORTED_MODULE_24___default = /*#__PURE__*/__webpack_require__.n(_widgets_scrollArea_js__WEBPACK_IMPORTED_MODULE_24__);
+/* harmony import */ var _widgets_radioGroup_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./widgets/radioGroup.js */ "./src/widgets/radioGroup.js");
+/* harmony import */ var _widgets_radioGroup_js__WEBPACK_IMPORTED_MODULE_25___default = /*#__PURE__*/__webpack_require__.n(_widgets_radioGroup_js__WEBPACK_IMPORTED_MODULE_25__);
+/* harmony import */ var _widgets_radioGroupItem_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./widgets/radioGroupItem.js */ "./src/widgets/radioGroupItem.js");
+/* harmony import */ var _widgets_radioGroupItem_js__WEBPACK_IMPORTED_MODULE_26___default = /*#__PURE__*/__webpack_require__.n(_widgets_radioGroupItem_js__WEBPACK_IMPORTED_MODULE_26__);
+/* harmony import */ var _widgets_horizontalSlider_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./widgets/horizontalSlider.js */ "./src/widgets/horizontalSlider.js");
+/* harmony import */ var _widgets_horizontalSlider_js__WEBPACK_IMPORTED_MODULE_27___default = /*#__PURE__*/__webpack_require__.n(_widgets_horizontalSlider_js__WEBPACK_IMPORTED_MODULE_27__);
+/* harmony import */ var _widgets_dialog_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./widgets/dialog.js */ "./src/widgets/dialog.js");
+/* harmony import */ var _widgets_dialog_js__WEBPACK_IMPORTED_MODULE_28___default = /*#__PURE__*/__webpack_require__.n(_widgets_dialog_js__WEBPACK_IMPORTED_MODULE_28__);
+/* harmony import */ var _widgets_horizontalLayout_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./widgets/horizontalLayout.js */ "./src/widgets/horizontalLayout.js");
+/* harmony import */ var _widgets_horizontalLayout_js__WEBPACK_IMPORTED_MODULE_29___default = /*#__PURE__*/__webpack_require__.n(_widgets_horizontalLayout_js__WEBPACK_IMPORTED_MODULE_29__);
+/* harmony import */ var _widgets_verticalLayout_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./widgets/verticalLayout.js */ "./src/widgets/verticalLayout.js");
+/* harmony import */ var _widgets_verticalLayout_js__WEBPACK_IMPORTED_MODULE_30___default = /*#__PURE__*/__webpack_require__.n(_widgets_verticalLayout_js__WEBPACK_IMPORTED_MODULE_30__);
+/* harmony import */ var _widgets_dynamicWrapper_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./widgets/dynamicWrapper.js */ "./src/widgets/dynamicWrapper.js");
+/* harmony import */ var _widgets_dynamicWrapper_js__WEBPACK_IMPORTED_MODULE_31___default = /*#__PURE__*/__webpack_require__.n(_widgets_dynamicWrapper_js__WEBPACK_IMPORTED_MODULE_31__);
+/* harmony import */ var _widgets_layoutSpacer_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./widgets/layoutSpacer.js */ "./src/widgets/layoutSpacer.js");
+/* harmony import */ var _widgets_layoutSpacer_js__WEBPACK_IMPORTED_MODULE_32___default = /*#__PURE__*/__webpack_require__.n(_widgets_layoutSpacer_js__WEBPACK_IMPORTED_MODULE_32__);
+/* harmony import */ var _widgets_time_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./widgets/time.js */ "./src/widgets/time.js");
+/* harmony import */ var _widgets_time_js__WEBPACK_IMPORTED_MODULE_33___default = /*#__PURE__*/__webpack_require__.n(_widgets_time_js__WEBPACK_IMPORTED_MODULE_33__);
 
 
 

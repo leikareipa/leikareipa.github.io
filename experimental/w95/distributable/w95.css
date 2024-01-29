@@ -7,7 +7,7 @@ body {
     overflow: hidden;
 }
 
-canvas {
+canvas.w95 {
     background-color: transparent;
     image-rendering: pixelated;
     user-select: none;
@@ -18,7 +18,7 @@ canvas {
     height: 100%;
 }
 
-canvas[data-w95-app="Desktop"] {
+canvas.w95[data-w95-app="Desktop"] {
     background-color: teal;
 }
 
