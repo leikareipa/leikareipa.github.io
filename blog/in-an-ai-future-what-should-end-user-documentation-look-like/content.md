@@ -2,7 +2,7 @@
 
 # In an AI future, what should end-user documentation look like?
 
-Wearing the hat of technical writer for [my software projects](https://www.tarpeeksihyvaesoft.com), the day usually starts with an attempt to predict the needs of the target audience, their backgrounds and expectations, etc., then aligning the documentation along those parameters.
+Wearing the hat of technical writer for [my software projects](https://leikareipa.github.io), the day usually starts with an attempt to predict the needs of the target audience, their backgrounds and expectations, etc., then aligning the documentation along those parameters.
 
 Now that stronger AI is on the horizon, this approach is starting to feel old-fashioned. It produces static content that can't adapt to the reader's needs.
 

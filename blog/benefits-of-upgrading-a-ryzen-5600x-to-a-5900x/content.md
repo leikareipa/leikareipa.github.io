@@ -10,7 +10,7 @@ I'll take a moment in this post to talk about the benefits (and non-benefits) of
 
 I've previously written a [retro-oriented single-threaded software 3D rasterizer in JavaScript](https://www.github.com/leikareipa/retro-ngon/).
 
-Below are results from [one of its benchmarks](https://www.tarpeeksihyvaesoft.com/retro-ngon/tests/performance/quake-1.html?scale=0.5) running on the 5900X and the 5600X at a render resolution of 1720 &times; 639 in Google Chrome 109.
+Below are results from [one of its benchmarks](https://leikareipa.github.io/retro-ngon/tests/performance/quake-1.html?scale=0.5) running on the 5900X and the 5600X at a render resolution of 1720 &times; 639 in Google Chrome 109.
 
 <dokki-table headerless>
     <table>
@@ -51,7 +51,7 @@ The two CPUs are known to be nearly identical in single-core performance, and th
 
 One of my spare-time projects is a [multi-threaded JavaScript (TypeScript) path tracer](https://www.github.com/leikareipa/wray/). It's simply a vanilla path tracer that renders via Web Workers.
 
-Below are results from [a sample scene](https://www.tarpeeksihyvaesoft.com/experimental/wray/samples/sample1.html?threads=all&pixelSize=1&resolution=1280x720) running on the 5900X and the 5600X in Google Chrome 109.
+Below are results from [a sample scene](https://leikareipa.github.io/experimental/wray/samples/sample1.html?threads=all&pixelSize=1&resolution=1280x720) running on the 5900X and the 5600X in Google Chrome 109.
 
 <dokki-table headerless>
     <table>
@@ -88,7 +88,7 @@ Below are results from [a sample scene](https://www.tarpeeksihyvaesoft.com/exper
 
 Although technically multi-threaded, the renderer is clearly bottlenecked in its thread scaling, with the 5900X topping out not far ahead of the 5600X despite having twice as many cores.
 
-The renderer also comes with a [performance test](https://www.tarpeeksihyvaesoft.com/experimental/wray/tests/performance/perftest1.html) that measures raw render throughput without overhead from displaying the rendered image. Below are results from that test running on the 5900X in Google Chrome 109 and using the same scene as above.
+The renderer also comes with a [performance test](https://leikareipa.github.io/experimental/wray/tests/performance/perftest1.html) that measures raw render throughput without overhead from displaying the rendered image. Below are results from that test running on the 5900X in Google Chrome 109 and using the same scene as above.
 
 <dokki-table headerless>
     <table>

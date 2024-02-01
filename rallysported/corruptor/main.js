@@ -137,7 +137,7 @@ function get_rs_dosbox_url(mutationPayloads = "") {
 
     const thsDosboxBaseUrl = (window.location.hostname === "localhost")
         ? "http://localhost:8000/dosbox"
-        : "https://www.tarpeeksihyvaesoft.com/dosbox";
+        : "https://leikareipa.github.io/dosbox";
 
     return `${thsDosboxBaseUrl}/?run=['copy rallye.org rallye.exe',${mutationPayloads},'rally']#/rallysported/corruptor/`;
 }

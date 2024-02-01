@@ -8,7 +8,7 @@ The w95 framework isn't currently public nor would GPT-4 have prior knowledge ab
 
 This blog post outlines the steps the AI took in replicating a fair bit of the functionality of Windows Minesweeper as a w95 app. I didn't bother trying to get it to fully replicate the game, as I think what it did here is indication enough that it could've done most of the rest as well, if not all.
 
-You can test the app here: [tarpeeksihyvaesoft.com/gpt4-w95-minesweeper](https://www.tarpeeksihyvaesoft.com/gpt4-w95-minesweeper) (again, keeping in mind that it's intended as a prototype rather than a finished version).
+You can test the app here: [leikareipa.github.io/gpt4-w95-minesweeper](https://leikareipa.github.io/gpt4-w95-minesweeper) (again, keeping in mind that it's intended as a prototype rather than a finished version).
 
 <b>Prompt</b>&mdash;<i>Here's an example of a Windows 95-like GUI window built using a GUI framework called w95. Study this example and generate another window using the framework. The window should be like a typical Windows 95 application.</i>
 
@@ -696,4 +696,4 @@ I made some tweaks on my own to the way the app looks:
 
 ![{image}{headerless}{no-border-rounding}](./5.png)
 
-As I noted in the introduction, you can test the app here: [tarpeeksihyvaesoft.com/gpt4-w95-minesweeper](https://www.tarpeeksihyvaesoft.com/gpt4-w95-minesweeper). It's not fully finished, but you get the idea.
+As I noted in the introduction, you can test the app here: [leikareipa.github.io/gpt4-w95-minesweeper](https://leikareipa.github.io/gpt4-w95-minesweeper). It's not fully finished, but you get the idea.
