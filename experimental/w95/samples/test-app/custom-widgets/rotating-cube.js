@@ -56,6 +56,7 @@ export const rotatingCube = w95.widget(function rotatingCube({
                     shape: w95.frameShape.box,
                     children: [
                         w95.widget.renderSurface({
+                            cursor: w95.cursor.none,
                             x: 1,
                             y: 1,
                             width: (width - 2),

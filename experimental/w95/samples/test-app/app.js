@@ -46,7 +46,7 @@ export default {
     
         const sliderValue = w95.state(5);
         const lineEditText = w95.state("Left empty");
-        const textEditText = w95.state("Text editing, with some bugs remaining.\n\n(Multi-line.)");
+        const textEditText = w95.state("Text editing, with some bugs remaining.\n\nMultiline.");
         const numEditText = w95.state("123");
         const userName = w95.state("");
         const widgetDisable = w95.state(false);
@@ -418,6 +418,7 @@ export default {
                                             height: "ph - 6",
                                             text: textEditText.now,
                                             autofocus: true,
+                                            font: w95.font.fixedsys[9],
                                             newText(text) {
                                                 textEditText.set(text);
                                             },

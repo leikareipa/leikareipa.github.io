@@ -2,6 +2,75 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/assets/cursors/win95-cursors.js":
+/*!*********************************************!*\
+  !*** ./src/assets/cursors/win95-cursors.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   win95Cursors: () => (/* binding */ win95Cursors)
+/* harmony export */ });
+// A selection of cursors of Microsoft Windows 95.
+//
+// The reproduction of these cursors here is assumed to be under fair use and IS NOT UNDER
+// THE LICENSE OF THE W95 SOURCE CODE.
+const win95Cursors = {
+    none: {
+        xOffset: 0,
+        yOffset: 0,
+        width: 1,
+        height: 1,
+        dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABmJLR0QA7QDsANV/RreOAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH6AIDDB8KeiPRJQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAALSURBVAjXY2AAAgAABQAB4iYFmwAAAABJRU5ErkJggg==",
+    },
+    arrow: {
+        xOffset: 0,
+        yOffset: 0,
+        width: 11,
+        height: 19,
+        dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAATCAYAAABGKffQAAAABmJLR0QA+gD6APoe/B6HAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5ggDAjQ6UK5IOwAAAGhJREFUKM+tklEOwCAIQ2mz+1+5+xkJMhE+JDFG0odQNTOTDYPfrrFY0gjwyiOA8dABzIkTwF2yAlhduQN4GigD7OyKwFOJAPw4NgLExSSEA+WALpw+N9ZuULqB6RfF2TUt89AuhmLPL2q1MRKBwiYAAAAAAElFTkSuQmCC",
+    },
+    text: {
+        xOffset: 3,
+        yOffset: 6,
+        width: 7,
+        height: 16,
+        dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAQCAYAAADagWXwAAAABmJLR0QAqwCrAP8Gm0j0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH6AIBFSwE0A7JZgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAiSURBVBjTY2RgYPjPgACMaHwUgCLBxIAHjErSTpIRX5QBAGUYBRrEJx0aAAAAAElFTkSuQmCC",
+    },
+    hResize: {
+        xOffset: 9,
+        yOffset: 3,
+        width: 21,
+        height: 9,
+        dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAJCAYAAADdA2d2AAAABmJLR0QAqwCrAP8Gm0j0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH6AIBFxoMVE0ETwAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAABbSURBVCjPtZFBCgAxCANHyf9fHOheu24LK6U565gYKLI9bA9+aDebdUgSHUmigvMEuAPHCmi7BZz3JEWcONz8+Y7TV0nAAFrtr3ZyuhgdhzXy7DBLlDb4Exl4AHCYWpN/bIVWAAAAAElFTkSuQmCC",
+    },
+    vResize: {
+        xOffset: 3,
+        yOffset: 10,
+        width: 9,
+        height: 21,
+        dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAVCAYAAACUhcTwAAAABmJLR0QAqwCrAP8Gm0j0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH6AICARUGOR6BsgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAABNSURBVCjP7dJRCgAgCAPQEbv/iQX7yUjD2AEa9JE8InBAiZk5XlnAWxggzgUruGAHTsgF96sk013++ICQj8Bu42mu7E5rgdwnuZmvjk+9mH3OfwDq9AAAAABJRU5ErkJggg==",
+    },
+    hvResizeIn: {
+        xOffset: 7,
+        yOffset: 7,
+        width: 15,
+        height: 15,
+        dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABmJLR0QAqwCrAP8Gm0j0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH6AICARQaNATsvAAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAABgSURBVCjPnZLBCgAgCEMt9v9fPLBLgYTVcre0N0Vt9hBJP+VgggBkptYFsJFMc12snBpIMEkHYKcOXgPzNbj9LYMxfoWlCplLuTUZjJ8DoIE7/AVme5779BL8Y4B15BUNFBSGtkUHDhkAAAAASUVORK5CYII=",
+    },
+    hvResizeOut: {
+        xOffset: 7,
+        yOffset: 7,
+        width: 15,
+        height: 15,
+        dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABmJLR0QAqwCrAP8Gm0j0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH6AICARMKZvJqHwAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAABlSURBVCjPrZNRDsAgCEMr4f4nbsJ+dFmQCRr7J/AKEm0kDT9S1YaFtBdNCZLIJFGQZNo1hKvgBHcQqz34TgbABuDPKewLtwwqE10ziKa9v5MA2L/OFxywVMHoCcsp+H6MgkEYfwC4dobDVu5pigAAAABJRU5ErkJggg==",
+    },
+};
+
+
+/***/ }),
+
 /***/ "./src/assets/fonts/courier-8-regular.js":
 /*!***********************************************!*\
   !*** ./src/assets/fonts/courier-8-regular.js ***!
@@ -8115,11 +8184,6 @@ __webpack_require__.r(__webpack_exports__);
 // The reproduction of these icons here is assumed to be under fair use and IS NOT UNDER
 // THE LICENSE OF THE W95 SOURCE CODE.
 const win95Icons = {
-    cursorArrow: {
-        width: 11,
-        height: 19,
-        dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAATCAYAAABGKffQAAAABmJLR0QA+gD6APoe/B6HAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5ggDAjQ6UK5IOwAAAGhJREFUKM+tklEOwCAIQ2mz+1+5+xkJMhE+JDFG0odQNTOTDYPfrrFY0gjwyiOA8dABzIkTwF2yAlhduQN4GigD7OyKwFOJAPw4NgLExSSEA+WALpw+N9ZuULqB6RfF2TUt89AuhmLPL2q1MRKBwiYAAAAAAElFTkSuQmCC",
-    },
     titleBarMaximize: Rngon.texture({
         width:12,
         height:10,
@@ -8346,10 +8410,11 @@ var __webpack_exports__ = {};
   \***********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./assets/icons/win95-icons.js */ "./src/assets/icons/win95-icons.js");
-/* harmony import */ var _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/fonts/ms-sans-serif-8-regular.js */ "./src/assets/fonts/ms-sans-serif-8-regular.js");
-/* harmony import */ var _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assets/fonts/ms-sans-serif-8-bold.js */ "./src/assets/fonts/ms-sans-serif-8-bold.js");
-/* harmony import */ var _assets_fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./assets/fonts/courier-8-regular.js */ "./src/assets/fonts/courier-8-regular.js");
-/* harmony import */ var _assets_fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./assets/fonts/fixedsys-9-regular.js */ "./src/assets/fonts/fixedsys-9-regular.js");
+/* harmony import */ var _assets_cursors_win95_cursors_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/cursors/win95-cursors.js */ "./src/assets/cursors/win95-cursors.js");
+/* harmony import */ var _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./assets/fonts/ms-sans-serif-8-regular.js */ "./src/assets/fonts/ms-sans-serif-8-regular.js");
+/* harmony import */ var _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./assets/fonts/ms-sans-serif-8-bold.js */ "./src/assets/fonts/ms-sans-serif-8-bold.js");
+/* harmony import */ var _assets_fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./assets/fonts/courier-8-regular.js */ "./src/assets/fonts/courier-8-regular.js");
+/* harmony import */ var _assets_fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./assets/fonts/fixedsys-9-regular.js */ "./src/assets/fonts/fixedsys-9-regular.js");
 /*
  * 2023 Tarpeeksi Hyvae Soft
  *
@@ -8363,30 +8428,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 w95.icon = _assets_icons_win95_icons_js__WEBPACK_IMPORTED_MODULE_0__.win95Icons;
+w95.cursor = _assets_cursors_win95_cursors_js__WEBPACK_IMPORTED_MODULE_1__.win95Cursors;
 
 w95.font.sansSerif = {
     8: {
-        regular: _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular,
-        bold: _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold,
+        regular: _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Regular,
+        bold: _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_3__.msSansSerif8Bold,
     },
 };
 w95.font.courier = {
     8: {
-        regular: _assets_fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_3__.courier8Regular,
-        bold: _assets_fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_3__.courier8Regular,
+        regular: _assets_fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_4__.courier8Regular,
+        bold: _assets_fonts_courier_8_regular_js__WEBPACK_IMPORTED_MODULE_4__.courier8Regular,
     },
 };
 w95.font.fixedsys = {
     9: {
-        regular: _assets_fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_4__.fixedsys9Regular,
-        bold: _assets_fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_4__.fixedsys9Regular,
+        regular: _assets_fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_5__.fixedsys9Regular,
+        bold: _assets_fonts_fixedsys_9_regular_js__WEBPACK_IMPORTED_MODULE_5__.fixedsys9Regular,
     },
 };
 
 // Default font.
-w95.font.regular = _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_1__.msSansSerif8Regular;
-w95.font.bold = _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Bold;
+w95.font.regular = _assets_fonts_ms_sans_serif_8_regular_js__WEBPACK_IMPORTED_MODULE_2__.msSansSerif8Regular;
+w95.font.bold = _assets_fonts_ms_sans_serif_8_bold_js__WEBPACK_IMPORTED_MODULE_3__.msSansSerif8Bold;
 
 })();
 

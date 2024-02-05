@@ -24,6 +24,7 @@ w95.widget("bitmap", function({
     children = [],
     isDisabled = false,
     styleHints = [],
+    cursor = undefined,
     onMouseDown = undefined,
     onMouseUp = undefined,
     onMouseMove = undefined,
@@ -38,6 +39,7 @@ w95.widget("bitmap", function({
     w95.debug?.assert(typeof color === "object");
     w95.debug?.assert(Array.isArray(children));
     w95.debug?.assert(Array.isArray(styleHints));
+    w95.debug?.assert(["undefined", "object"].includes(typeof cursor));
     w95.debug?.assert(["undefined", "object"].includes(typeof image));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseDown));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseUp));
@@ -50,6 +52,7 @@ w95.widget("bitmap", function({
         get y() { return y },
         get width() { return width },
         get height() { return height },
+        get cursor() { return cursor },
         Form() {
             if (!image) {
                 return [];
@@ -1169,6 +1172,7 @@ w95.widget("frame", function({
     styleHints = [],
     children = [],
     backgroundColor = undefined,
+    cursor = undefined,
     onMouseDown = undefined,
     onMouseUp = undefined,
     onClick = undefined,
@@ -1187,6 +1191,7 @@ w95.widget("frame", function({
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(Array.isArray(children));
     w95.debug?.assert(["undefined", "object"].includes(typeof backgroundColor));
+    w95.debug?.assert(["undefined", "object"].includes(typeof cursor));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseDown));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseUp));
     w95.debug?.assert(["undefined", "function"].includes(typeof onClick));
@@ -1195,27 +1200,36 @@ w95.widget("frame", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseLeave));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseEnter));
     
-    const borderGrab = w95.state({});
     const isPressed = w95.state(false, w95.noEffect);
     const isHovered = w95.state(false, w95.noEffect);
+    const borderHover = w95.state({}, w95.noEffect);
     const parentWidget = w95.state(undefined, w95.noEffect);
+    const isBorderGrabbed = w95.state(false);
 
-    const isBorderGrabbed = Boolean(
-        isResizable && (
-            borderGrab.now.left ||
-            borderGrab.now.right ||
-            borderGrab.now.top ||
-            borderGrab.now.bottom
-    ));
-    
+    const borderWidth = 4;
+
     return {
         get x() { return x },
         get y() { return y },
         get width() { return width },
         get height() { return height },
         get isHovered() { return isHovered.now },
-        get isGrabbed() { return (isGrabbable && isPressed.now) }, 
-        get isBorderGrabbed() { return (isResizable && isBorderGrabbed) },
+        get isGrabbed() { return (isGrabbable && isPressed.now) },
+        get isBorderGrabbed() { return (isResizable && isBorderGrabbed.now) },
+        get cursor() {
+            if (isResizable) {
+                if (borderHover.now.leftTop) return w95.cursor.hvResizeOut;
+                if (borderHover.now.rightTop) return w95.cursor.hvResizeIn;
+                if (borderHover.now.leftBottom) return w95.cursor.hvResizeIn;
+                if (borderHover.now.rightBottom) return w95.cursor.hvResizeOut;
+                if (borderHover.now.left || borderHover.now.right) return w95.cursor.hResize;
+                if (borderHover.now.top || borderHover.now.bottom) return w95.cursor.vResize;
+            }
+
+            if (cursor) {
+                return cursor;
+            }
+        },
         Form() {
             return [
                 ...children,
@@ -1239,18 +1253,10 @@ w95.widget("frame", function({
                 return onMouseEnter?.({at, widget:this});
             },
             mousedown({at}) {
-                const borderWidth = 4;
-                
                 isPressed.set(true);
 
-                borderGrab.set({
-                    left: (at.x < borderWidth),
-                    right: (at.x >= (width - borderWidth)),
-                    top: (at.y < borderWidth),
-                    bottom: (at.y >= (height - borderWidth)),
-                });
-
-                if (isBorderGrabbed) {
+                isBorderGrabbed.set(isResizable && Object.values(borderHover.now).some(v=>v));
+                if (isBorderGrabbed.now) {
                     return true;
                 }
 
@@ -1261,32 +1267,76 @@ w95.widget("frame", function({
             },
             mouseup({at}) {
                 isPressed.set(false);
-                borderGrab.set({});
+                borderHover.set({});
+                isBorderGrabbed.set(false);
                 const retval = onMouseUp?.({at, widget:this});
                 (!isHovered.now || onClick?.({at, widget:this}));
                 return retval;
             },
-            mousemove({event}) {
-                if (isResizable && isBorderGrabbed) {
+            mousemove({event, at}) {
+                update_border_hover(at);
+
+                if (isBorderGrabbed.now) {
                     w95.debug?.assert(["window", "dialog"].includes(parentWidget.now._type));
                     w95.debug?.assert(typeof event?.movementX === "number");
                     w95.debug?.assert(typeof event?.movementY === "number");
 
-                    if (borderGrab.now.right || borderGrab.now.bottom) {
+                    if (borderHover.now.rightBottom) {
                         parentWidget.now.Message.resize(
-                            borderGrab.now.right? (event.movementX / w95.shell.display.scale) : 0,
-                            borderGrab.now.bottom? (event.movementY / w95.shell.display.scale) : 0,
+                            (event.movementX / w95.shell.display.scale),
+                            (event.movementY / w95.shell.display.scale),
                         );
                     }
-
-                    if (borderGrab.now.left || borderGrab.now.top) {
+                    else if (borderHover.now.rightTop) {
                         parentWidget.now.Message.resize(
-                            borderGrab.now.left? (-event.movementX / w95.shell.display.scale) : 0,
-                            borderGrab.now.top? (-event.movementY / w95.shell.display.scale) : 0,
+                            (event.movementX / w95.shell.display.scale),
+                            -(event.movementY / w95.shell.display.scale),
                         );
                         parentWidget.now.Message.move(
-                            borderGrab.now.left? (event.movementX / w95.shell.display.scale) : 0,
-                            borderGrab.now.top? (event.movementY / w95.shell.display.scale) : 0,
+                            0,
+                            (event.movementY / w95.shell.display.scale),
+                        );
+                    }
+                    else if (borderHover.now.leftBottom) {
+                        parentWidget.now.Message.resize(
+                            -(event.movementX / w95.shell.display.scale),
+                            (event.movementY / w95.shell.display.scale),
+                        );
+                        parentWidget.now.Message.move(
+                            (event.movementX / w95.shell.display.scale),
+                            0,
+                        );
+                    }
+                    else if (borderHover.now.leftTop) {
+                        parentWidget.now.Message.resize(
+                            -(event.movementX / w95.shell.display.scale),
+                            -(event.movementY / w95.shell.display.scale),
+                        );
+                        parentWidget.now.Message.move(
+                            (event.movementX / w95.shell.display.scale),
+                            (event.movementY / w95.shell.display.scale),
+                        );
+                    }
+                    else if (
+                        borderHover.now.right ||
+                        borderHover.now.bottom
+                    ){
+                        parentWidget.now.Message.resize(
+                            borderHover.now.right? (event.movementX / w95.shell.display.scale) : 0,
+                            borderHover.now.bottom? (event.movementY / w95.shell.display.scale) : 0,
+                        );
+                    }
+                    else if (
+                        borderHover.now.left ||
+                        borderHover.now.top
+                    ){
+                        parentWidget.now.Message.resize(
+                            borderHover.now.left? (-event.movementX / w95.shell.display.scale) : 0,
+                            borderHover.now.top? (-event.movementY / w95.shell.display.scale) : 0,
+                        );
+                        parentWidget.now.Message.move(
+                            borderHover.now.left? (event.movementX / w95.shell.display.scale) : 0,
+                            borderHover.now.top? (event.movementY / w95.shell.display.scale) : 0,
                         );
                     }
                 }
@@ -1295,6 +1345,40 @@ w95.widget("frame", function({
             },
         },
     };
+
+    function update_border_hover(at) {
+        w95.debug?.assert(typeof at.x === "number");
+        w95.debug?.assert(typeof at.y === "number");
+
+        if (!isResizable || isBorderGrabbed.now) {
+            return;
+        }
+
+        const cornerMargin = 18;
+
+        borderHover.set({
+            rightTop: (
+                ((at.y < cornerMargin) && (at.x >= (width - borderWidth))) ||
+                ((at.y < borderWidth) && (at.x >= (width - cornerMargin)))
+            ),
+            rightBottom: (
+                (at.y >= (height - cornerMargin)) && (at.x >= (width - borderWidth)) ||
+                (at.y >= (height - borderWidth)) && (at.x >= (width - cornerMargin))
+            ),
+            leftTop: (
+                ((at.y < cornerMargin) && (at.x < borderWidth)) ||
+                ((at.y < borderWidth) && (at.x < cornerMargin))
+            ),
+            leftBottom: (
+                ((at.y >= (height - cornerMargin)) && (at.x < borderWidth)) ||
+                ((at.y >= (height - borderWidth)) && (at.x < cornerMargin))
+            ),
+            left: (at.x < borderWidth),
+            right: (at.x >= (width - borderWidth)),
+            top: (at.y < borderWidth),
+            bottom: (at.y >= (height - borderWidth)),
+        });
+    }
 
     function frame_mesh() {
         if (
@@ -2447,6 +2531,7 @@ w95.widget("label", function({
     font = w95.font.sansSerif[8],
     color = w95.palette.widget.foreground,
     backgroundColor = w95.palette.named.transparent,
+    cursor = undefined,
     onMouseDown = undefined,
     onMouseUp = undefined,
     onMouseMove = undefined,
@@ -2464,6 +2549,7 @@ w95.widget("label", function({
     w95.debug?.assert(typeof wordWrap === "boolean");
     w95.debug?.assert(typeof font === "object");
     w95.debug?.assert(Array.isArray(styleHints));
+    w95.debug?.assert(["undefined", "object"].includes(typeof cursor));
     w95.debug?.assert(["undefined", "number"].includes(typeof width));
     w95.debug?.assert(["undefined", "number"].includes(typeof height));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseDown));
@@ -2520,6 +2606,7 @@ w95.widget("label", function({
         get width() { return width },
         get height() { return height },
         get text() { return text },
+        get cursor() { return cursor },
         Form() {
             return [
                 ...text_mesh(),
@@ -2868,6 +2955,7 @@ w95.widget("lineEdit", function({
         get height() { return height },
         get hasFocus() { return hasFocus.now },
         get autofocus() { return autofocus },
+        get cursor() { return w95.cursor.text },
         Mounted() {
             cursorBlinkTimeout = setTimeout(()=>{
                 if (hasFocus.now) {
@@ -3583,6 +3671,7 @@ w95.widget("panel", function({
     width = 200,
     height = 22,
     color = w95.palette.named.navy,
+    cursor = undefined,
 } = {})
 {
     w95.debug?.assert(typeof x === "number");
@@ -3590,6 +3679,7 @@ w95.widget("panel", function({
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof color === "object");
+    w95.debug?.assert(["undefined", "object"].includes(typeof cursor));
     w95.debug?.assert(width > 0);
     w95.debug?.assert(height > 0);
 
@@ -3598,6 +3688,7 @@ w95.widget("panel", function({
         get y() { return y },
         get width() { return width },
         get height() { return height },
+        get cursor() { return cursor },
         Form() {
             return [
                 Rngon.ngon([
@@ -3956,6 +4047,7 @@ w95.widget("renderSurface", function({
     options = {},
     pipeline = {},
     id = "$w95-render-surface",
+    cursor = undefined,
     onTick = undefined,
     onMouseDown = undefined,
     onMouseUp = undefined,
@@ -3973,6 +4065,7 @@ w95.widget("renderSurface", function({
     w95.debug?.assert(typeof pipeline === "object");
     w95.debug?.assert(typeof id === "string");
     w95.debug?.assert(Array.isArray(meshes));
+    w95.debug?.assert(["undefined", "object"].includes(typeof cursor));
     w95.debug?.assert(["undefined", "function"].includes(typeof onTick));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseDown));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseUp));
@@ -4021,6 +4114,7 @@ w95.widget("renderSurface", function({
         get width() { return width },
         get height() { return height },
         get renderContext() { return Rngon.context[id] },
+        get cursor() { return cursor },
         Mounted() {
             if (onTick) {
                 w95.tick.listen(tick = tick.bind(this));
@@ -4106,6 +4200,7 @@ w95.widget("scrollArea", function({
     alwaysShowVerticalScroll = false,
     alwaysShowHorizontalScroll = false,
     backgroundColor = undefined,
+    cursor = undefined,
     onMouseDown = undefined,
     onMouseUp = undefined,
     onClick = undefined,
@@ -4123,6 +4218,7 @@ w95.widget("scrollArea", function({
     w95.debug?.assert(typeof alwaysShowVerticalScroll === "boolean");
     w95.debug?.assert(typeof alwaysShowHorizontalScroll === "boolean");
     w95.debug?.assert(Array.isArray(children));
+    w95.debug?.assert(["undefined", "object"].includes(typeof cursor));
     w95.debug?.assert(["undefined", "object"].includes(typeof backgroundColor));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseDown));
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseUp));
@@ -4185,6 +4281,7 @@ w95.widget("scrollArea", function({
             return [
                 w95.widget.frame({
                     $name: "_background",
+                    cursor,
                     x: padding,
                     y: padding,
                     width: (width - (vertical.isVisible.now * scrollButtonSize) - padding - padding),
@@ -4608,6 +4705,7 @@ w95.widget("textEdit", function({
         },
         Form() {
             return w95.widget.scrollArea({
+                cursor: w95.cursor.text,
                 width,
                 height,
                 frameShape: w95.frameShape.input,
@@ -4908,6 +5006,7 @@ w95.widget("titleBar", function({
                     width: (width - (icon? (5 + icon.width) : 3)) - (isDialog? 22 : 56),
                     height,
                     text: title,
+                    elide: true,
                     color: isBlurred
                         ? w95.palette.window.titleBar.inactiveForeground
                         : w95.palette.window.titleBar.foreground,
@@ -5188,6 +5287,7 @@ w95.widget("window", function({
         get menuBar() { return menuBarWidget },
         get isBlurred() { return isBlurred.now },
         get isDesktop() { return isDesktop },
+        get isBorderGrabbed() { return this.$form["_border"].isBorderGrabbed; },
         get title() { return title },
         get icon() { return icon },
         Mounted() {
