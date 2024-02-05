@@ -1,7 +1,6 @@
 .post-date
 {
     font-size: 85%;
-    color: var(--dokkiCSS-page-inert-fg-color);
     padding-left: var(--dokkiCSS-topic-horizontal-padding);
     padding-right: var(--dokkiCSS-topic-horizontal-padding);
     padding-top: calc(var(--dokkiCSS-topic-vertical-padding) + var(--dokkiCSS-navibar-item-padding-vertical));
@@ -9,8 +8,8 @@
 
 .post-date .bit + .bit::before
 {
-    content: "|";
-    margin: 0 0.5rem;
+    content: "·";
+    margin: 0 0.35rem;
     display: inline-block; /* Prevent inheriting link styling if parent is <a>.*/
     color: var(--dokkiCSS-page-inert-fg-color);
 }
