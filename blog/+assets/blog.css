@@ -208,7 +208,8 @@ body[data-dokki-layout="vertical-narrow"] .dokki-topic em
 .blog-post-abstract .field.tags .dokki-tag
 {
     background-color: var(--dokkiCSS-embedded-auxiliary-color);
-    color: var(--dokkiCSS-page-inert-fg-color);
+    color: var(--dokkiCSS-page-inert-fg-color) !important;
+    margin: 0 0.35em;
 }
 
 .blog-post-abstract .field.tags .dokki-tag:hover
