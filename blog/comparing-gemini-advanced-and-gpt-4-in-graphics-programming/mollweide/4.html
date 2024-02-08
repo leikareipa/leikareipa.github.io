@@ -1,0 +1,95 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+          const width = canvas.width;
+          const height = canvas.height;
+          const imageData = ctx.createImageData(width, height);
+
+          function standardMollweideProjection(x, y, width, height) {
+            const a = Math.sqrt(2);
+            const b = Math.PI * Math.sqrt(2);
+            const c = Math.PI / 2;
+
+            const normalizedX = (x / (width - 1)) * 2 * b - b;
+            const normalizedY = (y / (height - 1)) * 2 * c - c;
+
+            const theta = Math.asin(normalizedY / a);
+            const lon = (Math.PI * normalizedX) / (2 * a * Math.cos(theta));
+            const lat = Math.asin((2 * theta + Math.sin(2 * theta)) / Math.PI);
+
+            return [lon, lat];
+          }
+
+          function drawChessboardWithMollweideProjection(width, height, tileSize) {
+            // Create the pixel buffer
+            const pixelBuffer = new Array(height);
+            for (let i = 0; i < height; i++) {
+              pixelBuffer[i] = new Array(width);
+            }
+
+            // Draw the chessboard pattern
+            for (let i = 0; i < height; i++) {
+              for (let j = 0; j < width; j++) {
+                const isBlackTile = (Math.floor(i / tileSize) + Math.floor(j / tileSize)) % 2 === 0;
+                const color = isBlackTile ? { r: 0, g: 0, b: 0, a: 255 } : { r: 255, g: 255, b: 255, a: 255 };
+                pixelBuffer[i][j] = color;
+              }
+            }
+
+            // Apply the Mollweide projection
+            const mollweidePixelBuffer = new Array(height);
+            for (let i = 0; i < height; i++) {
+              mollweidePixelBuffer[i] = new Array(width);
+              for (let j = 0; j < width; j++) {
+                const [lon, lat] = standardMollweideProjection(j, i, width, height);
+
+                const projectedX = Math.floor(((lon + Math.PI) / (2 * Math.PI)) * (width - 1));
+                const projectedY = Math.floor(((lat + Math.PI / 2) / Math.PI) * (height - 1));
+
+                if (projectedX >= 0 && projectedX < width && projectedY >= 0 && projectedY < height) {
+                  mollweidePixelBuffer[i][j] = pixelBuffer[projectedY][projectedX];
+                } else {
+                  mollweidePixelBuffer[i][j] = { r: 0, g: 0, b: 0, a: 0 }; // Transparent pixel
+                }
+              }
+            }
+
+            return mollweidePixelBuffer;
+          }
+
+          const mollweidePixelBuffer = drawChessboardWithMollweideProjection(width, height, 30);
+
+          // <Non-GPT code to display the image.>
+          {
+            for (let y = 0; y < width; y++)
+            {
+                for (let x = 0; x < height; x++)
+                {
+                    const idx = ((y * width + x) * 4);
+                    imageData.data[idx + 0] = mollweidePixelBuffer[y][x].r;
+                    imageData.data[idx + 1] = mollweidePixelBuffer[y][x].g;
+                    imageData.data[idx + 2] = mollweidePixelBuffer[y][x].b;
+                    imageData.data[idx + 3] = mollweidePixelBuffer[y][x].a;
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+          }
+        </script>
+    </body>
+</html>

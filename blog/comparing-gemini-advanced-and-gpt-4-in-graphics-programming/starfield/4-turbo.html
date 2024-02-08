@@ -1,0 +1,79 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+              background-color: black;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <script>
+          class Star {
+            constructor(canvasWidth, canvasHeight) {
+                this.resetStar(canvasWidth, canvasHeight);
+                this.vel = 0.1 + Math.random() * 5;
+            }
+
+            resetStar(canvasWidth, canvasHeight) {
+                this.x = Math.random() * canvasWidth - canvasWidth / 2;
+                this.y = Math.random() * canvasHeight - canvasHeight / 2;
+                this.z = Math.random() * canvasWidth;
+            }
+
+            update(canvasWidth, canvasHeight) {
+                this.z -= this.vel;
+                if (this.z < 1) {
+                    this.resetStar(canvasWidth, canvasHeight);
+                }
+            }
+
+            draw(ctx, canvasWidth, canvasHeight) {
+                const px = (this.x / this.z) * canvasWidth / 2 + canvasWidth / 2;
+                const py = (this.y / this.z) * canvasHeight / 2 + canvasHeight / 2;
+
+                if (px >= 0 && px < canvasWidth && py >= 0 && py < canvasHeight) {
+                    ctx.fillStyle = "white";
+                    ctx.fillRect(px, py, 2, 2); // Draw a small square representing the star
+                }
+            }
+        }
+
+        function init() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+
+            const numStars = 1000;
+            const stars = [];
+
+            for (let i = 0; i < numStars; i++) {
+                stars.push(new Star(canvas.width, canvas.height));
+            }
+
+            function updateAndDraw() {
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                stars.forEach(star => {
+                    star.update(canvas.width, canvas.height);
+                    star.draw(ctx, canvas.width, canvas.height);
+                });
+
+                requestAnimationFrame(updateAndDraw);
+            }
+
+            updateAndDraw();
+        }
+
+        window.onload = init;
+        </script>
+    </body>
+</html>

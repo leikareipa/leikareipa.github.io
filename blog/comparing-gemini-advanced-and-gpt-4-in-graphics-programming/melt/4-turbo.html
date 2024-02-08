@@ -1,0 +1,86 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="256" height="256"></canvas>
+        <script src="../parrot.js"></script>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+
+          do_with_parrot((parrot)=>{
+            const WIDTH = parrot.width; // Width of your canvas
+            const HEIGHT = parrot.height; // Height of your canvas
+            let pixelBuffer = parrot.data; // Assuming 4 bytes per pixel
+
+            // Function to get the index of a pixel in the buffer
+            function getPixelIndex(x, y) {
+                return (y * WIDTH + x) * 4;
+            }
+
+            // Function to 'melt' a column of pixels
+            function meltColumn(x, meltAmounts) {
+                // Move each pixel down by the melt amount for this column
+                for (let y = HEIGHT - 1; y >= 0; y--) {
+                    if (meltAmounts[x] > 0 && y - meltAmounts[x] >= 0) {
+                        const index = getPixelIndex(x, y);
+                        const aboveIndex = getPixelIndex(x, y - meltAmounts[x]);
+
+                        // Copy the pixel from above down
+                        for (let i = 0; i < 4; i++) {
+                            pixelBuffer[index + i] = pixelBuffer[aboveIndex + i];
+                        }
+                    }
+                }
+
+                // Clear the top pixels for this column to the background color or transparency
+                for (let i = 0; i < meltAmounts[x]; i++) {
+                    const index = getPixelIndex(x, i);
+                    pixelBuffer.fill(0, index, index + 4); // Assuming black background, change as needed
+                }
+            }
+
+            // Function to start the melting effect
+            function startMelting() {
+                // Array to keep track of melt amounts for each column
+                let meltAmounts = new Array(WIDTH).fill(0);
+
+                // Function to update the melting effect
+                function update() {
+                    // Randomly increase melt amounts for each column
+                    for (let x = 0; x < WIDTH; x++) {
+                        if (Math.random() < 0.1) { // Adjust probability as needed
+                            meltAmounts[x] += Math.floor(Math.random() * 3); // Adjust the max drip speed as needed
+                        }
+                    }
+
+                    // Apply melt effect to each column
+                    for (let x = 0; x < WIDTH; x++) {
+                        meltColumn(x, meltAmounts);
+                    }
+
+                    // Here you would update your canvas with the new pixelBuffer
+              ctx.putImageData(parrot, 0, 0);
+
+                    requestAnimationFrame(update);
+                }
+
+                update();
+            }
+
+            startMelting();
+          });
+        </script>
+    </body>
+</html>

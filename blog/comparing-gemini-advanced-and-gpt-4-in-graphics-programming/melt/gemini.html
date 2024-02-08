@@ -1,0 +1,63 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="256" height="256"></canvas>
+        <script src="../parrot.js"></script>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+
+          do_with_parrot((parrot)=>{
+            applyDoomMelt();
+            function applyDoomMelt(pixelBuffer = parrot.data, width = parrot.width, height = parrot.height) {
+                const columns = [];
+                const numColumns = width; // Example: Divide into 10-pixel wide columns
+
+                // Initialize column melt offsets
+                for (let i = 0; i < numColumns; i++) {
+                    columns.push(Math.random() * height / 2); 
+                }
+
+                function meltFrame() {
+                    for (let col = 0; col < numColumns; col++) {
+                    let offset = columns[col];
+
+                    for (let y = 0; y < height; y++) {
+                        if (y >= offset) {
+                        let srcPos = ((y - offset) * width + col ) * 4;
+                        let destPos = (y * width + col) * 4;
+
+                        // Copy pixel data with decreasing alpha 
+                        for (let i = 0; i < 4; i++) {
+                            pixelBuffer[destPos + i] = pixelBuffer[srcPos + i] * (1 - (y - offset) / height);  
+                        }
+                        }
+                    }
+
+                    columns[col] += 0.5; // Adjust melt speed
+                        if (columns[col] > height) columns[col] = 0; 
+                    }
+
+                    ctx.putImageData(parrot, 0, 0);
+
+                    requestAnimationFrame(meltFrame); 
+                }
+
+                meltFrame();
+            }
+          });
+        </script>
+    </body>
+</html>

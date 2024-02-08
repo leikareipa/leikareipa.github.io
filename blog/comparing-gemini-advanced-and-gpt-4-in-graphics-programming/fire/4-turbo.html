@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <style>
+            html, body, canvas {
+                width: 100vw;
+                height: 100vh;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            const canvas = document.createElement('canvas');
+            canvas.width = 1000;
+            canvas.height = 400;
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+
+            const fireWidth = 1000;
+            const fireHeight = 400;
+            const firePixels = [];
+            const firePalette = generateFirePalette();
+
+            initializeFire();
+
+            function generateFirePalette() {
+                const palette = [];
+                for (let i = 0; i < 256; i++) {
+                    const red = Math.min(255, i * 2);
+                    const green = Math.max(0, Math.min(255, i * 4 - 100));
+                    palette.push({ r: red, g: green, b: 0, a: 255 });
+                }
+                return palette;
+            }
+
+            function initializeFire() {
+                for (let i = 0; i < fireWidth * fireHeight; i++) {
+                    firePixels[i] = 0;
+                }
+                for (let x = 0; x < fireWidth; x++) {
+                    const idx = (fireHeight - 1) * fireWidth + x;
+                    firePixels[idx] = 255;
+                }
+            }
+
+            function updateFireIntensity() {
+                for (let x = 0; x < fireWidth; x++) {
+                    for (let y = 1; y < fireHeight; y++) {
+                        const idx = x + y * fireWidth;
+                        const decay = Math.floor(Math.random() * 3);
+                        const srcIdx = idx - decay + fireWidth;
+                        const intensity = srcIdx < firePixels.length ? Math.max(0, firePixels[srcIdx] - decay) : 0;
+                        firePixels[idx - fireWidth] = intensity;
+                    }
+                }
+            }
+
+            function renderFire() {
+                const imageData = ctx.getImageData(0, 0, fireWidth, fireHeight);
+                for (let i = 0; i < firePixels.length; i++) {
+                    const intensity = Math.max(0, Math.min(255, firePixels[i]));
+                    const color = firePalette[intensity];
+                    imageData.data[i * 4 + 0] = color.r;
+                    imageData.data[i * 4 + 1] = color.g;
+                    imageData.data[i * 4 + 2] = color.b;
+                    imageData.data[i * 4 + 3] = color.a;
+                }
+                ctx.putImageData(imageData, 0, 0);
+            }
+
+            function animate() {
+                updateFireIntensity();
+                renderFire();
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,112 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+              background-color: black;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <script>
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const bufferWidth = canvas.width
+            const bufferHeight = canvas.height;
+            const pixelBuffer = new Uint8ClampedArray(bufferWidth * bufferHeight * 4);
+
+            // Star representation
+            class Star {
+                constructor(x, y, z) {
+                    this.x = x;
+                    this.y = y;
+                    this.z = z;
+                    this.brightness = Math.random(); 
+                }
+            }
+
+            function initializeStars(numStars) {
+            const stars = [];
+            for (let i = 0; i < numStars; i++) {
+                const x = Math.random() * bufferWidth * 2 - bufferWidth;
+                const y = Math.random() * bufferHeight * 2 - bufferHeight;
+                const z = Math.random() * 500 + 10; // z > 0 to avoid divide by zero
+                stars.push(new Star(x, y, z)); 
+            }
+            return stars;
+            }
+
+            function updateStarfield(stars) {
+                const perspectiveScale = 0.03; // Controls apparent speed
+                for (const star of stars) {
+                    star.z -= 5; // Base forward movement
+                    if (star.z <= 0) {
+                        star.z = Math.random() * 500 + 10; // "Reset" stars behind the viewer
+                        star.x = Math.random() * bufferWidth * 2 - bufferWidth;
+                        star.y = Math.random() * bufferHeight * 2 - bufferHeight;
+                    }
+                }
+            }
+
+            function renderStarfield(stars) {
+                // Clear buffer (Set background pixels)
+                pixelBuffer.fill(0);
+
+                for (const star of stars) {
+                    const projected = project2d(star);
+                    drawPixel(projected.x, projected.y, star.brightness);
+                }
+            }
+
+            // Animation loop
+            function animate() {
+                updateStarfield(stars); 
+                renderStarfield(stars);
+
+                const imageData = ctx.createImageData(bufferWidth, bufferHeight);
+                imageData.data.set(pixelBuffer); 
+                ctx.putImageData(imageData, 0, 0);
+
+                requestAnimationFrame(animate); 
+            }
+
+            const stars = initializeStars(500); // Adjust number of stars
+            animate();
+
+            function project2d(star) {
+                const focalLength = 200;
+
+                const projectedX = (star.x * focalLength) / star.z + bufferWidth / 2;
+                const projectedY = (star.y * focalLength) / star.z + bufferHeight / 2;
+
+                return { x: projectedX, y: projectedY };
+            }
+
+            function drawPixel(x, y, brightness) {
+                // Bounds Checking
+                if (x < 0 || x >= bufferWidth || y < 0 || y >= bufferHeight) {
+                    return; // Pixel outside the buffer
+                }
+
+                // Color Modulation with Brightness
+                const colorScale = 255 * brightness;
+                for (let dx = -1; dx <= 1; dx++) {
+                    for (let dy = -1; dy <= 1; dy++) {
+                        const pixelIndex = (~~(y+dy) * bufferWidth + ~~(x+dx)) * 4; 
+                        pixelBuffer[pixelIndex] = colorScale;   // Red
+                        pixelBuffer[pixelIndex + 1] = colorScale; // Green
+                        pixelBuffer[pixelIndex + 2] = colorScale; // Blue
+                        pixelBuffer[pixelIndex + 3] = 255;        // Alpha (fully opaque)
+                    }
+                }
+            } 
+        </script>
+    </body>
+</html>
