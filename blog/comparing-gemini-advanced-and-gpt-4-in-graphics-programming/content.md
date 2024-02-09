@@ -8,70 +8,6 @@ For full context, see the original blog posts:
 - [Comparing ChatGPT models' drawing skills](/blog/comparing-chatgpt-models-drawing-skills/)
 - [Comparing ChatGPT models' drawing skills, part 2](/blog/comparing-chatgpt-models-drawing-skills-part-2/)
 
-> My subjective assessment of task fulfilment
-<dokki-table headerless>
-    <table>
-        <tr>
-            <th>Task</th>
-            <th colspan="3">Score</th>
-        </tr>
-        <tr>
-            <th></th>
-            <th>Gemini Advanced (Q1 2024)</th>
-            <th>GPT-4 Turbo (Q4 2023)</th>
-            <th>GPT-4 (Q1 2023)</th>
-        </tr>
-        <tr>
-            <th>Average</th>
-            <th>40%</th>
-            <th>70%</th>
-            <th>90%</th>
-        </tr>
-        <tr>
-            <td>DOOM melt</td>
-            <td>20%</td>
-            <td>75%</td>
-            <td>80%</td>
-        </tr>
-        <tr>
-            <td>Snowfall</td>
-            <td>70%</td>
-            <td>65%</td>
-            <td>80%</td>
-        </tr>
-        <tr>
-            <td>Ray tracing</td>
-            <td>50%</td>
-            <td>70%</td>
-            <td>90%</td>
-        </tr>
-        <tr>
-            <td>Mollweide</td>
-            <td>0%</td>
-            <td>90%</td>
-            <td>100%</td>
-        </tr>
-        <tr>
-            <td>Starfield</td>
-            <td>90%</td>
-            <td>80%</td>
-            <td>100%</td>
-        </tr>
-        <tr>
-            <td>Fire</td>
-            <td>10%</td>
-            <td>60%</td>
-            <td>95%</td>
-        </tr>
-        <tr>
-            <td>Effect of choice</td>
-            <td>50%</td>
-            <td>30%</td>
-            <td>90%</td>
-        </tr>
-    </table>
-</dokki-table>
-
 ## DOOM-style screen melt
 
 <p class="label-a">"Write JavaScript code that applies onto a pixel buffer an animated screen melt effect, as seen in the 1990s DOS game DOOM. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
@@ -178,6 +114,70 @@ In its words, Gemini attempted to showcase "Reaction-Diffusion Based Organic Pat
 ## Finishing notes
 
 I've only just stated trialing Gemini Advanced (the first two months are free by the way), but what I see here leaves a mixed impression. The quality of its output in these tests was more inconsistent than that of GPT-4, and you might even say it looks a generation behind.
+
+> My subjective assessment of task fulfilment
+<dokki-table headerless>
+    <table>
+        <tr>
+            <th>Task</th>
+            <th colspan="3">Score</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>Gemini Advanced (Q1 2024)</th>
+            <th>GPT-4 Turbo (Q4 2023)</th>
+            <th>GPT-4 (Q1 2023)</th>
+        </tr>
+        <tr>
+            <th>Average</th>
+            <th>40%</th>
+            <th>70%</th>
+            <th>90%</th>
+        </tr>
+        <tr>
+            <td>DOOM melt</td>
+            <td>20%</td>
+            <td>75%</td>
+            <td>80%</td>
+        </tr>
+        <tr>
+            <td>Snowfall</td>
+            <td>70%</td>
+            <td>65%</td>
+            <td>80%</td>
+        </tr>
+        <tr>
+            <td>Ray tracing</td>
+            <td>50%</td>
+            <td>70%</td>
+            <td>90%</td>
+        </tr>
+        <tr>
+            <td>Mollweide</td>
+            <td>0%</td>
+            <td>90%</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>Starfield</td>
+            <td>90%</td>
+            <td>80%</td>
+            <td>100%</td>
+        </tr>
+        <tr>
+            <td>Fire</td>
+            <td>10%</td>
+            <td>60%</td>
+            <td>95%</td>
+        </tr>
+        <tr>
+            <td>Effect of choice</td>
+            <td>50%</td>
+            <td>30%</td>
+            <td>90%</td>
+        </tr>
+    </table>
+</dokki-table>
 
 Compared to GPT-4, Gemini's style feels more like pair programming. Its output is more prose-y and it tries to engage you in a conversation about the problem. This is both good and bad &ndash; if you just want the code then Gemini will work you for it, but on the other hand you might enjoy its conversational, exploratory approach (or is that just Google farming for more training data?). Though the code it produced had no shortage of "fill in the functionality here" moments, it would also happily fill everything in if asked.
 
