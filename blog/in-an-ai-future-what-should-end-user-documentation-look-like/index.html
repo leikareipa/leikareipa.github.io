@@ -16,6 +16,11 @@
             iframe {
                 border-radius: unset !important;
             }
+            .gpt-response-text .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
             .gpt-response.dokki0-embedded-expandable .caption > .type > .text {
                 display: none;
             }
@@ -64,7 +69,7 @@
                         
 <post-date date="23 April 2023"></post-date>
 <dokki-topic title="In an AI future, what should end-user documentation look like?">
-<p>Wearing the hat of technical writer for <a href="https://leikareipa.github.io">my software projects</a>, the day usually starts with an attempt to predict the needs of the target audience, their backgrounds and expectations, etc., then aligning the documentation along those parameters.</p>
+<p>Wearing the hat of technical writer for my software projects, the day usually starts with an attempt to predict the needs of the target audience, their backgrounds and expectations, etc., then aligning the documentation along those parameters.</p>
 <p>Now that stronger AI is on the horizon, this approach is starting to feel old-fashioned. It produces static content that can't adapt to the reader's needs.</p>
 <p>An obvious way forward is to use AI to project the documentation into the user's frame of mind, i.e. having the user issue queries to the AI about the software and the AI transforming the underlying documentation accordingly.</p>
 <dokki-subtopic title="AI-friendly documentation">
@@ -113,24 +118,24 @@
             
 <p>The documentation has been reduced to a technical API reference – written in Markdown – that briefs the salient details. The text uses various formatting strategies to pattern and compress the information, and sparsely includes sample code to demonstrate usage (not shown here).</p>
 <p>For end-user consumption, the raw Markdown can be rendered into HTML. For example, it looks like this when viewed on GitHub:</p>
-<dokki-image src="./rend.webp" width="981" height="544" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,UklGRmAAAABXRUJQVlA4IFQAAADQAwCdASoUAAsAPm0skkWkIqGYBABABsS0gFp0EfbotptSZQ8rQ6AA/vxpjAFJto/bQzou5VKFBrIhRvJkIX5getHWWuxyfvEmtdA6x8o5ThHwAAA=">
+<dokki-image src="./rend.webp" width="981" height="544"     headerless="true"  no-border-rounding="true"  thumbnail-src="data:image/png;base64,UklGRmAAAABXRUJQVlA4IFQAAADQAwCdASoUAAsAPm0skkWkIqGYBABABsS0gFp0EfbotptSZQ8rQ6AA/vxpjAFJto/bQzou5VKFBrIhRvJkIX5getHWWuxyfvEmtdA6x8o5ThHwAAA=">
                         </dokki-image>
 </dokki-subtopic><dokki-subtopic title="Trying it out">
 <p>Let's paste the API reference (or relevant parts of it, as it currently doesn't entirely fit the 4,000-token context limit) into ChatGPT and see whether the AI can have it accommodate some potential end-user needs.</p>
 <h3>Quick-start guide</h3>
-<p>Prompt—<i>Write a beginner-level quick-start guide on how to use the renderer.</i></p>
-<dokki-iframe src="./1-4.html" inline-class="gpt-response"><template #caption>GPT-4</template>
+<p class="label-a">"Write a beginner-level quick-start guide on how to use the renderer."</p>
+<dokki-iframe src="./1-4.html"        ><template #caption>GPT-4</template>
                     </dokki-iframe>
 <p>This is a reasonable quick-start guide, with logical steps and code snippets that work. It's not the best writing ever, but enough to get the user's feet wet, and they could ask follow-up questions to keep the ball rolling.</p>
 <h3>Isometric rendering</h3>
-<p>Prompt—<i>Show me how to draw an isometric tilemap using the renderer.</i></p>
-<dokki-iframe src="./2.html" inline-class="gpt-response"><template #caption>GPT-4</template>
+<p class="label-a">"Show me how to draw an isometric tilemap using the renderer."</p>
+<dokki-iframe src="./2.html"        ><template #caption>GPT-4</template>
                     </dokki-iframe>
 <p>Not a bad effort, as the output is more or less correct. The UV coordinates are off though.</p>
-<p>Prompt—<i>The textures look like they're not mapped correctly to the tile's orientation.</i></p>
+<p class="label-a">"The textures look like they're not mapped correctly to the tile's orientation."</p>
 
 
-                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response"><template #caption>GPT-4</template>
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>I apologize for the confusion. You're right; the texture mapping is not properly aligned with the isometric tile orientation. To fix this, we need to adjust the texture coordinates (UV coordinates) of each vertex in the isometric tile.
 
@@ -142,19 +147,19 @@ Here's an updated version of the createIsometricTile function with corrected UV 
                 </dokki-code>
             
 <p>Here the conversation exceeded ChatGPT's 4,000-token context limit and the model started hallucinating functionality (the <em>createIsometricTile</em> function) that wasn't in its original response. Still, it was correct about needing to adjust the UV coordinates, which I've done here:</p>
-<dokki-iframe src="./2-h.html" inline-class="gpt-response"><template #caption>GPT-4 + Human assistance</template>
+<dokki-iframe src="./2-h.html"        ><template #caption>GPT-4 + Human assistance</template>
                     </dokki-iframe>
 <p>This highlights the problem of context length, as when the documentation takes up most of the available 4,000 tokens, there's not much room left for continued discussion, and the coherency goes south very quickly. But as the context length ceiling is expected to go up in future releases of ChatGPT, it's effectively a solved problem.</p>
 <h3>Performance test</h3>
-<p>Prompt—<i>Write a performance test that renders at three different resolutions and displays the FPS results in a HTML table.</i></p>
-<dokki-iframe src="./perf.html" inline-class="gpt-response"><template #caption>GPT-4</template>
+<p class="label-a">"Write a performance test that renders at three different resolutions and displays the FPS results in a HTML table."</p>
+<dokki-iframe src="./perf.html"        ><template #caption>GPT-4</template>
                     </dokki-iframe>
 <p>If I wanted a quick pulse on the renderer's performance, I'd be pretty well covered, as ChatGPT is able to convert the API reference into this performance test scaffold.</p>
 <h3>Idea generation</h3>
-<p>Prompt—<i>List several possible render effects that can be accomplished by consecutive calls to render() with a custom surfaceWiper function.</i></p>
+<p class="label-a">"List several possible render effects that can be accomplished by consecutive calls to render() with a custom surfaceWiper function."</p>
 
 
-                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response"><template #caption>GPT-4</template>
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>Here are several render effects that can be accomplished by consecutive calls to render() with a custom surfaceWiper function:
 

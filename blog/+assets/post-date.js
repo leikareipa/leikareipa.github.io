@@ -9,7 +9,6 @@ const postDate = {
         <span class="bit">By <a href="/">Tarpeeksi Hyvae Soft</a></span>
         <span class="bit">{{date}}<span v-if="edited"><span style="margin: 0 0.4em;">&centerdot;</span>edited on {{edited}}</span>
         </span>
-        <a href="/blog/" class="bit">Blog index</a>
     </p>
     `,
 };

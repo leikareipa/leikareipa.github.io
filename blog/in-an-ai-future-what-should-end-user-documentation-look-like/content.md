@@ -2,7 +2,7 @@
 
 # In an AI future, what should end-user documentation look like?
 
-Wearing the hat of technical writer for [my software projects](https://leikareipa.github.io), the day usually starts with an attempt to predict the needs of the target audience, their backgrounds and expectations, etc., then aligning the documentation along those parameters.
+Wearing the hat of technical writer for my software projects, the day usually starts with an attempt to predict the needs of the target audience, their backgrounds and expectations, etc., then aligning the documentation along those parameters.
 
 Now that stronger AI is on the horizon, this approach is starting to feel old-fashioned. It produces static content that can't adapt to the reader's needs.
 
@@ -63,26 +63,26 @@ Let's paste the API reference (or relevant parts of it, as it currently doesn't 
 
 ### Quick-start guide
 
-Prompt&mdash;<i>Write a beginner-level quick-start guide on how to use the renderer.</i>
+<p class="label-a">"Write a beginner-level quick-start guide on how to use the renderer."</p>
 
 > GPT-4
-![{iframe}{inline-class:gpt-response}](./1-4.html)
+![{iframe}](./1-4.html)
 
 This is a reasonable quick-start guide, with logical steps and code snippets that work. It's not the best writing ever, but enough to get the user's feet wet, and they could ask follow-up questions to keep the ball rolling.
 
 ### Isometric rendering
 
-Prompt&mdash;<i>Show me how to draw an isometric tilemap using the renderer.</i>
+<p class="label-a">"Show me how to draw an isometric tilemap using the renderer."</p>
 
 > GPT-4
-![{iframe}{inline-class:gpt-response}](./2.html)
+![{iframe}](./2.html)
 
 Not a bad effort, as the output is more or less correct. The UV coordinates are off though.
 
-Prompt&mdash;<i>The textures look like they're not mapped correctly to the tile's orientation.</i>
+<p class="label-a">"The textures look like they're not mapped correctly to the tile's orientation."</p>
 
 > GPT-4
-``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response}]
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 I apologize for the confusion. You're right; the texture mapping is not properly aligned with the isometric tile orientation. To fix this, we need to adjust the texture coordinates (UV coordinates) of each vertex in the isometric tile.
 
 Here's an updated version of the createIsometricTile function with corrected UV coordinates:
@@ -93,25 +93,25 @@ Here's an updated version of the createIsometricTile function with corrected UV 
 Here the conversation exceeded ChatGPT's 4,000-token context limit and the model started hallucinating functionality (the *createIsometricTile* function) that wasn't in its original response. Still, it was correct about needing to adjust the UV coordinates, which I've done here:
 
 > GPT-4 + Human assistance
-![{iframe}{inline-class:gpt-response}](./2-h.html)
+![{iframe}](./2-h.html)
 
 This highlights the problem of context length, as when the documentation takes up most of the available 4,000 tokens, there's not much room left for continued discussion, and the coherency goes south very quickly. But as the context length ceiling is expected to go up in future releases of ChatGPT, it's effectively a solved problem.
 
 ### Performance test
 
-Prompt&mdash;<i>Write a performance test that renders at three different resolutions and displays the FPS results in a HTML table.</i>
+<p class="label-a">"Write a performance test that renders at three different resolutions and displays the FPS results in a HTML table."</p>
 
 > GPT-4
-![{iframe}{inline-class:gpt-response}](./perf.html)
+![{iframe}](./perf.html)
 
 If I wanted a quick pulse on the renderer's performance, I'd be pretty well covered, as ChatGPT is able to convert the API reference into this performance test scaffold.
 
 ### Idea generation
 
-Prompt&mdash;<i>List several possible render effects that can be accomplished by consecutive calls to render() with a custom surfaceWiper function.</i>
+<p class="label-a">"List several possible render effects that can be accomplished by consecutive calls to render() with a custom surfaceWiper function."</p>
 
 > GPT-4
-``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response}]
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 Here are several render effects that can be accomplished by consecutive calls to render() with a custom surfaceWiper function:
 
 1. Motion blur effect: By accumulating pixel values over multiple frames and blending them together, a motion blur effect can be achieved. The custom surfaceWiper function should not clear the entire render surface but instead blend the new frame with the previous frames using a specific weight or decay factor.

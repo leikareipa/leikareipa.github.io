@@ -8,34 +8,34 @@ This time, let's look at whether ChatGPT &ndash; with GPT-3.5 and GPT-4 &ndash; 
 
 ## Evaluate this assembly code
 
-<b>Prompt</b>&mdash;<i>Describe what this 386 assembly code does, and point out (without sample code) possible performance improvements while retaining compatibility with the 386 platform.</i>
-
-```x86asm [{headerless}]
-org 100h
-
-mov ebx,100000
-mov eax,00100100_00100100_00100100_00100100b
-fill:
-    mov ecx,((320*200)/4)
-    mov di,buffer
-    rep stosd
-    dec ebx
-    jnz fill
-ret
-
-align 4
-buffer rb (320*200)
-```
+> <i>"Describe what this 386 assembly code does, and point out (without sample code) possible performance improvements while retaining compatibility with the 386 platform."</i>
+>
+> ```x86asm [{headerless}]
+> org 100h
+> 
+> mov ebx,100000
+> mov eax,00100100_00100100_00100100_00100100b
+> fill:
+>     mov ecx,((320*200)/4)
+>     mov di,buffer
+>     rep stosd
+>     dec ebx
+>     jnz fill
+> ret
+> 
+> align 4
+> buffer rb (320*200)
+> ```
 
 > Human
-``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response}]
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 The code loops 100000 times, each loop filling a 320 by 200 pixel buffer with the value 36 (00100100 in binary; an 8-bit palette index). The pixel buffer represents video memory in VGA mode 13h (320 x 200, 256 colors). The code has been optimized for performance by packing four copies of the color value into EAX and blasting the data into the destination buffer with REP STOSD.
 
 I don't know of any further optimizations, but I assume they exist.
 ```
 
 > GPT-3.5 Default
-``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response}]
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 The given 386 assembly code initializes the buffer memory, represented by the label "buffer," with a value of 00100100_00100100_00100100_00100100b (repeated 320*200/4 times) using a loop.
 
 Here is a more detailed breakdown of the code:
@@ -60,7 +60,7 @@ To improve performance while retaining compatibility with the 386 platform, one 
 ```
 
 > GPT-3.5 Legacy
-``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response}]
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 This code is written in x86 assembly language for the Intel 386 architecture, and it performs a repetitive task of filling a buffer with a fixed 32-bit value.
 
 The code first sets the value 100000 in the EBX register, which will be used as a loop counter. Then, the value 00100100_00100100_00100100_00100100b (which is equivalent to the hexadecimal value 0x00100100) is loaded into the EAX register, which will be the source operand for the "stosd" (Store String Doubleword) instruction.
@@ -83,7 +83,7 @@ As for performance improvements, here are some suggestions that could be conside
 ```
 
 > GPT-4
-``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response}]
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 This 386 assembly code is a simple program that fills a 320x200-pixel screen buffer with a specific 32-bit pattern, and repeats this operation 100,000 times.
 
 Let's break down the code:
@@ -131,7 +131,7 @@ GPT-4 is the only model that figured out that the code deals with a pixel buffer
 
 ## Optimize it
 
-<b>Prompt</b>&mdash;<i>Implement the performance improvements [that you suggested for the input code].</i>
+> <i>"Implement the performance improvements [that you suggested for the input code]"</i>
 
 > GPT-3.5 Default
 ```x86asm [{inline-class:gpt-response}]
@@ -214,6 +214,8 @@ align 4
 buffer rb (320*200)
 ```
 
+GPT-4 was also asked not to implement plotting to video memory, which had been among its suggestions but wasn't relevant for this particular test case.
+
 <dokki-table headerless>
     <table>
         <tr>
@@ -221,29 +223,27 @@ buffer rb (320*200)
             <th>Performance (seconds to complete)</th>
         </tr>
         <tr>
+            <td>Baseline</td>
+            <td>3</td>
+        </tr>
+        <tr>
             <td>GPT-3.5 Default</td>
-            <td>Code doesn't compile</td>
+            <td class="bad">Code doesn't compile</td>
         </tr>
         <tr>
             <td>GPT-3.5 Legacy</td>
-            <td>Code doesn't compile</td>
+            <td class="bad">Code doesn't compile</td>
         </tr>
         <tr>
             <td>GPT-4</td>
             <td>8</td>
         </tr>
-        <tr>
-            <td>Original</td>
-            <td>3</td>
-        </tr>
     </table>
 </dokki-table>
 
-(GPT-4 was asked not to implement plotting to video memory, which had been among its suggestions but wasn't relevant for this particular test case.)
-
 ## Make it into JavaScript
 
-<b>Prompt</b>&mdash;<i>Convert [the original] 386 assembly code into JavaScript with a view to the resulting program achieving the maximum possible throughput for its task.</i>
+> <i>"Convert [the original] 386 assembly code into JavaScript with a view to the resulting program achieving the maximum possible throughput for its task."</i>
 
 > Human
 ```javascript [{inline-class:gpt-response}]
@@ -311,7 +311,7 @@ fillBuffer(buffer, PATTERN, 100000);
         </tr>
         <tr>
             <td>GPT-3.5 Legacy</td>
-            <td>Incorrect output</td>
+            <td class="bad">Incorrect output</td>
         </tr>
         <tr>
             <td>GPT-4</td>

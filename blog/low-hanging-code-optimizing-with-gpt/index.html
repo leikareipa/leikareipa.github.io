@@ -14,6 +14,11 @@
         <script type="module" src="/blog/capturing-dosboxs-frame-buffer-via-shared-memory/js/diff.js"></script>
 
         <style>
+            .gpt-response-text .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
             .x-diff {
                 display: block;
                 border: 1px solid var(--dokkiCSS-page-primary-line-color);
@@ -62,10 +67,11 @@
 <post-date date="29 March 2023"></post-date>
 <dokki-topic title="Low-hanging code optimizing with GPT">
 <p>By now everyone knows what GPT is, so let's jump straight to it.</p>
-<p>In this post, I'll feed ChatGPT – <i>GPT-3.5 Default</i> aka. the free one, <i>GPT-3.5 Legacy</i>, and <i>GPT-4</i> – some not-so-thoroughly-optimized but performance-critical JavaScript code (my own open-source work) and see whether the AI can help me optimize it without too much work on my part.</p>
+<p>In this post, I'll feed ChatGPT – <strong>GPT-3.5 Default</strong> aka. the free one, <strong>GPT-3.5 Legacy</strong>, and <strong>GPT-4</strong> – some not-so-thoroughly-optimized but performance-critical JavaScript code (my own open-source work) and see whether the AI can help me optimize it without too much work on my part.</p>
 <p>I won't delve into state-of-the-art prompt engineering here, I'll just use some basic prompting and see how it goes.</p>
 <dokki-subtopic title="Clamped UV coordinates">
-<p>Prompt—<i>Suggest ways to speed up this clamped UV coordinate calculation in a rasterizer:</i></p>
+<dokki-area inline-class="blockquote">
+<p><i>&quot;Suggest ways to speed up this clamped UV coordinate calculation in a rasterizer:&quot;</i></p>
 
                 <dokki-code syntax="javascript"headerless="true">
                     <template #code>
@@ -86,9 +92,11 @@ v *= textureMipLevel.height;
                     </template>
                 </dokki-code>
             
+</dokki-area>
 <h3>GPT-3.5 Default</h3>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-3.5 Default</template>
                     <template #code>
                         <pre>There are several ways to speed up the clamped UV coordinate calculation in a rasterizer:
 
@@ -124,7 +132,8 @@ v = (textureMipLevel.height * ((v &lt; 0)? 0 : (v &gt; upperLimit)? upperLimit :
 <p>It gave a 10% speedup in a typical rendering scenario.</p>
 <p>I asked GPT whether it could speed up that new ternary code. It had some concerns about readability and suggested this:</p>
 
-                <dokki-code syntax="javascript"headerless="true">
+
+                <dokki-code syntax="javascript"><template #caption>GPT-3.5 Default</template>
                     <template #code>
                         <pre>const upperLimit = 1 - Number.EPSILON;
 const width = textureMipLevel.width;
@@ -153,7 +162,8 @@ v *= height;
 <p>I wouldn't outright agree that this is more readable, but in any case the performance is slightly worse, which isn't a good tradeoff in a render loop.</p>
 <p>Going back to the ternary code, I asked GPT to reduce the number of comparisons in it without resorting to function calls. Here's what it offered:</p>
 
-                <dokki-code syntax="javascript"headerless="true">
+
+                <dokki-code syntax="javascript"><template #caption>GPT-3.5 Default</template>
                     <template #code>
                         <pre>// Negative UV coordinates flip the texture.
 const flipU = (u &lt; 0);
@@ -173,7 +183,8 @@ v *= textureMipLevel.height * (v &gt;= 0);
 <p>It's an interesting mutation, and at least superficially produces correct output, but runs quite a bit slower.</p>
 <p>I told GPT to ask me any questions that might help it do the job. Here's what it had on its mind:</p>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-3.5 Default</template>
                     <template #code>
                         <pre>What are the possible ranges of the input parameters u and v? Are they always within the range [0, 1]?
 
@@ -191,7 +202,8 @@ Are there any specific constraints on the output values of u and v? For example,
 <p>Answering some of them didn't improve the output in a significant way. GPT did at one point say that the ternary code was quite tight already, so we may have reached the limit here.</p>
 <p>While messing around with the prompts some more, I got the feeling that taking a more conversational approach resulted in better output – although still nothing faster than the ternary code. I'd first give GPT the code snippet and ask it to summarize it, then ask whether it had any questions about the code and whether the code seemed appropriate for the task, then have it suggest performance improvements, etc. The resulting code output looked cleaner; for example:</p>
 
-                <dokki-code syntax="javascript"headerless="true">
+
+                <dokki-code syntax="javascript"><template #caption>GPT-3.5 Default</template>
                     <template #code>
                         <pre>const upperLimit = (1 - Number.EPSILON);
 
@@ -212,7 +224,8 @@ v = textureMipLevel.height * v;
             
 <h3>GPT-3.5 Legacy</h3>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-3.5 Legacy</template>
                     <template #code>
                         <pre>Here are some ways to optimize the clamped UV coordinate calculation:
 
@@ -240,7 +253,8 @@ v *= textureMipLevel.height;
 <p>This time GPT went straight to offering a fast ternary version, but one that fails to correctly clamp negative input values to 0 like the original code does (for example, an input of -1.5 should map to 0 and not -0.5).</p>
 <p>I asked it whether it could reduce the number of comparisons in <a href="#optimized-ternary">the optimized ternary code</a>. It took a shot:</p>
 
-                <dokki-code syntax="javascript"headerless="true">
+
+                <dokki-code syntax="javascript"><template #caption>GPT-3.5 Legacy</template>
                     <template #code>
                         <pre>const upperLimit = (1 - Number.EPSILON);
 
@@ -256,7 +270,8 @@ v = textureMipLevel.height * v;
 <p>Fewer comparisons, but same problem of negative input not being clamped correctly.</p>
 <p>Asking GPT whether it had any questions for me to help it solve the problem produced this answer:</p>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-3.5 Legacy</template>
                     <template #code>
                         <pre>As an AI language model, I don't have personal experiences or emotions. However, in order to better optimize this code, it would be helpful to know more about the context in which it is being used. For example:
 
@@ -273,7 +288,8 @@ Answering these questions could provide more information about the problem and h
 <p>I attempted to explain how inputs are expected to map to outputs, but the AI wasn't able to produce code that would've both done it correctly and performed better than the original ternary code.</p>
 <h3>GPT-4</h3>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>To speed up the clamped UV coordinate calculation in your rasterizer, consider the following optimizations:
 
@@ -305,7 +321,8 @@ These optimizations should help to speed up the clamped UV coordinate calculatio
             
 <p>The answer sounds authoritative, the code is comparable in performance to <a href="#optimized-ternary">the previous optimized ternary code</a>, and the output clamping is technically correct. The use of bitwise | breaks the output, but telling GPT that both the input and output values are floating-point gets it to patch it:</p>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>My apologies for the confusion. In that case, let's revert the use of bitwise operators and modify the code as follows:
 
@@ -330,7 +347,8 @@ The above code removes the Math.sign() usage and simplifies the process of clamp
 <p>Seems to be working, has good performance, and there was no faffing about in getting the AI to produce it (it was told nothing about the input format at first, so we can overlook the bitwise operation). I prefer the earlier hand-written ternary version for clarity, but still.</p>
 <p>As before, I asked GPT to attempt to reduce the number of comparisons in the original optimized ternary code, underlining that the code is performance-critical. Here's the response:</p>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>To reduce the number of comparisons in this performance-critical code, you can use the Math.min() and Math.max() functions. Here's a revised version of the code with fewer comparisons:
 
@@ -350,9 +368,12 @@ This version of the code reduces the number of comparisons and should be more ef
             
 <p>Although the code now uses function calls, it performs similarly to the original code; and again deals correctly with negative input values.</p>
 </dokki-subtopic><dokki-subtopic title="Rasterization loop">
-<p>Prompt—<i>Suggest high-level changes to this JavaScript rasterization loop to improve its performance:</i></p>
+<dokki-area inline-class="blockquote">
+<p><i>&quot;Suggest high-level changes to this JavaScript rasterization loop to improve its performance:&quot;</i></p>
+</dokki-area>
 
-                <dokki-code syntax="javascript">
+
+                <dokki-code syntax="javascript"><template #caption>Input code</template>
                     <template #code>
                         <pre>for (let y = ngonStartY; y &lt; ngonEndY; y++)
 {
@@ -504,7 +525,8 @@ This version of the code reduces the number of comparisons and should be more ef
             
 <h3>GPT-3.5 Default</h3>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-3.5 Default</template>
                     <template #code>
                         <pre>There are a few ways to improve the performance of this rasterization loop. Here are some high-level changes that could be made:
 
@@ -528,7 +550,8 @@ This version of the code reduces the number of comparisons and should be more ef
 <p>Overall, the suggestions are fairly generic best-practice stuff, valid in their own right but not super relevant to this particular code. The output would probably have been more relevant if I'd provided more background, but the AI was also struggling to keep the original code in its memory, so I didn't push it.</p>
 <h3>GPT-3.5 Legacy</h3>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-3.5 Legacy</template>
                     <template #code>
                         <pre>Here are a few suggestions that could improve the performance of this JavaScript rasterization loop:
 
@@ -558,7 +581,8 @@ This version of the code reduces the number of comparisons and should be more ef
 <p>The rest of the suggestions were again fairly general best-practice stuff and not highly relevant to the input code. Since the suggestion to replace <em>for</em> with <em>while</em> didn't come up, it might've been beneficial to ask GPT to list some more suggestions, or to list the most relevant ones first.</p>
 <h3>GPT-4</h3>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>Here are some high-level suggestions to improve the performance of the given rasterization loop:
 
@@ -576,7 +600,8 @@ Move texture coordinate calculations and related switch cases out of the loop, w
             
 <p>Still not that useful, as the suggestions generally require adding function calls, which tanks performance. For example, here's GPT's implementation for the second suggestion:</p>
 
-                <dokki-code syntax="javascript"headerless="true">
+
+                <dokki-code syntax="javascript"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>function applyClampWrapping() {
     // ...
@@ -626,7 +651,8 @@ for (let y = ngonStartY; y &lt; ngonEndY; y++) {
 <p>Breaking the functionality into separate functions is better for readability etc., but it also runs about 40% slower compared to the original code.</p>
 <p>Asking the AI to suggest something without needing additional function calls resulted in this:</p>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>To improve the performance of this JavaScript rasterization loop without adding function calls, we can do the following high-level changes:
 
@@ -644,7 +670,8 @@ Replace division, modulo, and rounding operations with bitwise operations when p
             
 <p>These seem to me more in the realm of micro-optimizations than high-level refactoring. In any case, I asked GPT to implement the second suggestion, which got it to admit a secret:</p>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>The original code doesn't have any array lengths used directly in the loop. However, I'll provide an example of caching array lengths in a generic loop to demonstrate the concept ...
 </pre>
@@ -653,9 +680,12 @@ Replace division, modulo, and rounding operations with bitwise operations when p
             
 <p>In other words, it's a suggestion not relevant to the input code, but could be relevant in educating the reader. (Caching array lengths in this case meant assigning the value of <em>Array.length</em> to a variable and using the variable in the loop comparator. Though this kind of thing could improve performance, I remember seeing mixed results when I've tried it in the past.)</p>
 </dokki-subtopic><dokki-subtopic title="BVH creation">
-<p>Prompt—<i>This TypeScript code creates a bounding volume hierarchy from a mesh of triangles, for ray tracing. Suggest some ways to speed up the creation of the BVH, then some ways to improve the quality of the BVH for better render performance.</i></p>
+<dokki-area inline-class="blockquote">
+<p><i>&quot;This TypeScript code creates a bounding volume hierarchy from a mesh of triangles, for ray tracing. Suggest some ways to speed up the creation of the BVH, then some ways to improve the quality of the BVH for better render performance.&quot;</i></p>
+</dokki-area>
 
-                <dokki-code syntax="typescript">
+
+                <dokki-code syntax="typescript"><template #caption>Input code</template>
                     <template #code>
                         <pre>// An AABB encompassing the entire scene and from which further splits are made.
 const baseAABB: AABB = Wray.aabb(scene, false);
@@ -755,7 +785,8 @@ const minNumTris: number = 3;
             
 <h3>GPT-3.5 Legacy</h3>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-3.5 Legacy</template>
                     <template #code>
                         <pre>To speed up the creation of the BVH:
 
@@ -779,7 +810,8 @@ To improve the quality of the BVH for better render performance:
 <p>Parallelizing the construction seems like a good idea if it's technically possible with a BVH, though I won't be trying it here. Good point about the reusability of some of the buffers as well.</p>
 <p>I asked it to show an example of one of those smarter splitting strategies. It said:</p>
 
-                <dokki-code syntax="typescript"headerless="true">
+
+                <dokki-code syntax="typescript"><template #caption>GPT-3.5 Legacy</template>
                     <template #code>
                         <pre>// A smarter splitting strategy could be to choose the split axis and position
 // that maximizes the difference in the number of triangles in each of the
@@ -849,7 +881,8 @@ split(parentAABB.mutable.right, bestRightMesh, depth + 1);
 <p>Besides the <em>leftMin</em> and <em>leftMax</em> variables being unused and the code requiring additional <em>@ts-ignore</em> in a few places to allow &quot;[splitAxis]&quot; indexing without TypeScript build errors, BVH construction time is more or less unchanged and render performance is about 100 times worse.</p>
 <p>I also asked for an example of a more sophisticated cost function:</p>
 
-                <dokki-code syntax="typescript"headerless="true">
+
+                <dokki-code syntax="typescript"><template #caption>GPT-3.5 Legacy</template>
                     <template #code>
                         <pre>// A more sophisticated cost function could take into account factors such as the
 // number of triangles, the volume of the AABB, and the distribution of triangles
@@ -872,7 +905,8 @@ const costOfSplit: number = leftCost + rightCost;
 <p>At least when using AABB volume instead of surface area, this code reduced render performance by about 10×. In any case, the original code already uses SAH as far as I know, which GPT doesn't seem to agree with.</p>
 <h3>GPT-4</h3>
 
-                <dokki-code headerless="true"no-line-numbers="true"word-wrap="true">
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>To speed up the creation of the BVH:
 
@@ -902,7 +936,8 @@ To improve the quality of the BVH for better render performance:
 <p>These suggestions appear to be more specific to the input code compared to GPT-3.5's response, and overall have an air of usefulness by comparison. That said, like GPT-3.5, GPT-4 doesn't think the original code uses SAH – this could be an AI parallel to an in-code comment (&quot;Propose random split positions ...&quot;) being more confusing than useful.</p>
 <p>I asked the AI for an example of a more advanced splitting strategy:</p>
 
-                <dokki-code syntax="typescript"headerless="true">
+
+                <dokki-code syntax="typescript"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>// The Surface Area Heuristic (SAH) calculates the cost of splitting an AABB at
 // a certain position by considering the surface area of each child AABB. This
@@ -961,10 +996,11 @@ function findBestSplit(mesh: Triangle[], parentAABB: AABB): { leftMesh: Triangle
                     </template>
                 </dokki-code>
             
-<p>There are a few new, unimplemented functions, so I won't take the time right now to test it out. But I encourage you to give it a go (<a href="https://github.com/leikareipa/wray">here's the full project</a> that the input code comes from), and send me feedback if you find an amazing performance boost. I have some doubts though.</p>
+<p>There are a few new, unimplemented functions, so I won't take the time right now to test it out.</p>
 <p>For completeness, I asked GPT for an implementation of spatial splits as well – I won't test it right now, but you can have a gander:</p>
 
-                <dokki-code syntax="typescript"headerless="true">
+
+                <dokki-code syntax="typescript"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>// Spatial splits divide the space into regions that may not necessarily be
 // occupied by triangles. This can result in a better BVH structure and lower

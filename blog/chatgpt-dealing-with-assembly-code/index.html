@@ -13,6 +13,11 @@
         <script type="module" src="../+assets/post-date.js"></script>
 
         <style>
+            .gpt-response-text .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
             .gpt-response.dokki-code .caption > .type > .text {
                 display: none;
             }
@@ -33,6 +38,9 @@
             .gpt-response.dokki-code .caption > .label {
                 margin: 0;
                 display: inline-block;
+            }
+            td.bad {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color);
             }
         </style>
     </head>
@@ -59,7 +67,8 @@
 <p>About a year ago, in the time before ChatGPT, I wrote a <a href="/blog/comparing-pixel-plotting-performance-in-javascript-and-386-assembly/">blog post comparing the pixel-plotting performance of 386 assembly and JavaScript</a>.</p>
 <p>This time, let's look at whether ChatGPT – with GPT-3.5 and GPT-4 – can improve on the performance of the code from that post.</p>
 <dokki-subtopic title="Evaluate this assembly code">
-<p><b>Prompt</b>—<i>Describe what this 386 assembly code does, and point out (without sample code) possible performance improvements while retaining compatibility with the 386 platform.</i></p>
+<dokki-area inline-class="blockquote">
+<p><i>&quot;Describe what this 386 assembly code does, and point out (without sample code) possible performance improvements while retaining compatibility with the 386 platform.&quot;</i></p>
 
                 <dokki-code syntax="x86asm"headerless="true">
                     <template #code>
@@ -81,9 +90,10 @@ buffer rb (320*200)
                     </template>
                 </dokki-code>
             
+</dokki-area>
 
 
-                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response"><template #caption>Human</template>
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>Human</template>
                     <template #code>
                         <pre>The code loops 100000 times, each loop filling a 320 by 200 pixel buffer with the value 36 (00100100 in binary; an 8-bit palette index). The pixel buffer represents video memory in VGA mode 13h (320 x 200, 256 colors). The code has been optimized for performance by packing four copies of the color value into EAX and blasting the data into the destination buffer with REP STOSD.
 
@@ -94,7 +104,7 @@ I don't know of any further optimizations, but I assume they exist.
             
 
 
-                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response"><template #caption>GPT-3.5 Default</template>
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-3.5 Default</template>
                     <template #code>
                         <pre>The given 386 assembly code initializes the buffer memory, represented by the label &quot;buffer,&quot; with a value of 00100100_00100100_00100100_00100100b (repeated 320*200/4 times) using a loop.
 
@@ -123,7 +133,7 @@ To improve performance while retaining compatibility with the 386 platform, one 
             
 
 
-                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response"><template #caption>GPT-3.5 Legacy</template>
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-3.5 Legacy</template>
                     <template #code>
                         <pre>This code is written in x86 assembly language for the Intel 386 architecture, and it performs a repetitive task of filling a buffer with a fixed 32-bit value.
 
@@ -150,7 +160,7 @@ As for performance improvements, here are some suggestions that could be conside
             
 
 
-                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response"><template #caption>GPT-4</template>
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
                     <template #code>
                         <pre>This 386 assembly code is a simple program that fills a 320x200-pixel screen buffer with a specific 32-bit pattern, and repeats this operation 100,000 times.
 
@@ -197,7 +207,9 @@ Remember that these suggestions are specific to retaining compatibility with the
 <p>Legacy's explanation is a bit less superficial than Default's, but its suggestions for optimization are about as unhelpful.</p>
 <p>GPT-4 is the only model that figured out that the code deals with a pixel buffer. Its claim that a DWORD is 6 bytes is a bit odd though. I don't think its optimization suggestions are much better than the other two models', but it knows not to suggest features not available on the 386 platform.</p>
 </dokki-subtopic><dokki-subtopic title="Optimize it">
-<p><b>Prompt</b>—<i>Implement the performance improvements [that you suggested for the input code].</i></p>
+<dokki-area inline-class="blockquote">
+<p><i>&quot;Implement the performance improvements [that you suggested for the input code]&quot;</i></p>
+</dokki-area>
 
 
                 <dokki-code syntax="x86asm"inline-class="gpt-response"><template #caption>GPT-3.5 Default</template>
@@ -291,6 +303,7 @@ buffer rb (320*200)
                     </template>
                 </dokki-code>
             
+<p>GPT-4 was also asked not to implement plotting to video memory, which had been among its suggestions but wasn't relevant for this particular test case.</p>
 <dokki-table headerless>
     <table>
         <tr>
@@ -298,26 +311,27 @@ buffer rb (320*200)
             <th>Performance (seconds to complete)</th>
         </tr>
         <tr>
+            <td>Baseline</td>
+            <td>3</td>
+        </tr>
+        <tr>
             <td>GPT-3.5 Default</td>
-            <td>Code doesn't compile</td>
+            <td class="bad">Code doesn't compile</td>
         </tr>
         <tr>
             <td>GPT-3.5 Legacy</td>
-            <td>Code doesn't compile</td>
+            <td class="bad">Code doesn't compile</td>
         </tr>
         <tr>
             <td>GPT-4</td>
             <td>8</td>
         </tr>
-        <tr>
-            <td>Original</td>
-            <td>3</td>
-        </tr>
     </table>
 </dokki-table>
-<p>(GPT-4 was asked not to implement plotting to video memory, which had been among its suggestions but wasn't relevant for this particular test case.)</p>
 </dokki-subtopic><dokki-subtopic title="Make it into JavaScript">
-<p><b>Prompt</b>—<i>Convert [the original] 386 assembly code into JavaScript with a view to the resulting program achieving the maximum possible throughput for its task.</i></p>
+<dokki-area inline-class="blockquote">
+<p><i>&quot;Convert [the original] 386 assembly code into JavaScript with a view to the resulting program achieving the maximum possible throughput for its task.&quot;</i></p>
+</dokki-area>
 
 
                 <dokki-code syntax="javascript"inline-class="gpt-response"><template #caption>Human</template>
@@ -400,7 +414,7 @@ fillBuffer(buffer, PATTERN, 100000);
         </tr>
         <tr>
             <td>GPT-3.5 Legacy</td>
-            <td>Incorrect output</td>
+            <td class="bad">Incorrect output</td>
         </tr>
         <tr>
             <td>GPT-4</td>

@@ -13,6 +13,11 @@
         <script type="module" src="../+assets/post-date.js"></script>
 
         <style>
+            .gpt-response-text .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
             .gpt-response.dokki-code .caption > .type > .text {
                 display: none;
             }
@@ -33,6 +38,9 @@
             .gpt-response.dokki-code .caption > .label {
                 margin: 0;
                 display: inline-block;
+            }
+            td.bad {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color);
             }
         </style>
     </head>

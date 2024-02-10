@@ -4,34 +4,34 @@
 
 By now everyone knows what GPT is, so let's jump straight to it.
 
-In this post, I'll feed ChatGPT &ndash; <i>GPT-3.5 Default</i> aka. the free one, <i>GPT-3.5 Legacy</i>, and <i>GPT-4</i> &ndash; some not-so-thoroughly-optimized but performance-critical JavaScript code (my own open-source work) and see whether the AI can help me optimize it without too much work on my part.
+In this post, I'll feed ChatGPT &ndash; **GPT-3.5 Default** aka. the free one, **GPT-3.5 Legacy**, and **GPT-4** &ndash; some not-so-thoroughly-optimized but performance-critical JavaScript code (my own open-source work) and see whether the AI can help me optimize it without too much work on my part.
 
 I won't delve into state-of-the-art prompt engineering here, I'll just use some basic prompting and see how it goes.
 
 ## Clamped UV coordinates
 
-Prompt&mdash;<i>Suggest ways to speed up this clamped UV coordinate calculation in a rasterizer:</i>
-
-```javascript [{headerless}]
-const signU = Math.sign(u);
-const signV = Math.sign(v);
-const upperLimit = (1 - Number.EPSILON);
-
-u = Math.max(0, Math.min(Math.abs(u), upperLimit));
-v = Math.max(0, Math.min(Math.abs(v), upperLimit));
-
-// Negative UV coordinates flip the texture.
-if (signU === -1) u = (upperLimit - u);
-if (signV === -1) v = (upperLimit - v);
-
-u *= textureMipLevel.width;
-v *= textureMipLevel.height;
-```
+> <i>"Suggest ways to speed up this clamped UV coordinate calculation in a rasterizer:"</i>
+>
+> ```javascript [{headerless}]
+> const signU = Math.sign(u);
+> const signV = Math.sign(v);
+> const upperLimit = (1 - Number.EPSILON);
+> 
+> u = Math.max(0, Math.min(Math.abs(u), upperLimit));
+> v = Math.max(0, Math.min(Math.abs(v), upperLimit));
+> 
+> // Negative UV coordinates flip the texture.
+> if (signU === -1) u = (upperLimit - u);
+> if (signV === -1) v = (upperLimit - v);
+> 
+> u *= textureMipLevel.width;
+> v *= textureMipLevel.height;
+> ```
 
 ### GPT-3.5 Default
 
-
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-3.5 Default
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 There are several ways to speed up the clamped UV coordinate calculation in a rasterizer:
 
 1. Use precomputed values: If you know the upper and lower bounds of your texture coordinates, you can precompute the scaling factor needed to transform them into pixel coordinates. This can save time in the runtime calculation of the clamped UV coordinates.
@@ -64,7 +64,8 @@ It gave a 10% speedup in a typical rendering scenario.
 
 I asked GPT whether it could speed up that new ternary code. It had some concerns about readability and suggested this: 
 
-```javascript [{headerless}]
+> GPT-3.5 Default
+```javascript
 const upperLimit = 1 - Number.EPSILON;
 const width = textureMipLevel.width;
 const height = textureMipLevel.height;
@@ -91,7 +92,8 @@ I wouldn't outright agree that this is more readable, but in any case the perfor
 
 Going back to the ternary code, I asked GPT to reduce the number of comparisons in it without resorting to function calls. Here's what it offered:
 
-```javascript [{headerless}]
+> GPT-3.5 Default
+```javascript
 // Negative UV coordinates flip the texture.
 const flipU = (u < 0);
 const flipV = (v < 0);
@@ -109,7 +111,8 @@ It's an interesting mutation, and at least superficially produces correct output
 
 I told GPT to ask me any questions that might help it do the job. Here's what it had on its mind:
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-3.5 Default
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 What are the possible ranges of the input parameters u and v? Are they always within the range [0, 1]?
 
 What is the context or purpose of this code? Is it part of a larger function or program, and how is it being used?
@@ -125,7 +128,8 @@ Answering some of them didn't improve the output in a significant way. GPT did a
 
 While messing around with the prompts some more, I got the feeling that taking a more conversational approach resulted in better output &ndash; although still nothing faster than the ternary code. I'd first give GPT the code snippet and ask it to summarize it, then ask whether it had any questions about the code and whether the code seemed appropriate for the task, then have it suggest performance improvements, etc. The resulting code output looked cleaner; for example:
 
-```javascript [{headerless}]
+> GPT-3.5 Default
+```javascript
 const upperLimit = (1 - Number.EPSILON);
 
 // Negative UV coordinates flip the texture.
@@ -143,7 +147,8 @@ v = textureMipLevel.height * v;
 
 ### GPT-3.5 Legacy
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-3.5 Legacy
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 Here are some ways to optimize the clamped UV coordinate calculation:
 
 1. Precompute values: You can precompute the value of upperLimit and 1 - Number.EPSILON outside of the function and store it as a constant, so that it does not have to be recomputed every time the function is called.
@@ -169,7 +174,8 @@ This time GPT went straight to offering a fast ternary version, but one that fai
 
 I asked it whether it could reduce the number of comparisons in <a href="#optimized-ternary">the optimized ternary code</a>. It took a shot:
 
-```javascript [{headerless}]
+> GPT-3.5 Legacy
+```javascript
 const upperLimit = (1 - Number.EPSILON);
 
 u = (u < 0) ? (upperLimit + u) : ((u > upperLimit) ? upperLimit : u);
@@ -183,7 +189,8 @@ Fewer comparisons, but same problem of negative input not being clamped correctl
 
 Asking GPT whether it had any questions for me to help it solve the problem produced this answer:
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-3.5 Legacy
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 As an AI language model, I don't have personal experiences or emotions. However, in order to better optimize this code, it would be helpful to know more about the context in which it is being used. For example:
 
 - What is the expected input range for u and v?
@@ -198,7 +205,8 @@ I attempted to explain how inputs are expected to map to outputs, but the AI was
 
 ### GPT-4
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-4
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 To speed up the clamped UV coordinate calculation in your rasterizer, consider the following optimizations:
 
 1. Remove the usage of Math.sign():
@@ -227,7 +235,8 @@ These optimizations should help to speed up the clamped UV coordinate calculatio
 
 The answer sounds authoritative, the code is comparable in performance to <a href="#optimized-ternary">the previous optimized ternary code</a>, and the output clamping is technically correct. The use of bitwise | breaks the output, but telling GPT that both the input and output values are floating-point gets it to patch it:
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-4
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 My apologies for the confusion. In that case, let's revert the use of bitwise operators and modify the code as follows:
 
 const upperLimit = (1 - Number.EPSILON);
@@ -250,7 +259,8 @@ Seems to be working, has good performance, and there was no faffing about in get
 
 As before, I asked GPT to attempt to reduce the number of comparisons in the original optimized ternary code, underlining that the code is performance-critical. Here's the response:
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-4
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 To reduce the number of comparisons in this performance-critical code, you can use the Math.min() and Math.max() functions. Here's a revised version of the code with fewer comparisons:
 
 const upperLimit = (1 - Number.EPSILON);
@@ -269,8 +279,9 @@ Although the code now uses function calls, it performs similarly to the original
 
 ## Rasterization loop
 
-Prompt&mdash;<i>Suggest high-level changes to this JavaScript rasterization loop to improve its performance:</i>
+> <i>"Suggest high-level changes to this JavaScript rasterization loop to improve its performance:"</i>
 
+> Input code
 ```javascript
 for (let y = ngonStartY; y < ngonEndY; y++)
 {
@@ -420,7 +431,8 @@ for (let y = ngonStartY; y < ngonEndY; y++)
 
 ### GPT-3.5 Default
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-3.5 Default
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 There are a few ways to improve the performance of this rasterization loop. Here are some high-level changes that could be made:
 
 1. Use TypedArrays: Instead of using regular arrays for the pixelBuffer, depthBuffer, and pixelBufferClamped8, use TypedArrays like Uint32Array, Float32Array, and Uint8ClampedArray. TypedArrays are more performant than regular arrays, especially for large arrays.
@@ -444,7 +456,8 @@ Overall, the suggestions are fairly generic best-practice stuff, valid in their 
 
 ### GPT-3.5 Legacy
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-3.5 Legacy
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 Here are a few suggestions that could improve the performance of this JavaScript rasterization loop:
 
 1. Use integer-based computation: The code performs floating-point computation, which is slower than integer computation. Whenever possible, use integer-based computation. For example, you could round values to the nearest integer before use.
@@ -476,7 +489,8 @@ The rest of the suggestions were again fairly general best-practice stuff and no
 
 ### GPT-4
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-4
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 Here are some high-level suggestions to improve the performance of the given rasterization loop:
 
 1. Cache frequently used values:
@@ -491,7 +505,8 @@ Move texture coordinate calculations and related switch cases out of the loop, w
 
 Still not that useful, as the suggestions generally require adding function calls, which tanks performance. For example, here's GPT's implementation for the second suggestion:
 
-```javascript [{headerless}]
+> GPT-4
+```javascript
 function applyClampWrapping() {
     // ...
     // Compute texture UV coordinates.
@@ -539,7 +554,8 @@ Breaking the functionality into separate functions is better for readability etc
 
 Asking the AI to suggest something without needing additional function calls resulted in this:
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-4
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 To improve the performance of this JavaScript rasterization loop without adding function calls, we can do the following high-level changes:
 
 1. Hoist constant expressions out of the loop:
@@ -554,8 +570,8 @@ Replace division, modulo, and rounding operations with bitwise operations when p
 
 These seem to me more in the realm of micro-optimizations than high-level refactoring. In any case, I asked GPT to implement the second suggestion, which got it to admit a secret:
 
-
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-4
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 The original code doesn't have any array lengths used directly in the loop. However, I'll provide an example of caching array lengths in a generic loop to demonstrate the concept ...
 ```
 
@@ -563,8 +579,9 @@ In other words, it's a suggestion not relevant to the input code, but could be r
 
 ## BVH creation
 
-Prompt&mdash;<i>This TypeScript code creates a bounding volume hierarchy from a mesh of triangles, for ray tracing. Suggest some ways to speed up the creation of the BVH, then some ways to improve the quality of the BVH for better render performance.</i>
+> <i>"This TypeScript code creates a bounding volume hierarchy from a mesh of triangles, for ray tracing. Suggest some ways to speed up the creation of the BVH, then some ways to improve the quality of the BVH for better render performance."</i>
 
+> Input code
 ```typescript
 // An AABB encompassing the entire scene and from which further splits are made.
 const baseAABB: AABB = Wray.aabb(scene, false);
@@ -662,7 +679,8 @@ const minNumTris: number = 3;
 
 ### GPT-3.5 Legacy
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-3.5 Legacy
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 To speed up the creation of the BVH:
 
 1. Use a smarter splitting strategy: Instead of randomly choosing a split axis and split position, you could use a more sophisticated heuristic to choose the split axis and position that minimizes the cost of intersecting triangles.
@@ -684,7 +702,8 @@ Parallelizing the construction seems like a good idea if it's technically possib
 
 I asked it to show an example of one of those smarter splitting strategies. It said:
 
-```typescript [{headerless}]
+> GPT-3.5 Legacy
+```typescript
 // A smarter splitting strategy could be to choose the split axis and position
 // that maximizes the difference in the number of triangles in each of the
 // resulting child nodes. This would ensure that the child nodes have a more
@@ -752,7 +771,8 @@ Besides the *leftMin* and *leftMax* variables being unused and the code requirin
 
 I also asked for an example of a more sophisticated cost function:
 
-```typescript [{headerless}]
+> GPT-3.5 Legacy
+```typescript
 // A more sophisticated cost function could take into account factors such as the
 // number of triangles, the volume of the AABB, and the distribution of triangles
 // within the AABB. For example, you could use the SAH (Surface Area Heuristics)
@@ -773,7 +793,8 @@ At least when using AABB volume instead of surface area, this code reduced rende
 
 ### GPT-4
 
-``` [{word-wrap}{no-line-numbers}{headerless}]
+> GPT-4
+``` [{word-wrap}{no-line-numbers}{inline-class:gpt-response-text}]
 To speed up the creation of the BVH:
 
 1. Use a surface area heuristic (SAH) instead of a random split position. The SAH calculates the cost of splitting the AABB by considering the surface area of each child AABB, leading to more optimal splits.
@@ -801,7 +822,8 @@ These suggestions appear to be more specific to the input code compared to GPT-3
 
 I asked the AI for an example of a more advanced splitting strategy:
 
-```typescript [{headerless}]
+> GPT-4
+```typescript
 // The Surface Area Heuristic (SAH) calculates the cost of splitting an AABB at
 // a certain position by considering the surface area of each child AABB. This
 // approach tends to produce more optimal splits compared to random splits.
@@ -857,11 +879,12 @@ function findBestSplit(mesh: Triangle[], parentAABB: AABB): { leftMesh: Triangle
 // input AABBs.
 ```
 
-There are a few new, unimplemented functions, so I won't take the time right now to test it out. But I encourage you to give it a go ([here's the full project](https://github.com/leikareipa/wray) that the input code comes from), and send me feedback if you find an amazing performance boost. I have some doubts though.
+There are a few new, unimplemented functions, so I won't take the time right now to test it out.
 
 For completeness, I asked GPT for an implementation of spatial splits as well &ndash; I won't test it right now, but you can have a gander:
 
-```typescript [{headerless}]
+> GPT-4
+```typescript
 // Spatial splits divide the space into regions that may not necessarily be
 // occupied by triangles. This can result in a better BVH structure and lower
 // traversal costs. Here's an example of a simple spatial split implementation:

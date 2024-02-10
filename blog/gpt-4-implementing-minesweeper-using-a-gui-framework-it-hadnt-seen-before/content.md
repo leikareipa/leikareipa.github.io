@@ -8,9 +8,9 @@ The w95 framework isn't currently public nor would GPT-4 have prior knowledge ab
 
 This blog post outlines the steps the AI took in replicating a fair bit of the functionality of Windows Minesweeper as a w95 app. I didn't bother trying to get it to fully replicate the game, as I think what it did here is indication enough that it could've done most of the rest as well, if not all.
 
-You can test the app here: [leikareipa.github.io/gpt4-w95-minesweeper](https://leikareipa.github.io/gpt4-w95-minesweeper) (again, keeping in mind that it's intended as a prototype rather than a finished version).
+## Warming up
 
-<b>Prompt</b>&mdash;<i>Here's an example of a Windows 95-like GUI window built using a GUI framework called w95. Study this example and generate another window using the framework. The window should be like a typical Windows 95 application.</i>
+> <i>"Here's an example of a Windows 95-like GUI window built using a GUI framework called w95. Study this example and generate another window using the framework. The window should be like a typical Windows 95 application."</i>
 
 > Input code
 ```javascript
@@ -367,7 +367,9 @@ w95.widget.window({
 
 For clarity, I've omitted a screenshot of the window GPT-4 chose to create.
 
-<b>Prompt</b>&mdash;<i>Generate the Windows 95 Minesweeper game using the API.</i>
+## First go at Minesweeper
+
+> <i>Generate the Windows 95 Minesweeper game using the API.</i>
 
 > GPT-4
 ```javascript [{inline-class:gpt-response}]
@@ -482,13 +484,17 @@ w95.widget.window({
 // Implement the Minesweeper game board elements and logic here.
 ```
 
+Plugging GPT-4's code into w95 gave this output:
+
 ![{image}{headerless}{no-border-rounding}](./1.png)
 
 It's striking to me that the AI knew the layout of Minesweeper so well. I guess it's a massively well-known program, but still.
 
 The menu bar entries are correct, the two score counters are where they should be, the smiley face button is reproduced and centered, and the window title has been set properly as well &ndash; all using an API the AI hadn't seen before. The vertical placement of the counters and smiley button is off by one pixel, and the background frame extends too far past the bottom of the window, but these are minor issues.
 
-<b>Prompt</b>&mdash;<i>Could you show a full implementation of the game board frame widget?</i>
+## Implementing game logic
+
+> <i>"Could you show a full implementation of the game board frame widget?"</i>
 
 > GPT-4
 ```javascript [{inline-class:gpt-response}]
@@ -591,7 +597,7 @@ w95.widget.frame({
 
 The AI added the game board buttons, correctly using the *onClick* callback function to interactively reveal the contents when the button is pressed (I've pressed some of the buttons in the above picture).
 
-<b>Prompt</b>&mdash;<i>Can you add logic for revealing the relevant surrounding empty cells when  an empty cell is clicked?</i>
+> <i>"Can you add logic for revealing the relevant surrounding empty cells when  an empty cell is clicked?"</i>
 
 > GPT-4
 ```javascript [{inline-class:gpt-response}]
@@ -671,7 +677,9 @@ w95.widget.frame({
 
 The AI implemented depth-first search to reveal adjacent empty cells (marked here with "#"). I don't know whether this is a good approach, but it seems to work.
 
-<b>Prompt</b>&mdash;<i>Thanks, looks good. The initial values for width.now and height.now determine the size of the Minesweeper window. Could you give me their values so that the window is properly sized to contain the board and other GUI elements?</i>
+## Cleaning up
+
+> <i>"Thanks, looks good. The initial values for width.now and height.now determine the size of the Minesweeper window. Could you give me their values so that the window is properly sized to contain the board and other GUI elements?"</i>
 
 > GPT-4
 ```javascript [{inline-class:gpt-response}]
@@ -695,5 +703,3 @@ GPT-4 shows it has a working understading of what elements contribute to the dim
 I made some tweaks on my own to the way the app looks:
 
 ![{image}{headerless}{no-border-rounding}](./5.png)
-
-As I noted in the introduction, you can test the app here: [leikareipa.github.io/gpt4-w95-minesweeper](https://leikareipa.github.io/gpt4-w95-minesweeper). It's not fully finished, but you get the idea.
