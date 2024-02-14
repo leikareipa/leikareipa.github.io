@@ -2071,7 +2071,7 @@ __webpack_require__.r(__webpack_exports__);
 // THE LICENSE OF THE SOURCE CODE.
 const fixedsys9Regular = {
 	lineHeight: 15,
-	spaceWidth: 9,
+	spaceWidth: 7,
 	"100": Rngon.texture({
 		width:7,
 		height:15,

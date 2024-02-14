@@ -256,7 +256,10 @@ __webpack_require__.r(__webpack_exports__);
  * 
  */
 
-function desktopApp(icons = []) {
+function desktopApp({
+    icons = [],
+    showWatermark = true,
+} = {}) {
     w95.debug?.assert(Array.isArray(icons));
 
     return {
@@ -325,7 +328,7 @@ function desktopApp(icons = []) {
                                         },
                                     }),
                                 ],
-                            }),
+                            }, {hideIf: !showWatermark}),
                         ],
                         onMouseDown({widget}) {
                             w95.$recurseDescendantWidgets(widget, (w)=>{w.Message?.blur?.()});
@@ -1033,8 +1036,14 @@ function render_loop(timestamp, timeDeltaMs, numTicks = 0) {
 }
 
 function enact_cursor(cursor) {
+    const scaledCursor = scaledCursorImages[cursor.dataUrl];
+
+    if (!scaledCursor) {
+        return;
+    }
+
     document.body.style.cursor = `url(
-        ${scaledCursorImages[cursor.dataUrl]})
+        ${scaledCursor})
         ${cursor.xOffset * w95.shell.display.scale}
         ${cursor.yOffset * w95.shell.display.scale},
         auto
@@ -2632,8 +2641,6 @@ const windowManager = {
                     });
                 }
                 else {
-                    let windowWasBlurred = false;
-                    
                     switch (event.type) {
                         case "mousedown": {
                             if (!intersectedWidgets.some(w=>w._type === "menuItem")) {
@@ -2652,7 +2659,6 @@ const windowManager = {
                             focusedWidget?.Message.blur();
 
                             if (intersectedWindow?._type === "window") {
-                                windowWasBlurred = intersectedWindow.isBlurred;
                                 w95.windowManager.raise_window(intersectedWindow);
                             }
                             else if (intersectedWindow?._type === "dialog") {
@@ -2673,7 +2679,7 @@ const windowManager = {
                     // non-blurred.
                     if (!intersectedWindow?.isBlurred) {
                         const lowestVisibleZ = Math.min(...intersectedWidgets.filter(w=>!w._hideMesh).map(w=>w._zIndex));
-                        const cursoredWidget = intersectedWidgets.reverse().find(w=>(w.cursor && (w._zIndex <= lowestVisibleZ)));
+                        const cursoredWidget = intersectedWidgets.reverse().find(w=>(w.cursor && !w._disabled && (w._zIndex <= lowestVisibleZ)));
 
                         if (cursoredWidget) {
                             activeCursor = cursoredWidget.cursor;
@@ -2695,7 +2701,7 @@ const windowManager = {
                         }
                     }
 
-                    w95.shell.cursor = ((windowWasBlurred || w95.windowManager.isPopupMenuActive)? w95.cursor.arrow : activeCursor);
+                    w95.shell.cursor = (w95.windowManager.isPopupMenuActive? w95.cursor.arrow : activeCursor);
                 }
             }
         }
@@ -3019,7 +3025,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-02-05.12:28:05"}`,
+    version: `BETA ${"2024-02-14.16:42:40"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     $mesh(widget) {
         return Rngon.mesh((0,_core_widget_js__WEBPACK_IMPORTED_MODULE_2__.transformed_recursive_mesh)(widget));

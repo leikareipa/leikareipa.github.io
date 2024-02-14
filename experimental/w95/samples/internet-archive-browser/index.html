@@ -13,15 +13,15 @@
             background-image: url("./assets/woman.png");
             background-size: 768px 1024px;
         }
-        iframe {
-                background-color: white;
-                width: 1180px;
-                height: 668px;
-                transform: none;
-                filter: none;
-                position: absolute;
-                border: none;
-            }
+        iframe.ia-browser {
+            background-color: white;
+            width: 1180px;
+            height: 668px;
+            transform: none;
+            filter: none;
+            position: absolute;
+            border: none;
+        }
     </style>
     <body data-w95-scale="2">
         <script type="module">
@@ -29,26 +29,28 @@
             import notepad from "../notepad/app.js";
             import {icons} from "./assets/icons.js";
             import {icons as notepadIcons} from "../notepad/assets/icons.js";
-            const desktop = w95.shell.desktop([
-                w95.widget.desktopIcon({
-                    x: 5,
-                    y: 10,
-                    text: "Browser",
-                    icon: icons.app32,
-                    onActivate() {
-                        w95.shell.run(app);
-                    },
-                }),
-                w95.widget.desktopIcon({
-                    x: 5,
-                    y: 76,
-                    text: "instructions.txt",
-                    icon: notepadIcons.app32,
-                    async onActivate() {
-                        w95.shell.run(notepad("./assets/instructions.txt"), {singleInstance: true});
-                    },
-                }),
-            ]);
+            const desktop = w95.shell.desktop({
+                icons: [
+                    w95.widget.desktopIcon({
+                        x: 5,
+                        y: 10,
+                        text: "Browser",
+                        icon: icons.app32,
+                        onActivate() {
+                            w95.shell.run(app);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        x: 5,
+                        y: 76,
+                        text: "instructions.txt",
+                        icon: notepadIcons.app32,
+                        async onActivate() {
+                            w95.shell.run(notepad("./assets/instructions.txt"), {singleInstance: true});
+                        },
+                    }),
+                ],
+            });
             w95.shell.boot();
             w95.shell.run([desktop, w95.shell.taskbar(), app]);
         </script>

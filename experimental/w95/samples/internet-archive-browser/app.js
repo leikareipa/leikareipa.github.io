@@ -286,6 +286,7 @@ export default {
                             y: 97,
                             width: "pw - 4",
                             height: "ph - 119",
+                            className: "ia-browser",
                             element: iframeEl.now,
                         }),
                         w95.widget.frame({
@@ -381,7 +382,7 @@ export default {
 
             switch (address.now) {
                 case "about:browser": {
-                    iframeEl.now.src = "./assets/index.html";
+                    iframeEl.now.src = "";
                     return;
                 }
                 default: targetUrl = address.now; break;

@@ -70,7 +70,7 @@ export default function(filename = "", run = "") {
                                                     label: "Exit",
                                                     onClick(widget) {
                                                         w95.windowManager.release_window(widget.$app.window);
-                                                    }
+                                                    },
                                                 }),
                                             ],
                                         }),

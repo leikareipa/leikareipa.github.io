@@ -16,9 +16,9 @@ export default function(filename = "") {
         },
         App() {
             const minWidth = 100;
-            const minHeight = 200;
+            const minHeight = 150;
             const width = w95.state(430);
-            const height = w95.state(400);
+            const height = w95.state(Math.max(minHeight, Math.min(400, ~~(w95.shell.display.height * 0.9))));
 
             const x = w95.state(
                 ~~(0.5 * (w95.shell.display.width - width.now)),

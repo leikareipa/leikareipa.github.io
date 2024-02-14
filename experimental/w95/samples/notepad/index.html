@@ -35,19 +35,22 @@
         <script type="module">
             import app from "./app.js";
             import {icons} from "./assets/icons.js";
-            const desktop = w95.shell.desktop([
-                w95.widget.desktopIcon({
-                    x: 5,
-                    y: 10,
-                    text: "ulysses.txt",
-                    icon: icons.app32,
-                    onActivate() {
-                        w95.shell.run(app("./assets/ulysses.txt"), {singleInstance: true});
-                    },
-                }),
-            ]);
+            const desktop = w95.shell.desktop({
+                icons: [
+                    w95.widget.desktopIcon({
+                        x: 5,
+                        y: 10,
+                        text: "ulysses.txt",
+                        icon: icons.app32,
+                        onActivate() {
+                            w95.shell.run(app("./assets/ulysses.txt"), {singleInstance: true});
+                        },
+                    }),
+                ],
+            });
             w95.shell.boot();
             w95.shell.run([desktop, w95.shell.taskbar(), app("./assets/ulysses.txt")]);
         </script>
     </body>
 </html>
+

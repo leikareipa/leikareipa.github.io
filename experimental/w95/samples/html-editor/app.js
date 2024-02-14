@@ -205,7 +205,7 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                                     className: "preview",
                                                 }),
                                             ],
-                                        })
+                                        }),
                                     ],
                                 },
                             },

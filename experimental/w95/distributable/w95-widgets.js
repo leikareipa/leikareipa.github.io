@@ -1246,6 +1246,9 @@ w95.widget("frame", function({
         Event: {
             mouseleave({at}) {
                 isHovered.set(false);
+                if (!isBorderGrabbed.now) {
+                    borderHover.set({});
+                }
                 return onMouseLeave?.({at, widget:this});
             },
             mouseenter({at}) {
@@ -3213,7 +3216,7 @@ w95.widget("lineEdit", function({
 /***/ (() => {
 
 /*
- * 2022 Tarpeeksi Hyvae Soft
+ * 2022-2024 Tarpeeksi Hyvae Soft
  *
  * Software: w95
  * 
@@ -3230,6 +3233,7 @@ w95.widget("menu", function({
     const width = w95.state(40);
     const height = w95.state(10);
     const isOpen = w95.state(false);
+    const isHovered = w95.state(false, w95.noEffect);
 
     return {
         get x() { return x.now },
@@ -3284,11 +3288,21 @@ w95.widget("menu", function({
             ];
         },
         Event: {
+            mouseenter() {
+                isHovered.set(true);
+            },
+            mouseleave() {
+                isHovered.set(false);
+            },
             mousedown() {
                 return true;
             },
         },
         Message: {
+            move(newX, newY) {
+                x.set(newX);
+                y.set(newY);
+            },
             open() {
                 isOpen.set(true);
             },
@@ -3458,6 +3472,11 @@ w95.widget("menuItem", function({
         get isChecked() { return isChecked },
         get isCheckabled() { return isCheckable },
         get isHovered() { return isHovered.now },
+        Mounted() {
+            if (!isTopLevel && this.subMenu) {
+                this.subMenu.Message.move(x.now+width.now-4, -3);
+            }
+        },
         Form() {
             return [
                 w95.widget.panel({
@@ -3509,6 +3528,9 @@ w95.widget("menuItem", function({
             ];
         },
         Event: {
+            mouseleave() {
+                isHovered.set(false);
+            },
             mousedown() {
                 if (isDisabled) {
                     return;
@@ -3541,9 +3563,6 @@ w95.widget("menuItem", function({
                 isHovered.set(true);
                 w95.windowManager.root_widget(this)?.menuBar?.Message.update();
             },
-            mouseleave() {
-                isHovered.set(false);
-            }
         },
         Message: {
             resize(newWidth = 0)  {
@@ -4075,10 +4094,10 @@ w95.widget("renderSurface", function({
     w95.debug?.assert(width > 0);
     w95.debug?.assert(height > 0);
 
+    const numTicks = w95.state(0);
+
     const renderWidth = ~~(width * (options.resolution || 1));
     const renderHeight = ~~(height * (options.resolution || 1));
-
-    const numTicks = w95.state(0);
     
     if (!isDisabled) {
         Rngon.render({
@@ -4126,6 +4145,10 @@ w95.widget("renderSurface", function({
             }
         },
         Form() {
+            if (!Rngon.context[id]) {
+                return;
+            }
+
             return [
                 Rngon.ngon([
                     Rngon.vertex(0, 0),
