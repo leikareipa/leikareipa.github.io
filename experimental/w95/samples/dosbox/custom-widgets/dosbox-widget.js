@@ -91,7 +91,7 @@ export default w95.widget(function dosboxWidget({
         jsdosCanvasEl.now.style.zIndex = -1;
 
         const zipFile = await fetch(filename).then(response=>response.blob());
-        const jsdosInstance = await Dos(jsdosCanvasEl.now, {wdosboxUrl: "./js-dos/wdosbox.js"});
+        const jsdosInstance = await Dos(jsdosCanvasEl.now, {wdosboxUrl: "https://leikareipa.github.io/dosbox/js-dos/wdosbox.js"});
         await jsdosInstance.fs.extract(URL.createObjectURL(zipFile));
         jsdosInterface.set(await jsdosInstance.main(["-conf", "dosbox.conf", "-c", run]));
 
