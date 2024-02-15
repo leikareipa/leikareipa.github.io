@@ -100,7 +100,6 @@ body.loading
     padding: 0;
     margin: 0;
     display: flex;
-    border-top: 1px solid black;
 }
 
 #ui-overlay
@@ -155,6 +154,11 @@ canvas
     pointer-events: none;
 }
 
+body.w95 #jsdos-container .button
+{
+    display: none !important;
+}
+
 #jsdos-container .button
 {
     margin: 0;
@@ -191,6 +195,11 @@ canvas
     padding: 0;
     cursor: initial;
     flex-shrink: 0;
+}
+
+body.w95 #button-bar
+{
+    display: none !important;
 }
 
 #button-bar

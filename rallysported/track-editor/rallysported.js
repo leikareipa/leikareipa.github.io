@@ -334,17 +334,62 @@ Rsed.browserMetadata = (function()
 
     return publicInterface;
 })();
-"use strict";
+/*
+ * 2024 Tarpeeksi Hyvae Soft
+ * 
+ * Software: RallySportED-js
+ *
+ */
 
-Rsed.uuid = {};
-
-// Generates a version 4 UUID and returns it as a string. Adapted with
-// superficial modifications from https://stackoverflow.com/a/2117523,
-// which is based on https://gist.github.com/jed/982883.
-Rsed.uuid.generate_v4 = function()
+Rsed.iframeListener = (function()
 {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c=>(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
-}
+    if (!Rsed.browserMetadata.has_url_param("w95"))
+    {
+        return {};
+    }
+
+    const publicInterface =
+    {
+        send_message(message = "", payload)
+        {
+            window.parent.postMessage({message, payload});
+        },
+        listen(event)
+        {
+            if (event.origin !== window.location.origin)
+            {
+                return;
+            }
+
+            switch (event.data.message || event.data)
+            {
+                case "save:project": return Rsed.$currentProject.download_as_zip();
+                case "rename:project": return Rsed.$currentProject.rename();
+
+                case "run:stop": return Rsed.player.stop();
+                case "run:play": return Rsed.player.play_with_opponent();
+                case "run:test": return Rsed.player.play_test_drive();
+                case "run:record": return Rsed.player.record_ai_lap();
+                
+                case "export:maasto": return Rsed.$currentProject.download_asset_file('maasto');
+                case "export:varimaa": return Rsed.$currentProject.download_asset_file('varimaa');
+                case "export:palat": return Rsed.$currentProject.download_asset_file('palat');
+                case "export:text": return Rsed.$currentProject.download_asset_file('text');
+                case "export:anims": return Rsed.$currentProject.download_asset_file('anims');
+                case "export:kierros": return Rsed.$currentProject.download_asset_file('kierros');
+
+                case "import:maasto": return Rsed.ui.utils.assetMutator.user_edit("maasto", {command: 'import', file: event.data.payload});
+                case "import:varimaa": return Rsed.ui.utils.assetMutator.user_edit("varimaa", {command: 'import', file: event.data.payload});
+                case "import:palat": return Rsed.ui.utils.assetMutator.user_edit("palat", {command: 'import', file: event.data.payload});
+                case "import:text": return Rsed.ui.utils.assetMutator.user_edit("text", {command: 'import', file: event.data.payload});
+                case "import:anims": return Rsed.ui.utils.assetMutator.user_edit("anims", {command: 'import', file: event.data.payload});
+                case "import:kierros": return Rsed.ui.utils.assetMutator.user_edit("kierros", {command: 'import', file: event.data.payload});
+            }
+        },
+    };
+
+    return publicInterface;
+})();
 /*
  * Most recent known filename: js/player/player.js
  *
@@ -481,6 +526,8 @@ Rsed.player = (function()
         document.body.classList.remove("playing", "ingame");
         Rsed.ui.dom.html.refresh();
 
+        Rsed.iframeListener.send_message("run:stopped");
+
         return;
     }
 
@@ -497,6 +544,8 @@ Rsed.player = (function()
         {
             return;
         }
+
+        Rsed.iframeListener.send_message("run:starting");
 
         Rsed.ui.dom.html.set_visible(false);
         Rsed.$currentScene = "loading-spinner";
@@ -572,6 +621,8 @@ Rsed.player = (function()
         }
 
         document.body.classList.add("ingame");
+        
+        Rsed.iframeListener.send_message("run:started");
 
         return true;
     }
@@ -724,10 +775,7 @@ Rsed.project = async function(projectArgs = {})
         get name()
         {
             const name = projectData.meta.internalName.toLowerCase();
-
-            const capitalizedName = (name[0].toUpperCase() +
-                                     name.slice(1));
-
+            const capitalizedName = (name[0].toUpperCase() + name.slice(1));
             return capitalizedName;
         },
 
@@ -775,7 +823,6 @@ Rsed.project = async function(projectArgs = {})
             projectData.meta.displayName = projectData.meta.internalName = newName;
 
             Rsed.ui.dom.html.refresh();
-
             Rsed.ui.dom.popup_notification(`Renamed to "${this.name}".`);
 
             return;
@@ -1807,7 +1854,7 @@ Rsed.constants = Object.freeze(
     // How many colors there are in a given hard-coded Rally-Sport palette.
     paletteSize: 32,
 
-    rsedGitHubTracksURL: "https://raw.githubusercontent.com/leikareipa/rallysported/master/goodies/modded-content/tracks",
+    rsedGitHubTracksURL: "./assets/tracks",
 });
 /*
  * Most recent known filename: js/visual/texture.js
@@ -3912,7 +3959,7 @@ Rsed.ui.utils.undoStack = (function()
         }
 
         undoLevels[undoLevelHead] = {
-            id: Rsed.uuid.generate_v4(),
+            id: crypto.randomUUID(),
             before: {
                 ground: dirtyGround,
                 props: dirtyProps,
@@ -4847,6 +4894,10 @@ Rsed.ui.dom.html = (function()
                  ${Rsed.$currentProject.name.toUpperCase()}`
             );
 
+            Rsed.iframeListener.send_message?.("project:name", (
+                ((Rsed.$currentProject.areAllChangesSaved? "" : "*") + Rsed.$currentProject.name)
+            ));
+
             document.title = `${title} - ${Rsed.appName}`;
             document.querySelector("#project-name .label").textContent = title;
 
@@ -5083,6 +5134,11 @@ window.onbeforeunload = function(event)
 // Parses any address bar parameters, then launches RallySportED.
 window.onload = function(event)
 {
+    if (Rsed.browserMetadata.has_url_param("w95")) {
+        document.body.classList.add("w95");
+        window.addEventListener("message", Rsed.iframeListener.listen, false);
+    }
+
     // The app doesn't need to be run if we're just testing its units.
     if (Rsed.unitTestRun) return;
 
@@ -10485,6 +10541,7 @@ Rsed.core = (function()
 
             coreIsRunning = true;
             document.body.classList.remove("loading");
+            Rsed.iframeListener.send_message?.("project:loaded", Rsed.$currentProject.name);
 
             return;
         },

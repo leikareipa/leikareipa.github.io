@@ -1206,20 +1206,8 @@ function update_dirty_region(app) {
         }
     }
     else if (popupParentApp && (popupParentApp === app)) {
-        const {popupWidget, at} = w95.windowManager.get_active_popup_menu();
-        w95.debug?.assert(popupWidget?._what === "w95-widget");
-        w95.debug?.assert(typeof at === "object");
-
-        const rect = rect_clamped_to_screen({
-            x: at.x,
-            y: at.y,
-            width: popupWidget.width,
-            height: popupWidget.height,
-        });
-
-        if (!is_rect_fully_inside_other(rect, app._dirtyRegion[0])) {
-            app._dirtyRegion.push(rect);
-        }
+        // Redraw the entire canvas.
+        delete app._dirtyRegion;
     }
 }
 
@@ -3025,7 +3013,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-02-14.16:42:40"}`,
+    version: `BETA ${"2024-02-15.12:46:21"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     $mesh(widget) {
         return Rngon.mesh((0,_core_widget_js__WEBPACK_IMPORTED_MODULE_2__.transformed_recursive_mesh)(widget));

@@ -3234,6 +3234,11 @@ w95.widget("menu", function({
     const height = w95.state(10);
     const isOpen = w95.state(false);
     const isHovered = w95.state(false, w95.noEffect);
+    const subMenuOpenTimer = w95.state(undefined, w95.noEffect);
+    const activeItem = w95.state(undefined, w95.noEffect);
+    const activeSubMenu = w95.state(undefined, w95.noEffect);
+
+    const subMenuOpenDelayMs = 300;
 
     return {
         get x() { return x.now },
@@ -3241,30 +3246,33 @@ w95.widget("menu", function({
         get width() { return width.now },
         get height() { return height.now },
         get isOpen() { return isOpen.now },
+        get menuItems() { return this.$form["_menuItemsContainer"].$childWidgets },
         get isActivePopupMenu() { return isOpen.now },
         Mounted() {
-            const menuItems = this.$form["_menuItemsContainer"].$childWidgets;
-            const nonSeparatorItems = menuItems.filter(w=>w._type !== "menuSeparator");
-            w95.debug?.assert(menuItems.every(item=>["menuItem", "menuSeparator"].includes(item._type)));
+            const nonSeparatorItems = this.menuItems.filter(w=>w._type !== "menuSeparator");
+            w95.debug?.assert(this.menuItems.every(item=>["menuItem", "menuSeparator"].includes(item._type)));
             w95.debug?.assert(nonSeparatorItems.every(item=>(item._type === "menuItem")));
 
-            for (const child of menuItems) {
+            for (const child of this.menuItems) {
                 child.Message?.setParentMenuWidget?.(this);
             }
     
             // Size the menu to its contents.
             const maxChildWidth = nonSeparatorItems.reduce((max, c)=>Math.max(max, c.width), 0);
-            const totalChildHeight = menuItems.reduce((sum, c)=>(sum + (c.height - 0)), 0);
+            const totalChildHeight = this.menuItems.reduce((sum, c)=>(sum + (c.height - 0)), 0);
             width.set(maxChildWidth + 6);
             height.set(totalChildHeight + 6);
-            menuItems.forEach(child=>child.Message.resize(maxChildWidth));
+            this.menuItems.forEach(child=>child.Message.resize(maxChildWidth));
     
             // Arrange the menu contents vertically.
             let yOffs = 3;
-            for (const menuItem of menuItems) {
+            for (const menuItem of this.menuItems) {
                 menuItem.Message.moveTo(3, yOffs);
                 yOffs += menuItem.height;
             }
+        },
+        BeforeUnmount() {
+            this.menuItems[activeItem.now]?.Message.close?.();
         },
         Form() {
             return [
@@ -3299,7 +3307,33 @@ w95.widget("menu", function({
             },
         },
         Message: {
+            itemHighlighted(menuItem) {
+                w95.debug?.assert(["menuItem", "menuSeparator"].includes(menuItem?._type));
+
+                const subMenuIdx = this.menuItems.findIndex(m=>m === menuItem);
+                w95.debug?.assert(subMenuIdx >= 0);
+
+                if (this.menuItems[activeItem.now] !== menuItem) {
+                    this.menuItems[activeItem.now]?.Message.close?.();
+                }
+                clearTimeout(subMenuOpenTimer.now);
+
+                if (menuItem.subMenu) {
+                    subMenuOpenTimer.set(setTimeout(()=>{
+                        if (this.menuItems[subMenuIdx].isHovered) {
+                            activeItem.set(subMenuIdx);
+                            activeSubMenu.set(menuItem.subMenu);
+                            this.menuItems[subMenuIdx].Message.open?.();
+                        }
+                    }, subMenuOpenDelayMs));
+                }
+                else {
+                    this.menuItems[activeItem.now]?.Message.close?.();
+                }
+            },
             move(newX, newY) {
+                w95.debug?.assert(Number.isInteger(newX));
+                w95.debug?.assert(Number.isInteger(newY));
                 x.set(newX);
                 y.set(newY);
             },
@@ -3308,6 +3342,7 @@ w95.widget("menu", function({
             },
             close() {
                 isOpen.set(false);
+                activeSubMenu.now?.Message.close();
             },
             checkItem(menuItem) {
                 w95.debug?.assert(menuItem?._type === "menuItem");
@@ -3451,7 +3486,7 @@ w95.widget("menuItem", function({
     const isActive = w95.state(false);
     const leftPadding = (isTopLevel? 6 : 22);
     const rightPadding = (isTopLevel? 6 : 20);
-    const width = w95.state(leftPadding + w95.font.stringWidth(label) + rightPadding - 1);
+    const width = w95.state(leftPadding + w95.font.stringWidth(label) + rightPadding - 1 + ((!isTopLevel && menu)? 2 : 0));
     const height = 18;
     const styleHints = (
         isTopLevel
@@ -3474,7 +3509,7 @@ w95.widget("menuItem", function({
         get isHovered() { return isHovered.now },
         Mounted() {
             if (!isTopLevel && this.subMenu) {
-                this.subMenu.Message.move(x.now+width.now-4, -3);
+                this.subMenu.Message.move((x.now + width.now - 5), -3);
             }
         },
         Form() {
@@ -3525,11 +3560,31 @@ w95.widget("menuItem", function({
                         (!isDisabled && (isActive.now || (!isTopLevel && isHovered.now)))? w95.styleHint.inverted : 0,
                     ],
                 }),
+                // Submenu indicator.
+                w95.widget.bitmap({
+                    x: (width.now - 10),
+                    y: 5,
+                    image: w95.icon.arrowRight,
+                    color: w95.palette.widget.foreground,
+                    styleHints: [
+                        (isHovered.now? w95.styleHint.inverted : 0),
+                    ],
+                }, {
+                    hideIf: (!menu || isTopLevel),
+                }),
             ];
         },
         Event: {
+            mouseenter() {
+                isHovered.set(true);
+                if (!isTopLevel) {
+                    parentMenuWidget.now.Message.itemHighlighted(this);
+                }
+            },
             mouseleave() {
-                isHovered.set(false);
+                if (isTopLevel || !this.isOpen) {
+                    isHovered.set(false);
+                }
             },
             mousedown() {
                 if (isDisabled) {
@@ -3537,13 +3592,17 @@ w95.widget("menuItem", function({
                 }
 
                 if (this.subMenu) {
-                    this.Message.toggle();
+                    this.Message[isTopLevel? "toggle" : "open"]();
                 }
 
                 return true;
             },
             mouseup() {
                 if (isDisabled) {
+                    return;
+                }
+
+                if (this.subMenu) {
                     return;
                 }
                 
@@ -3560,7 +3619,6 @@ w95.widget("menuItem", function({
                 return (onClick?.(this) ?? true);
             },
             mousemove() {
-                isHovered.set(true);
                 w95.windowManager.root_widget(this)?.menuBar?.Message.update();
             },
         },
@@ -3628,6 +3686,7 @@ w95.widget("menuSeparator", function()
     const y = w95.state(0);
     const width = w95.state(200);
     const height = 8;
+    const parentMenuWidget = w95.state(undefined, w95.noEffect);
 
     return {
         get x() { return x.now },
@@ -3653,6 +3712,11 @@ w95.widget("menuSeparator", function()
                 }),
             ];
         },
+        Event: {
+            mouseenter() {
+                parentMenuWidget.now.Message.itemHighlighted(this);
+            },
+        },
         Message: {
             resize(newWidth = 0) {
                 w95.debug?.assert(typeof newWidth === "number");
@@ -3663,6 +3727,10 @@ w95.widget("menuSeparator", function()
                 w95.debug?.assert(typeof newY === "number");
                 x.set(newX);
                 y.set(newY);
+            },
+            setParentMenuWidget(newParentMenuWidget) {
+                w95.debug?.assert(newParentMenuWidget?._type === "menu");
+                parentMenuWidget.set(newParentMenuWidget);
             },
         },
     };

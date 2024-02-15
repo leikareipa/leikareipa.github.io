@@ -21,69 +21,69 @@
 
             <div id="button-bar">
 
-            <div id="project-name"
-                 class="label"
-                 onclick="Rsed.$currentProject.rename();">
+                <div id="project-name"
+                    class="label"
+                    onclick="Rsed.$currentProject.rename();">
 
-                <span class="label"></span>
-
-            </div>
-
-            <div class="button"
-                 onclick="Rsed.$currentProject.download_as_zip();">
-
-                Download
-
-            </div>
-
-            <div class="button data"
-                 onclick="Rsed.ui.dom.html.toggle_data_dropdown();"
-                 style="position: relative;">
-
-                Data
-
-                <div id="data-dropdown">
-                </div>
-
-            </div>
-
-            <div class="button nonclick">
-
-                <div class="button nested"
-                     onclick="Rsed.player.play_with_opponent();"
-                >
-
-                    Play
+                    <span class="label"></span>
 
                 </div>
 
-                <div class="button nested"
-                     onclick="Rsed.player.play_test_drive();"
-                >
+                <div class="button"
+                    onclick="Rsed.$currentProject.download_as_zip();">
 
-                    Test
-
-                </div>
-
-                <div class="button nested"
-                     onclick="Rsed.player.record_ai_lap();"
-                >
-
-                    Record
+                    Download
 
                 </div>
 
-            </div>
+                <div class="button data"
+                    onclick="Rsed.ui.dom.html.toggle_data_dropdown();"
+                    style="position: relative;">
 
-            <div class="button"
-                 onclick="window.open('https://github.com/leikareipa/rallysported/blob/master/track-editor/users-guide.md', '_blank', 'noopener');">
+                    Data
 
-                Help
+                    <div id="data-dropdown">
+                    </div>
 
+                </div>
+
+                <div class="button nonclick">
+
+                    <div class="button nested"
+                        onclick="Rsed.player.play_with_opponent();"
+                    >
+
+                        Play
+
+                    </div>
+
+                    <div class="button nested"
+                        onclick="Rsed.player.play_test_drive();"
+                    >
+
+                        Test
+
+                    </div>
+
+                    <div class="button nested"
+                        onclick="Rsed.player.record_ai_lap();"
+                    >
+
+                        Record
+
+                    </div>
+
+                </div>
+
+                <div class="button"
+                    onclick="window.open('https://github.com/leikareipa/rallysported/blob/master/track-editor/users-guide.md', '_blank', 'noopener');">
+
+                    Help
+
+                </div>
             </div>
 
             <div id="prop-dropdown" class="dropdown-menu">
-            </div>
 
         </section>
 
