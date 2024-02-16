@@ -77,7 +77,7 @@ body[data-dokki-layout="vertical-narrow"] .dokki-tag-cloud.headerless > .dokki0-
 {
     font-style: normal;
     background-color: var(--dokkiCSS-embedded-auxiliary-color);
-    border-radius: 10px;
+    border-radius: 0;
     font-weight: normal !important;
     padding: 0.13rem 0.45rem;
     margin: 1px;
@@ -88,11 +88,6 @@ body[data-dokki-layout="vertical-narrow"] .dokki-tag-cloud.headerless > .dokki0-
 .dokki-topic strong
 {
     font-weight: var(--dokkiCSS-bold-text-weight);
-}
-
-body[data-dokki-layout^="vertical"] .dokki-header
-{
-    box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25);
 }
 
 .dokki-header
@@ -234,7 +229,7 @@ body[data-dokki-layout="vertical-narrow"] .dokki-topic em
     padding: 1em;
     background-color: var(--dokkiCSS-embedded-auxiliary-color);
     max-width: calc(100% - 26px);
-    border-radius: 10px;
+    border-radius: 0;
     font-style: italic;
 }
 

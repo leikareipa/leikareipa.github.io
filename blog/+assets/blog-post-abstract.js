@@ -17,7 +17,7 @@ const blogPostAbstract = {
                     .replace(/[\/–\s]+/g, "-")
                     .replace(/[^a-zA-Z\d\s-\.]/g, "")
                           
-            return `./${simplifiedTitle}/`;
+            return `/blog/${simplifiedTitle}/`;
         },
     },
     template: `
@@ -33,14 +33,6 @@ const blogPostAbstract = {
             <span class="field date">
                 <span class="label">
                     {{date}}
-                </span>
-            </span>
-
-            <span class="field tags" v-if="tags">
-                <span class="label">
-                    <dokki-tag v-for="tag of tags">
-                        {{tag}}
-                    </dokki-tag>
                 </span>
             </span>
 

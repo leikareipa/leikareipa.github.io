@@ -22,6 +22,7 @@ export default {
         const y = w95.state(~~(0.5 * (w95.shell.display.visibleHeight - height.now)), w95.reRenderOnly);
 
         const fileSelectorEl = w95.state(document.createElement("input"));
+        const trackFileSelectorEl = w95.state(document.createElement("input"));
         const iframeEl = w95.state(document.createElement("iframe"));
         const projectName = w95.state(undefined);
         const dosboxRunState = w95.state(0);
@@ -40,7 +41,7 @@ export default {
                     switch (event.data.message) {
                         case "project:loaded": return projectName.set(event.data.payload);
                         case "project:name": return projectName.set(event.data.payload);
-                        case "run:starting": return dosboxRunState.set(1);
+                        case "run:starting": return dosboxRunState.set(1); 
                         case "run:started": return dosboxRunState.set(2);
                         case "run:stopped": return dosboxRunState.set(0);
                     }
@@ -49,6 +50,12 @@ export default {
                 fileSelectorEl.now.type = "file";
                 fileSelectorEl.now.onchange = async function() {
                     send_message(`import:${fileSelectorEl.now.$assetType}`, fileSelectorEl.now.files[0]);
+                };
+
+                trackFileSelectorEl.now.type = "file";
+                trackFileSelectorEl.now.accept = ".zip";
+                trackFileSelectorEl.now.onchange = async function() {
+                    send_message("import:project", trackFileSelectorEl.now.files[0]);
                 };
             },
             Form() {
@@ -99,7 +106,7 @@ export default {
                                                     children: [
                                                         w95.widget.menuItem({
                                                             label: "From disk...",
-                                                            onClick() {send_message("load:project")},
+                                                            onClick() {trackFileSelectorEl.now.$assetType = "project"; trackFileSelectorEl.now.click();},
                                                         }),
                                                         w95.widget.menuSeparator(),
                                                         w95.widget.menuItem({
@@ -300,9 +307,7 @@ export default {
                                         children: [
                                             w95.widget.menuItem({
                                                 label: "About...",
-                                                onClick() {
-                                                    //showAbout.set(true);
-                                                },
+                                                isDisabled: true,
                                             }),
                                         ],
                                     }),

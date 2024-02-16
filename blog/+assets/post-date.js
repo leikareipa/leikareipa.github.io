@@ -6,7 +6,7 @@ const postDate = {
     },
     template: `
     <p class="post-date">
-        <span class="bit">By <a href="/">Tarpeeksi Hyvae Soft</a></span>
+        <span class="bit">By <a href="https://github.com/leikareipa">Tarpeeksi Hyvae Soft</a></span>
         <span class="bit">{{date}}<span v-if="edited"><span style="margin: 0 0.4em;">&centerdot;</span>edited on {{edited}}</span>
         </span>
     </p>

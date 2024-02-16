@@ -363,6 +363,14 @@ Rsed.iframeListener = (function()
 
             switch (event.data.message || event.data)
             {
+                case "import:project": {
+                    return Rsed.core.start({
+                        project: {
+                            dataLocality: "client",
+                            contentId: event.data.payload,
+                        },
+                    });
+                }
                 case "save:project": return Rsed.$currentProject.download_as_zip();
                 case "rename:project": return Rsed.$currentProject.rename();
 

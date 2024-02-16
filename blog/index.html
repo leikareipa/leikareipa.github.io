@@ -10,11 +10,11 @@
         
         <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
         <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
-        <script defer src="./+assets/highlight.min.js"></script>
+        <script defer src="/blog/+assets/highlight.min.js"></script>
         <script defer src="/dokki/distributable/dokki.js"></script>
-        <link rel="stylesheet" href="./+assets/blog.css">
+        <link rel="stylesheet" href="/blog/+assets/blog.css">
 
-        <script type="module" src="./+assets/blog-post-abstract.js"></script>
+        <script type="module" src="/blog/+assets/blog-post-abstract.js"></script>
 
         <style>
             body
@@ -38,16 +38,6 @@
                 display: none !important;
             }
 
-            body[data-dokki-layout^="vertical"]  .dokki-tag-filter
-            {
-                margin-top: 0 !important;
-            }
-            
-            body[data-dokki-layout^="vertical"]  .dokki-topic#introduction
-            {
-                display: none;
-            }
-            
             .dokki-topics
             {
                 padding-top: calc(1 * var(--dokkiCSS-topic-vertical-padding));
@@ -82,6 +72,11 @@
             .dokki-topic.abstract .dokkiCSS-topic-title
             {
                 margin-bottom: 0.5rem !important;
+            }
+
+            .dokki-topic.abstract .dokkiCSS-topic-title a
+            {
+                text-decoration: none !important;
             }
 
             .dokki-topics .dokki-tag-filter
@@ -141,10 +136,7 @@
                             a decades-long hobbyist developer with no ties to the commercial software industry.
                             Expect the outside perspective.
                         </p>
-                        <dokki-tag-cloud headerless/>
                     </dokki-topic>
-
-                    <dokki-tag-filter entity-name="posts"></dokki-tag-filter>
 
                     <blog-post-abstract
                         date="February 12, 2024"
