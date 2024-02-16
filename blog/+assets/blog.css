@@ -190,6 +190,7 @@ body[data-dokki-layout="vertical-narrow"] .dokki-topic em
 
 .blog-post-abstract .field.date .label
 {
+    color: var(--dokkiCSS-page-primary-fg-color);
     font-weight: var(--dokkiCSS-bold-text-weight);
 }
 

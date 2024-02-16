@@ -288,6 +288,31 @@ function desktopApp({
                         height.set(w95.shell.display.height);
                     },
                 },
+                Mounted() {
+                    const iconWrappers = this.$childWidgets[0].$form["_contents"].$childWidgets.filter(w=>((w._type === "dynamicWrapper") && !w.$childWidgets[0]._hideMesh));
+                    
+                    // Position the icons on a grid.
+                    {
+                        const xOffset = 5;
+                        const yOffset = 5;
+                        const verticalSpacing = 75;
+                        const horizontalSpacing = 75;
+
+                        let x = xOffset;
+                        let y = yOffset;
+                        for (const wrapper of iconWrappers) {
+                            const iconWidget = wrapper.$childWidgets[0];
+
+                            if ((y + iconWidget.height) > w95.shell.display.visibleHeight) {
+                                x += horizontalSpacing;
+                                y = yOffset;
+                            }
+
+                            wrapper.Message.move(x, y);
+                            y += verticalSpacing;
+                        }
+                    }
+                },
                 Form() {
                     return w95.widget.window({
                         parent: this,
@@ -296,7 +321,11 @@ function desktopApp({
                             w95.styleHint.desktop,
                         ],
                         children: [
-                            ...icons,
+                            ...icons.map(c=>(
+                                w95.widget.dynamicWrapper({
+                                    widget: c,
+                                })
+                            )),
                             w95.widget.verticalLayout({
                                 x: "pw - 10",
                                 height: "ph - 10 - (w95.registry.get('taskbar-height') || 0)",
@@ -3013,7 +3042,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-02-15.12:46:21"}`,
+    version: `BETA ${"2024-02-16.12:17:37"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     $mesh(widget) {
         return Rngon.mesh((0,_core_widget_js__WEBPACK_IMPORTED_MODULE_2__.transformed_recursive_mesh)(widget));
