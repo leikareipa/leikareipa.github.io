@@ -5,7 +5,7 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <script src="/experimental/w95/distributable/w95-api.js"></script>
         <script src="/experimental/w95/distributable/w95-assets.js"></script>
-        <script src="./experimental/w95/distributable/w95-widgets.js"></script>
+        <script src="/experimental/w95/distributable/w95-widgets.js"></script>
         <link href="/experimental/w95/distributable/w95.css" rel="stylesheet">
     </head>
     <style>
@@ -40,6 +40,8 @@
             import rallySportEd from "./desktop/apps/rallysported/app.js";
             import {icons as rallySportEdIcons} from "./desktop/apps/rallysported/icons.js";
 
+            import pillunsaamislaskuri from "./desktop/apps/pillunsaamislaskuri/app.js";
+
             const desktop = w95.shell.desktop({
                 showWatermark: false,
                 icons: [
@@ -68,6 +70,15 @@
                         icon: rallySportEdIcons.app32,
                         onActivate() {
                             w95.shell.run(rallySportEd);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        x: 5,
+                        y: 222,
+                        text: "Pillunsaamislaskuri",
+                        icon: w95.icon.applicationIcon32x32,
+                        onActivate() {
+                            w95.shell.run(pillunsaamislaskuri);
                         },
                     }),
                 ]
