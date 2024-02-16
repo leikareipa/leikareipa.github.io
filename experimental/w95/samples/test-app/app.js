@@ -529,6 +529,57 @@ export default {
                                             }),
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuItem({
+                                                label: "Sub-menu",
+                                                menu: w95.widget.menu({
+                                                    children: [
+                                                        w95.widget.menuItem({
+                                                            label: "Sub-sub-menu",
+                                                            menu: w95.widget.menu({
+                                                                children: [
+                                                                    w95.widget.menuItem({
+                                                                        label: "Check this",
+                                                                        isCheckable: true,
+                                                                        isChecked: isCheckChecked.now,
+                                                                        newCheckState(isChecked) {
+                                                                            isCheckChecked.set(isChecked);
+                                                                        },
+                                                                    }),
+                                                                ],
+                                                            }),
+                                                        }),
+                                                    ],
+                                                }),
+                                            }),
+                                            w95.widget.menuItem({
+                                                label: "Sub-menu 2",
+                                                menu: w95.widget.menu({
+                                                    children: [
+                                                        w95.widget.menuItem({
+                                                            label: "Nothing",
+                                                        }),
+                                                        w95.widget.menuItem({
+                                                            label: "Nothing 2",
+                                                        }),
+                                                        w95.widget.menuItem({
+                                                            label: "Sub-sub-menu",
+                                                            menu: w95.widget.menu({
+                                                                children: [
+                                                                    w95.widget.menuItem({
+                                                                        label: "Check this",
+                                                                        isCheckable: true,
+                                                                        isChecked: isCheckChecked.now,
+                                                                        newCheckState(isChecked) {
+                                                                            isCheckChecked.set(isChecked);
+                                                                        },
+                                                                    }),
+                                                                ],
+                                                            }),
+                                                        }),
+                                                    ],
+                                                }),
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
                                                 label: "Group item 1",
                                                 group: "a",
                                                 isCheckable: true,

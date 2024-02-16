@@ -73,6 +73,13 @@
                             w95.shell.run(pillunsaamislaskuri);
                         },
                     }),
+                    w95.widget.desktopIcon({
+                        text: "Copy of Luemut.txt",
+                        icon: notepadIcons.app32,
+                        onActivate() {
+                            w95.shell.run(notepad("./desktop/Copy of Luemut.txt"), {singleInstance: true});
+                        },
+                    }),
                 ]
             });
             w95.shell.boot();
