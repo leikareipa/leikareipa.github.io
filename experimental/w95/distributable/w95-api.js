@@ -295,7 +295,7 @@ function desktopApp({
                     {
                         const xOffset = 5;
                         const yOffset = 5;
-                        const verticalSpacing = 75;
+                        const verticalSpacing = 77;
                         const horizontalSpacing = 75;
 
                         let x = xOffset;
@@ -883,7 +883,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let booted = false;
-let wallpaper = "";
+let wallpaper = undefined;
 let renderScale = 1;
 let screen_shader_fn = undefined;
 let debugLayerEl = undefined;
@@ -952,12 +952,17 @@ const shell = {
         w95.debug?.assert(booted, "Must call `w95.shell.boot()` before assigning `w95.shell.wallpaper`.");
         w95.debug?.assert(["undefined", "string"].includes(typeof url));
 
-        if (typeof url === "undefined") {
-            return;
-        }
+        wallpaper = url;
 
         const canvasEl = document.getElementById("desktop");
         if (!canvasEl) {
+            return;
+        }
+
+        if (
+            (typeof url !== "string") ||
+            !url.length
+         ){
             return;
         }
         
@@ -966,8 +971,7 @@ const shell = {
         const image = new Image();
         image.src = url;
         image.onload = function() {
-            wallpaper = image.src;
-            canvasEl.style.backgroundImage = `url(${wallpaper})`;
+            canvasEl.style.backgroundImage = `url("${wallpaper}")`;
             canvasEl.style.backgroundSize = `${image.width * w95.shell.display.scale}px ${image.height * w95.shell.display.scale}px`;
             canvasEl.width = 0; // Force the canvas to reflow its background. Otherwise, if there's no initial bg image, it won't update.
             w95.shell.refresh();
@@ -994,7 +998,7 @@ const shell = {
 
         booted = true;
 
-        w95.shell.display.scale = ~~(document.body.dataset.w95Scale || 1);
+        w95.shell.display.scale = best_fit_display_scale();
         w95.shell.cursor = w95.cursor.arrow;
 
         if (false) {}
@@ -1021,6 +1025,11 @@ const shell = {
         });
 
         window.addEventListener("resize", ()=>{
+            const newDisplayScale = best_fit_display_scale();
+            if (w95.shell.display.scale !== newDisplayScale) {
+                w95.shell.display.scale = newDisplayScale;
+            }
+
             forceAllWidgetsToUpdate = true;
             enforce_universal_canvas_properties();
             w95.windowManager.apps.forEach(app=>w95.$recurseDescendantWidgets(app, (widget)=>widget.Message?.fitToDisplay?.()));
@@ -1062,6 +1071,16 @@ function render_loop(timestamp, timeDeltaMs, numTicks = 0) {
     geometry.renderTimeMs = (performance.now() - timestamp);
 
     window.requestAnimationFrame((newTimestamp)=>render_loop(newTimestamp, (newTimestamp - timestamp), numTicks + 1));
+}
+
+function best_fit_display_scale() {
+    return (
+        (window.innerHeight <= 1080)
+            ? 1
+            : (window.innerHeight <= 1440)
+                ? 2
+                : 4
+    );
 }
 
 function enact_cursor(cursor) {
@@ -1189,6 +1208,7 @@ function update_dom_widget_suppressions() {
 
         const suppressDomElements = (
             app.window.isBlurred ||
+            app.window.isGrabbed ||
             app.window.isBorderGrabbed ||
             Boolean(w95.windowManager.get_active_popup_menu(app).popupWidget) ||
             Boolean(w95.windowManager.get_active_dialog(app).widget)
@@ -2509,6 +2529,7 @@ const windowManager = {
 
             const canvas = appInstance._canvas = document.createElement("canvas");
             canvas.classList.add("w95");
+            canvas.oncontextmenu = ()=>false;
             canvas.dataset.w95App = appInstance.Meta.name;
             canvas.dataset.w95AppId = appInstance.id;
             document.body.append(canvas);
@@ -2531,9 +2552,10 @@ const windowManager = {
 
             if (appInstance.appObject.isDesktop) {
                 canvas.id = "desktop";
+                w95.shell.wallpaper = w95.shell.wallpaper;
             }
 
-            w95.$recurseDescendantWidgets(appInstance, w=>(!w._hideMesh && w.Opened?.()));
+            w95.$recurseDescendantWidgets(appInstance.window, w=>(!w._hideMesh && w.Opened?.()));
         });
 
         if (runningApps.length) {
@@ -3042,7 +3064,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-02-16.12:17:37"}`,
+    version: `BETA ${"2024-02-17.16:26:36"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     $mesh(widget) {
         return Rngon.mesh((0,_core_widget_js__WEBPACK_IMPORTED_MODULE_2__.transformed_recursive_mesh)(widget));

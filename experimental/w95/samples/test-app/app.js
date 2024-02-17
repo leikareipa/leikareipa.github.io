@@ -206,8 +206,7 @@ export default {
                                     y: 38,
                                     itemIndex: (w95.registry.get("render-scale") - 1),
                                     newItemIndex(idx) {
-                                        w95.registry.set("render-scale", (idx + 1)),
-                                        w95.shell.display.scale = (idx + 1);
+                                        w95.registry.set("render-scale", (idx + 1));
                                     },
                                     items: {
                                         "1x": {

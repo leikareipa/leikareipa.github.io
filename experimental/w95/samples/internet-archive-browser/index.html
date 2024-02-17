@@ -9,10 +9,6 @@
         <link href="../../distributable/w95.css" rel="stylesheet">
     </head>
     <style>
-        #desktop {
-            background-image: url("./assets/woman.png");
-            background-size: 768px 1024px;
-        }
         iframe.ia-browser {
             background-color: white;
             width: 1180px;
@@ -23,7 +19,7 @@
             border: none;
         }
     </style>
-    <body data-w95-scale="2">
+    <body>
         <script type="module">
             import app from "./app.js";
             import notepad from "../notepad/app.js";
@@ -48,6 +44,7 @@
                 ],
             });
             w95.shell.boot();
+            w95.shell.wallpaper = "./assets/woman.png";
             w95.shell.run([desktop, w95.shell.taskbar(), app]);
         </script>
         <script>

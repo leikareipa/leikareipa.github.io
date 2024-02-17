@@ -39,6 +39,13 @@ const dosboxCanvasScaler = {
         dosboxContainer.style.height = `${dosboxCanvas.height}px`;
     },
 
+    fillerup: function()
+    {
+        dosboxContainer.style.width = "100%";
+        dosboxContainer.style.height = "100%";
+        dosboxContainer.focus();
+    },
+
     // Scale to twice the size of DOSBox's native resolution. May overflow the
     // viewport.
     double: function()
@@ -77,6 +84,7 @@ export async function start_dosbox(args = {})
             zip: "",
             persist: "",
             title: undefined,
+            scaler: "contain_integer",
         },
         ...args
     };
@@ -140,16 +148,17 @@ export async function start_dosbox(args = {})
         // Reveal the js-dos canvas to the user.
         try
         {
-            dosboxCanvasScaler.contain_integer();
-            window.addEventListener("resize", dosboxCanvasScaler.contain_integer);
+            dosboxCanvasScaler[args.scaler]();
+            window.addEventListener("resize", dosboxCanvasScaler[args.scaler]);
     
-            const dosboxVideoModeObserver = new MutationObserver(dosboxCanvasScaler.contain_integer);
+            const dosboxVideoModeObserver = new MutationObserver(dosboxCanvasScaler[args.scaler]);
             dosboxVideoModeObserver.observe(dosboxCanvas, { 
                 attributes: true, 
                 attributeFilter: ["width", "height"],
             });
 
             dosboxContainer.classList.add("running");
+            dosboxContainer.dataset.scaler = args.scaler;
         }
         catch (error)
         {
@@ -194,7 +203,7 @@ export async function start_dosbox(args = {})
                 throw "All run commands must be strings.";
             };
 
-            jsdosInterface = await jsdosInstance.main(["-conf", `${assetRootPath}/dosbox.conf`]);
+            jsdosInterface = await jsdosInstance.main(["-conf", `${assetRootPath}/dosbox.cfg`]);
 
             // Providing these shell commands via the call to jsdosInstance.main() doesn't work
             // reliably, as some commands get ignored at pseudo-random. So we'll just issue them

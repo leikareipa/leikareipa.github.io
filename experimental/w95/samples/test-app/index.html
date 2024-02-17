@@ -8,10 +8,6 @@
         <script src="../../distributable/w95-widgets.js"></script>
         <link href="../../distributable/w95.css" rel="stylesheet">
         <style>
-            #desktop {
-                background-image: url("./assets/woman.png");
-                background-size: 614px 1024px;
-            }
             #w95-debug-layer {
                 visibility: hidden;
             }
@@ -37,7 +33,7 @@
             }
         </style>
     </head>
-    <body data-w95-scale="2">
+    <body>
         <div id="w95-debug-layer"></div>
         <script type="module">
             import testApp from "./app.js";
@@ -58,12 +54,13 @@
 
             w95.registry.set("num-windows-spawned", 0);
             w95.registry.set("is-debug-enabled", false);
-            w95.registry.set("render-scale", ~~document.body.dataset.w95Scale);
-
             w95.shell.display.screenShader = dither_shader;
 
             w95.shell.boot();
+            w95.shell.wallpaper = "./assets/woman.png";
             w95.shell.run([desktop, taskbar, testApp]);
+
+            w95.registry.set("render-scale", w95.shell.display.scale);
         </script>
     </body>
 </html>

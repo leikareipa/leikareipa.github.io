@@ -3,17 +3,13 @@
     <head>
         <title></title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="https://leikareipa.github.io/dosbox/js-dos/js-dos.js"></script>
         <script src="/experimental/w95/distributable/w95-api.js"></script>
         <script src="/experimental/w95/distributable/w95-assets.js"></script>
         <script src="/experimental/w95/distributable/w95-widgets.js"></script>
         <link href="/experimental/w95/distributable/w95.css" rel="stylesheet">
     </head>
     <style>
-        #desktop {
-            background-image: url("./desktop/kukka.png");
-            background-size: 1024px 1024px;
-        }
-
         iframe.ia-browser {
             background-color: white;
             width: 1180px;
@@ -28,8 +24,27 @@
             background-color: white;
             border: none;
         }
+        
+        iframe.dosbox {
+            background-color: white;
+            border: none;
+        }
+        
+        .jsdos-canvas {
+            width: unset;
+            height: unset;
+            position: absolute;
+            cursor: none;
+            padding: 0;
+            background-color: black;
+        }
+        .dosbox-container {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+        }
     </style>
-    <body data-w95-scale="2">
+    <body>
         <script type="module">
             import notepad from "/experimental/w95/samples/notepad/app.js";
             import {icons as notepadIcons} from "/experimental/w95/samples/notepad/assets/icons.js";
@@ -41,6 +56,12 @@
             import {icons as rallySportEdIcons} from "./desktop/apps/rallysported/icons.js";
 
             import pillunsaamislaskuri from "./desktop/apps/pillunsaamislaskuri/app.js";
+
+            import quake from "./desktop/apps/quake/app.js";
+            import {icons as quakeIcons} from "./desktop/apps/quake/icons.js";
+
+            import apina from "./desktop/apps/apina/app.js";
+            import {icons as apinaIcons} from "./desktop/apps/apina/icons.js";
 
             const desktop = w95.shell.desktop({
                 showWatermark: false,
@@ -70,7 +91,7 @@
                         text: "Pillunsaamislaskuri",
                         icon: w95.icon.applicationIcon32x32,
                         onActivate() {
-                            w95.shell.run(pillunsaamislaskuri);
+                            w95.shell.run(pillunsaamislaskuri, {singleInstance: true});
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -80,9 +101,24 @@
                             w95.shell.run(notepad("./desktop/Copy of Luemut.txt"));
                         },
                     }),
+                    w95.widget.desktopIcon({
+                        text: "Quake SW",
+                        icon: quakeIcons.app32,
+                        onActivate() {
+                            w95.shell.run(quake, {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Pyörivä apina",
+                        icon: apinaIcons.app32,
+                        onActivate() {
+                            w95.shell.run(apina, {singleInstance: true});
+                        },
+                    }),
                 ]
             });
             w95.shell.boot();
+            w95.shell.wallpaper = "./desktop/kukka.png";
             w95.shell.run([desktop, w95.shell.taskbar()]);
         </script>
     </body>

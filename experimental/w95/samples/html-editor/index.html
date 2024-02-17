@@ -9,10 +9,6 @@
         <link href="../../distributable/w95.css" rel="stylesheet">
     </head>
     <style>
-        #desktop {
-            background-image: url("./assets/rosy.png");
-            background-size: 768px 768px;
-        }
         .preview {
             padding: 0.5em;
             box-sizing: border-box;
@@ -31,7 +27,7 @@
             margin-top: 0;
         }
     </style>
-    <body data-w95-scale="2">
+    <body>
         <script type="module">
             import app from "./app.js";
             import {icons} from "./assets/icons.js";
@@ -47,6 +43,7 @@
                 ]
             });
             w95.shell.boot();
+            w95.shell.wallpaper = "./assets/rosy.png";
             w95.shell.run([desktop, w95.shell.taskbar(), app]);
         </script>
     </body>

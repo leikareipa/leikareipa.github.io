@@ -5140,8 +5140,8 @@ w95.widget("titleBar", function({
                     icon: w95.icon.titleBarMinimize,
                 }, {hideIf: isDialog}),
 
-                // Grabber.
                 w95.widget.frame({
+                    $name: "_grabber",
                     x: (icon? (5 + icon.width) : 3),
                     y: 0,
                     width: (width - (icon? (5 + icon.width) : 3)) - (isDialog? 22 : 56),
@@ -5330,6 +5330,7 @@ w95.widget("window", function({
     onMouseMove = undefined,
     onKeyUp = undefined,
     onKeyDown = undefined,
+    onFocus = undefined,
     resize = undefined,
     move = undefined,
     maximize = undefined,
@@ -5350,6 +5351,7 @@ w95.widget("window", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onMouseMove));
     w95.debug?.assert(["undefined", "function"].includes(typeof onKeyUp));
     w95.debug?.assert(["undefined", "function"].includes(typeof onKeyDown));
+    w95.debug?.assert(["undefined", "function"].includes(typeof onFocus));
     w95.debug?.assert(["undefined", "function"].includes(typeof resize));
     w95.debug?.assert(["undefined", "function"].includes(typeof move));
     w95.debug?.assert(["undefined", "function"].includes(typeof maximize));
@@ -5378,6 +5380,7 @@ w95.widget("window", function({
         get menuBar() { return menuBarWidget },
         get isBlurred() { return isBlurred.now },
         get isDesktop() { return isDesktop },
+        get isGrabbed() { return this.$form["_titleBar"].$form["_grabber"].isGrabbed },
         get isBorderGrabbed() { return this.$form["_border"].isBorderGrabbed; },
         get title() { return title },
         get icon() { return icon },
@@ -5459,6 +5462,7 @@ w95.widget("window", function({
                     w95.$recurseDescendantWidgets(this, (widget)=>{widget.Message?.parentWindowRaised?.()});
                 }
                 isBlurred.set(false);
+                onFocus?.();
             }
         },
         Event: {

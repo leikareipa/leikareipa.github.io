@@ -10,6 +10,13 @@ export default {
         persist: "/rs-demo",
         run: "rally.bat",
     },
+    "^/?quake/sw?$": {
+        title: "Quake (shareware)",
+        zip: "./content/quake/shareware/quake.zip",
+        persist: "/quake",
+        run: ["cls", "quake.exe -nocdaudio"],
+        scaler: "fillerup",
+    },
     "^/?rallysported/corruptor/?$": {
         title: "RallySportED / Corruptor",
         zip: "./content/rally-sport/rs/rallys.zip",
