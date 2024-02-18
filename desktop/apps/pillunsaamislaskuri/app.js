@@ -11,7 +11,7 @@ export default {
     },
     App() {
         const minWidth = 200;
-        const minHeight = 91;
+        const minHeight = 90;
         const width = w95.state(minWidth);
         const height = w95.state(minHeight);
 
@@ -38,6 +38,7 @@ export default {
                     close() {
                         w95.windowManager.release_window(this)
                     },
+                    styleHints: [],
                     children: [
                         w95.widget.label({
                             y: 10,
