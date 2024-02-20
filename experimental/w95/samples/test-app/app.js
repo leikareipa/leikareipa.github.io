@@ -290,6 +290,7 @@ export default {
                                                     text: "2.) For more info, see the w95\ncode repository on GitHub.*",
                                                 }),
                                                 w95.widget.label({
+                                                    cursor: w95.cursor.pointer,
                                                     x: 84,
                                                     y: 68,
                                                     text: "on GitHub",

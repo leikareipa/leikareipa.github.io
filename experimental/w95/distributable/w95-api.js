@@ -346,6 +346,7 @@ function desktopApp({
                                         text: "A Windows 95 themed web UI framework",
                                     }),
                                     w95.widget.label({
+                                        cursor: w95.cursor.pointer,
                                         color: w95.palette.named.white,
                                         text: "https://github.com/leikareipa/w95",
                                         styleHints: [
@@ -1115,7 +1116,7 @@ async function generate_scaled_cursors(scale) {
             if (currentCursor === icon) {
                 enact_cursor(currentCursor);
             }
-        }
+        };
     });
 }
 
@@ -1968,11 +1969,13 @@ function mount_widget({
                 case "dialog":          return 0;
                 case "menuBar":         return 1;
                 case "menuItem":        return 1;
+                case "menuSeparator":   return 1;
                 case "menu":            return 1;
                 case "dropdownBox":     return 2;
                 case "dropdownBoxList": return 2;
-                case "desktopIcon":     return 4;
-                default:                return 5;
+                case "dropdownBoxItem": return 2;
+                case "desktopIcon":     return 3;
+                default:                return 4;
             }
         })();
 
@@ -3064,7 +3067,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-02-17.16:26:36"}`,
+    version: `BETA ${"2024-02-19.22:44:48"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     $mesh(widget) {
         return Rngon.mesh((0,_core_widget_js__WEBPACK_IMPORTED_MODULE_2__.transformed_recursive_mesh)(widget));

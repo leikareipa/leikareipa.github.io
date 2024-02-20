@@ -24,6 +24,13 @@ const win95Cursors = {
         height: 1,
         dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABmJLR0QA7QDsANV/RreOAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH6AIDDB8KeiPRJQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAALSURBVAjXY2AAAgAABQAB4iYFmwAAAABJRU5ErkJggg==",
     },
+    pointer: {
+        xOffset: 5,
+        yOffset: 0,
+        width: 17,
+        height: 22,
+        dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAWCAYAAAAmaHdCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH6AITEw0ZwQpT+gAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAACCSURBVDjL1ZTNCgAhCIQn8f2fWHAvBdZWlrWHFYIO9jGNP0A/NJ+lSD2AiAAAmHmUUwXhQvwL4prMHsGYrKOCbH1HRAq0Uhf2xMBAhqpREHVkvvxo79PqzBJneQQg5fY+7pMjEHlSdyFhNUezU1ZFCwmpuTLFo62lnsF2632rZOf9A048OdvLPkm2AAAAAElFTkSuQmCC",
+    },
     arrow: {
         xOffset: 0,
         yOffset: 0,

@@ -732,18 +732,11 @@ w95.widget("domElement", function({
 /***/ (() => {
 
 /*
- * 2022-2023 Tarpeeksi Hyvae Soft
+ * 2022-2024 Tarpeeksi Hyvae Soft
  *
  * Software: w95
  * 
  */
-
-// TODOs:
-//
-// - When the box's drop-down list of items is opened, highlight the currently-
-//   selected item. This should also scroll the item into view if it isn't already.
-//
-// - When the box has focus, highlight the input field.
 
 w95.widget("dropdownBox", function({
     x = 0,
@@ -760,32 +753,38 @@ w95.widget("dropdownBox", function({
     w95.debug?.assert(typeof y === "number");
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
-    w95.debug?.assert(typeof items === "object");
+    w95.debug?.assert((typeof items === "object") || Array.isArray(items));
     w95.debug?.assert(["number", "string"].includes(typeof itemIndex));
     w95.debug?.assert(["undefined", "function"].includes(typeof newItemIndex));
 
+    // The 'items' object can be passed in either as an array or as a set of key-value
+    // pairs. For simplicity, we'll process it internally as an array, so convert as
+    // needed.
+    if (!Array.isArray(items)) {
+        items = Object.entries(items).map(e=>({label: e[0], options: e[1]}));
+    }
+
     if (typeof itemIndex === "string") {
-        itemIndex = Object.keys(items).findIndex(key=>(key === itemIndex));
+        itemIndex = items.findIndex(item=>(item.label === itemIndex));
         w95.debug?.assert(itemIndex >= 0);
     }
 
-    const text = w95.state("");
     const isOpen = w95.state(false);
     
+    const dropdownButtonSize = 16;
+    const text = items[itemIndex].label;
     const toggleOpen = (
         isOpen.now
             ? ()=>isOpen.set(false)
             : ()=>isOpen.set(true)
     );
 
-    const dropdownButtonSize = 16;
-
     return {
         get x() { return x },
         get y() { return y },
         get width() { return width },
         get height() { return height },
-        get text() { return text.now },
+        get text() { return text },
         Form() {
             return [
                 // The currently-selected item.
@@ -804,7 +803,7 @@ w95.widget("dropdownBox", function({
                             y: 2,
                             width: (width - dropdownButtonSize - 7),
                             height: (height - 4),
-                            text: text.now,
+                            text,
                             color: (
                                 isDisabled
                                     ? w95.palette.widget.disabled1
@@ -837,10 +836,9 @@ w95.widget("dropdownBox", function({
                     isOpen: isOpen.now,
                     newItemIndex(item, idx) {
                         w95.debug?.assert(item._type === "dropdownBoxItem");
-                        text.set(item.text);
                         isOpen.set(false);
                         if (itemIndex !== idx) {
-                            newItemIndex?.(idx);
+                            newItemIndex?.(idx, item);
                         }
                     },
                     onCloseRequested() {
@@ -1008,7 +1006,7 @@ w95.widget("dropdownBoxList", function({
     y = 0,
     width = 100,
     isOpen = false,
-    items = {},
+    items = [],
     itemIndex = 0,
     newItemIndex = undefined,
     onCloseRequested = undefined,
@@ -1018,8 +1016,8 @@ w95.widget("dropdownBoxList", function({
     w95.debug?.assert(typeof y === "number");
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof isOpen === "boolean");
-    w95.debug?.assert(typeof items === "object");
     w95.debug?.assert(typeof itemIndex === "number");
+    w95.debug?.assert(Array.isArray(items));
     w95.debug?.assert(["undefined", "function"].includes(typeof onCloseRequested));
     w95.debug?.assert(["undefined", "function"].includes(typeof newItemIndex));
 
@@ -1034,9 +1032,9 @@ w95.widget("dropdownBoxList", function({
         get listItems() { return this.$form["_listItemsContainer"].$childWidgets },
         get isActivePopupMenu() { return isOpen },
         Form() {
-            const itemWidgets = Object.keys(items).map((k, idx)=>w95.widget.dropdownBoxItem({
-                ...items[k],
-                text: k,
+            const itemWidgets = items.map((item, idx)=>w95.widget.dropdownBoxItem({
+                ...item.options,
+                text: item.label,
                 onMouseEnter: ()=>{
                     highlightedIdx.set(idx);
                 },
@@ -3259,7 +3257,7 @@ w95.widget("menu", function({
     
             // Size the menu to its contents.
             const maxChildWidth = nonSeparatorItems.reduce((max, c)=>Math.max(max, c.width), 0);
-            const totalChildHeight = this.menuItems.reduce((sum, c)=>(sum + (c.height - 0)), 0);
+            const totalChildHeight = this.menuItems.reduce((sum, c)=>(sum + (c.height - 1)), 1);
             width.set(maxChildWidth + 6);
             height.set(totalChildHeight + 6);
             this.menuItems.forEach(child=>child.Message.resize(maxChildWidth));
@@ -3268,7 +3266,7 @@ w95.widget("menu", function({
             let yOffs = 3;
             for (const menuItem of this.menuItems) {
                 menuItem.Message.moveTo(3, yOffs);
-                yOffs += menuItem.height;
+                yOffs += (menuItem.height - 1);
             }
         },
         BeforeUnmount() {
@@ -4644,8 +4642,15 @@ w95.widget("tabControl", function({
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
     w95.debug?.assert(typeof tabIndex === "number");
-    w95.debug?.assert(typeof tabs === "object");
+    w95.debug?.assert((typeof tabs === "object") || Array.isArray(tabs));
     w95.debug?.assert(["undefined", "function"].includes(typeof newTabIndex));
+
+    // The 'tabs' object can be passed in either as an array or as a set of key-value
+    // pairs. For simplicity, we'll process it internally as an array, so convert as
+    // needed.
+    if (!Array.isArray(tabs)) {
+        tabs = Object.entries(tabs).map(e=>({label: e[0], options: e[1]}));
+    }
 
     const tabButtonHeight = 20;
 
@@ -4656,18 +4661,18 @@ w95.widget("tabControl", function({
         get height() { return height },
         get tabIndex() { return tabIndex },
         Form() {    
-            const tabButtons = Object.keys(tabs).reduce((list, tabLabel, idx)=>{
+            const tabButtons = tabs.reduce((list, tab, idx)=>{
                 const isFirstTab = (idx === 0);
                 const isActiveTab = (idx === tabIndex);
-                const labelWidth = (w95.font.stringWidth(tabLabel) + 13);
+                const labelWidth = (w95.font.stringWidth(tab.label) + 13);
                 list.buttons.push(
                     w95.widget.button({
                         x: (list.x - (isActiveTab? 2 : 0)),
                         y: (isActiveTab? 0 : 2),
                         width: labelWidth + (isActiveTab? 4 : 0),
                         height: tabButtonHeight + (isActiveTab? 2 : 0),
-                        text: tabLabel,
-                        isDisabled: ((isDisabled || tabs[tabLabel].isDisabled) && (idx !== tabIndex)),
+                        text: tab.label,
+                        isDisabled: ((isDisabled || tab.options.isDisabled) && (idx !== tabIndex)),
                         shape: w95.buttonShape.tabControl,
                         styleHints: [
                             (isFirstTab? w95.styleHint.first : w95.styleHint.void),
@@ -4685,14 +4690,14 @@ w95.widget("tabControl", function({
 
             const activeTabIdxButton = tabButtons.splice(tabIndex, 1)[0];
 
-            const tabContents = Object.values(tabs).map((tab, idx)=>{
+            const tabContents = tabs.map((tab, idx)=>{
                 return w95.widget.frame({
                     x: 2,
                     y: 2,
                     width: (width - 4),
                     height: (height - tabButtonHeight - 4),
                     shape: w95.frameShape.none,
-                    children: tab.children,
+                    children: tab.options.children,
                 }, {
                     hideIf: (idx !== tabIndex),
                 });

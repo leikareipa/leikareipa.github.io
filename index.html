@@ -29,6 +29,12 @@
             background-color: white;
             border: none;
         }
+
+        canvas.ngon-texture-convert {
+            background-color: rgb(192, 192, 192);
+            pointer-events: none;
+            image-rendering: pixelated;
+        }
         
         .jsdos-canvas {
             width: unset;
@@ -62,6 +68,8 @@
 
             import apina from "./desktop/apps/apina/app.js";
             import {icons as apinaIcons} from "./desktop/apps/apina/icons.js";
+
+            import rngonTextureConvert from "./desktop/apps/rngon-texture-convert/app.js";
 
             const desktop = w95.shell.desktop({
                 showWatermark: false,
@@ -113,6 +121,13 @@
                         icon: apinaIcons.app32,
                         onActivate() {
                             w95.shell.run(apina, {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Retro texture converter",
+                        icon: w95.icon.applicationIcon32x32,
+                        onActivate() {
+                            w95.shell.run(rngonTextureConvert);
                         },
                     }),
                 ]
