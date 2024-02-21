@@ -2935,19 +2935,28 @@ w95.widget("lineEdit", function({
     w95.debug?.assert(["undefined", "function"].includes(typeof onSubmit));
     w95.debug?.assert(["undefined", "function"].includes(typeof newText));
 
+    const textBuffer = w95.state(text, w95.noEffect);
     const showCursor = w95.state(true);
-    const cursorPosition = w95.state(text.length);
+    const cursorPosition = w95.state(textBuffer.now.length);
     const viewBufferStart = w95.state(0);
-    const viewBufferEnd = w95.state(text.length);
+    const viewBufferEnd = w95.state(textBuffer.now.length);
     const hasFocus = w95.state(false);
+
+    // Reset the internal state if the input text was modified externally.
+    if (textBuffer.now !== text) {
+        cursorPosition.set(0);
+        viewBufferStart.set(0);
+        viewBufferEnd.set(text.length);
+        textBuffer.set(text);
+    }
 
     let cursorBlinkTimeout;
     const borderWidth = 2;
     const horPadding = 5;
-    const visibleText = text.slice(viewBufferStart.now, viewBufferEnd.now);
+    const visibleText = textBuffer.now.slice(viewBufferStart.now, viewBufferEnd.now);
     const font = w95.font;
     const fontVariant = font.regular;
-    const cursorXOffset = (leftPadding + w95.font.stringWidth(text.slice(viewBufferStart.now, cursorPosition.now), font));
+    const cursorXOffset = (leftPadding + w95.font.stringWidth(textBuffer.now.slice(viewBufferStart.now, cursorPosition.now), font));
 
     return {
         get x() { return x },
@@ -3023,7 +3032,7 @@ w95.widget("lineEdit", function({
             replaceText(newText) {
                 w95.debug?.assert(typeof newText === "string");
 
-                if (text === newText) {
+                if (textBuffer.now === newText) {
                     return;
                 }
 
@@ -3031,17 +3040,17 @@ w95.widget("lineEdit", function({
                 viewBufferEnd.set(newText.length);
 
                 set_cursor_position(0);
-                text = remove_text(text.length);
-                text = enter_text(newText);
+                textBuffer.set(remove_text(textBuffer.now.length));
+                textBuffer.set(enter_text(newText));
 
                 showCursor.set(true);
-                set_cursor_position(text.length);
+                set_cursor_position(textBuffer.length);
                 
-                newText?.(text, this);
+                newText?.(textBuffer.now, this);
             },
             submit() {
                 if (onSubmit) {
-                    onSubmit({text, widget:this});
+                    onSubmit({text:textBuffer.now, widget:this});
                     this.Message.blur();
                 }
             }
@@ -3065,7 +3074,7 @@ w95.widget("lineEdit", function({
                 w95.debug?.assert(event instanceof KeyboardEvent);
                 w95.debug?.assert(typeof event.key === "string");
 
-                let updatedText = text;
+                let updatedText = textBuffer.now;
 
                 if (event.key.length !== 1) {
                     return;
@@ -3073,9 +3082,9 @@ w95.widget("lineEdit", function({
 
                 updatedText = enter_text(event.key);
 
-                if (text !== updatedText) {
-                    text = updatedText;
-                    newText?.(text, this);
+                if (textBuffer.now !== updatedText) {
+                    textBuffer.set(updatedText);
+                    newText?.(textBuffer.now, this);
                 }
 
                 return;
@@ -3088,7 +3097,7 @@ w95.widget("lineEdit", function({
                     return;
                 }
 
-                let updatedText = text;
+                let updatedText = textBuffer.now;
 
                 if (event.key == "Backspace") {
                     updatedText = remove_text(-1);
@@ -3106,7 +3115,7 @@ w95.widget("lineEdit", function({
                     set_cursor_position(cursorPosition.now - 1);
                     if (cursorPosition.now < viewBufferStart.now) {
                         viewBufferStart.set(viewBufferStart.now - 1);
-                        while (!string_fits_widget(text.slice(viewBufferStart.now, viewBufferEnd.now))) {
+                        while (!string_fits_widget(textBuffer.now.slice(viewBufferStart.now, viewBufferEnd.now))) {
                             viewBufferEnd.set(viewBufferEnd.now - 1);
                         };
                     }
@@ -3115,15 +3124,15 @@ w95.widget("lineEdit", function({
                     set_cursor_position(cursorPosition.now + 1);
                     if (cursorPosition.now > viewBufferEnd.now) {
                         viewBufferEnd.set(viewBufferEnd.now + 1);
-                        while (!string_fits_widget(text.slice(viewBufferStart.now, viewBufferEnd.now))) {
+                        while (!string_fits_widget(textBuffer.now.slice(viewBufferStart.now, viewBufferEnd.now))) {
                             viewBufferStart.set(viewBufferStart.now + 1);
                         };
                     }
                 }
 
-                if (text !== updatedText) {
-                    text = updatedText;
-                    newText?.(text);
+                if (textBuffer.now !== updatedText) {
+                    textBuffer.set(updatedText);
+                    newText?.(textBuffer.now);
                 }
 
                 return;
@@ -3134,11 +3143,17 @@ w95.widget("lineEdit", function({
     function remove_text(count = 0) {
         w95.debug?.assert(typeof count === "number");
 
-        let updatedText = text;
+        let updatedText = textBuffer.now;
 
         switch (Math.sign(count)) {
             case 1: {
-                updatedText = (text.slice(0, cursorPosition.now) + text.slice(cursorPosition.now + count));
+                updatedText = (textBuffer.now.slice(0, cursorPosition.now) + textBuffer.now.slice(cursorPosition.now + count));
+                
+                viewBufferEnd.set(text.length);
+                while (!string_fits_widget(updatedText.slice(viewBufferStart.now, viewBufferEnd.now))) {
+                    viewBufferEnd.set(viewBufferEnd.now - 1);
+                };
+
                 break;
             }
             case -1: {
@@ -3149,8 +3164,12 @@ w95.widget("lineEdit", function({
                 const oldCursorPos = cursorPosition.now;
                 const newCursorPos = set_cursor_position(oldCursorPos + count);
 
-                updatedText = (text.slice(0, newCursorPos) + text.slice(oldCursorPos));
-                viewBufferEnd.set(viewBufferEnd.now + count);
+                updatedText = (textBuffer.now.slice(0, newCursorPos) + textBuffer.now.slice(oldCursorPos));
+
+                viewBufferEnd.set(text.length);
+                while (!string_fits_widget(updatedText.slice(viewBufferStart.now, viewBufferEnd.now))) {
+                    viewBufferEnd.set(viewBufferEnd.now - 1);
+                };
 
                 if (cursorPosition.now < viewBufferStart.now) {
                     viewBufferStart.set(Math.max(0, (viewBufferStart.now - 10)));
@@ -3175,23 +3194,26 @@ w95.widget("lineEdit", function({
         newText = newText.split("").filter(ch=>validator.test(ch)).join("");
 
         if (!newText.length) {
-            return text;
+            return textBuffer.now;
         }
 
-        const updatedText = [text.slice(0, cursorPosition.now), newText, text.slice(cursorPosition.now)].join("");
+        const updatedText = [textBuffer.now.slice(0, cursorPosition.now), newText, textBuffer.now.slice(cursorPosition.now)].join("");
         
         showCursor.set(true);
         set_cursor_position((cursorPosition.now + newText.length), updatedText);
 
         viewBufferEnd.set(viewBufferEnd.now + 1);
-        while (!string_fits_widget(updatedText.slice(viewBufferStart.now, viewBufferEnd.now))) {
+        while (!string_fits_widget(updatedText.slice(viewBufferStart.now, cursorPosition.now))) {
             viewBufferStart.set(viewBufferStart.now + 1);
+        };
+        while (!string_fits_widget(updatedText.slice(viewBufferStart.now, viewBufferEnd.now))) {
+            viewBufferEnd.set(viewBufferEnd.now - 1);
         };
 
         return updatedText;
     };
 
-    function set_cursor_position(newPosition = 0, referenceText = text) {
+    function set_cursor_position(newPosition = 0, referenceText = textBuffer.now) {
         w95.debug?.assert(typeof newPosition === "number");
         newPosition = Math.max(0, Math.min(newPosition, referenceText.length));
         showCursor.set(true);
