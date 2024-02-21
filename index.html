@@ -69,7 +69,7 @@
             import apina from "./desktop/apps/apina/app.js";
             import {icons as apinaIcons} from "./desktop/apps/apina/icons.js";
 
-            import rngonTextureConvert from "./desktop/apps/rngon-texture-convert/app.js";
+            import rngonTextureConvert from "./desktop/apps/rngon-texture-converter/app.js";
 
             const desktop = w95.shell.desktop({
                 showWatermark: false,
@@ -124,7 +124,7 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Retro texture converter",
+                        text: "Rngon texture converter",
                         icon: w95.icon.applicationIcon32x32,
                         onActivate() {
                             w95.shell.run(rngonTextureConvert);
