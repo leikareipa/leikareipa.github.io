@@ -15,7 +15,7 @@ const blogPostAbstract = {
                     .replace(/C\+\+/g, "cpp")
                     .toLowerCase()
                     .replace(/[\/–\s]+/g, "-")
-                    .replace(/[^a-zA-Z\d\s-\.]/g, "")
+                    .replace(/[^a-zA-Z\d\s-]/g, "")
                           
             return `/blog/${simplifiedTitle}/`;
         },
