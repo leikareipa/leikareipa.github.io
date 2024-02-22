@@ -824,6 +824,6 @@ The efforts from Gemini and GPT-3.5 aren't worth discussing in the sense that th
 
 ## Final notes
 
-As I spend more time with Gemini Advanced, I develop some concerns. The model is good at talking but its ability to reason can be superficial and it's not good at following unusual paths. This might indicate a weaker model tuned for specific tasks or a stronger model gimped by overzealous guardrails.
+As I spend more time with Gemini Advanced, I develop some concerns. The model is good at talking but its ability to reason can be superficial and it's not good at following unusual paths.
 
 The next version of Gemini reportedly will ship with a very large context window but is otherwise expected to be comparable to the current model. Which is to say, the  near-term usefulness of Gemini for coding looks uncertain.
