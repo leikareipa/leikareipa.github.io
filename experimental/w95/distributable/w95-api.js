@@ -2870,7 +2870,7 @@ const windowManager = {
         function is_point_inside_clip_rect(point, rect) {
             return (
                 (point.x >= rect.left && (point.x < rect.right) &&
-                (point.y >= rect.top) && (point.y < (rect.bottom - 1)))
+                (point.y >= rect.top) && (point.y < rect.bottom))
             )
         }
 
@@ -2880,9 +2880,9 @@ const windowManager = {
             }
             return (
                 (point.x >= rect.x) &&
-                (point.x <= (rect.x + rect.width - 1)) &&
+                (point.x < (rect.x + rect.width)) &&
                 (point.y >= rect.y) &&
-                (point.y <= (rect.y + rect.height - 1))
+                (point.y < (rect.y + rect.height))
             )
         }
     },
@@ -3067,7 +3067,7 @@ const w95 = {
     shell: _core_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _core_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _core_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-02-21.16:52:21"}`,
+    version: `BETA ${"2024-02-22.15:46:35"}`,
     $recurseDescendantWidgets: _core_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     $mesh(widget) {
         return Rngon.mesh((0,_core_widget_js__WEBPACK_IMPORTED_MODULE_2__.transformed_recursive_mesh)(widget));

@@ -1057,7 +1057,7 @@ w95.widget("dropdownBoxList", function({
             const borderWidth = 1;
     
             // Size the menu to its contents.
-            const totalChildHeight = (1 + this.listItems.reduce((sum, c)=>(sum + (c.height - 1)), 0));
+            const totalChildHeight = this.listItems.reduce((sum, c)=>(sum + c.height), 0);
             this.listItems.forEach(child=>child.Message.resize((width - (borderWidth * 2))));
             height.set(totalChildHeight + (borderWidth * 2));
     
@@ -1065,7 +1065,7 @@ w95.widget("dropdownBoxList", function({
             let yOffs = borderWidth;
             for (const listItem of this.listItems) {
                 listItem.Message.moveTo(borderWidth, yOffs);
-                yOffs += (listItem.height - 1);
+                yOffs += listItem.height;
             }
 
             if (highlightedIdx.now === undefined) {
@@ -3279,7 +3279,7 @@ w95.widget("menu", function({
     
             // Size the menu to its contents.
             const maxChildWidth = nonSeparatorItems.reduce((max, c)=>Math.max(max, c.width), 0);
-            const totalChildHeight = this.menuItems.reduce((sum, c)=>(sum + (c.height - 1)), 1);
+            const totalChildHeight = this.menuItems.reduce((sum, c)=>(sum + c.height), 0);
             width.set(maxChildWidth + 6);
             height.set(totalChildHeight + 6);
             this.menuItems.forEach(child=>child.Message.resize(maxChildWidth));
@@ -3288,7 +3288,7 @@ w95.widget("menu", function({
             let yOffs = 3;
             for (const menuItem of this.menuItems) {
                 menuItem.Message.moveTo(3, yOffs);
-                yOffs += (menuItem.height - 1);
+                yOffs += menuItem.height;
             }
         },
         BeforeUnmount() {
