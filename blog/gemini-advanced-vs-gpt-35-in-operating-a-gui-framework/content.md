@@ -1,4 +1,4 @@
-<post-date date="22 February 2024"/>
+<post-date date="22 February 2024" edited="24 February 2024"/>
 
 # Gemini Advanced vs. GPT-3.5 in operating a GUI framework
 
@@ -11,14 +11,20 @@ The gist of the test is like so:
 1. Give the AI sample code demonstrating usage of the framework.
 2. Have the AI use the framework to build a GUI.
 
-Let's go!
+Let's go! Or [be distracted](https://www.midjourney.com/showcase).
 
 ## Simple window
 
-> <i>"Below is a sample javascript web app created using a windows 95 lookalike ui framework. Use the framework to create a new app with a menu bar ("File" and "Help", File is empty and Help -> About shows an about dialog) and a tab control with two empty tabs."</i>
+<x-prompt>
+    <p>
+        Below is a sample javascript web app created using a windows 95 lookalike ui framework.
+    </p>
+    <p>
+        Use the framework to create a new app with a menu bar ("File" and "Help", File is empty and Help -> About shows an about dialog) and a tab control with two empty tabs.
+    </p>
 
-> Input code
-```javascript [{inline-class:pipp}]
+> Code
+```javascript
 export default {
     Meta: {
         name: "Test app for w95",
@@ -569,25 +575,32 @@ export default {
     },
 };
 ```
+</x-prompt>
 
 > Gemini Advanced
-``` [{expanded}{no-line-numbers}{inline-class:gpt-response-text}]
+``` [{no-line-numbers}{inline-class:model-response}]
 Something went wrong.
 ```
 
 > GPT-3.5
-![{image}{expanded}](./2-gpt-1.png)
+![{image}{inline-class:model-response}](./2-gpt-1.png)
 
 I gave Gemini a day and some number of prompting attempts, but it wasn't able to process this task, although it could respond to other prompts. I can only assume the token count was too high.
 
 GPT-3.5 did a reasonable job, with only minor issues: the File menu wasn't empty and neither were the tabs, and the tab widget was too wide for the window.
 
-### Simpler sample code for Gemini
+Assuming the above prompt was too long for Gemini, I cut out some of the sample app and tried again.
 
-Assuming the above prompt was too long for Gemini, I cut out some of the sample app and tried again using the same prompt.
+<x-prompt>
+    <p>
+        Below is a sample javascript web app created using a windows 95 lookalike ui framework.
+    </p>
+    <p>
+        Use the framework to create a new app with a menu bar ("File" and "Help", File is empty and Help -> About shows an about dialog) and a tab control with two empty tabs.
+    </p>
 
-> Input code
-```javascript [{inline-class:pipp}]
+> Code
+```javascript 
 export default {
     Meta: {
         name: "Test app for w95",
@@ -769,11 +782,11 @@ export default {
         };
     },
 };
-
 ```
+</x-prompt>
 
 > Gemini Advanced
-![{image}{expanded}](./3-gemini-1.png)
+![{image}{inline-class:model-response}](./3-gemini-1.png)
 
 This time it's a good effort from Gemini, just as requested.
 
@@ -781,25 +794,220 @@ This time it's a good effort from Gemini, just as requested.
 
 Unlike GPT-3.5, Gemini has the ability to process images. So let's feed it a mock sketch of a UI and have it convert it into code.
 
-...Although the process wasn't quite that simple in practice. I found Gemini would for some reason refuse to look at the image if given together with the sample code. I had to use separate prompts.
+...Although the process wasn't quite that smooth. I found Gemini would explicitly refuse to look at the image if given together with the sample code. I had to use separate prompts.
 
-> <i>"Examine the UI in this mockup sketch."</i>
-
-<span></span>
-
-![{image}{headerless}](./1009acd1-0faf-4113-ad1a-60975f7a383d.png)
+<x-prompt>
+    <p>
+        Examine the UI in this mockup sketch.
+    </p>
+    <dokki-image src="./1009acd1-0faf-4113-ad1a-60975f7a383d.png" width="556" height="394">
+        <template #caption>
+            Image
+        </template>
+    </dokki-image>
+</x-prompt>
 
 > Gemini Advanced
-``` [{expanded}{no-line-numbers}{inline-class:gpt-response-text}]
+``` [{no-line-numbers}{inline-class:model-response}]
 [Response omitted for clarity.]
 ```
 
-> <i>"Below is a sample javascript web app created using a windows 95 lookalike ui framework. Examine the sample app to learn all you can about this framework, then write code to implement the UI from the sketch using the framework."</i>
+<x-prompt>
+    <p>
+        Below is a sample javascript web app created using a windows 95 lookalike ui framework.
+    </p>
+    <p>
+        Examine the sample app to learn all you can about this framework, then write code to implement the UI from the sketch using the framework.
+    </p>
 
-<span></span>
+> Code
+```javascript 
+export default {
+    Meta: {
+        name: "Test app for w95",
+        version: "0.1",
+        author: "Tarpeeksi Hyvae Soft",
+    },
+    App() {
+        const width = w95.state(400);
+        const height = w95.state(Math.max(422, ~~(w95.shell.display.height * 0.8)));
+
+        const x = w95.state(
+            ~~((w95.shell.display.width - width.now) / 2),
+            w95.reRenderOnly
+        );
+        const y = w95.state(
+            ~~(0.5 * (w95.shell.display.visibleHeight - height.now)),
+            w95.reRenderOnly
+        );
+
+        const isErrorDialogOpen = w95.state(false);
+        const lineEditText = w95.state("Left empty");
+        const numEditText = w95.state("123");
+        const userName = w95.state("");
+        const widgetDisable = w95.state(false);
+        const tabIndex = w95.state(1);
+        const dropdownIndex = w95.state(2);
+
+        return {
+            get x() { return x.now },
+            get y() { return y.now },
+            get width() { return width.now },
+            get height() { return height.now },
+            Form() {
+                return w95.widget.window({
+                    parent: this,
+                    title: `${userName.now.length? `${userName.now} - ` : ""}Developer's test app for w95`,
+                    resize(deltaWidth, deltaHeight) {
+                        height.set(Math.max(100, (height.now + deltaHeight)));
+                    },
+                    move(deltaX, deltaY) {
+                        x.set(x.now + deltaX);
+                        y.set(y.now + deltaY);
+                    },
+                    close() {
+                        w95.windowManager.release_window(this)
+                    },
+                    children: [
+                        w95.widget.groupBox({
+                            title: "Fields",image.png
+                            x: 6,
+                            y: 22,
+                            width: 182,
+                            height: 85,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                w95.widget.dropdownBox({
+                                    x: 10,
+                                    y: 15,
+                                    width: "pw - 20",
+                                    itemIndex: dropdownIndex.now,
+                                    items: {
+                                        "2 Color": {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 2);
+                                            },
+                                        },
+                                        "16 Color": {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 16);
+                                            },
+                                        },
+                                        "True Color (32 bit)": {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 32e6);
+                                            },
+                                        },
+                                    },
+                                    newItemIndex(idx) {
+                                        dropdownIndex.set(idx);
+                                    },
+                                }),
+                                w95.widget.lineEdit({
+                                    x: 10,
+                                    y: 45,
+                                    width: "pw - 76",
+                                    text: lineEditText.now,
+                                    newText(text) {
+                                        lineEditText.set(text);
+                                    },
+                                }),
+                                w95.widget.lineEdit({
+                                    x: "pw - 58",
+                                    y: 45,
+                                    width: "pw - 134",
+                                    validator: /[0-9]/,
+                                    text: numEditText.now,
+                                    newText(text) {
+                                        numEditText.set(text);
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.groupBox({
+                            title: "Tab widget",
+                            x: 196,
+                            y: 82,
+                            width: 190,
+                            height: 183,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                w95.widget.tabControl({
+                                    x: 10,
+                                    y: 15,
+                                    width: "pw - 20",
+                                    height: "ph - 27",
+                                    tabIndex: tabIndex.now,
+                                    newTabIndex(idx) {
+                                        tabIndex.set(idx);
+                                    },
+                                    tabs: {
+                                        "Notes": {
+                                            children: [
+                                                w95.widget.label({
+                                                    x: 9,
+                                                    y: 7,
+                                                    text: "1.) Use the #no-debug URL\nhash to disable the DOM\ndebug layer.",
+                                                }),
+                                            ]
+                                        },
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.menuBar({
+                            width: (width.now - 8),
+                            children: [
+                                w95.widget.menuItem({
+                                    label: "File",
+                                    isTopLevel: true,
+                                    isDisabled: widgetDisable.now,
+                                    menu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuItem({
+                                                label: "Cloud it",
+                                                onClick() {
+                                                    w95.shell.wallpaper = "./assets/clouds.gif";
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: "Exit",
+                                                onClick(widget) {
+                                                    w95.windowManager.release_window(widget.$app.window);
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                            ],
+                        }),
+                        w95.shell.popup({
+                            parent: this,
+                            icon: w95.icon.error,
+                            title: "Error",
+                            text: "The NTVDM CPU has encountered an illegal instruction.",
+                            buttons: [
+                                w95.widget.button({
+                                    width: 75,
+                                    text: "OK",
+                                    onClick() {
+                                        isErrorDialogOpen.set(false);
+                                    },
+                                }),
+                            ],
+                        }, {hideIf: !isErrorDialogOpen.now}),
+                    ],
+                });
+            },
+        };
+    },
+};
+```
+</x-prompt>
 
 > Gemini Advanced
-![{image}{expanded}](./4-gemini.png)
+![{image}{inline-class:model-response}](./4-gemini.png)
 
 Not perfect, but a start.
 
@@ -812,18 +1020,19 @@ The model appears to have understood only the most obvious widgets, ie. "Press" 
 Harking back to [the test I gave GPT-4 where I had it create Minesweeper using the framework](/blog/gpt-4-implementing-minesweeper-using-a-gui-framework-it-hadnt-seen-before/), let's see how the other two models do using the first two prompts from that test.
 
 > Gemini Advanced
-![{image}{expanded}](./5-gemini.png)
+![{image}{inline-class:model-response}](./5-gemini.png)
 
 > GPT-3.5
-![{image}{expanded}](./5-gpt.png)
+![{image}{inline-class:model-response}](./5-gpt.png)
 
-GPT-4 is in a category of its own. It understood the layout of the board down to the menu bar and was able to recreate it well.
+The efforts from Gemini and GPT-3.5 aren't worth discussing in the sense that they don't cut the mustard by comparison to GPT-4, which understood the layout of the game board down to the menu bar and was able to recreate it well.
 
-The efforts from Gemini and GPT-3.5 aren't worth discussing in the sense that they don't cut the mustard by comparison. But if we do, it seems Gemini's idea of the overall layout of the game board was better than GPT-3.5's, although still not very accurate.
-
+But if we must, Gemini's idea of the overall layout of the board was better than GPT-3.5's, although still not very accurate. It hallucinated a status bar and made a bit of a mess otherwise. GPT-3.5 was hyper-focused on the core gameplay section.
 
 ## Final notes
 
-As I spend more time with Gemini Advanced, I develop some concerns. The model is good at talking but its ability to reason can be superficial and it's not good at following unusual paths.
+As I spend more time with Gemini Advanced, I develop some concerns. The model is good at talking but its ability to reason can be superficial and it easily ends up hallucinating extrapolations from a weak basis. It has several smells of a small model or one confused by excessive guardrails.
 
-The next version of Gemini reportedly will ship with a very large context window but is otherwise expected to be comparable to the current model. Which is to say, the near-term usefulness of Gemini for coding looks uncertain.
+The next version of Gemini reportedly will ship with a very large context window but is otherwise expected to be comparable to the current model. Which is to say, the near-term usefulness of Gemini for coding looks uncertain. It's great if you can fit large sections of your codebase in-context, but less great if the model draws a blank trying to reason about it.
+
+As per this test and others, Gemini does tend to beat GPT-3.5 in coding, but that bar is too low in my opinion.

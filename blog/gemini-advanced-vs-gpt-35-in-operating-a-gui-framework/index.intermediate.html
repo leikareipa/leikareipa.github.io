@@ -13,37 +13,34 @@
         <script type="module" src="../+assets/post-date.js"></script>
 
         <style>
-            .pipp {
-                background-color: var(--dokkiCSS-embedded-auxiliary-color) !important;
+            x-prompt {
+                margin: 2rem 0;
+                margin-bottom: 1.375rem;
+                display: block;
+                padding: calc(1.5 * var(--dokkiCSS-embedded-header-padding));
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                position: relative;
             }
-            .gpt-response-text .dokki-area {
+
+            x-prompt::before {
+                content: "Prompt:";
+                position: absolute;
+                top: -1.5ch;
+                background-color: var(--dokkiCSS-page-secondary-bg-color);
+                font-weight: var(--dokkiCSS-bold-text-weight);
+                padding: 0 0.5em;
+                margin-left: -0.5em;
+            }
+
+            .model-response {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color) !important;
+                border: none !important;
+            }
+
+            .model-response .dokki-area {
                 background-color: transparent !important;
                 padding: 0.25rem !important;
                 padding-top: 0 !important;
-            }
-            .gpt-response.dokki-code .caption > .type > .text {
-                display: none;
-            }
-            .gpt-response.dokki-code .caption > .type > .icon {
-                margin-right: 0.4em;
-            }
-            .gpt-response.dokki-code .caption > .type > .icon > i {
-                visibility: hidden;
-            }
-            .gpt-response.dokki-code .caption > .type > .icon > i::before {
-                font-family: "Font Awesome 5 Free";
-                font-weight: normal;
-                content: "\f075";
-                visibility: visible;
-                transform: scaleX(-1);
-                display: inline-block;
-            }
-            .gpt-response.dokki-code .caption > .label {
-                margin: 0;
-                display: inline-block;
-            }
-            td.bad {
-                background-color: var(--dokkiCSS-embedded-auxiliary-color);
             }
         </style>
     </head>
