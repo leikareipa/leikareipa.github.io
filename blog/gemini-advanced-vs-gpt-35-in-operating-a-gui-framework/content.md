@@ -1,4 +1,4 @@
-<post-date date="22 February 2024" edited="24 February 2024"/>
+<post-date date="22 February 2024" edited="25 February 2024"/>
 
 # Gemini Advanced vs. GPT-3.5 in operating a GUI framework
 
@@ -1031,8 +1031,6 @@ But if we must, Gemini's idea of the overall layout of the board was better than
 
 ## Final notes
 
-As I spend more time with Gemini Advanced, I develop some concerns. The model is good at talking but its ability to reason can be superficial and it easily ends up hallucinating extrapolations from a weak basis. It has several smells of a small model or one confused by excessive guardrails.
+As I spend more time with Gemini Advanced, I develop some concerns. The model is good at talking but its ability to reason can be superficial and it easily ends up hallucinating extrapolations from a weak basis. It has smells of a small model or one confused by excessive guardrails.
 
-The next version of Gemini reportedly will ship with a very large context window but is otherwise expected to be comparable to the current model. Which is to say, the near-term usefulness of Gemini for coding looks uncertain. It's great if you can fit large sections of your codebase in-context, but less great if the model draws a blank trying to reason about it.
-
-As per this test and others, Gemini does tend to beat GPT-3.5 in coding, but that bar is too low in my opinion.
+The next version of Gemini reportedly will ship with a very large context window but is otherwise expected to be comparable to the current model. Which is to say, the near-term usefulness of Gemini for coding looks uncertain &ndash; as per this test and others, Gemini as-is does tend to beat GPT-3.5, but that bar is too low in my opinion.

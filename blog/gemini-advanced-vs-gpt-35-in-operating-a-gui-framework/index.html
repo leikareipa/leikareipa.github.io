@@ -25,7 +25,7 @@
             x-prompt::before {
                 content: "Prompt:";
                 position: absolute;
-                top: -1.5ch;
+                top: -1.25ex;
                 background-color: var(--dokkiCSS-page-secondary-bg-color);
                 font-weight: var(--dokkiCSS-bold-text-weight);
                 padding: 0 0.5em;
@@ -62,7 +62,7 @@
                     </dokki-header>
                     <dokki-topics>
                         
-<post-date date="22 February 2024" edited="24 February 2024"></post-date>
+<post-date date="22 February 2024" edited="25 February 2024"></post-date>
 <dokki-topic title="Gemini Advanced vs. GPT-3.5 in operating a GUI framework">
 <p>When it comes to coding, Gemini Advanced struggles to compete with GPT-4. Let's instead put it up against GPT-3.5 in <a href="/blog/gpt-4-implementing-minesweeper-using-a-gui-framework-it-hadnt-seen-before/">a test I had GPT-4 do a year ago</a>; namely, operating a foreign JavaScript GUI framework.</p>
 <p>The framework is one I built myself, <a href="https://github.com/leikareipa/w95">w95</a>. It wasn't included in GPT-4's training data and probably remains fairly obscure to the current-gen models.</p>
@@ -1085,9 +1085,8 @@
 <p>The efforts from Gemini and GPT-3.5 aren't worth discussing in the sense that they don't cut the mustard by comparison to GPT-4, which understood the layout of the game board down to the menu bar and was able to recreate it well.</p>
 <p>But if we must, Gemini's idea of the overall layout of the board was better than GPT-3.5's, although still not very accurate. It hallucinated a status bar and made a bit of a mess otherwise. GPT-3.5 was hyper-focused on the core gameplay section.</p>
 </dokki-subtopic><dokki-subtopic title="Final notes">
-<p>As I spend more time with Gemini Advanced, I develop some concerns. The model is good at talking but its ability to reason can be superficial and it easily ends up hallucinating extrapolations from a weak basis. It has several smells of a small model or one confused by excessive guardrails.</p>
-<p>The next version of Gemini reportedly will ship with a very large context window but is otherwise expected to be comparable to the current model. Which is to say, the near-term usefulness of Gemini for coding looks uncertain. It's great if you can fit large sections of your codebase in-context, but less great if the model draws a blank trying to reason about it.</p>
-<p>As per this test and others, Gemini does tend to beat GPT-3.5 in coding, but that bar is too low in my opinion.</p>
+<p>As I spend more time with Gemini Advanced, I develop some concerns. The model is good at talking but its ability to reason can be superficial and it easily ends up hallucinating extrapolations from a weak basis. It has smells of a small model or one confused by excessive guardrails.</p>
+<p>The next version of Gemini reportedly will ship with a very large context window but is otherwise expected to be comparable to the current model. Which is to say, the near-term usefulness of Gemini for coding looks uncertain – as per this test and others, Gemini as-is does tend to beat GPT-3.5, but that bar is too low in my opinion.</p>
 </dokki-subtopic></dokki-topic>
 
                     </dokki-topics>
