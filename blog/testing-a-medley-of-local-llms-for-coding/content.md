@@ -1,14 +1,14 @@
-<post-date date="26 February 2024"/>
+<post-date date="26 February 2024" edited="26 February 2024"/>
 
 # Testing a medley of local LLMs for coding
 
 While the release of GPT-4 last year upgraded my expectations for LLMs, the recent release of Gemini Ultra has somewhat downgraded them. With that in mind, let's look at some of the smaller players' LLM offerings, and in particular some of the open models that're available to run locally.
 
-I picked a variety of open models &ndash; as well as some closed ones for comparison &ndash; and ran them with Ollama through a battery of custom, programming-related zero-shot tests using straightforward prompting without particular prompt engineering.
+I picked a variety of open models &ndash; as well as some closed ones for comparison &ndash; and ran them with Ollama through a battery of custom, programming-related zero-shot tests using straightforward prompting without particular prompt engineering. A model was given only one chance per test.
 
 ## Results
 
-<table>
+<table class="results">
     <thead>
         <tr>
             <th colspan="2"></th>
@@ -44,8 +44,8 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td>gemini-1.0:ultra<sup>*</sup></td>
-            <td>41%</td>
-            <td class="s2">2</td>
+            <td>37%</td>
+            <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -82,19 +82,6 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td>mixtral</td>
-            <td>22%</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s2">2</td>
-        </tr>
-        <tr>
             <td>dolphin-mixtral</td>
             <td>22%</td>
             <td class="s0">0</td>
@@ -106,6 +93,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
+        </tr>
+        <tr>
+            <td>mixtral</td>
+            <td>22%</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
         </tr>
         <tr>
             <td>deepseek-coder:33b</td>
@@ -196,7 +196,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
     </tfoot>
 </table>
 
-The results in the table above are color-coded: gray means the model produced an irrelevant answer or code that didn't run, midtone means the model's answer was generally reasonable but lacked some key information, and light means the answer was more or less perfect. There's also dim gray to indicate that the test wasn't given to this model (due to me not having the time).
+The results in the table above are color-coded: gray means the model produced an irrelevant answer or code that didn't run, midtone means the model's answer was generally reasonable but lacked some key information or had too many hallucinations, and light means the answer was more or less perfect. There's also dim gray to indicate that the test wasn't given to this model (due to me not having the time).
 
 Below is a brief description of each test. Note that these are high-level descriptions rather than specifics, for two reasons: 1) it's a bunch of data that would take time to write up on, and 2) the models are listening and I'd rather they improve in general.
 
@@ -264,14 +264,14 @@ Below is a brief description of each test. Note that these are high-level descri
         <th>10</th>
         <td>
             <p>Remove all comments from a ~100-line snippet of C++ code. The code includes a variety of comment styles as well as some gotchas.</p>
-            <p><b>Difficulty level:</b> Medium</p>
+            <p><b>Difficulty level:</b> Easy/Medium</p>
         </td>
     </tr>
     <tr>
         <th>11</th>
         <td>
             <p>Find bugs in a ~100-line snippet of C++ code. The code contains (at least) one explicit bug.</p>
-            <p><b>Difficulty level:</b> Medium</p>
+            <p><b>Difficulty level:</b> Easy/Medium</p>
         </td>
     </tr>
 </table>
