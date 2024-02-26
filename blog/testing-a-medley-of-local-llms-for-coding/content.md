@@ -43,6 +43,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
+            <td>mistral-large<sup>*</sup></td>
+            <td>41%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
             <td>gemini-1.0:ultra<sup>*</sup></td>
             <td>37%</td>
             <td class="s1">1</td>
@@ -249,7 +262,7 @@ Below is a brief description of each test. Note that these are high-level descri
         <td>
             <p>Disassemble a 15-byte MS-DOS COM executable into x86 assembly of a particular syntax.</p>
             <p><b>Difficulty level:</b> Medium/High</p>
-            <p><b>Observations:</b> There's no universal one way to do this conversion, so the model would have to consider the context carefully.</p>
+            <p><b>Observations:</b> There's no one universal way to do this conversion, so the model would have to consider the context carefully.</p>
         </td>
     </tr>
     <tr>
