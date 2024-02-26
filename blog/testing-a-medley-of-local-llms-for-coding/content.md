@@ -160,7 +160,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s"> </td>
         </tr>
         <tr>
-            <td>gemma</td>
+            <td>gemma:7b</td>
             <td>7%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -280,7 +280,7 @@ Below is a brief description of each test. Note that these are high-level descri
 
 Overall, the closed models took the cake, the newly-released phind:70b impressing me in particular.
 
-The open models are a mixed bag. They don't seem mature enough for serious use, but might be OK for some specific tasks, depending on your situation.
+The open models are a mixed bag. They don't seem mature enough for serious use, but might be OK for some specific tasks, depending on your situation. It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is &ndash; it may be possible to get better performance out of them with a more careful approach.
 
 The Qwen models did surprisingly poorly. One of their problems was that they tended to produce small syntax errors in code, which in these tests gave a failing grade.
 
