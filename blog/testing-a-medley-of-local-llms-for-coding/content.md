@@ -30,7 +30,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
     </thead>
     <tbody>
         <tr>
-            <td>phind:70b<sup>*</sup></td>
+            <td><b>phind</b>:70b<sup>*</sup></td>
             <td>48%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -43,7 +43,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td>mistral-large<sup>*</sup></td>
+            <td><b>mistral</b>:large<sup>*</sup></td>
             <td>41%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -56,7 +56,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td>gemini-1.0:ultra<sup>*</sup></td>
+            <td><b>gemini</b>:ultra-v1.0<sup>*</sup></td>
             <td>37%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -69,7 +69,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td>chatgpt-3.5<sup>*</sup></td>
+            <td><b>chatgpt</b>:v3.5<sup>*</sup></td>
             <td>37%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -82,7 +82,20 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td>phind-codellama:34b-v2</td>
+            <td><b>phind-codellama</b>:34b-v2-q6_K</td>
+            <td>26%</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+        </tr>
+        <tr>
+            <td><b>phind-codellama</b>:34b-v2-q4_0</td>
             <td>26%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -95,7 +108,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td>deepseek-coder:33b-instruct</td>
+            <td><b>deepseek-coder</b>:33b-instruct-q6_K</td>
             <td>26%</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
@@ -108,7 +121,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td>dolphin-mixtral</td>
+            <td><b>dolphin-mixtral</b>:8x7b-v2.7-q4_0</td>
             <td>22%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -121,7 +134,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td>mixtral</td>
+            <td><b>mixtral</b>:8x7b-instruct-v0.1-q4_0</td>
             <td>22%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -134,7 +147,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td>deepseek-coder:33b</td>
+            <td><b>deepseek-coder</b>:33b-instruct-q4_0</td>
             <td>19%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -147,7 +160,20 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td>mistral</td>
+            <td><b>mistral</b>:7b-instruct-v0.2-q6_K</td>
+            <td>15%</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+        </tr>
+        <tr>
+            <td><b>mistral</b>:7b-instruct-v0.2-q4_0</td>
             <td>15%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -160,7 +186,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td>codellama:70b</td>
+            <td><b>codellama</b>:70b-instruct-q4_0</td>
             <td>13%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -173,7 +199,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s"> </td>
         </tr>
         <tr>
-            <td>qwen:72b</td>
+            <td><b>qwen</b>:72b-chat-v1.5-q4_0</td>
             <td>13%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -186,7 +212,20 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s"> </td>
         </tr>
         <tr>
-            <td>gemma:7b</td>
+            <td><b>gemma</b>:7b-instruct-q6_K</td>
+            <td>11%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
+            <td><b>gemma</b>:7b-instruct-q4_0</td>
             <td>7%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -199,7 +238,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td>qwen:14b</td>
+            <td><b>qwen</b>:14b-chat-v1.5-q4_0</td>
             <td>4%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
