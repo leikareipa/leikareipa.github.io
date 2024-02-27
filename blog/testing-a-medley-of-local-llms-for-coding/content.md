@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="26 February 2024"/>
+<post-date date="26 February 2024" edited="27 February 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -93,6 +93,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
+        </tr>
+        <tr>
+            <td>deepseek-coder:33b-instruct</td>
+            <td>26%</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
         </tr>
         <tr>
             <td>dolphin-mixtral</td>
