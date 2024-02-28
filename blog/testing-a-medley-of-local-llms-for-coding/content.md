@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="27 February 2024"/>
+<post-date date="26 February 2024" edited="28 February 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -31,7 +31,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
     <tbody>
         <tr>
             <td><b>phind</b>:70b<sup>*</sup></td>
-            <td>48%</td>
+            <td>72%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -44,7 +44,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>mistral</b>:large<sup>*</sup></td>
-            <td>41%</td>
+            <td>61%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -57,7 +57,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>gemini</b>:ultra-v1.0<sup>*</sup></td>
-            <td>37%</td>
+            <td>56%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -70,7 +70,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>chatgpt</b>:v3.5<sup>*</sup></td>
-            <td>37%</td>
+            <td>56%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -82,8 +82,21 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
+            <td><b>mistral</b>:small<sup>*</sup></td>
+            <td>56%</td>
+            <td class="s2">2</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+        </tr>
+        <tr>
             <td><b>phind-codellama</b>:34b-v2-q6_K</td>
-            <td>26%</td>
+            <td>39%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -96,7 +109,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>phind-codellama</b>:34b-v2-q4_0</td>
-            <td>26%</td>
+            <td>39%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
@@ -108,8 +121,21 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
+            <td><b>mixtral</b>:8x7b-instruct-v0.1-q6_K</td>
+            <td>39%</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
             <td><b>deepseek-coder</b>:33b-instruct-q6_K</td>
-            <td>26%</td>
+            <td>39%</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -122,7 +148,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>dolphin-mixtral</b>:8x7b-v2.7-q4_0</td>
-            <td>22%</td>
+            <td>33%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
@@ -135,7 +161,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>mixtral</b>:8x7b-instruct-v0.1-q4_0</td>
-            <td>22%</td>
+            <td>33%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
@@ -148,7 +174,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>deepseek-coder</b>:33b-instruct-q4_0</td>
-            <td>19%</td>
+            <td>28%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
@@ -161,7 +187,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>mistral</b>:7b-instruct-v0.2-q6_K</td>
-            <td>15%</td>
+            <td>22%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -174,7 +200,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>mistral</b>:7b-instruct-v0.2-q4_0</td>
-            <td>15%</td>
+            <td>22%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -184,23 +210,10 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
-        </tr>
-        <tr>
-            <td><b>codellama</b>:70b-instruct-q4_0</td>
-            <td>13%</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
-            <td class="s"> </td>
         </tr>
         <tr>
             <td><b>qwen</b>:72b-chat-v1.5-q4_0</td>
-            <td>13%</td>
+            <td>20%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s"> </td>
@@ -212,8 +225,34 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s"> </td>
         </tr>
         <tr>
+            <td><b>codellama</b>:70b-instruct-q4_0</td>
+            <td>19%</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s"> </td>
+        </tr>
+        <tr>
+            <td><b>codellama</b>:70b (via Nvidia Playground)</td>
+            <td>17%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
             <td><b>gemma</b>:7b-instruct-q6_K</td>
-            <td>11%</td>
+            <td>17%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -226,7 +265,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>gemma</b>:7b-instruct-q4_0</td>
-            <td>7%</td>
+            <td>11%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -239,7 +278,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>qwen</b>:14b-chat-v1.5-q4_0</td>
-            <td>4%</td>
+            <td>6%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -253,7 +292,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="12"><sup>*</sup>Not a local model.</td>
+            <td colspan="12"><sup>*</sup>Not an open model.</td>
         </tr>
         <tr>
             <td colspan="12"><sup>**</sup>Not tested.</td>
@@ -322,7 +361,7 @@ Below is a brief description of each test. Note that these are high-level descri
         <td>
             <p>Add helpful comments to a ~100-line snippet of C++ code.</p>
             <p><b>Difficulty level:</b> Medium</p>
-            <p><b>Observations:</b> Virtually all models produced unnecessary line-by-line commentary that repeated what the code was obviously doing. One or two models were able to infer a basis for more meaningful comments for some sections of the code.</p>
+            <p><b>Observations:</b> Virtually all models produced unnecessary line-by-line commentary that repeated what the code was obviously doing. A few models were able to infer a basis for more meaningful comments for some sections of the code. A number of models decided to also refactor the code here and there, which wasn't welcome.</p>
         </td>
     </tr>
     <tr>
@@ -330,6 +369,7 @@ Below is a brief description of each test. Note that these are high-level descri
         <td>
             <p>Remove all comments from a ~100-line snippet of C++ code. The code includes a variety of comment styles as well as some gotchas.</p>
             <p><b>Difficulty level:</b> Easy/Medium</p>
+            <p><b>Observations:</b> A number of models decided to also refactor the code here and there, which wasn't welcome.</p>
         </td>
     </tr>
     <tr>
@@ -347,10 +387,12 @@ Overall, the closed models took the cake, the newly-released phind:70b impressin
 
 The open models are a mixed bag. They don't seem mature enough for serious use, but might be OK for some specific tasks, depending on your situation. It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is &ndash; it may be possible to get better performance out of them with a more careful approach.
 
+A delineator between open and closed models was that closed models tended to experience no outright failures to provide a relevant answer; open models were hit or miss by comparison. In this sense it's unfortunate that mistral:small isn't an open model &ndash; it has the hallmarks of a leap in open capability.
+
+### Particulars
+
 The Qwen models did surprisingly poorly. One of their problems was that they tended to produce small syntax errors in code, which in these tests gave a failing grade.
 
-The big Code Llama model likewise wasn't on fire. It had maybe the worst responses of all models tested. I'm aware some people have reported problems getting the model properly configured &ndash; maybe that's the problem, I just went with the default Ollama settings and am not interested enough to dig through config files to find out.
+The big Code Llama model likewise wasn't on fire. It had maybe the worst responses of all models tested. There are reports of people having trouble getting the model properly configured &ndash; I tried it both locally (default Ollama settings) and on Nvidia AI Playground, and the results were bad.
 
 Gemma sucked for coding but seems to be among the better ones for natural-sounding text production.
-
-I get the impression a problem with open models is that as soon as they become good enough to seriously challenge the closed models they end up closed themselves ($$$ and responsibility), so the open field would remain behind the curve even when its absolute level rises.
