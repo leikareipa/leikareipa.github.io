@@ -61,7 +61,7 @@
                     </dokki-header>
                     <dokki-topics>
                         
-<post-date date="26 February 2024" edited="28 February 2024"></post-date>
+<post-date date="26 February 2024" edited="1 March 2024"></post-date>
 <dokki-topic title="Testing a medley of local LLMs for coding">
 <p>While the release of GPT-4 last year upgraded my expectations for LLMs, the recent release of Gemini Ultra has somewhat downgraded them. With that in mind, let's look at some of the smaller players' LLM offerings, and in particular some of the open models that're available to run locally.</p>
 <p>I picked a variety of open models – as well as some closed ones for comparison – and ran them with Ollama through a battery of custom, programming-related zero-shot tests using straightforward prompting without particular prompt engineering. A model was given only one chance per test.</p>
@@ -101,6 +101,19 @@
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s2">2</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td><b>gpt:v4-turbo-preview</b><sup>*</sup></td>
+            <td>67%</td>
+            <td class="s2">2</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
             <td class="s2">2</td>
         </tr>
         <tr>
@@ -350,6 +363,19 @@
             <td class="s0">0</td>
             <td class="s"> </td>
         </tr>
+        <tr>
+            <td><b>phi</b>:2b-chat-v2-q6_K</td>
+            <td>0%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+        </tr>
     </tbody>
     <tfoot>
         <tr>
@@ -446,9 +472,9 @@
                 </template>
             </dokki-table>
 </dokki-subtopic><dokki-subtopic title="Discussion">
-<p>Overall, the closed models took the cake, the newly-released phind:70b impressing me in particular.</p>
-<p>The open models are a mixed bag. They don't seem mature enough for serious use, but might be OK for some specific tasks, depending on your situation. It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is – it may be possible to get better performance out of them with a more careful approach.</p>
-<p>A delineator between open and closed models was that closed models tended to experience no outright failures to provide a relevant answer; open models were hit or miss by comparison. In this sense it's unfortunate that mistral:small isn't an open model – it has the hallmarks of a leap in open capability.</p>
+<p>Overall, the closed models took the cake. The newly-released phind:70b impressed me in particular – although it's not clear how much of the performance is their own model and how much is from integration with GPT-4, which I believe is what they've worked on in the past.</p>
+<p>The open models were a mixed bag. They don't seem mature enough for serious use, but will be OK for some specific tasks, depending on your situation. It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is – it may be possible to get better performance out of them with a more careful approach.</p>
+<p>A delineator between open and closed models in these tests was that closed models tended to experience no outright failures to provide a relevant answer or working code; open models were hit or miss by comparison. In this sense it's unfortunate that mistral:small isn't an open model – it has the hallmarks of a leap in open capability.</p>
 <h3>Particulars</h3>
 <p>The Qwen models did surprisingly poorly. One of their problems was that they tended to produce small syntax errors in code, which in these tests gave a failing grade.</p>
 <p>The big Code Llama model likewise wasn't on fire. It had maybe the worst responses of all models tested. There are reports of people having trouble getting the model properly configured – I tried it both locally (default Ollama settings) and on Nvidia AI Playground, and the results were bad.</p>
