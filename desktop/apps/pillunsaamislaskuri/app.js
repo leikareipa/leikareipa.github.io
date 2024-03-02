@@ -27,10 +27,6 @@ export default {
                 return w95.widget.window({
                     parent: this,
                     title: "Pillunsaamislaskuri",
-                    resize(deltaWidth, deltaHeight) {
-                        width.set(Math.max(minWidth, (width.now + deltaWidth)));
-                        height.set(Math.max(minHeight, (height.now + deltaHeight)));
-                    },
                     move(deltaX, deltaY) {
                         x.set(x.now + deltaX);
                         y.set(y.now + deltaY);
@@ -38,7 +34,6 @@ export default {
                     close() {
                         w95.windowManager.release_window(this)
                     },
-                    styleHints: [],
                     children: [
                         w95.widget.label({
                             y: 10,

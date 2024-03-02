@@ -82,19 +82,6 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>mistral</b>:next*</td>
-            <td>56%</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s2">2</td>
-        </tr>
-        <tr>
             <td><b>gemini</b>:ultra-v1.0*</td>
             <td>56%</td>
             <td class="s1">1</td>
@@ -132,19 +119,6 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
-        </tr>
-        <tr>
-            <td><b>mistral</b>:internal***</td>
-            <td>50%</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s2">2</td>
-            <td class="s2">2</td>
-            <td class="s1">1</td>
-            <td class="s2">2</td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
         </tr>
         <tr>
             <td><b>phind-codellama</b>:34b-v2-q6_K</td>
@@ -361,9 +335,6 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td colspan="12"><sup>**</sup>Not tested.</td>
-        </tr>
-        <tr>
-            <td colspan="12"><sup>***</sup>Not intended as an open model. Leaked in Jan 2024. Re-quantized to q3_K_M.</td>
         </tr>
     </tfoot>
 </table>

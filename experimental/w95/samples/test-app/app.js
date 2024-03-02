@@ -1,5 +1,5 @@
 /*
- * 2023 Tarpeeksi Hyvae Soft
+ * 2023-2024 Tarpeeksi Hyvae Soft
  *
  * Software: w95
  * 

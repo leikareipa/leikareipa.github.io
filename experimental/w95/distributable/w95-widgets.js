@@ -5346,9 +5346,7 @@ w95.widget("window", function({
     backgroundColor = w95.palette.window.background,
     icon = w95.icon.applicationIcon16x16,
     isBlurred = true,
-    styleHints = [
-        w95.styleHint.resizable,
-    ],
+    styleHints = [],
     children = [],
     onMouseEnter = undefined,
     onMouseLeave = undefined,
@@ -5396,7 +5394,7 @@ w95.widget("window", function({
     const isPlain = styleHints.includes(w95.styleHint.plain);
     const isDesktop = styleHints.includes(w95.styleHint.desktop);
     const hasNoBorder = styleHints.includes(w95.styleHint.noBorder);
-    const isResizable = styleHints.includes(w95.styleHint.resizable);
+    const isResizable = (typeof resize === "function");
     let menuBarWidget = undefined;
 
     return {

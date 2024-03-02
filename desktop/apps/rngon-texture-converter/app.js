@@ -62,10 +62,6 @@ export default {
                 return w95.widget.window({
                     parent: this,
                     title: "Retro n-gon texture converter",
-                    resize(deltaWidth, deltaHeight) {
-                        width.set(Math.max(100, (width.now + deltaWidth)));
-                        height.set(Math.max(100, (height.now + deltaHeight)));
-                    },
                     move(deltaX, deltaY) {
                         x.set(x.now + deltaX);
                         y.set(y.now + deltaY);
@@ -73,7 +69,6 @@ export default {
                     close() {
                         w95.windowManager.release_window(this)
                     },
-                    styleHints: [],
                     children: [
                         w95.widget.tabControl({
                             x: 2,
