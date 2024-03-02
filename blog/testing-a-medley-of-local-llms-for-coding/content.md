@@ -1,8 +1,8 @@
-<post-date date="26 February 2024" edited="1 March 2024"/>
+<post-date date="26 February 2024" edited="2 March 2024"/>
 
 # Testing a medley of local LLMs for coding
 
-While the release of GPT-4 last year upgraded my expectations for LLMs, the recent release of Gemini Ultra has somewhat downgraded them. With that in mind, let's look at some of the smaller players' LLM offerings, and in particular some of the open models that're available to run locally.
+While the release of GPT-4 last year upgraded my expectations for LLMs, the recent release of Gemini has somewhat downgraded them. With that in mind, let's look at some of the smaller players' LLM offerings, and in particular some of the open models that're available to run locally.
 
 I picked a variety of open models &ndash; as well as some closed ones for comparison &ndash; and ran them with Ollama through a battery of custom, programming-related zero-shot tests using straightforward prompting without particular prompt engineering. A model was given only one chance per test.
 
@@ -30,7 +30,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
     </thead>
     <tbody>
         <tr>
-            <td><b>gpt:v4-0613</b><sup>*</sup></td>
+            <td><b>gpt</b>:v4-0613*</td>
             <td>72%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -43,7 +43,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>phind</b>:70b<sup>*</sup></td>
+            <td><b>phind</b>:70b*</td>
             <td>72%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -56,7 +56,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>gpt:v4-0125-preview</b><sup>*</sup></td>
+            <td><b>gpt</b>:v4-0125-preview*</td>
             <td>72%</td>
             <td class="s2">2</td>
             <td class="s0">0</td>
@@ -69,7 +69,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>mistral</b>:large<sup>*</sup></td>
+            <td><b>mistral</b>:large-2402*</td>
             <td>61%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -82,7 +82,20 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>gemini</b>:ultra-v1.0<sup>*</sup></td>
+            <td><b>mistral</b>:next*</td>
+            <td>56%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td><b>gemini</b>:ultra-v1.0*</td>
             <td>56%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -95,7 +108,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td><b>chatgpt</b>:v3.5<sup>*</sup></td>
+            <td><b>chatgpt</b>:v3.5*</td>
             <td>56%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -108,7 +121,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>mistral</b>:small<sup>*</sup></td>
+            <td><b>mistral</b>:small-2402*</td>
             <td>56%</td>
             <td class="s2">2</td>
             <td class="s0">0</td>
@@ -119,6 +132,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
+        </tr>
+        <tr>
+            <td><b>mistral</b>:internal***</td>
+            <td>50%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
         </tr>
         <tr>
             <td><b>phind-codellama</b>:34b-v2-q6_K</td>
@@ -199,6 +225,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
+            <td><b>gemini</b>:pro-v1.0*</td>
+            <td>33%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
             <td><b>deepseek-coder</b>:33b-instruct-q4_0</td>
             <td>28%</td>
             <td class="s0">0</td>
@@ -264,19 +303,6 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s"> </td>
         </tr>
         <tr>
-            <td><b>codellama</b>:70b (via Nvidia Playground)</td>
-            <td>17%</td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
-        </tr>
-        <tr>
             <td><b>gemma</b>:7b-instruct-q6_K</td>
             <td>17%</td>
             <td class="s0">0</td>
@@ -335,6 +361,9 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td colspan="12"><sup>**</sup>Not tested.</td>
+        </tr>
+        <tr>
+            <td colspan="12"><sup>***</sup>Not intended as an open model. Leaked in Jan 2024. Re-quantized to q3_K_M.</td>
         </tr>
     </tfoot>
 </table>
@@ -425,8 +454,6 @@ Below is a brief description of each test. Note that these are high-level descri
 Overall, the closed models took the cake. The newly-released phind:70b impressed me in particular &ndash; although it's not clear how much of the performance is their own model and how much is from integration with GPT-4, which I believe is what they've worked on in the past.
 
 The open models were a mixed bag. They don't seem mature enough for serious use, but will be OK for some specific tasks, depending on your situation. It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is &ndash; it may be possible to get better performance out of them with a more careful approach.
-
-A delineator between open and closed models in these tests was that closed models tended to experience no outright failures to provide a relevant answer or working code; open models were hit or miss by comparison. In this sense it's unfortunate that mistral:small isn't an open model &ndash; it has the hallmarks of a leap in open capability.
 
 ### Particulars
 
