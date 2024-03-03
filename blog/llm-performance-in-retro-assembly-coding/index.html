@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results th.name {
+                writing-mode: vertical-lr;
+                font-weight: normal;
+            }
+            .dokki-table.results td:first-child {
+                white-space: pre-line;
+                min-width: 20rem;
+            }
+
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s {
+                text-align: center !important;
+                vertical-align: middle !important;
+            }
+            .dokki-table.results td.s0 {
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+            .dokki-table.results td.s1 {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            .dokki-table.results td.s2 {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                LLM performance in retro assembly coding
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="4 March 2024"></post-date>
+<dokki-topic title="LLM performance in retro assembly coding">
+<p>How well can the various publically-available LLMs assist you in retro assembly coding? Here's seven of them compared.</p>
+<dokki-subtopic title="Results">
+<p>Each of the seven LLMs was given a set of discrete tasks to create various beginner-level MS-DOS 386 assembly programs in COM format using the FASM syntax.</p>
+<p>For example: &quot;Write a DOS COM program that asks the user for a word and prints it out. Use 386 assembly in the FASM syntax.&quot;</p>
+<p>Here's how they did:</p>
+
+            <dokki-table headerless class inline-class="results">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th colspan="7">Score per task</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th class="name">GPT-4</th>
+            <th class="name">Mistral Large</th>
+            <th class="name">Phind 70B</th>
+            <th class="name">GPT-4 Turbo</th>
+            <th class="name">Gemini Ultra 1.0</th>
+            <th class="name">DeepSeek Coder</th>
+            <th class="name">GPT-3.5</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A program that asks the user for a word and prints it out.</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that paints the screen blue and prints something in the middle.</td>
+            <td class="s1">25%</td>
+            <td class="s2">50%</td>
+            <td class="s2">50%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that draws something onto the screen in a VGA graphics mode.</td>
+            <td class="s2">50%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that prints the value in the EDX register in binary format.</td>
+            <td class="s0">0%</td>
+            <td class="s2">50%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s1">25%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that reads mouse input and displays information about it on the screen.</td>
+            <td class="s2">50%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that loads a paletted image and displays it on the screen.</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>A score of 0% means the code failed to compile, 25% means the code compiled but was very buggy, and 50% means the code worked somewhat as intended but not perfectly. No model received a score higher than 50%, but 75% would indicate a perfect result and 100% perfection + the extra mile.</p>
+<p>Below are the average test scores per model across all tasks:</p>
+
+            <dokki-table headerless  inline-class="">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Average score</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GPT-4</td>
+            <td>21%</td>
+        </tr>
+        <tr>
+            <td>Mistral Large</td>
+            <td>17%</td>
+        </tr>
+        <tr>
+            <td>Phind 70B</td>
+            <td>13%</td>
+        </tr>
+        <tr>
+            <td>GPT-4 Turbo</td>
+            <td>8%</td>
+        </tr>
+        <tr>
+            <td>Gemini Ultra 1.0</td>
+            <td>8%</td>
+        </tr>
+        <tr>
+            <td>DeepSeek Coder</td>
+            <td>4%</td>
+        </tr>
+        <tr>
+            <td>GPT-3.5</td>
+            <td>0%</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>It's an interesting ordering of models, given that regular GPT-4 beats GPT-4 Turbo so clearly.</p>
+<p>Besides training data, which I assume would've been similar between GPT-4 and GPT-4 Turbo, if we assume that the size of a model affects its ability to perform in these more obscure tasks, we might guesstimate model parameter counts:</p>
+<ul>
+<li>DeepSeek Coder is known to have 33 B,</li>
+<li>Mistral Large might be 120 B since Mistral Medium may have 70 B as per the leaked model of Jan 2024,</li>
+<li>which might put GPT-4 at 150 B (whether MoE or not)</li>
+<li>and GPT-4 Turbo at 60 B,</li>
+<li>same as Gemini Ultra 1.0,</li>
+<li>while GPT-3.5 could by now be sub-30 B.</li>
+</ul>
+<p>These numbers might be off by quite a bit, but speculation is free.</p>
+</dokki-subtopic><dokki-subtopic title="Final words">
+<p>Well, the LLMs tested here – which are among the best available – don't make for great retro DOS assembly programming assistants.</p>
+<p>The tasks are seemingly quite challenging for the models, probably in part because of limited training data specific to these problems.</p>
+<p>The results also appear to show the unfortunate trend of nerfings to GPT-4's capabilities, the Turbo model from early 2024 performing much worse than the mid-2023 non-Turbo (which itself was allegedly a nerf of the original Q1 2023 launch model).</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>
