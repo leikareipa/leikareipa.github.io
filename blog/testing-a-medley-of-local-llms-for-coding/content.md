@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="2 March 2024"/>
+<post-date date="26 February 2024" edited="5 March 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -43,6 +43,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
+            <td><b>claude</b>:v3-opus-20240229*</td>
+            <td>72%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
             <td><b>phind</b>:70b*</td>
             <td>72%</td>
             <td class="s2">2</td>
@@ -65,6 +78,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td><b>claude</b>:v3-sonnet-20240229*</td>
+            <td>67%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
             <td class="s1">1</td>
             <td class="s2">2</td>
         </tr>
@@ -421,8 +447,6 @@ Below is a brief description of each test. Note that these are high-level descri
 </table>
 
 ## Discussion
-
-Overall, the closed models took the cake. The newly-released phind:70b impressed me in particular &ndash; although it's not clear how much of the performance is their own model and how much is from integration with GPT-4, which I believe is what they've worked on in the past.
 
 The open models were a mixed bag. They don't seem mature enough for serious use, but will be OK for some specific tasks, depending on your situation. It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is &ndash; it may be possible to get better performance out of them with a more careful approach.
 

@@ -1,4 +1,4 @@
-<post-date date="4 March 2024"/>
+<post-date date="4 March 2024" edited="4 March 2024"/>
 
 # LLM performance in retro assembly coding
 
@@ -20,6 +20,7 @@ Here's how they did:
         </tr>
         <tr>
             <th></th>
+            <th class="name">Claude 3 Opus</th>
             <th class="name">GPT-4</th>
             <th class="name">Mistral Large</th>
             <th class="name">Phind 70B</th>
@@ -36,12 +37,14 @@ Here's how they did:
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
+            <td class="s0">0%</td>
             <td class="s1">25%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
         </tr>
         <tr>
             <td>A program that paints the screen blue and prints something in the middle.</td>
+            <td class="s2">50%</td>
             <td class="s1">25%</td>
             <td class="s2">50%</td>
             <td class="s2">50%</td>
@@ -52,6 +55,7 @@ Here's how they did:
         </tr>
         <tr>
             <td>A program that draws something onto the screen in a VGA graphics mode.</td>
+            <td class="s3">75%</td>
             <td class="s2">50%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
@@ -62,6 +66,7 @@ Here's how they did:
         </tr>
         <tr>
             <td>A program that prints the value in the EDX register in binary format.</td>
+            <td class="s1">25%</td>
             <td class="s0">0%</td>
             <td class="s2">50%</td>
             <td class="s0">0%</td>
@@ -73,6 +78,7 @@ Here's how they did:
         <tr>
             <td>A program that reads mouse input and displays information about it on the screen.</td>
             <td class="s2">50%</td>
+            <td class="s2">50%</td>
             <td class="s0">0%</td>
             <td class="s1">25%</td>
             <td class="s0">0%</td>
@@ -82,6 +88,7 @@ Here's how they did:
         </tr>
         <tr>
             <td>A program that loads a paletted image and displays it on the screen.</td>
+            <td class="s1">25%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
@@ -93,7 +100,7 @@ Here's how they did:
     </tbody>
 </table>
 
-A score of 0% means the code failed to compile, 25% means the code compiled but was very buggy, and 50% means the code worked somewhat as intended but not perfectly. No model received a score higher than 50%, but 75% would indicate a perfect result and 100% perfection + the extra mile.
+A score of 0% means the code failed to compile, 25% means the code compiled but was very buggy, 50% means the code worked somewhat as intended but not perfectly, 75% means the code worked as intended, and 100% means the code worked as intended and the implementation went the extra mile in including relevant bonus features or had a particularly good presentation.
 
 Below are the average test scores per model across all tasks:
 
@@ -105,6 +112,10 @@ Below are the average test scores per model across all tasks:
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td>Claude 3 Opus</td>
+            <td>38%</td>
+        </tr>
         <tr>
             <td>GPT-4</td>
             <td>21%</td>
@@ -145,7 +156,8 @@ Besides training data, which I assume would've been similar between GPT-4 and GP
 - which might put GPT-4 at 150 B (whether MoE or not)
 - and GPT-4 Turbo at 60 B,
 - same as Gemini Ultra 1.0,
-- while GPT-3.5 could by now be sub-30 B.
+- while GPT-3.5 could by now be sub-30 B,
+- and Claude 3 Opus might be in the 200 B range.
 
 These numbers might be off by quite a bit, but speculation is free.
 
