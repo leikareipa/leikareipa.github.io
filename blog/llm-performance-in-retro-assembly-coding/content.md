@@ -16,7 +16,7 @@ Here's how they did:
     <thead>
         <tr>
             <th>Task</th>
-            <th colspan="7">Score per task</th>
+            <th colspan="8">Score per task</th>
         </tr>
         <tr>
             <th></th>
@@ -157,7 +157,7 @@ Besides training data, which I assume would've been similar between GPT-4 and GP
 - and GPT-4 Turbo at 60 B,
 - same as Gemini Ultra 1.0,
 - while GPT-3.5 could by now be sub-30 B,
-- and Claude 3 Opus might be in the 200 B range.
+- and Claude 3 Opus may be in the 200 B range.
 
 These numbers might be off by quite a bit, but speculation is free.
 
