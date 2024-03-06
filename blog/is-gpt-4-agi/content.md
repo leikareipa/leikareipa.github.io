@@ -113,7 +113,7 @@ In an earlier blog post comparing GPT-3.5 and GPT-4 in some programming tasks, I
 
 In that particular case, GPT-4 was able to convert its initial sub-optimal implementation into a well-optimized one &ndash; matching my performance &ndash; in 2&ndash;4 steps of iteration. I simply gave the AI a performance target and reported back the performance level of each of its attempts, based on which GPT-4 adjusted its code to eventually reach the target.
 
-Again, with a framework in which GPT-4 could iterate on solutions, it matched my performance and provided the implementation faster than I could.
+Again, in this pinpoint domain, with a framework in which GPT-4 could iterate on solutions, it matched my ability and provided the implementation faster than I could.
 
 ## AGI, ASI
 
