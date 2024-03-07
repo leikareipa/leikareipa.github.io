@@ -2,7 +2,7 @@
 
 # LLM performance in retro assembly coding
 
-How well can the various publically-available LLMs assist you in retro assembly coding? Here's eight of them compared.
+How well can the various publically-available LLMs assist you in retro assembly coding? Here's nine of them compared.
 
 ## Results
 
@@ -16,17 +16,18 @@ Here's how they did:
     <thead>
         <tr>
             <th>Task</th>
-            <th colspan="8">Score per task</th>
+            <th colspan="9">Score per task</th>
         </tr>
         <tr>
             <th></th>
             <th class="name">Claude 3 Opus</th>
             <th class="name">GPT-4</th>
             <th class="name">Mistral Large</th>
-            <th class="name">Phind 70B</th>
+            <th class="name">Phind-70B</th>
             <th class="name">GPT-4 Turbo</th>
             <th class="name">Gemini Ultra 1.0</th>
             <th class="name">DeepSeek Coder</th>
+            <th class="name">Claude 3 Sonnet</th>
             <th class="name">GPT-3.5</th>
         </tr>
     </thead>
@@ -41,6 +42,7 @@ Here's how they did:
             <td class="s1">25%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
+            <td class="s0">0%</td>
         </tr>
         <tr>
             <td>A program that paints the screen blue and prints something in the middle.</td>
@@ -49,6 +51,7 @@ Here's how they did:
             <td class="s2">50%</td>
             <td class="s2">50%</td>
             <td class="s1">25%</td>
+            <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
@@ -62,6 +65,7 @@ Here's how they did:
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
+            <td class="s1">25%</td>
             <td class="s0">0%</td>
         </tr>
         <tr>
@@ -74,6 +78,7 @@ Here's how they did:
             <td class="s1">25%</td>
             <td class="s1">25%</td>
             <td class="s0">0%</td>
+            <td class="s0">0%</td>
         </tr>
         <tr>
             <td>A program that reads mouse input and displays information about it on the screen.</td>
@@ -85,10 +90,12 @@ Here's how they did:
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
+            <td class="s0">0%</td>
         </tr>
         <tr>
             <td>A program that loads a paletted image and displays it on the screen.</td>
             <td class="s1">25%</td>
+            <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
@@ -125,7 +132,7 @@ Below are the average test scores per model across all tasks:
             <td>17%</td>
         </tr>
         <tr>
-            <td>Phind 70B</td>
+            <td>Phind-70B</td>
             <td>13%</td>
         </tr>
         <tr>
@@ -138,6 +145,10 @@ Below are the average test scores per model across all tasks:
         </tr>
         <tr>
             <td>DeepSeek Coder</td>
+            <td>4%</td>
+        </tr>
+        <tr>
+            <td>Claude 3 Sonnet</td>
             <td>4%</td>
         </tr>
         <tr>

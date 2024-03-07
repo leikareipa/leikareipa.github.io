@@ -33,6 +33,7 @@
             .dokki-table.results td.s {
                 text-align: center !important;
                 vertical-align: middle !important;
+                max-width: 0.85em;
             }
             .dokki-table.results td.s0 {
                 color: var(--dokkiCSS-page-inert-fg-color);
@@ -68,7 +69,7 @@
                         
 <post-date date="4 March 2024" edited="4 March 2024"></post-date>
 <dokki-topic title="LLM performance in retro assembly coding">
-<p>How well can the various publically-available LLMs assist you in retro assembly coding? Here's eight of them compared.</p>
+<p>How well can the various publically-available LLMs assist you in retro assembly coding? Here's nine of them compared.</p>
 <dokki-subtopic title="Results">
 <p>Each of the seven LLMs was given a set of discrete tasks to create various beginner-level MS-DOS 386 assembly programs in COM format using the FASM syntax.</p>
 <p>For example: &quot;Write a DOS COM program that asks the user for a word and prints it out. Use 386 assembly in the FASM syntax.&quot;</p>
@@ -80,17 +81,18 @@
     <thead>
         <tr>
             <th>Task</th>
-            <th colspan="8">Score per task</th>
+            <th colspan="9">Score per task</th>
         </tr>
         <tr>
             <th></th>
             <th class="name">Claude 3 Opus</th>
             <th class="name">GPT-4</th>
             <th class="name">Mistral Large</th>
-            <th class="name">Phind 70B</th>
+            <th class="name">Phind-70B</th>
             <th class="name">GPT-4 Turbo</th>
             <th class="name">Gemini Ultra 1.0</th>
             <th class="name">DeepSeek Coder</th>
+            <th class="name">Claude 3 Sonnet</th>
             <th class="name">GPT-3.5</th>
         </tr>
     </thead>
@@ -105,6 +107,7 @@
             <td class="s1">25%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
+            <td class="s0">0%</td>
         </tr>
         <tr>
             <td>A program that paints the screen blue and prints something in the middle.</td>
@@ -113,6 +116,7 @@
             <td class="s2">50%</td>
             <td class="s2">50%</td>
             <td class="s1">25%</td>
+            <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
@@ -126,6 +130,7 @@
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
+            <td class="s1">25%</td>
             <td class="s0">0%</td>
         </tr>
         <tr>
@@ -138,6 +143,7 @@
             <td class="s1">25%</td>
             <td class="s1">25%</td>
             <td class="s0">0%</td>
+            <td class="s0">0%</td>
         </tr>
         <tr>
             <td>A program that reads mouse input and displays information about it on the screen.</td>
@@ -149,10 +155,12 @@
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
+            <td class="s0">0%</td>
         </tr>
         <tr>
             <td>A program that loads a paletted image and displays it on the screen.</td>
             <td class="s1">25%</td>
+            <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
             <td class="s0">0%</td>
@@ -191,7 +199,7 @@
             <td>17%</td>
         </tr>
         <tr>
-            <td>Phind 70B</td>
+            <td>Phind-70B</td>
             <td>13%</td>
         </tr>
         <tr>
@@ -204,6 +212,10 @@
         </tr>
         <tr>
             <td>DeepSeek Coder</td>
+            <td>4%</td>
+        </tr>
+        <tr>
+            <td>Claude 3 Sonnet</td>
             <td>4%</td>
         </tr>
         <tr>
