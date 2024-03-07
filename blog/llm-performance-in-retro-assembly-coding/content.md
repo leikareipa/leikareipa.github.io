@@ -2,7 +2,7 @@
 
 # LLM performance in retro assembly coding
 
-How well can the various publically-available LLMs assist you in retro assembly coding? Here's seven of them compared.
+How well can the various publically-available LLMs assist you in retro assembly coding? Here's eight of them compared.
 
 ## Results
 
