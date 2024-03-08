@@ -27,6 +27,7 @@ export default {
         const imageSelectorEl = w95.state(document.createElement("input"));
         const tabIndex = w95.state(0);
         const colorDepth = w95.state("8888");
+        const prevColorDepth = w95.state(undefined);
         const encoding = w95.state("Base64");
         const chromaKey = w95.state({
             enabled: false,
@@ -154,11 +155,16 @@ export default {
                                                             newItemIndex(idx, item) {
                                                                 encoding.set(item.text);
                                                                 if (item.text === "Array") {
+                                                                    prevColorDepth.set(colorDepth.now);
                                                                     colorDepth.set("8888");
                                                                     isColorDepthLocked.set(true);
                                                                 }
                                                                 else {
                                                                     isColorDepthLocked.set(false);
+                                                                    if (prevColorDepth.now) {
+                                                                        colorDepth.set(prevColorDepth.now);
+                                                                        prevColorDepth.set(undefined);
+                                                                    }
                                                                 }
                                                             },
                                                         }),
