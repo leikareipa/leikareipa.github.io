@@ -4,7 +4,7 @@
 
 When it comes to coding, Gemini Advanced struggles to compete with GPT-4. Let's instead put it up against GPT-3.5 in [a test I had GPT-4 do a year ago](/blog/gpt-4-implementing-minesweeper-using-a-gui-framework-it-hadnt-seen-before/); namely, operating a foreign JavaScript GUI framework.
 
-The framework is one I built myself, [w95](https://github.com/leikareipa/w95). It wasn't included in GPT-4's training data and probably remains fairly obscure to the current-gen models.
+The framework is one I built myself. It wasn't included in GPT-4's training data and probably remains fairly obscure to the current-gen models.
 
 The gist of the test is like so:
 
