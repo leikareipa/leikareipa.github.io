@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="5 March 2024"/>
+<post-date date="26 February 2024" edited="9 March 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -108,7 +108,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>gemini</b>:ultra-v1.0*</td>
+            <td><b>gemini</b>:v1.0-ultra*</td>
             <td>56%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -199,6 +199,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
+            <td><b>starcoder2</b>:15b-q4_K_M***</td>
+            <td>39%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
             <td><b>dolphin-mixtral</b>:8x7b-v2.7-q4_0</td>
             <td>33%</td>
             <td class="s0">0</td>
@@ -225,7 +238,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>gemini</b>:pro-v1.0*</td>
+            <td><b>gemini</b>:v1.0-pro*</td>
             <td>33%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -361,6 +374,9 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td colspan="12"><sup>**</sup>Not tested.</td>
+        </tr>
+        <tr>
+            <td colspan="12"><sup>***</sup>This is a code completion model. Prompts had to be converted from instructions to completions and so aren't fully comparable to results for other models.</td>
         </tr>
     </tfoot>
 </table>

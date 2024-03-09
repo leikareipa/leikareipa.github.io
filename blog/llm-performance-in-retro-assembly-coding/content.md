@@ -158,7 +158,7 @@ Below are the average test scores per model across all tasks:
     </tbody>
 </table>
 
-It's an interesting ordering of models, given that regular GPT-4 beats GPT-4 Turbo so clearly.
+It's an interesting ordering of models, given that regular GPT-4 beats GPT-4 Turbo so clearly. The results for Claude 3 are interesting as well; I've written a bit more about them [here](/blog/claude-3s-exceptional-abilities-at-obscure-languages/).
 
 Besides training data, which I assume would've been similar between GPT-4 and GPT-4 Turbo, if we assume that the size of a model affects its ability to perform in these more obscure tasks, we might guesstimate model parameter counts:
 
