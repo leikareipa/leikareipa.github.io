@@ -57,6 +57,7 @@ export default {
                 imageSelectorEl.now.accept = "image/*";
                 imageSelectorEl.now.onchange = async function() {
                     load_image(imageSelectorEl.now.files[0]);
+                    imageSelectorEl.now.value = null;
                 };
             },
             Form() {
