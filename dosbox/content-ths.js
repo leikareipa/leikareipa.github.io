@@ -10,7 +10,14 @@ export default {
         persist: "/rs-demo",
         run: "rally.bat",
     },
-    "^/?quake/sw?$": {
+    "^/?geoclock/?$": {
+        title: "GeoClock",
+        zip: "./content/geoclock/geoclock.zip",
+        persist: "/geoclock",
+        run: ["cls", "geoclk.exe"],
+        scaler: "fillerup",
+    },
+    "^/?quake/sw/?$": {
         title: "Quake (shareware)",
         zip: "./content/quake/shareware/quake.zip",
         persist: "/quake",

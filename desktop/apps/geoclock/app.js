@@ -7,9 +7,9 @@ import {icons} from "./icons.js";
 
 export default {
     Meta: {
-        name: "Quake",
+        name: "GeoClock",
         version: "1.0",
-        author: "Tarpeeksi Hyvae Soft",
+        author: "",
     },
     App() {
         const minWidth = 320;
@@ -29,7 +29,7 @@ export default {
             get width() { return width.now },
             get height() { return height.now },
             Opened() {
-                iframeEl.now.src = "/dosbox/#/quake/sw";
+                iframeEl.now.src = "/dosbox/#/geoclock/";
                 focusTimeout.set(setInterval(()=>{
                     if (!this.window.isBlurred) {
                         iframeEl.now.focus();
@@ -42,7 +42,7 @@ export default {
             Form() {
                 return w95.widget.window({
                     parent: this,
-                    title: "Quake",
+                    title: this.$app.Meta.name,
                     icon: icons.app16,
                     resize(deltaWidth, deltaHeight) {
                         width.set(Math.max(minWidth, (width.now + deltaWidth)));

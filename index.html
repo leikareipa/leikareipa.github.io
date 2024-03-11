@@ -71,6 +71,9 @@
 
             import rngonTextureConvert from "./desktop/apps/rngon-texture-converter/app.js";
 
+            import geoClock from "./desktop/apps/geoclock/app.js";
+            import {icons as geoClockIcons} from "./desktop/apps/geoclock/icons.js";
+
             const desktop = w95.shell.desktop({
                 showWatermark: false,
                 icons: [
@@ -128,6 +131,16 @@
                         icon: w95.icon.applicationIcon32x32,
                         onActivate() {
                             w95.shell.run(rngonTextureConvert);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "GeoClock",
+                        icon: geoClockIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(geoClock);
                         },
                     }),
                 ]
