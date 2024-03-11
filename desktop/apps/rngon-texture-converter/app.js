@@ -1,3 +1,5 @@
+import {icons} from "./icons.js";
+
 export default {
     Meta: {
         name: "Retro n-gon texture converter",
@@ -64,6 +66,7 @@ export default {
                 return w95.widget.window({
                     parent: this,
                     title: "Retro n-gon texture converter",
+                    icon: icons.app16,
                     move(deltaX, deltaY) {
                         x.set(x.now + deltaX);
                         y.set(y.now + deltaY);

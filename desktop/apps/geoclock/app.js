@@ -71,7 +71,7 @@ export default {
                                     width: "pw - 2",
                                     height: "ph - 2",
                                     element: iframeEl.now,
-                                    className: "dosbox",
+                                    className: "geoclock",
                                 }),
                             ],
                         }),

@@ -41,7 +41,7 @@ What happens if I plop into the test results the estimated performance level of 
             <td class="s1">1</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
-            <td class="s2">1</td>
+            <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s2">2</td>
             <td class="s2">2</td>

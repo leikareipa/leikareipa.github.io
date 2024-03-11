@@ -21,13 +21,14 @@
     <body>
         <script type="module">
             import app from "./app.js";
+            import {icons as rngonTextureConvertIcons}  from "./icons.js";
 
             const taskbar = w95.shell.taskbar();
             const desktop = w95.shell.desktop({
                 icons: [
                     w95.widget.desktopIcon({
                         text: "Rngon texture converter",
-                        icon: w95.icon.applicationIcon32x32,
+                        icon: rngonTextureConvertIcons.app32,
                         onActivate() {
                             w95.shell.run(app);
                         },

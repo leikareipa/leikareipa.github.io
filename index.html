@@ -29,6 +29,11 @@
             background-color: rgb(192, 192, 192);
             border: none;
         }
+        
+        iframe.geoclock {
+            background-color: rgb(192, 192, 192);
+            border: none;
+        }
 
         canvas.ngon-texture-convert {
             background-color: rgb(192, 192, 192);
@@ -70,6 +75,7 @@
             import {icons as apinaIcons} from "./desktop/apps/apina/icons.js";
 
             import rngonTextureConvert from "./desktop/apps/rngon-texture-converter/app.js";
+            import {icons as rngonTextureConvertIcons}  from "./desktop/apps/rngon-texture-converter/icons.js";
 
             import geoClock from "./desktop/apps/geoclock/app.js";
             import {icons as geoClockIcons} from "./desktop/apps/geoclock/icons.js";
@@ -128,7 +134,7 @@
                     }),
                     w95.widget.desktopIcon({
                         text: "Rngon texture converter",
-                        icon: w95.icon.applicationIcon32x32,
+                        icon: rngonTextureConvertIcons.app32,
                         onActivate() {
                             w95.shell.run(rngonTextureConvert);
                         },
