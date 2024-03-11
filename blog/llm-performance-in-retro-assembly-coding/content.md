@@ -1,4 +1,4 @@
-<post-date date="4 March 2024" edited="4 March 2024"/>
+<post-date date="4 March 2024" edited="11 March 2024"/>
 
 # LLM performance in retro assembly coding
 
@@ -160,22 +160,12 @@ Below are the average test scores per model across all tasks:
 
 It's an interesting ordering of models, given that regular GPT-4 beats GPT-4 Turbo so clearly. The results for Claude 3 are interesting as well; I've written a bit more about them [here](/blog/claude-3s-exceptional-abilities-at-obscure-languages/).
 
-Besides training data, which I assume would've been similar between GPT-4 and GPT-4 Turbo, if we assume that the size of a model affects its ability to perform in these more obscure tasks, we might guesstimate model parameter counts:
-
-- DeepSeek Coder is known to have 33 B,
-- Mistral Large might be 120 B since Mistral Medium may have 70 B as per the leaked model of Jan 2024,
-- which might put GPT-4 at 150 B (whether MoE or not)
-- and GPT-4 Turbo at 60 B,
-- same as Gemini Ultra 1.0,
-- while GPT-3.5 could by now be sub-30 B,
-- and Claude 3 Opus may be in the 200 B range.
-
-These numbers might be off by quite a bit, but speculation is free.
+One thing to note about these scores is that, as explained above, failure to produce compilable code resulted in a score of 0% in the corresponding test, regardless of the quality of the implementation otherwise. So it would be possible for a reasonably good model that tends to make small mistakes to have a deceptively low score.
 
 ## Final words
 
-Well, the LLMs tested here &ndash; which are among the best available &ndash; don't make for great retro DOS assembly programming assistants.
+Well, although the results revealed some interesting metapatterns, these LLMs &ndash; which are among the best available &ndash; don't make for great retro DOS assembly programming assistants. The tasks were seemingly quite challenging for the models, probably in part because of limited training data specific to this blend of assembly.
 
-The tasks are seemingly quite challenging for the models, probably in part because of limited training data specific to these problems.
+Across the tests, Claude 3 Opus was the most capable and consistent, but with an average score of just 38%, it can't quite be called apt.
 
-The results also appear to show the unfortunate trend of nerfings to GPT-4's capabilities, the Turbo model from early 2024 performing much worse than the mid-2023 non-Turbo (which itself was allegedly a nerf of the original Q1 2023 launch model).
+All of that said, these tests measured the ability to create complete implementations independently. More limited code completion tasks etc. might show notably higher scores.
