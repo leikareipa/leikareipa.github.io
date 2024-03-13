@@ -3,6 +3,8 @@
  * 
  */
 
+import {icons} from "./icons.js";
+
 export default {
     Meta: {
         name: "Pillunsaamislaskuri",
@@ -27,6 +29,7 @@ export default {
                 return w95.widget.window({
                     parent: this,
                     title: "Pillunsaamislaskuri",
+                    icon: icons.app16,
                     move(deltaX, deltaY) {
                         x.set(x.now + deltaX);
                         y.set(y.now + deltaY);

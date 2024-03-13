@@ -59,6 +59,7 @@
             import {icons as rallySportEdIcons} from "./desktop/apps/rallysported/icons.js";
 
             import pillunsaamislaskuri from "./desktop/apps/pillunsaamislaskuri/app.js";
+            import {icons as pillunsaamislaskuriIcons} from "./desktop/apps/pillunsaamislaskuri/icons.js";
 
             import quake from "./desktop/apps/quake/app.js";
             import {icons as quakeIcons} from "./desktop/apps/quake/icons.js";
@@ -101,7 +102,7 @@
                     }),
                     w95.widget.desktopIcon({
                         text: "Pillunsaamislaskuri",
-                        icon: w95.icon.applicationIcon32x32,
+                        icon: pillunsaamislaskuriIcons.app32,
                         onActivate() {
                             w95.shell.run(pillunsaamislaskuri, {singleInstance: true});
                         },
