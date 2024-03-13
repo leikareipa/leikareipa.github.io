@@ -65,7 +65,7 @@
                         text: "instructions.txt",
                         icon: notepadIcons.app32,
                         async onActivate() {
-                            w95.shell.run(notepad("./assets/instructions.txt"), {singleInstance: true});
+                            w95.shell.run(notepad({file: "./assets/instructions.txt"}), {singleInstance: true});
                         },
                     }),
                 ]
@@ -73,7 +73,7 @@
 
             w95.shell.boot();
             w95.shell.wallpaper = "./assets/nature.png";
-            w95.shell.run([desktop, w95.shell.taskbar(), notepad("./assets/instructions.txt")]);
+            w95.shell.run([desktop, w95.shell.taskbar(), notepad({file: "./assets/instructions.txt"})]);
         </script>
     </body>
 </html>
