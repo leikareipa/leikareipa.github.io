@@ -49,6 +49,8 @@
     </style>
     <body>
         <script type="module">
+            import {icons} from "./desktop/icons.js";
+
             import notepad from "/experimental/w95/samples/notepad/app.js";
             import {icons as notepadIcons} from "/experimental/w95/samples/notepad/assets/icons.js";
 
@@ -83,7 +85,7 @@
                         text: "PC.txt",
                         icon: notepadIcons.app32,
                         onActivate() {
-                            w95.shell.run(notepad("./desktop/PC.txt"));
+                            w95.shell.run(notepad({file: "./desktop/PC.txt"}));
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -111,7 +113,7 @@
                         text: "Copy of PC.txt",
                         icon: notepadIcons.app32,
                         onActivate() {
-                            w95.shell.run(notepad("./desktop/Copy of PC.txt"));
+                            w95.shell.run(notepad({file: "./desktop/Copy of PC.txt"}));
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -164,6 +166,13 @@
                         icon: imageViewerIcons.app32,
                         onActivate() {
                             w95.shell.run(imageViewer("./desktop/v3-970-80.gif"));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Real2Int.h",
+                        icon: icons.fileH32,
+                        onActivate() {
+                            w95.shell.run(notepad({file: "./desktop/Real2Int.h", isWordWrap: false}));
                         },
                     }),
                 ]

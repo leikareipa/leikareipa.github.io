@@ -7,7 +7,10 @@
 
 import {icons} from "./assets/icons.js";
 
-export default function(filename = "") {
+export default function({
+    file = "",
+    isWordWrap = true,
+} = {}) {
     return {
         Meta: {
             name: "Notepad",
@@ -29,7 +32,7 @@ export default function(filename = "") {
                 w95.reRenderOnly
             );
 
-            const isWordWrapEnabled = w95.state(true);
+            const isWordWrapEnabled = w95.state(isWordWrap);
             const showAbout = w95.state(false);
 
             const text = w95.state("");
@@ -41,16 +44,16 @@ export default function(filename = "") {
                 get width() { return width.now },
                 get height() { return height.now },
                 async Mounted() {
-                    text.set(await (await fetch(filename)).text());
-                    srcFile.set(filename.replace(/.*?\//g, ""));
+                    text.set(await (await fetch(file)).text());
+                    srcFile.set(file.replace(/.*?\//g, ""));
                 },
                 Form() {
                     return w95.widget.window({
                         parent: this,
                         title: (
                             srcFile.now
-                                ? `${srcFile.now} - ${this.$app.Meta.name}`
-                                : this.$app.Meta.name
+                                ? `${srcFile.now} - Notepad`
+                                : "Notepad"
                         ),
                         icon: icons.app16,
                         resize(deltaWidth, deltaHeight) {
