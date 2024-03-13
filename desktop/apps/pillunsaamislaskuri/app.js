@@ -38,7 +38,7 @@ export default {
                         w95.widget.label({
                             y: 10,
                             width: "pw",
-                            text: "2375",
+                            text: `${w95.registry.get("pillua")}`,
                             styleHints: [
                                 w95.styleHint.alignHCenter,
                             ],
@@ -48,6 +48,9 @@ export default {
                             y: 32,
                             width: "pw - 20",
                             text: "Päivitä",
+                            onClick() {
+                                w95.registry.increment("pillua");
+                            },
                         }),
                     ],
                 });

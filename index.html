@@ -10,32 +10,24 @@
         <link href="/experimental/w95/distributable/w95.css" rel="stylesheet">
     </head>
     <style>
-        iframe.ia-browser {
+        iframe.rsed,
+        iframe.dosbox,
+        iframe.geoclock,
+        iframe.ia-browser   {
             background-color: rgb(192, 192, 192);
+            border: none;
+        }
+
+        iframe.ia-browser {
             width: 1180px;
             height: 668px;
             transform: none;
             filter: none;
             position: absolute;
-            border: none;
-        }
-        
-        iframe.rsed {
-            background-color: rgb(192, 192, 192);
-            border: none;
-        }
-        
-        iframe.dosbox {
-            background-color: rgb(192, 192, 192);
-            border: none;
-        }
-        
-        iframe.geoclock {
-            background-color: rgb(192, 192, 192);
-            border: none;
         }
 
-        canvas.ngon-texture-convert {
+        canvas.ngon-texture-convert,
+        canvas.image-viewer {
             background-color: rgb(192, 192, 192);
             pointer-events: none;
             image-rendering: pixelated;
@@ -80,14 +72,17 @@
             import geoClock from "./desktop/apps/geoclock/app.js";
             import {icons as geoClockIcons} from "./desktop/apps/geoclock/icons.js";
 
+            import imageViewer from "./desktop/apps/image-viewer/app.js";
+            import {icons as imageViewerIcons} from "./desktop/apps/image-viewer/icons.js";
+
             const desktop = w95.shell.desktop({
                 showWatermark: false,
                 icons: [
                     w95.widget.desktopIcon({
-                        text: "Luemut.txt",
+                        text: "PC.txt",
                         icon: notepadIcons.app32,
                         onActivate() {
-                            w95.shell.run(notepad("./desktop/Luemut.txt"));
+                            w95.shell.run(notepad("./desktop/PC.txt"));
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -112,17 +107,24 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Copy of Luemut.txt",
+                        text: "Copy of PC.txt",
                         icon: notepadIcons.app32,
                         onActivate() {
-                            w95.shell.run(notepad("./desktop/Copy of Luemut.txt"));
+                            w95.shell.run(notepad("./desktop/Copy of PC.txt"));
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Quake SW",
+                        text: "Quake",
                         icon: quakeIcons.app32,
                         onActivate() {
                             w95.shell.run(quake, {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Jaana Lapissa.gif",
+                        icon: imageViewerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(imageViewer("./desktop/Jaana Lapissa.gif"));
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -149,9 +151,24 @@
                             w95.shell.run(geoClock);
                         },
                     }),
+                    w95.widget.desktopIcon({
+                        text: "SÄÄTÖÄ.GIF",
+                        icon: imageViewerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(imageViewer("./desktop/SÄÄTÖÄ.GIF"));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "v3-970-80.gif",
+                        icon: imageViewerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(imageViewer("./desktop/v3-970-80.gif"));
+                        },
+                    }),
                 ]
             });
             w95.shell.boot();
+            w95.registry.set("pillua", 8);
             w95.shell.wallpaper = "./desktop/rock.png";
             w95.shell.run([desktop, w95.shell.taskbar()]);
         </script>

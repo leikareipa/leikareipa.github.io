@@ -49,8 +49,8 @@ export default function(filename = "") {
                         parent: this,
                         title: (
                             srcFile.now
-                                ? `${srcFile.now} - Notepad`
-                                : "Notepad"
+                                ? `${srcFile.now} - ${this.$app.Meta.name}`
+                                : this.$app.Meta.name
                         ),
                         icon: icons.app16,
                         resize(deltaWidth, deltaHeight) {
