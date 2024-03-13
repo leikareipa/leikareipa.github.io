@@ -31,7 +31,7 @@ export default {
 
         const iframeEl = w95.state(document.createElement("iframe"));
         const address = w95.state("about:browser");
-        const year = w95.state(1996 + ~~(Math.random() * 10), browse_to_current_address);
+        const year = w95.state(1998);
 
         return {
             get x() { return x.now },
