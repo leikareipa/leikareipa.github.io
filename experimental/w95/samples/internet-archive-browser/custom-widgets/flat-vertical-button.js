@@ -72,40 +72,48 @@ export const flatVerticalButton = w95.widget(function flatVerticalButton({
                         isPressed.set(false);
                     },
                     children: [
-                        w95.widget.verticalLayout({
-                            y: -1,
+                        w95.widget.frame({
+                            x: ~~isVisuallyPressed,
+                            y: ~~isVisuallyPressed,
+                            shape: w95.frameShape.none,
                             width,
                             height,
-                            styleHints:  [
-                                w95.styleHint.alignVCenter,
-                                w95.styleHint.alignHCenter,
-                            ],
                             children: [
-                                w95.widget.bitmap({
-                                    x: ~~isVisuallyPressed,
-                                    y: (~~isVisuallyPressed + (19 - icon.height) - ~~isDisabled - ~~[icons.buttonLeft, icons.buttonRight].includes(icon)),
-                                    image: icon,
-                                    isDisabled: !isHovered.now,
-                                }, {
-                                    hideIf: !icon,
-                                }),
-                                w95.widget.layoutSpacer({
-                                    height: (14 - icon.height) + ~~[icons.buttonLeft, icons.buttonRight].includes(icon),
-                                }),
-                                w95.widget.label({
-                                    x: ~~isVisuallyPressed,
-                                    y: (~~isVisuallyPressed + ~~isDisabled),
-                                    text,
-                                    styleHints: [
-                                        w95.styleHint.action,
+                                w95.widget.verticalLayout({
+                                    y: -1,
+                                    width,
+                                    height,
+                                    styleHints:  [
+                                        w95.styleHint.alignVCenter,
                                         w95.styleHint.alignHCenter,
                                     ],
-                                }, {
-                                    hideIf: !text.length,
+                                    children: [
+                                        w95.widget.layoutSpacer({
+                                            height: ([icons.buttonLeft, icons.buttonRight].includes(icon)? -1 : 0),
+                                        }),
+                                        w95.widget.bitmap({
+                                            image: icon,
+                                            isDisabled: !isHovered.now,
+                                        }, {
+                                            hideIf: !icon,
+                                        }),
+                                        w95.widget.layoutSpacer({
+                                            height: ([icons.buttonLeft, icons.buttonRight].includes(icon)? -1 : -3),
+                                        }),
+                                        w95.widget.label({
+                                            text,
+                                            styleHints: [
+                                                w95.styleHint.action,
+                                                w95.styleHint.alignHCenter,
+                                            ],
+                                        }, {
+                                            hideIf: !text.length,
+                                        }),
+                                    ],
                                 }),
                             ],
                         }),
-                    ]
+                    ],
                 }),
             ];
         },

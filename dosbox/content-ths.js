@@ -17,6 +17,13 @@ export default {
         run: ["cls", "geoclk.exe"],
         scaler: "fillerup",
     },
+    "^/?operation-cleaner/?$": {
+        title: "Operation Cleaner",
+        zip: "./content/operation-cleaner/cleaner.zip",
+        persist: "/opclean",
+        run: ["cls", "cleaner.exe"],
+        scaler: "fillerup",
+    },
     "^/?quake/sw/?$": {
         title: "Quake (shareware)",
         zip: "./content/quake/shareware/quake.zip",

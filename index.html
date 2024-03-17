@@ -75,8 +75,14 @@
             import geoClock from "./desktop/apps/geoclock/app.js";
             import {icons as geoClockIcons} from "./desktop/apps/geoclock/icons.js";
 
+            import operationCleaner from "./desktop/apps/operation-cleaner/app.js";
+            import {icons as operationCleanerIcons} from "./desktop/apps/operation-cleaner/icons.js";
+
             import imageViewer from "./desktop/apps/image-viewer/app.js";
             import {icons as imageViewerIcons} from "./desktop/apps/image-viewer/icons.js";
+
+            import fileExplorer from "./desktop/apps/file-explorer/app.js";
+            import {icons as fileExplorerIcons} from "./desktop/apps/file-explorer/icons.js";
 
             const desktop = w95.shell.desktop({
                 showWatermark: false,
@@ -92,7 +98,7 @@
                         text: "Nettiselain",
                         icon: browserIcons.app32,
                         onActivate() {
-                            w95.shell.run(browser);
+                            w95.shell.run(browser({url: "www.yahoo.com"}));
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -119,6 +125,9 @@
                     w95.widget.desktopIcon({
                         text: "Quake",
                         icon: quakeIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
                         onActivate() {
                             w95.shell.run(quake, {singleInstance: true});
                         },
@@ -169,10 +178,40 @@
                         },
                     }),
                     w95.widget.desktopIcon({
+                        text: "Lanikuvat",
+                        icon: fileExplorerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(fileExplorer({
+                                baseDisplayPath: "Lanikuvat",
+                                files: {
+                                    "Assembly '98/": {
+                                        "64tiikeri.gif": ()=>w95.shell.run(imageViewer("./desktop/lanikuvat/assembly 98/64tiikeri.gif")),
+                                        "graffa6.gif": ()=>w95.shell.run(imageViewer("./desktop/lanikuvat/assembly 98/graffa6.gif")),
+                                        "kahvi-3.gif": ()=>w95.shell.run(imageViewer("./desktop/lanikuvat/assembly 98/kahvi-3.gif")),
+                                        "krooh-2.gif": ()=>w95.shell.run(imageViewer("./desktop/lanikuvat/assembly 98/krooh-2.gif")),
+                                        "patja.gif": ()=>w95.shell.run(imageViewer("./desktop/lanikuvat/assembly 98/patja.gif")),
+                                        "roskapoyta.gif": ()=>w95.shell.run(imageViewer("./desktop/lanikuvat/assembly 98/roskapoyta.gif")),
+                                        "MBnet.url": ()=>w95.shell.run(browser({year: 2000, url: "www.mbnet.fi/jutut/assembly98"})),
+                                    },
+                                },
+                            }));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
                         text: "Real2Int.h",
                         icon: icons.fileH32,
                         onActivate() {
                             w95.shell.run(notepad({file: "./desktop/Real2Int.h", isWordWrap: false}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Operation Cleaner",
+                        icon: operationCleanerIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(operationCleaner);
                         },
                     }),
                 ]

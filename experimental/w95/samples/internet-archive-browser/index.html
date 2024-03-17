@@ -31,7 +31,7 @@
                         text: "Browser",
                         icon: icons.app32,
                         onActivate() {
-                            w95.shell.run(app);
+                            w95.shell.run(app());
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -45,7 +45,7 @@
             });
             w95.shell.boot();
             w95.shell.wallpaper = "./assets/pird.png";
-            w95.shell.run([desktop, w95.shell.taskbar(), app]);
+            w95.shell.run([desktop, w95.shell.taskbar(), app()]);
         </script>
         <script>
             // Some websites like to direct their links to the top window, i.e. the window
