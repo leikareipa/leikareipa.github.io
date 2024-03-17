@@ -46,6 +46,14 @@ export default function({
                     const scrollAreaWidget = this.$form["window"].$form["_contents"].$childWidgets[1];
                     contentHeight.set(scrollAreaWidget.height);
                 },
+                Event: {
+                    keydown(event) {
+                        if (event.keyCode === 8) {
+                            const fileViewWidget = this.$form["window"].$form["_contents"].$childWidgets[1].$form["_contents"].$form["fileView"];
+                            fileViewWidget.Message.navigate_back();
+                        }
+                    },
+                },
                 Form() {
                     return w95.widget.window({
                         $name: "window",
@@ -105,6 +113,7 @@ export default function({
                                 backgroundColor: Rngon.color.white,
                                 children: [
                                     fileView({
+                                        $name: "fileView",
                                         x: 1,
                                         y: 1,
                                         width: (width.now - 51),

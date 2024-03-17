@@ -94,11 +94,24 @@ export default w95.widget(function fileView({
                 stackIndex: currentPath.now,
             });
         },
+        Message: {
+            navigate_back() {
+                currentPath.set(go_back(currentPath.now));
+                
+                function go_back(path) {
+                    return (
+                        (path === "/")
+                            ? path
+                            : path.substring(0, (path.replace(/\/$/, "").lastIndexOf("/") + 1))
+                    );
+                }
+            },
+        },
         Event: {
             mousedown() {
                 this.icons.forEach(w=>w.Message?.blur?.());
-            }
-        }
+            },
+        },
     };
 
     function is_directory(filename) {
