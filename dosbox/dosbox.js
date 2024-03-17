@@ -203,7 +203,7 @@ export async function start_dosbox(args = {})
                 throw "All run commands must be strings.";
             };
 
-            jsdosInterface = await jsdosInstance.main(["-conf", `${assetRootPath}/dosbox.cfg`]);
+            jsdosInterface = await jsdosInstance.main(["-conf", `${assetRootPath}/dosbox.conf`]);
 
             // Providing these shell commands via the call to jsdosInstance.main() doesn't work
             // reliably, as some commands get ignored at pseudo-random. So we'll just issue them
