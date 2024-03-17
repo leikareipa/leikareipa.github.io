@@ -164,8 +164,8 @@ One thing to note about these scores is that, as explained above, failure to pro
 
 ## Final words
 
-Well, although the results revealed some interesting metapatterns, these LLMs &ndash; which are among the best available &ndash; don't make for great retro DOS assembly programming assistants. The tasks were seemingly quite challenging for the models, probably in part because of limited training data specific to this blend of assembly.
+Well, although the results revealed some interesting metapatterns, these LLMs &ndash; which are among the best available &ndash; don't appear to make for great retro DOS assembly programming assistants. The tasks were seemingly quite challenging for them, probably in part due to limited training data specific to this blend of assembly.
 
-Across the tests, Claude 3 Opus was the most capable and consistent, but with an average score of just 38%, it can't quite be called apt.
+Across all tests, Claude 3 Opus was the most capable and consistent; but with an average score of just 38%, it can't be called apt.
 
-All of that said, these tests measured the ability to create complete implementations independently. More limited code completion tasks etc. might show notably higher scores.
+That said, these tests measured the ability to create complete implementations independently. More limited code completion tasks etc. might show notably higher scores.
