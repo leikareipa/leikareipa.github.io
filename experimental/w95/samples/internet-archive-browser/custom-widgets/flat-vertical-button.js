@@ -89,7 +89,7 @@ export const flatVerticalButton = w95.widget(function flatVerticalButton({
                                     ],
                                     children: [
                                         w95.widget.layoutSpacer({
-                                            height: ([icons.buttonLeft, icons.buttonRight].includes(icon)? -1 : 0),
+                                            height: ([icons.buttonLeft, icons.buttonRight].includes(icon)? 6 : 3),
                                         }),
                                         w95.widget.bitmap({
                                             image: icon,
@@ -98,7 +98,7 @@ export const flatVerticalButton = w95.widget(function flatVerticalButton({
                                             hideIf: !icon,
                                         }),
                                         w95.widget.layoutSpacer({
-                                            height: ([icons.buttonLeft, icons.buttonRight].includes(icon)? -1 : -3),
+                                            height: ([icons.buttonLeft, icons.buttonRight].includes(icon)? 3 : 0),
                                         }),
                                         w95.widget.label({
                                             text,

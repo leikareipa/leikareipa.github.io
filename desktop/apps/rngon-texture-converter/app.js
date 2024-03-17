@@ -260,16 +260,13 @@ export default {
                                                         conversionIsFinished.set(true);
                                                     },
                                                 }),
-                                                w95.widget.label({
-                                                    y: 4,
-                                                    width: 182,
-                                                    text: `Done! Copy JSON to clipboard (${imageSize.now}).`,
-                                                }, {hideIf: !conversionIsFinished.now}),
+                                                w95.widget.layoutSpacer({
+                                                    height: 4,
+                                                }),
                                                 w95.widget.label({
                                                     cursor: w95.cursor.pointer,
-                                                    x: 30,
-                                                    y: -14,
-                                                    text: "Copy JSON to clipboard",
+                                                    width: 182,
+                                                    text: `Done! Copy JSON to clipboard (${imageSize.now}).`,
                                                     color: (
                                                         hasImageBeenCopied.now
                                                             ? w95.palette.named.purple

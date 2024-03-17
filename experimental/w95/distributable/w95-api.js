@@ -3103,13 +3103,13 @@ const w95 = {
     shell: _api_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _api_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _api_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-03-17.03:42:20"}`,
+    version: `BETA ${"2024-03-17.23:20:47"}`,
     $recurseDescendantWidgets: _api_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     $mesh(widget) {
         return Rngon.mesh((0,_api_widget_js__WEBPACK_IMPORTED_MODULE_2__.transformed_recursive_mesh)(widget));
     },
     font: {
-        stringWidth(text = "", font = w95.font, initialFontVariant = font.regular, letterSpacing = 1, wordSpacing = 3) {
+        stringWidth(text = "", font = w95.font, initialFontVariant = font.regular, allowFormatting = true, letterSpacing = 1, wordSpacing = 3) {
             w95.debug?.assert(typeof text === "string");
             w95.debug?.assert(typeof font === "object");
             w95.debug?.assert(typeof letterSpacing === "number");
@@ -3126,23 +3126,27 @@ const w95 = {
                     const charCode = string[i].charCodeAt(0);
                     const glyph = (fontVariant[charCode] || fontVariant[63]);
 
+                    if (allowFormatting) {
+                        switch (charCode) {
+                            // \b (toggle bold font on/off).
+                            case 8: {
+                                fontVariant = ((fontVariant === font.regular)? font.bold : font.regular);
+                                break;
+                            }
+
+                            // \v (toggle underlining on/off).
+                            case 11: break;
+
+                            // \r (set text color, e.g. "\r{red}this is in red\r{-} back to normal color").
+                            case 13: {
+                                const colorName = string.slice((i + 2), string.indexOf("}", (i + 2)));
+                                i += (colorName.length + 2);
+                                break;
+                            }
+                        }
+                    }
+
                     switch (charCode) {
-                        // \b (toggle bold font on/off).
-                        case 8: {
-                            fontVariant = ((fontVariant === font.regular)? font.bold : font.regular);
-                            break;
-                        }
-
-                        // \v (toggle underlining on/off).
-                        case 11: break;
-
-                        // \r (set text color, e.g. "\r{red}this is in red\r{-} back to normal color").
-                        case 13: {
-                            const colorName = string.slice((i + 2), string.indexOf("}", (i + 2)));
-                            i += (colorName.length + 2);
-                            break;
-                        }
-
                         // Tab.
                         case 9: {
                             len += (fontVariant.spaceWidth * 4);

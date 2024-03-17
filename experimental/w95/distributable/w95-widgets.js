@@ -2531,6 +2531,7 @@ w95.widget("label", function({
     isDisabled = false,
     elide = false,
     wordWrap = false,
+    allowFormatting = true,
     styleHints = [],
     font = w95.font.sansSerif[8],
     color = w95.palette.widget.foreground,
@@ -2551,6 +2552,7 @@ w95.widget("label", function({
     w95.debug?.assert(typeof isDisabled === "boolean");
     w95.debug?.assert(typeof elide === "boolean");
     w95.debug?.assert(typeof wordWrap === "boolean");
+    w95.debug?.assert(typeof allowFormatting === "boolean");
     w95.debug?.assert(typeof font === "object");
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "object"].includes(typeof cursor));
@@ -2568,15 +2570,15 @@ w95.widget("label", function({
     let isUnderlined = (styleHints.includes(w95.styleHint.underlined));
 
     if (typeof width === "undefined") {
-        width = w95.font.stringWidth(text, font, fontVariant);
+        width = w95.font.stringWidth(text, font, fontVariant, allowFormatting);
     }
     if (typeof height === "undefined") {
-        height = w95.font.stringHeight(text, font, fontVariant);
+        height = w95.font.stringHeight(text, font, fontVariant, allowFormatting);
     }
 
     if (
         wordWrap &&
-        (w95.font.stringWidth(text, font, fontVariant) > width)
+        (w95.font.stringWidth(text, font, fontVariant, allowFormatting) > width)
     ){
         word_wrap_text();
     }
@@ -2584,7 +2586,7 @@ w95.widget("label", function({
     if (
         elide &&
         text.length &&
-        (w95.font.stringWidth(text, font, fontVariant) > width)
+        (w95.font.stringWidth(text, font, fontVariant, allowFormatting) > width)
     ){
         elide_text();
     }
@@ -2661,7 +2663,7 @@ w95.widget("label", function({
 
         while (words.length) {
             const nextCutIdx = words.findIndex((word, idx)=>(
-                w95.font.stringWidth(words.slice(0, (idx + 1)).join(" "), font, fontVariant) >= width
+                w95.font.stringWidth(words.slice(0, (idx + 1)).join(" "), font, fontVariant, allowFormatting) >= width
             ));
 
             // The entire text fits and so doesn't need wrapping.
@@ -2672,7 +2674,7 @@ w95.widget("label", function({
             // Not even the first word fits, so chop it up.
             else if (nextCutIdx === 0) {
                 const interWordCutIdx = words[0].split("").findIndex((word, idx)=>(
-                    w95.font.stringWidth(words[0].substring(0, (idx + 1)), font, fontVariant) >= width
+                    w95.font.stringWidth(words[0].substring(0, (idx + 1)), font, fontVariant, allowFormatting) >= width
                 ));
                 lines[lineIdx] = words[0].substring(0, interWordCutIdx);
                 words[0] = words[0].substring(interWordCutIdx);
@@ -2692,13 +2694,13 @@ w95.widget("label", function({
 
     function elide_text() {
         const eliderString = "...";
-        const eliderWidth = w95.font.stringWidth(eliderString, font, fontVariant);
+        const eliderWidth = w95.font.stringWidth(eliderString, font, fontVariant, allowFormatting);
 
         if (eliderWidth < width) {
             // Not the most efficient way to do this, but good enough for now.
             do {
                 text = text.slice(0, -1);
-            } while (width < (eliderWidth + w95.font.stringWidth(text, font, fontVariant)));
+            } while (width < (eliderWidth + w95.font.stringWidth(text, font, fontVariant, allowFormatting)));
 
             text += eliderString;
         }
@@ -2738,40 +2740,42 @@ w95.widget("label", function({
             let prevColor = textColor
 
             for (const line of text.split("\n")) {
-                const lineWidth = w95.font.stringWidth(line, font, fontVariant);
+                const lineWidth = w95.font.stringWidth(line, font, fontVariant, allowFormatting);
                 const lineNgons = [];
                 const chars = line.split("");
 
                 for (let i = 0; i < chars.length; i++) {
                     const charCode = chars[i].charCodeAt(0);
     
-                    // \b (toggle bold font on/off).
-                    if (charCode === 8) {
-                        fontVariant = ((fontVariant === font.regular)? font.bold : font.regular);
-                        continue;
-                    }
-    
-                    // \v (toggle underlining on/off).
-                    if (charCode === 11) {
-                        isUnderlined = !isUnderlined;
-                        continue;
-                    }
-    
-                    // \r (set text color, e.g. "\r{red}this is in red\r{} back to normal color").
-                    if (charCode === 13) {
-                        const colorName = line.slice((i + 2), line.indexOf("}", (i + 2)));
-                        if (!isDisabled) {
-                            // If a color name is given.
-                            if (colorName.length > 1) {
-                                prevColor = textColor;
-                                textColor = w95.palette.named[colorName];
-                            }
-                            else {
-                                textColor = ((colorName === "-")? initialColor : prevColor);
-                            }
+                    if (allowFormatting) {
+                        // \b (toggle bold font on/off).
+                        if (charCode === 8) {
+                            fontVariant = ((fontVariant === font.regular)? font.bold : font.regular);
+                            continue;
                         }
-                        i += (2 + colorName.length);
-                        continue;
+        
+                        // \v (toggle underlining on/off).
+                        if (charCode === 11) {
+                            isUnderlined = !isUnderlined;
+                            continue;
+                        }
+        
+                        // \r (set text color, e.g. "\r{red}this is in red\r{} back to normal color").
+                        if (charCode === 13) {
+                            const colorName = line.slice((i + 2), line.indexOf("}", (i + 2)));
+                            if (!isDisabled) {
+                                // If a color name is given.
+                                if (colorName.length > 1) {
+                                    prevColor = textColor;
+                                    textColor = w95.palette.named[colorName];
+                                }
+                                else {
+                                    textColor = ((colorName === "-")? initialColor : prevColor);
+                                }
+                            }
+                            i += (2 + colorName.length);
+                            continue;
+                        }
                     }
         
                     // Tab, space.
@@ -5402,7 +5406,7 @@ w95.widget("verticalLayout", function({
                         }
                     }
 
-                    runningHeight += (widget.height + (widget.height? padding : 0));
+                    runningHeight += (widget.height + ((widget.height && (widget._type !== "layoutSpacer"))? padding : 0));
                 }
             }
         },
