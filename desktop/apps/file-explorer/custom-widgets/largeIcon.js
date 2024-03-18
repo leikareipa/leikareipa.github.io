@@ -54,7 +54,7 @@ export default w95.widget(function largeIcon({
                         image: icon,
                         color: (
                             hasFocus.now
-                                ? Rngon.color(128, 128, 255)
+                                ? Rngon.color(127, 127, 191)
                                 : w95.palette.named.white
                         ),
                         styleHints: [

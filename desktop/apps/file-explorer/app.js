@@ -60,7 +60,7 @@ export default function({
                     return w95.widget.window({
                         $name: "window",
                         parent: this,
-                        title: `${basePath}${currentPath.now}`.replace(/\/$/, ""),
+                        title: `C:\\${basePath}${currentPath.now}`.replace(/\/$/, "").replace(/\//g, "\\"),
                         icon: icons.app16,
                         move(deltaX, deltaY) {
                             x.set(x.now + deltaX);

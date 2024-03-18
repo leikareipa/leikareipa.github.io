@@ -22,37 +22,11 @@ export default w95.widget(function fileView({
 {
     const contentHeight = w95.state(height);
     const currentPath = w95.state("/", ()=>reportPath?.(currentPath.now));
+    const views = w95.state({});
 
-    const views = {};
-    (function recurse(files, path = "/") {
-        const widgets = [];
-
-        for (const [filename, runner] of Object.entries(files)) {
-            widgets.push(
-                w95.widget.dynamicWrapper({
-                    widget: largeIcon({
-                        text: filename.replace(/\/$/, "").replace(/\.url$/, ""),
-                        icon: get_icon(filename),
-                        onActivate() {
-                            if (is_directory(filename)) {
-                                currentPath.set(path + filename);
-                            }
-                            else {
-                                const fullPath = (externalBasePath + currentPath.now + filename);
-                                (defaultRunners[get_file_type(filename)] || runner)?.(fullPath, filename);
-                            }
-                        },
-                    }),
-                })
-            );
-
-            if (is_directory(filename)) {
-                recurse(files[filename], (path + filename));
-            }
-
-            views[path] = widgets;
-        }
-    })(files);
+    if (!Object.keys(views.now).length) {
+        generate_views();
+    }
 
     return {
         get x() { return x },
@@ -87,13 +61,13 @@ export default w95.widget(function fileView({
             }
         },
         Form() {
-            reportNumIcons?.(views[currentPath.now].length);
+            reportNumIcons?.(views.now[currentPath.now].length);
 
             return w95.widget.stackedWidget({
                 width,
                 height: (contentHeight.now - 2),
                 $name: "_contents",
-                stacks: views,
+                stacks: views.now,
                 stackIndex: currentPath.now,
             });
         },
@@ -116,6 +90,38 @@ export default w95.widget(function fileView({
             },
         },
     };
+
+    function generate_views() {
+        (function recurse(files, path = "/") {
+            const widgets = [];
+    
+            for (const [filename, runner] of Object.entries(files)) {
+                widgets.push(
+                    w95.widget.dynamicWrapper({
+                        widget: largeIcon({
+                            text: filename.replace(/\/$/, "").replace(/\.url$/, ""),
+                            icon: get_icon(filename),
+                            onActivate() {
+                                if (is_directory(filename)) {
+                                    currentPath.set(path + filename);
+                                }
+                                else {
+                                    const fullPath = (externalBasePath + currentPath.now + filename);
+                                    (defaultRunners[get_file_type(filename)] || runner)?.(fullPath, filename);
+                                }
+                            },
+                        }),
+                    })
+                );
+    
+                if (is_directory(filename)) {
+                    recurse(files[filename], (path + filename));
+                }
+    
+                views.now[path] = widgets;
+            }
+        })(files);
+    }
 
     function is_directory(filename) {
         return filename.endsWith("/");
