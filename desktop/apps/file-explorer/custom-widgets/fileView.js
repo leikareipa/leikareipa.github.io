@@ -14,6 +14,8 @@ export default w95.widget(function fileView({
     y = 0,
     width = 200,
     height = 200,
+    defaultRunners = undefined,
+    externalBasePath = "",
     reportNumIcons = undefined,
     reportPath = undefined,
 } = {})
@@ -35,8 +37,9 @@ export default w95.widget(function fileView({
                             if (is_directory(filename)) {
                                 currentPath.set(path + filename);
                             }
-                            else if (typeof runner === "function") {
-                                runner();
+                            else {
+                                const fullPath = (externalBasePath + currentPath.now + filename);
+                                (defaultRunners[get_file_type(filename)] || runner)?.(fullPath, filename);
                             }
                         },
                     }),
@@ -97,7 +100,7 @@ export default w95.widget(function fileView({
         Message: {
             navigate_back() {
                 currentPath.set(go_back(currentPath.now));
-                
+
                 function go_back(path) {
                     return (
                         (path === "/")
@@ -118,21 +121,28 @@ export default w95.widget(function fileView({
         return filename.endsWith("/");
     }
 
+    function get_file_type(filename) {
+        switch (get_filename_extension(filename)) {
+            case "diz": return "text";
+            case "txt": return "text";
+            case "gif":
+            case "jpg":
+            case "bmp":
+            case "png": return "image";
+            case "com":
+            case "exe": return "executable";
+            case "bat": return "batch";
+            case "url": return "url";
+            default: return "unknown";
+        }
+    }
+
     function get_icon(filename) {
         if (is_directory(filename)) {
             return icons.dir32;
         }
 
-        switch (get_filename_extension(filename)) {
-            case "txt": return icons.text32;
-            case "gif":
-            case "jpg":
-            case "png": return icons.image32;
-            case "com":
-            case "exe": return icons.executable32;
-            case "url": return icons.url32;
-            default: return icons.unknown32;
-        }
+        return icons[`${get_file_type(filename)}32`];
     }
 
     function get_filename_extension(filename) {

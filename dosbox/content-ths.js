@@ -10,6 +10,13 @@ export default {
         persist: "/rs-demo",
         run: "rally.bat",
     },
+    "^/?rally-sport/rallys/?$": {
+        title: "Rally-Sport (demo)",
+        zip: "./content/rally-sport/demo/rallys.zip",
+        persist: "/rallys",
+        scaler: "fillerup",
+        run: "?run",
+    },
     "^/?geoclock/?$": {
         title: "GeoClock",
         zip: "./content/geoclock/geoclock.zip",

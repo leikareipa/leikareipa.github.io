@@ -7,8 +7,8 @@ import {icons} from "./icons.js";
 import fileView from "./custom-widgets/fileView.js";
 
 export default function({
-    baseDisplayPath = "/",
-    files = {}
+    files = {},
+    defaultRunners = {},
 } = {}) {
     return {
         Meta: {
@@ -36,6 +36,8 @@ export default function({
 
             const viewFileCount = w95.state(0);
             const currentPath = w95.state("/");
+            const basePath = Object.keys(files)[0].replace(/\/$/, "");
+            const fileStructure = Object.values(files)[0];
 
             return {
                 get x() { return x.now },
@@ -58,7 +60,7 @@ export default function({
                     return w95.widget.window({
                         $name: "window",
                         parent: this,
-                        title: `${baseDisplayPath}${currentPath.now}`.replace(/\/$/, ""),
+                        title: `${basePath}${currentPath.now}`.replace(/\/$/, ""),
                         icon: icons.app16,
                         move(deltaX, deltaY) {
                             x.set(x.now + deltaX);
@@ -116,9 +118,11 @@ export default function({
                                         $name: "fileView",
                                         x: 1,
                                         y: 1,
-                                        width: (width.now - 51),
+                                        width: (width.now - 29),
                                         height: (Math.max(contentHeight.now, height.now) - 70),
-                                        files,
+                                        files: fileStructure,
+                                        externalBasePath: basePath,
+                                        defaultRunners,
                                         reportNumIcons(num) {
                                             viewFileCount.set(num);
                                         },

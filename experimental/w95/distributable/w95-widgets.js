@@ -2777,6 +2777,12 @@ w95.widget("label", function({
                             continue;
                         }
                     }
+                    else {
+                        // \r
+                        if (charCode === 13) {
+                            continue;
+                        }
+                    }
         
                     // Tab, space.
                     if ([9, 32].includes(charCode)) {

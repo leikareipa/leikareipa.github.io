@@ -37,14 +37,14 @@
                         text: "ulysses.txt",
                         icon: icons.app32,
                         onActivate() {
-                            w95.shell.run(app("./assets/ulysses.txt"), {singleInstance: true});
+                            w95.shell.run(app({file: "./assets/ulysses.txt"}), {singleInstance: true});
                         },
                     }),
                 ],
             });
             w95.shell.boot();
             w95.shell.wallpaper = "./assets/nature.png";
-            w95.shell.run([desktop, w95.shell.taskbar(), app("./assets/ulysses.txt")]);
+            w95.shell.run([desktop, w95.shell.taskbar(), app({file: "./assets/ulysses.txt"})]);
         </script>
     </body>
 </html>

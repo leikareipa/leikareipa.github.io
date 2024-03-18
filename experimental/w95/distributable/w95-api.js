@@ -3103,7 +3103,7 @@ const w95 = {
     shell: _api_shell_js__WEBPACK_IMPORTED_MODULE_8__.shell,
     windowManager: _api_window_manager_js__WEBPACK_IMPORTED_MODULE_10__.windowManager,
     StateVariable: _api_state_js__WEBPACK_IMPORTED_MODULE_6__.StateVariable,
-    version: `BETA ${"2024-03-17.23:20:47"}`,
+    version: `BETA ${"2024-03-18.13:43:48"}`,
     $recurseDescendantWidgets: _api_widget_js__WEBPACK_IMPORTED_MODULE_2__.recurse_descendant_widgets,
     $mesh(widget) {
         return Rngon.mesh((0,_api_widget_js__WEBPACK_IMPORTED_MODULE_2__.transformed_recursive_mesh)(widget));
@@ -3143,6 +3143,12 @@ const w95 = {
                                 i += (colorName.length + 2);
                                 break;
                             }
+                        }
+                    }
+                    else {
+                        // \r
+                        if (charCode === 13) {
+                            continue;
                         }
                     }
 

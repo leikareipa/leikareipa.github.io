@@ -10,6 +10,7 @@ import {icons} from "./assets/icons.js";
 export default function({
     file = "",
     isWordWrap = true,
+    decoder = (bytes)=>(new TextDecoder("utf-8").decode(bytes)),
 } = {}) {
     return {
         Meta: {
@@ -44,7 +45,7 @@ export default function({
                 get width() { return width.now },
                 get height() { return height.now },
                 async Mounted() {
-                    text.set(await (await fetch(file)).text());
+                    text.set(decoder(await (await fetch(file)).arrayBuffer()));
                     srcFile.set(file.replace(/.*?\//g, ""));
                 },
                 Form() {
@@ -145,6 +146,7 @@ export default function({
                                         text: text.now,
                                         font: w95.font.fixedsys[9],
                                         wordWrap: isWordWrapEnabled.now,
+                                        allowFormatting: false,
                                     }),
                                 ],
                             }),
