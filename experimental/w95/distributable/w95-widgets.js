@@ -706,7 +706,13 @@ w95.widget("domElement", function({
             element.classList.add("hidden");
         },
         Form() {
-            return Rngon.ngon([]);
+            return Rngon.ngon([
+                Rngon.vertex(0, 0),
+                Rngon.vertex(width, 0),
+                Rngon.vertex(width, height),
+                Rngon.vertex(0, height)], {
+                    color: Rngon.color(0, 0, 0, 0),
+            });
         },
         Message: {
             setIsSuppressed(isSuppressed) {
