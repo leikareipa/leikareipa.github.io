@@ -148,30 +148,6 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "GeoClock",
-                        icon: commandIcons.app32,
-                        styleHints: [
-                            w95.styleHint.shortcut,
-                        ],
-                        onActivate() {
-                            w95.shell.run(command({url: "/dosbox/#/geoclock/"}), {singleInstance: true});
-                        },
-                    }),
-                    w95.widget.desktopIcon({
-                        text: "SÄÄTÖÄ.GIF",
-                        icon: imageViewerIcons.app32,
-                        onActivate() {
-                            w95.shell.run(imageViewer("./desktop/SÄÄTÖÄ.GIF"));
-                        },
-                    }),
-                    w95.widget.desktopIcon({
-                        text: "v3-970-80.gif",
-                        icon: imageViewerIcons.app32,
-                        onActivate() {
-                            w95.shell.run(imageViewer("./desktop/v3-970-80.gif"));
-                        },
-                    }),
-                    w95.widget.desktopIcon({
                         text: "Lanikuvat",
                         icon: fileExplorerIcons.app32,
                         onActivate() {
@@ -196,10 +172,13 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Real2Int.h",
-                        icon: icons.fileH32,
+                        text: "GeoClock",
+                        icon: commandIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
                         onActivate() {
-                            w95.shell.run(notepad({file: "./desktop/Real2Int.h", isWordWrap: false}));
+                            w95.shell.run(command({url: "/dosbox/#/geoclock/"}), {singleInstance: true});
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -213,6 +192,37 @@
                         },
                     }),
                     w95.widget.desktopIcon({
+                        text: "The Curse of Monkey Island",
+                        icon: fileExplorerIcons.url32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(browser({year: 1998, url: "www.lucasarts.com/products/monkey/default.htm"}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "SÄÄTÖÄ.GIF",
+                        icon: imageViewerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(imageViewer("./desktop/SÄÄTÖÄ.GIF"));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "v3-970-80.gif",
+                        icon: imageViewerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(imageViewer("./desktop/v3-970-80.gif"));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Real2Int.h",
+                        icon: icons.fileH32,
+                        onActivate() {
+                            w95.shell.run(notepad({file: "./desktop/Real2Int.h", isWordWrap: false}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
                         text: "RALLYS",
                         icon: fileExplorerIcons.app32,
                         onActivate() {
@@ -223,7 +233,7 @@
                                     unknown: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
                                     text: (filename)=>w95.shell.run(notepad({
                                         file: `./desktop/${filename}`,
-                                        decoder: (bytes)=>(new TextDecoder("latin2").decode(bytes)),
+                                        decoder: (bytes)=>(new TextDecoder("iso-8859-15").decode(bytes)),
                                     })),
                                     image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
                                 },
@@ -311,7 +321,7 @@
                             }));
                         },
                     }),
-                ]
+                ],
             });
             w95.shell.boot();
             w95.registry.set("pillua", 8);
