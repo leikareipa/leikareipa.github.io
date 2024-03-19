@@ -37,6 +37,20 @@ export default function({
             const address = w95.state(url);
             year = w95.state(year, browse_to_current_address);
 
+            const statusMessageClearoutDelayMs = 2000;
+            let statusMessageClearoutTimer = undefined;
+            const statusMessageSetTime = w95.state(0, w95.noEffect);
+            const statusMessage = w95.state("", ()=>{
+                statusMessageSetTime.set(performance.now());
+                statusMessageClearoutTimer = undefined;
+            });
+
+            function clear_status_message() {
+                statusMessageClearoutTimer = setTimeout(()=>{
+                    statusMessage.set("");
+                }, (statusMessageClearoutDelayMs - (performance.now() - statusMessageSetTime.now)));
+            }
+
             return {
                 get x() { return x.now },
                 get y() { return y.now },
@@ -296,6 +310,13 @@ export default function({
                                 width: 248,
                                 height: 18,
                                 shape: w95.frameShape.box,
+                                children: [
+                                    w95.widget.label({
+                                        x: 5,
+                                        y: 2,
+                                        text: statusMessage.now,
+                                    }),
+                                ],
                             }),
 
                             // Footer field #2.
@@ -381,7 +402,8 @@ export default function({
                 }
 
                 // Show a blank page while we load the next one.
-                iframeEl.now.srcdoc = "Accessing the Internet Archive! Hold on...";
+                iframeEl.now.srcdoc = "";
+                statusMessage.set("Accessing the Internet Archive...");
 
                 targetUrl = targetUrl.replace(/[\s\:<>\'\"]/g, "_");
 
@@ -391,7 +413,8 @@ export default function({
                     if (!response.ok) {
                         console.error("Page not found");
                         iframeEl.now.src = "";
-                        iframeEl.now.srcdoc = "Page not found";
+                        iframeEl.now.srcdoc = "";
+                        statusMessage.set("Page not found.");
                     }
 
                     try {
@@ -405,11 +428,13 @@ export default function({
 
                         iframeEl.now.removeAttribute("srcdoc");
                         iframeEl.now.src = url;
+                        clear_status_message();
                     }
                     catch {
                         console.error("Unhandled error");
                         iframeEl.now.src = "";
-                        iframeEl.now.srcdoc = "Page not found";
+                        iframeEl.now.srcdoc = "";
+                        statusMessage.set("Page not found.");
                     }
                 })();
             }
