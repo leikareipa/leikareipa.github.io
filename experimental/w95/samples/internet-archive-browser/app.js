@@ -37,17 +37,35 @@ export default function({
             const address = w95.state(url);
             year = w95.state(year, browse_to_current_address);
 
-            const statusMessageClearoutDelayMs = 2000;
+            const statusMessages = {
+                none: {
+                    icon: undefined,
+                    text: undefined,
+                },
+                accessingInternetArchive: {
+                    icon: icons.app16,
+                    text: "Pinging Internet Archive...",
+                },
+                pageNotFound: {
+                    icon: icons.error16,
+                    text: "Page not found.",
+                },
+            };
+
+            const statusMessageClearoutDelayMs = 2500;
             let statusMessageClearoutTimer = undefined;
             const statusMessageSetTime = w95.state(0, w95.noEffect);
-            const statusMessage = w95.state("", ()=>{
+            const statusMessage = w95.state(statusMessages.none, ()=>{
                 statusMessageSetTime.set(performance.now());
                 statusMessageClearoutTimer = undefined;
             });
 
             function clear_status_message() {
+                const referenceStatusMessage = statusMessage.now;
                 statusMessageClearoutTimer = setTimeout(()=>{
-                    statusMessage.set("");
+                    if (statusMessage.now === referenceStatusMessage) {
+                        statusMessage.set(statusMessages.none);
+                    }
                 }, (statusMessageClearoutDelayMs - (performance.now() - statusMessageSetTime.now)));
             }
 
@@ -311,11 +329,16 @@ export default function({
                                 height: 18,
                                 shape: w95.frameShape.box,
                                 children: [
+                                    w95.widget.bitmap({
+                                        x: 1,
+                                        y: 1,
+                                        image: statusMessage.now.icon,
+                                    }, {hideIf: !statusMessage.now.icon}),
                                     w95.widget.label({
-                                        x: 5,
+                                        x: 18,
                                         y: 2,
-                                        text: statusMessage.now,
-                                    }),
+                                        text: statusMessage.now.text,
+                                    }, {hideIf: !statusMessage.now.text}),
                                 ],
                             }),
 
@@ -403,7 +426,7 @@ export default function({
 
                 // Show a blank page while we load the next one.
                 iframeEl.now.srcdoc = "";
-                statusMessage.set("Accessing the Internet Archive...");
+                statusMessage.set(statusMessages.accessingInternetArchive);
 
                 targetUrl = targetUrl.replace(/[\s\:<>\'\"]/g, "_");
 
@@ -414,7 +437,7 @@ export default function({
                         console.error("Page not found");
                         iframeEl.now.src = "";
                         iframeEl.now.srcdoc = "";
-                        statusMessage.set("Page not found.");
+                        statusMessage.set(statusMessages.pageNotFound);
                     }
 
                     try {
@@ -434,7 +457,7 @@ export default function({
                         console.error("Unhandled error");
                         iframeEl.now.src = "";
                         iframeEl.now.srcdoc = "";
-                        statusMessage.set("Page not found.");
+                        statusMessage.set(statusMessages.pageNotFound);
                     }
                 })();
             }
