@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snowfall Animation</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; background-color: black; }
+    </style>
+</head>
+<body>
+    <canvas id="snowfallCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('snowfallCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let snowflakes = [];
+        const maxSnowflakes = 200;
+        let groundAccumulation = Array(canvas.width).fill(0);
+
+        function createSnowflake() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 4 + 1,
+                density: Math.random() * maxSnowflakes,
+                speed: Math.random() * 1 + 0.5,
+            };
+        }
+
+        for (let i = 0; i < maxSnowflakes; i++) {
+            snowflakes.push(createSnowflake());
+        }
+
+        function drawSnowflakes() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            for (let flake of snowflakes) {
+                ctx.moveTo(flake.x, flake.y);
+                ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2, true);
+            }
+            ctx.fill();
+            moveSnowflakes();
+            drawGround();
+        }
+
+        function moveSnowflakes() {
+            for (let flake of snowflakes) {
+                flake.y += Math.pow(flake.density, 0.5) + flake.speed;
+                flake.x += Math.sin(flake.y * 0.01) * 2;
+
+                if (flake.y > canvas.height - groundAccumulation[Math.floor(flake.x)]) {
+                    groundAccumulation[Math.floor(flake.x)] += flake.radius * 0.2;
+                    flake.x = Math.random() * canvas.width;
+                    flake.y = 0;
+                }
+            }
+        }
+
+        function drawGround() {
+            ctx.fillStyle = 'white';
+            for (let i = 0; i < groundAccumulation.length; i++) {
+                ctx.fillRect(i, canvas.height - groundAccumulation[i], 1, groundAccumulation[i]);
+            }
+        }
+
+        function animate() {
+            drawSnowflakes();
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            groundAccumulation = Array(canvas.width).fill(0);
+        });
+    </script>
+</body>
+</html>

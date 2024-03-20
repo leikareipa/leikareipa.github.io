@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Snowfall Animation</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      background-color: black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const snowflakes = [];
+    const numSnowflakes = 200;
+    const groundLevel = canvas.height - 50;
+
+    // Snowflake class
+    class Snowflake {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = 0;
+        this.radius = Math.random() * 2 + 1;
+        this.speed = Math.random() * 2 + 1;
+      }
+
+      update() {
+        this.y += this.speed;
+
+        // Check for collision with the ground
+        if (this.y + this.radius > groundLevel) {
+          this.y = groundLevel - this.radius;
+          this.speed = 0;
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+
+    // Create snowflakes
+    for (let i = 0; i < numSnowflakes; i++) {
+      snowflakes.push(new Snowflake());
+    }
+
+    // Animation loop
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw the ground
+      ctx.fillStyle = 'brown';
+      ctx.fillRect(0, groundLevel, canvas.width, canvas.height - groundLevel);
+
+      // Update and draw snowflakes
+      for (let i = 0; i < snowflakes.length; i++) {
+        snowflakes[i].update();
+        snowflakes[i].draw();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

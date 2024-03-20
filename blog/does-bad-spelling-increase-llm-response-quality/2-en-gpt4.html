@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snowfall Animation</title>
+    <style>
+        body, html { margin: 0; padding: 0; overflow: hidden; }
+        canvas { display: block; background-color: black; }
+    </style>
+</head>
+<body>
+<canvas id="snowCanvas"></canvas>
+<script>
+    const canvas = document.getElementById('snowCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let snowflakes = [];
+    const maxSnowflakes = 200;
+    const snowAccumulation = [];
+
+    // Initialize snow accumulation
+    for(let i = 0; i < canvas.width; i++) {
+        snowAccumulation[i] = canvas.height;
+    }
+
+    function createSnowflake() {
+        const x = Math.random() * canvas.width;
+        const size = Math.random() * 5 + 2;
+        const speed = Math.random() * 1 + 0.5;
+        return { x, y: 0, size, speed };
+    }
+
+    function drawSnowflake(flake) {
+        ctx.beginPath();
+        ctx.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    }
+
+    function updateSnowflakes() {
+        for (let i = 0; i < snowflakes.length; i++) {
+            snowflakes[i].y += snowflakes[i].speed;
+            if (snowflakes[i].y > snowAccumulation[Math.floor(snowflakes[i].x)] - snowflakes[i].size) {
+                snowAccumulation[Math.floor(snowflakes[i].x)] -= snowflakes[i].size;
+                snowflakes.splice(i, 1);
+                i--;
+            }
+        }
+
+        while (snowflakes.length < maxSnowflakes) {
+            snowflakes.push(createSnowflake());
+        }
+    }
+
+    function drawGround() {
+        for(let i = 0; i < snowAccumulation.length; i++) {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(i, snowAccumulation[i], 1, canvas.height - snowAccumulation[i]);
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        updateSnowflakes();
+        snowflakes.forEach(drawSnowflake);
+        drawGround();
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ray Tracer Output</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+    <script>
+        // Get the canvas element
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        // Draw the background
+        ctx.fillStyle = "#000000"; // Black background
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the red sphere
+        ctx.beginPath();
+        ctx.arc(200, 200, 80, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF0000"; // Red color
+        ctx.fill();
+
+        // Draw the blue sphere
+        ctx.beginPath();
+        ctx.arc(100, 200, 60, 0, 2 * Math.PI);
+        ctx.fillStyle = "#0000FF"; // Blue color
+        ctx.fill();
+
+        // Draw the reflection of the red sphere on the blue sphere
+        ctx.beginPath();
+        ctx.arc(160, 200, 20, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF0000"; // Red color
+        ctx.fill();
+    </script>
+</body>
+</html>

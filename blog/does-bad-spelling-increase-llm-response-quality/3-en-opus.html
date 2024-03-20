@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Animated Fire Effect</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="400" height="400"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const fireWidth = canvas.width;
+    const fireHeight = canvas.height;
+    const firePixels = [];
+
+    // Initialize the fire pixels array
+    for (let i = 0; i < fireWidth * fireHeight; i++) {
+      firePixels[i] = 0;
+    }
+
+    function updateFirePixels() {
+      for (let i = 0; i < fireWidth; i++) {
+        for (let j = 0; j < fireHeight; j++) {
+          const pixelIndex = i + j * fireWidth;
+          const decay = Math.random() * 3;
+          const belowPixelIndex = i + (j + 1) * fireWidth;
+
+          if (j === fireHeight - 1) {
+            firePixels[pixelIndex] = Math.random() * 255;
+          } else {
+            firePixels[pixelIndex] = (firePixels[belowPixelIndex] - decay) | 0;
+          }
+        }
+      }
+    }
+
+    function renderFire() {
+      const imageData = ctx.createImageData(fireWidth, fireHeight);
+      const data = imageData.data;
+
+      for (let i = 0; i < fireWidth * fireHeight; i++) {
+        const intensity = firePixels[i];
+        const colorIndex = intensity * 3;
+
+        data[i * 4] = colorIndex;
+        data[i * 4 + 1] = intensity < 100 ? intensity : 0;
+        data[i * 4 + 2] = intensity < 50 ? intensity : 0;
+        data[i * 4 + 3] = 255;
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    function animate() {
+      updateFirePixels();
+      renderFire();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
