@@ -131,13 +131,13 @@ The table below condenses the outcomes, ❌ representing the poorly-spelled prom
 
 Snowfall was consistently better when prompted with poor spelling, while Ray tracer was the opposite. Fire was inconclusive on the surface.
 
-Assuming these results are representative, my guess is that Snowfall is a mundane enough request that the LLM does a half-assed job if not pressed harder. The other two requests are less common, so the LLM is already putting some effort into it, and bad spelling is a distraction.
+Assuming these results are representative, my guess is that Snowfall is a mundane enough request that the LLM does a half-assed job if not pressed harder. The other two requests are less common, so the LLM is already putting some effort into it, and here bad spelling is more of a distraction.
 
-So it would seem that poor spelling may elicit higher-quality responses when the request is on the mundane side.
+So it would seem that poor spelling may elicit higher-quality responses when the request is on the mundane side. Whether it's the <i>best</i> way to prompt is another matter &ndash; if spelling mistakes were a distraction in the less mundane prompts of Fire and Ray tracer, they may be so in mundane ones as well to some extent.
 
 ## Snowfall #2
 
-To test the hypothesis that the Snowfall request was too bland for a high-effort response, let's re-word the prompt using technical jargon instead of spelling mistakes.
+To test the hypothesis that the Snowfall request was too bland for a high-effort response, let's re-word the prompt using technical jargon instead of spelling mistakes. This isn't totally an apples-to-apples comparison, but take it as a starting point.
 
 <x-prompt>
     Develop a JavaScript implementation employing canvas rendering techniques to generate a dynamic snowfall animation. Utilize a collision detection mechanism to determine accumulation on the ground plane.
@@ -152,8 +152,6 @@ To test the hypothesis that the Snowfall request was too bland for a high-effort
 > GPT-4 Turbo
 ![{iframe}{inline-class:model-response}](./2-2-gpt4.html)
 
-These responses are in a way better than the normally-elicited ones, as now there's some level of flake accumulation on the ground. But the presentation is less consistent than the ones from broken spelling.
+These responses are in a way better than the normally-elicited ones, as now there's some level of flake accumulation on the ground. But the presentation is less consistent than the ones from broken spelling. 
 
 It's a fairly unusual way to word this request, so maybe it's not surprising that the first-iteration responses are a mixed bag. In that sense, simply misspelling the original predictable prompt would be the way to go.
-
-Whether bad spelling is the <i>best</i> way to prompt this is another matter. If poor spelling was a distraction in the less mundane prompts of Fire and Ray tracer, it may be so in mundane ones as well to some extent.
