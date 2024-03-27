@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="14 March 2024"/>
+<post-date date="26 February 2024" edited="27 March 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -277,6 +277,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
+            <td><b>starling-lm</b>:7b-beta-q6</td>
+            <td>28%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+        </tr>
+        <tr>
             <td><b>mistral</b>:7b-instruct-v0.2-q6_K</td>
             <td>22%</td>
             <td class="s0">0</td>
@@ -477,12 +490,6 @@ Below is a brief description of each test. Note that these are high-level descri
 
 ## Discussion
 
-The open models were a mixed bag. They don't seem mature enough for serious use, but will be OK for some specific tasks, depending on your situation. It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is &ndash; it may be possible to get better performance out of them with a more careful approach.
+The open models were a mixed bag. They don't seem mature enough for serious use, but will be OK for some specific tasks, depending on your situation.
 
-### Particulars
-
-The Qwen models did surprisingly poorly. One of their problems was that they tended to produce small syntax errors in code, which in these tests gave a failing grade.
-
-The big Code Llama model likewise wasn't on fire. It had maybe the worst responses of all models tested. There are reports of people having trouble getting the model properly configured &ndash; I tried it both locally (default Ollama settings) and on Nvidia AI Playground, and the results were bad.
-
-Gemma sucked for coding but seems to be among the better ones for natural-sounding text production.
+It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is &ndash; it may be possible to get better performance out of them with a more careful approach.

@@ -61,7 +61,7 @@
                     </dokki-header>
                     <dokki-topics>
                         
-<post-date date="26 February 2024" edited="14 March 2024"></post-date>
+<post-date date="26 February 2024" edited="27 March 2024"></post-date>
 <dokki-topic title="Testing a medley of local LLMs for coding">
 <p>While the release of GPT-4 last year upgraded my expectations for LLMs, the recent release of Gemini has somewhat downgraded them. With that in mind, let's look at some of the smaller players' LLM offerings, and in particular some of the open models that're available to run locally.</p>
 <p>I picked a variety of open models – as well as some closed ones for comparison – and ran them with Ollama through a battery of custom, programming-related zero-shot tests using straightforward prompting without particular prompt engineering. A model was given only one chance per test.</p>
@@ -338,6 +338,19 @@
             <td class="s0">0</td>
         </tr>
         <tr>
+            <td><b>starling-lm</b>:7b-beta-q6</td>
+            <td>28%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+        </tr>
+        <tr>
             <td><b>mistral</b>:7b-instruct-v0.2-q6_K</td>
             <td>22%</td>
             <td class="s0">0</td>
@@ -540,11 +553,8 @@
                 </template>
             </dokki-table>
 </dokki-subtopic><dokki-subtopic title="Discussion">
-<p>The open models were a mixed bag. They don't seem mature enough for serious use, but will be OK for some specific tasks, depending on your situation. It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is – it may be possible to get better performance out of them with a more careful approach.</p>
-<h3>Particulars</h3>
-<p>The Qwen models did surprisingly poorly. One of their problems was that they tended to produce small syntax errors in code, which in these tests gave a failing grade.</p>
-<p>The big Code Llama model likewise wasn't on fire. It had maybe the worst responses of all models tested. There are reports of people having trouble getting the model properly configured – I tried it both locally (default Ollama settings) and on Nvidia AI Playground, and the results were bad.</p>
-<p>Gemma sucked for coding but seems to be among the better ones for natural-sounding text production.</p>
+<p>The open models were a mixed bag. They don't seem mature enough for serious use, but will be OK for some specific tasks, depending on your situation.</p>
+<p>It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is – it may be possible to get better performance out of them with a more careful approach.</p>
 </dokki-subtopic></dokki-topic>
 
                     </dokki-topics>
