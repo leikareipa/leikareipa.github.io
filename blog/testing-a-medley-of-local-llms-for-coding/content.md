@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="9 April 2024"/>
+<post-date date="26 February 2024" edited="10 April 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -29,6 +29,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td><b>gpt</b>:v4-turbo-2024-04-09*</td>
+            <td>78%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
         <tr>
             <td><b>gpt</b>:v4-0613*</td>
             <td>72%</td>
