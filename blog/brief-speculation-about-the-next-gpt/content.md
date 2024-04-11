@@ -43,7 +43,7 @@ With reference to [my zero-shot coding tests for LLMs](/blog/testing-a-medley-of
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td>GPT-4 Turbo</td>
+            <td>GPT-4</td>
             <td>72%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
