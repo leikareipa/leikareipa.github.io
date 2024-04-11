@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ray Tracing Simulation</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: black; }
+        canvas { border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = 500;
+    canvas.height = 300;
+
+    // Function to draw a sphere
+    function drawSphere(x, y, radius, color, reflectionColor) {
+        // Draw the main sphere
+        let gradient = ctx.createRadialGradient(x, y, radius * 0.5, x, y, radius);
+        gradient.addColorStop(0, color);
+        gradient.addColorStop(1, 'black');
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw the reflection (simplified)
+        ctx.fillStyle = reflectionColor;
+        ctx.beginPath();
+        ctx.arc(x - radius * 0.3, y - radius * 0.3, radius * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Background
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw spheres
+    drawSphere(250, 150, 50, 'red', 'rgba(255, 0, 0, 0.3)');
+    drawSphere(150, 150, 50, 'blue', 'rgba(255, 0, 0, 0.5)');
+
+</script>
+</body>
+</html>

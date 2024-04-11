@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results td:first-child {
+                white-space: pre-line;
+                min-width: 20rem;
+            }
+
+            x-prompt {
+                margin: 2rem 0;
+                margin-bottom: 1.375rem;
+                display: block;
+                padding: calc(1.5 * var(--dokkiCSS-embedded-header-padding));
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                position: relative;
+            }
+
+            x-prompt::before {
+                content: "Prompt:";
+                position: absolute;
+                top: -1.25ex;
+                background-color: var(--dokkiCSS-page-secondary-bg-color);
+                font-weight: var(--dokkiCSS-bold-text-weight);
+                padding: 0 0.5em;
+                margin-left: -0.5em;
+            }
+
+            .model-response {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color) !important;
+                border: none !important;
+            }
+
+            .model-response .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Briefly evaluating the new GPT-4 Turbo
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="11 April 2024"></post-date>
+<dokki-topic title="Briefly evaluating the new GPT-4 Turbo">
+<p>OpenAI recently put out a new, &quot;majorly improved&quot; version of GPT-4 Turbo – although it's not clear <a href="https://twitter.com/OpenAI/status/1777772582680301665">from the tweet</a> whether the improvements are exclusive to the vision aspects of the model.</p>
+<p>In any case, Playground now has a new entry for &quot;gpt-4-turbo-2024-04-09,&quot; so let's test it against the previous version of Turbo and see whether these 'major improvements' relate to coding.</p>
+<dokki-subtopic title="Graphics effects">
+<p><a href="https://leikareipa.github.io/blog/does-bad-spelling-increase-llm-response-quality/">In a previous blog post</a>, I ran some graphics programming tests on the now-previous version of GPT-4 Turbo. We can have the new Turbo take the same tests.</p>
+<x-prompt>
+    Write JavaScript code that draws animated snowfall that accumulates on the ground.
+</x-prompt>
+<dokki-iframe src="./nt-snow.html"        inline-class="model-response"><template #caption>New GPT-4 Turbo</template>
+                    </dokki-iframe>
+<dokki-iframe src="./2-ref-gpt4.html"        inline-class="model-response"><template #caption>Old GPT-4 Turbo</template>
+                    </dokki-iframe>
+<x-prompt>
+    Write JavaScript code that draws the animated fire effect often seen in the demoscene.
+</x-prompt>
+<dokki-iframe src="./nt-fire.html"        inline-class="model-response"><template #caption>New GPT-4 Turbo</template>
+                    </dokki-iframe>
+<dokki-iframe src="./3-ref-gpt4.html"        inline-class="model-response"><template #caption>Old GPT-4 Turbo</template>
+                    </dokki-iframe>
+<x-prompt>
+    <p>Imagine you're a ray tracer from the 1990s. You're asked to render a scene containing two spheres, one (red) in the middle of your view and another (blue) to the left of it; and a reflection of the red sphere is visible on the blue sphere.</p>
+    <p>Use JavaScript to draw an image to represent your output.</p>
+    <p>Don't write actual ray-tracing code, just an image to represent your most likely output.</p>
+</x-prompt>
+<dokki-iframe src="./nt-rt.html"        inline-class="model-response"><template #caption>New GPT-4 Turbo</template>
+                    </dokki-iframe>
+<dokki-iframe src="./4-ref-gpt4.html"        inline-class="model-response"><template #caption>Old GPT-4 Turbo</template>
+                    </dokki-iframe>
+<p>The new Turbo has a nicer snowfall animation, though it still fails to accumulate. In the other two effects, the old model does slightly better.</p>
+</dokki-subtopic><dokki-subtopic title="Retro assembly">
+<p>Not long ago, <a href="https://leikareipa.github.io/blog/llm-performance-in-retro-assembly-coding/">I benchmarked a bunch of LLMs in retro assembly programming</a>. Interestingly, the non-Turbo GPT-4 did twice as good as the Turbo, and in general the results suggested that larger models do better in these tests.</p>
+
+            <dokki-table headerless class inline-class="results">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th colspan="9">Score</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th class="name">New GPT-4 Turbo</th>
+            <th class="name">Old GPT-4 Turbo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A program that asks the user for a word and prints it out.</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that paints the screen blue and prints something in the middle.</td>
+            <td class="s2">25%</td>
+            <td class="s1">25%</td>
+        </tr>
+        <tr>
+            <td>A program that draws something onto the screen in a VGA graphics mode.</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that prints the value in the EDX register in binary format.</td>
+            <td class="s2">25%</td>
+            <td class="s1">25%</td>
+        </tr>
+        <tr>
+            <td>A program that reads mouse input and displays information about it on the screen.</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that loads a paletted image and displays it on the screen.</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>No difference.</p>
+</dokki-subtopic><dokki-subtopic title="Conclusion">
+<p>When it comes to coding, the new Turbo appears to provide no major benefit over the old one.</p>
+<p>It does <a href="https://leikareipa.github.io/blog/testing-a-medley-of-local-llms-for-coding/">beat the old Turbo in my overall LLM coding benchmark</a>, but the difference is too small to call.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>
