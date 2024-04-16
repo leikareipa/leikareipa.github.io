@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="10 April 2024"/>
+<post-date date="26 February 2024" edited="16 April 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -340,6 +340,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
+        </tr>
+        <tr>
+            <td><b>wizardlm2</b>:7b-q6_K</td>
+            <td>22%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
         </tr>
         <tr>
             <td><b>qwen</b>:72b-chat-v1.5-q4_0</td>
