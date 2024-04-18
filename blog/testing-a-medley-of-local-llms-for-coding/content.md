@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="18 April 2024"/>
+<post-date date="26 February 2024" edited="19 April 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -173,6 +173,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
+            <td><b>llama3</b>:70b****</td>
+            <td>50%</td>
+            <td class="s0">0</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
             <td><b>phind-codellama</b>:34b-v2-q6_K</td>
             <td>39%</td>
             <td class="s0">0</td>
@@ -275,6 +288,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
+        </tr>
+        <tr>
+            <td><b>llama3</b>:8b-instruct-q6_K</td>
+            <td>28%</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
         </tr>
         <tr>
             <td><b>deepseek-coder</b>:33b-instruct-q4_0</td>
@@ -481,6 +507,9 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td colspan="12"><sup>***</sup>This is a code completion model. Prompts had to be converted from instructions to completions and so aren't fully comparable to results for other models.</td>
+        </tr>
+        <tr>
+            <td colspan="12"><sup>****</sup>Via Nvidia Playground.</td>
         </tr>
     </tfoot>
 </table>
