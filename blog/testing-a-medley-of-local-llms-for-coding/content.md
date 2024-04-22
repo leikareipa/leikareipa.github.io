@@ -290,19 +290,6 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>llama3</b>:8b-instruct-q6_K</td>
-            <td>28%</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s0">0</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-            <td class="s1">1</td>
-        </tr>
-        <tr>
             <td><b>deepseek-coder</b>:33b-instruct-q4_0</td>
             <td>28%</td>
             <td class="s0">0</td>
@@ -330,6 +317,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
         <tr>
             <td><b>gemma</b>:7b-instruct-v1.1-q6_K</td>
+            <td>28%</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
+            <td><b>llama3</b>:8b-instruct-q6_K</td>
             <td>28%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
