@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            x-prompt {
+                margin: 2rem 0;
+                margin-bottom: 1.375rem;
+                display: block;
+                padding: calc(1.5 * var(--dokkiCSS-embedded-header-padding));
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                position: relative;
+            }
+
+            x-prompt::before {
+                content: "Prompt:";
+                position: absolute;
+                top: -1.25ex;
+                background-color: var(--dokkiCSS-page-secondary-bg-color);
+                font-weight: var(--dokkiCSS-bold-text-weight);
+                padding: 0 0.5em;
+                margin-left: -0.5em;
+            }
+
+            .model-response {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color) !important;
+                border: none !important;
+            }
+
+            .model-response .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Brief tests on the mysterious gpt2-chatbot on LMSYS Chatbot Arena
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="29 April 2024"></post-date>
+<dokki-topic title="Brief tests on the mysterious gpt2-chatbot on LMSYS Chatbot Arena">
+<p>Over the weekend, people noticed a new entry on LMSYS Chatbot Arena called &quot;gpt2-chatbot&quot;. Mysteriously titled, nobody seems to know whose LLM it is, just that it identifies itself as a derivative of GPT-4 and performs about on par.</p>
+<p>I ran a few benchmarks of my own to get a feel for what it's capable of.</p>
+<p>Here's three graphics programming tasks pitting the mysterious bot against some recent version of GPT-4 Turbo:</p>
+<x-prompt>
+    Write JavaScript code that draws animated snowfall that accumulates on the ground.
+</x-prompt>
+<dokki-iframe src="./gpt2-snow.html"        inline-class="model-response"><template #caption>gpt2-chatbot</template>
+                    </dokki-iframe>
+<dokki-iframe src="./nt-snow.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<x-prompt>
+    Write JavaScript code that draws the animated fire effect often seen in the demoscene.
+</x-prompt>
+<dokki-iframe src="./gpt2-fire.html"        inline-class="model-response"><template #caption>gpt2-chatbot</template>
+                    </dokki-iframe>
+<dokki-iframe src="./nt-fire.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<x-prompt>
+    <p>Imagine you're a ray tracer from the 1990s. You're asked to render a scene containing two spheres, one (red) in the middle of your view and another (blue) to the left of it; and a reflection of the red sphere is visible on the blue sphere.</p>
+    <p>Use JavaScript to draw an image to represent your output.</p>
+    <p>Don't write actual ray-tracing code, just an image to represent your most likely output.</p>
+</x-prompt>
+<dokki-iframe src="./gpt2-rt.html"        inline-class="model-response"><template #caption>gpt2-chatbot</template>
+                    </dokki-iframe>
+<dokki-iframe src="./nt-rt.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<p>In all of these, gpt2-chatbot did somewhat better than GPT-4 Turbo, but the similarities in output are fairly obvious.</p>
+<p>Besides the graphics tests, I had the AI translate some text from a low-resource language. Here, there was no big difference in achievement between gpt2-chatbot and GPT-4 Turbo, both did fairly poorly and had similar output.</p>
+<p>So with that exhaustive barrage of tests, I'd say gpt2-chatbot is a derivative of GPT-4 Turbo, perhaps by OpenAI and perhaps not. It appears to set no towering records in ability, in some regards performing worse than the original GPT-4 as well as Claude 3 Opus.</p>
+<p>I noted here and there in its output that it might be more introspective than GPT-4, but I haven't used GPT-4 much in a while so maybe I just don't remember what it sounds like.</p>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>
