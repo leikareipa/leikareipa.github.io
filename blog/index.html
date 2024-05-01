@@ -114,10 +114,25 @@
                 margin-bottom: 0 !important;
             }
 
-            #introduction,
-            #introduction h1
-            { 
-                color: var(--dokkiCSS-page-inert-fg-color) !important;
+            #introduction
+            {
+                box-shadow: 0 0 17px rgba(0, 0, 0, 0.3);
+                padding: 35px;
+                border-radius: 14px;
+                margin: 30px;
+                width: calc(50% - 60px);
+                border-left: 14px solid #73c477;
+            }
+
+            body[data-dokki-theme="dark"] #introduction
+            {
+                border: 1px solid #73c477;
+                border-left: 14px solid #73c477;
+            }
+
+            body[data-dokki-layout^="vertical"] #introduction
+            {
+                width: calc(100% - 60px);
             }
         </style>
     </head>
@@ -137,6 +152,7 @@
                 <dokki-topics>
 
                     <dokki-topic dokki-ignore title="Introduction" inline-class="abstract dokki-ignore">
+                        <img style="float: left; width: 4rem; margin: 1rem; margin-bottom: 0; background-color: #73c477; padding: 3px; border-radius: 5px;" src="./flog.png">
                         <p>
                             This is the blog of a decades-long hobbyist developer with no ties to the
                             commercial software industry. Expect the outside perspective.
