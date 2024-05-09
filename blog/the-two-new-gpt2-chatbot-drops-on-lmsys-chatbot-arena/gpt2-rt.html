@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ray Tracer Output Simulation</title>
+<style>
+  body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+  canvas { border: 1px solid black; }
+</style>
+</head>
+<body>
+<canvas id="canvas" width="400" height="300"></canvas>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  // Function to draw a sphere with simple lighting and reflection
+  function drawSphere(x, y, radius, color, reflect=false) {
+    const gradient = ctx.createRadialGradient(x, y, radius * 0.5, x, y, radius);
+    gradient.addColorStop(0, color);
+    gradient.addColorStop(1, 'black');
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+
+    // Simulate a reflection if required
+    if (reflect) {
+      ctx.beginPath();
+      ctx.arc(x - radius * 0.5, y - radius * 0.2, radius * 0.5, 0, Math.PI * 2, true);
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.4)'; // Red color reflection with some transparency
+      ctx.fill();
+    }
+  }
+
+  // Blue sphere (with red reflection)
+  drawSphere(100, 150, 50, 'blue', true);
+
+  // Red sphere
+  drawSphere(250, 150, 50, 'red');
+
+</script>
+</body>
+</html>

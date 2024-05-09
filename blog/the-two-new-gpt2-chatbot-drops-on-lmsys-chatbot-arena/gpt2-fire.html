@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fire Effect</title>
+<style>
+  body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: black; }
+  canvas { image-rendering: pixelated; }
+</style>
+</head>
+<body>
+<canvas id="fireCanvas"></canvas>
+<script>
+    const canvas = document.getElementById('fireCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = 320;
+canvas.height = 200;
+const width = canvas.width;
+const height = canvas.height;
+
+// Fire palette holding RGBA values
+const fireColorsPalette = [];
+for (let i = 0; i < 256; i++) {
+    const color = fireColor(i);
+    fireColorsPalette.push([color, 0, 0, 255]);  // Red gradient
+}
+
+// Buffer to hold the fire's intensity values
+const firePixelsArray = new Array(width * height).fill(0);
+
+// Function to calculate red shades based on intensity
+function fireColor(value) {
+    return Math.min(255, value * 255 / 80);
+}
+
+// Function to render the fire
+function renderFire() {
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const data = imageData.data;
+
+    for (let x = 0; x < width; x++) {
+        for (let y = 0; y < height; y++) {
+            const idx = y * width + x;
+            const value = firePixelsArray[idx];
+            const color = fireColorsPalette[value];
+            const dataIdx = idx * 4;
+            data[dataIdx] = color[0];
+            data[dataIdx + 1] = color[1];
+            data[dataIdx + 2] = color[2];
+            data[dataIdx + 3] = color[3];
+        }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+}
+
+// Function to update fire intensity
+function updateFireIntensityPerPixel(currentPixelIndex) {
+    const belowPixelIndex = currentPixelIndex + width;
+    if (belowPixelIndex >= width * height) {
+        return;
+    }
+
+    const decay = Math.floor(Math.random() * 3);
+    const belowPixelFireIntensity = firePixelsArray[belowPixelIndex];
+    const newFireIntensity = belowPixelFireIntensity - decay >= 0 ? belowPixelFireIntensity - decay : 0;
+    firePixelsArray[currentPixelIndex - decay] = newFireIntensity;
+}
+
+// Main update function
+function updateFire() {
+    for (let x = 0; x < width; x++) {
+        for (let y = 1; y < height; y++) {
+            const idx = y * width + x;
+            updateFireIntensityPerPixel(idx);
+        }
+    }
+    renderFire();
+}
+
+// Creating the initial hot base for the fire at the bottom of the canvas
+function createFireSource() {
+    for (let x = 0; x < width; x++) {
+        const overflowPixelIndex = width * height;
+        const pixelIndex = (height - 1) * width + x;
+        firePixelsArray[pixelIndex] = 80;
+    }
+}
+
+createFireSource();
+setInterval(updateFire, 50);
+</script>
+</body>
+</html>

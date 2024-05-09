@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Starfield Animation</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+  <script>
+    const canvas = document.getElementById('starfield');
+    const context = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const stars = [];
+    const numStars = 1000;
+    const speed = 3;
+
+    function Star() {
+      this.reset = function () {
+        this.x = (Math.random() * width * 2) - width;
+        this.y = (Math.random() * height * 2) - height;
+        this.z = Math.random() * width;
+      };
+
+      this.reset();
+
+      this.update = function () {
+        this.z -= speed;
+        if (this.z <= 0) {
+          this.reset();
+        }
+      };
+
+      this.draw = function () {
+        const x = (this.x / this.z) * width + width / 2;
+        const y = (this.y / this.z) * height + height / 2;
+        const radius = (1 - this.z / width) * 2;
+        const opacity = 1 - this.z / width;
+
+        context.beginPath();
+        context.arc(x, y, radius, 0, Math.PI * 2, false);
+        context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+        context.fill();
+      };
+    }
+
+    for (let i = 0; i < numStars; i++) {
+      stars.push(new Star());
+    }
+
+    function animate() {
+      context.fillStyle = 'black';
+      context.fillRect(0, 0, width, height);
+
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Adjust canvas size on window resize
+    window.addEventListener('resize', () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    });
+  </script>
+</body>
+</html>

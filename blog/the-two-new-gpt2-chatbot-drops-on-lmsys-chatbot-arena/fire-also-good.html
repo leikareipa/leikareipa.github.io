@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demoscene Fire Effect</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: black;
+        }
+        canvas {
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireCanvas" width="320" height="160"></canvas>
+    <script>
+        const canvas = document.getElementById('fireCanvas');
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const firePixels = new Array(width * height).fill(0);
+        const fireColors = [];
+
+        function createFireColors() {
+            const colorMapping = [
+                [7, 7, 7], [31, 7, 7], [47, 15, 7], [71, 15, 7], [87, 23, 7],
+                [103, 31, 7], [119, 31, 7], [143, 39, 7], [159, 47, 7], [175, 63, 7],
+                [191, 71, 7], [199, 71, 7], [223, 79, 7], [223, 87, 7], [223, 87, 7],
+                [215, 95, 7], [215, 95, 7], [215, 103, 15], [207, 111, 15], [207, 119, 15],
+                [207, 127, 15], [207, 135, 23], [199, 135, 23], [199, 143, 23], [199, 151, 31],
+                [191, 159, 31], [191, 159, 31], [191, 167, 39], [191, 167, 39], [191, 175, 47],
+                [183, 175, 47], [183, 183, 47], [183, 183, 55], [207, 207, 111], [223, 223, 159],
+                [239, 239, 199], [255, 255, 255]
+            ];
+
+            for (let i = 0; i < colorMapping.length; i++) {
+                const [r, g, b] = colorMapping[i];
+                fireColors.push(`rgb(${r},${g},${b})`);
+            }
+        }
+
+        function createFireSource() {
+            for (let x = 0; x < width; x++) {
+                const index = (height - 1) * width + x;
+                firePixels[index] = fireColors.length - 1;
+            }
+        }
+
+        function calculateFirePropagation() {
+            for (let y = 0; y < height - 1; y++) {
+                for (let x = 0; x < width; x++) {
+                    const index = y * width + x;
+                    updateFireIntensity(index);
+                }
+            }
+        }
+
+        function updateFireIntensity(currentIndex) {
+            const belowIndex = currentIndex + width;
+            if (belowIndex >= firePixels.length) return;
+
+            const decay = Math.floor(Math.random() * 3);
+            const newIntensity = firePixels[belowIndex] - decay;
+
+            if (newIntensity < 0) {
+                firePixels[currentIndex] = 0;
+            } else {
+                firePixels[currentIndex - decay] = newIntensity;
+            }
+        }
+
+        function renderFire() {
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+
+            for (let i = 0; i < firePixels.length; i++) {
+                const intensity = firePixels[i];
+                const color = fireColors[intensity];
+                const [r, g, b] = color.match(/\d+/g).map(Number);
+
+                const index = i * 4;
+                data[index] = r;
+                data[index + 1] = g;
+                data[index + 2] = b;
+                data[index + 3] = 255; // Alpha channel
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function animate() {
+            calculateFirePropagation();
+            renderFire();
+            requestAnimationFrame(animate);
+        }
+
+        function start() {
+            createFireColors();
+            createFireSource();
+            animate();
+        }
+
+        start();
+    </script>
+</body>
+</html>

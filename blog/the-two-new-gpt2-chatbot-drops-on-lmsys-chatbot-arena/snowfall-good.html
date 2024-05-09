@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Snowfall Animation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0e1a2b; /* Dark background for better contrast */
+        }
+        canvas {
+            display: block; /* Removes the margin around the canvas */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="snowCanvas"></canvas>
+
+    <script>
+        class Snowflake {
+    constructor(x, y, radius, density, canvasWidth, canvasHeight) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.density = density;
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
+        this.speed = { x: Math.random() * 2 - 1, y: Math.random() * 5 + 1 };
+    }
+
+    update(groundLevel) {
+        this.x += this.speed.x;
+        this.y += this.speed.y;
+
+        // When snowflake hits the ground
+        if (this.y > this.canvasHeight - groundLevel[(Math.floor(this.x))] - this.radius) {
+            this.y = this.canvasHeight - groundLevel[(Math.floor(this.x))] - this.radius;
+            this.speed.y = 0;
+            this.speed.x = 0;
+            if (this.radius > 1) {
+                // Accumulate the snow on the ground
+                groundLevel[Math.floor(this.x)] += this.radius * 0.2;
+            }
+        }
+
+        // Reset the snowflake to the top
+        if (this.speed.y === 0 && this.speed.x === 0) {
+            this.reset();
+        }
+    }
+
+    reset() {
+        this.x = Math.random() * this.canvasWidth;
+        this.y = -this.radius;
+        this.speed = { x: Math.random() * 2 - 1, y: Math.random() * 5 + 1 };
+    }
+
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    }
+}
+
+function createSnowflakes(num, canvasWidth, canvasHeight) {
+    const flakes = [];
+    for (let i = 0; i < num; i++) {
+        let radius = Math.random() * 3 + 2;
+        let x = Math.random() * canvasWidth;
+        let y = Math.random() * canvasHeight;
+        let density = Math.random() * 0.5;
+        flakes.push(new Snowflake(x, y, radius, density, canvasWidth, canvasHeight));
+    }
+    return flakes;
+}
+
+function drawGround(ctx, groundLevel, canvasWidth, canvasHeight) {
+    ctx.beginPath();
+    ctx.moveTo(0, canvasHeight - groundLevel[0]);
+    for (let i = 1; i < canvasWidth; i++) {
+        ctx.lineTo(i, canvasHeight - groundLevel[i]);
+    }
+    ctx.lineTo(canvasWidth, canvasHeight);
+    ctx.lineTo(0, canvasHeight);
+    ctx.closePath();
+    ctx.fillStyle = '#FFF';
+    ctx.fill();
+}
+
+function animate(ctx, snowflakes, groundLevel, canvasWidth, canvasHeight) {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    snowflakes.forEach(flake => {
+        flake.update(groundLevel);
+        flake.draw(ctx);
+    });
+
+    drawGround(ctx, groundLevel, canvasWidth, canvasHeight);
+
+    requestAnimationFrame(() => animate(ctx, snowflakes, groundLevel, canvasWidth, canvasHeight));
+}
+
+function main() {
+    const canvas = document.getElementById('snowCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Adjust canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const numSnowflakes = 500;
+    const snowflakes = createSnowflakes(numSnowflakes, canvas.width, canvas.height);
+    const groundLevel = new Array(canvas.width).fill(0);
+
+    animate(ctx, snowflakes, groundLevel, canvas.width, canvas.height);
+}
+
+main();
+
+window.addEventListener('resize', main);
+    </script>
+</body>
+</html>

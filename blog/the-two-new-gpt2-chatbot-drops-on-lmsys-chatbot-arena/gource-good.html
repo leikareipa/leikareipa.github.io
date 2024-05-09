@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GeoCities Gource Simulation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<canvas></canvas>
+<script>
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas full screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Node {
+        constructor(name, x, y, type = 'dir') {
+            this.name = name;
+            this.children = [];
+            this.x = x;
+            this.y = y;
+            this.type = type;
+            this.radius = type === 'dir' ? 5 : 3;
+            this.color = type === 'dir' ? 'rgb(255, 165, 0)' : 'rgb(135, 206, 235)';
+        }
+
+        addChild(node) {
+            this.children.push(node);
+        }
+
+        draw(connections = true) {
+            if (connections) {
+                this.children.forEach(child => {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(child.x, child.y);
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.stroke();
+                });
+            }
+
+            this.children.forEach(child => child.draw());
+
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+    }
+
+    // Create a root node
+    const root = new Node('root', canvas.width / 2, canvas.height / 2);
+    let nodes = [root];
+    let counter = 0;
+
+    function addNodes() {
+        let newNodes = [];
+        nodes.forEach(node => {
+            if (Math.random() < 0.7 && node.type === 'dir') { // Directory probability
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                const x = node.x + Math.cos(angle) * distance;
+                const y = node.y + Math.sin(angle) * distance;
+                const newNode = new Node('node' + counter++, x, y, Math.random() < 0.5 ? 'dir' : 'file');
+                node.addChild(newNode);
+                newNodes.push(newNode);
+            }
+        });
+        nodes = nodes.concat(newNodes);
+
+        if (nodes.length < 1000) {
+            setTimeout(addNodes, 1000 / 60);
+        }
+    }
+
+    // Draw loop
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'; // Trail effect
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        root.draw(false); // Start without drawing connections to nonexistent parent
+        requestAnimationFrame(draw);
+    }
+
+    addNodes();
+    draw();
+</script>
+</body>
+</html>

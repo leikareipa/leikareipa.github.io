@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chessboard with Visual Effect</title>
+    <style>
+        html, body, canvas {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script src="./parrot.js"></script>
+    <script>
+      do_with_parrot((parrot)=>{
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const imageData = ctx.createImageData(canvas.width, canvas.height);
+        const pixels = parrot.data;
+        
+        ///////////////////////
+        // Function to calculate the luminance of a pixel
+        function luminance(r, g, b) {
+            return 0.299 * r + 0.587 * g + 0.114 * b;
+        }
+
+        // Function to sort pixels in a row based on their luminance
+        function sortRow(buffer, width, y) {
+            let start = y * width * 4;
+            let end = start + width * 4;
+            let row = [];
+
+            // Extract each pixel in the row
+            for (let i = start; i < end; i += 4) {
+                row.push({
+                    r: buffer[i],
+                    g: buffer[i+1],
+                    b: buffer[i+2],
+                    a: buffer[i+3]
+                });
+            }
+
+            // Sort the row by luminance
+            row.sort((a, b) => luminance(a.r, a.g, a.b) - luminance(b.r, b.g, b.b));
+
+            // Place sorted pixels back into the buffer
+            for (let i = 0, j = start; i < row.length; i++, j += 4) {
+                buffer[j] = row[i].r;
+                buffer[j+1] = row[i].g;
+                buffer[j+2] = row[i].b;
+                buffer[j+3] = row[i].a;
+            }
+        }
+
+        // Example usage:
+        // Assuming 'pixelBuffer' is a Uint8ClampedArray containing the RGBA data of a 256x256 image
+        function applyPixelSorting(pixelBuffer, width, height) {
+            for (let y = 0; y < height; y++) {
+                sortRow(pixelBuffer, width, y);
+            }
+        }
+
+        // To execute with an actual pixel buffer, ensure you have the buffer available as `pixelBuffer`
+        const WIDTH = 256;
+        const HEIGHT = 256;
+        let pixelBuffer = new Uint8ClampedArray(WIDTH * HEIGHT * 4); // Assuming this is filled with pixel data
+
+        applyPixelSorting(parrot.data, WIDTH, HEIGHT);
+        ///////////////////////
+
+        ctx.putImageData(parrot, 0, 0);
+      });
+    </script>
+</body>
+</html>
+
