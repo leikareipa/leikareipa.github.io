@@ -30,7 +30,20 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
     </thead>
     <tbody>
         <tr>
-            <td><b>gpt</b>:v4-turbo-2024-04-09*</td>
+            <td><b>gpt-4o</b>:2024-05-13*</td>
+            <td>78%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td><b>gpt-4-turbo</b>:2024-04-09*</td>
             <td>78%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -43,7 +56,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>gpt</b>:v4-0613*</td>
+            <td><b>gpt-4</b>:0613*</td>
             <td>72%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -56,7 +69,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>claude</b>:v3-opus-20240229*</td>
+            <td><b>claude-3-opus</b>:20240229*</td>
             <td>72%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -82,7 +95,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>gpt</b>:v4-0125-preview*</td>
+            <td><b>gpt-4</b>:0125-preview*</td>
             <td>72%</td>
             <td class="s2">2</td>
             <td class="s0">0</td>
@@ -95,7 +108,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>claude</b>:v3-sonnet-20240229*</td>
+            <td><b>claude-3-sonnet</b>:20240229*</td>
             <td>67%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -108,7 +121,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>claude</b>:v3-haiku-20240307*</td>
+            <td><b>claude-3-haiku</b>:20240307*</td>
             <td>67%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -121,7 +134,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>yi</b>:v1.5-34b-chat-q8_0</td>
+            <td><b>yi-1.5</b>:34b-chat-q8_0</td>
             <td>61%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -134,7 +147,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td><b>mistral</b>:large-2402*</td>
+            <td><b>mistral-large</b>:2402*</td>
             <td>61%</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
@@ -147,7 +160,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>gemini</b>:v1.0-ultra*</td>
+            <td><b>gemini-1.0-ultra</b>*</td>
             <td>56%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -160,7 +173,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td><b>chatgpt</b>:v3.5*</td>
+            <td><b>chatgpt-3.5</b>*</td>
             <td>56%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -173,7 +186,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>mistral</b>:small-2402*</td>
+            <td><b>mistral-small</b>:2402*</td>
             <td>56%</td>
             <td class="s2">2</td>
             <td class="s0">0</td>
@@ -199,7 +212,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>phind-codellama</b>:34b-v2-q6_K</td>
+            <td><b>phind-codellama-2</b>:34b-q6_K</td>
             <td>39%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -212,7 +225,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td><b>phind-codellama</b>:34b-v2-q4_0</td>
+            <td><b>phind-codellama-2</b>:34b-q4_0</td>
             <td>39%</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -225,7 +238,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td><b>mixtral</b>:8x7b-instruct-v0.1-q6_K</td>
+            <td><b>mixtral-0.1</b>:8x7b-instruct-q6_K</td>
             <td>39%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -264,7 +277,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>dolphin-mixtral</b>:8x7b-v2.7-q4_0</td>
+            <td><b>dolphin-mixtral-2.7</b>:8x7b-q4_0</td>
             <td>33%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -277,7 +290,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>mixtral</b>:8x7b-instruct-v0.1-q4_0</td>
+            <td><b>mixtral-0.1</b>:8x7b-instruct-q4_0</td>
             <td>33%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -290,7 +303,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
         </tr>
         <tr>
-            <td><b>gemini</b>:v1.0-pro*</td>
+            <td><b>gemini-1.0-pro</b>*</td>
             <td>33%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -329,7 +342,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td><b>gemma</b>:7b-instruct-v1.1-q6_K</td>
+            <td><b>gemma-1.1</b>:7b-instruct-q6_K</td>
             <td>28%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -355,7 +368,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>mistral</b>:7b-instruct-v0.2-q6_K</td>
+            <td><b>mistral-0.2</b>:7b-instruct-q6_K</td>
             <td>22%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -368,7 +381,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
         </tr>
         <tr>
-            <td><b>mistral</b>:7b-instruct-v0.2-q4_0</td>
+            <td><b>mistral-0.2</b>:7b-instruct-q4_0</td>
             <td>22%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -394,7 +407,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>qwen</b>:72b-chat-v1.5-q4_0</td>
+            <td><b>qwen-1.5</b>:72b-chat-q4_0</td>
             <td>20%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -446,7 +459,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>codeqwen</b>:7b-chat-v1.5-q8_0</td>
+            <td><b>codeqwen-1.5</b>:7b-chat-q8_0</td>
             <td>17%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -459,7 +472,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>command-r</b>:35b-v0.1-q4_K_M</td>
+            <td><b>command-r-0.1</b>:35b-q4_K_M</td>
             <td>17%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -485,7 +498,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>phi3</b>:3.8b-mini-instruct-4k-fp16</td>
+            <td><b>phi-3-mini</b>:3.8b-instruct-4k-fp16</td>
             <td>6%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -498,7 +511,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s0">0</td>
         </tr>
         <tr>
-            <td><b>qwen</b>:14b-chat-v1.5-q4_0</td>
+            <td><b>qwen-1.5</b>:14b-chat-q4_0</td>
             <td>6%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -511,7 +524,7 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s"> </td>
         </tr>
         <tr>
-            <td><b>phi</b>:2b-chat-v2-q6_K</td>
+            <td><b>phi-2</b>:2b-chat-q6_K</td>
             <td>0%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
