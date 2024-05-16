@@ -1,4 +1,4 @@
-<post-date date="15 May 2024"/>
+<post-date date="15 May 2024" edited="16 May 2024"/>
 
 # Testing visual understanding in LLMs
 
@@ -15,7 +15,6 @@
             <th>Score</th>
             <th>1</th>
             <th>2</th>
-            <th>3</th>
             <th>4</th>
             <th>5</th>
             <th>6</th>
@@ -32,10 +31,9 @@
     <tbody>
         <tr>
             <td><b>gpt-4o</b>:2024-05-13</td>
-            <td>50%</td>
+            <td>46%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
-            <td class="s2">2</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
@@ -50,10 +48,9 @@
         </tr>
         <tr>
             <td><b>claude-3-haiku</b>:20240307</td>
-            <td>29%</td>
+            <td>23%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
-            <td class="s2">2</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
@@ -68,10 +65,9 @@
         </tr>
         <tr>
             <td><b>gpt-4-turbo</b>:2024-04-09</td>
-            <td>25%</td>
+            <td>19%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
-            <td class="s2">2</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -86,10 +82,9 @@
         </tr>
         <tr>
             <td><b>llava-1.6</b>:34b-q5_K_M</td>
-            <td>7%</td>
+            <td>4%</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
-            <td class="s1">1</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -112,7 +107,6 @@
             <td class="s"></td>
             <td class="s"></td>
             <td class="s"></td>
-            <td class="s"></td>
             <td class="s0">0</td>
             <td class="s"></td>
             <td class="s0">0</td>
@@ -123,7 +117,6 @@
         <tr>
             <td><b>claude-3-opus</b>:20240229</td>
             <td>n/a</td>
-            <td class="s"></td>
             <td class="s"></td>
             <td class="s"></td>
             <td class="s"></td>
@@ -249,33 +242,6 @@ On this particular plot:
 6. There may also be a time-domain signal trace at the bottom (not fully visible in this image) that shows how the amplitude of the signal changes over time, which can help in understanding the characteristics of the signal being analyzed.
 
 Without more context or information about the specific software and the nature of the signal being processed, it's difficult to provide a detailed analysis. However, such plots are commonly used by engineers, scientists, and technicians for tasks like identifying harmonics in audio signals, analyzing communication signals, or understanding the  frequency content of any kind of digital or analog data.
-```
-
-### 3
-
-<x-prompt>
-    <p>Guess the year this screenshot was taken.</p>
-    <dokki-image headerless src="./3/image.png" width="797" height="570"/>
-</x-prompt>
-
-> gpt-4o:2024-05-13
-``` [{no-line-numbers}{inline-class:model-response}{word-wrap}]
-The screenshot shows Microsoft Visual C++ 6.0, which was a popular development environment in the late 1990s and early 2000s. Given the interface and the file names, it is likely that this screenshot was taken around the late 1990s to early 2000s, possibly between 1998 and 2002.
-```
-
-> gpt-4-turbo:2024-04-09
-``` [{no-line-numbers}{inline-class:model-response}{word-wrap}]
-The screenshot shows Microsoft Visual C++ 6.0, which was released in 1998. The visual style and interface elements such as icons and toolbars are characteristic of software design from the late 1990s to early 2000s. Based on this, the screenshot was likely taken around the late 1990s or early 2000s.
-```
-
-> claude-3-haiku:20240307
-``` [{no-line-numbers}{inline-class:model-response}{word-wrap}]
-Based on the visual elements in the screenshot, such as the Microsoft Visual C++ user interface and the code editor, this appears to be an older software development environment. Without being able to identify any specific individuals in the image, I would estimate that this screenshot was likely taken sometime in the late 1990s or early 2000s, when this version of Visual C++ was commonly used.
-```
-
-> llava-1.6:34b-q5_K_M
-``` [{no-line-numbers}{inline-class:model-response}{word-wrap}]
-The screenshot you've provided appears to be of an older Windows operating system, possibly Windows XP or Windows 2000. The user interface design and the style of the icons are characteristic of that era. However, without more context or information about specific details in the image, it's difficult to pinpoint the exact year. If there is a  timestamp or date on the screenshot that is not visible, it could provide more insight into when this photo was taken.
 ```
 
 ### 4
