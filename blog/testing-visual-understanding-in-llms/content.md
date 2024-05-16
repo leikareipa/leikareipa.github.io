@@ -111,6 +111,22 @@ A collection of visual tests and their results for various LLMs.
             <td class="s1">1</td>
         </tr>
         <tr>
+            <td><b>gemini-1.0-pro</b></td>
+            <td>17%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s2">2</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s2">2</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
             <td><b>llava-1.6</b>:34b-q5_K_M</td>
             <td>4%</td>
             <td class="s0">0</td>
