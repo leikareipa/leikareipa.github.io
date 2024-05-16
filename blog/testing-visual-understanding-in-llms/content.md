@@ -22,7 +22,6 @@
             <th>8</th>
             <th>9</th>
             <th>10</th>
-            <th>11</th>
             <th>13</th>
             <th>14</th>
             <th>15</th>
@@ -42,13 +41,12 @@
             <td class="s1">1</td>
             <td class="s2">2</td>
             <td class="s1">1</td>
-            <td class="s1">1</td>
             <td class="s0">0</td>
             <td class="s2">2</td>
         </tr>
         <tr>
             <td><b>claude-3-haiku</b>:20240307</td>
-            <td>23%</td>
+            <td>25%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -58,14 +56,13 @@
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
-            <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
         </tr>
         <tr>
             <td><b>gpt-4-turbo</b>:2024-04-09</td>
-            <td>19%</td>
+            <td>21%</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
@@ -75,7 +72,6 @@
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
-            <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
@@ -89,7 +85,6 @@
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
-            <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
@@ -112,7 +107,6 @@
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
-            <td class="s0">0</td>
         </tr>
         <tr>
             <td><b>claude-3-opus</b>:20240229</td>
@@ -126,7 +120,6 @@
             <td class="s"></td>
             <td class="s1">1</td>
             <td class="s"></td>
-            <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s"></td>
             <td class="s"></td>
@@ -202,13 +195,6 @@
 <x-prompt>
     <p>Summarize this image.</p>
     <dokki-image headerless src="./10/image.png" width="856" height="164"/>
-</x-prompt>
-
-### 11
-
-<x-prompt>
-    <p>Summarize these results.</p>
-    <dokki-image headerless src="./11/image.png" width="353" height="939"/>
 </x-prompt>
 
 ### 13
