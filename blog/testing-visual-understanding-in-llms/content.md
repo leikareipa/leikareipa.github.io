@@ -2,6 +2,8 @@
 
 # Testing visual understanding in LLMs
 
+A collection of visual tests and their results for various LLMs.
+
 ## Results
 
 <table class="results">
@@ -61,6 +63,38 @@
             <td class="s1">1</td>
         </tr>
         <tr>
+            <td><b>claude-3-sonnet</b>:20240229</td>
+            <td>21%</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
+            <td><b>claude-3-opus</b>:20240229</td>
+            <td>21%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+        </tr>
+        <tr>
             <td><b>gpt-4-turbo</b>:2024-04-09</td>
             <td>21%</td>
             <td class="s0">0</td>
@@ -92,44 +126,7 @@
             <td class="s0">0</td>
             <td class="s0">0</td>
         </tr>
-        <tr>
-            <td><b>claude-3-sonnet</b>:20240229</td>
-            <td>n/a</td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s0">0</td>
-            <td class="s"></td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
-            <td class="s0">0</td>
-        </tr>
-        <tr>
-            <td><b>claude-3-opus</b>:20240229</td>
-            <td>n/a</td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s"></td>
-            <td class="s1">1</td>
-            <td class="s"></td>
-            <td class="s0">0</td>
-            <td class="s"></td>
-            <td class="s"></td>
-        </tr>
     </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="19"><sup>*</sup>Not tested.</td>
-        </tr>
-    </tfoot>
 </table>
 
 ## Tests
