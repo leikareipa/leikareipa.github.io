@@ -127,6 +127,22 @@ A collection of visual tests and their results for various LLMs.
             <td class="s0">0</td>
         </tr>
         <tr>
+            <td><b>qwen-vl-max</b></td>
+            <td>8%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
             <td><b>llava-1.6</b>:34b-q5_K_M</td>
             <td>4%</td>
             <td class="s0">0</td>
