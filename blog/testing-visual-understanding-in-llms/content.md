@@ -1,4 +1,4 @@
-<post-date date="15 May 2024" edited="18 May 2024"/>
+<post-date date="15 May 2024" edited="20 May 2024"/>
 
 # Testing visual understanding in LLMs
 
@@ -109,6 +109,22 @@ A collection of visual tests and their results for various LLMs.
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
+        </tr>
+        <tr>
+            <td><b>gemini-1.5-pro</b>:2024-may</td>
+            <td>21%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
         </tr>
         <tr>
             <td><b>gemini-1.0-pro</b></td>
