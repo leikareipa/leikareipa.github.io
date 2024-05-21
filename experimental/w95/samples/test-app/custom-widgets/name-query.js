@@ -56,29 +56,25 @@ export const nameQuery = w95.widget(function nameQuery({
                         x: 49,
                         y: 12,
                         width: "pw - 60",
-                        text: name.now,
                         autofocus: true,
-                        newText(text) {
-                            name.set(text);
-                        },
+                        state: name,
                         onSubmit: accept,
                     }),
                     w95.widget.horizontalLayout({
                         y: 46,
                         width: "pw - 11",
+                        padding: 6,
                         styleHints:  [
                             w95.styleHint.alignRight,
                         ],
                         children: [
                             w95.widget.button({
-                                x: 0,
                                 width: 71,
                                 text: "OK",
                                 isDisabled: (!name.now.length && !acceptedName.now.length),
                                 onClick: accept,
                             }),
                             w95.widget.button({
-                                x: 77,
                                 width: 71,
                                 text: "Cancel",
                                 onClick: reject,

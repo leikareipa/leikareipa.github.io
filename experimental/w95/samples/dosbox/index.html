@@ -47,7 +47,7 @@
                         styleHints: [
                             w95.styleHint.shortcut,
                         ],
-                        async onActivate() {
+                        onActivate() {
                             w95.shell.run(app("./assets/qbasic.zip", "qbasic"), {singleInstance: true});
                         },
                     }),
@@ -57,14 +57,14 @@
                         styleHints: [
                             w95.styleHint.shortcut,
                         ],
-                        async onActivate() {
+                        onActivate() {
                             w95.shell.run(app("./assets/tombdemo.zip", "tomb"), {singleInstance: true});
                         },
                     }),
                     w95.widget.desktopIcon({
                         text: "instructions.txt",
                         icon: notepadIcons.app32,
-                        async onActivate() {
+                        onActivate() {
                             w95.shell.run(notepad({file: "./assets/instructions.txt"}), {singleInstance: true});
                         },
                     }),

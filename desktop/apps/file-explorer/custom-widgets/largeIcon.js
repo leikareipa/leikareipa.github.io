@@ -41,6 +41,7 @@ export default w95.widget(function largeIcon({
         Form() {
             return w95.widget.verticalLayout({
                 $name: "layout",
+                width,
                 height,
                 padding: 4,
                 styleHints:  [

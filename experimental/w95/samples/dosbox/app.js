@@ -58,15 +58,15 @@ export default function(filename = "", run = "") {
                         ),
                         children: [
                             w95.widget.menuBar({
-                                width: (width.now - 8),
+                                width: "pw",
                                 children: [
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "File",
                                         isTopLevel: true,
                                         isDisabled: !jsdosInitialized.now,
-                                        menu: w95.widget.menu({
+                                        submenu: w95.widget.menu({
                                             children: [
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "Exit",
                                                     onClick(widget) {
                                                         w95.windowManager.release_window(widget.$app.window);
@@ -75,13 +75,13 @@ export default function(filename = "", run = "") {
                                             ],
                                         }),
                                     }),
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "Output",
                                         isTopLevel: true,
                                         isDisabled: !jsdosInitialized.now,
-                                        menu: w95.widget.menu({
+                                        submenu: w95.widget.menu({
                                             children: [
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: `Custom: ${width.now} x ${height.now}`,
                                                     group: "output",
                                                     isDisabled: true,
@@ -93,7 +93,7 @@ export default function(filename = "", run = "") {
                                                     ),
                                                 }),
                                                 w95.widget.menuSeparator(),
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "720 x 400",
                                                     group: "output",
                                                     isChecable: true,
@@ -103,7 +103,7 @@ export default function(filename = "", run = "") {
                                                         height.set(400);
                                                     },
                                                 }),
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "640 x 400",
                                                     group: "output",
                                                     isChecable: true,
@@ -113,7 +113,7 @@ export default function(filename = "", run = "") {
                                                         height.set(400);
                                                     },
                                                 }),
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "640 x 480",
                                                     group: "output",
                                                     isChecable: true,
@@ -126,12 +126,12 @@ export default function(filename = "", run = "") {
                                             ],
                                         }),
                                     }),
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "Help",
                                         isTopLevel: true,
-                                        menu: w95.widget.menu({
+                                        submenu: w95.widget.menu({
                                             children: [
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "About...",
                                                     onClick() {
                                                         showAbout.set(true);

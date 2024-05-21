@@ -79,35 +79,35 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                     },
                     children: [
                         w95.widget.menuBar({
-                            width: (width.now - 8),
+                            width: "pw",
                             children: [
-                                w95.widget.menuItem({
+                                w95.widget.menuAction({
                                     label: "File",
                                     isTopLevel: true,
-                                    menu: w95.widget.menu({
+                                    submenu: w95.widget.menu({
                                         children: [
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Save",
                                                 isDisabled: true,
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Save As...",
                                                 isDisabled: true,
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Load...",
                                                 isDisabled: true,
                                             }),
                                         ],
                                     }),
                                 }),
-                                w95.widget.menuItem({
+                                w95.widget.menuAction({
                                     label: "Font",
                                     isTopLevel: true,
-                                    menu: w95.widget.menu({
+                                    submenu: w95.widget.menu({
                                         children: [
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Courier",
                                                 group: "font",
                                                 isCheckable: true,
@@ -118,7 +118,7 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                                     }
                                                 },
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Fixedsys",
                                                 group: "font",
                                                 isCheckable: true,
@@ -129,7 +129,7 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                                     }
                                                 },
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Sans Serif",
                                                 group: "font",
                                                 isCheckable: true,
@@ -143,12 +143,12 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                         ],
                                     }),
                                 }),
-                                w95.widget.menuItem({
+                                w95.widget.menuAction({
                                     label: "Help",
                                     isTopLevel: true,
-                                    menu: w95.widget.menu({
+                                    submenu: w95.widget.menu({
                                         children: [
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "About...",
                                                 onClick() {
                                                     showAbout.set(true);
@@ -172,11 +172,10 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                             y: 3,
                                             width: "pw - 6",
                                             height: "ph - 6",
-                                            text: html.now,
+                                            state: html,
                                             font: editorFont.now,
-                                            newText(text) {
-                                                html.set(text);
-                                                previewEl.now.innerHTML = html.now;
+                                            onChange(text) {
+                                                previewEl.now.innerHTML = text;
                                             },
                                             highlighter(text) {
                                                 return text
@@ -209,9 +208,7 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                     ],
                                 },
                             },
-                            newTabIndex(idx) {
-                                tabIdx.set(idx);
-                            },
+                            state: tabIdx,
                         }),
                         w95.shell.popup({
                             parent: this,

@@ -77,12 +77,12 @@ export default function({
                             w95.widget.menuBar({
                                 width: (width.now - 8),
                                 children: [
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "File",
                                         isTopLevel: true,
-                                        menu: w95.widget.menu({
+                                        submenu: w95.widget.menu({
                                             children: [
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "Exit",
                                                     onClick(widget) {
                                                         w95.windowManager.release_window(widget.$app.window);
@@ -91,17 +91,17 @@ export default function({
                                             ],
                                         }),
                                     }),
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "Edit",
                                         isTopLevel: true,
                                         isDisabled: true,
                                     }),
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "View",
                                         isTopLevel: true,
                                         isDisabled: true,
                                     }),
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "Help",
                                         isTopLevel: true,
                                         isDisabled: true,

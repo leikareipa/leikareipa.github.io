@@ -49,7 +49,8 @@ export default {
         const textEditText = w95.state("Text editing, with some bugs remaining.\n\nMultiline.");
         const numEditText = w95.state("123");
         const userName = w95.state("");
-        const widgetDisable = w95.state(false);
+        const globalWidgetDisable = w95.state(false);
+        const radioIndex = w95.state(1);
         const tabIndex = w95.state(1);
         const tab2Index = w95.state(0);
         const dropdownIndex = w95.state(2);
@@ -99,20 +100,20 @@ export default {
                             y: 185,
                             width: 182,
                             height: 80,
-                            isDisabled: widgetDisable.now,
+                            isDisabled: globalWidgetDisable.now,
                             children: [
                                 w95.widget.progressBar({
                                     x: 10,
                                     y: 15,
                                     width: "pw / 2 - 15",
-                                    progress: (sliderValue.now * 10),
+                                    value: (sliderValue.now * 10),
                                     showLabel: true,
                                 }),
                                 w95.widget.progressBar({
                                     x: 94,
                                     y: 15,
                                     width: "pw / 2 - 13",
-                                    progress: (sliderValue.now * 10),
+                                    value: (sliderValue.now * 10),
                                     styleHints: [
                                         w95.styleHint.dashed,
                                     ],
@@ -124,9 +125,7 @@ export default {
                                     minValue: 0,
                                     maxValue: 10,
                                     value: sliderValue.now,
-                                    newValue(value) {
-                                        sliderValue.set(value);
-                                    },
+                                    newValue: sliderValue.set,
                                 }),
                             ]
                         }),
@@ -136,7 +135,7 @@ export default {
                             y: 22,
                             width: 182,
                             height: 85,
-                            isDisabled: widgetDisable.now,
+                            isDisabled: globalWidgetDisable.now,
                             children: [
                                 w95.widget.dropdownBox({
                                     x: 10,
@@ -160,28 +159,20 @@ export default {
                                             },
                                         },
                                     },
-                                    newItemIndex(idx) {
-                                        dropdownIndex.set(idx);
-                                    },
+                                    newItemIndex: dropdownIndex.set,
                                 }),
                                 w95.widget.lineEdit({
                                     x: 10,
                                     y: 45,
                                     width: "pw - 76",
-                                    text: lineEditText.now,
-                                    newText(text) {
-                                        lineEditText.set(text);
-                                    },
+                                    state: lineEditText,
                                 }),
                                 w95.widget.lineEdit({
                                     x: "pw - 58",
                                     y: 45,
                                     width: "pw - 134",
                                     validator: /[0-9]/,
-                                    text: numEditText.now,
-                                    newText(text) {
-                                        numEditText.set(text);
-                                    },
+                                    state: numEditText,
                                 }),
                             ]
                         }),
@@ -196,26 +187,19 @@ export default {
                                     x: 10,
                                     y: 16,
                                     label: "Disable all widgets", 
-                                    isChecked: widgetDisable.now,
-                                    newCheckState(isChecked) {
-                                        widgetDisable.set(isChecked);
-                                    },
+                                    state: globalWidgetDisable,
                                 }),
                                 w95.widget.radioGroup({
                                     x: 10,
                                     y: 38,
-                                    itemIndex: (w95.registry.get("render-scale") - 1),
-                                    newItemIndex(idx) {
-                                        w95.registry.set("render-scale", (idx + 1));
-                                    },
                                     items: {
                                         "1x": {
-                                            isDisabled: widgetDisable.now,
+                                            isDisabled: globalWidgetDisable.now,
                                         },
                                         "2x": {
                                             x: 40,
                                             y: 0,
-                                            isDisabled: widgetDisable.now,
+                                            isDisabled: globalWidgetDisable.now,
                                         },
                                         "3x": {
                                             x: 80,
@@ -225,8 +209,12 @@ export default {
                                         "4x": {
                                             x: 120,
                                             y: 0,
-                                            isDisabled: widgetDisable.now,
+                                            isDisabled: globalWidgetDisable.now,
                                         },
+                                    },
+                                    state: radioIndex,
+                                    onChange(idx) {
+                                        w95.registry.set("render-scale", (idx + 1));
                                     },
                                 }),
                             ]
@@ -237,7 +225,7 @@ export default {
                             y: 22,
                             width: 190,
                             height: 55,
-                            isDisabled: widgetDisable.now,
+                            isDisabled: globalWidgetDisable.now,
                             children: [
                                 spawnButton({
                                     x: 10,
@@ -257,17 +245,14 @@ export default {
                             y: 82,
                             width: 190,
                             height: 183,
-                            isDisabled: widgetDisable.now,
+                            isDisabled: globalWidgetDisable.now,
                             children: [
                                 w95.widget.tabControl({
                                     x: 10,
                                     y: 15,
                                     width: "pw - 20",
                                     height: "ph - 27",
-                                    tabIndex: tabIndex.now,
-                                    newTabIndex(idx) {
-                                        tabIndex.set(idx);
-                                    },
+                                    state: tabIndex,
                                     tabs: {
                                         "Status": {
                                             children: [
@@ -295,15 +280,15 @@ export default {
                                                     y: 68,
                                                     text: "on GitHub",
                                                     color: (
-                                                        widgetDisable.now
+                                                        globalWidgetDisable.now
                                                             ? w95.palette.named.dimgray
                                                             : w95.palette.named.blue
                                                     ),
                                                     styleHints: [
-                                                        (widgetDisable.now? 0 : w95.styleHint.underlined),
+                                                        (globalWidgetDisable.now? 0 : w95.styleHint.underlined),
                                                     ],
                                                     onMouseDown() {
-                                                        if (!widgetDisable.now) {
+                                                        if (!globalWidgetDisable.now) {
                                                             window.open("https://github.com/leikareipa/w95", "_blank");
                                                             return true;
                                                         }
@@ -335,7 +320,7 @@ export default {
                                                             height: "ph - 4",
                                                             element: domEl.now,
                                                             className: "html-page",
-                                                            isDisabled: widgetDisable.now,
+                                                            isDisabled: globalWidgetDisable.now,
                                                         }),
                                                     ],
                                                 }),
@@ -346,7 +331,7 @@ export default {
                                                 rotatingCube({
                                                     width: "pw",
                                                     height: "ph",
-                                                    isDisabled: widgetDisable.now,
+                                                    isDisabled: globalWidgetDisable.now,
                                                 }),
                                             ]
                                         },
@@ -359,11 +344,8 @@ export default {
                             y: 271,
                             width: (width.now - 20),
                             height: Math.max(110, (height.now - 307)),
-                            isDisabled: widgetDisable.now,
-                            tabIndex: tab2Index.now,
-                            newTabIndex(idx) {
-                                tab2Index.set(idx);
-                            },
+                            isDisabled: globalWidgetDisable.now,
+                            state: tab2Index,
                             tabs: {
                                 "Scroll area": {
                                     children: [
@@ -377,7 +359,7 @@ export default {
                                                 w95.widget.label({
                                                     x: 2,
                                                     y: 0,
-                                                    isDisabled: widgetDisable.now,
+                                                    isDisabled: globalWidgetDisable.now,
                                                     text: `Stately, plump Buck Mulligan came from the stairhead, bearing a bowl of lather on which a mirror and a razor lay crossed. A yellow dressinggown, ungirdled, was sustained gently behind him by the mild morning air. He held the bowl aloft and intoned:
             
                                                         --Introibo ad altare Dei.
@@ -403,7 +385,7 @@ export default {
                                                     x: 109,
                                                     y: 24,
                                                     image: w95.icon.windowsLogo16x16,
-                                                    isDisabled: widgetDisable.now,
+                                                    isDisabled: globalWidgetDisable.now,
                                                 }),
                                             ],
                                         }),
@@ -416,12 +398,9 @@ export default {
                                             y: 3,
                                             width: "pw - 6",
                                             height: "ph - 6",
-                                            text: textEditText.now,
+                                            state: textEditText,
                                             autofocus: true,
                                             font: w95.font.fixedsys[9],
-                                            newText(text) {
-                                                textEditText.set(text);
-                                            },
                                         }),
                                     ],
                                 },
@@ -439,7 +418,7 @@ export default {
                                                     y: 2,
                                                     width: "pw - 4",
                                                     height: "ph - 4",
-                                                    isDisabled: widgetDisable.now,
+                                                    isDisabled: globalWidgetDisable.now,
                                                 }),
                                             ]
                                         }),
@@ -448,22 +427,22 @@ export default {
                             },
                         }),
                         w95.widget.menuBar({
-                            width: (width.now - 8),
+                            width: "pw",
                             children: [
-                                w95.widget.menuItem({
+                                w95.widget.menuAction({
                                     label: "File",
                                     isTopLevel: true,
-                                    isDisabled: widgetDisable.now,
-                                    menu: w95.widget.menu({
+                                    isDisabled: globalWidgetDisable.now,
+                                    submenu: w95.widget.menu({
                                         children: [
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Cloud it",
                                                 onClick() {
                                                     w95.shell.wallpaper = "./assets/clouds.gif";
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Exit",
                                                 onClick(widget) {
                                                     w95.windowManager.release_window(widget.$app.window);
@@ -472,39 +451,39 @@ export default {
                                         ],
                                     }),
                                 }),
-                                w95.widget.menuItem({
+                                w95.widget.menuAction({
                                     label: "Dialogs",
                                     isTopLevel: true,
-                                    isDisabled: widgetDisable.now,
-                                    menu: w95.widget.menu({
+                                    isDisabled: globalWidgetDisable.now,
+                                    submenu: w95.widget.menu({
                                         children: [
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Error",
                                                 onClick() {
                                                     isErrorDialogOpen.set(true);
                                                 },
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Question",
                                                 onClick() {
                                                     isQuestionDialogOpen.set(true);
                                                 },
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Warning",
                                                 onClick() {
                                                     isWarningDialogOpen.set(true);
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Custom warning",
                                                 onClick() {
                                                     isCustomWarningDialogOpen.set(true);
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "String query",
                                                 onClick() {
                                                     isNameQueryDialogOpen.set(true);
@@ -513,36 +492,32 @@ export default {
                                         ],
                                     }),
                                 }),
-                                w95.widget.menuItem({
+                                w95.widget.menuAction({
                                     label: "Other",
                                     isTopLevel: true,
-                                    isDisabled: widgetDisable.now,
-                                    menu: w95.widget.menu({
+                                    isDisabled: globalWidgetDisable.now,
+                                    submenu: w95.widget.menu({
                                         children: [
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Check this",
                                                 isCheckable: true,
                                                 isChecked: isCheckChecked.now,
-                                                newCheckState(isChecked) {
-                                                    isCheckChecked.set(isChecked);
-                                                },
+                                                newCheckState: isCheckChecked.set,
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Sub-menu",
-                                                menu: w95.widget.menu({
+                                                submenu: w95.widget.menu({
                                                     children: [
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Sub-sub-menu",
-                                                            menu: w95.widget.menu({
+                                                            submenu: w95.widget.menu({
                                                                 children: [
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Check this",
                                                                         isCheckable: true,
                                                                         isChecked: isCheckChecked.now,
-                                                                        newCheckState(isChecked) {
-                                                                            isCheckChecked.set(isChecked);
-                                                                        },
+                                                                        newCheckState: isCheckChecked.set,
                                                                     }),
                                                                 ],
                                                             }),
@@ -550,27 +525,25 @@ export default {
                                                     ],
                                                 }),
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Sub-menu 2",
-                                                menu: w95.widget.menu({
+                                                submenu: w95.widget.menu({
                                                     children: [
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Nothing",
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Nothing 2",
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Sub-sub-menu",
-                                                            menu: w95.widget.menu({
+                                                            submenu: w95.widget.menu({
                                                                 children: [
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Check this",
                                                                         isCheckable: true,
                                                                         isChecked: isCheckChecked.now,
-                                                                        newCheckState(isChecked) {
-                                                                            isCheckChecked.set(isChecked);
-                                                                        },
+                                                                        newCheckState: isCheckChecked.set,
                                                                     }),
                                                                 ],
                                                             }),
@@ -579,7 +552,7 @@ export default {
                                                 }),
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Group item 1",
                                                 group: "a",
                                                 isCheckable: true,
@@ -590,7 +563,7 @@ export default {
                                                     }
                                                 },
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Group item 2",
                                                 group: "a",
                                                 isCheckable: true,
@@ -601,7 +574,7 @@ export default {
                                                     }
                                                 },
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Group item 3",
                                                 group: "a",
                                                 isCheckable: true,
@@ -613,7 +586,7 @@ export default {
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Show debug layer",
                                                 isDisabled: !Boolean(w95.shell.display.debugLayer),
                                                 isCheckable: true,
@@ -626,16 +599,16 @@ export default {
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Out of service",
                                                 isDisabled: true,
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Operating system",
                                                 icon: w95.icon.windowsLogo16x16,
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Program application",
                                                 icon: w95.icon.applicationIcon16x16,
                                             }),

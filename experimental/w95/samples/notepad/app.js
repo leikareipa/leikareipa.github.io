@@ -70,53 +70,51 @@ export default function({
                         },
                         children: [
                             w95.widget.menuBar({
-                                width: (width.now - 8),
+                                width: "pw",
                                 children: [
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "File",
                                         isTopLevel: true,
                                         isDisabled: !srcFile.now,
-                                        menu: w95.widget.menu({
+                                        submenu: w95.widget.menu({
                                             children: [
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "Save",
                                                     isDisabled: true,
                                                 }),
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "Save As...",
                                                     isDisabled: true,
                                                 }),
                                                 w95.widget.menuSeparator(),
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "Load...",
                                                     isDisabled: true,
                                                 }),
                                             ],
                                         }),
                                     }),
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "Edit",
                                         isTopLevel: true,
                                         isDisabled: !srcFile.now,
-                                        menu: w95.widget.menu({
+                                        submenu: w95.widget.menu({
                                             children: [
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "Word wrap",
                                                     isCheckable: true,
                                                     isChecked: isWordWrapEnabled.now,
-                                                    newCheckState(isChecked) {
-                                                        isWordWrapEnabled.set(isChecked);
-                                                    },
+                                                    newCheckState: isWordWrapEnabled.set,
                                                 }),
                                             ],
                                         }),
                                     }),
-                                    w95.widget.menuItem({
+                                    w95.widget.menuAction({
                                         label: "Help",
                                         isTopLevel: true,
-                                        menu: w95.widget.menu({
+                                        submenu: w95.widget.menu({
                                             children: [
-                                                w95.widget.menuItem({
+                                                w95.widget.menuAction({
                                                     label: "About...",
                                                     onClick() {
                                                         showAbout.set(true);

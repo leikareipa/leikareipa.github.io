@@ -131,29 +131,29 @@ export default function({
                                             w95.widget.menuBar({
                                                 x: 8,
                                                 y: 3,
-                                                width: (width.now - 6),
+                                                width: "pw",
                                                 children: [
-                                                    w95.widget.menuItem({
+                                                    w95.widget.menuAction({
                                                         label: "File",
                                                         isTopLevel: true,
                                                     }),
-                                                    w95.widget.menuItem({
+                                                    w95.widget.menuAction({
                                                         label: "Edit",
                                                         isTopLevel: true,
                                                     }),
-                                                    w95.widget.menuItem({
+                                                    w95.widget.menuAction({
                                                         label: "View",
                                                         isTopLevel: true,
                                                     }),
-                                                    w95.widget.menuItem({
+                                                    w95.widget.menuAction({
                                                         label: "Go",
                                                         isTopLevel: true,
                                                     }),
-                                                    w95.widget.menuItem({
+                                                    w95.widget.menuAction({
                                                         label: "Favorites",
                                                         isTopLevel: true,
                                                     }),
-                                                    w95.widget.menuItem({
+                                                    w95.widget.menuAction({
                                                         label: "Help",
                                                         isTopLevel: true,
                                                     }),
@@ -268,10 +268,7 @@ export default function({
                                                 width: (width.now - 100 - 25),
                                                 height: 22, 
                                                 leftPadding: 17,
-                                                text: address.now,
-                                                newText(text) {
-                                                    address.set(text);
-                                                },
+                                                state: address,
                                                 onSubmit: browse_to_current_address,
                                             }),
                                             w95.widget.bitmap({

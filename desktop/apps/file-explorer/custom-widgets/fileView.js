@@ -53,6 +53,7 @@ export default w95.widget(function fileView({
                         y += verticalSpacing;
                     }
 
+                    wrapper.Message.resize(iconWidget.width, iconWidget.height);
                     wrapper.Message.move(x, y);
                     x += horizontalSpacing;
                 }

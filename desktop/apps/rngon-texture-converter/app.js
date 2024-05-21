@@ -31,11 +31,11 @@ export default {
         const colorDepth = w95.state("8888");
         const prevColorDepth = w95.state(undefined);
         const encoding = w95.state("Base64");
-        const chromaKey = w95.state({
-            enabled: false,
-            red: 0,
-            green: 0,
-            blue: 0,
+        const chromaKey = {
+            enabled: w95.state(false),
+            red: w95.state("0"),
+            green: w95.state("0"),
+            blue: w95.state("0"),
             is(red, green, blue) {
                 return (
                     this.enabled &&
@@ -44,7 +44,7 @@ export default {
                     (blue == this.blue)
                 )
             },
-        });
+        };
 
         return {
             get x() { return x.now },
@@ -80,10 +80,7 @@ export default {
                             y: 2,
                             width: "pw - 4",
                             height: "ph - 2",
-                            tabIndex: tabIndex.now,
-                            newTabIndex(idx) {
-                                tabIndex.set(idx);
-                            },
+                            state: tabIndex,
                             tabs: {
                                 "Image to JSON": {
                                     children: [
@@ -121,14 +118,19 @@ export default {
                                             isDisabled: !imageData.now,
                                             children: [
                                                 w95.widget.horizontalLayout({
+                                                    styleHints: [
+                                                        w95.styleHint.alignVCenter,
+                                                    ],
+                                                    width: 500,
                                                     children: [
                                                         w95.widget.label({
-                                                            y: 4,
                                                             text: "Color depth",
+                                                        }),
+                                                        w95.widget.layoutSpacer({
+                                                            width: 25,
                                                         }),
                                                         w95.widget.dropdownBox({
                                                             width: 100,
-                                                            x: 82,
                                                             itemIndex: colorDepth.now,
                                                             isDisabled: isColorDepthLocked.now,
                                                             items: [
@@ -143,14 +145,19 @@ export default {
                                                     ],
                                                 }),
                                                 w95.widget.horizontalLayout({
+                                                    styleHints: [
+                                                        w95.styleHint.alignVCenter,
+                                                    ],
+                                                    width: 500,
                                                     children: [
                                                         w95.widget.label({
-                                                            y: 4,
                                                             text: "Pixel encoding",
+                                                        }),
+                                                        w95.widget.layoutSpacer({
+                                                            width: 10,
                                                         }),
                                                         w95.widget.dropdownBox({
                                                             width: 100,
-                                                            x: 82,
                                                             itemIndex: encoding.now,
                                                             items: [
                                                                 {label: "Base64"},
@@ -175,56 +182,41 @@ export default {
                                                     ],
                                                 }),
                                                 w95.widget.horizontalLayout({
+                                                    styleHints: [
+                                                        w95.styleHint.alignVCenter,
+                                                    ],
+                                                    width: 500,
                                                     children: [
                                                         w95.widget.checkbox({
-                                                            y: 4,
-                                                            isChecked: chromaKey.now.enabled,
+                                                            state: chromaKey.enabled,
                                                             label: "Chroma key",
-                                                            newCheckState(checked) {
-                                                                chromaKey.set({
-                                                                    ...chromaKey.now,
-                                                                    enabled: checked,
-                                                                });
-                                                            },
+                                                        }),
+                                                        w95.widget.layoutSpacer({
+                                                            width: (imageData.now? 4 : 3),
                                                         }),
                                                         w95.widget.lineEdit({
                                                             width: 30,
-                                                            x: 82,
-                                                            text: String(chromaKey.now.red),
+                                                            state: chromaKey.red,
                                                             validator: /[0-9]/,
-                                                            isDisabled: !chromaKey.now.enabled,
-                                                            newText(text) {
-                                                                chromaKey.set({
-                                                                    ...chromaKey.now,
-                                                                    red: text,
-                                                                });
-                                                            },
+                                                            isDisabled: !chromaKey.enabled.now,
+                                                        }),
+                                                        w95.widget.layoutSpacer({
+                                                            width: 2,
                                                         }),
                                                         w95.widget.lineEdit({
-                                                            x: 117,
                                                             width: 30,
-                                                            text: String(chromaKey.now.green),
+                                                            state: chromaKey.green,
                                                             validator: /[0-9]/,
-                                                            isDisabled: !chromaKey.now.enabled,
-                                                            newText(text) {
-                                                                chromaKey.set({
-                                                                    ...chromaKey.now,
-                                                                    green: text,
-                                                                });
-                                                            },
+                                                            isDisabled: !chromaKey.enabled.now,
+                                                        }),
+                                                        w95.widget.layoutSpacer({
+                                                            width: 2,
                                                         }),
                                                         w95.widget.lineEdit({
-                                                            x: 152,
                                                             width: 30,
-                                                            text: String(chromaKey.now.blue),
+                                                            state: chromaKey.blue,
                                                             validator: /[0-9]/,
-                                                            isDisabled: !chromaKey.now.enabled,
-                                                            newText(text) {
-                                                                chromaKey.set({
-                                                                    ...chromaKey.now,
-                                                                    blue: text,
-                                                                });
-                                                            },
+                                                            isDisabled: !chromaKey.enabled.now,
                                                         }),
                                                     ],
                                                 }),
@@ -266,7 +258,7 @@ export default {
                                                 w95.widget.label({
                                                     cursor: w95.cursor.pointer,
                                                     width: 182,
-                                                    text: `Done! Copy JSON to clipboard (${imageSize.now}).`,
+                                                    text: `Done! Copy to clipboard (${imageSize.now}).`,
                                                     color: (
                                                         hasImageBeenCopied.now
                                                             ? w95.palette.named.purple
@@ -347,7 +339,7 @@ export default {
                     const green = imageData.now.data[idx + 1];
                     const blue = imageData.now.data[idx + 2];
                     const alpha = (
-                        chromaKey.now.is(red, green, blue)
+                        chromaKey.is(red, green, blue)
                             ? 0
                             : imageData.now.data[idx + 3]
                     );

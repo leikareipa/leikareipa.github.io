@@ -82,109 +82,109 @@ export default {
                         w95.widget.menuBar({
                             width: (width.now - 8),
                             children: [
-                                w95.widget.menuItem({
+                                w95.widget.menuAction({
                                     label: "File",
                                     isTopLevel: true,
                                     isDisabled: (dosboxRunState.now !== 0),
-                                    menu: w95.widget.menu({
+                                    submenu: w95.widget.menu({
                                         children: [
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Save",
                                                 isDisabled: !projectName.now,
                                                 onClick() {send_message("save:project")},
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Rename...",
                                                 onClick() {
                                                     send_message("rename:project");
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Load track",
-                                                menu: w95.widget.menu({
+                                                submenu: w95.widget.menu({
                                                     children: [
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "From disk...",
                                                             onClick() {trackFileSelectorEl.now.$assetType = "project"; trackFileSelectorEl.now.click();},
                                                         }),
                                                         w95.widget.menuSeparator(),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Rally-Sport's demo",
-                                                            menu: w95.widget.menu({
+                                                            submenu: w95.widget.menu({
                                                                 children: [
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Nurtsi cruising",
                                                                         onClick() {load_track(1)},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Vesistö vedätys",
                                                                         onClick() {load_track(2)},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Ralli-cross",
                                                                         onClick() {load_track(3)},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Yleisö EK",
                                                                         onClick() {load_track(4)},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Very slippery",
                                                                         onClick() {load_track(5)},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "You asked it",
                                                                         onClick() {load_track(6)},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Bumps and jumps",
                                                                         onClick() {load_track(7)},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Short and easy",
                                                                         onClick() {load_track(8)},
                                                                     }),
                                                                 ],
                                                             }),
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Fan-made",
-                                                            menu: w95.widget.menu({
+                                                            submenu: w95.widget.menu({
                                                                 children: [
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Hakkuu",
                                                                         onClick() {load_track("hakkuu")},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Jossain",
                                                                         onClick() {load_track("jossain")},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Klorofyl",
                                                                         onClick() {load_track("klorofyl")},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Lumitaso",
                                                                         onClick() {load_track("lumitaso")},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Naapurit",
                                                                         onClick() {load_track("naapurit")},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Saaristo",
                                                                         onClick() {load_track("saaristo")},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Syyssy",
                                                                         onClick() {load_track("syyssy")},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Suorundi",
                                                                         onClick() {load_track("suorundi")},
                                                                     }),
-                                                                    w95.widget.menuItem({
+                                                                    w95.widget.menuAction({
                                                                         label: "Jouluke",
                                                                         onClick() {load_track("jouluke")},
                                                                     }),
@@ -195,64 +195,64 @@ export default {
                                                 }),
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Import",
                                                 isDisabled: !projectName.now,
-                                                menu: w95.widget.menu({
+                                                submenu: w95.widget.menu({
                                                     children: [
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Maasto",
                                                             onClick() {fileSelectorEl.now.$assetType = "maasto"; fileSelectorEl.now.click();},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Varimaa",
                                                             onClick() {fileSelectorEl.now.$assetType = "varimaa"; fileSelectorEl.now.click();},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Palat",
                                                             onClick() {fileSelectorEl.now.$assetType = "palat"; fileSelectorEl.now.click();},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Text",
                                                             onClick() {fileSelectorEl.now.$assetType = "text"; fileSelectorEl.now.click();},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Anims",
                                                             onClick() {fileSelectorEl.now.$assetType = "anims"; fileSelectorEl.now.click();},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Kierros",
                                                             onClick() {fileSelectorEl.now.$assetType = "kierros"; fileSelectorEl.now.click();},
                                                         }),
                                                     ],
                                                 }),
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Export",
                                                 isDisabled: !projectName.now,
-                                                menu: w95.widget.menu({
+                                                submenu: w95.widget.menu({
                                                     children: [
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Maasto",
                                                             onClick() {send_message("export:maasto")},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Varimaa",
                                                             onClick() {send_message("export:varimaa")},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Palat",
                                                             onClick() {send_message("export:palat")},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Text",
                                                             onClick() {send_message("export:text")},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Anims",
                                                             onClick() {send_message("export:anims")},
                                                         }),
-                                                        w95.widget.menuItem({
+                                                        w95.widget.menuAction({
                                                             label: "Kierros",
                                                             onClick() {send_message("export:kierros")},
                                                         }),
@@ -262,27 +262,27 @@ export default {
                                         ],
                                     }),
                                 }),
-                                w95.widget.menuItem({
+                                w95.widget.menuAction({
                                     label: "Run",
                                     isTopLevel: true,
                                     isDisabled: !projectName.now,
-                                    menu: w95.widget.menu({
+                                    submenu: w95.widget.menu({
                                         children: [
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Play",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:play");
                                                 },
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Test",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:test");
                                                 },
                                             }),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Record",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
@@ -290,7 +290,7 @@ export default {
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "Stop",
                                                 isDisabled: (dosboxRunState.now !== 2),
                                                 onClick() {
@@ -300,12 +300,12 @@ export default {
                                         ],
                                     }),
                                 }),
-                                w95.widget.menuItem({
+                                w95.widget.menuAction({
                                     label: "Help",
                                     isTopLevel: true,
-                                    menu: w95.widget.menu({
+                                    submenu: w95.widget.menu({
                                         children: [
-                                            w95.widget.menuItem({
+                                            w95.widget.menuAction({
                                                 label: "About...",
                                                 isDisabled: true,
                                             }),
