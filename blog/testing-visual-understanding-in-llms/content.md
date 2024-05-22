@@ -1,4 +1,4 @@
-<post-date date="15 May 2024" edited="20 May 2024"/>
+<post-date date="15 May 2024" edited="22 May 2024"/>
 
 # Testing visual understanding in LLMs
 
@@ -140,6 +140,22 @@ A collection of visual tests and their results for various LLMs.
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s2">2</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
+            <td><b>phi-3-vision-128k</b></td>
+            <td>8%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
             <td class="s0">0</td>
         </tr>
         <tr>
