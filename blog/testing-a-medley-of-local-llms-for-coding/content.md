@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="21 May 2024"/>
+<post-date date="26 February 2024" edited="22 May 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -493,6 +493,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s1">1</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
+            <td><b>phi-3-medium</b>:14b-4k-instruct-q8_0</td>
+            <td>17%</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
             <td class="s0">0</td>
