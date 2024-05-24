@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sample app</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="/experimental/w95/distributable/w95-api.js"></script>
+        <script src="/experimental/w95/distributable/w95-assets.js"></script>
+        <script src="/experimental/w95/distributable/w95-widgets.js"></script>
+        <link href="/experimental/w95/distributable/w95.css" rel="stylesheet">
+    </head>
+    <body>
+        <script type="module">
+            import controlPanel from "./apps/control-panel/app.js";
+            import {appicon32} from "./apps/textures.js";
+
+            const desktop = w95.shell.desktop({
+                icons: [
+                    w95.widget.desktopIcon({
+                        text: "ACQ",
+                        icon: appicon32,
+                        onActivate() {
+                            w95.shell.run(controlPanel, {singleInstance: true});
+                        },
+                    }),
+                ],
+            });
+
+            w95.shell.boot();
+            w95.shell.wallpaper = "./rojua.png";
+            w95.shell.run([desktop, w95.shell.taskbar(), controlPanel]);
+        </script>
+    </body>
+</html>
