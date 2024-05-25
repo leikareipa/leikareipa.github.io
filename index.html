@@ -328,7 +328,7 @@
                         text: "ACQ",
                         icon: acqIcon,
                         async onActivate() {
-                            let models = [];
+                            const models = [];
 
                             try {
                                 const response = await fetch('http://localhost:11434/api/tags');
@@ -344,7 +344,7 @@
                                 models.push(...json.models.map(m=>m.model).sort());
                             }
                             catch {
-                                models = [];
+                                models.length = 0;
                             }
 
                             w95.shell.run(acq({models}), {singleInstance: true});
