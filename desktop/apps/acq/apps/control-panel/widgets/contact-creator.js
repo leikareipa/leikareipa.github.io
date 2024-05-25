@@ -8,6 +8,7 @@ export const contactCreator = w95.widget(function contactCreator({
     y = 0,
     width = 100,
     height = 200,
+    models = [],
     onAccept = undefined,
     onReject = undefined,
 } = {})
@@ -16,6 +17,7 @@ export const contactCreator = w95.widget(function contactCreator({
     w95.debug?.assert(typeof y === "number");
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
+    w95.debug?.assert(Array.isArray(models));
     w95.debug?.assert(typeof onAccept === "function");
     w95.debug?.assert(typeof onReject === "function");
 
@@ -31,6 +33,8 @@ export const contactCreator = w95.widget(function contactCreator({
     const personality = w95.state("");
     const isPeriodCorrect = w95.state(true);
     const isMessageDelay = w95.state(true);
+
+    const dropdownIndex = w95.state(0);
 
     return {
         get x() { return x.now },
@@ -85,7 +89,13 @@ export const contactCreator = w95.widget(function contactCreator({
                                     w95.widget.lineEdit({
                                         width: "pw - (pw / 4) - 2",
                                         state: modelName,
-                                    }),
+                                    }, {hideIf: models.length}),
+                                    w95.widget.dropdownBox({
+                                        width: "pw - (pw / 4) - 2",
+                                        itemIndex: dropdownIndex.now,
+                                        items: (models.length? models.reduce((o, i)=>({...o, [i]: {}}), {}) : {"0": {}}),
+                                        newItemIndex: dropdownIndex.set,
+                                    }, {hideIf: !models.length}),
                                 ],
                             }),
                             w95.widget.horizontalLayout({
@@ -187,7 +197,11 @@ export const contactCreator = w95.widget(function contactCreator({
 
     function accept() {
         onAccept({
-            model: modelName.now,
+            model: (
+                models.length
+                    ? models[dropdownIndex.now]
+                    : modelName.now
+            ),
             name: nickName.now,
             personality: personality.now,
             isPeriodCorrect: isPeriodCorrect.now,

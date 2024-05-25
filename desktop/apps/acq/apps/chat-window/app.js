@@ -158,7 +158,7 @@ export default function({
                 Form() {
                     return w95.widget.window({
                         parent: this,
-                        title: `${name} - ${this.$app.Meta.name}`,
+                        title: `${name}${errorFlag.now? " [Offline]" : ""} - ${this.$app.Meta.name}`,
                         icon: (errorFlag.now? appicon16Disabled : appicon16),
                         resize(deltaWidth, deltaHeight) {
                             width.set(Math.max(minWidth, (width.now + deltaWidth)));
@@ -251,7 +251,7 @@ export default function({
                                                     w95.widget.label({
                                                         width: "pw",
                                                         height: "ph",
-                                                        text: `${name}${errorFlag.now? " [Offline]" : ""}`,
+                                                        text: name,
                                                         elide: true,
                                                         styleHints: [
                                                             w95.styleHint.alignVCenter,

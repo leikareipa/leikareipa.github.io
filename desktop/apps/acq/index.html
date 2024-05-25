@@ -25,9 +25,31 @@
                 ],
             });
 
-            w95.shell.boot();
-            w95.shell.wallpaper = "./rojua.png";
-            w95.shell.run([desktop, w95.shell.taskbar(), controlPanel]);
+            (async()=>{
+                const models = [];
+
+                try {
+                    const response = await fetch('http://localhost:11434/api/tags');
+
+                    if (!response.ok) {
+                        throw "";
+                    }
+
+                    const json = await response.json();
+                    
+                    if (!Array.isArray(json.models)) {
+                        throw "";
+                    }
+                    
+                    models.push(...json.models.map(m=>m.model).sort());
+                }
+                catch {
+                }
+
+                w95.shell.boot();
+                w95.shell.wallpaper = "./rojua.png";
+                w95.shell.run([desktop, w95.shell.taskbar(), controlPanel({models})]);
+            })();
         </script>
     </body>
 </html>
