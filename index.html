@@ -78,6 +78,9 @@
             import fileExplorer from "./desktop/apps/file-explorer/app.js";
             import {icons as fileExplorerIcons} from "./desktop/apps/file-explorer/icons.js";
 
+            import acq from "./desktop/apps/acq/apps/control-panel/app.js";
+            import {appicon32 as acqIcon} from "./desktop/apps/acq/apps/textures.js";
+
             const desktop = w95.shell.desktop({
                 showWatermark: false,
                 icons: [
@@ -319,6 +322,32 @@
                                     },
                                 },
                             }));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "ACQ",
+                        icon: acqIcon,
+                        async onActivate() {
+                            let models = [];
+
+                            try {
+                                const response = await fetch('http://localhost:11434/api/tags');
+                                if (!response.ok) {
+                                    throw "";
+                                }
+
+                                const json = await response.json();
+                                if (!Array.isArray(json.models)) {
+                                    throw "";
+                                }
+                                
+                                models.push(...json.models.map(m=>m.model).sort());
+                            }
+                            catch {
+                                models = [];
+                            }
+
+                            w95.shell.run(acq({models}), {singleInstance: true});
                         },
                     }),
                 ],

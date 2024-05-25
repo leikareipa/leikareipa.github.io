@@ -164,7 +164,7 @@ export default function({
                             }, {hideIf: !isContactCreatorDialogOpen.now}),
                             w95.shell.popup({
                                 parent: this,
-                                icon: w95.icon.info,
+                                icon: w95.icon.information,
                                 title: "About ACQ",
                                 text: `A front-end for Ollama to chat with local LLMs.\n\nSet \"OLLAMA_ORIGINS=${window.location.origin}\"\nand go to town.\n\n\bNote:\b This software may resemble ICQ but is not\nassociated with it.`,
                                 buttons: [

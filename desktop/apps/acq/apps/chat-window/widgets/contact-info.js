@@ -59,9 +59,9 @@ export const contactInfo = w95.widget(function contactInfo({
                 },
                 children: [
                     w95.widget.verticalLayout({
-                        x: 10,
-                        y: 10,
-                        width: "pw - 20",
+                        x: 6,
+                        y: 6,
+                        width: "pw - 12",
                         children: [
                             w95.widget.horizontalLayout({
                                 width: "pw",
