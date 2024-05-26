@@ -44,7 +44,7 @@ export default function({
                 get y() { return y.now },
                 get width() { return width.now },
                 get height() { return height.now },
-                async Mounted() {
+                async Opened() {
                     text.set(decoder(await (await fetch(file)).arrayBuffer()));
                     srcFile.set(file.replace(/.*?\//g, ""));
                 },
@@ -125,28 +125,13 @@ export default function({
                                     }),
                                 ],
                             }),
-                            w95.widget.scrollArea({
+                            w95.widget.textEdit({
                                 y: 18,
                                 width: "pw",
                                 height: "ph - 18",
-                                backgroundColor: w95.palette.named.white,
-                                alwaysShowHorizontalScroll: true,
-                                alwaysShowVerticalScroll: true,
-                                children: [
-                                    w95.widget.label({
-                                        x: 2,
-                                        y: 2,
-                                        width: (
-                                            isWordWrapEnabled.now
-                                            ? (width.now - 30)
-                                            : undefined
-                                        ),
-                                        text: text.now,
-                                        font: w95.font.fixedsys[9],
-                                        wordWrap: isWordWrapEnabled.now,
-                                        allowFormatting: false,
-                                    }),
-                                ],
+                                state: text,
+                                font: w95.font.fixedsys[9],
+                                wordWrap: isWordWrapEnabled.now,
                             }),
                             w95.shell.popup({
                                 parent: this,

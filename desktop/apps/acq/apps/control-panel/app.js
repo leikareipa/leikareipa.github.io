@@ -175,7 +175,7 @@ export default function({
                                         height: 3,
                                     }),
                                     w95.widget.button({
-                                        text: "Add a contact",
+                                        text: "Add a contact...",
                                         width: "pw",
                                         isDisabled: (contacts.now.length >= contactsListItems.now.length),
                                         async onClick() {
