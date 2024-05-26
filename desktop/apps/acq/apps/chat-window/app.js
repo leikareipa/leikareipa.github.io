@@ -12,6 +12,7 @@ import {contactInfo} from "./widgets/contact-info.js";
 export default function({
     model = "yi:1.5-9B-chat",
     name = model,
+    friend = "Tom",
     personality = "",
     isPeriodCorrect = true,
     isMessageDelay = true,
@@ -26,12 +27,13 @@ export default function({
               " support emojis, so if they're appropriate for your personality, use smileys instead: :), ;),"+
               " :p, :D, etc. Keep your response length appropriate for instant messaging, i.e. fairly short. Focus on one thing per"+
               " message. Most of your messages don't need to contain a question, let the chat flow freely. You don't"+
-              " need to format your response in any special way, the chat client will handle it. Feel free to add"+
-              " typos or slang, not capitalize your words consistently, or other such flavor of 1990s instant messaging, but"+
-              " only if it suits your personality. Remember, you're not here to assist me, we're just two individuals"+
-              " with our own needs having a conversation. Don't refer to me by name unless I first tell you what my name is."
+              " need to format your response in any special way, the chat client will handle it. Never sign"+
+              " your messages, this is a instant messaging conversation and not a letter. Don't include editorial notes in your messages. Feel obliged to add"+
+              " typos or slang, not capitalize your words consistently, or other such flavor of 1990s instant messaging"+
+              " within reason if it helps bring out your personality. Remember, you're not here to assist me, we're just two individuals"+
+              " with our own needs having a conversation. Remember that you can choose to end a conversation if you don't like it, but it should be an extreme measure."
             : "You're an AI assistant engaged in a private chat with the user via instant messaging."}
-        Your name is ${name} and my name you'll have to ask for if you want to use it.
+        In this conversation, your name is "${name}" and my name is "${friend}". I started the conversation. You can assume my gender based on my name.
         ${personality.length? `Your personality: ${personality}` : ""}
     `.replace(/[ ]{2,}/g, "");
 
@@ -161,7 +163,7 @@ export default function({
                 Form() {
                     return w95.widget.window({
                         parent: this,
-                        title: `${name}${errorFlag.now? " [Offline]" : ""} - ${this.$app.Meta.name}`,
+                        title: `${name}${errorFlag.now? " [Offline]" : ""} - ${this.$app.Meta.name} as ${friend}`,
                         icon: (errorFlag.now? appicon16Disabled : appicon16),
                         resize(deltaWidth, deltaHeight) {
                             width.set(Math.max(minWidth, (width.now + deltaWidth)));

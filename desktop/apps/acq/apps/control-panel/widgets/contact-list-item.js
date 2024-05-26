@@ -51,7 +51,7 @@ export const contactListItem = w95.widget(function contactListItem({
                 ),
                 onClick: onClick.now,
                 onDoubleClick() {
-                    w95.shell.run(chatWindow(contact.now));
+                    w95.shell.run(chatWindow({...contact.now, friend: contact.now.getFriendName()}));
                 },
                 children: [
                     w95.widget.horizontalLayout({

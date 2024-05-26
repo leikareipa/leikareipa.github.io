@@ -5,6 +5,7 @@
  * 
  */
 
+import textures from "./textures.js";
 import {appicon16} from "../textures.js";
 import {contactListItem} from  "./widgets/contact-list-item.js";
 import {contactCreator} from  "./widgets/contact-creator.js";
@@ -21,7 +22,7 @@ export default function({
         App() {
             // The dimensions of the app's window.
             const minWidth = 170;
-            const minHeight = 312;
+            const minHeight = 343;
             const width = w95.state(minWidth);
             const height = w95.state(minHeight);
 
@@ -33,6 +34,8 @@ export default function({
             const isContactCreatorDialogOpen = w95.state(false);
             const isAboutDialogOpen = w95.state(false);
 
+            const nick = w95.state("Tom");
+            const getNick = ()=>nick.now;
             const contacts = w95.state([]);
             const contactsListItems = w95.state(new Array(12).fill().map(e=>contactListItem()));
 
@@ -123,7 +126,7 @@ export default function({
                                     w95.widget.frame({
                                         $name: "users-container",
                                         width: "pw",
-                                        height: (height.now - 69),
+                                        height: (height.now - 99),
                                         backgroundColor: Rngon.color(235, 235, 235),
                                         shape: w95.frameShape.plain,
                                         children: [
@@ -137,7 +140,39 @@ export default function({
                                         ],
                                     }),
                                     w95.widget.layoutSpacer({
-                                        height: 2,
+                                        height: 3,
+                                    }),
+                                    w95.widget.horizontalLayout({
+                                        width: "pw",
+                                        padding: 1,
+                                        height: 20,
+                                        styleHints: [
+                                            w95.styleHint.alignVCenter,
+                                        ],
+                                        children: [
+                                            w95.widget.layoutSpacer({
+                                                width: 3,
+                                            }),
+                                            w95.widget.bitmap({
+                                                image: textures.person,
+                                            }),
+                                            w95.widget.layoutSpacer({
+                                                width: 3,
+                                            }),
+                                            w95.widget.lineEdit({
+                                                state: nick,
+                                                width: "pw - 26"
+                                            }),
+                                        ],
+                                    }),
+                                    w95.widget.layoutSpacer({
+                                        height: 3,
+                                    }),
+                                    w95.widget.horizontalRule({
+                                        width: "pw",
+                                    }),
+                                    w95.widget.layoutSpacer({
+                                        height: 3,
                                     }),
                                     w95.widget.button({
                                         text: "Add a contact",
@@ -156,7 +191,7 @@ export default function({
                                 models,
                                 onAccept(contact) {
                                     isContactCreatorDialogOpen.set(false);
-                                    add_contact(contact);
+                                    add_contact({...contact, getFriendName: getNick});
                                 },
                                 onReject() {
                                     isContactCreatorDialogOpen.set(false);
