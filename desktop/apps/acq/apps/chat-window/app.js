@@ -8,6 +8,7 @@
 import textures from "./textures.js";
 import {appicon16, appicon16Disabled} from "../textures.js";
 import {contactInfo} from "./widgets/contact-info.js";
+import {editMessage} from "./widgets/edit-message.js";
 
 export default function({
     model = "yi:1.5-9B-chat",
@@ -63,6 +64,7 @@ export default function({
             const errorFlag = w95.state(false);
             
             const isContactInfoDialogOpen = w95.state(false);
+            const isOverrideStringDialogOpen = w95.state(false);
 
             function reset_chat_history() {
                 messageHistory.set([]);
@@ -84,8 +86,10 @@ export default function({
 
                 isWaitingForResponse.set(true);
 
-                add_message("You", prompt.now);
-                prompt.set("");
+                if (prompt.now.length) {
+                    add_message(friend, prompt.now);
+                    prompt.set("");
+                }
 
                 const messageList = [];
                 {
@@ -98,7 +102,7 @@ export default function({
 
                     messageList.push(...messageHistory.now.map(m=>({
                         role: (
-                            (m.sender === "You")
+                            (m.sender === friend)
                                 ? "user"
                                 : "assistant"
                         ),
@@ -144,21 +148,27 @@ export default function({
 
                 for (const message of messageHistory.now) {
                     const color = (
-                        (message.sender === "You")
+                        (message.sender === friend)
                             ? "blue"
                             : "green"
                     );
-                    chatText.set(`\r{${color}}\b${message.sender} (${message.time}):\b\r{}\n${message.text}\n\n${chatText.now}`);
+                    const from = (
+                        (message.sender === friend)
+                            ? "You"
+                            : message.sender
+                    );
+                    chatText.set(`\r{${color}}\b${from} (${message.time}):\b\r{}\n${message.text}\n\n${chatText.now}`);
                 }
 
                 chatText.set(chatText.now.trimEnd())
             }
 
-            return {
+            const intf = {
                 get x() { return x.now },
                 get y() { return y.now },
                 get width() { return width.now },
                 get height() { return height.now },
+                get chatField() { return this.$childWidgets[0].$form["_contents"].$childWidgets[0].$childWidgets[0].$form["chat-field"] },
                 Opened() {
                     reset_chat_history();
                 },
@@ -185,6 +195,7 @@ export default function({
                                 padding: 0,
                                 children: [
                                     w95.widget.scrollArea({
+                                        $name: "chat-field",
                                         width: "pw",
                                         height: (height.now - 74),
                                         backgroundColor: Rngon.color.white,
@@ -252,7 +263,7 @@ export default function({
                                                 text: "To:",
                                             }),
                                             w95.widget.frame({
-                                                width: 140,
+                                                width: 125,
                                                 height: 16,
                                                 children: [
                                                     w95.widget.label({
@@ -314,6 +325,35 @@ export default function({
                                             w95.widget.button({
                                                 width: 16,
                                                 height: 16,
+                                                icon: textures.clear,
+                                                isDisabled: (
+                                                    isWaitingForResponse.now ||
+                                                    !messageHistory.now.length
+                                                ),
+                                                onClick() {
+                                                    messageHistory.now.pop();
+                                                    refresh_chat_text();
+                                                    intf.chatField.Message.scroll_to_vertical_target(0);
+                                                },
+                                            }),
+                                            w95.widget.button({
+                                                width: 16,
+                                                height: 16,
+                                                icon: textures.editMessage,
+                                                isDisabled: (
+                                                    isWaitingForResponse.now ||
+                                                    !messageHistory.now.length
+                                                ),
+                                                onClick() {
+                                                    isOverrideStringDialogOpen.set(true);
+                                                },
+                                            }),
+                                            w95.widget.verticalRule({
+                                                height: 16,
+                                            }),
+                                            w95.widget.button({
+                                                width: 16,
+                                                height: 16,
                                                 icon: textures.clipboard,
                                                 onClick() {
                                                     navigator.clipboard.writeText(chatText.now.replace(/{}/g, "").trim());
@@ -323,6 +363,10 @@ export default function({
                                                 width: 16,
                                                 height: 16,
                                                 icon: textures.trash,
+                                                isDisabled: (
+                                                    isWaitingForResponse.now ||
+                                                    !messageHistory.now.length
+                                                ),
                                                 onClick: reset_chat_history,
                                             }),
                                         ],
@@ -345,10 +389,27 @@ export default function({
                                     isContactInfoDialogOpen.set(false);
                                 },
                             }, {hideIf: !isContactInfoDialogOpen.now}),
+                            editMessage({
+                                x: ((width.now / 2) - 155),
+                                width: 310,
+                                height: 170,
+                                from: (messageHistory.now.at(-1)?.sender || "Unknown"),
+                                message: (messageHistory.now.at(-1)?.text || ""),
+                                onAccept(editedResponse) {
+                                    messageHistory.now.at(-1).text = editedResponse;
+                                    refresh_chat_text();
+
+                                    isOverrideStringDialogOpen.set(false);
+                                },
+                                onReject() {
+                                    isOverrideStringDialogOpen.set(false);
+                                },
+                            }, {hideIf: !isOverrideStringDialogOpen.now}),
                         ],
                     });
                 },
             };
+            return intf;
         },
     };
 }
