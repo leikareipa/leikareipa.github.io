@@ -50,7 +50,7 @@ export default function({
                 get y() { return y.now },
                 get width() { return width.now },
                 get height() { return height.now },
-                get contactsList() { return this.$childWidgets[0].$form["_contents"].$childWidgets[1].$childWidgets[0].$childWidgets[0].$childWidgets[0] },
+                get contactsList() { return this.$("contacts-list") },
                 Mounted() {
                     const contactItems = this.contactsList.$childWidgets;
                     contactItems.forEach(b=>b.$childWidgets[0].Message.setIsHidden(true));
@@ -124,13 +124,13 @@ export default function({
                                 padding: 0,
                                 children: [
                                     w95.widget.frame({
-                                        $name: "users-container",
                                         width: "pw",
                                         height: (height.now - 99),
                                         backgroundColor: Rngon.color(235, 235, 235),
                                         shape: w95.frameShape.plain,
                                         children: [
                                             w95.widget.verticalLayout({
+                                                $name: "contacts-list",
                                                 y: 1,
                                                 width: "pw",
                                                 height: "ph",

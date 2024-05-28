@@ -141,6 +141,9 @@ export default function({
                     isWaitingForResponse.set(false);
                     errorFlag.set(true);
                 }
+                finally {
+                    intf.$("prompt-input").Message.focus();
+                }
             }
 
             function refresh_chat_text() {
@@ -168,7 +171,7 @@ export default function({
                 get y() { return y.now },
                 get width() { return width.now },
                 get height() { return height.now },
-                get chatField() { return this.$childWidgets[0].$form["_contents"].$childWidgets[0].$childWidgets[0].$form["chat-field"] },
+                get chatField() { return this.$("messages-view") },
                 Opened() {
                     reset_chat_history();
                 },
@@ -195,7 +198,7 @@ export default function({
                                 padding: 0,
                                 children: [
                                     w95.widget.scrollArea({
-                                        $name: "chat-field",
+                                        $name: "messages-view",
                                         width: "pw",
                                         height: (height.now - 74),
                                         backgroundColor: Rngon.color.white,
@@ -229,6 +232,7 @@ export default function({
                                                 onClick: send_current_prompt,
                                             }),
                                             w95.widget.lineEdit({
+                                                $name: "prompt-input",
                                                 width: "pw - 79",
                                                 height: "ph",
                                                 state: prompt,
