@@ -392,7 +392,7 @@ export default function({
                             editMessage({
                                 x: ((width.now / 2) - 155),
                                 width: 310,
-                                height: 170,
+                                height: 153,
                                 from: (messageHistory.now.at(-1)?.sender || "Unknown"),
                                 message: (messageHistory.now.at(-1)?.text || ""),
                                 onAccept(editedResponse) {

@@ -59,33 +59,41 @@ export const editMessage = w95.widget(function editMessage({
                         y: 6,
                         width: "pw - 12",
                         children: [
-                            w95.widget.textEdit({
-                                width: "pw",
-                                height: 80,
-                                state: editedMessage,
-                                font: w95.font.sansSerif[8],
-                            }),
-                            w95.widget.layoutSpacer({
-                                height: 1,
-                            }),
                             w95.widget.horizontalLayout({
                                 width: "pw",
-                                height: 16,
-                                padding: 4,
-                                styleHints: [
-                                    w95.styleHint.alignVCenter,
-                                    w95.styleHint.alignLeft,
-                                ],
                                 children: [
-                                    w95.widget.button({
-                                        width: 16,
+                                    w95.widget.textEdit({
+                                        width: "pw - 18",
+                                        height: 80,
+                                        state: editedMessage,
+                                        font: w95.font.sansSerif[8],
+                                    }),
+                                    w95.widget.layoutSpacer({
+                                        height: 1,
+                                    }),
+                                    w95.widget.horizontalLayout({
+                                        width: "pw",
                                         height: 16,
-                                        icon: textures.clear,
-                                        onClick() {
-                                            editedMessage.set("");
-                                        },
+                                        padding: 4,
+                                        styleHints: [
+                                            w95.styleHint.alignVCenter,
+                                            w95.styleHint.alignLeft,
+                                        ],
+                                        children: [
+                                            w95.widget.button({
+                                                width: 16,
+                                                height: 16,
+                                                icon: textures.clear,
+                                                onClick() {
+                                                    editedMessage.set("");
+                                                },
+                                            }),
+                                        ],
                                     }),
                                 ],
+                            }),
+                            w95.widget.layoutSpacer({
+                                height: 3,
                             }),
                             w95.widget.horizontalRule({
                                 width: "pw",
@@ -103,6 +111,7 @@ export const editMessage = w95.widget(function editMessage({
                                     w95.widget.button({
                                         width: 60,
                                         text: "OK",
+                                        isDisabled: !editedMessage.now.length,
                                         onClick: accept,
                                     }),
                                     w95.widget.button({
