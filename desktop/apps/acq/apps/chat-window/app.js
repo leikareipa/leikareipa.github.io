@@ -339,7 +339,7 @@ export default function({
                                             w95.widget.button({
                                                 width: 16,
                                                 height: 16,
-                                                icon: textures.editMessage,
+                                                icon: textures.edit,
                                                 isDisabled: (
                                                     isWaitingForResponse.now ||
                                                     !messageHistory.now.length
@@ -392,7 +392,7 @@ export default function({
                             editMessage({
                                 x: ((width.now / 2) - 155),
                                 width: 310,
-                                height: 153,
+                                height: 146,
                                 from: (messageHistory.now.at(-1)?.sender || "Unknown"),
                                 message: (messageHistory.now.at(-1)?.text || ""),
                                 onAccept(editedResponse) {

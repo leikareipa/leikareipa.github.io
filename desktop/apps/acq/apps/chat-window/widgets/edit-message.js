@@ -93,19 +93,13 @@ export const editMessage = w95.widget(function editMessage({
                                 ],
                             }),
                             w95.widget.layoutSpacer({
-                                height: 3,
-                            }),
-                            w95.widget.horizontalRule({
-                                width: "pw",
-                            }),
-                            w95.widget.layoutSpacer({
-                                height: 3,
+                                height: 4,
                             }),
                             w95.widget.horizontalLayout({
                                 width: "pw",
                                 padding: 6,
                                 styleHints: [
-                                    w95.styleHint.alignRight,
+                                    w95.styleHint.alignHCenter,
                                 ],
                                 children: [
                                     w95.widget.button({
