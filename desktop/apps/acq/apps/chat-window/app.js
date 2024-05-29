@@ -227,7 +227,7 @@ export default function({
                                                 height: "ph",
                                                 isDisabled: (
                                                     isWaitingForResponse.now ||
-                                                    ! prompt.now.length
+                                                    !prompt.now.trim().length
                                                 ),
                                                 onClick: send_current_prompt,
                                             }),
@@ -239,7 +239,14 @@ export default function({
                                                 autofocus: true,
                                                 font: w95.font.sansSerif[8],
                                                 isDisabled: isWaitingForResponse.now,
-                                                onSubmit: send_current_prompt,
+                                                onSubmit() {
+                                                    if (prompt.now.trim().length) {
+                                                        send_current_prompt()
+                                                    }
+                                                    else {
+                                                        return false;
+                                                    }
+                                                },
                                             }),
                                             w95.widget.frame({
                                                 height: "ph",
