@@ -57,6 +57,7 @@ export default function({
             const x = w95.state(~~(0.5 * (w95.shell.display.width - width.now)), w95.reRenderOnly);
             const y = w95.state(~~(0.5 * (w95.shell.display.visibleHeight - height.now)), w95.reRenderOnly);
 
+            const editedMessage = w95.state("");
             const messageHistory = w95.state([], refresh_chat_text);
             const chatText = w95.state("");
             const prompt = w95.state("");
@@ -163,7 +164,8 @@ export default function({
                     chatText.set(`\r{${color}}\b${from} (${message.time}):\b\r{}\n${message.text}\n\n${chatText.now}`);
                 }
 
-                chatText.set(chatText.now.trimEnd())
+                chatText.set(chatText.now.trimEnd());
+                editedMessage.set(messageHistory.now.at(-1)?.text || "");
             }
 
             const intf = {
@@ -405,9 +407,9 @@ export default function({
                                 width: 310,
                                 height: 146,
                                 from: (messageHistory.now.at(-1)?.sender || "Unknown"),
-                                message: (messageHistory.now.at(-1)?.text || ""),
-                                onAccept(editedResponse) {
-                                    messageHistory.now.at(-1).text = editedResponse;
+                                message: editedMessage,
+                                onAccept() {
+                                    messageHistory.now.at(-1).text = editedMessage.now;
                                     refresh_chat_text();
 
                                     isOverrideStringDialogOpen.set(false);

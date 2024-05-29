@@ -11,7 +11,7 @@ export const editMessage = w95.widget(function editMessage({
     width = 100,
     height = 200,
     from = "Tom",
-    message = "",
+    message = w95.StateVariable,
     onAccept = undefined,
     onReject = undefined,
 } = {})
@@ -20,12 +20,10 @@ export const editMessage = w95.widget(function editMessage({
     w95.debug?.assert(typeof y === "number");
     w95.debug?.assert(typeof width === "number");
     w95.debug?.assert(typeof height === "number");
+    w95.debug?.assert(message instanceof w95.StateVariable);
     w95.debug?.assert(typeof from === "string");
-    w95.debug?.assert(typeof message === "string");
     w95.debug?.assert(typeof onAccept === "function");
     w95.debug?.assert(typeof onReject === "function");
-
-    const editedMessage = w95.state(message);
 
     const originalX = w95.state(x);
     const originalY = w95.state(y);
@@ -37,9 +35,6 @@ export const editMessage = w95.widget(function editMessage({
         get y() { return y.now },
         get width() { return width },
         get height() { return height },
-        Opened() {
-            editedMessage.set(message);
-        },
         Closed() {
             x.set(originalX.now);
             y.set(originalY.now);
@@ -65,7 +60,7 @@ export const editMessage = w95.widget(function editMessage({
                                     w95.widget.textEdit({
                                         width: "pw - 18",
                                         height: 80,
-                                        state: editedMessage,
+                                        state: message,
                                         font: w95.font.sansSerif[8],
                                     }),
                                     w95.widget.layoutSpacer({
@@ -85,7 +80,7 @@ export const editMessage = w95.widget(function editMessage({
                                                 height: 16,
                                                 icon: textures.clear,
                                                 onClick() {
-                                                    editedMessage.set("");
+                                                    message.set("");
                                                 },
                                             }),
                                         ],
@@ -105,7 +100,7 @@ export const editMessage = w95.widget(function editMessage({
                                     w95.widget.button({
                                         width: 60,
                                         text: "OK",
-                                        isDisabled: !editedMessage.now.length,
+                                        isDisabled: !message.now.length,
                                         onClick: accept,
                                     }),
                                     w95.widget.button({
@@ -126,7 +121,7 @@ export const editMessage = w95.widget(function editMessage({
     };
 
     function accept() {
-        onAccept(editedMessage.now);
+        onAccept( );
     }
 
     function reject() {
