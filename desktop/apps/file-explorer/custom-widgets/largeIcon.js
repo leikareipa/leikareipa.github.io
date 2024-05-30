@@ -33,8 +33,8 @@ export default w95.widget(function largeIcon({
     return {
         get x() { return x },
         get y() { return y },
-        get width() { return this.$form.layout.width },
-        get height() { return this.$form.layout.height },
+        get width() { return this.$("layout").width },
+        get height() { return this.$("layout").height },
         Mounted() {
             height = this.$childWidgets.reduce((sum, w)=>(sum + w.height), 0);
         },

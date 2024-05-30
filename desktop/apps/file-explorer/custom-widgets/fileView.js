@@ -33,7 +33,7 @@ export default w95.widget(function fileView({
         get y() { return y },
         get width() { return width },
         get height() { return contentHeight.now },
-        get iconWrappers() { return this.$form["_contents"].$form["_stacks"].$form[currentPath.now].$childWidgets.filter(w=>((w._type === "dynamicWrapper") && !w.$childWidgets[0]._hideMesh)) },
+        get iconWrappers() { return this.$("_stacks").$(currentPath.now).$childWidgets.filter(w=>((w._type === "dynamicWrapper") && !w.$childWidgets[0]._hideMesh)) },
         get icons() { return this.iconWrappers.map(w=>w.$childWidgets[0]) },
         Mounted() {
             // Position the icons on a grid.

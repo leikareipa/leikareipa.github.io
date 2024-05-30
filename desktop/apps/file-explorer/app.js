@@ -45,13 +45,13 @@ export default function({
                 get width() { return width.now },
                 get height() { return height.now },
                 Mounted() {
-                    const scrollAreaWidget = this.$form["window"].$form["_contents"].$childWidgets[1];
+                    const scrollAreaWidget = this.$("_window-contents").$childWidgets[1];
                     contentHeight.set(scrollAreaWidget.height);
                 },
                 Event: {
                     keydown(event) {
                         if (event.keyCode === 8) {
-                            const fileViewWidget = this.$form["window"].$form["_contents"].$childWidgets[1].$form["_contents"].$form["fileView"];
+                            const fileViewWidget = this.$("fileView");
                             fileViewWidget.Message.navigate_back();
                         }
                     },
