@@ -346,7 +346,7 @@ export default function({
                                                 onClick() {
                                                     messageHistory.now.pop();
                                                     refresh_chat_text();
-                                                    intf.chatField.Message.scroll_to_vertical_target(0);
+                                                    intf.chatField.Message.scrollToVerticalTarget(0);
                                                 },
                                             }),
                                             w95.widget.button({
