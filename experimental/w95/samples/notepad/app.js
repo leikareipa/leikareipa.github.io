@@ -103,6 +103,7 @@ export default function({
                                                 w95.widget.menuAction({
                                                     label: "Word wrap",
                                                     isCheckable: true,
+                                                    isDisabled: true,
                                                     isChecked: isWordWrapEnabled.now,
                                                     newCheckState: isWordWrapEnabled.set,
                                                 }),
