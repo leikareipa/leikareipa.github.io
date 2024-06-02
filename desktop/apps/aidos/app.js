@@ -238,7 +238,6 @@ export default {
                                     state: output,
                                     autofocus: true,
                                     isEditable: !isWaitingForResponse.now,
-                                    font: w95.font.vga["9x16"],
                                     color: Rngon.color(168, 168, 168),
                                     backgroundColor: w95.palette.named.transparent,
                                     styleHints: [
