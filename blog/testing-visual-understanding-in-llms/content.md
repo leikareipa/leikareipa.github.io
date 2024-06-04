@@ -1,4 +1,4 @@
-<post-date date="15 May 2024" edited="22 May 2024"/>
+<post-date date="15 May 2024" edited="4 June 2024"/>
 
 # Testing visual understanding in LLMs
 
@@ -149,6 +149,22 @@ A collection of visual tests and their results for various LLMs.
             <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+        </tr>
+        <tr>
+            <td><b>llava-llama3</b>:8b-v1.1-fp16</td>
+            <td>8%</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
             <td class="s0">0</td>
             <td class="s1">1</td>
             <td class="s0">0</td>
