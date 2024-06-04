@@ -21,7 +21,6 @@
             {
                 --dokkiCSS-navibar-item-padding-vertical: 0.5em !important;
                 --dokkiCSS-topic-vertical-padding: 1.7em !important;
-                cursor: url("./cursor.png") 0 0, auto;
             }
 
             .dokki-tag-filter
@@ -133,7 +132,8 @@
             
             body[data-dokki-layout^="horizontal"] #introduction
             {
-                transform: translateX(-14px);
+                translate: -54px;
+                transform: rotate3d(0, 0, 1, -3deg) !important;
             }
 
             body[data-dokki-layout^="vertical"] #introduction

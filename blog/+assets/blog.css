@@ -1,3 +1,14 @@
+body
+{
+    cursor: url("/blog/cursor.png") 0 0, auto;
+}
+
+a,
+.dokkiCSS-embedded header
+{
+    cursor: url("/blog/pointer.png") 0 0, auto !important;
+}
+
 b
 {
     font-weight: var(--dokkiCSS-bold-text-weight);
