@@ -5,6 +5,7 @@
  * 
  */
 
+import chatWindow from "../chat-window/app.js";
 import textures from "./textures.js";
 import {appicon16} from "../textures.js";
 import {contactListItem} from  "./widgets/contact-list-item.js";
@@ -37,12 +38,11 @@ export default function({
             const nick = w95.state("Tom");
             const getNick = ()=>nick.now;
             const contacts = w95.state([]);
-            const contactsListItems = w95.state(new Array(12).fill().map(e=>contactListItem()));
 
             function add_contact(contact) {
-                if (contacts.now.length < contactsListItems.now.length) {
+               // if (contacts.now.length < contactsListItems.now.length) {
                     contacts.set([...contacts.now, contact]);
-                }
+                //}
             }
 
             return {
@@ -51,22 +51,6 @@ export default function({
                 get width() { return width.now },
                 get height() { return height.now },
                 get contactsList() { return this.$("contacts-list") },
-                Mounted() {
-                    const contactItems = this.contactsList.$childWidgets;
-                    contactItems.forEach(b=>b.$childWidgets[0].Message.setIsHidden(true));
-
-                    contacts.now.forEach((contact, idx)=>{
-                        const listItem = contactItems[idx].$childWidgets[0];
-                        listItem.Message.setContact(contact);
-                        listItem.Message.setWidth(this.contactsList.width);
-                        listItem.Message.setIsOnline(true);
-                        listItem.Message.setIsSelected(selectedContact.now === idx);
-                        listItem.Message.setIsHidden(false);
-                        listItem.Message.setOnClick(()=>{
-                            selectedContact.set(idx);
-                        });
-                    });
-                },
                 Form() {
                     return w95.widget.window({
                         parent: this,
@@ -123,20 +107,36 @@ export default function({
                                 height: "ph",
                                 padding: 0,
                                 children: [
-                                    w95.widget.frame({
+                                    w95.widget.scrollArea({
                                         width: "pw",
                                         height: (height.now - 99),
                                         backgroundColor: Rngon.color(235, 235, 235),
-                                        shape: w95.frameShape.plain,
+                                        frameShape: w95.frameShape.plain,
+                                        onClick() {
+                                            selectedContact.set(-1);
+                                        },
+                                        styleHints: [
+                                            w95.styleHint.hideHorizontalScrollBar,
+                                        ],
                                         children: [
-                                            w95.widget.verticalLayout({
+                                            w95.widget.dynamicContent({
                                                 $name: "contacts-list",
-                                                y: 1,
-                                                width: "pw",
-                                                height: "ph",
-                                                padding: 0,
-                                                children: contactsListItems.now,
-                                            }),
+                                                children: contacts.now.map((contact, idx)=>(
+                                                    contactListItem({
+                                                        y: idx*20,
+                                                        width: (width.now - 10),
+                                                        contact,
+                                                        isSelected: (idx === selectedContact.now),
+                                                        onClick() {
+                                                            selectedContact.set(idx);
+                                                            return true;
+                                                        },
+                                                        onDoubleClick() {
+                                                            w95.shell.run(chatWindow(contact));
+                                                        },
+                                                    })
+                                                )),
+                                            })
                                         ],
                                     }),
                                     w95.widget.layoutSpacer({
@@ -177,7 +177,6 @@ export default function({
                                     w95.widget.button({
                                         text: "Add a contact...",
                                         width: "pw",
-                                        isDisabled: (contacts.now.length >= contactsListItems.now.length),
                                         async onClick() {
                                             isContactCreatorDialogOpen.set(true);
                                         },
@@ -191,7 +190,7 @@ export default function({
                                 models,
                                 onAccept(contact) {
                                     isContactCreatorDialogOpen.set(false);
-                                    add_contact({...contact, getFriendName: getNick});
+                                    add_contact({...contact, friend: nick.now});
                                 },
                                 onReject() {
                                     isContactCreatorDialogOpen.set(false);
