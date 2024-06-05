@@ -18,6 +18,10 @@ export default function({
     isPeriodCorrect = true,
     isMessageDelay = true,
 } = {}) {
+    if (typeof friend === "function") {
+        friend = friend();
+    }
+
     const systemPrompt = `
         ${isPeriodCorrect
             ? "Listen carefully. The year is 1998. We're two people casually chatting with each other via an"+

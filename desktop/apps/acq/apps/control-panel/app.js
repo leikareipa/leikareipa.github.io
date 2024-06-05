@@ -36,13 +36,10 @@ export default function({
             const isAboutDialogOpen = w95.state(false);
 
             const nick = w95.state("Tom");
-            const getNick = ()=>nick.now;
             const contacts = w95.state([]);
 
             function add_contact(contact) {
-               // if (contacts.now.length < contactsListItems.now.length) {
-                    contacts.set([...contacts.now, contact]);
-                //}
+                contacts.set([...contacts.now, contact]);
             }
 
             return {
@@ -190,7 +187,7 @@ export default function({
                                 models,
                                 onAccept(contact) {
                                     isContactCreatorDialogOpen.set(false);
-                                    add_contact({...contact, friend: nick.now});
+                                    add_contact({...contact, friend: ()=>nick.now});
                                 },
                                 onReject() {
                                     isContactCreatorDialogOpen.set(false);
