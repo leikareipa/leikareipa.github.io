@@ -43,7 +43,6 @@ const systemPrompt = `
     The DOS terminal uses a monospaced font, so you don't need to embed code etc. inside a blockquote.
     You should never stop emulating DOS, but if you do, insert the string "%STOPPED%" into your response.
     Never respond like a human, always like a machine.
-    If you want to reject the user's command because it's offensive, output "%STOPPED%".
 `.replace(/[ ]{2,}/g, "");
 
 export default {
@@ -59,13 +58,26 @@ export default {
         const y = w95.state(~~(0.5 * (w95.shell.display.visibleHeight - height.now)), w95.reRenderOnly);
 
         const output = w95.state("Starting AI-DOS...", ()=>{
-            if (output.now.at(-1) === "\n") {
+            if (!stdoutTimer.now && (output.now.at(-1) === "\n")) {
                 submit();
             }
         });
 
         const isWaitingForResponse = w95.state(true);
         const messageHistory = w95.state([]);
+
+        const stdoutTimer = w95.state(undefined);
+        const stdoutQueue = w95.state([], ()=>{
+            stdoutTimer.set(setInterval(()=>{
+                if (stdoutQueue.now.length) {
+                    output.set(output.now + "\n" + stdoutQueue.now.shift());
+                }
+                else if (stdoutTimer.now) {
+                    clearInterval(stdoutTimer.now);
+                    stdoutTimer.set(undefined);
+                }
+            }, 25));
+        });
 
         function add_message(from, message) {
             messageHistory.set([
@@ -182,11 +194,25 @@ export default {
                     output.set(initialPrompt);
                 }
                 else {
+                    const maxCharsPerLine = 77;
+                    const lines = responseText.split('\n').flatMap(paragraph => {
+                        if (paragraph === '') {
+                            return [''];
+                        }
+                        return paragraph.split('').reduce((acc, char) => {
+                            if (acc.length === 0 || (acc[acc.length - 1].length >= maxCharsPerLine)) {
+                                acc.push("");
+                            }
+                            acc[acc.length - 1] += char;
+                            return acc;
+                        }, []);
+                    }).map(l=>l.trim());
+                    stdoutQueue.set(lines);
                     add_message("assistant", responseText);
-                    output.set(output.now + (responseText || ""));
                 }
             }
             catch (e) {
+                console.error(e);
                 print_error("model-offline");
             }
             finally {
@@ -237,7 +263,10 @@ export default {
                                     height: "Math.floor( ph / 16) * 16",
                                     state: output,
                                     autofocus: true,
-                                    isEditable: !isWaitingForResponse.now,
+                                    isEditable: (
+                                        !isWaitingForResponse.now &&
+                                        (stdoutTimer.now === undefined)
+                                    ),
                                     color: Rngon.color(168, 168, 168),
                                     backgroundColor: w95.palette.named.transparent,
                                     styleHints: [
