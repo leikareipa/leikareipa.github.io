@@ -20,7 +20,7 @@
             body
             {
                 --dokkiCSS-navibar-item-padding-vertical: 0.5em !important;
-                --dokkiCSS-topic-vertical-padding: 1.7em !important;
+                --dokkiCSS-topic-vertical-padding: 1.85em !important;
             }
 
             .dokki-tag-filter
@@ -116,24 +116,18 @@
 
             #introduction
             {
-                box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-                padding: 35px;
-                border-radius: 14px;
+                padding: 0;
                 margin: var(--dokkiCSS-topic-vertical-padding) 0;
-                width: calc(50% - 60px);
-                border-left: 14px solid black;
             }
 
-            body[data-dokki-theme="dark"] #introduction
+            #introduction h1
             {
-                border: 1px solid white;
-                border-left: 14px solid white;
+                display: none;
             }
-            
-            body[data-dokki-layout^="horizontal"] #introduction
+
+            #introduction p
             {
-                translate: -54px;
-                transform: rotate3d(0, 0, 1, -3deg) !important;
+                margin: 0;
             }
 
             body[data-dokki-layout^="vertical"] #introduction
@@ -151,7 +145,7 @@
                 <dokki-header>
                     
                     <template #caption>
-                        Tarpeeksi Hyvae Soft's blog
+                        Blog
                     </template>
                     
                 </dokki-header>
@@ -160,8 +154,8 @@
 
                     <dokki-topic dokki-ignore title="Introduction" inline-class="abstract dokki-ignore">
                         <p>
-                            This is the blog of a veteran developer with no ties to the
-                            commercial software industry. Expect the outside perspective.
+                            This is the blog of <a href="https://github.com/leikareipa/">a veteran developer</a> with no ties to the
+                            commercial software industry. Expect the outside perspective. 
                         </p>
                     </dokki-topic>
 
