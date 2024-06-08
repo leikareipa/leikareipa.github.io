@@ -14,6 +14,11 @@ b
     font-weight: var(--dokkiCSS-bold-text-weight);
 }
 
+img
+{
+    filter: saturate(0);
+}
+
 .post-date
 {
     font-size: 85%;
