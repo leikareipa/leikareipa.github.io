@@ -3,11 +3,6 @@ b
     font-weight: var(--dokkiCSS-bold-text-weight);
 }
 
-img
-{
-    filter: saturate(0);
-}
-
 body[data-dokki-theme="light"],
 .dokki-topic[data-dokki-theme="light"]:not(#introduction),
 .dokki-toolbar[data-dokki-theme="light"],
