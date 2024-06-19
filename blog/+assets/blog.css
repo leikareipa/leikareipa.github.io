@@ -201,7 +201,6 @@ body[data-dokki-layout="vertical-narrow"] .dokki-topic em
 
 .blog-post-abstract .field
 {
-    margin-right: 0.5em;
     display: inline-flex;
     align-self: start;
     flex-direction: column;
@@ -210,14 +209,13 @@ body[data-dokki-layout="vertical-narrow"] .dokki-topic em
 .blog-post-abstract .field.brief
 {
     border-left: 1px solid;
-    padding-left: 1ch;
+    padding-left: 0.75em;
 }
 
 .blog-post-abstract .field.date .label
 {
     white-space: nowrap;
     color: var(--dokkiCSS-page-inert-fg-color);
-    font-style: italic;
 }
 
 .blog-post-abstract .field.tags .label
