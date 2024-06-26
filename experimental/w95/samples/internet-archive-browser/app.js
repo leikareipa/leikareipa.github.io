@@ -450,8 +450,8 @@ export default function({
                         iframeEl.now.src = url;
                         clear_status_message();
                     }
-                    catch {
-                        console.error("Unhandled error");
+                    catch (error) {
+                        console.error("Unhandled error", error);
                         iframeEl.now.src = "";
                         iframeEl.now.srcdoc = "";
                         statusMessage.set(statusMessages.pageNotFound);
