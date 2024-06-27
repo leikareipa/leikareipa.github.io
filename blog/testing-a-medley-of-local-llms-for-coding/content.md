@@ -1,12 +1,10 @@
-<post-date date="26 February 2024" edited="21 June 2024"/>
+<post-date date="26 February 2024" edited="27 June 2024"/>
 
 # Testing a medley of local LLMs for coding
 
-While the release of GPT-4 last year upgraded my expectations for LLMs, the recent release of Gemini has somewhat downgraded them. With that in mind, let's look at some of the smaller players' LLM offerings, and in particular some of the open models that're available to run locally.
+While the release of GPT-4 last year upgraded my expectations for LLMs, the recent release of Gemini 1.0 has somewhat downgraded them. With that in mind, let's look at some of the smaller players' LLM offerings, and in particular some of the open models that're available to run locally.
 
 I picked a variety of open models &ndash; as well as some closed ones for comparison &ndash; and ran them with Ollama through a battery of custom, programming-related zero-shot tests using straightforward prompting without particular prompt engineering. A model was given only one chance per test.
-
-## Results
 
 <table class="results">
     <thead>
@@ -129,6 +127,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
             <td class="s2">2</td>
             <td class="s1">1</td>
             <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td><b>gemma-2</b>:27b-it*****</td>
+            <td>67%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s1">1</td>
             <td class="s2">2</td>
@@ -615,6 +626,9 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         <tr>
             <td colspan="12"><sup>****</sup>Via Nvidia Playground.</td>
         </tr>
+        <tr>
+            <td colspan="12"><sup>*****</sup>Via Google AI Studio.</td>
+        </tr>
     </tfoot>
 </table>
 
@@ -698,9 +712,3 @@ Below is a brief description of each test. Note that these are high-level descri
         </td>
     </tr>
 </table>
-
-## Discussion
-
-The open models were a mixed bag. They don't seem mature enough for serious use, but will be OK for some specific tasks, depending on your situation.
-
-It's worth noting that I put no extra effort into configuring these models, just firing them up in Ollama as-is &ndash; it may be possible to get better performance out of them with a more careful approach.
