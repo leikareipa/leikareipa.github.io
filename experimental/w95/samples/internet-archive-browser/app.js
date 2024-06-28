@@ -9,7 +9,7 @@ import {flatVerticalButton} from "./custom-widgets/flat-vertical-button.js";
 import {icons} from "./assets/icons.js";
 
 export default function({
-    url = "about:browser",
+    url = "about:empty",
     year = 1998,
 } = {}) {
     return {
@@ -85,7 +85,7 @@ export default function({
                         y: y.now,
                         width: width.now,
                         height: height.now,
-                        title: `Browser (${year.now})`,
+                        title: "Wayback Explorer",
                         icon: icons.app16,
                         resize(deltaWidth, deltaHeight) {
                             width.set(Math.max(minWidth, (width.now + deltaWidth)));
@@ -224,7 +224,7 @@ export default function({
                                                 text: "Home",
                                                 icon: icons.buttonHome,
                                                 onClick: ()=>{
-                                                    address.set("about:browser");
+                                                    address.set("about:empty");
                                                     browse_to_current_address();
                                                 },
                                             }),
@@ -414,7 +414,7 @@ export default function({
                 let targetUrl = "";
 
                 switch (address.now) {
-                    case "about:browser": {
+                    case "about:empty": {
                         iframeEl.now.src = "";
                         return;
                     }
