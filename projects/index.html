@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <link rel="stylesheet" href="/blog/+assets/blog.css">
+
+        <style>
+            body[data-dokki-theme]
+            {
+                --dokkiCSS-embedded-border-radius: 5px;
+            }
+
+            .dokki0-embedded-expandable > header > .caption > .type
+            {
+                display: none;
+            }
+
+            .dokki0-embedded-expandable > header > .caption > .label
+            {
+                margin-top: 0 !important;
+            }
+
+            .dokki-tag-filter .button::after
+            {
+                display: none;
+            }
+
+            .dokki-tag-cloud.headerless > .dokki0-animated-expander > .content
+            {
+                flex-wrap: wrap !important;
+            }
+            
+            .dokki-warning,
+            .dokki-tip
+            {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color) !important;
+                color: unset !important;
+            }
+
+            .dokki-image,
+            .dokki-image img
+            {
+                border-radius: 0 !important;
+            }
+
+            .dokki-topics > .dokki-topic > h1
+            {
+                margin-bottom: 1rem !important;
+            }
+
+            .dokki-topic > h1 + .tag-list .count
+            {
+                display: none;
+            }
+
+            .dokki-document .dokki-toolbar .idx
+            {
+                display: none;
+            }
+
+            .dokki-area.blockquote
+            {
+                background-color: transparent;
+                padding: 0;
+                margin: 1rem 0 !important;
+            }
+
+            .dokki-area > .container > .button
+            {
+                font-size: inherit !important;
+            }
+
+            .dokki0-table-of-contents .navi-link,
+            .dokki-header .dokki-user-widget
+            {
+                color: var(--dokkiCSS-page-secondary-fg-color) !important;
+            }
+
+            body[data-dokki-theme] .dokki-tag,
+            body[data-dokki-theme] .dokki-tag-filter .button
+            {
+                background-color: var(--dokkiCSS-page-secondary-bg-color) !important;
+                color: inherit !important;
+                border: 1px solid var(--dokkiCSS-page-primary-line-color) !important;
+            }
+
+            body[data-dokki-theme] .dokki-tag:hover,
+            body[data-dokki-theme] .dokki-tag-filter .button:hover
+            {
+                color: var(--dokkiCSS-page-primary-bg-color) !important;
+                background-color: var(--dokkiCSS-page-primary-fg-color) !important;
+                border-color: var(--dokkiCSS-page-primary-fg-color) !important;
+            }
+
+            .dokki-area.tag-list
+            {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 0;
+                background-color: inherit;
+                margin-top: -6px; /* Negate <dokki-tag>'s' top margin.*/
+            }
+
+            .blog-link
+            {
+                color: inherit !important;
+                text-decoration: none !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+
+            /* Assume the .dokki-hr handles the margin between it and the h2.*/
+            .dokki-topic .dokki-hr + .dokkiCSS-anchor + h2
+            {
+                margin-top: 0;
+            }
+
+            .dokki-topics:not(.skeletonized) .dokki-topic:first-of-type
+            {
+                display: block !important;
+            }
+
+            .dokki-topics .dokki-tag-filter
+            {
+                margin-top: 0;
+            }
+
+            .dokki-toolbar .subtopic
+            {
+                display: none !important;
+            }
+
+            .explain
+            {
+                border-bottom: 1px dotted;
+                cursor: help;
+            }
+
+            .dokki-tag
+            {
+                padding: 4px 14px !important;
+                margin: 10px 10px 0 0 !important;
+                color: inherit !important;
+                font-size: inherit !important;
+                border-color: var(--dokkiCSS-page-primary-line-color) !important;
+            }
+
+            .dokki-tag .count
+            {
+                display: none !important;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Some of the free software I've made over the years
+            
+                        </template>
+                        <template #widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<dokki-topic dokki-ignore title="Introduction">
+    <p>
+        This page talks about some of the free software I've made over the years.
+    </p>
+    <dokki-tag-cloud headerless></dokki-tag-cloud>
+</dokki-topic>
+
+<dokki-tag-filter entity-name="software"></dokki-tag-filter>
+
+<dokki-topic title="JavaScript software renderer">
+<dokki-area inline-class="tag-list dokkiCSS-area-container">
+    <dokki-tag>2019</dokki-tag>
+    <dokki-tag>API</dokki-tag>
+    <dokki-tag>Rendering</dokki-tag>
+    <dokki-tag>JavaScript</dokki-tag>
+</dokki-area>
+    <dokki-image src="./img/rngon/tomb-raider-1-texture-lightmap-2.webp" width="1920" height="890" headerless="true">
+    </dokki-image>
+<p>A low-level retro-oriented 3D and 2D software renderer for the HTML5 &lt;canvas&gt;.</p>
+<p>The renderer supports <i>n</i>-sided convex polygons, as well as lines and points. It provides a good approximation of the sort of
+fixed-pipeline rendering that was done in the 1990s, but also exposes full modularity and programmability of the pipeline, including
+pixel and vertex shaders.</i></p>
+<dokki-image src="./img/rngon/rngon-3.png" width="1919" height="930" headerless="true">
+</dokki-image>
+<p>The renderer performs quite well for scenes typical of mid-1990s gaming, exceeding 60 FPS on a Ryzen 5000 series desktop CPU.
+Shaders are also fairly performant.
+</p>
+<p>For more information:</p>
+<ul>
+<li><a href="https://www.github.com/leikareipa/retro-ngon">Code and docs on GitHub</a></li>
+<li><a href="https://leikareipa.github.io/retro-ngon/samples/">Interactive render samples</a></li>
+<li><a href="/blog/a-path-tracing-pixel-shader-in-a-javascript-software-renderer/">Blog post on writing a path-tracing pixel shader</a></li>
+</ul>
+</dokki-topic>
+
+<dokki-topic title="Windows 95 web UI framework">
+    <dokki-area inline-class="tag-list dokkiCSS-area-container">
+        <dokki-tag>2022</dokki-tag>
+        <dokki-tag>JavaScript</dokki-tag>
+        <dokki-tag>Framework</dokki-tag>
+    </dokki-area>
+    <dokki-image src="./img/w95/ss.png" width="2560" height="1440" headerless="true">
+    </dokki-image>
+    <p>A JavaScript UI framework for building web apps in the style of Windows 95.</p>
+    <p>The framework implements all widget functionality from scratch and renders the entire UI in a canvas
+    using a custom rasterizer. A functional API modeled after React hooks is exposed to developers to
+    build applications using the framework.</p>
+    <p>Unlike CSS styling, the framework achieves pixel-level replication of the Windows 95 look thanks to in-canvas rendering.</p>
+    <p><a href="https://leikareipa.github.io">Visit my desktop</a> to see an example of the framework in action.</p>
+</dokki-topic>
+
+<dokki-topic title="Control app for capture devices">
+    <dokki-area inline-class="tag-list dokkiCSS-area-container">
+        <dokki-tag>2017</dokki-tag>
+        <dokki-tag>Video capture</dokki-tag>
+        <dokki-tag>C++</dokki-tag>
+        <dokki-tag>Qt</dokki-tag>
+        <dokki-tag>OpenCV</dokki-tag>
+        <dokki-tag>Video4Linux</dokki-tag>
+    </dokki-area>
+    <dokki-image src="./img/vcs/vcs.png" width="2110" height="841" headerless="true">
+    </dokki-image>
+    <p>A Linux control application mainly for Datapath Vision capture cards. Also has experimental support for generic Video4Linux devices (webcams etc.), digital cameras via gPhoto2, and a shared memory interface for inter-process capture.</p>
+    <p>The app receives image data from a capture device, processes it with various scaling and filtering options, and displays it on the screen. There are
+    also controls for adjusting the capture device's operational parameters (resolution, analog properties, etc.).
+    </p>
+    <dokki-image src="./img/vcs/screenshot3.png" width="2075" height="693" headerless="true">
+        <template #caption>Applying image filters</template>
+    </dokki-image>
+    <p>The program became popular especially with users who intended to capture retro PCs and consoles using Datapath Vision cards, as compared to Datapath's bundled software this app
+    improves considerably the hardware's compatibility with analog signals.</p>
+    <p>Written in modular C++. Provides an internal interface to support any capture source without rewriting the program. Uses Qt for the UI, but this has been
+    abstracted so that a different UI framework can be substituted without rewriting.
+    </p>
+    <p>For more information, <a href="https://www.github.com/leikareipa/vcs">visit the project on GitHub</a>.</p>
+</dokki-topic>
+
+<dokki-topic title="Cloud simulator and renderer">
+    <dokki-area inline-class="tag-list dokkiCSS-area-container">
+        <dokki-tag>2011</dokki-tag>
+        <dokki-tag>Simulation</dokki-tag>
+        <dokki-tag>Rendering</dokki-tag>
+        <dokki-tag>Path tracing</dokki-tag>
+        <dokki-tag>Photon mapping</dokki-tag>
+        <dokki-tag>GPGPU</dokki-tag>
+        <dokki-tag>C++</dokki-tag>
+        <dokki-tag>Qt</dokki-tag>
+        <dokki-tag>OpenCL</dokki-tag>
+    </dokki-area>
+    <dokki-image src="./img/cloud/fluff-1.png" width="512" height="353" headerless="true">
+    </dokki-image>
+    <p>Ever wanted a cloud physics simulator and renderer? Maybe not, but this software provides.</p>
+    <p>The program simulates the rising of moist air and the subsequent condensation of
+    cloud-forming droplets as the air cools, then renders the resulting 3D droplet grid
+    into a realistic (thereabouts) image of clouds.</p>
+    <dokki-image src="./img/cloud/ui-1.png" width="760" height="459" headerless="true">
+    </dokki-image>
+    <p>The code is written in multi-threaded C++ and uses Qt for the UI. OpenCL is used to accelerate the 
+    computation of atmospheric condensation, which ran almost 100 times faster on my
+    Radeon HD 5770 GPU than it did on my Athlon 64 CPU.
+    </p>
+    <p>Rendering is done via volumetric path tracing, with an initial photon-mapping pass to deposit sunlight.
+    </p>
+    <p>For more information, <a href="/blog/how-i-wrote-a-cloud-simulator-renderer/">see this blog post</a>.</p>
+</dokki-topic>
+
+<dokki-topic title="3D UI for PCem">
+    <dokki-area inline-class="tag-list dokkiCSS-area-container">
+        <dokki-tag>2018</dokki-tag>
+        <dokki-tag>C++</dokki-tag>
+        <dokki-tag>Qt</dokki-tag>
+        <dokki-tag>OpenGL</dokki-tag>
+        <dokki-tag>JavaScript</dokki-tag>
+    </dokki-area>
+    <dokki-image src="./img/pcbi/pcbi-5.png" width="1282" height="749" headerless="true">
+    </dokki-image>
+    <p>A 3D user interface/experience for the PC emulator PCem.</p>
+    <dokki-video platform="youtube" src="4Xh8L9PbXeM" ><template #caption>Assembling and booting a Cyrix-based Socket 7 machine</template>
+    </dokki-video>
+    <p>The user assembles a PC by dragging parts (CPUs, video cards, RAM sticks, etc.) from a toolbar onto the motherboard. The configuration is
+    uploaded to PCem to be emulated, during which PCem's frame buffer is displayed in the 3D view.
+    </p>
+    <dokki-image src="./img/pcbi/pcbi-1.png" width="1169" height="748" headerless="true">
+    </dokki-image>
+    <p>The UI is implemented as a separate process that communicates with PCem via two-way shared memory. Written in C++, with Qt for the GUI. Rendering is done using legacy OpenGL with software transforms; early versions were
+    software-rendered.
+    </p>
+</dokki-topic>
