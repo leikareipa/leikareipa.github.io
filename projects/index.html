@@ -11,9 +11,16 @@
         <link rel="stylesheet" href="/blog/+assets/blog.css">
 
         <style>
+            a,
+            a:visited
+            {
+                color: revert !important;
+            }
+
             body[data-dokki-theme]
             {
                 --dokkiCSS-embedded-border-radius: 5px;
+                --dokkiCSS-topic-vertical-padding: 1.5em;
             }
 
             .dokki0-embedded-expandable > header > .caption > .type
