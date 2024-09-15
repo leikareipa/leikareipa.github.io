@@ -105,7 +105,7 @@ export default {
                                             x: 10,
                                             y: 115,
                                             width: 100,
-                                            text: "Load image...",
+                                            text: "Select image...",
                                             isDisabled: imageIsLoading.now,
                                             onClick() {
                                                 imageSelectorEl.now.click();
