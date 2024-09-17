@@ -277,6 +277,9 @@ Shaders are also fairly performant.
     cloud-forming droplets as the air cools, then renders the resulting 3D droplet grid
     into a realistic (thereabouts) image of clouds.</p>
     <dokki-image src="./img/cloud/ui-1.png" width="760" height="459" headerless="true">
+        <template #caption>
+            One of the many UI designs for the atmospheric simulation
+        </template>
     </dokki-image>
     <p>The code is written in multi-threaded C++ and uses Qt for the UI. OpenCL is used to accelerate the 
     computation of atmospheric condensation, which ran almost 100 times faster on my
