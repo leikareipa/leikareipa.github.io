@@ -1,4 +1,4 @@
-<post-date date="26 February 2024" edited="27 June 2024"/>
+<post-date date="26 February 2024" edited="18 September 2024"/>
 
 # Testing a medley of local LLMs for coding
 
@@ -27,6 +27,19 @@ I picked a variety of open models &ndash; as well as some closed ones for compar
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td><b>gpt-4o</b>:2024-08-06*</td>
+            <td>78%</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
         <tr>
             <td><b>gpt-4o</b>:2024-05-13*</td>
             <td>78%</td>
@@ -654,7 +667,7 @@ Below is a brief description of each test. Note that these are high-level descri
         <td>
             <p>Write an animated graphical effect in JavaScript, with some accompanying basic physics.</p>
             <p><b>Difficulty level:</b> Easy/Medium</p>
-            <p><b>Observations:</b> Most models couldn't produce the physics part &ndash; so far, I've only seen the original version of GPT-4 do it.</p>
+            <p><b>Observations:</b> Most models couldn't produce the physics part.</p>
         </td>
     </tr>
     <tr>
