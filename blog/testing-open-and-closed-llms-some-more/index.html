@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            b32,
+            b27,
+            b22,
+            b14,
+            b9 {
+                color: white;
+                background-color: black;
+                padding: 0 0.5em;
+                border-radius: 7px;
+                font-weight: bold;
+                margin-right: 0.75ch;
+            }
+            b32::after {
+                content: "32b";
+            }
+            b27::after {
+                content: "27b";
+            }
+            b22::after {
+                content: "22b";
+            }
+            b14::after {
+                content: "14b";
+            }
+            b9::after {
+                content: "9b";
+            }
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s {
+                color: transparent;
+                width: 1rem !important;
+                text-align: center !important;
+            }
+            .dokki-table.results td.s0 {
+                background-color: gray;
+            }
+            .dokki-table.results td.s1 {
+                background-color: lightgray;
+            }
+            .dokki-table.results td.s2 {
+                background-color: white;
+            }
+            .dokki-table.results td.s {
+                background-color: #303030;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Testing open and closed LLMs some more
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="25 September 2024"></post-date>
+<dokki-topic title="Testing open and closed LLMs some more">
+
+            <dokki-table headerless  inline-class="">
+                <template #table>
+                    
+    <tr>
+        <th>Test</th>
+        <th>General description</th>
+    </tr>
+    <tr>
+        <th>1</th>
+        <td>
+            <p>Basic graphics programming using JavaScript. Requires some spatial awareness.</p>
+        </td>
+    </tr>
+    <tr>
+        <th>2</th>
+        <td>
+            <p>Translate a short bit of code from one language to another, optimizing for performance. Includes a gotcha.</p>
+    </td></tr>
+    <tr>
+        <th>3</th>
+        <td>
+            <p>Write a short program using archaic assembly.</p>
+        </td>
+    </tr>
+    <tr>
+        <th>4</th>
+        <td>
+            <p>Implement a relatively simple feature in a file of production-class C++.</p>
+        </td>
+    </tr>
+    <tr>
+        <th>5</th>
+        <td>
+            <p>In a file of C++ code, refactor the formatting without changing the functionality. Includes a gotcha.</p>
+        </td>
+    </tr>
+
+                </template>
+            </dokki-table>
+
+            <dokki-table headerless class inline-class="results">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th colspan="2"></th>
+            <th colspan="9">Test</th>
+        </tr>
+        <tr>
+            <th>Model</th>
+            <th>Score</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>claude-3.5</b>:sonnet-20240620</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b32></b32><b>qwen-2.5</b>:32b-instruct-q5_K_M</td>
+            <td>40%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b>gpt-4o</b>:mini-2024-07-18</td>
+            <td>40%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b>gpt-4o</b>:2024-08-06</td>
+            <td>40%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b27></b27><b>gemma-2</b>:27b-instruct-q6_K</td>
+            <td>30%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b>gemini-1.5</b>:pro-002</td>
+            <td>30%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b14></b14><b>qwen-2.5</b>:14b-instruct-q8_0</td>
+            <td>20%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b22></b22><b>mistral-small</b>:22b-instruct-2409-q6_K</td>
+            <td>20%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b9></b9><b>yi-1.5</b>:9b-chat-fp16</td>
+            <td>0%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>
