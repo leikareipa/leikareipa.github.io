@@ -1,4 +1,4 @@
-<post-date date="25 September 2024"/>
+<post-date date="25 September 2024" edited="26 September 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -126,6 +126,15 @@
             <td class="s0"></td>
             <td class="s0"></td>
             <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b3/><b>llama-3.2</b>:3b-instruct-fp16</td>
+            <td>20%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
         </tr>
         <tr>
             <td><b9/><b>yi-1.5</b>:9b-chat-fp16</td>

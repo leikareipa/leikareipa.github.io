@@ -16,7 +16,8 @@
             b27,
             b22,
             b14,
-            b9 {
+            b9,
+            b3 {
                 color: white;
                 background-color: black;
                 padding: 0 0.5em;
@@ -38,6 +39,9 @@
             }
             b9::after {
                 content: "9b";
+            }
+            b3::after {
+                content: "3b";
             }
             .dokki-table.results td,
             .dokki-table.results th {
@@ -83,7 +87,7 @@
                     </dokki-header>
                     <dokki-topics>
                         
-<post-date date="25 September 2024"></post-date>
+<post-date date="25 September 2024" edited="26 September 2024"></post-date>
 <dokki-topic title="Testing open and closed LLMs some more">
 
             <dokki-table headerless  inline-class="">
@@ -216,6 +220,15 @@
             <td class="s0"></td>
             <td class="s0"></td>
             <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b3></b3><b>llama-3.2</b>:3b-instruct-fp16</td>
+            <td>20%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
         </tr>
         <tr>
             <td><b9></b9><b>yi-1.5</b>:9b-chat-fp16</td>
