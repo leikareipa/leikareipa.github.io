@@ -197,23 +197,23 @@
     <dokki-tag>Rendering</dokki-tag>
     <dokki-tag>JavaScript</dokki-tag>
 </dokki-area>
+    <p>A low-level retro-oriented 3D and 2D software renderer for the HTML5 &lt;canvas&gt;.</p>
     <dokki-image src="./img/rngon/tomb-raider-1-texture-lightmap-2.webp" width="1920" height="890" headerless="true">
     </dokki-image>
-<p>A low-level retro-oriented 3D and 2D software renderer for the HTML5 &lt;canvas&gt;.</p>
-<p>The renderer supports <i>n</i>-sided convex polygons, as well as lines and points. It provides a good approximation of the sort of
-fixed-pipeline rendering that was done in the 1990s, but also exposes full modularity and programmability of the pipeline, including
-pixel and vertex shaders.</i></p>
-<dokki-image src="./img/rngon/rngon-3.png" width="1919" height="930" headerless="true">
-</dokki-image>
-<p>The renderer performs quite well for scenes typical of mid-1990s gaming, exceeding 60 FPS on a Ryzen 5000 series desktop CPU.
-Shaders are also fairly performant.
-</p>
-<p>For more information:</p>
-<ul>
-<li><a href="https://www.github.com/leikareipa/retro-ngon">Code and docs on GitHub</a></li>
-<li><a href="https://leikareipa.github.io/retro-ngon/samples/">Interactive render samples</a></li>
-<li><a href="/blog/a-path-tracing-pixel-shader-in-a-javascript-software-renderer/">Blog post on writing a path-tracing pixel shader</a></li>
-</ul>
+    <p>The renderer supports <i>n</i>-sided convex polygons, as well as lines and points. It provides a good approximation of the sort of
+    fixed-pipeline rendering that was done in the 1990s, but also exposes full modularity and programmability of the pipeline, including
+    pixel and vertex shaders.</i></p>
+    <dokki-image src="./img/rngon/rngon-3.png" width="1919" height="930" headerless="true">
+    </dokki-image>
+    <p>The renderer performs quite well for scenes typical of mid-1990s gaming, exceeding 60 FPS on a Ryzen 5000 series desktop CPU.
+    Shaders are also fairly performant.
+    </p>
+    <p>For more information:</p>
+    <ul>
+    <li><a href="https://www.github.com/leikareipa/retro-ngon">Code and docs on GitHub</a></li>
+    <li><a href="https://leikareipa.github.io/retro-ngon/samples/">Interactive render samples</a></li>
+    <li><a href="/blog/a-path-tracing-pixel-shader-in-a-javascript-software-renderer/">Blog post on writing a path-tracing pixel shader</a></li>
+    </ul>
 </dokki-topic>
 
 <dokki-topic title="Windows 95 web UI framework">
@@ -222,12 +222,15 @@ Shaders are also fairly performant.
         <dokki-tag>JavaScript</dokki-tag>
         <dokki-tag>Framework</dokki-tag>
     </dokki-area>
+    <p>A JavaScript UI framework for building web apps in the style of Windows 95.</p>
     <dokki-image src="./img/w95/ss.png" width="2560" height="1440" headerless="true">
     </dokki-image>
-    <p>Among my more complex projects, a JavaScript UI framework for building web apps in the style of Windows 95.</p>
     <p>The framework implements all widget functionality from scratch and renders the entire UI in a canvas
     using a custom rasterizer. A functional API modeled after React hooks is exposed to developers to
     build applications using the framework.</p>
+    <dokki-image src="./img/w95/form-designer.png" width="1500" height="900" headerless="true">
+        <template #caption>Work-in-progress visual form designer, built using the framework</template>
+    </dokki-image>
     <p>Unlike CSS styling, the framework achieves pixel-level replication of the Windows 95 look thanks to in-canvas rendering.</p>
     <p><a href="https://leikareipa.github.io">Visit my desktop</a> to see an example of the framework in action.</p>
 </dokki-topic>
@@ -241,9 +244,9 @@ Shaders are also fairly performant.
         <dokki-tag>OpenCV</dokki-tag>
         <dokki-tag>Video4Linux</dokki-tag>
     </dokki-area>
+    <p>A Linux control application mainly for Datapath Vision capture cards. Also has experimental support for generic Video4Linux devices (webcams etc.), digital cameras via gPhoto2, and a shared memory interface for inter-process capture.</p>
     <dokki-image src="./img/vcs/vcs.png" width="2110" height="841" headerless="true">
     </dokki-image>
-    <p>A Linux control application mainly for Datapath Vision capture cards. Also has experimental support for generic Video4Linux devices (webcams etc.), digital cameras via gPhoto2, and a shared memory interface for inter-process capture.</p>
     <p>The app receives image data from a capture device, processes it with various scaling and filtering options, and displays it on the screen. There are
     also controls for adjusting the capture device's operational parameters (resolution, analog properties, etc.).
     </p>
@@ -270,9 +273,9 @@ Shaders are also fairly performant.
         <dokki-tag>Qt</dokki-tag>
         <dokki-tag>OpenCL</dokki-tag>
     </dokki-area>
+    <p>Ever wanted a cloud physics simulator and renderer? Maybe not, but this software provides.</p>
     <dokki-image src="./img/cloud/fluff-1.png" width="512" height="353" headerless="true">
     </dokki-image>
-    <p>Ever wanted a cloud physics simulator and renderer? Maybe not, but this software provides.</p>
     <p>The program simulates the rising of moist air and the subsequent condensation of
     cloud-forming droplets as the air cools, then renders the resulting 3D droplet grid
     into a realistic (thereabouts) image of clouds.</p>
@@ -298,9 +301,9 @@ Shaders are also fairly performant.
         <dokki-tag>OpenGL</dokki-tag>
         <dokki-tag>JavaScript</dokki-tag>
     </dokki-area>
+    <p>A 3D user interface/experience for the PC emulator PCem.</p>
     <dokki-image src="./img/pcbi/pcbi-5.png" width="1282" height="749" headerless="true">
     </dokki-image>
-    <p>A 3D user interface/experience for the PC emulator PCem.</p>
     <dokki-video platform="youtube" src="4Xh8L9PbXeM" ><template #caption>Assembling and booting a Cyrix-based Socket 7 machine</template>
     </dokki-video>
     <p>The user assembles a PC by dragging parts (CPUs, video cards, RAM sticks, etc.) from a toolbar onto the motherboard. The configuration is
@@ -311,6 +314,42 @@ Shaders are also fairly performant.
     <p>The UI is implemented as a separate process that communicates with PCem via two-way shared memory. Written in C++, with Qt for the GUI. Rendering is done using legacy OpenGL with software transforms; early versions were
     software-rendered.
     </p>
+</dokki-topic>
+
+<dokki-topic title="Retro hardware rendering API">
+    <dokki-area inline-class="tag-list dokkiCSS-area-container">
+        <dokki-tag>2019</dokki-tag>
+        <dokki-tag>ANSI C</dokki-tag>
+        <dokki-tag>Direct3D</dokki-tag>
+        <dokki-tag>DirectDraw</dokki-tag>
+        <dokki-tag>Glide</dokki-tag>
+        <dokki-tag>OpenGL</dokki-tag>
+    </dokki-area>
+    <p>A unifying C wrapper for retro hardware rasterizer APIs, including Glide, OpenGL 1.1, Direct3D 5, and others.</p>
+    <dokki-image src="./img/kelpo/glide.png" width="639" height="479" headerless="true">
+        <template #caption>Rendering a scene from Tomb Raider on a 3Dfx Voodoo</template>
+    </dokki-image>
+    <p>The wrapper provides a simple, streamlined API for hardware rasterization, designed to expose a minimalist feature-set that's
+        supported by all 1990s 3D accelerators and their proprietary APIs.
+    </p>
+    <dokki-code headerless>
+        <template #code>
+            <pre>
+                kelpo_create_interface(&kelpo, "glide3");
+                kelpo->window.set_message_handler(window_message_handler);
+                kelpo->window.open(0, 640, 480, 16);
+            
+                while (
+                    kelpo->window.process_messages(),
+                    !kelpo->window.is_closing()
+                ){
+                    kelpo->rasterizer.clear_framebuffer();
+                    kelpo->rasterizer.draw_triangles(&triangle, 1);
+                    kelpo->window.flip_surface();
+                }
+            </pre>
+        </template>
+    </dokki-code>
 </dokki-topic>
 
 <dokki-topic title="Track editor for Rally-Sport">
