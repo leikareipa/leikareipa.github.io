@@ -320,22 +320,21 @@
     <dokki-area inline-class="tag-list dokkiCSS-area-container">
         <dokki-tag>2019</dokki-tag>
         <dokki-tag>ANSI C</dokki-tag>
-        <dokki-tag>Direct3D</dokki-tag>
-        <dokki-tag>DirectDraw</dokki-tag>
-        <dokki-tag>Glide</dokki-tag>
-        <dokki-tag>OpenGL</dokki-tag>
+        <dokki-tag>rendering</dokki-tag>
     </dokki-area>
-    <p>A unifying C wrapper for retro hardware rasterizer APIs, including Glide, OpenGL 1.1, Direct3D 5, and others.</p>
+    <p>A unifying Win32 C wrapper for retro hardware rasterizer APIs.</p>
     <dokki-image src="./img/kelpo/glide.png" width="639" height="479" headerless="true">
-        <template #caption>Rendering a scene from Tomb Raider on a 3Dfx Voodoo</template>
+        <template #caption>A scene from Tomb Raider rendered on a 3Dfx Voodoo</template>
     </dokki-image>
-    <p>The wrapper provides a simple, streamlined API for hardware rasterization, designed to expose a minimalist feature-set that's
-        supported by all 1990s 3D accelerators and their proprietary APIs.
+    <p>The wrapper provides a single streamlined rendering API designed to expose a minimalist feature-set
+        supported by the majority of 1990s 3D accelerators and their proprietary APIs. This allows one rendering
+        code to work across multiple accelerators while exploiting their native capabilities.
     </p>
     <dokki-code headerless>
         <template #code>
             <pre>
                 kelpo_create_interface(&kelpo, "glide3");
+
                 kelpo->window.set_message_handler(window_message_handler);
                 kelpo->window.open(0, 640, 480, 16);
             
@@ -350,6 +349,50 @@
             </pre>
         </template>
     </dokki-code>
+    <dokki-table headerless>
+        <table>
+            <tr>
+                <th>API</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Direct3D 5</td>
+                <td>Supported</td>
+            </tr>
+            <tr>
+                <td>Direct3D 7</td>
+                <td>Supported</td>
+            </tr>
+            <tr>
+                <td>OpenGL 1.0</td>
+                <td>Supported</td>
+            </tr>
+            <tr>
+                <td>OpenGL 3.0</td>
+                <td>Supported</td>
+            </tr>
+            <tr>
+                <td>3Dfx Glide 3</td>
+                <td>Supported</td>
+            </tr>
+            <tr>
+                <td>Matrox Simple Interface</td>
+                <td>Partially supported</td>
+            </tr>
+            <tr>
+                <td>ATI 3DCIF</td>
+                <td>Planned</td>
+            </tr>
+            <tr>
+                <td>S3 S3D</td>
+                <td>Planned</td>
+            </tr>
+            <tr>
+                <td>Rendition RRedline</td>
+                <td>Planned</td>
+            </tr>
+        </table>
+    </dokki-table>
 </dokki-topic>
 
 <dokki-topic title="Track editor for Rally-Sport">
