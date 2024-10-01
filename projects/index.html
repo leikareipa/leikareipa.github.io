@@ -279,11 +279,6 @@
     <p>The program simulates the rising of moist air and the subsequent condensation of
     cloud-forming droplets as the air cools, then renders the resulting 3D droplet grid
     into a realistic (thereabouts) image of clouds.</p>
-    <dokki-image src="./img/cloud/ui-1.png" width="760" height="459" headerless="true">
-        <template #caption>
-            One of the many UI designs for the atmospheric simulation
-        </template>
-    </dokki-image>
     <p>The code is written in multi-threaded C++ and uses Qt for the UI. OpenCL is used to accelerate the 
     computation of atmospheric condensation, which ran almost 100 times faster on my
     Radeon HD 5770 GPU than it did on my Athlon 64 CPU.
@@ -304,15 +299,18 @@
     <p>A 3D user interface/experience for the PC emulator PCem.</p>
     <dokki-image src="./img/pcbi/pcbi-5.png" width="1282" height="749" headerless="true">
     </dokki-image>
-    <dokki-video platform="youtube" src="4Xh8L9PbXeM" ><template #caption>Assembling and booting a Cyrix-based Socket 7 machine</template>
+    <p>You assemble a PC by dragging components (CPUs, video cards, RAM sticks, etc.) onto a motherboard. The configuration is
+    then transmitted to PCem to be emulated, during which PCem's frame buffer is displayed in the 3D view.
+    </p>
+    <dokki-video platform="youtube" src="4Xh8L9PbXeM" ><template #caption>Video: Assembling and booting a Cyrix-based Socket 7 machine</template>
     </dokki-video>
-    <p>The user assembles a PC by dragging parts (CPUs, video cards, RAM sticks, etc.) from a toolbar onto the motherboard. The configuration is
-    uploaded to PCem to be emulated, during which PCem's frame buffer is displayed in the 3D view.
+    <p>The program is implemented as a standalone process that communicates with PCem via shared memory. Written in C++,
+        Qt is used for the GUI, and rendering is done with OpenGL. Early versions used a custom software renderer.
     </p>
     <dokki-image src="./img/pcbi/pcbi-1.png" width="1169" height="748" headerless="true">
     </dokki-image>
-    <p>The UI is implemented as a separate process that communicates with PCem via two-way shared memory. Written in C++, with Qt for the GUI. Rendering is done using legacy OpenGL with software transforms; early versions were
-    software-rendered.
+    <p>The program allows modders to easily add new components, as nothing about the component system is hard-coded. Later
+        versions came bundled with a component editor.
     </p>
 </dokki-topic>
 
@@ -410,6 +408,8 @@
     <dokki-image src="./img/rsed/rsed.png" width="1440" height="810" headerless="true">
     </dokki-image>
     <p>The editor came to have versions for a variety of platforms, including DOS, Windows 95, Linux, and browsers; written in assembly, C++, and JavaScript, respectively.</p>
+    <dokki-image src="./img/rsed/rsed2.png" width="3425" height="1266" headerless="true">
+    </dokki-image>
     <p>Integration with a content repository allowed custom tracks to be uploaded online and from there imported into the editor's browser front-end. Support was also
         added for streaming your edits to others via WebRTC, and for simultaneous multi-user editing via a PHP-based server.
     </p>
