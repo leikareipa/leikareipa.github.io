@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <style>
+            html, body, canvas {
+                width: 100vw;
+                height: 100vh;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            const canvas = document.createElement('canvas');
+            canvas.width = 1000;
+            canvas.height = 400;
+            document.body.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+            const fireWidth = canvas.width;
+            const fireHeight = canvas.height;
+            const fireBuffer = new Array(fireHeight).fill(null).map(() => new Uint8Array(fireWidth));
+            const palette = createFirePalette();
+
+            function createFirePalette() {
+                const palette = [];
+                for (let i = 0; i < 256; i++) {
+                    const b = i;
+                    const g = Math.min(255, Math.floor(i * 1.5));
+                    const r = Math.min(255, Math.floor(i * 2.5));
+                    const a = 255;
+
+                    palette[i] = (a << 24) | (b << 16) | (g << 8) | r;
+                }
+                return palette;
+            }
+
+            function updateFire() {
+                for (let x = 0; x < fireWidth; x++) {
+                    for (let y = 1; y < fireHeight; y++) {
+                        const randDecay = Math.floor(Math.random() * 3);
+                        const srcY = Math.min(fireHeight - 1, y + randDecay);
+                        const srcX = (x + Math.floor(Math.random() * 3) - 1 + fireWidth) % fireWidth;
+
+                        const decay = Math.floor(Math.random() * 4);
+                        const intensity = Math.max(0, fireBuffer[srcY][srcX] - decay);
+                        fireBuffer[y - 1][x] = intensity;
+                    }
+                }
+            }
+
+            function renderFire() {
+                for (let x = 0; x < fireWidth; x++) {
+                    for (let y = 0; y < fireHeight; y++) {
+                        const intensity = fireBuffer[y][x];
+                        const color = palette[intensity];
+                        const idx = (x + y * canvas.width) * 4;
+                        imgData.data[idx] = (color >> 0) & 0xFF;
+                        imgData.data[idx + 1] = (color >> 8) & 0xFF;
+                        imgData.data[idx + 2] = (color >> 16) & 0xFF;
+                        imgData.data[idx + 3] = (color >> 24) & 0xFF;
+                    }
+                }
+
+                ctx.putImageData(imgData, 0, 0);
+            }
+
+            function animate() {
+                updateFire();
+                renderFire();
+                requestAnimationFrame(animate);
+            }
+
+            // Initialize the bottom row of the fire buffer with maximum intensity
+            for (let x = 0; x < fireWidth; x++) {
+                fireBuffer[fireHeight - 1][x] = 255;
+            }
+
+            animate();
+        </script>
+    </body>
+</html>

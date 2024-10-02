@@ -64,6 +64,17 @@ export default {
         zip: "./content/dos-c-compiler-benchmark/dccb.zip",
         run: ["cls", "t_vc15.exe"],
     },
+    
+    "^/?o1-test(:|/)o1-mini/?$": {
+        title: "o1-test",
+        zip: "./content/o1-test/o1-test.zip",
+        run: ["cls", "o1-mini.com"],
+    },
+    "^/?o1-test(:|/)claude-3-opus/?$": {
+        title: "o1-test",
+        zip: "./content/o1-test/o1-test.zip",
+        run: ["cls", "c3o.com"],
+    },
 
     undefined: {
         zip: "",
