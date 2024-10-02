@@ -38,4 +38,4 @@ Here's a few basic graphics programming tests for the o1 Mini.
 
 ## Conclusions
 
-o1 Mini lost two of the three tests against the other SOTA models, and I suppose that's not too impressive. On the other hand, its code quality showed some promise.
+o1 Mini lost two of the three tests against the older SOTA models, and I suppose that's not too impressive. On the other hand, its code quality showed some promise.
