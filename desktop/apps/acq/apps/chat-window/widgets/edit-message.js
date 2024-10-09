@@ -61,7 +61,7 @@ export const editMessage = w95.widget(function editMessage({
                                         width: "pw - 18",
                                         height: 80,
                                         state: message,
-                                        font: w95.font.sansSerif[8],
+                                        font: w95.font.sansSerif8,
                                     }),
                                     w95.widget.layoutSpacer({
                                         height: 1,

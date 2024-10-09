@@ -1,4 +1,4 @@
 Intel Pentium II 266 MHz
 64 MB SDRAM
-3Dfx Voodoo2
-Windows 95 + Mandrake Linux
+3Dfx Voodoo2 + Matrox G100
+Windows 95 & Mandrake Linux

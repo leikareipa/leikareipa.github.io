@@ -243,7 +243,7 @@ export default function({
                                                 height: "ph",
                                                 state: prompt,
                                                 autofocus: true,
-                                                font: w95.font.sansSerif[8],
+                                                font: w95.font.sansSerif8,
                                                 isDisabled: isWaitingForResponse.now,
                                                 onSubmit() {
                                                     if (prompt.now.trim().length) {

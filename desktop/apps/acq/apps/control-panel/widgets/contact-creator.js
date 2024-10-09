@@ -112,7 +112,7 @@ export const contactCreator = w95.widget(function contactCreator({
                                         width: "pw - (pw / 4) - 2",
                                         height: 70,
                                         state: personality,
-                                        font: w95.font.sansSerif[8],
+                                        font: w95.font.sansSerif8,
                                     }),
                                 ],
                             }),
