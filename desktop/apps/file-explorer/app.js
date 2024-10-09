@@ -113,6 +113,9 @@ export default function({
                                 width: "pw",
                                 height: "ph - 38",
                                 backgroundColor: Rngon.color.white,
+                                styleHints: [
+                                    w95.styleHint.hideHorizontalScrollBar,
+                                ],
                                 children: [
                                     fileView({
                                         $name: "fileView",

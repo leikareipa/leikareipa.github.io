@@ -130,7 +130,7 @@ export default w95.widget(function fileView({
 
     function get_file_type(filename) {
         switch (get_filename_extension(filename)) {
-            case "diz": return "text";
+            case "diz":
             case "txt": return "text";
             case "gif":
             case "jpg":
