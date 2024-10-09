@@ -13,10 +13,10 @@ export default {
         description: "A w95 wrapper for the browser version of RallySportED's track editor.",
     },
     App() {
-        const minWidth = 600;
-        const minHeight = 420;
-        const width = w95.state(minWidth);
-        const height = w95.state(minHeight);
+        const minWidth = 500;
+        const minHeight = 300;
+        const width = w95.state(Math.max(minWidth, Math.min(900, ~~(w95.shell.display.width * 0.9))));
+        const height = w95.state(Math.max(minHeight, Math.min(600, ~~(w95.shell.display.height * 0.9))));
 
         const x = w95.state(~~(0.5 * (w95.shell.display.width - width.now)), w95.reRenderOnly);
         const y = w95.state(~~(0.5 * (w95.shell.display.visibleHeight - height.now)), w95.reRenderOnly);
@@ -110,7 +110,7 @@ export default {
                                                         }),
                                                         w95.widget.menuSeparator(),
                                                         w95.widget.menuAction({
-                                                            label: "Rally-Sport's demo",
+                                                            label: "Rally-Sport",
                                                             submenu: w95.widget.menu({
                                                                 children: [
                                                                     w95.widget.menuAction({
@@ -149,7 +149,7 @@ export default {
                                                             }),
                                                         }),
                                                         w95.widget.menuAction({
-                                                            label: "Fan-made",
+                                                            label: "Custom",
                                                             submenu: w95.widget.menu({
                                                                 children: [
                                                                     w95.widget.menuAction({
