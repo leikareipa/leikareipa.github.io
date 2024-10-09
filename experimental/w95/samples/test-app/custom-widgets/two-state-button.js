@@ -34,9 +34,7 @@ export const twoStateButton = w95.widget(function twoStateButton({
                     height,
                     text: "Composite",
                     isDisabled,
-                    styleHints: [
-                        (isPressed.now? w95.styleHint.lowered : w95.styleHint.raised),
-                    ],
+                    invert: isPressed.now,
                     onMouseDown({widget}) {
                         const canvasEl = document.body.querySelector(`canvas[data-w95-app-id='${widget.$app.id}']`);
                         canvasEl?.classList.toggle("composite");

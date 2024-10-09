@@ -29,7 +29,7 @@ export default {
         );
 
         const showAbout = w95.state(false);
-        const editorFont = w95.state(w95.font.courier[8]);
+        const editorFont = w95.state(w95.font.courier8);
         const tabIdx = w95.state(0);
         const html = w95.state(`
 <h1>Recent releases</h1>
@@ -111,10 +111,10 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                                 label: "Courier",
                                                 group: "font",
                                                 isCheckable: true,
-                                                isChecked: (editorFont.now === w95.font.courier[8]),
+                                                isChecked: (editorFont.now === w95.font.courier8),
                                                 newCheckState(isChecked) {
                                                     if (isChecked) {
-                                                        editorFont.set(w95.font.courier[8]);
+                                                        editorFont.set(w95.font.courier8);
                                                     }
                                                 },
                                             }),
@@ -122,10 +122,10 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                                 label: "Fixedsys",
                                                 group: "font",
                                                 isCheckable: true,
-                                                isChecked: (editorFont.now === w95.font.fixedsys[9]),
+                                                isChecked: (editorFont.now === w95.font.fixedsys9),
                                                 newCheckState(isChecked) {
                                                     if (isChecked) {
-                                                        editorFont.set(w95.font.fixedsys[9]);
+                                                        editorFont.set(w95.font.fixedsys9);
                                                     }
                                                 },
                                             }),
@@ -133,10 +133,22 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                                 label: "Sans Serif",
                                                 group: "font",
                                                 isCheckable: true,
-                                                isChecked: (editorFont.now === w95.font.sansSerif[8]),
+                                                isChecked: (editorFont.now === w95.font.sansSerif8),
                                                 newCheckState(isChecked) {
                                                     if (isChecked) {
-                                                        editorFont.set(w95.font.sansSerif[8]);
+                                                        editorFont.set(w95.font.sansSerif8);
+                                                    }
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuAction({
+                                                label: "VGA 9x16",
+                                                group: "font",
+                                                isCheckable: true,
+                                                isChecked: (editorFont.now === w95.font.vga9x16),
+                                                newCheckState(isChecked) {
+                                                    if (isChecked) {
+                                                        editorFont.set(w95.font.vga9x16);
                                                     }
                                                 },
                                             }),
@@ -174,6 +186,7 @@ This page best viewed with Netscape <img src="./assets/netscape.gif">`.replace(/
                                             height: "ph - 6",
                                             state: html,
                                             font: editorFont.now,
+                                            wordWrap: false,
                                             onChange(text) {
                                                 previewEl.now.innerHTML = text;
                                             },

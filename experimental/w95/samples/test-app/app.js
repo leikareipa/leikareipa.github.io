@@ -400,7 +400,7 @@ export default {
                                             height: "ph - 6",
                                             state: textEditText,
                                             autofocus: true,
-                                            font: w95.font.fixedsys[9],
+                                            font: w95.font.fixedsys9,
                                         }),
                                     ],
                                 },
@@ -643,7 +643,6 @@ export default {
                             text: "Something went wrong, but I'm not sure what.",
                             buttons: [
                                 w95.widget.button({
-                                    x: 0,
                                     width: 75,
                                     text: "OK",
                                     onClick() {
@@ -651,7 +650,6 @@ export default {
                                     },
                                 }),
                                 w95.widget.button({
-                                    x: 81,
                                     width: 75,
                                     text: "Cancel",
                                     onClick() {
@@ -667,7 +665,6 @@ export default {
                             text: "He prodded a fork into the kidney and slapped it over: then fitted the\nteapot on the tray. Its hump bumped as he took it up. Everything on it?",
                             buttons: [
                                 w95.widget.button({
-                                    x: 0,
                                     width: 75,
                                     text: "Yes",
                                     onClick() {
@@ -675,7 +672,6 @@ export default {
                                     },
                                 }),
                                 w95.widget.button({
-                                    x: 81,
                                     width: 75,
                                     text: "No",
                                     isDisabled: true,

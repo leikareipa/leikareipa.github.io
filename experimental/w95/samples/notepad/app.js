@@ -131,7 +131,7 @@ export default function({
                                 width: "pw",
                                 height: "ph - 18",
                                 state: text,
-                                font: w95.font.fixedsys[9],
+                                font: w95.font.fixedsys9,
                                 wordWrap: isWordWrapEnabled.now,
                             }),
                             w95.shell.popup({
