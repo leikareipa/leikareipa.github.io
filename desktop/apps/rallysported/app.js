@@ -64,7 +64,7 @@ export default {
                     parent: this,
                     title: (
                         projectName.now
-                            ? `${projectName.now} - RallySportED`
+                            ? `Track: ${projectName.now} - RallySportED`
                             : "RallySportED"
                     ),
                     resize(deltaWidth, deltaHeight) {
@@ -85,7 +85,10 @@ export default {
                                 w95.widget.menuAction({
                                     label: "File",
                                     isTopLevel: true,
-                                    isDisabled: (dosboxRunState.now !== 0),
+                                    isDisabled: (
+                                        !projectName.now ||
+                                        (dosboxRunState.now !== 0)
+                                    ),
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
@@ -94,14 +97,7 @@ export default {
                                                 onClick() {send_message("save:project")},
                                             }),
                                             w95.widget.menuAction({
-                                                label: "Rename...",
-                                                onClick() {
-                                                    send_message("rename:project");
-                                                },
-                                            }),
-                                            w95.widget.menuSeparator(),
-                                            w95.widget.menuAction({
-                                                label: "Load track",
+                                                label: "Load",
                                                 submenu: w95.widget.menu({
                                                     children: [
                                                         w95.widget.menuAction({
@@ -196,32 +192,50 @@ export default {
                                             }),
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuAction({
+                                                label: "Rename...",
+                                                onClick() {
+                                                    send_message("rename:project");
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                                w95.widget.menuAction({
+                                    label: "Data",
+                                    isTopLevel: true,
+                                    isDisabled: (
+                                        !projectName.now ||
+                                        (dosboxRunState.now !== 0)
+                                    ),
+                                    submenu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuAction({
                                                 label: "Import",
                                                 isDisabled: !projectName.now,
                                                 submenu: w95.widget.menu({
                                                     children: [
                                                         w95.widget.menuAction({
-                                                            label: "Maasto",
+                                                            label: "Maasto...",
                                                             onClick() {fileSelectorEl.now.$assetType = "maasto"; fileSelectorEl.now.click();},
                                                         }),
                                                         w95.widget.menuAction({
-                                                            label: "Varimaa",
+                                                            label: "Varimaa...",
                                                             onClick() {fileSelectorEl.now.$assetType = "varimaa"; fileSelectorEl.now.click();},
                                                         }),
                                                         w95.widget.menuAction({
-                                                            label: "Palat",
+                                                            label: "Palat...",
                                                             onClick() {fileSelectorEl.now.$assetType = "palat"; fileSelectorEl.now.click();},
                                                         }),
                                                         w95.widget.menuAction({
-                                                            label: "Text",
+                                                            label: "Text...",
                                                             onClick() {fileSelectorEl.now.$assetType = "text"; fileSelectorEl.now.click();},
                                                         }),
                                                         w95.widget.menuAction({
-                                                            label: "Anims",
+                                                            label: "Anims...",
                                                             onClick() {fileSelectorEl.now.$assetType = "anims"; fileSelectorEl.now.click();},
                                                         }),
                                                         w95.widget.menuAction({
-                                                            label: "Kierros",
+                                                            label: "Kierros...",
                                                             onClick() {fileSelectorEl.now.$assetType = "kierros"; fileSelectorEl.now.click();},
                                                         }),
                                                     ],
@@ -269,21 +283,22 @@ export default {
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
-                                                label: "Play",
+                                                label: "Race",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:play");
                                                 },
                                             }),
                                             w95.widget.menuAction({
-                                                label: "Test",
+                                                label: "Debug",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:test");
                                                 },
                                             }),
+                                            w95.widget.menuSeparator(),
                                             w95.widget.menuAction({
-                                                label: "Record",
+                                                label: "Record lap",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:record");
