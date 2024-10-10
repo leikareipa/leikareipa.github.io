@@ -21,6 +21,7 @@ export default {
         const x = w95.state(~~(0.5 * (w95.shell.display.width - width.now)), w95.reRenderOnly);
         const y = w95.state(~~(0.5 * (w95.shell.display.visibleHeight - height.now)), w95.reRenderOnly);
 
+        const currentEditorView = w95.state("terrain-editor", ()=>send_message("view:editor", currentEditorView.now));
         const fileSelectorEl = w95.state(document.createElement("input"));
         const trackFileSelectorEl = w95.state(document.createElement("input"));
         const iframeEl = w95.state(document.createElement("iframe"));
@@ -41,6 +42,7 @@ export default {
                     switch (event.data.message) {
                         case "project:loaded": return projectName.set(event.data.payload);
                         case "project:name": return projectName.set(event.data.payload);
+                        case "view:editor": return currentEditorView.set(event.data.payload);
                         case "run:starting": return dosboxRunState.set(1); 
                         case "run:started": return dosboxRunState.set(2);
                         case "run:stopped": return dosboxRunState.set(0);
@@ -310,6 +312,51 @@ export default {
                                                 isDisabled: (dosboxRunState.now !== 2),
                                                 onClick() {
                                                     send_message("run:stop");
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                                w95.widget.menuAction({
+                                    label: "View",
+                                    isTopLevel: true,
+                                    isDisabled: (
+                                        !projectName.now ||
+                                        (dosboxRunState.now !== 0)
+                                    ),
+                                    submenu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuAction({
+                                                label: "Terrain",
+                                                group: "editor",
+                                                isCheckable: true,
+                                                isChecked: (currentEditorView.now === "terrain-editor"),
+                                                newCheckState(isChecked) {
+                                                    if (isChecked) {
+                                                        currentEditorView.set("terrain-editor");
+                                                    }
+                                                },
+                                            }),
+                                            w95.widget.menuAction({
+                                                label: "Tilemap",
+                                                group: "editor",
+                                                isCheckable: true,
+                                                isChecked: (currentEditorView.now === "tilemap-editor"),
+                                                newCheckState(isChecked) {
+                                                    if (isChecked) {
+                                                        currentEditorView.set("tilemap-editor");
+                                                    }
+                                                },
+                                            }),
+                                            w95.widget.menuAction({
+                                                label: "Textures",
+                                                group: "editor",
+                                                isCheckable: true,
+                                                isChecked: (currentEditorView.now === "texture-editor"),
+                                                newCheckState(isChecked) {
+                                                    if (isChecked) {
+                                                        currentEditorView.set("texture-editor");
+                                                    }
                                                 },
                                             }),
                                         ],

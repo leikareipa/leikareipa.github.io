@@ -35,6 +35,7 @@ const Rsed = {
 
     set $currentScene(sceneName)
     {
+        Rsed.iframeListener.send_message?.("view:editor", sceneName);
         return Rsed.core.set_scene(sceneName);
     },
 
@@ -373,6 +374,8 @@ Rsed.iframeListener = (function()
                 }
                 case "save:project": return Rsed.$currentProject.download_as_zip();
                 case "rename:project": return Rsed.$currentProject.rename();
+
+                case "view:editor": return Rsed.$currentScene = event.data.payload;
 
                 case "run:stop": return Rsed.player.stop();
                 case "run:play": return Rsed.player.play_with_opponent();
@@ -6086,7 +6089,7 @@ Rsed.ui.canvas.component.editorSelector = function({
                         : Rsed.visual.palette.HOTPINK
                 ),
             }),
-            textureEditorLabel("Texture", (x - isTexture), (y + (labelVerticalSpacing * 2) - isTexture), {
+            textureEditorLabel("Textures", (x - isTexture), (y + (labelVerticalSpacing * 2) - isTexture), {
                 plain: !isTexture,
                 bgColor: (
                     isTexture
@@ -8691,7 +8694,7 @@ Rsed.scenes["terrain-editor"] = (function()
                     return cursors.fingerHand;
                 }
 
-                return null;
+                return cursors.closedHand;
             }
 
             if (mouseHover)
