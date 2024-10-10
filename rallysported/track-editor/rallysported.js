@@ -537,7 +537,7 @@ Rsed.player = (function()
         document.body.classList.remove("playing", "ingame");
         Rsed.ui.dom.html.refresh();
 
-        Rsed.iframeListener.send_message("run:stopped");
+        Rsed.iframeListener.send_message?.("run:stopped");
 
         return;
     }
@@ -556,7 +556,7 @@ Rsed.player = (function()
             return;
         }
 
-        Rsed.iframeListener.send_message("run:starting");
+        Rsed.iframeListener.send_message?.("run:starting");
 
         Rsed.ui.dom.html.set_visible(false);
         Rsed.$currentScene = "loading-spinner";
@@ -633,7 +633,7 @@ Rsed.player = (function()
 
         document.body.classList.add("ingame");
         
-        Rsed.iframeListener.send_message("run:started");
+        Rsed.iframeListener.send_message?.("run:started");
 
         return true;
     }
