@@ -133,6 +133,8 @@ export default function({
                                 state: text,
                                 font: w95.font.fixedsys9,
                                 wordWrap: isWordWrapEnabled.now,
+                                allowFormatting: false,
+                                isEditable: false,
                             }),
                             w95.shell.popup({
                                 parent: this,
