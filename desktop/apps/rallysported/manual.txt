@@ -1,0 +1,77 @@
+BAREBONES MANUAL FOR RALLYSPORTED'S TRACK EDITOR
+
+Introduction
+============
+
+RallySportED is a contemporary modding tool for the MS-DOS racing game Rally-Sport.
+
+RallySportED is (c) 2016-2024 Tarpeeksi Hyvae Soft. No affiliation with Rally-Sport creator Jukka Jäkälä.
+
+Controls
+========
+
+Terrain editor
+--------------
+
+Keyboard:
+
+E S D F       Move the camera.
+1 2 3 4 5     Set the pen radius.
+L             Level the ground to a height of 0.
+W             Toggle wireframe on/off.
+B             Toggle prop transparency on/off.
+T             Open in the texture editor the texture on which the mouse hovers.
+G             Toggle mouse hover PALA preview on/off.
+A             Toggle the texture pane on/off.
+Q             Open the tilemap editor.
+Space         Toggle ground smoothing on/off.
+Up            Raise the ground by one unit where the mouse cursor is hovering.
+Down          Lower the ground by one unit where the mouse cursor is hovering.
+Ctrl+S        Download (save) the current track.
+Ctrl+Z        Undo changes (across all editors).
+Ctrl+Shift+Z  Redo changes (across all editors).
+
+Mouse:
+
+Left click (ground)          Move the ground up; or, if ground smoothing is enabled, apply a smoothing filter to the ground. The size of the area affected depends on the current pen radius.
+Left click + drag (prop)     Move the prop.
+Shift + Left click (prop)    Remove the prop.
+Shift + Left click (ground)  Add a prop.
+Tab + Left click (ground)    Eye dropper tool: select the PALA on which the cursor hovers.
+Right click (ground)         Move the ground down; or, if ground smoothing is enabled, apply a smoothing filter to the ground. The size of the area affected down depends on the current pen radius.
+Right click (prop)           Change the prop's type.
+Middle click (ground)        Paint the ground with the currently-selected PALA texture.
+Shift + Mouse wheel          Tilt the camera.
+
+Texture editor
+--------------
+
+Keyboard:
+
+E S D F       Move the camera.
+R             Rotate the texture.
+Ctrl+C        Copy the texture onto the clipboard.
+Ctrl+V        Paste the clipboard over the texture.
+Ctrl+Z        Undo changes (across all editors).
+Ctrl+Shift+Z  Redo changes (across all editors).
+
+Mouse:
+
+Left click (texture)        Paint the texture with the currently-selected color.
+Tab + Left click (texture)  Eye dropper tool: select the color on which the cursor hovers.
+Shift + Mouse wheel         Adjust the zoom level.
+
+Tilemap editor
+--------------
+
+Keyboard:
+
+E S D F       Move the camera.
+A             Toggle the texture pane on/off.
+Ctrl+Z        Undo changes (across all editors).
+Ctrl+Shift+Z  Redo changes (across all editors).
+
+Mouse:
+
+Left click           Paint the tilemap with the currently-selected PALA texture.
+Shift + Mouse wheel  Adjust the zoom level.

@@ -4,6 +4,7 @@
  */
 
 import {icons} from "./icons.js";
+import notepad from "../../../experimental/w95/samples/notepad/app.js";
 
 export default {
     Meta: {
@@ -368,8 +369,14 @@ export default {
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
-                                                label: "About...",
-                                                isDisabled: true,
+                                                label: "Manual",
+                                                isChecked: (currentEditorView.now === "texture-editor"),
+                                                onClick() {
+                                                    w95.shell.run(notepad({
+                                                        file: "./desktop/apps/rallysported/manual.txt",
+                                                        isWordWrap: false,
+                                                    }));
+                                                },
                                             }),
                                         ],
                                     }),
