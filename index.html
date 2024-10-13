@@ -54,6 +54,8 @@
             import notepad from "/experimental/w95/samples/notepad/app.js";
             import {icons as notepadIcons} from "/experimental/w95/samples/notepad/assets/icons.js";
 
+            import analogClock from "/experimental/w95/samples/analog-clock/app.js";
+
             import browser from "/experimental/w95/samples/internet-archive-browser/app.js";
             import {icons as browserIcons} from "/experimental/w95/samples/internet-archive-browser/assets/icons.js";
 
@@ -249,6 +251,13 @@
                             }
 
                             w95.shell.run(acq({models}), {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Clock",
+                        icon: w95.icon.application32,
+                        onActivate() {
+                            w95.shell.run(analogClock, {singleInstance: true});
                         },
                     }),
                     w95.widget.desktopIcon({

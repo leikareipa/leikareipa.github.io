@@ -1,11 +1,13 @@
 BAREBONES MANUAL FOR RALLYSPORTED'S TRACK EDITOR
 
+
 Introduction
 ============
 
 RallySportED is a contemporary modding tool for the MS-DOS racing game Rally-Sport.
 
 RallySportED is (c) 2016-2024 Tarpeeksi Hyvae Soft. No affiliation with Rally-Sport creator Jukka Jäkälä.
+
 
 Controls
 ========

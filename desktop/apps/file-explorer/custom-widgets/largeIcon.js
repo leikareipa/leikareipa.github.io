@@ -6,7 +6,7 @@
 export default w95.widget(function largeIcon({
     x = 0,
     y = 0,
-    width = 74,
+    width = 70,
     height = 60,
     text = "Large icon",
     icon = w95.icon.applicationIcon32x32,

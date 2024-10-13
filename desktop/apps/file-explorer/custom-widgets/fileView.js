@@ -40,7 +40,7 @@ export default w95.widget(function fileView({
             {
                 const xOffset = 0;
                 const yOffset = 0;
-                const verticalSpacing = 77;
+                const verticalSpacing = 75;
                 const horizontalSpacing = 75;
 
                 let x = xOffset;

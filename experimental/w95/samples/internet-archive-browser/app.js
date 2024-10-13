@@ -283,12 +283,22 @@ export default function({
                                                 height: 25,
                                                 shape: w95.frameShape.box,
                                             }),
+                                            w95.widget.panel({
+                                                x: (width.now - 68),
+                                                y: 2,
+                                                width: 56,
+                                                height: 20,
+                                                color: w95.color.white,
+                                            }),
                                             w95.widget.dropdownBox({
                                                 x: (width.now - 67),
-                                                y: 1,
+                                                y: 4,
                                                 width: 54,
                                                 height: 22,
                                                 itemIndex: String(year.now),
+                                                styleHints: [
+                                                    w95.styleHint.noBorder,
+                                                ],
                                                 items: {
                                                     ...(
                                                         new Array(10).fill().map((e, idx)=>({onSelect() { year.set(1996 + idx)}}))

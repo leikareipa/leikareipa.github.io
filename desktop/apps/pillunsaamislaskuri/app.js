@@ -42,6 +42,7 @@ export default {
                             y: 10,
                             width: "pw",
                             text: `${w95.registry.get("pillua")}`,
+                            font: w95.font.vga9x16,
                             styleHints: [
                                 w95.styleHint.alignHCenter,
                             ],
