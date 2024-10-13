@@ -113,35 +113,35 @@ export default {
                                                             submenu: w95.widget.menu({
                                                                 children: [
                                                                     w95.widget.menuAction({
-                                                                        label: "Nurtsi cruising",
+                                                                        label: "1: Nurtsi cruising",
                                                                         onClick() {load_track(1)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Vesistö vedätys",
+                                                                        label: "2: Vesistö vedätys",
                                                                         onClick() {load_track(2)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Ralli-cross",
+                                                                        label: "3: Ralli-cross",
                                                                         onClick() {load_track(3)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Yleisö EK",
+                                                                        label: "4: Yleisö EK",
                                                                         onClick() {load_track(4)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Very slippery",
+                                                                        label: "5: Very slippery",
                                                                         onClick() {load_track(5)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "You asked it",
+                                                                        label: "6: You asked it",
                                                                         onClick() {load_track(6)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Bumps and jumps",
+                                                                        label: "7: Bumps and jumps",
                                                                         onClick() {load_track(7)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Short and easy",
+                                                                        label: "8: Short and easy",
                                                                         onClick() {load_track(8)},
                                                                     }),
                                                                 ],
@@ -152,6 +152,10 @@ export default {
                                                             submenu: w95.widget.menu({
                                                                 children: [
                                                                     w95.widget.menuAction({
+                                                                        label: "Haastava",
+                                                                        onClick() {load_track("haastava")},
+                                                                    }),
+                                                                    w95.widget.menuAction({
                                                                         label: "Hakkuu",
                                                                         onClick() {load_track("hakkuu")},
                                                                     }),
@@ -160,8 +164,16 @@ export default {
                                                                         onClick() {load_track("jossain")},
                                                                     }),
                                                                     w95.widget.menuAction({
+                                                                        label: "Jouluke",
+                                                                        onClick() {load_track("jouluke")},
+                                                                    }),
+                                                                    w95.widget.menuAction({
                                                                         label: "Klorofyl",
                                                                         onClick() {load_track("klorofyl")},
+                                                                    }),
+                                                                    w95.widget.menuAction({
+                                                                        label: "Lausturi",
+                                                                        onClick() {load_track("lausturi")},
                                                                     }),
                                                                     w95.widget.menuAction({
                                                                         label: "Lumitaso",
@@ -172,8 +184,16 @@ export default {
                                                                         onClick() {load_track("naapurit")},
                                                                     }),
                                                                     w95.widget.menuAction({
+                                                                        label: "Oivoi",
+                                                                        onClick() {load_track("oivoi")},
+                                                                    }),
+                                                                    w95.widget.menuAction({
                                                                         label: "Saaristo",
                                                                         onClick() {load_track("saaristo")},
+                                                                    }),
+                                                                    w95.widget.menuAction({
+                                                                        label: "Sodantie",
+                                                                        onClick() {load_track("sodantie")},
                                                                     }),
                                                                     w95.widget.menuAction({
                                                                         label: "Syyssy",
@@ -182,10 +202,6 @@ export default {
                                                                     w95.widget.menuAction({
                                                                         label: "Suorundi",
                                                                         onClick() {load_track("suorundi")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Jouluke",
-                                                                        onClick() {load_track("jouluke")},
                                                                     }),
                                                                 ],
                                                             }),
