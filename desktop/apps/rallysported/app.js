@@ -203,6 +203,10 @@ export default {
                                                                         label: "Suorundi",
                                                                         onClick() {load_track("suorundi")},
                                                                     }),
+                                                                    w95.widget.menuAction({
+                                                                        label: "Uusivesi",
+                                                                        onClick() {load_track("uusivesi")},
+                                                                    }),
                                                                 ],
                                                             }),
                                                         }),
