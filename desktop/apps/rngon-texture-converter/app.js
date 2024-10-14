@@ -359,7 +359,7 @@ export default {
                            break;
                         }
                         case "Binary": {
-                            convertedPixels.push(~~Boolean(red || green || blue));
+                            convertedPixels.push(~~Boolean(red || green || blue || alpha));
                            break;
                         }
                     }

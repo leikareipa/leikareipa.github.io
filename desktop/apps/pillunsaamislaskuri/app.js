@@ -13,7 +13,7 @@ export default {
     },
     App() {
         const minWidth = 200;
-        const minHeight = 90;
+        const minHeight = 89;
         const width = w95.state(minWidth);
         const height = w95.state(minHeight);
 
@@ -38,23 +38,46 @@ export default {
                         w95.windowManager.release_window(this)
                     },
                     children: [
-                        w95.widget.label({
-                            y: 10,
-                            width: "pw",
-                            text: `${w95.registry.get("pillua")}`,
-                            font: w95.font.vga9x16,
+                        w95.widget.verticalLayout({
+                            x: 4,
+                            width: "pw - 8",
+                            height: (height.now - 24),
+                            padding: 4,
                             styleHints: [
+                                w95.styleHint.alignVCenter,
                                 w95.styleHint.alignHCenter,
                             ],
-                        }),
-                        w95.widget.button({
-                            x: 10,
-                            y: 32,
-                            width: "pw - 20",
-                            text: "Päivitä",
-                            onClick() {
-                                w95.registry.increment("pillua");
-                            },
+                            children: [
+                                w95.widget.frame({
+                                    width: "pw",
+                                    height: 28,
+                                    backgroundColor: w95.color.black,
+                                    children: [
+                                        w95.widget.horizontalLayout({
+                                            y: 6,
+                                            width: "pw",
+                                            padding: 2,
+                                            styleHints: [
+                                                w95.styleHint.alignVCenter,
+                                                w95.styleHint.alignHCenter,
+                                            ],
+                                            children: String(w95.registry.get("pillua")).split("").map((digit, idx)=>(
+                                                w95.widget.bitmap({
+                                                    image: icons[digit],
+                                                    color: w95.color.limegreen,
+                                                })
+                                            ))
+                                        }),
+                                    ],
+                                }),
+                                w95.widget.button({
+                                    width: "pw",
+                                    text: "Päivitä",
+                                    onClick() {
+                                        w95.registry.increment("pillua");
+                                    },
+                                }),
+                            ],
                         }),
                     ],
                 });
