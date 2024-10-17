@@ -41,7 +41,20 @@ export default {
                         return;
                     }
                     switch (event.data.message) {
-                        case "project:loaded": return projectName.set(event.data.payload);
+                        case "project:loaded": {
+                            let name = event.data.payload;
+                            switch (event.data.payload) {
+                                case "Demoa": name = "Nurtsi cruising"; break;
+                                case "Demob": name = "Vesistö vedätys"; break;
+                                case "Democ": name = "Ralli-cross"; break;
+                                case "Demod": name = "Yleisö EK"; break;
+                                case "Demoe": name = "Very slippery"; break;
+                                case "Demof": name = "You asked it"; break;
+                                case "Demog": name = "Bumps and jumps"; break;
+                                case "Demoh": name = "Short and easy"; break;
+                            }
+                            return projectName.set(name);
+                        }
                         case "project:name": return projectName.set(event.data.payload);
                         case "view:editor": return currentEditorView.set(event.data.payload);
                         case "run:starting": return dosboxRunState.set(1); 
