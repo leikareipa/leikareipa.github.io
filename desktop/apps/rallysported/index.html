@@ -21,17 +21,33 @@
     </head>
     <body>
         <script type="module">
-            import app from "./app.js";
+            import trackEditor from "./track-editor.js";
+            import keyRemapper from "./key-remapper.js";
+            import corruptor from "./corruptor.js";
             import {icons}  from "./icons.js";
 
             const taskbar = w95.shell.taskbar();
             const desktop = w95.shell.desktop({
                 icons: [
                     w95.widget.desktopIcon({
-                        text: "Kenttäeditori",
+                        text: "Track editor",
                         icon: icons.app32,
                         onActivate() {
-                            w95.shell.run(app);
+                            w95.shell.run(trackEditor);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Key remapper",
+                        icon: icons.app32,
+                        onActivate() {
+                            w95.shell.run(keyRemapper);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Corruptor",
+                        icon: icons.app32,
+                        onActivate() {
+                            w95.shell.run(corruptor);
                         },
                     }),
                 ]
@@ -39,7 +55,7 @@
 
             w95.shell.boot();
             w95.shell.wallpaper = "./hires2.png";
-            w95.shell.run([desktop, taskbar, app]);
+            w95.shell.run([desktop, taskbar]);
         </script>
     </body>
 </html>

@@ -8,7 +8,7 @@
         <script defer src="./FileSaver.min.js"></script>
     </head>
     <body>
-        <h1>
+        <h1 id="title">
             RallySportED's key remapper
         </h1>
         <div id="file-eater" ondrop="drop_handler(event)" ondragover="event.preventDefault()">
@@ -16,7 +16,7 @@
             <div class="filename">
                 RALLYE.EXE
             </div>
-            here
+            here!
         </div>
         <div id="controls">
             <div class="container">
@@ -50,6 +50,10 @@
         </div>
 
         <script>
+            if ((new URLSearchParams(window.location.search)).has("w95")) {
+                document.getElementById("title").remove();
+            }
+
             const tarpEl = document.getElementById("query-tarp");
 
             // The keys supported by this remapper.

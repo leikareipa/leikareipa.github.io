@@ -67,8 +67,8 @@ export default {
                     parent: this,
                     title: (
                         projectName.now
-                            ? `Track: ${projectName.now} - RallySportED`
-                            : "RallySportED"
+                            ? `${projectName.now} - Track Editor - RallySportED`
+                            : "Track Editor - RallySportED"
                     ),
                     resize(deltaWidth, deltaHeight) {
                         width.set(Math.max(minWidth, (width.now + deltaWidth)));

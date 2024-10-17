@@ -62,7 +62,7 @@
             import pillunsaamislaskuri from "./desktop/apps/pillunsaamislaskuri/app.js";
             import {icons as pillunsaamislaskuriIcons} from "./desktop/apps/pillunsaamislaskuri/icons.js";
 
-            import rallySportEd from "./desktop/apps/rallysported/app.js";
+            import rallySportEdTrackEditor from "./desktop/apps/rallysported/track-editor.js";
             import {icons as rallySportEdIcons} from "./desktop/apps/rallysported/icons.js";
 
             import apina from "./desktop/apps/apina/app.js";
@@ -104,7 +104,7 @@
                         text: "Rally-Sport kenttäeditori",
                         icon: rallySportEdIcons.app32,
                         onActivate() {
-                            w95.shell.run(rallySportEd);
+                            w95.shell.run(rallySportEdTrackEditor);
                         },
                     }),
                     w95.widget.desktopIcon({
