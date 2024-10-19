@@ -438,16 +438,15 @@ export default function({
                 targetUrl = targetUrl.replace(/[\s\:<>\'\"]/g, "_");
 
                 (async()=>{
-                    const response = await fetch(`https://archive.org/wayback/available?timestamp=${year.now}0600&url=${targetUrl}`);
-
-                    if (!response.ok) {
-                        console.error("Page not found");
-                        iframeEl.now.src = "";
-                        iframeEl.now.srcdoc = "";
-                        statusMessage.set(statusMessages.pageNotFound);
-                    }
-
                     try {
+                        const response = await fetch(`https://archive.org/wayback/available?timestamp=${year.now}0600&url=${targetUrl}`);
+
+                        if (!response.ok) {
+                            iframeEl.now.src = "";
+                            iframeEl.now.srcdoc = "";
+                            statusMessage.set(statusMessages.pageNotFound);
+                        }
+
                         const json = await response.json();
 
                         if (!json.archived_snapshots.closest.timestamp.startsWith(year.now)) {
