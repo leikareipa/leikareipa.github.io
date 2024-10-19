@@ -4,6 +4,7 @@
  */
 
 import clockFaceTexture from "./assets/clockface.texture.js";
+import {icons} from "/desktop/apps/pillunsaamislaskuri/icons.js";
 
 export default {
     Meta: {
@@ -121,6 +122,7 @@ export default {
             },
             Form() {
                 return w95.widget.window({
+                    icon: icons.app16,
                     parent: this,
                     title: "Clock",
                     move(deltaX, deltaY) {
