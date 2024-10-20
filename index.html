@@ -59,32 +59,32 @@
             import browser from "/experimental/w95/samples/internet-archive-browser/app.js";
             import {icons as browserIcons} from "/experimental/w95/samples/internet-archive-browser/assets/icons.js";
 
-            import pillunsaamislaskuri from "./desktop/apps/pillunsaamislaskuri/app.js";
-            import {icons as pillunsaamislaskuriIcons} from "./desktop/apps/pillunsaamislaskuri/icons.js";
+            import pillunsaamislaskuri from "./desktop/$apps/pillunsaamislaskuri/app.js";
+            import {icons as pillunsaamislaskuriIcons} from "./desktop/$apps/pillunsaamislaskuri/icons.js";
 
-            import rallySportEdTrackEditor from "./desktop/apps/rallysported/track-editor.js";
-            import {icons as rallySportEdIcons} from "./desktop/apps/rallysported/icons.js";
+            import rallySportEdTrackEditor from "./desktop/$apps/rallysported/track-editor.js";
+            import {icons as rallySportEdIcons} from "./desktop/$apps/rallysported/icons.js";
 
-            import apina from "./desktop/apps/apina/app.js";
-            import {icons as apinaIcons} from "./desktop/apps/apina/icons.js";
+            import apina from "./desktop/$apps/apina/app.js";
+            import {icons as apinaIcons} from "./desktop/$apps/apina/icons.js";
 
-            import xmas94 from "./desktop/apps/xmas94/app.js";
-            import {icons as xmas94Icons} from "./desktop/apps/xmas94/icons.js";
+            import xmas94 from "./desktop/$apps/xmas94/app.js";
+            import {icons as xmas94Icons} from "./desktop/$apps/xmas94/icons.js";
 
-            import command from "./desktop/apps/command/app.js";
-            import {icons as commandIcons} from "./desktop/apps/command/icons.js";
+            import command from "./desktop/$apps/command/app.js";
+            import {icons as commandIcons} from "./desktop/$apps/command/icons.js";
 
-            import rngonTextureConvert from "./desktop/apps/rngon-texture-converter/app.js";
-            import {icons as rngonTextureConvertIcons}  from "./desktop/apps/rngon-texture-converter/icons.js";
+            import rngonTextureConvert from "./desktop/$apps/rngon-texture-converter/app.js";
+            import {icons as rngonTextureConvertIcons}  from "./desktop/$apps/rngon-texture-converter/icons.js";
 
-            import imageViewer from "./desktop/apps/image-viewer/app.js";
-            import {icons as imageViewerIcons} from "./desktop/apps/image-viewer/icons.js";
+            import imageViewer from "./desktop/$apps/image-viewer/app.js";
+            import {icons as imageViewerIcons} from "./desktop/$apps/image-viewer/icons.js";
 
-            import fileExplorer from "./desktop/apps/file-explorer/app.js";
-            import {icons as fileExplorerIcons} from "./desktop/apps/file-explorer/icons.js";
+            import fileExplorer from "./desktop/$apps/file-explorer/app.js";
+            import {icons as fileExplorerIcons} from "./desktop/$apps/file-explorer/icons.js";
 
-            import acq from "./desktop/apps/acq/apps/control-panel/app.js";
-            import {appicon32 as acqIcon} from "./desktop/apps/acq/apps/textures.js";
+            import acq from "./desktop/$apps/acq/widgets/control-panel/app.js";
+            import {appicon32 as acqIcon} from "./desktop/$apps/acq/widgets/textures.js";
 
             const desktop = w95.shell.desktop({
                 showWatermark: false,
@@ -167,6 +167,25 @@
                                             "roskapoyta.gif": {},
                                             "MBnet.url": ()=>w95.shell.run(browser({year: 2000, url: "www.mbnet.fi/jutut/assembly98"})),
                                         },
+                                    },
+                                },
+                            }));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Kuvia",
+                        icon: fileExplorerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(fileExplorer({
+                                defaultRunners: {
+                                    image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
+                                },
+                                files: {
+                                    "Kuvia/": {
+                                        "eläin.gif": {},
+                                        "naku.gif": {},
+                                        "ukkeli.gif": {},
+                                        "ukko.gif": {},
                                     },
                                 },
                             }));

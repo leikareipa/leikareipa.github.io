@@ -35,7 +35,7 @@ export default {
             get width() { return width.now },
             get height() { return height.now },
             async Opened() {
-                const obj = await (await fetch("/desktop/apps/apina/suzanne.obj")).blob();
+                const obj = await (await fetch("/desktop/$apps/apina/suzanne.obj")).blob();
                 meshes.set(Object.values(await obj2mesh(obj)));
             },
             Form() {
