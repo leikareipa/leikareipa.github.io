@@ -4,7 +4,7 @@
  */
 
 import clockFaceTexture from "./assets/clockface.texture.js";
-import {icons} from "/desktop/apps/pillunsaamislaskuri/icons.js";
+import {icons} from "/desktop/$apps/pillunsaamislaskuri/icons.js";
 
 export default {
     Meta: {

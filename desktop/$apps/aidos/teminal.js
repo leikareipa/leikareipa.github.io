@@ -10,7 +10,7 @@ export const terminal = w95.widget(function terminal({
     height = 100,
     state = w95.StateVariable,
     color = w95.palette.widget.foreground,
-    backgroundColor = w95.palette.named.white,
+    backgroundColor = w95.palette.named.black,
     isEditable = true,
     isDisabled = false,
     wordWrap = true,
@@ -34,7 +34,7 @@ export const terminal = w95.widget(function terminal({
     w95.debug?.assert(["undefined", "function"].includes(typeof highlighter));
     w95.debug?.assert(["undefined", "function"].includes(typeof onChange));
 
-    const font = w95.font.vga["9x16"];
+    const font = w95.font.vga9x16;
 
     const hasBorder = (
         styleHints.includes(w95.styleHint.noBorder)

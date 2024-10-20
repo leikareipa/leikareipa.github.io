@@ -406,7 +406,7 @@ export default {
                                                 isChecked: (currentEditorView.now === "texture-editor"),
                                                 onClick() {
                                                     w95.shell.run(notepad({
-                                                        file: "/desktop/apps/rallysported/manual.txt",
+                                                        file: "/desktop/$apps/rallysported/manual.txt",
                                                         isWordWrap: false,
                                                     }));
                                                 },

@@ -8,7 +8,7 @@ The ICQ one is kinda like ICQ as you'd guess, with some differences and called A
 
 ![{image}{headerless}{no-border-rounding}](./acq.webp)
 
-The DOS one is called [AI-DOS](/desktop/apps/aidos/?model=) and is what you'd expect:
+The DOS one is called [AI-DOS](/desktop/$apps/aidos/?model=) and is what you'd expect:
 
 ![{image}{headerless}{no-border-rounding}  ](./aidos.png)
 
