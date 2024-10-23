@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="26 September 2024"/>
+<post-date date="25 September 2024" edited="23 October 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -55,6 +55,15 @@
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td><b>claude-3.5</b>:sonnet-20241022</td>
+            <td>70%</td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
         <tr>
             <td><b>claude-3.5</b>:sonnet-20240620</td>
             <td>50%</td>
