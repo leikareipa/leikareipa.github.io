@@ -13,6 +13,7 @@ export const terminal = w95.widget(function terminal({
     backgroundColor = w95.palette.named.black,
     isEditable = true,
     isDisabled = false,
+    showScroll = false,
     wordWrap = true,
     autofocus = false,
     styleHints = [],
@@ -58,8 +59,6 @@ export const terminal = w95.widget(function terminal({
         cursorPos2d.now.y = (wordWrappedText.now.slice(0, cursorPos.now).split("\n").length - 1);
         cursorPos2d.now.globalX = (~~hasBorder + 2 + w95.font.stringWidth(wordWrappedText.now.split("\n")[cursorPos2d.now.y].slice(0, cursorPos2d.now.x), font));
         cursorPos2d.now.globalY = (~~hasBorder + (cursorPos2d.now.y * fontVariant.lineHeight));
-
-        widget.$("scroll-area").Message.scrollToVerticalTarget((cursorPos2d.now.globalY - 1), fontVariant.lineHeight);
     });
     
     const displayText = (highlighter?.(text) || text);
@@ -86,6 +85,8 @@ export const terminal = w95.widget(function terminal({
                 }
             }, 150);
 
+            this.$("scroll-area").Message.scrollToBottom();
+
             wordWrappedText.set(wordWrap? this.displayText : text);
             if (cursorPosDelta.now) {
                 cursorPos.set(cursorPos.now + cursorPosDelta.now);
@@ -98,7 +99,11 @@ export const terminal = w95.widget(function terminal({
         Form() {
             return w95.widget.scrollArea({
                 $name: "scroll-area",
-                cursor: w95.cursor.text,
+                cursor: (
+                    showScroll
+                        ? w95.cursor.arrow
+                        : w95.cursor.none
+                ),
                 width,
                 height,
                 frameShape: (
@@ -107,7 +112,7 @@ export const terminal = w95.widget(function terminal({
                     : w95.frameShape.input
                 ),
                 styleHints: [
-                    w95.styleHint.hideVerticalScrollBar,
+                    (showScroll? w95.styleHint.showVerticalScrollBar : w95.styleHint.hideVerticalScrollBar),
                 ],
                 backgroundColor: (
                     isDisabled
@@ -188,6 +193,11 @@ export const terminal = w95.widget(function terminal({
                     (event.key.length !== 1) ||
                     (event.key === ">")
                  ){
+                    return;
+                }
+
+                // The w95 framework doesn't handle line wrapping well, so let's prevent it.
+                if (cursorPos2d.now.x === 79) {
                     return;
                 }
 

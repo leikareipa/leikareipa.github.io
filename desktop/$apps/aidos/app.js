@@ -5,10 +5,7 @@
 
 import {terminal} from "./teminal.js";
 
-const model = (new URLSearchParams(document.location.search).get("model"));
-
-const initialPrompt = "Starting AI-DOS...\n\n\nHIMEX is testing extended memory...done.\n\nC:\\>";
-
+const initialPrompt = "Starting AI-DOS...";
 const systemPrompt = `
     The user has requested that from now on you consistently emulate the responses of a version of the MS-DOS operating system called AI-DOS, running on a system with countless text-based utilities and games installed, as well as an assortment of personal files.
     Interpret everything the user says from now on as an intended command for AI-DOS. Never break character, respond like a machine. Never perform more than one command.
@@ -23,6 +20,8 @@ const systemPrompt = `
     Never respond like a human, always like a machine.
 `.replace(/[ ]{2,}/g, "");
 
+let model = (new URLSearchParams(document.location.search).get("model"));
+
 export default function({
     isWindowed = false,
 } = {}) {
@@ -33,12 +32,14 @@ export default function({
             author: "THS",
         },
         App() {
-            const width = w95.state(isWindowed? 720 : w95.shell.display.width);
-            const height = w95.state(isWindowed? 350 : w95.shell.display.height);
+            const minWidth = 749;
+            const minHeight = 382;
+            const width = w95.state(isWindowed? minWidth : w95.shell.display.width);
+            const height = w95.state(isWindowed? minHeight : w95.shell.display.height);
             const x = w95.state(~~(0.5 * (w95.shell.display.width - width.now)), w95.reRenderOnly);
             const y = w95.state(~~(0.5 * (w95.shell.display.height - height.now)), w95.reRenderOnly);
 
-            const output = w95.state("Starting AI-DOS...", ()=>{
+            const output = w95.state(initialPrompt, ()=>{
                 if (!stdoutTimer.now && (output.now.at(-1) === "\n")) {
                     submit();
                 }
@@ -99,8 +100,8 @@ export default function({
 
                 switch (errorType) {
                     case "no-model-specified": message = `\n\nERROR: No model specified. Use the 'model' command to load.\n\nC:\\>`; break;
-                    case "model-not-available": message = `Starting AI-DOS...\n\nERROR: Model "${model}" is not available.`; isFatal = true; break;
-                    case "model-offline": message = `ERROR: Model "${model}" is not available.\n\nC:\\>`; break;
+                    case "model-not-available": message = `ERROR: The model is not available.\n\n${cwd()}`; break;
+                    case "model-offline": message = `Cannot execute command. Model not available.\n\n${cwd()}`; break;
                 }
 
                 if (isFatal) {
@@ -140,7 +141,7 @@ export default function({
                     add_message("assistant", "\n\nC:\\GAMES>");
                     add_message("user", "C:\\GAMES>cd..");
                     add_message("assistant", "\n\nC:\\>");
-                    output.set(initialPrompt);
+                    output.set(initialPrompt + `\n\nC:\\>`);
                     isWaitingForResponse.set(false);
                 }
             }
@@ -148,17 +149,33 @@ export default function({
             async function submit() {
                 isWaitingForResponse.set(true);
 
-                const command = output.now.trimEnd().split("\n").at(-1);
-                add_message("user", command);
+                const commandLine = output.now.trimEnd().split("\n").at(-1);
+                const command = commandLine.substring(commandLine.indexOf(">") + 1).toLowerCase();
 
-                if (command.toLowerCase().endsWith(">model")) {
+                // Select a model.
+                if (command.startsWith("model ")) {
                     const models = await get_available_models();
-                    const str = `${models.join("\n")}\n\n${cwd()}`;
+                    const proposedModelIdx = (command.split("model ")[1] - 1);
+                    if (models[proposedModelIdx]) {
+                        model = models[proposedModelIdx];
+                        initialize_context();
+                    }
+                    else {
+                        print_error("model-not-available");
+                        model = null;
+                    }
+                    isWaitingForResponse.set(false);
+                }
+                // Display a list of models.
+                else if (command === "model") {
+                    const models = await get_available_models();
+                    const str = `${(models.length? models.map((s, idx)=>(`${idx+1}:${s === model? "*" : " "}${s}`)).join("\n") : "No models available. Make sure Ollama is running and allows connections from this origin.")}\n\n${cwd()}`;
                     stdoutQueue.set(str.split("\n"));
-                    add_message("assistant", str);
                     isWaitingForResponse.set(false);
                 }
                 else {
+                    add_message("user", commandLine);
+
                     try {
                         const response = await fetch('http://localhost:11434/api/chat', {
                             method: 'POST',
@@ -196,7 +213,7 @@ export default function({
 
                         if (responseText.includes("%STOPPED%")) {
                             initialize_context();
-                            output.set(initialPrompt);
+                            output.set(initialPrompt + `\n\nC:\\>`);
                         }
                         else {
                             const maxCharsPerLine = 77;
@@ -271,45 +288,37 @@ export default function({
 
                         },
                         children: [
-                            w95.widget.verticalLayout({
+                            w95.widget.frame({
+                                y: 1,
                                 width: "pw",
-                                height: "ph",
-                                styleHints: [
-                                    w95.styleHint.alignHCenter,
-                                    w95.styleHint.alignVCenter,
-                                ],
+                                height: "ph - 1",
+                                shape: (
+                                    isWindowed
+                                        ? w95.frameShape.box
+                                        : w95.frameShape.none
+                                ),
                                 children: [
-                                    w95.widget.frame({
-                                        width: "pw",
-                                        height: "ph",
-                                        shape: (
-                                            isWindowed
-                                                ? w95.frameShape.box
-                                                : w95.frameShape.none
+                                    terminal({
+                                        x: 1,
+                                        y: 1,
+                                        $name: "terminal",
+                                        width: "pw - 2",
+                                        height: "ph - 2",
+                                        state: output,
+                                        autofocus: true,
+                                        showScroll: isWindowed,
+                                        isEditable: (
+                                            !isWaitingForResponse.now &&
+                                            (stdoutTimer.now === undefined)
                                         ),
-                                        children: [
-                                            terminal({
-                                                x: 1,
-                                                y: 1,
-                                                $name: "terminal",
-                                                width: 720,
-                                                height: "Math.floor( ph / 16) * 16",
-                                                state: output,
-                                                autofocus: true,
-                                                isEditable: (
-                                                    !isWaitingForResponse.now &&
-                                                    (stdoutTimer.now === undefined)
-                                                ),
-                                                isEditable: true,
-                                                color: Rngon.color(168, 168, 168),
-                                                styleHints: [
-                                                    w95.styleHint.noBorder,
-                                                ],
-                                            }),
+                                        isEditable: true,
+                                        color: Rngon.color(168, 168, 168),
+                                        styleHints: [
+                                            w95.styleHint.noBorder,
                                         ],
                                     }),
                                 ],
-                            })
+                            }),
                         ],
                     });
                 },

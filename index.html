@@ -71,6 +71,8 @@
             import xmas94 from "./desktop/$apps/xmas94/app.js";
             import {icons as xmas94Icons} from "./desktop/$apps/xmas94/icons.js";
 
+            import aiDos from "./desktop/$apps/aidos/app.js";
+
             import command from "./desktop/$apps/command/app.js";
             import {icons as commandIcons} from "./desktop/$apps/command/icons.js";
 
@@ -388,6 +390,13 @@
                         icon: xmas94Icons.app32,
                         onActivate() {
                             w95.shell.run(xmas94, {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "AI-DOS",
+                        icon: w95.icon.application32,
+                        onActivate() {
+                            w95.shell.run(aiDos({isWindowed: true}), {singleInstance: true});
                         },
                     }),
                 ],
