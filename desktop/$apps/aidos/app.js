@@ -45,7 +45,7 @@ export default function({
                 }
             });
 
-            const isWaitingForResponse = w95.state(true);
+            const isWaitingForResponse = w95.state(false);
             const messageHistory = w95.state([]);
 
             const stdoutTimer = w95.state(undefined);
@@ -259,6 +259,9 @@ export default function({
                 Opened() {
                     initialize_context();
                 },
+                Closed() {
+                    isWaitingForResponse.set(false);
+                },
                 Mounted() {
                     this.$("terminal").Message.moveCursorToEnd();
                 },
@@ -311,7 +314,6 @@ export default function({
                                             !isWaitingForResponse.now &&
                                             (stdoutTimer.now === undefined)
                                         ),
-                                        isEditable: true,
                                         color: Rngon.color(168, 168, 168),
                                         styleHints: [
                                             w95.styleHint.noBorder,
