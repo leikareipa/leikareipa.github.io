@@ -4,7 +4,7 @@
 
 The developer job search has been uninspiring this year as openings have remained at record lows. The outlook for next year isn't very good either, but that's to be seen.
 
-The key numbers for this year are 6% interview rate and 0% offer rate, for a developer with 20+ years of background in programming and no relevant work experience. Though there's still technically about a month left in the recruiting season, I don't expect radical changes and so I'll call it early.
+The key numbers for this year are 6% interview rate and 0% offer rate, for a developer with a few decades of background in programming and no relevant work experience. Though there's still technically about a month left in the recruiting season, I don't expect radical changes and so I'll call it early.
 
 As there isn't much but rejection emails to go on, let's have a brief look at them.
 
@@ -55,3 +55,7 @@ I hope you all the best!
 ```
 
 While their pre-screening may not be very different from Kesko's, Mehiläinen's template is more nicely worded and I believe the recruiter added the second paragraph by hand. This nets Mehiläinen the award of most effortful rejection email this year.
+
+## About time
+
+The median time to response was two weeks, with Kesko clocking the slowest at seven weeks. This is more or less typical for the last few years.
