@@ -68,6 +68,9 @@
             import apina from "./desktop/$apps/apina/app.js";
             import {icons as apinaIcons} from "./desktop/$apps/apina/icons.js";
 
+            import heightmapGen from "./desktop/$apps/heightmap/app.js";
+            import {icons as heightmapGenIcons} from "./desktop/$apps/heightmap/icons.js";
+
             import xmas94 from "./desktop/$apps/xmas94/app.js";
             import {icons as xmas94Icons} from "./desktop/$apps/xmas94/icons.js";
 
@@ -397,6 +400,13 @@
                         icon: w95.icon.application32,
                         onActivate() {
                             w95.shell.run(aiDos({isWindowed: true}), {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Heightmap Generator",
+                        icon: heightmapGenIcons.app32,
+                        onActivate() {
+                            w95.shell.run(heightmapGen);
                         },
                     }),
                 ],
