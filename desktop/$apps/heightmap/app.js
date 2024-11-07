@@ -5,7 +5,7 @@
 
 import {icons} from "./icons.js";
 import {perlin} from "./perlin.js";
-import {seedQuery} from  "./seed-query.js";
+import {seedQuery} from  "./seed-query-dialog.js";
 
 export default {
     Meta: {
@@ -31,6 +31,7 @@ export default {
         );
 
         const isSeedQueryDialogOpen = w95.state(false);
+        const isAboutDialogOpen = w95.state(false);
 
         const heightmap = w95.state([]);
         const terrainMesh = w95.state(Rngon.mesh());
@@ -236,13 +237,13 @@ export default {
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
-                                                label: "Export OBJ",
+                                                label: "Export to OBJ",
                                                 onClick() {
                                                     download_terrain();
                                                 },
                                             }),
                                             w95.widget.menuAction({
-                                                label: "Export PNG",
+                                                label: "Export to PNG",
                                                 onClick() {
                                                     download_heightmap();
                                                 },
@@ -338,6 +339,20 @@ export default {
                                                         }),
                                                     ],
                                                 }),
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                                w95.widget.menuAction({
+                                    label: "Help",
+                                    isTopLevel: true,
+                                    submenu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuAction({
+                                                label: "About...",
+                                                onClick() {
+                                                    isAboutDialogOpen.set(true);
+                                                },
                                             }),
                                         ],
                                     }),
@@ -449,6 +464,21 @@ export default {
                                 isSeedQueryDialogOpen.set(false);
                             },
                         }, {hideIf: !isSeedQueryDialogOpen.now}),
+                        w95.shell.popup({
+                            parent: this,
+                            icon: w95.icon.information,
+                            title: "About...",
+                            text: `${this.$app.Meta.name} ${this.$app.Meta.version} by ArtesaaniSoft.\n\nGenerate heightmaps using Perlin noise and export\nthem as OBJ and/or PNG.`,
+                            buttons: [
+                                w95.widget.button({
+                                    width: 75,
+                                    text: "OK",
+                                    onClick() {
+                                        isAboutDialogOpen.set(false);
+                                    },
+                                }),
+                            ],
+                        }, {hideIf: !isAboutDialogOpen.now}),
                     ],
                 });
             },
