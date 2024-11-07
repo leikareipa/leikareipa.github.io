@@ -35,7 +35,7 @@ export default {
         const heightmap = w95.state([]);
         const terrainMesh = w95.state(Rngon.mesh());
         const noise = w95.state(perlin());
-        const id = w95.state(crypto.randomUUID());
+        const renderId = w95.state(crypto.randomUUID());
         const seed = w95.state(0, ()=>noise.now.seed(seed.now));
 
         const generationMethod = w95.state(noise.now.perlin2);
@@ -116,7 +116,7 @@ export default {
             return polys;
         }
 
-        function draw_2d(context) {
+        function draw_heightmap(context) {
             const {width, height, data:pixels} = context.pixelBuffer;
             for (let i = 0; i < (width * height); i++) {
                 pixels[i*4+0] =
@@ -144,10 +144,11 @@ export default {
             }
         
             return [
-                `# Terrain ${seed.now}`,
+                "# Terrain",
                 `# ${mesh.length} faces`,
                 "#",
                 `# Method: ${(generationMethod.now === noise.now.perlin2)? "Perlin" : "Simplex"}`,
+                `# Seed: ${seed.now}`,
                 `# Octaves: ${uiOctaves.now}`,
                 `# Frequency: ${uiFrequency.now}`,
                 `# Amplitude: ${uiAmplitude.now}`,
@@ -158,14 +159,32 @@ export default {
             ].join("\n");
         }
         
-        function download(text, filename = "model.obj") {
-            const blob = new Blob([text], {type: "text/plain"});
+        function download_terrain() {
+            const mesh = generate_terrain_mesh();
+            const objStr = mesh_to_obj_string(mesh);
+            const blob = new Blob([objStr], {type: "text/plain"});
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
-            link.download = filename;
+            link.download = `terrain-${seed.now}.obj`;
             link.click();
             URL.revokeObjectURL(url);
+        }
+
+        function download_heightmap() {
+            const imageData = new ImageData(viewWidth.now, viewHeight.now);
+            draw_heightmap({pixelBuffer: imageData});
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = imageData.width;
+            canvas.height = imageData.height;
+            ctx.putImageData(imageData, 0, 0);
+            
+            const link = document.createElement("a");
+            link.href = canvas.toDataURL();
+            link.download = `terrain-${seed.now}.png`;
+            link.click();
         }
 
         function randomize_seed() {
@@ -217,14 +236,16 @@ export default {
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
-                                                label: "Export as OBJ",
+                                                label: "Export OBJ",
                                                 onClick() {
-                                                    download(mesh_to_obj_string(generate_terrain_mesh()), `terrain-${seed.now}.obj`);
+                                                    download_terrain();
                                                 },
                                             }),
                                             w95.widget.menuAction({
-                                                label: "Export as PNG",
-                                                isDisabled: true,
+                                                label: "Export PNG",
+                                                onClick() {
+                                                    download_heightmap();
+                                                },
                                             }),
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuAction({
@@ -340,7 +361,7 @@ export default {
                                             ? [terrainMesh.now]
                                             : [Rngon.mesh([])]
                                     ),
-                                    id: id.now,
+                                    id: renderId.now,
                                     backgroundColor: w95.color.transparent,
                                     options: {
                                         nearPlane: 0.1,
@@ -350,7 +371,7 @@ export default {
                                     pipeline: {
                                         pixelShader: (
                                             ((viewMode.now === "2D") && !isWindowResizing.now)
-                                                ? draw_2d
+                                                ? draw_heightmap
                                                 : undefined
                                         ),
                                     },
