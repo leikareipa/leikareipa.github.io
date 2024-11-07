@@ -5,6 +5,7 @@
 
 import {icons} from "./icons.js";
 import {perlin} from "./perlin.js";
+import {seedQuery} from  "./seed-query.js";
 
 export default {
     Meta: {
@@ -28,6 +29,8 @@ export default {
             ~~(0.5 * (w95.shell.display.visibleHeight - height.now)),
             w95.reRenderOnly
         );
+
+        const isSeedQueryDialogOpen = w95.state(false);
 
         const heightmap = w95.state([]);
         const terrainMesh = w95.state(Rngon.mesh());
@@ -140,7 +143,19 @@ export default {
                 faces += "\n";
             }
         
-            return `# Heightmap\n${uniqueVertices.map(v=>`v ${v.x} ${v.y} ${v.z}`).join("\n")}\n${faces}`;
+            return [
+                `# Terrain ${seed.now}`,
+                `# ${mesh.length} faces`,
+                "#",
+                `# Method: ${(generationMethod.now === noise.now.perlin2)? "Perlin" : "Simplex"}`,
+                `# Octaves: ${uiOctaves.now}`,
+                `# Frequency: ${uiFrequency.now}`,
+                `# Amplitude: ${uiAmplitude.now}`,
+                `# Distortion: ${uiDistortion.now}`,
+                "#",
+                `${uniqueVertices.map(v=>`v ${v.x} ${v.y} ${v.z}`).join("\n")}`,
+                `${faces}`
+            ].join("\n");
         }
         
         function download(text, filename = "model.obj") {
@@ -267,7 +282,9 @@ export default {
                                                         w95.widget.menuSeparator(),
                                                         w95.widget.menuAction({
                                                             label: "Change...",
-                                                            isDisabled: true,
+                                                            onClick() {
+                                                                isSeedQueryDialogOpen.set(true);
+                                                            },
                                                         }),
                                                     ],
                                                 }),
@@ -397,6 +414,20 @@ export default {
                             validator: /[0-9\-\.]/,
                             state: uiDistortion,
                         }),
+                        seedQuery({
+                            x: ((width.now / 2) - 120),
+                            y: 60,
+                            width: 240,
+                            height: 105,
+                            value: `${seed.now}`,
+                            onAccept(name) {
+                                seed.set(name);
+                                isSeedQueryDialogOpen.set(false);
+                            },
+                            onReject() {
+                                isSeedQueryDialogOpen.set(false);
+                            },
+                        }, {hideIf: !isSeedQueryDialogOpen.now}),
                     ],
                 });
             },
