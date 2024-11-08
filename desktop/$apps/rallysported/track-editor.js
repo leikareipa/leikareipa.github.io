@@ -210,16 +210,16 @@ export default {
                                                                         onClick() {load_track("sodantie")},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Syyssy",
-                                                                        onClick() {load_track("syyssy")},
+                                                                        label: "Suolisto",
+                                                                        onClick() {load_track("suolisto")},
                                                                     }),
                                                                     w95.widget.menuAction({
                                                                         label: "Suorundi",
                                                                         onClick() {load_track("suorundi")},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Uusivesi",
-                                                                        onClick() {load_track("uusivesi")},
+                                                                        label: "Syyssy",
+                                                                        onClick() {load_track("syyssy")},
                                                                     }),
                                                                 ],
                                                             }),
