@@ -21,7 +21,7 @@ export default function({
         App() {
             const minWidth = 100;
             const minHeight = 150;
-            const width = w95.state(550);
+            const width = w95.state(585);
             const height = w95.state(Math.max(minHeight, Math.min(400, ~~(w95.shell.display.height * 0.9))));
 
             const x = w95.state(
