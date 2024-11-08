@@ -18,7 +18,7 @@ export default function({
         Meta: {
             name: "ACQ",
             version: "1.0",
-            author: "Tarpeeksi Hyvae Soft",
+            author: "ArtisaaniSoft",
         },
         App() {
             // The dimensions of the app's window.
@@ -193,21 +193,10 @@ export default function({
                                     isContactCreatorDialogOpen.set(false);
                                 },
                             }, {hideIf: !isContactCreatorDialogOpen.now}),
-                            w95.shell.popup({
+                            w95.shell.popup.about({
                                 parent: this,
-                                icon: w95.icon.information,
-                                title: "About ACQ",
-                                text: `A front-end for Ollama to chat with local LLMs.\n\nSet \"OLLAMA_ORIGINS=${window.location.origin}\"\nand go to town.\n\n\bNote:\b This software may resemble ICQ but is not\nassociated with it.`,
-                                buttons: [
-                                    w95.widget.button({
-                                        width: 75,
-                                        text: "OK",
-                                        onClick() {
-                                            isAboutDialogOpen.set(false);
-                                        },
-                                    }),
-                                ],
-                                onReject() {
+                                text: `A front-end for Ollama to chat with local LLMs.\n\nSet \"OLLAMA_ORIGINS=${window.location.origin}\"\nand go to town.`,
+                                onClose() {
                                     isAboutDialogOpen.set(false);
                                 },  
                             }, {hideIf: !isAboutDialogOpen.now}),

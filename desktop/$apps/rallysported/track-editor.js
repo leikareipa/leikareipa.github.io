@@ -8,9 +8,9 @@ import notepad from "../../../experimental/w95/samples/notepad/app.js";
 
 export default {
     Meta: {
-        name: "RallySportED's track editor in w95",
+        name: "RallySportED's track editor",
         version: "1.0",
-        author: "Tarpeeksi Hyvae Soft",
+        author: "ArtisaaniSoft",
         description: "A w95 wrapper for the browser version of RallySportED's track editor.",
     },
     App() {
@@ -28,6 +28,7 @@ export default {
         const iframeEl = w95.state(document.createElement("iframe"));
         const projectName = w95.state(undefined);
         const dosboxRunState = w95.state(0);
+        const isAboutOpen = w95.state(false);
 
         return {
             get x() { return x.now },
@@ -402,6 +403,13 @@ export default {
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
+                                                label: "About...",
+                                                onClick() {
+                                                    isAboutOpen.set(true);
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuAction({
                                                 label: "Manual",
                                                 isChecked: (currentEditorView.now === "texture-editor"),
                                                 onClick() {
@@ -432,6 +440,13 @@ export default {
                                 }),
                             ],
                         }),
+                        w95.shell.popup.about({
+                            parent: this,
+                            text: "Create, edit, and play Rally-Sport tracks.",
+                            onClose() {
+                                isAboutOpen.set(false);
+                            },
+                        }, {hideIf: !isAboutOpen.now}),
                     ],
                 });
             },

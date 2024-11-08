@@ -14,7 +14,7 @@ export default function({
         Meta: {
             name: "File Explorer",
             version: "1.0",
-            author: "Tarpeeksi Hyvae Soft",
+            author: "ArtisaaniSoft",
         },
         App() {
             const minWidth = 200;
@@ -38,6 +38,7 @@ export default function({
             const currentPath = w95.state("/");
             const basePath = Object.keys(files)[0].replace(/\/$/, "");
             const fileStructure = Object.values(files)[0];
+            const isAboutDialogOpen = w95.state(false);
 
             return {
                 get x() { return x.now },
@@ -92,19 +93,18 @@ export default function({
                                         }),
                                     }),
                                     w95.widget.menuAction({
-                                        label: "Edit",
-                                        isTopLevel: true,
-                                        isDisabled: true,
-                                    }),
-                                    w95.widget.menuAction({
-                                        label: "View",
-                                        isTopLevel: true,
-                                        isDisabled: true,
-                                    }),
-                                    w95.widget.menuAction({
                                         label: "Help",
                                         isTopLevel: true,
-                                        isDisabled: true,
+                                        submenu: w95.widget.menu({
+                                            children: [
+                                                w95.widget.menuAction({
+                                                    label: "About...",
+                                                    onClick() {
+                                                        isAboutDialogOpen.set(true);
+                                                    },
+                                                }),
+                                            ],
+                                        }),
                                     }),
                                 ],
                             }),
@@ -150,6 +150,12 @@ export default function({
                                     }),
                                 ],
                             }),
+                            w95.shell.popup.about({
+                                parent: this,
+                                onClose() {
+                                    isAboutDialogOpen.set(false);
+                                },
+                            }, {hideIf: !isAboutDialogOpen.now}),
                         ],
                     });
                 },

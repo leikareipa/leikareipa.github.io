@@ -11,7 +11,7 @@ export default {
     Meta: {
         name: "Heightmap Generator",
         version: "1.0",
-        author: "Tarpeeksi Hyvae Soft",
+        author: "ArtisaaniSoft",
     },
     App() {
         const minWidth = 268;
@@ -464,20 +464,12 @@ export default {
                                 isSeedQueryDialogOpen.set(false);
                             },
                         }, {hideIf: !isSeedQueryDialogOpen.now}),
-                        w95.shell.popup({
+                        w95.shell.popup.about({
                             parent: this,
-                            icon: w95.icon.information,
-                            title: "About...",
-                            text: `${this.$app.Meta.name} ${this.$app.Meta.version} by ArtesaaniSoft.\n\nGenerate heightmaps using Perlin noise and export\nthem as OBJ and/or PNG.`,
-                            buttons: [
-                                w95.widget.button({
-                                    width: 75,
-                                    text: "OK",
-                                    onClick() {
-                                        isAboutDialogOpen.set(false);
-                                    },
-                                }),
-                            ],
+                            text: "Generate heightmaps using Perlin noise and export\nthem as OBJ and/or PNG.",
+                            onClose() {
+                                isAboutDialogOpen.set(false);
+                            },
                         }, {hideIf: !isAboutDialogOpen.now}),
                     ],
                 });

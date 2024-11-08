@@ -16,7 +16,7 @@ export default function({
         Meta: {
             name: "Notepad",
             version: "1.0",
-            author: "Tarpeeksi Hyvae Soft",
+            author: "ArtisaaniSoft",
         },
         App() {
             const minWidth = 100;
@@ -136,22 +136,9 @@ export default function({
                                 allowFormatting: false,
                                 isEditable: false,
                             }),
-                            w95.shell.popup({
+                            w95.shell.popup.about({
                                 parent: this,
-                                icon: w95.icon.information,
-                                title: `About ${this.$app.Meta.name} ${this.$app.Meta.version}`,
-                                text: "This sample application for w95 demonstrates the use of the\nscrollArea and label widgets to create a clone of the Notepad\napplication as seen in Windows 95.",
-                                buttons: [
-                                    w95.widget.button({
-                                        x: 0,
-                                        width: 75,
-                                        text: "OK",
-                                        onClick() {
-                                            showAbout.set(false);
-                                        },
-                                    }),
-                                ],
-                                onReject() {
+                                onClose() {
                                     showAbout.set(false);
                                 },
                             }, {hideIf: !showAbout.now}),
