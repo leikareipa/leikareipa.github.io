@@ -28,12 +28,12 @@ export default function({
     return {
         Meta: {
             name: "AI-DOS",
-            version: "alpha-1",
-            author: "THS",
+            version: "1.0",
+            author: "ArtisaaniSoft",
         },
         App() {
             const minWidth = 749;
-            const minHeight = 382;
+            const minHeight = 399;
             const width = w95.state(isWindowed? minWidth : w95.shell.display.width);
             const height = w95.state(isWindowed? minHeight : w95.shell.display.height);
             const x = w95.state(~~(0.5 * (w95.shell.display.width - width.now)), w95.reRenderOnly);
@@ -45,6 +45,7 @@ export default function({
                 }
             });
 
+            const isAboutDialogOpen = w95.state(false);
             const isWaitingForResponse = w95.state(false);
             const messageHistory = w95.state([]);
 
@@ -291,10 +292,43 @@ export default function({
 
                         },
                         children: [
-                            w95.widget.frame({
-                                y: 1,
+                            w95.widget.menuBar({
                                 width: "pw",
-                                height: "ph - 1",
+                                children: [
+                                    w95.widget.menuAction({
+                                        label: "File",
+                                        isTopLevel: true,
+                                        submenu: w95.widget.menu({
+                                            children: [
+                                                w95.widget.menuAction({
+                                                    label: "Exit",
+                                                    onClick(widget) {
+                                                        w95.windowManager.release_window(widget.$app.window);
+                                                    },
+                                                }),
+                                            ],
+                                        }),
+                                    }),
+                                    w95.widget.menuAction({
+                                        label: "Help",
+                                        isTopLevel: true,
+                                        submenu: w95.widget.menu({
+                                            children: [
+                                                w95.widget.menuAction({
+                                                    label: "About...",
+                                                    onClick() {
+                                                        isAboutDialogOpen.set(true);
+                                                    },
+                                                }),
+                                            ],
+                                        }),
+                                    }),
+                                ],
+                            }),
+                            w95.widget.frame({
+                                y: 18,
+                                width: "pw",
+                                height: "ph - 18",
                                 shape: (
                                     isWindowed
                                         ? w95.frameShape.box
@@ -321,6 +355,13 @@ export default function({
                                     }),
                                 ],
                             }),
+                            w95.shell.popup.about({
+                                parent: this,
+                                text: `A front-end for Ollama to chat with local LLMs in the\nspirit of DOS.\n\nSet \"OLLAMA_ORIGINS=${window.location.origin}\"\nand go to town.`,
+                                onClose() {
+                                    isAboutDialogOpen.set(false);
+                                },
+                            }, {hideIf: !isAboutDialogOpen.now}),
                         ],
                     });
                 },

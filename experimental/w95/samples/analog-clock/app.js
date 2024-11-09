@@ -10,16 +10,17 @@ export default {
     Meta: {
         name: "Analog clock",
         version: "1.0",
-        author: "Tarpeeksi Hyvae Soft",
+        author: "ArtisaaniSoft",
     },
     App() {
         const width = w95.state(clockFaceTexture.width + 12);
-        const height = w95.state(clockFaceTexture.height + 32);
+        const height = w95.state(clockFaceTexture.height + 53);
 
         const x = w95.state(~~(0.5 * (w95.shell.display.width - width.now)), w95.reRenderOnly);
         const y = w95.state(~~(0.5 * (w95.shell.display.visibleHeight - height.now)), w95.reRenderOnly);
         
         const tick = w95.state(0);
+        const isAboutDialogOpen = w95.state(false);
 
         const clockMesh = w95.state({
             minute: Rngon.mesh([
@@ -133,9 +134,42 @@ export default {
                         w95.windowManager.release_window(this)
                     },
                     children: [
+                        w95.widget.menuBar({
+                            width: "pw",
+                            children: [
+                                w95.widget.menuAction({
+                                    label: "File",
+                                    isTopLevel: true,
+                                    submenu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuAction({
+                                                label: "Exit",
+                                                onClick(widget) {
+                                                    w95.windowManager.release_window(widget.$app.window);
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                                w95.widget.menuAction({
+                                    label: "Help",
+                                    isTopLevel: true,
+                                    submenu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuAction({
+                                                label: "About...",
+                                                onClick() {
+                                                    isAboutDialogOpen.set(true);
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                            ],
+                        }),
                         w95.widget.frame({
                             x: 3,
-                            y: 3,
+                            y: 24,
                             width: clockFaceTexture.width,
                             height: clockFaceTexture.height,
                             shape: w95.frameShape.none,
@@ -181,6 +215,13 @@ export default {
                                 }),
                             ],
                         }),
+                        w95.shell.popup.about({
+                            parent: this,
+                            text: "Replicates the look and feel of the Windows 95 clock.",
+                            onClose() {
+                                isAboutDialogOpen.set(false);
+                            },
+                        }, {hideIf: !isAboutDialogOpen.now}),
                     ],
                 });
             },
