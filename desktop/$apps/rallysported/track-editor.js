@@ -127,35 +127,35 @@ export default {
                                                             submenu: w95.widget.menu({
                                                                 children: [
                                                                     w95.widget.menuAction({
-                                                                        label: "1: Nurtsi cruising",
+                                                                        label: "Nurtsi cruising",
                                                                         onClick() {load_track(1)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "2: Vesistö vedätys",
+                                                                        label: "Vesistö vedätys",
                                                                         onClick() {load_track(2)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "3: Ralli-cross",
+                                                                        label: "Ralli-cross",
                                                                         onClick() {load_track(3)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "4: Yleisö EK",
+                                                                        label: "Yleisö EK",
                                                                         onClick() {load_track(4)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "5: Very slippery",
+                                                                        label: "Very slippery",
                                                                         onClick() {load_track(5)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "6: You asked it",
+                                                                        label: "You asked it",
                                                                         onClick() {load_track(6)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "7: Bumps and jumps",
+                                                                        label: "Bumps and jumps",
                                                                         onClick() {load_track(7)},
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "8: Short and easy",
+                                                                        label: "Short and easy",
                                                                         onClick() {load_track(8)},
                                                                     }),
                                                                 ],
