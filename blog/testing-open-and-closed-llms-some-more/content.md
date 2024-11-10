@@ -110,6 +110,15 @@
             <td class="s1"></td>
         </tr>
         <tr>
+            <td><b11/><b>llama3.2-vision</b>:11b-instruct-q8_0</td>
+            <td>30%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
             <td><b27/><b>gemma-2</b>:27b-instruct-q6_K</td>
             <td>30%</td>
             <td class="s1"></td>
