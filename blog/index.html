@@ -27,26 +27,25 @@
             {
                 margin-top: 1em;
                 display: inline-flex;
-                flex-direction: column;
-                gap: 1em;
-                align-items: flex-start;
-                padding: var(--dokkiCSS-topic-vertical-padding) var(--dokkiCSS-topic-horizontal-padding);
-                padding-bottom: 6px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.5em;
             }
 
             b-stickies > a.sticky
             {
-                border-left: 5px solid;
+                border-bottom: 1px solid;
                 padding: 0.5em 0.65em;
-                box-shadow: 0 4px 4px -1px rgba(0, 0, 0, 0.2);
-                border-radius: 5px;
-                background-color: white;
                 text-decoration: none;
                 line-height: 1.45;
+                font-size: 90%;
+                background-color: var(--dokkiCSS-page-primary-fg-color) !important;
+                color: var(--dokkiCSS-page-primary-bg-color) !important;
             }
 
             body[data-dokki-theme="dark"] b-stickies > a.sticky
             {
+                border-bottom: none;
                 box-shadow: none;
                 background-color: black;
             }
@@ -177,20 +176,20 @@
 
                     <dokki-topic dokki-ignore title="Introduction" inline-class="abstract dokki-ignore">
                         <p>
-                            This is the blog of a veteran developer with no background in
-                            commercial software development. Expect the outside perspective. 
+                            This is the blog of a veteran software developer with no background in
+                            commercial development. Expect the outside perspective. 
                         </p>
                         <b-stickies>
                             <a class="sticky" href="/blog/testing-a-medley-of-local-llms-for-coding/">
-                                <i class="fas fa-thumbtack"></i>
+                                <i class="fas fa-xs fa-thumbtack" style="transform: rotate(-45deg);"></i>
                                 Testing a medley of local LLMs for coding
                             </a>
                             <a class="sticky" href="/blog/testing-open-and-closed-llms-some-more/">
-                                <i class="fas fa-thumbtack"></i>
+                                <i class="fas fa-xs fa-thumbtack" style="transform: rotate(-45deg);"></i>
                                 Testing open and closed LLMs some more
                             </a>
                             <a class="sticky" href="/blog/testing-visual-understanding-in-llms/">
-                                <i class="fas fa-thumbtack"></i>
+                                <i class="fas fa-xs fa-thumbtack" style="transform: rotate(-45deg);"></i>
                                 Testing visual understanding in LLMs
                             </a>
                         </b-stickies>

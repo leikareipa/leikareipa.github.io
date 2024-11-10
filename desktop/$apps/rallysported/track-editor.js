@@ -123,7 +123,7 @@ export default {
                                                         }),
                                                         w95.widget.menuSeparator(),
                                                         w95.widget.menuAction({
-                                                            label: "Rally-Sport",
+                                                            label: "Rally-Sport (demo)",
                                                             submenu: w95.widget.menu({
                                                                 children: [
                                                                     w95.widget.menuAction({
@@ -166,60 +166,95 @@ export default {
                                                             submenu: w95.widget.menu({
                                                                 children: [
                                                                     w95.widget.menuAction({
-                                                                        label: "Haastava",
-                                                                        onClick() {load_track("haastava")},
+                                                                        label: "2016",
+                                                                        submenu: w95.widget.menu({
+                                                                            children: [
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Lumitaso",
+                                                                                    onClick() {load_track("lumitaso")},
+                                                                                }),
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Saaristo",
+                                                                                    onClick() {load_track("saaristo")},
+                                                                                }),
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Suorundi",
+                                                                                    onClick() {load_track("suorundi")},
+                                                                                }),
+                                                                            ],
+                                                                        }),
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Hakkuu",
-                                                                        onClick() {load_track("hakkuu")},
+                                                                        label: "2017",
+                                                                        submenu: w95.widget.menu({
+                                                                            children: [
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Haastava",
+                                                                                    onClick() {load_track("haastava")},
+                                                                                }),
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Hakkuu",
+                                                                                    onClick() {load_track("hakkuu")},
+                                                                                }),
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Jossain",
+                                                                                    onClick() {load_track("jossain")},
+                                                                                }),
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Klorofyl",
+                                                                                    onClick() {load_track("klorofyl")},
+                                                                                }),
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Lausturi",
+                                                                                    onClick() {load_track("lausturi")},
+                                                                                }),
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Sodantie",
+                                                                                    onClick() {load_track("sodantie")},
+                                                                                }),
+                                                                            ],
+                                                                        }),
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Jossain",
-                                                                        onClick() {load_track("jossain")},
+                                                                        label: "2018",
+                                                                        submenu: w95.widget.menu({
+                                                                            children: [
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Suolisto",
+                                                                                    onClick() {load_track("suolisto")},
+                                                                                }),
+                                                                            ],
+                                                                        }),
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Jouluke",
-                                                                        onClick() {load_track("jouluke")},
+                                                                        label: "2020",
+                                                                        submenu: w95.widget.menu({
+                                                                            children: [
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Jouluke",
+                                                                                    onClick() {load_track("jouluke")},
+                                                                                }),
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Oivoi",
+                                                                                    onClick() {load_track("oivoi")},
+                                                                                }),
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Syyssy",
+                                                                                    onClick() {load_track("syyssy")},
+                                                                                }),
+                                                                            ],
+                                                                        }),
                                                                     }),
                                                                     w95.widget.menuAction({
-                                                                        label: "Klorofyl",
-                                                                        onClick() {load_track("klorofyl")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Lausturi",
-                                                                        onClick() {load_track("lausturi")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Lumitaso",
-                                                                        onClick() {load_track("lumitaso")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Naapurit",
-                                                                        onClick() {load_track("naapurit")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Oivoi",
-                                                                        onClick() {load_track("oivoi")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Saaristo",
-                                                                        onClick() {load_track("saaristo")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Sodantie",
-                                                                        onClick() {load_track("sodantie")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Suolisto",
-                                                                        onClick() {load_track("suolisto")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Suorundi",
-                                                                        onClick() {load_track("suorundi")},
-                                                                    }),
-                                                                    w95.widget.menuAction({
-                                                                        label: "Syyssy",
-                                                                        onClick() {load_track("syyssy")},
+                                                                        label: "2022",
+                                                                        submenu: w95.widget.menu({
+                                                                            children: [
+                                                                                w95.widget.menuAction({
+                                                                                    label: "Naapurit",
+                                                                                    onClick() {load_track("naapurit")},
+                                                                                }),
+                                                                            ],
+                                                                        }),
                                                                     }),
                                                                 ],
                                                             }),
