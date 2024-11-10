@@ -23,6 +23,34 @@
                 --dokkiCSS-topic-vertical-padding: 1.85em !important;
             }
 
+            b-stickies
+            {
+                margin-top: 1em;
+                display: inline-flex;
+                flex-direction: column;
+                gap: 1em;
+                align-items: flex-start;
+                padding: var(--dokkiCSS-topic-vertical-padding) var(--dokkiCSS-topic-horizontal-padding);
+                padding-bottom: 6px;
+            }
+
+            b-stickies > a.sticky
+            {
+                border-left: 5px solid;
+                padding: 0.5em 0.65em;
+                box-shadow: 0 4px 4px -1px rgba(0, 0, 0, 0.2);
+                border-radius: 5px;
+                background-color: white;
+                text-decoration: none;
+                line-height: 1.45;
+            }
+
+            body[data-dokki-theme="dark"] b-stickies > a.sticky
+            {
+                box-shadow: none;
+                background-color: black;
+            }
+
             .dokki-tag-filter
             {
                 margin-top: var(--dokkiCSS-embedded-vertical-padding) !important;
@@ -152,6 +180,20 @@
                             This is the blog of a veteran developer with no background in
                             commercial software development. Expect the outside perspective. 
                         </p>
+                        <b-stickies>
+                            <a class="sticky" href="/blog/testing-a-medley-of-local-llms-for-coding/">
+                                <i class="fas fa-thumbtack"></i>
+                                Testing a medley of local LLMs for coding
+                            </a>
+                            <a class="sticky" href="/blog/testing-open-and-closed-llms-some-more/">
+                                <i class="fas fa-thumbtack"></i>
+                                Testing open and closed LLMs some more
+                            </a>
+                            <a class="sticky" href="/blog/testing-visual-understanding-in-llms/">
+                                <i class="fas fa-thumbtack"></i>
+                                Testing visual understanding in LLMs
+                            </a>
+                        </b-stickies>
                     </dokki-topic>
 
                     <blog-post-abstract
