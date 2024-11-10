@@ -155,7 +155,25 @@
             <td class="s1"></td>
         </tr>
         <tr>
+            <td><b32/><b>qwen2.5</b>:32b-instruct-q2_K</td>
+            <td>20%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
             <td><b3/><b>llama-3.2</b>:3b-instruct-fp16</td>
+            <td>20%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><b8/><b>llama-3.2</b>:8b-instruct-q8_0</td>
             <td>20%</td>
             <td class="s0"></td>
             <td class="s0"></td>
@@ -174,6 +192,15 @@
         </tr>
         <tr>
             <td><b9/><b>yi-1.5</b>:9b-chat-fp16</td>
+            <td>0%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+        </tr>
+        <tr>
+            <td><b27/><b>gemma-2</b>:27b-instruct-q2_K</td>
             <td>0%</td>
             <td class="s0"></td>
             <td class="s0"></td>
