@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="10 November 2024"/>
+<post-date date="25 September 2024" edited="12 November 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -146,6 +146,15 @@
             <td class="s1"></td>
         </tr>
         <tr>
+            <td><b14/><b>qwen-2.5-coder</b>:14b-instruct-q8_0</td>
+            <td>20%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
             <td><b22/><b>mistral-small</b>:22b-instruct-2409-q6_K</td>
             <td>20%</td>
             <td class="s1"></td>
@@ -161,6 +170,15 @@
             <td class="s0"></td>
             <td class="s0"></td>
             <td class="s1"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b32/><b>qwen2.5-coder</b>:32b-instruct-q5_K_M</td>
+            <td>20%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
             <td class="s1"></td>
         </tr>
         <tr>
