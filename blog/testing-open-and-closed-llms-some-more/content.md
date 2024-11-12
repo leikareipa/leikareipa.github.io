@@ -173,7 +173,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b32/><b>qwen2.5-coder</b>:32b-instruct-q5_K_M</td>
+            <td><b32/><b>qwen2.5-coder</b>:32b-instruct-q5_K_M<sup>1</sup></td>
             <td>20%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -226,5 +226,12 @@
             <td class="s0"></td>
             <td class="s0"></td>
         </tr>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    <sup>1</sup>See <a href="/blog/comparing-qwen-25-and-qwen-25-coder-for-programming/">here</a>.
+                </td>
+            </tr>
+        </tfoot>
     </tbody>
 </table>
