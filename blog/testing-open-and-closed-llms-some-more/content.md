@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="12 November 2024"/>
+<post-date date="25 September 2024" edited="14 November 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -36,6 +36,11 @@
             <p>In a file of C++ code, refactor the formatting without changing the functionality. Includes a gotcha.</p>
         </td>
     </tr>
+    <tfoot>
+        <tr>
+            <td colspan="9">Note: The tests measure the ability of the output to fulfil the given task. Code quality (readability, extendability, maintainability, etc.) is not an explicit factor in any of the tests.</td>
+        </tr>
+    </tfoot>
 </table>
 
 <table class="results">
@@ -56,7 +61,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><b>claude-3.5</b>:sonnet-20241022</td>
+            <td>🥇 <b>claude-3.5</b>:sonnet-20241022</td>
             <td>70%</td>
             <td class="s2"></td>
             <td class="s1"></td>
@@ -65,7 +70,16 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b>claude-3.5</b>:sonnet-20240620</td>
+            <td>🥈 <b32></b32><b>qwen-2.5</b>:72b-instruct-q2_K</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td>🥈 <b>claude-3.5</b>:sonnet-20240620</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -74,7 +88,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b32/><b>qwen-2.5</b>:32b-instruct-q5_K_M</td>
+            <td>🥉 <b32></b32><b>qwen-2.5</b>:32b-instruct-q5_K_M</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -83,7 +97,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b>claude-3.5</b>:haiku-20241022</td>
+            <td>🥉 <b>claude-3.5</b>:haiku-20241022</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -92,7 +106,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><b>gpt-4o</b>:mini-2024-07-18</td>
+            <td>🥉 <b>gemini-exp</b>:1114</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -101,7 +115,25 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b>gpt-4o</b>:2024-08-06</td>
+            <td>🥉 <b>gpt-4o</b>:mini-2024-07-18</td>
+            <td>40%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td>🥉 <b>gpt-4o</b>:2024-08-06</td>
+            <td>40%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td>🥉 <b>claude-3</b>:opus-20240229</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -209,7 +241,25 @@
             <td class="s1"></td>
         </tr>
         <tr>
+            <td><b27/><b>qwen2.5-coder</b>:32b-instruct-q2_K</td>
+            <td>10%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
             <td><b9/><b>yi-1.5</b>:9b-chat-fp16</td>
+            <td>0%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+        </tr>
+        <tr>
+            <td><b27/><b>qwen2.5-coder</b>:3b-instruct-fp16</td>
             <td>0%</td>
             <td class="s0"></td>
             <td class="s0"></td>
