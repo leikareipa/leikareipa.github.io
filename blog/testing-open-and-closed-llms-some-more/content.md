@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="14 November 2024"/>
+<post-date date="25 September 2024" edited="15 November 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -70,7 +70,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td>🥈 <b32></b32><b>qwen-2.5</b>:72b-instruct-q2_K</td>
+            <td>🥈 <b72></b72><b>qwen-2.5</b>:72b-instruct-q2_K</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s1"></td>
@@ -142,7 +142,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b11/><b>llama3.2-vision</b>:11b-instruct-q8_0</td>
+            <td><b11></b11><b>llama-3.2-vision</b>:11b-instruct-q8_0</td>
             <td>30%</td>
             <td class="s0"></td>
             <td class="s0"></td>
@@ -151,7 +151,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><b27/><b>gemma-2</b>:27b-instruct-q6_K</td>
+            <td><b27></b27><b>gemma-2</b>:27b-instruct-q6_K</td>
             <td>30%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -169,7 +169,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b14/><b>qwen-2.5</b>:14b-instruct-q8_0</td>
+            <td><b14></b14><b>qwen-2.5</b>:14b-instruct-q8_0</td>
             <td>20%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -178,7 +178,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b14/><b>qwen-2.5-coder</b>:14b-instruct-q8_0</td>
+            <td><b14></b14><b>qwen-2.5-coder</b>:14b-instruct-q8_0</td>
             <td>20%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -187,7 +187,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b22/><b>mistral-small</b>:22b-instruct-2409-q6_K</td>
+            <td><b22></b22><b>mistral-small</b>:22b-instruct-2409-q6_K</td>
             <td>20%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -196,7 +196,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b32/><b>qwen2.5</b>:32b-instruct-q2_K</td>
+            <td><b32></b32><b>qwen-2.5</b>:32b-instruct-q2_K</td>
             <td>20%</td>
             <td class="s0"></td>
             <td class="s0"></td>
@@ -205,7 +205,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b32/><b>qwen2.5-coder</b>:32b-instruct-q5_K_M<sup>1</sup></td>
+            <td><b32></b32><b>qwen-2.5-coder</b>:32b-instruct-q5_K_M<sup>1</sup></td>
             <td>20%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -214,7 +214,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b3/><b>llama-3.2</b>:3b-instruct-fp16</td>
+            <td><b3></b3><b>llama-3.2</b>:3b-instruct-fp16</td>
             <td>20%</td>
             <td class="s0"></td>
             <td class="s0"></td>
@@ -223,7 +223,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><b8/><b>llama-3.2</b>:8b-instruct-q8_0</td>
+            <td><b8></b8><b>llama-3.2</b>:8b-instruct-q8_0</td>
             <td>20%</td>
             <td class="s0"></td>
             <td class="s0"></td>
@@ -241,7 +241,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b27/><b>qwen2.5-coder</b>:32b-instruct-q2_K</td>
+            <td><b32></b32><b>qwen-2.5-coder</b>:32b-instruct-q2_K</td>
             <td>10%</td>
             <td class="s0"></td>
             <td class="s0"></td>
@@ -250,7 +250,16 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><b9/><b>yi-1.5</b>:9b-chat-fp16</td>
+            <td><b70></b70><b>llama-3.1</b>:70b-instruct-q2_K</td>
+            <td>10%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+        </tr>
+        <tr>
+            <td><b9></b9><b>yi-1.5</b>:9b-chat-fp16</td>
             <td>0%</td>
             <td class="s0"></td>
             <td class="s0"></td>
@@ -259,7 +268,7 @@
             <td class="s0"></td>
         </tr>
         <tr>
-            <td><b27/><b>qwen2.5-coder</b>:3b-instruct-fp16</td>
+            <td><b3></b3><b>qwen-2.5-coder</b>:3b-instruct-fp16</td>
             <td>0%</td>
             <td class="s0"></td>
             <td class="s0"></td>
@@ -268,7 +277,7 @@
             <td class="s0"></td>
         </tr>
         <tr>
-            <td><b27/><b>gemma-2</b>:27b-instruct-q2_K</td>
+            <td><b27></b27><b>gemma-2</b>:27b-instruct-q2_K</td>
             <td>0%</td>
             <td class="s0"></td>
             <td class="s0"></td>
@@ -279,7 +288,7 @@
         <tfoot>
             <tr>
                 <td colspan="6">
-                    <sup>1</sup>See <a href="/blog/comparing-qwen-25-and-qwen-25-coder-for-programming/">here</a>.
+                    <sup>1</sup>See <a href="/blog/comparing-qwen-25-and-qwen-25-coder-for-programming/">this blog post</a> for details.
                 </td>
             </tr>
         </tfoot>
