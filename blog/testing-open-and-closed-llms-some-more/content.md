@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="15 November 2024"/>
+<post-date date="25 September 2024" edited="20 November 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -68,6 +68,15 @@
             <td class="s1"></td>
             <td class="s2"></td>
             <td class="s1"></td>
+        </tr>
+        <tr>
+            <td>🥈 <b>o1-preview</b>:2024-09-12</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
         </tr>
         <tr>
             <td>🥈 <b72></b72><b>qwen-2.5</b>:72b-instruct-q2_K</td>
