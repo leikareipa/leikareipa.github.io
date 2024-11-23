@@ -466,7 +466,7 @@ export default {
                         }, {hideIf: !isSeedQueryDialogOpen.now}),
                         w95.shell.popup.about({
                             parent: this,
-                            text: "Generate heightmaps using Perlin noise and export\nthem as OBJ and/or PNG.",
+                            text: "Generate heightmaps using Perlin noise and export\nthem as OBJ/PNG.",
                             onClose() {
                                 isAboutDialogOpen.set(false);
                             },
