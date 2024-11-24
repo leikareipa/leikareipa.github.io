@@ -269,6 +269,7 @@ export default function({
                                                 height: 22, 
                                                 leftPadding: 17,
                                                 state: address,
+                                                autofocus: (url === "about:empty"),
                                                 onSubmit: browse_to_current_address,
                                             }),
                                             w95.widget.bitmap({
