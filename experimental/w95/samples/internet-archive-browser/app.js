@@ -10,7 +10,7 @@ import {icons} from "./assets/icons.js";
 
 export default function({
     url = "about:empty",
-    year = 1998,
+    year = 1999,
 } = {}) {
     return {
         Meta: {
