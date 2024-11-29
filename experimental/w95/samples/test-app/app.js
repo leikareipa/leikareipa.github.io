@@ -214,7 +214,7 @@ export default {
                                     },
                                     state: radioIndex,
                                     onChange(idx) {
-                                        w95.registry.set("render-scale", (idx + 1));
+                                        w95.registry["render-scale"] = (idx + 1);
                                     },
                                 }),
                             ]
@@ -590,12 +590,12 @@ export default {
                                                 label: "Show debug layer",
                                                 isDisabled: !Boolean(w95.shell.display.debugLayer),
                                                 isCheckable: true,
-                                                isChecked: w95.registry.get("is-debug-enabled"),
+                                                isChecked: w95.registry["is-debug-enabled"],
                                                 newCheckState(isChecked) {
                                                     if (w95.shell.display.debugLayer) {
                                                         w95.shell.display.debugLayer.style.visibility = (isChecked? "visible" : "hidden");
                                                     }
-                                                    w95.registry.set("is-debug-enabled", isChecked);
+                                                    w95.registry["is-debug-enabled"] = isChecked;
                                                 },
                                             }),
                                             w95.widget.menuSeparator(),
@@ -704,6 +704,6 @@ export default {
 };
 
 function set_color_count(widget, count) {
-    w95.registry.set(`${widget.$app.id}-display-color-count`, count);
+    w95.registry[`${widget.$app.id}-display-color-count`] = count;
     widget.$app.rerasterize();
 }

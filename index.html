@@ -92,7 +92,7 @@
             import {appicon32 as acqIcon} from "./desktop/$apps/acq/widgets/textures.js";
 
             const desktop = w95.shell.desktop({
-                showWatermark: false,
+                showWatermark: (window.location.hostname === "localhost"),
                 icons: [
                     w95.widget.desktopIcon({
                         text: "PC.txt",
@@ -412,7 +412,7 @@
                 ],
             });
             w95.shell.boot();
-            w95.registry.set("pillua", 3072);
+            w95.registry["pillua"] = 3072;
             w95.shell.wallpaper = "./desktop/rock.png";
             w95.shell.run([desktop, w95.shell.taskbar()]);
         </script>

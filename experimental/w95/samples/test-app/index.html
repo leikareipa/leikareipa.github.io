@@ -53,15 +53,15 @@
                 ],
             });
 
-            w95.registry.set("num-windows-spawned", 0);
-            w95.registry.set("is-debug-enabled", false);
+            w95.registry["num-windows-spawned"] = 0;
+            w95.registry["is-debug-enabled"] = false;
             w95.shell.display.screenShader = dither_shader;
 
             w95.shell.boot();
             w95.shell.wallpaper = "./assets/woman.png";
             w95.shell.run([desktop, taskbar, testApp]);
 
-            w95.registry.set("render-scale", w95.shell.display.scale);
+            w95.registry["render-scale"] = w95.shell.display.scale;
         </script>
     </body>
 </html>

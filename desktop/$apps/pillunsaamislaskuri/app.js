@@ -61,7 +61,7 @@ export default {
                                                 w95.styleHint.alignVCenter,
                                                 w95.styleHint.alignHCenter,
                                             ],
-                                            children: String(w95.registry.get("pillua")).split("").map((digit, idx)=>(
+                                            children: String(w95.registry["pillua"]).split("").map((digit, idx)=>(
                                                 w95.widget.bitmap({
                                                     image: icons[digit],
                                                     color: w95.color.limegreen,
@@ -74,7 +74,7 @@ export default {
                                     width: "pw",
                                     text: "Päivitä",
                                     onClick() {
-                                        w95.registry.increment("pillua");
+                                        w95.registry["pillua"]++;
                                     },
                                 }),
                             ],

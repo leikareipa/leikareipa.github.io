@@ -7,7 +7,7 @@
 
 export function dither_shader(renderContext) {
     const app = w95.windowManager.apps.find(a=>a.id === renderContext.contextName);
-    const colorLevels = (w95.registry.get(`${app.id}-display-color-count`) || 24e6);
+    const colorLevels = (w95.registry[`${app.id}-display-color-count`] || 24e6);
 
     if (colorLevels > 16) {
         return;
