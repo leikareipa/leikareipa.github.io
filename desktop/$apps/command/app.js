@@ -7,6 +7,7 @@ import {icons} from "./icons.js";
 
 export default function({
     url = "",
+    textMode = false,
 } = {}) {
     return {
         Meta: {
@@ -18,7 +19,7 @@ export default function({
             const minWidth = 200;
             const minHeight = 200;
             const width = w95.state(653);
-            const height = w95.state(540);
+            const height = w95.state(textMode? 460 : 540);
 
             const x = w95.state(
                 ~~(0.5 * (w95.shell.display.width - width.now)),

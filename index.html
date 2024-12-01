@@ -409,6 +409,16 @@
                             w95.shell.run(heightmapGen);
                         },
                     }),
+                    w95.widget.desktopIcon({
+                        text: "FPU Bench",
+                        icon: commandIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(command({url: "/dosbox/#/pp/", textMode: true}), {singleInstance: true});
+                        },
+                    }),
                 ],
             });
             w95.shell.boot();

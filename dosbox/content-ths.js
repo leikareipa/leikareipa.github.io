@@ -31,6 +31,13 @@ export default {
         run: ["cls", "cleaner.exe"],
         scaler: "fillerup",
     },
+    "^/?pp/?$": {
+        title: "PP",
+        zip: "./content/pp/pp.zip",
+        persist: "/pp",
+        run: ["pp.exe"],
+        scaler: "fillerup",
+    },
     "^/?quake/sw/?$": {
         title: "Quake (shareware)",
         zip: "./content/quake/shareware/quake.zip",
