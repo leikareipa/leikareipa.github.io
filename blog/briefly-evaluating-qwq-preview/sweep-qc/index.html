@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>gpt4-w95-minesweeper</title>
+        <meta name="description" content="Old browsin'">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="./assets/rngon.js"></script>
+        <script src="./assets/w95.js" type="module"></script>
+        <style>
+            body {
+                background-color: black;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+                overflow: hidden;
+            }
+            #w95-canvas {
+                background-color: transparent;
+                user-select: none;
+                image-rendering: pixelated;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="w95-canvas" data-scale="2"></canvas>
+        <script type="module">
+            import {minesweeper} from "./apps/minesweeper/single.js";
+            w95.shell.boot(document.getElementById("w95-canvas"));
+            w95.shell.run([minesweeper]);
+        </script>
+    </body>
+</html>
