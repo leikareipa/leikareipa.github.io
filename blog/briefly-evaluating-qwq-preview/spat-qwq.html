@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Scene</title>
+</head>
+<body>
+    <canvas id="sceneCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('sceneCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Draw red sphere in the middle
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(200, 150, 50, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw blue sphere to the left
+        ctx.fillStyle = 'blue';
+        ctx.beginPath();
+        ctx.arc(100, 170, 48, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Calculate reflection position and size based on optical principles
+        const mirrorCenterX = 100;
+        const mirrorCenterY = 170;
+        const objectCenterX = 200;
+        const objectCenterY = 150;
+        const objectRadius = 50;
+        const mirrorRadius = 48;
+
+        // Vector from mirror center to object center
+        const dx = objectCenterX - mirrorCenterX;
+        const dy = objectCenterY - mirrorCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Unit vector in the direction of the object
+        const unitDx = dx / distance;
+        const unitDy = dy / distance;
+
+        // Image distance calculation for a spherical mirror
+        const focalLength = mirrorRadius / 2;
+        const o = distance;
+        const i = 1 / ((1 / focalLength) - (1 / o));
+
+        // Position of the image behind the mirror
+        const imageX = mirrorCenterX + unitDx * i;
+        const imageY = mirrorCenterY + unitDy * i;
+
+        // Magnification
+        const m = -i / o;
+
+        // Size of the reflection
+        const reflectionRadius = objectRadius * Math.abs(m);
+
+        // Draw reflection with adjusted position, size, and opacity
+        ctx.globalAlpha = 0.4; // Adjusted opacity for better realism
+        ctx.beginPath();
+        ctx.arc(imageX, imageY, reflectionRadius, 0, Math.PI * 2);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+    </script>
+</body>
+</html>
+

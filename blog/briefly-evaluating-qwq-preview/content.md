@@ -4,7 +4,7 @@
 
 Alibaba has somewhat stunned the AI community by their releasing a relatively capable o1 competitor as an open model, mere months after the unveiling of o1. The model is called QwQ Preview, or QwQ-32B-Preview if you will. You can learn more about it on google.
 
-Let's briefly evaluate its coding chops, using the Q4_K_M variant running via Ollama.
+Let's briefly evaluate its coding chops, using the Q4_K_M variant running via Ollama. Note that I won't be comparing it to o1 directly since my OAI API credit is at 0 and I don't want to put more in there right now.
 
 ## Add comments to C++ code
 
@@ -707,6 +707,74 @@ int main(void)
 
 A small ray tracer. Qwen 2.5 Coder gets further than QwQ; neither gets it right.
 
+## Spatial reasoning
+
+<x-prompt>
+<p>
+    This code draws the likeness of a 1990s ray traced scene of two spheres. It doesn't quite look physically correct though.
+</p>
+
+> Code
+```js
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Scene</title>
+</head>
+<body>
+    <canvas id="sceneCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('sceneCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Draw red sphere in the middle
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(200, 150, 50, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw blue sphere to the left
+        ctx.fillStyle = 'blue';
+        ctx.beginPath();
+        ctx.arc(100, 170, 48, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw reflection of red sphere on blue sphere (simplified)
+        ctx.globalAlpha = 0.5; // Semi-transparent for the reflection effect
+        ctx.beginPath();
+        ctx.arc(138, 206, 19, 0, Math.PI * 2);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+    </script>
+</body>
+</html>
+```
+</x-prompt>
+
+> Original
+![{iframe}{inline-class:model-response}](./spat-o.html)
+
+> QwQ Preview 32B
+![{iframe}{inline-class:model-response}](./spat-qwq.html)
+
+> Claude 3.5 Sonnet (October 2024)
+![{iframe}{inline-class:model-response}](./spat-s35.html)
+
+> Mistral Large 123B
+![{iframe}{inline-class:model-response}](./spat-misla.html)
+
+> Grok 2
+![{iframe}{inline-class:model-response}](./spat-grok2.html)
+
+> Qwen 2.5 72B
+![{iframe}{inline-class:model-response}](./spat-q25.html)
+
+> Llama 3.2 Vision 90B
+![{iframe}{inline-class:model-response}](./spat-llama-vision-90.html)
+
+In the original image, the reflection of the red sphere on the blue sphere is incorrectly placed. QwQ was the only model that clearly understood this and fixed it. Grok 2 might also have had a sniff of this issue; the other models not so much.
+
 ## Use a GUI framework
 
 <x-prompt>
@@ -781,5 +849,5 @@ Both QwQ and Qwen 2.5 Coder added a game-over condition, though I'd say QwQ's is
 
 ## Conclusions
 
-QwQ Preview does a decent job, often rising above Qwen 2.5 Coder and sometimes matching Claude 3.5 Sonnet; but on the flip side eating up quite a few more tokens. Interesting to see the full QwQ down the road.
+QwQ Preview does a decent job, often rising above Qwen 2.5 Coder and sometimes even Claude 3.5 Sonnet; but on the flip side eating up quite a few more tokens. Interesting to see the full QwQ down the road.
 

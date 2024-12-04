@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Scene</title>
+</head>
+<body>
+    <canvas id="sceneCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('sceneCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Draw red sphere in the middle
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(200, 150, 50, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw blue sphere to the left
+        ctx.fillStyle = 'blue';
+        ctx.beginPath();
+        ctx.arc(100, 170, 48, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw reflection of red sphere on blue sphere (simplified)
+        ctx.globalAlpha = 0.5; // Semi-transparent for the reflection effect
+        ctx.beginPath();
+        ctx.arc(138, 206, 19, 0, Math.PI * 2);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+    </script>
+</body>
+</html>

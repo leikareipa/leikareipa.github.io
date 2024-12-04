@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Improved Ray Traced Scene</title>
+    <style>
+        body { background-color: #f0f0f0; margin: 0; overflow: hidden; }
+        canvas { display: block; margin: auto; }
+    </style>
+</head>
+<body>
+    <canvas id="sceneCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('sceneCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Light source position
+        const lightSource = {x: 300, y: 50};
+
+        // Function to draw a sphere with shading
+        function drawSphere(x, y, radius, color, lightReflection = true) {
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            gradient.addColorStop(0, 'white'); // Highlight from light source
+            gradient.addColorStop(0.1, color);
+            gradient.addColorStop(1, 'black'); // Shadow on the opposite side
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (lightReflection) {
+                // Add a specular highlight
+                const highlightX = x - radius / 3;
+                const highlightY = y - radius / 3;
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                ctx.beginPath();
+                ctx.arc(highlightX, highlightY, radius / 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Draw red sphere with shading
+        drawSphere(200, 150, 50, 'red');
+
+        // Draw blue sphere with shading
+        drawSphere(100, 170, 48, 'blue');
+
+        // Improved reflection of red sphere on blue sphere
+        ctx.globalAlpha = 0.7;
+        ctx.fillStyle = 'rgba(255,0,0,0.5)';
+        ctx.beginPath();
+        // The reflection should be elliptical due to perspective and sphere curvature
+        ctx.ellipse(130, 180, 10, 15, Math.PI / 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Simple shadow for depth (this is very basic, real ray tracing would calculate this)
+        ctx.globalAlpha = 0.3;
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.ellipse(205, 205, 40, 15, 0, 0, Math.PI * 2); // Shadow for red sphere
+        ctx.ellipse(105, 220, 38, 15, 0, 0, Math.PI * 2); // Shadow for blue sphere
+        ctx.fill();
+    </script>
+</body>
+</html>

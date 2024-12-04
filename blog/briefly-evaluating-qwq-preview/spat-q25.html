@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Scene</title>
+</head>
+<body>
+    <canvas id="sceneCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('sceneCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Function to draw a sphere with shading and reflection
+        function drawSphere(x, y, radius, color, highlightOffset) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Highlight
+            const highlightRadius = radius / 3;
+            ctx.beginPath();
+            ctx.arc(x + highlightOffset, y - highlightOffset, highlightRadius, 0, Math.PI * 2);
+            ctx.fillStyle = 'white';
+            ctx.globalAlpha = 0.7; // Semi-transparent for the highlight effect
+            ctx.fill();
+            ctx.globalAlpha = 1; // Reset alpha
+
+            // Shadow
+            const shadowRadius = radius / 2;
+            ctx.beginPath();
+            ctx.arc(x, y + radius * 0.8, shadowRadius, 0, Math.PI);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fill();
+        }
+
+        // Draw red sphere in the middle
+        drawSphere(200, 150, 50, 'red', -20);
+
+        // Draw blue sphere to the left
+        drawSphere(100, 170, 48, 'blue', -15);
+
+        // Draw reflection of red sphere on blue sphere (simplified)
+        ctx.globalAlpha = 0.5; // Semi-transparent for the reflection effect
+        ctx.beginPath();
+        ctx.arc(138, 206, 19, 0, Math.PI * 2);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+        ctx.globalAlpha = 1; // Reset alpha
+
+        // Draw shadow of red sphere on blue sphere
+        const shadowRadius = 19 / 2;
+        ctx.beginPath();
+        ctx.arc(138, 206 + 19 * 0.8, shadowRadius, 0, Math.PI);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        ctx.fill();
+    </script>
+</body>
+</html>
+
