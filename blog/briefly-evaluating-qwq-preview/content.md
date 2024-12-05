@@ -849,5 +849,4 @@ Both QwQ and Qwen 2.5 Coder added a game-over condition, though I'd say QwQ's is
 
 ## Conclusions
 
-QwQ Preview does a decent job, often rising above Qwen 2.5 Coder and sometimes even Claude 3.5 Sonnet; but on the flip side eating up quite a few more tokens. Interesting to see the full QwQ down the road.
-
+QwQ Preview does a decent job, often rising above Qwen 2.5 and sometimes even Claude 3.5 Sonnet; but on the flip side eating up quite a few more tokens. It appears to be a specialist model in that some tasks it does very well and others not too great. Interesting to see the full QwQ down the road.
