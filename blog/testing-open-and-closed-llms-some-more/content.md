@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="1 December 2024"/>
+<post-date date="25 September 2024" edited="5 December 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -61,7 +61,7 @@
     </thead>
     <tbody>
         <tr>
-            <td>🥇 <b>claude-3.5</b>:sonnet-20241022</td>
+            <td><span class="first">🥇</span> <b>claude-3.5</b>:sonnet-20241022</td>
             <td>70%</td>
             <td class="s2"></td>
             <td class="s1"></td>
@@ -70,7 +70,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td>🥇 <x-size>19G</x-size><b>qwq</b>:32b-preview-q4_K_M</td>
+            <td><span class="first">🥇</span> <x-size>19G</x-size><b>qwq</b>:32b-preview-q4_K_M</td>
             <td>70%</td>
             <td class="s0"></td>
             <td class="s1"></td>
@@ -79,7 +79,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td>🥈 <b>o1-preview</b>:2024-09-12</td>
+            <td><span>🥈</span> <b>o1-preview</b>:2024-09-12</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -88,7 +88,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td>🥈 <x-size>30G</x-size><b>qwen-2.5</b>:72b-instruct-q2_K</td>
+            <td><span>🥈</span> <x-size>30G</x-size><b>qwen-2.5</b>:72b-instruct-q2_K</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s1"></td>
@@ -97,7 +97,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td>🥈 <b>claude-3.5</b>:sonnet-20240620</td>
+            <td><span>🥈</span> <b>claude-3.5</b>:sonnet-20240620</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -106,7 +106,25 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td>🥉 <x-size>23G</x-size><b>qwen-2.5</b>:32b-instruct-q5_K_M</td>
+            <td><span>🥈</span> <x-size>52G</x-size><b>mistral-large</b>:123b-instruct-2407-q3_K_S</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><span>🥈</span> <x-size>54G</x-size><b>llama3.2-vision</b>:90b-instruct-q4_K_M</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><span>🥉</span> <x-size>23G</x-size><b>qwen-2.5</b>:32b-instruct-q5_K_M</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -115,7 +133,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td>🥉 <b>claude-3.5</b>:haiku-20241022</td>
+            <td><span>🥉</span> <b>claude-3.5</b>:haiku-20241022</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -124,7 +142,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td>🥉 <b>gemini-exp</b>:1114</td>
+            <td><span>🥉</span> <b>gemini-exp</b>:1114</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -133,7 +151,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td>🥉 <b>gpt-4o</b>:mini-2024-07-18</td>
+            <td><span>🥉</span> <b>gpt-4o</b>:mini-2024-07-18</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -142,7 +160,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td>🥉 <b>gpt-4o</b>:2024-08-06</td>
+            <td><span>🥉</span> <b>gpt-4o</b>:2024-08-06</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -151,7 +169,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td>🥉 <b>claude-3</b>:opus-20240229</td>
+            <td><span>🥉</span> <b>claude-3</b>:opus-20240229</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
