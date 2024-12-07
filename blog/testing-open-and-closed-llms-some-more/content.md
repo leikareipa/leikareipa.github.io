@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="5 December 2024"/>
+<post-date date="25 September 2024" edited="7 December 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -98,15 +98,6 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <b>claude-3.5</b>:sonnet-20240620</td>
-            <td>50%</td>
-            <td class="s1"></td>
-            <td class="s0"></td>
-            <td class="s1"></td>
-            <td class="s2"></td>
-            <td class="s1"></td>
-        </tr>
-        <tr>
             <td><span>🥈</span> <x-size>52G</x-size><b>mistral-large</b>:123b-instruct-2407-q3_K_S</td>
             <td>50%</td>
             <td class="s1"></td>
@@ -114,6 +105,15 @@
             <td class="s0"></td>
             <td class="s2"></td>
             <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><span>🥈</span> <b>claude-3.5</b>:sonnet-20240620</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
         </tr>
         <tr>
             <td><span>🥈</span> <x-size>54G</x-size><b>llama-3.2-vision</b>:90b-instruct-q4_K_M</td>
@@ -126,6 +126,15 @@
         </tr>
         <tr>
             <td><span>🥉</span> <x-size>23G</x-size><b>qwen-2.5</b>:32b-instruct-q5_K_M</td>
+            <td>40%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><span>🥉</span> <x-size>49G</x-size><b>llama-3.3</b>:70b-instruct-q5_K_M</td>
             <td>40%</td>
             <td class="s1"></td>
             <td class="s0"></td>
