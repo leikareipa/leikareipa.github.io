@@ -51,7 +51,7 @@
             <th colspan="9">Test</th>
         </tr>
         <tr>
-            <th><input type="text" placeholder="&#x1F50E;&#xFE0E; Filter models"></th>
+            <th><input type="text" placeholder="&#x1F50E;&#xFE0E; Filter"></th>
             <th>Score</th>
             <th>1</th>
             <th>2</th>
@@ -105,6 +105,15 @@
             <td class="s0"></td>
             <td class="s2"></td>
             <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><span>🥈</span> <b>gemini-exp</b>:1206</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
         </tr>
         <tr>
             <td><span>🥈</span> <b>claude-3.5</b>:sonnet-20240620</td>
