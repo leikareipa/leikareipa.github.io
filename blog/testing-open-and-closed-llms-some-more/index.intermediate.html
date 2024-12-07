@@ -25,6 +25,15 @@
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 display: none;
             }
+            .results input {
+                width: 100%;
+                box-sizing: border-box;
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                padding: 0.5em;
+                border-radius: 5px;
+                background-color: var(--dokkiCSS-page-primary-bg-color);
+                color: var(--dokkiCSS-page-primary-fg-color);
+            }
             td span.first {
                 box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1), inset 0 6px 5px white;
             }
@@ -70,5 +79,30 @@
                 <article src="content.md"></article>
             </section>
         </template>
+        <script>
+            window.addEventListener("dokki-mounted", ()=>{
+                const filterEl = document.querySelector('.results input');
+                if (filterEl) {
+                    filterEl.addEventListener('keyup', function() {
+                        let searchText = this.value.toLowerCase();
+                        let table = document.querySelector('.results');
+                        let rows = table.getElementsByTagName('tr');
+                    
+                        // Start from index 1 to skip the header row
+                        for (let i = 1; i < rows.length; i++) {
+                            let firstCell = rows[i].getElementsByTagName('td')[0];
+                            if (firstCell) {
+                                let textValue = firstCell.textContent || firstCell.innerText;
+                                if (textValue.toLowerCase().indexOf(searchText) > -1) {
+                                    rows[i].style.display = '';
+                                } else {
+                                    rows[i].style.display = 'none';
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
     </body>
 </html>

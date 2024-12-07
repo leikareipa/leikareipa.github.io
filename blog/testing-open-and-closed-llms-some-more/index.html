@@ -24,6 +24,15 @@
                 margin-right: 0.5ch;
                 display: none;
             }
+            .results input {
+                width: 100%;
+                box-sizing: border-box;
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                padding: 0.5em;
+                border-radius: 5px;
+                background-color: var(--dokkiCSS-page-primary-bg-color);
+                color: var(--dokkiCSS-page-primary-fg-color);
+            }
             td span.first {
                 box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1), inset 0 6px 5px white;
             }
@@ -124,14 +133,13 @@
 
             <dokki-table headerless class inline-class="results">
                 <template #table>
-                    
             <thead>
                 <tr>
-                    <th colspan="2"></th>
+                    <th colspan="2">Model</th>
                     <th colspan="9">Test</th>
                 </tr>
                 <tr>
-                    <th>Model</th>
+                    <th><input type="text" placeholder="&#x1F50E;&#xFE0E; Filter models"></th>
                     <th>Score</th>
                     <th>1</th>
                     <th>2</th>
@@ -436,5 +444,30 @@
                     </dokki-topics>
                 </dokki-document>
             </template>
+            <script>
+                window.addEventListener("dokki-mounted", ()=>{
+                    const filterEl = document.querySelector('.results input');
+                    if (filterEl) {
+                        filterEl.addEventListener('keyup', function() {
+                            let searchText = this.value.toLowerCase();
+                            let table = document.querySelector('.results');
+                            let rows = table.getElementsByTagName('tr');
+                        
+                            // Start from index 1 to skip the header row
+                            for (let i = 1; i < rows.length; i++) {
+                                let firstCell = rows[i].getElementsByTagName('td')[0];
+                                if (firstCell) {
+                                    let textValue = firstCell.textContent || firstCell.innerText;
+                                    if (textValue.toLowerCase().indexOf(searchText) > -1) {
+                                        rows[i].style.display = '';
+                                    } else {
+                                        rows[i].style.display = 'none';
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            </script>
         </body>
 </html>

@@ -47,11 +47,11 @@
 <table class="results">
     <thead>
         <tr>
-            <th colspan="2"></th>
+            <th colspan="2">Model</th>
             <th colspan="9">Test</th>
         </tr>
         <tr>
-            <th>Model</th>
+            <th><input type="text" placeholder="&#x1F50E;&#xFE0E; Filter models"></th>
             <th>Score</th>
             <th>1</th>
             <th>2</th>
