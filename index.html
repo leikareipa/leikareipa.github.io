@@ -396,6 +396,13 @@
                         },
                     }),
                     w95.widget.desktopIcon({
+                        text: "Heightmap Generator",
+                        icon: heightmapGenIcons.app32,
+                        onActivate() {
+                            w95.shell.run(heightmapGen);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
                         text: "AI-DOS",
                         icon: w95.icon.application32,
                         onActivate() {
@@ -403,10 +410,13 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Heightmap Generator",
-                        icon: heightmapGenIcons.app32,
+                        text: "QBasic",
+                        icon: commandIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
                         onActivate() {
-                            w95.shell.run(heightmapGen);
+                            w95.shell.run(command({url: "/dosbox/#/qbasic/", textMode: true}));
                         },
                     }),
                     w95.widget.desktopIcon({

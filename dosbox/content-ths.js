@@ -45,6 +45,13 @@ export default {
         run: ["cls", "quake.exe -nocdaudio"],
         scaler: "fillerup",
     },
+    "^/?qbasic/?$": {
+        title: "QBasic",
+        zip: "./content/qbasic/qb.zip",
+        persist: "/qbasic",
+        run: ["cls", "keyb su > nul", "cls", "qbasic.exe"],
+        scaler: "fillerup",
+    },
     "^/?rallysported/corruptor/?$": {
         title: "RallySportED / Corruptor",
         zip: "./content/rally-sport/rs/rallys.zip",
