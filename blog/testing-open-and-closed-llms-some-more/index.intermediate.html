@@ -87,7 +87,7 @@
                 const filterEl = document.querySelector('.results input');
                 if (filterEl) {
                     filterEl.addEventListener('keyup', function() {
-                        const searchText = this.value.toLowerCase().trim();
+                        const searchWords = this.value.toLowerCase().trim().split(" ");
                         const table = document.querySelector('.results');
                         const rows = table.querySelectorAll('tbody tr');
                     
@@ -95,7 +95,7 @@
                             let firstCell = rows[i].getElementsByTagName('td')[0];
                             if (firstCell) {
                                 let textValue = firstCell.textContent || firstCell.innerText;
-                                if (textValue.toLowerCase().indexOf(searchText) > -1) {
+                                if (searchWords.some(w=>textValue.toLowerCase().indexOf(w) > -1)) {
                                     rows[i].style.display = '';
                                 } else {
                                     rows[i].style.display = 'none';

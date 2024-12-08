@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="7 December 2024"/>
+<post-date date="25 September 2024" edited="8 December 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -80,7 +80,25 @@
             <td class="s2"></td>
         </tr>
         <tr>
+            <td><span>🥈</span> <x-size>23G</x-size><b>qwq</b>:32b-preview-q5_K_M</td>
+            <td>60%</td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
             <td><span>🥈</span> <b>o1-preview</b>:2024-09-12</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><span>🥈</span> <x-size>34G</x-size><b>qwq</b>:32b-preview-q8_0</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s0"></td>
