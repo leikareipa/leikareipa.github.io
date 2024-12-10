@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="9 December 2024"/>
+<post-date date="25 September 2024" edited="10 December 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -387,6 +387,15 @@
         </tr>
         <tr>
             <td><x-size>10G</x-size><b>gemma-2</b>:27b-instruct-q2_K</td>
+            <td>0%</td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+        </tr>
+        <tr>
+            <td><x-size>19G</x-size><b>exaone-3.5</b>:32b-instruct-q4_K_M</td>
             <td>0%</td>
             <td class="s0"></td>
             <td class="s0"></td>

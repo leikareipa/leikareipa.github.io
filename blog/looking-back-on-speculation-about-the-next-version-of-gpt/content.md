@@ -4,7 +4,7 @@
 
 [In Q1 2024](/blog/brief-speculation-about-the-next-gpt/), I speculated the next major version of GPT would be an agentic GPT-4 rather than GPT-5. That ended up being the case when o1 came out a few quarters later.
 
-Back then, I ran some of my coding benchmarks on the then-current models and wrote:
+Back then, I ran some of my software development benchmarks on the then-current models and wrote:
 
 > In these tests, I think a score of 72% approaches the maximum for a system with no ability to iteratively evaluate its responses. I'd expect a successful agentic GPT based on GPT-4 to score in the range 80–90%, at a cost of 2–3 times the base.
 
