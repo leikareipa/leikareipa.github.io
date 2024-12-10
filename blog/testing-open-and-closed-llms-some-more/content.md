@@ -197,6 +197,15 @@
             <td class="s1"></td>
         </tr>
         <tr>
+            <td><span>🥉</span> <b>o1-mini</b>:2024-09-12</td>
+            <td>40%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
             <td><span>🥉</span> <b>gpt-4o</b>:mini-2024-07-18</td>
             <td>40%</td>
             <td class="s1"></td>
