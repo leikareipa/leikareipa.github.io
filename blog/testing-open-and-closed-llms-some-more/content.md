@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="10 December 2024"/>
+<post-date date="25 September 2024" edited="11 December 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -125,6 +125,15 @@
             <td class="s2"></td>
         </tr>
         <tr>
+            <td><span>🥈</span> <b>gemini-2.0-flash</b>:exp</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
             <td><span>🥈</span> <b>gemini-exp</b>:1206</td>
             <td>50%</td>
             <td class="s1"></td>
@@ -150,6 +159,15 @@
             <td class="s0"></td>
             <td class="s2"></td>
             <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><span>🥉</span> <x-size>65G</x-size><b>qwq</b>:32b-preview-fp16</td>
+            <td>50%</td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
         </tr>
         <tr>
             <td><span>🥉</span> <x-size>15G</x-size><b>qwq</b>:32b-preview-q3_K_M</td>
