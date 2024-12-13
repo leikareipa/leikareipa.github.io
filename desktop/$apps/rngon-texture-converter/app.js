@@ -79,7 +79,7 @@ export default {
                             x: 2,
                             y: 2,
                             width: "pw - 4",
-                            height: "ph - 2",
+                            height: "ph - 3",
                             state: tabIndex,
                             tabs: {
                                 "Image to JSON": {

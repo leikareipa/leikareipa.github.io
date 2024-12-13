@@ -13,7 +13,7 @@
         iframe.rsed,
         iframe.dosbox,
         iframe.geoclock,
-        iframe.ia-browser   {
+        iframe.ia-browser {
             background-color: rgb(192, 192, 192);
             border: none;
         }
@@ -78,6 +78,8 @@
 
             import command from "./desktop/$apps/command/app.js";
             import {icons as commandIcons} from "./desktop/$apps/command/icons.js";
+
+            import gorillas from "./desktop/$apps/gorillas/app.js";
 
             import rngonTextureConvert from "./desktop/$apps/rngon-texture-converter/app.js";
             import {icons as rngonTextureConvertIcons}  from "./desktop/$apps/rngon-texture-converter/icons.js";
@@ -429,11 +431,17 @@
                             w95.shell.run(command({url: "/dosbox/#/pp/", textMode: true}), {singleInstance: true});
                         },
                     }),
+                    w95.widget.desktopIcon({
+                        text: "GORILLAS",
+                        onActivate() {
+                            w95.shell.run(gorillas, {singleInstance: true});
+                        },
+                    }),
                 ],
             });
             w95.shell.boot();
             w95.registry["pillua"] = 3072;
-            w95.shell.wallpaper = "./desktop/rock.png";
+            w95.shell.wallpaper = "./desktop/nature.png";
             w95.shell.run([desktop, w95.shell.taskbar()]);
         </script>
     </body>

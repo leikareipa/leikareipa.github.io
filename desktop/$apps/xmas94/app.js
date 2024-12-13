@@ -17,7 +17,7 @@ export default {
     },
     App() {
         const width = w95.state(150);
-        const height = w95.state(167);
+        const height = w95.state(168);
         const x = w95.state(
             ~~(0.5 * (w95.shell.display.width - width.now)),
             w95.reRenderOnly
@@ -110,43 +110,43 @@ export default {
                         w95.windowManager.release_window(this)
                     },
                     children: [
-                            w95.widget.menuBar({
-                                width: "pw",
-                                children: [
-                                    w95.widget.menuAction({
-                                        label: "File",
-                                        isTopLevel: true,
-                                        submenu: w95.widget.menu({
-                                            children: [
-                                                w95.widget.menuAction({
-                                                    label: "Exit",
-                                                    onClick(widget) {
-                                                        w95.windowManager.release_window(widget.$app.window);
-                                                    },
-                                                }),
-                                            ],
-                                        }),
+                        w95.widget.menuBar({
+                            width: "pw",
+                            children: [
+                                w95.widget.menuAction({
+                                    label: "File",
+                                    isTopLevel: true,
+                                    submenu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuAction({
+                                                label: "Exit",
+                                                onClick(widget) {
+                                                    w95.windowManager.release_window(widget.$app.window);
+                                                },
+                                            }),
+                                        ],
                                     }),
-                                    w95.widget.menuAction({
-                                        label: "Help",
-                                        isTopLevel: true,
-                                        submenu: w95.widget.menu({
-                                            children: [
-                                                w95.widget.menuAction({
-                                                    label: "About...",
-                                                    onClick() {
-                                                        isAboutDialogOpen.set(true);
-                                                    },
-                                                }),
-                                            ],
-                                        }),
+                                }),
+                                w95.widget.menuAction({
+                                    label: "Help",
+                                    isTopLevel: true,
+                                    submenu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuAction({
+                                                label: "About...",
+                                                onClick() {
+                                                    isAboutDialogOpen.set(true);
+                                                },
+                                            }),
+                                        ],
                                     }),
-                                ],
-                            }),
+                                }),
+                            ],
+                        }),
                         w95.widget.frame({
                             y: 18,
                             width: "pw",
-                            height: "ph - 17",
+                            height: "ph - 18",
                             shape: w95.frameShape.box,
                             children: [
                                 w95.widget.renderSurface({
