@@ -39,7 +39,7 @@
     <tfoot>
         <tr>
             <td colspan="9">Note: The tests measure the ability of the model's output to fulfil the given task; code quality (readability, extendability, maintainability, etc.) is not an explicit factor in any of the tests. A
-            model is given one chance per test.</td>
+            model is given one chance per test. Models are typically run via Ollama.</td>
         </tr>
     </tfoot>
 </table>
