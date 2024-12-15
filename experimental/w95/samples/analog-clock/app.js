@@ -13,8 +13,8 @@ export default {
         author: "ArtisaaniSoft",
     },
     App() {
-        const width = w95.state(clockFaceTexture.width + 12);
-        const height = w95.state(clockFaceTexture.height + 53);
+        const width = w95.state(clockFaceTexture.width + 14);
+        const height = w95.state(clockFaceTexture.height + 54);
 
         const x = w95.state(~~(0.5 * (w95.shell.display.width - width.now)), w95.reRenderOnly);
         const y = w95.state(~~(0.5 * (w95.shell.display.visibleHeight - height.now)), w95.reRenderOnly);
@@ -167,9 +167,12 @@ export default {
                                 }),
                             ],
                         }),
+                        w95.widget.horizontalRule({
+                            y: 19,
+                        }),
                         w95.widget.frame({
                             x: 3,
-                            y: 24,
+                            y: 25,
                             width: clockFaceTexture.width,
                             height: clockFaceTexture.height,
                             shape: w95.frameShape.none,
