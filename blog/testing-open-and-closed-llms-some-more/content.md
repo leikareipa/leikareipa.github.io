@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="11 December 2024"/>
+<post-date date="25 September 2024" edited="18 December 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -195,6 +195,15 @@
             <td class="s0"></td>
             <td class="s2"></td>
             <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><span>🥉</span> <x-size>10G</x-size><b>falcon-3</b>:10b-instruct-q8_0</td>
+            <td>40%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+            <td class="s2"></td>
         </tr>
         <tr>
             <td><span>🥉</span> <b>claude-3.5</b>:haiku-20241022</td>

@@ -66,12 +66,12 @@ Q3_K_M and Q4_K_M managed to produce the requested fisheye effect; Q2_K failed c
 </x-prompt>
 
 > Q2_K
-``` [{no-line-numbers}}{inline-class:model-response}]
+``` [{no-line-numbers}{inline-class:model-response}]
 [Syntax errors]
 ```
 
 > Q3_K_M
-``` [{no-line-numbers}}{inline-class:model-response}]
+``` [{no-line-numbers}{inline-class:model-response}]
 [Syntax errors]
 ```
 
@@ -79,12 +79,12 @@ Q3_K_M and Q4_K_M managed to produce the requested fisheye effect; Q2_K failed c
 ![{image}{inline-class:model-response}](./q4-lightning.png)
 
 > Q5_K_M
-``` [{no-line-numbers}}{inline-class:model-response}]
+``` [{no-line-numbers}{inline-class:model-response}]
 [Syntax errors]
 ```
 
 > Q8_0
-``` [{no-line-numbers}}{inline-class:model-response}]
+``` [{no-line-numbers}{inline-class:model-response}]
 [Syntax errors]
 ```
 
