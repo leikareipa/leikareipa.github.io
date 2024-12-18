@@ -9,7 +9,6 @@ import {icons} from "/desktop/$apps/pillunsaamislaskuri/icons.js";
 export default {
     Meta: {
         name: "Analog clock",
-        version: "1.0",
         author: "ArtisaaniSoft",
     },
     App() {

@@ -1081,6 +1081,8 @@ SUB SparklePause
 
   WHILE INKEY$ = ""
     FOR A = 1 TO 5
+      Rest .01 'This line is a third-party addition in 2024.
+      
       LOCATE 1, 1                             'print horizontal sparkles
       PRINT MID$(A$, A, 80);
       LOCATE 22, 1

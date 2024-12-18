@@ -12,7 +12,6 @@ const fluidDomainSize = 150;
 export default {
     Meta: {
         name: "Xmas '94",
-        version: "1.0",
         author: "ArtisaaniSoft",
     },
     App() {
