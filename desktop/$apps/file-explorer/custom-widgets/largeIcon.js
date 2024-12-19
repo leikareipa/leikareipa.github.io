@@ -73,6 +73,8 @@ export default w95.widget(function largeIcon({
                         width: labelWidth,
                         text,
                         wordWrap: true,
+                        horizontalPadding: 2,
+                        verticalPadding: 1,
                         backgroundColor: (
                             hasFocus.now
                                 ? w95.palette.named.navy
@@ -86,6 +88,7 @@ export default w95.widget(function largeIcon({
                         styleHints: [
                             w95.styleHint.alignHCenter,
                             w95.styleHint.action,
+                            w95.styleHint.fitContentsHorizontal,
                         ],
                     }),
                 ]
