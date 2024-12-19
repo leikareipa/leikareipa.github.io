@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="18 December 2024"/>
+<post-date date="25 September 2024" edited="19 December 2024"/>
 
 # Testing open and closed LLMs some more
 
@@ -342,6 +342,15 @@
         </tr>
         <tr>
             <td><x-size>47G</x-size><b>athene-v2</b>:72b-q4_K_M</td>
+            <td>20%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b>gemini-2.0-flash-thinking</b>:exp-1219</td>
             <td>20%</td>
             <td class="s1"></td>
             <td class="s0"></td>
