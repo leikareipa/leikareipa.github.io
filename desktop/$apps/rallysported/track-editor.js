@@ -9,7 +9,6 @@ import notepad from "../../../experimental/w95/samples/notepad/app.js";
 export default {
     Meta: {
         name: "RallySportED's track editor",
-        version: "1.0",
         author: "ArtisaaniSoft",
         description: "A w95 wrapper for the browser version of RallySportED's track editor.",
     },
