@@ -157,7 +157,7 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Lanikuvat",
+                        text: "Lanit",
                         icon: fileExplorerIcons.app32,
                         onActivate() {
                             w95.shell.run(fileExplorer({
@@ -165,7 +165,7 @@
                                     image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
                                 },
                                 files: {
-                                    "Lanikuvat/": {
+                                    "Lanit/": {
                                         "Assembly '98/": {
                                             "64tiikeri.gif": {},
                                             "graffa6.gif": {},
@@ -181,7 +181,7 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Kuvia",
+                        text: "Valokuvia",
                         icon: fileExplorerIcons.app32,
                         onActivate() {
                             w95.shell.run(fileExplorer({
@@ -189,19 +189,7 @@
                                     image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
                                 },
                                 files: {
-                                    "Kuvia/": {
-                                        "Näyttiksiä/": {
-                                            "G100 4MB.gif": {},
-                                            "GeForce2 MX.gif": {},
-                                            "Millennium.gif": {},
-                                            "Mystique.gif": {},
-                                            "Quadro4 980 XGL.gif": {},
-                                            "RIVA 128.gif": {},
-                                            "TNT2 M64.gif": {},
-                                            "Vérité 2100.gif": {},
-                                            "Voodoo Rush 8MB.gif": {},
-                                        },
-                                        "kasvi.gif": {},
+                                    "Valokuvia/": {
                                         "kokko.gif": {},
                                         "pappa.gif": {},
                                         "pappa nuorena.gif": {},
@@ -258,10 +246,33 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "v3-970-80.gif",
-                        icon: imageViewerIcons.app32,
+                        text: "Näyttis",
+                        icon: fileExplorerIcons.app32,
                         onActivate() {
-                            w95.shell.run(imageViewer("./desktop/v3-970-80.gif"));
+                            w95.shell.run(fileExplorer({
+                                defaultRunners: {
+                                    image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
+                                },
+                                files: {
+                                    "Näyttis/": {
+                                        "G100 4MB.gif": {},
+                                        "G200.gif": {},
+                                        "GeForce2 MX.gif": {},
+                                        "Millennium.gif": {},
+                                        "Mystique.gif": {},
+                                        "Permedia 2.gif": {},
+                                        "Quadro4 980 XGL.gif": {},
+                                        "Rage 128.gif": {},
+                                        "Rage IIc.gif": {},
+                                        "Rage Pro Turbo.gif": {},
+                                        "RIVA 128.gif": {},
+                                        "TNT2 M64.gif": {},
+                                        "Vanta-16.gif": {},
+                                        "Vérité V2100.gif": {},
+                                        "Voodoo Rush 8MB.gif": {},
+                                    },
+                                },
+                            }));
                         },
                     }),
                     w95.widget.desktopIcon({
