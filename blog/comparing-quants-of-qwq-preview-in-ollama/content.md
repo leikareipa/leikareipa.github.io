@@ -164,6 +164,6 @@ For reference, the table includes the unquantized version of QwQ as hosted on Hu
 
 These tests roughly confirm the previously-found bell curve, where Q4_K_M is the apex quant and categorically better than Q8_0. More broadly, the sweet spot appears to be between Q3_K_M and Q5_K_M, inclusive.
 
-Q8_0 was in fact so bad that it indicates a potential problem with Ollama. I don't see many other explanations for it being categorically worse than Q4_K_M <i>and</i> the unquantized version.
+Q8_0 was in fact so bad that it indicates a potential problem with Ollama. Outside of these tests, I've also seen preliminary indications that Ollama's FP16 struggles in a similar way. I opened an issue for this, but it was closed without resolution, so it's not something the Ollama authors are concerned about.
 
 All of that said, my time with QwQ has also shown a fair bit of variance in output quality within any given quant. You'd ideally do very many runs of a test to find a realistic average.
