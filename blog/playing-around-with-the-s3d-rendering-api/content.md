@@ -4,15 +4,18 @@
 
 This past Christmas week I've been playing around with S3's proprietary Win32 hardware rendering API, S3d. It's a lightweight layer for building 3D applications for the (in)famous mid-1990s S3 ViRGE platform.
 
-> A level from Tomb Raider being rendered on the ViRGE/DX.
+> A level mesh from Tomb Raider being rendered on the ViRGE/DX in Windows 98 using S3d.
 ![{image}{headerless}](./s3dtr.png)
 
 The ViRGE, a family of early 3D graphics cards, were known to some as "graphics decelarators" due to their performance comparing unfavorably with that of software rendering. True enough, on my ViRGE/DX, S3d performance is fairly low, as seen in the screenshot above. Although the renderer isn't fully optimized, the competing 3Dfx Voodoo achieves about 30 FPS in this scene using its native, equally unoptimized-for Glide API.
 
-> The same scene in PCem (in my 3D UI) using its ViRGE emulation. The emulation has worse Z fighting but better performance.
+> The same scene in PCem (in my 3D UI) using its ViRGE/DX emulation. The emulation has worse Z fighting but better performance.
 ![{image}{headerless}](./s3dtrpcem.png)
 
-Conveniently, the PC emulator PCem comes with support for ViRGE/DX emulation. It looks reasonably faithful, though there are some artifacts not seen on real hardware, as shown above, and performance may not be indicative of real life. Other than that, I'll much rather debug my code in an emulator than go back and forth on a retro PC.
+Conveniently, the PC emulator PCem comes with support for ViRGE/DX emulation. It looks reasonably faithful,  though there's more artifacting than seen on real hardware, and performance may not be indicative of real life. Other than that, I'll much rather debug my code in an emulator than go back and forth on a retro PC.
+
+> The ViRGE/DX rendering the same scene using Direct3D 5. In this case, S3d provided better performance and better visuals. Mipmapping was enabled for Direct3D but not for S3d, which may account for some of the difference in performance.
+![{image}{headerless}](./d3dtr.png)
 
 The S3d API is fairly streamlined and minimalist, the main functions being `S3DTK_TriangleSet()` to render triangles and `S3DTK_SetState()` to configure the render state. A typical render loop might look something like this:
 
@@ -50,7 +53,7 @@ Looking around the sample code, you can also find this:
 
 Indeed, the surface (S3d's Win32 version uses DirectDraw for render and texture surfaces) that acts as the Z buffer can't be created as an actual Z buffer surface. Who knows why, but apparently it was a known and unresolved issue at S3. This reinforces the impression that S3d never had time to reach maturity, not for Win32 anyway.
 
-Whatever the case, S3's sample code can be compiled for Windows 9x using MinGW 4.41, including from Linux:
+Whatever the case, S3's sample code can be compiled for Windows 9x using MinGW 4.4.1, including from Linux:
 
 ```bash [{headerless}]
 OUTPUT="example.exe"
@@ -75,4 +78,6 @@ OPTIONS="
 wine "$MINGW/bin/gcc.exe" $OPTIONS -o $OUTPUT $INPUT -lDDRAW -lS3DTKW
 ```
 
-I didn't mess around with the DOS version of S3d yet, but it may be the more interesting one given that the ViRGE as a 3D solution was quite obsolete by the Windows era.
+In my limited testing I've found MinGW to produce the most performant executables for Windows 9x, so that's what I'd recommend here.
+
+I didn't mess around with the DOS version of S3d yet, but it may be the more interesting one given that the ViRGE as a 3D solution was quite obsolete by the Windows era of gaming.
