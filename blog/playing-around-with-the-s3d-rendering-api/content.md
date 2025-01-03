@@ -7,7 +7,7 @@ This past Christmas week I've been playing around with S3's proprietary Win32 ha
 > A level mesh from Tomb Raider being rendered on the ViRGE/DX in Windows 98 using S3d.
 ![{image}{headerless}](./s3dtr.png)
 
-The ViRGE, a family of early 3D graphics cards, were known to some as "graphics decelarators" due to their performance comparing unfavorably with that of software rendering. True enough, on my ViRGE/DX, S3d performance is fairly low, as seen in the screenshot above. Although the renderer isn't fully optimized, the competing 3Dfx Voodoo achieves about 30 FPS in this scene using its native, equally unoptimized-for Glide API.
+The ViRGE, a family of early 3D graphics cards, were known to some as "graphics decelarators" due to their performance comparing unfavorably with that of software rendering. True enough, on my ViRGE/DX, S3d performance is fairly low, as seen in the 640 &times; 480 screenshot, above. Although the renderer isn't fully optimized, the competing 3Dfx Voodoo achieves about 30 FPS in this scene using its native, equally unoptimized-for Glide API.
 
 > The same scene in PCem (in my 3D UI) using its ViRGE/DX emulation. The emulation has worse Z fighting but better performance.
 ![{image}{headerless}](./s3dtrpcem.png)
