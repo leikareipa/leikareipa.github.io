@@ -449,6 +449,13 @@
                             w95.shell.run(gorillas, {singleInstance: true});
                         },
                     }),
+                    w95.widget.desktopIcon({
+                        text: "S3DTRNGL.C",
+                        icon: icons.fileC32,
+                        onActivate() {
+                            w95.shell.run(notepad({file: "./desktop/S3DTRNGL.C", isWordWrap: false}));
+                        },
+                    }),
                 ],
             });
             w95.shell.boot();
