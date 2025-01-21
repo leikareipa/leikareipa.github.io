@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="19 December 2024"/>
+<post-date date="25 September 2024" edited="21 January 2025"/>
 
 # Testing open and closed LLMs some more
 
@@ -84,6 +84,15 @@
             <td>60%</td>
             <td class="s1"></td>
             <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><span>🥈</span> <x-size>19G</x-size><b>deepseek-r1</b>:32b-qwen-distill-q4_K_M</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
             <td class="s0"></td>
             <td class="s2"></td>
             <td class="s2"></td>
