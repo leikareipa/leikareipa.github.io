@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="21 January 2025"/>
+<post-date date="25 September 2024" edited="22 January 2025"/>
 
 # Testing open and closed LLMs some more
 
@@ -213,6 +213,15 @@
             <td class="s0"></td>
             <td class="s1"></td>
             <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><span>🥉</span> <x-size>42G</x-size><b>deepseek-r1</b>:70b-llama-distill-q4_K_M</td>
+            <td>40%</td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s1"></td>
+            <td class="s1"></td>
         </tr>
         <tr>
             <td><span>🥉</span> <b>claude-3.5</b>:haiku-20241022</td>
