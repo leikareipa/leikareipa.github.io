@@ -450,10 +450,13 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "S3DTRNGL.C",
-                        icon: icons.fileC32,
+                        text: "s3d-wrap.zip",
+                        icon: fileExplorerIcons.archive32,
                         onActivate() {
-                            w95.shell.run(notepad({file: "./desktop/S3DTRNGL.C", isWordWrap: false}));
+                            const link = document.createElement("a");
+                            link.href = "/desktop/s3d-wrap.zip";
+                            link.downlod = "s3d-wrap.zip";
+                            link.click();
                         },
                     }),
                 ],

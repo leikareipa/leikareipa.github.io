@@ -138,6 +138,7 @@ export default w95.widget(function fileView({
             case "png": return "image";
             case "com":
             case "exe": return "executable";
+            case "zip": return "archive";
             case "bat": return "batch";
             case "url": return "url";
             default: return "unknown";
