@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="22 January 2025"/>
+<post-date date="25 September 2024" edited="6 February 2025"/>
 
 # Testing open and closed LLMs some more
 
@@ -135,6 +135,15 @@
         </tr>
         <tr>
             <td><span>🥈</span> <b>gemini-2.0-flash</b>:exp</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><span>🥈</span> <b>gemini-2.0-pro</b>:exp-02-05</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s1"></td>
