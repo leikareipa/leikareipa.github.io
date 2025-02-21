@@ -1,4 +1,4 @@
-<post-date date="15 May 2024" edited="25 December 2024"/>
+<post-date date="15 May 2024" edited="21 February 2024"/>
 
 # Testing visual understanding in LLMs
 
@@ -30,6 +30,22 @@ A collection of visual tests and their results for various LLMs.
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td><b>grok-3</b>:nonthinking-20-2-2025</td>
+            <td>46%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s0">0</td>
+            <td class="s2">2</td>
+        </tr>
         <tr>
             <td><b>gpt-4o</b>:2024-05-13</td>
             <td>46%</td>
