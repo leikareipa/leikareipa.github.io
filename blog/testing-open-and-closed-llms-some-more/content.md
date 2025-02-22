@@ -71,6 +71,15 @@
             <td class="s1"></td>
         </tr>
         <tr>
+            <td><span class="first">🥇</span> <b>grok-3</b>:thinking-20-2-2025</td>
+            <td>70%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
             <td><span class="first">🥇</span> <x-size>19G</x-size><b>qwq</b>:32b-preview-q4_K_M</td>
             <td>70%</td>
             <td class="s0"></td>
