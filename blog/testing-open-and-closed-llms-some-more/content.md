@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="20 February 2025"/>
+<post-date date="25 September 2024" edited="24 February 2025"/>
 
 # Testing open and closed LLMs some more
 
@@ -62,6 +62,15 @@
     </thead>
     <tbody>
         <tr>
+            <td><span class="first">🥇</span> <b>claude-3.7</b>:sonnet-20250219-think-32k</td>
+            <td>90%</td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
             <td><span class="first">🥇</span> <b>claude-3.5</b>:sonnet-20241022</td>
             <td>70%</td>
             <td class="s2"></td>
@@ -114,6 +123,15 @@
             <td class="s0"></td>
             <td class="s2"></td>
             <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><b>claude-3.7</b>:sonnet-20250219</td>
+            <td>50%</td>
+            <td class="s2"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
         </tr>
         <tr>
             <td><span>🥈</span> <b>o1-preview</b>:2024-09-12</td>
