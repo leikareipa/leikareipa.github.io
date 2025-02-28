@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="24 February 2025"/>
+<post-date date="25 September 2024" edited="28 February 2025"/>
 
 # Testing open and closed LLMs some more
 
@@ -67,6 +67,15 @@
             <td class="s2"></td>
             <td class="s1"></td>
             <td class="s2"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><span class="first">🥇</span> <b>gpt-4.5</b>:preview-2025-02-27</td>
+            <td>80%</td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+            <td class="s1"></td>
             <td class="s2"></td>
             <td class="s2"></td>
         </tr>
