@@ -458,6 +458,16 @@
                             link.click();
                         },
                     }),
+                    w95.widget.desktopIcon({
+                        text: "msi2sw-dd2.zip",
+                        icon: fileExplorerIcons.archive32,
+                        onActivate() {
+                            const link = document.createElement("a");
+                            link.href = "/desktop/msi2sw-dd2.zip";
+                            link.downlod = "msi2sw-dd2.zip";
+                            link.click();
+                        },
+                    }),
                 ],
             });
             w95.shell.boot();
