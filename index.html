@@ -296,6 +296,76 @@
                         },
                     }),
                     w95.widget.desktopIcon({
+                        text: "Wrapperit",
+                        icon: fileExplorerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(fileExplorer({
+                                defaultRunners: {
+                                    unknown: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    ini: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    text: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    library: (filePath)=>{
+                                        const link = document.createElement("a");
+                                        link.href = `/desktop/${filePath}`;
+                                        link.click();
+                                    },
+                                },
+                                files: {
+                                    "Wrapperit/": {
+                                        "Grafiikka/": {
+                                            "Glide-S3d/": {
+                                                "Glide2x/": {
+                                                    "glide2x.dll": {},
+                                                    "glide2x.ini": {},
+                                                    "readme.txt": {},
+                                                },
+                                                "Ignition/": {
+                                                    "glide2x.dll": {},
+                                                    "glide2x.ini": {},
+                                                    "readme.txt": {},
+                                                },
+                                                "Monster Truck Madness 2/": {
+                                                    "glide2x.dll": {},
+                                                    "glide2x.ini": {},
+                                                    "readme.txt": {},
+                                                },
+                                            },
+                                            "Msi-Sw/": {
+                                                "Destruction Derby 2/": {
+                                                    "msi95.dll": {},
+                                                    "msi95.ini": {},
+                                                    "readme.txt": {},
+                                                },
+                                            },
+                                            "S3d-Sw/": {
+                                                "Destruction Derby/": {
+                                                    "readme.txt": {},
+                                                    "s3dtkw.dll": {},
+                                                    "s3dtkw.ini": {},
+                                                },
+                                                "Havoc/": {
+                                                    "readme.txt": {},
+                                                    "s3dtkw.dll": {},
+                                                    "s3dtkw.ini": {},
+                                                },
+                                                "POD Gold/": {
+                                                    "readme.txt": {},
+                                                    "s3dtkw.dll": {},
+                                                    "s3dtkw.ini": {},
+                                                },
+                                                "Reference/": {
+                                                    "readme.txt": {},
+                                                    "s3dtkw.dll": {},
+                                                    "s3dtkw.ini": {},
+                                                },
+                                            }
+                                        },
+                                    },
+                                },
+                            }));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
                         text: "Clock",
                         icon: pillunsaamislaskuriIcons.app32,
                         onActivate() {
@@ -446,26 +516,6 @@
                         text: "GORILLAS",
                         onActivate() {
                             w95.shell.run(gorillas, {singleInstance: true});
-                        },
-                    }),
-                    w95.widget.desktopIcon({
-                        text: "s3d-wrap.zip",
-                        icon: fileExplorerIcons.archive32,
-                        onActivate() {
-                            const link = document.createElement("a");
-                            link.href = "/desktop/s3d-wrap.zip";
-                            link.downlod = "s3d-wrap.zip";
-                            link.click();
-                        },
-                    }),
-                    w95.widget.desktopIcon({
-                        text: "msi2sw-dd2.zip",
-                        icon: fileExplorerIcons.archive32,
-                        onActivate() {
-                            const link = document.createElement("a");
-                            link.href = "/desktop/msi2sw-dd2.zip";
-                            link.downlod = "msi2sw-dd2.zip";
-                            link.click();
                         },
                     }),
                 ],

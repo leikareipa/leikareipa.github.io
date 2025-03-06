@@ -9,7 +9,7 @@ import {icons} from "./assets/icons.js";
 
 export default function({
     file = "",
-    isWordWrap = true,
+    isWordWrap = false,
     decoder = (bytes)=>(new TextDecoder("utf-8").decode(bytes)),
 } = {}) {
     return {

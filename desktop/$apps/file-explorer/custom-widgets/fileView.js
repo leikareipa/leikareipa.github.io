@@ -136,6 +136,8 @@ export default w95.widget(function fileView({
             case "jpg":
             case "bmp":
             case "png": return "image";
+            case "ini": return "ini";
+            case "dll": return "library";
             case "com":
             case "exe": return "executable";
             case "zip": return "archive";
@@ -150,7 +152,26 @@ export default w95.widget(function fileView({
             return icons.dir32;
         }
 
-        return icons[`${get_file_type(filename)}32`];
+        let iconType = "unknown";
+
+        switch (get_filename_extension(filename)) {
+            case "diz":
+            case "txt": iconType = "txt"; break;
+            case "gif":
+            case "jpg":
+            case "bmp":
+            case "png": iconType = "bmp"; break;
+            case "ini": iconType = "ini"; break;
+            case "dll": iconType = "dll"; break;
+            case "com":
+            case "exe": iconType = "exe"; break;
+            case "zip": iconType = "zip"; break;
+            case "bat": iconType = "bat"; break;
+            case "url": iconType = "url"; break;
+            default: break;
+        }
+
+        return icons[`${iconType}32`];
     }
 
     function get_filename_extension(filename) {
