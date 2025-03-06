@@ -125,7 +125,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><span>🥈</span><b>grok-3</b>:nonthinking-20-2-2025</td>
+            <td><span>🥈</span><b>grok-3</b>:20-2-2025</td>
             <td>60%</td>
             <td class="s2"></td>
             <td class="s1"></td>
