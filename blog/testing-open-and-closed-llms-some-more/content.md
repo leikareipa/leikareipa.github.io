@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="28 February 2025"/>
+<post-date date="25 September 2024" edited="6 March 2025"/>
 
 # Testing open and closed LLMs some more
 
@@ -62,7 +62,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><span class="first">🥇</span> <b>claude-3.7</b>:sonnet-20250219-think-32k</td>
+            <td><b>claude-3.7</b>:sonnet-20250219-think-32k</td>
             <td>90%</td>
             <td class="s2"></td>
             <td class="s1"></td>
@@ -71,7 +71,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><span class="first">🥇</span> <b>gpt-4.5</b>:preview-2025-02-27</td>
+            <td><b>gpt-4.5</b>:preview-2025-02-27</td>
             <td>80%</td>
             <td class="s2"></td>
             <td class="s1"></td>
@@ -80,7 +80,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><span class="first">🥇</span> <b>claude-3.5</b>:sonnet-20241022</td>
+            <td><b>claude-3.5</b>:sonnet-20241022</td>
             <td>70%</td>
             <td class="s2"></td>
             <td class="s1"></td>
@@ -89,7 +89,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><span class="first">🥇</span> <b>grok-3</b>:thinking-20-2-2025</td>
+            <td><b>grok-3</b>:thinking-20-2-2025</td>
             <td>70%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -98,11 +98,20 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><span class="first">🥇</span> <x-size>19G</x-size><b>qwq</b>:32b-preview-q4_K_M</td>
+            <td><x-size>19G</x-size><b>qwq</b>:32b-preview-q4_K_M</td>
             <td>70%</td>
             <td class="s0"></td>
             <td class="s1"></td>
             <td class="s2"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><x-size>19G</x-size><b>qwq</b>:32b-q4_K_M</td>
+            <td>60%</td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
             <td class="s2"></td>
             <td class="s2"></td>
         </tr>
