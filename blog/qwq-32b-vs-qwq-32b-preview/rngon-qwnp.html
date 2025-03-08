@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rotating Cube</title>
+</head>
+<body>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <script src="/retro-ngon/distributable/rngon.global.js"></script>
+    <script>
+    // Create vertices and materials for each face of the cube
+const frontVerts = [
+    Rngon.vertex(-1, -1, 1),
+    Rngon.vertex(1, -1, 1),
+    Rngon.vertex(1, 1, 1),
+    Rngon.vertex(-1, 1, 1)
+];
+const frontNgon = Rngon.ngon(frontVerts, { color: Rngon.color.red }, Rngon.vector(0, 0, 1));
+
+const backVerts = [
+    Rngon.vertex(-1, -1, -1),
+    Rngon.vertex(1, -1, -1),
+    Rngon.vertex(1, 1, -1),
+    Rngon.vertex(-1, 1, -1)
+];
+const backNgon = Rngon.ngon(backVerts, { color: Rngon.color.blue }, Rngon.vector(0, 0, -1));
+
+const rightVerts = [
+    Rngon.vertex(1, -1, -1),
+    Rngon.vertex(1, 1, -1),
+    Rngon.vertex(1, 1, 1),
+    Rngon.vertex(1, -1, 1)
+];
+const rightNgon = Rngon.ngon(rightVerts, { color: Rngon.color.green }, Rngon.vector(1, 0, 0));
+
+const leftVerts = [
+    Rngon.vertex(-1, -1, -1),
+    Rngon.vertex(-1, 1, -1),
+    Rngon.vertex(-1, 1, 1),
+    Rngon.vertex(-1, -1, 1)
+];
+const leftNgon = Rngon.ngon(leftVerts, { color: Rngon.color.magenta }, Rngon.vector(-1, 0, 0));
+
+const topVerts = [
+    Rngon.vertex(-1, 1, -1),
+    Rngon.vertex(1, 1, -1),
+    Rngon.vertex(1, 1, 1),
+    Rngon.vertex(-1, 1, 1)
+];
+const topNgon = Rngon.ngon(topVerts, { color: Rngon.color.cyan }, Rngon.vector(0, 1, 0));
+
+const bottomVerts = [
+    Rngon.vertex(-1, -1, -1),
+    Rngon.vertex(1, -1, -1),
+    Rngon.vertex(1, -1, 1),
+    Rngon.vertex(-1, -1, 1)
+];
+const bottomNgon = Rngon.ngon(bottomVerts, { color: Rngon.color.yellow }, Rngon.vector(0, -1, 0));
+
+// Collect all faces into a mesh
+const cubeNgons = [frontNgon, backNgon, rightNgon, leftNgon, topNgon, bottomNgon];
+const cubeMesh = Rngon.mesh(cubeNgons);
+
+function animate() {
+    requestAnimationFrame(animate);
+    
+    // Rotate the cube using time-based rotation
+    const nowSeconds = Date.now() / 1000;
+    cubeMesh.rotate.y = (nowSeconds * 45) % 360; // Rotate around Y-axis
+    cubeMesh.rotate.x = (nowSeconds * 45) % 360; // Rotate around X-axis
+    
+    Rngon.render({
+        target: 'canvas',
+        meshes: [cubeMesh],
+        options: {
+            cameraPosition: Rngon.vector(0, 0, -5),
+            useBackfaceCulling: true,
+            resolution: { width: 640, height: 480 } // Adjust to canvas size
+        }
+    });
+}
+
+// Start the animation loop
+animate();
+</script>
+</body>
+</html>
+

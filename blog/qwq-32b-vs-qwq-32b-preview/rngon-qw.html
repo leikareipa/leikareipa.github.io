@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rotating Cube</title>
+</head>
+<body>
+    <canvas id="renderCanvas" width="640" height="480"></canvas>
+    <script src="/retro-ngon/distributable/rngon.global.js"></script>
+    <script>
+    // Define vertices
+const vertices = [
+    Rngon.vertex(-1, -1, 1), // Front bottom left
+    Rngon.vertex(1, -1, 1),  // Front bottom right
+    Rngon.vertex(1, 1, 1),   // Front top right
+    Rngon.vertex(-1, 1, 1),  // Front top left
+    Rngon.vertex(-1, -1, -1),// Back bottom left
+    Rngon.vertex(1, -1, -1), // Back bottom right
+    Rngon.vertex(1, 1, -1),  // Back top right
+    Rngon.vertex(-1, 1, -1)  // Back top left
+];
+
+// Define materials for each face
+const frontMaterial = { color: Rngon.color.red };
+const backMaterial = { color: Rngon.color.blue };
+const topMaterial = { color: Rngon.color.yellow };
+const bottomMaterial = { color: Rngon.color.green };
+const leftMaterial = { color: Rngon.color.magenta };
+const rightMaterial = { color: Rngon.color.cyan };
+
+// Define quads for each face
+const frontQuad = Rngon.ngon([vertices[0], vertices[1], vertices[2], vertices[3]], frontMaterial);
+const backQuad = Rngon.ngon([vertices[4], vertices[5], vertices[6], vertices[7]], backMaterial);
+const topQuad = Rngon.ngon([vertices[3], vertices[2], vertices[6], vertices[7]], topMaterial);
+const bottomQuad = Rngon.ngon([vertices[0], vertices[1], vertices[5], vertices[4]], bottomMaterial);
+const leftQuad = Rngon.ngon([vertices[0], vertices[4], vertices[7], vertices[3]], leftMaterial);
+const rightQuad = Rngon.ngon([vertices[1], vertices[5], vertices[6], vertices[2]], rightMaterial);
+
+// Create mesh
+const cubeMesh = Rngon.mesh([frontQuad, backQuad, topQuad, bottomQuad, leftQuad, rightQuad]);
+
+function animate() {
+    // Calculate the current rotation angle based on time
+    const angle = performance.now() / 1000 * 90; // Rotate 90 degrees per second
+
+    // Apply rotation to the mesh
+    cubeMesh.rotate = Rngon.vector(angle, angle, 0);
+
+    // Render the scene
+    Rngon.render({
+        target: "renderCanvas",
+        meshes: [cubeMesh],
+        options: {
+            cameraPosition: Rngon.vector(0, 0, -5),
+            useBackfaceCulling: true,
+        },
+    });
+
+    // Request the next frame
+    requestAnimationFrame(animate);
+}
+
+// Start the animation loop
+animate();
+</script>
+</body>
+</html>
+
