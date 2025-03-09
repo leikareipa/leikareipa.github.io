@@ -84,6 +84,14 @@ export default w95.widget(function fileView({
                     );
                 }
             },
+            activate_current_item() {
+                for (const icon of this.icons) {
+                    if (icon.isSelected) {
+                        icon.Message.activate();
+                        break;
+                    }
+                }
+            },
         },
         Event: {
             mousedown() {

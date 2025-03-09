@@ -51,9 +51,17 @@ export default function({
                 },
                 Event: {
                     keydown(event) {
-                        if (event.keyCode === 8) {
-                            const fileViewWidget = this.$("fileView");
-                            fileViewWidget.Message.navigate_back();
+                        switch (event.keyCode) {
+                            /* Backspace.*/
+                            case 8: {
+                                this.$("fileView").Message.navigate_back();
+                                break;
+                            }
+                            /* Enter.*/
+                            case 13: {
+                                this.$("fileView").Message.activate_current_item();
+                                break;
+                            }
                         }
                     },
                 },

@@ -35,6 +35,7 @@ export default w95.widget(function largeIcon({
         get y() { return y },
         get width() { return this.$("layout").width },
         get height() { return this.$("layout").height },
+        get isSelected() { return hasFocus.now },
         Mounted() {
             height = this.$childWidgets.reduce((sum, w)=>(sum + w.height), 0);
         },
@@ -97,6 +98,9 @@ export default w95.widget(function largeIcon({
         Message: {
             blur() {
                 hasFocus.set(false);
+            },
+            activate() {
+                onActivate?.(this);
             },
         },
         Event: {
