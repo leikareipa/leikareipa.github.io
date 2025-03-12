@@ -95,7 +95,7 @@
             import {appicon32 as acqIcon} from "./desktop/$apps/acq/widgets/textures.js";
 
             const desktop = w95.shell.desktop({
-                showWatermark: (window.location.hostname === "localhost"),
+                showWatermark: 1,//(window.location.hostname === "localhost"),
                 icons: [
                     w95.widget.desktopIcon({
                         text: "PC.txt",
@@ -255,7 +255,6 @@
                                 files: {
                                     "Näyttis/": {
                                         "G400.gif": {},
-                                        "Rage Pro Turbo.gif": {},
                                         "TNT2 M64.gif": {},
                                     },
                                 },
@@ -537,7 +536,7 @@
             });
             w95.shell.boot();
             w95.registry["pillua"] = 3072;
-            w95.shell.wallpaper = "./desktop/nature.png";
+            w95.shell.wallpaper = "./desktop/Näyttis/G400.gif";
             w95.shell.run([desktop, w95.shell.taskbar()]);
         </script>
     </body>
