@@ -294,7 +294,7 @@ export default function({
                                             w95.widget.dropdownBox({
                                                 x: (width.now - 67),
                                                 y: 4,
-                                                width: 54,
+                                                width: 53,
                                                 height: 22,
                                                 itemIndex: String(year.now),
                                                 styleHints: [
