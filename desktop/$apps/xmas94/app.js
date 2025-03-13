@@ -97,6 +97,7 @@ export default {
                     move(deltaX, deltaY) {
                         x.set(x.now + deltaX);
                         y.set(y.now + deltaY);
+                        deltaY = Math.min(0, deltaY);
                         for (let y = 1; y < fluidDomainSize - 1; y++) {
                             for (let x = 1; x < fluidDomainSize - 1; x++) {
                                 if (Math.random() < 0.25) {

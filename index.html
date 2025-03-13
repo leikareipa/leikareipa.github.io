@@ -10,6 +10,10 @@
         <link href="/experimental/w95/distributable/w95.css" rel="stylesheet">
     </head>
     <style>
+        #desktop {
+            background-size: cover !important;
+        }
+
         iframe.rsed,
         iframe.dosbox,
         iframe.geoclock,
@@ -95,7 +99,7 @@
             import {appicon32 as acqIcon} from "./desktop/$apps/acq/widgets/textures.js";
 
             const desktop = w95.shell.desktop({
-                showWatermark: 1,//(window.location.hostname === "localhost"),
+                showWatermark: (window.location.hostname === "localhost"),
                 icons: [
                     w95.widget.desktopIcon({
                         text: "Nettiselain",
@@ -512,7 +516,7 @@
             });
             w95.shell.boot();
             w95.registry["pillua"] = 3072;
-            w95.shell.wallpaper = "./desktop/Näyttis/G400.gif";
+            w95.shell.wallpaper = "./desktop/prt.png";
             w95.shell.run([desktop, w95.shell.taskbar()]);
         </script>
     </body>
