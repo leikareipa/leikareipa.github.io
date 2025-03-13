@@ -98,17 +98,17 @@
                 showWatermark: 1,//(window.location.hostname === "localhost"),
                 icons: [
                     w95.widget.desktopIcon({
-                        text: "PC.txt",
-                        icon: notepadIcons.app32,
-                        onActivate() {
-                            w95.shell.run(notepad({file: "./desktop/PC.txt"}));
-                        },
-                    }),
-                    w95.widget.desktopIcon({
                         text: "Nettiselain",
                         icon: browserIcons.app32,
                         onActivate() {
                             w95.shell.run(browser({year: 1999, url: "www.altavista.com"}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "PC.txt",
+                        icon: notepadIcons.app32,
+                        onActivate() {
+                            w95.shell.run(notepad({file: "./desktop/PC.txt"}));
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -154,30 +154,6 @@
                         icon: apinaIcons.app32,
                         onActivate() {
                             w95.shell.run(apina, {singleInstance: true});
-                        },
-                    }),
-                    w95.widget.desktopIcon({
-                        text: "Lanit",
-                        icon: fileExplorerIcons.app32,
-                        onActivate() {
-                            w95.shell.run(fileExplorer({
-                                defaultRunners: {
-                                    image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
-                                },
-                                files: {
-                                    "Lanit/": {
-                                        "Assembly '98/": {
-                                            "64tiikeri.gif": {},
-                                            "graffa6.gif": {},
-                                            "kahvi-3.gif": {},
-                                            "krooh-2.gif": {},
-                                            "patja.gif": {},
-                                            "roskapoyta.gif": {},
-                                            "MBnet.url": ()=>w95.shell.run(browser({year: 2000, url: "www.mbnet.fi/jutut/assembly98"})),
-                                        },
-                                    },
-                                },
-                            }));
                         },
                     }),
                     w95.widget.desktopIcon({

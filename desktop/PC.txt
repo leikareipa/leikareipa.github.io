@@ -1,4 +1,4 @@
 Intel Pentium II 266 MHz
+Matrox Millennium G400
 64 MB SDRAM
-Matrox G400
 Windows 95
