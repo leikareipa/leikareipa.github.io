@@ -55,8 +55,8 @@ export default {
             }
 
             const octaves = Math.max(0, Math.min(99, uiOctaves.now));
-            const width = viewWidth.now;
-            const height = viewHeight.now;
+            const width = ~~viewWidth.now;
+            const height = ~~viewHeight.now;
             let idx = 0;
 
             for (let y = 0; y < height; y++)
@@ -79,7 +79,7 @@ export default {
             terrainMesh.set(
                 Rngon.mesh(generate_terrain_mesh(), {
                     rotate: Rngon.vector(45, 0, 0),
-                    translate: Rngon.vector(-(viewWidth.now / 2), 0, 0),
+                    translate: Rngon.vector(-(width/ 2), 0, 0),
                 })
             );
         }
@@ -87,8 +87,8 @@ export default {
         function generate_terrain_mesh(skip = 8) {
             const hm = heightmap.now;
             const polys = [];
-            const width = viewWidth.now;
-            const height = viewHeight.now;
+            const width = ~~viewWidth.now;
+            const height = ~~viewHeight.now;
 
             for (let y = 0; y < (height - skip); y += skip)
             {
@@ -173,7 +173,7 @@ export default {
         }
 
         function download_heightmap() {
-            const imageData = new ImageData(viewWidth.now, viewHeight.now);
+            const imageData = new ImageData(~~viewWidth.now, ~~viewHeight.now);
             draw_heightmap({pixelBuffer: imageData});
 
             const canvas = document.createElement("canvas");
@@ -203,7 +203,7 @@ export default {
             Form() {
                 return w95.widget.window({
                     parent: this,
-                    title: `${viewWidth.now}x${viewHeight.now} - ${this.$app.Meta.name}`,
+                    title: `${~~viewWidth.now}x${~~viewHeight.now} - ${this.$app.Meta.name}`,
                     icon: icons.app16,
                     resize(deltaWidth, deltaHeight) {
                         const oldWidth = width.now;

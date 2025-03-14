@@ -124,7 +124,7 @@ export default {
                 return w95.widget.window({
                     icon: icons.app16,
                     parent: this,
-                    title: "Clock",
+                    title: "A-Clock",
                     move(deltaX, deltaY) {
                         x.set(x.now + deltaX);
                         y.set(y.now + deltaY);

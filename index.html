@@ -170,6 +170,10 @@
                                 },
                                 files: {
                                     "Valokuvia/": {
+                                        "Näyttis/": {
+                                            "G400.gif": {},
+                                            "TNT2 M64.gif": {},
+                                        },
                                         "kokko.gif": {},
                                         "pappa.gif": {},
                                         "pappa nuorena.gif": {},
@@ -208,7 +212,7 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "The Curse of Monkey Island",
+                        text: "COMI",
                         icon: fileExplorerIcons.url32,
                         styleHints: [
                             w95.styleHint.shortcut,
@@ -222,23 +226,6 @@
                         icon: imageViewerIcons.app32,
                         onActivate() {
                             w95.shell.run(imageViewer("./desktop/SÄÄTÖÄ.GIF"));
-                        },
-                    }),
-                    w95.widget.desktopIcon({
-                        text: "Näyttis",
-                        icon: fileExplorerIcons.app32,
-                        onActivate() {
-                            w95.shell.run(fileExplorer({
-                                defaultRunners: {
-                                    image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
-                                },
-                                files: {
-                                    "Näyttis/": {
-                                        "G400.gif": {},
-                                        "TNT2 M64.gif": {},
-                                    },
-                                },
-                            }));
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -360,7 +347,7 @@
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Clock",
+                        text: "A-Clock",
                         icon: pillunsaamislaskuriIcons.app32,
                         onActivate() {
                             w95.shell.run(analogClock, {singleInstance: true});
@@ -515,7 +502,7 @@
                 ],
             });
             w95.shell.boot();
-            w95.registry["pillua"] = 3072;
+            w95.registry["pillua"] = 3125;
             w95.shell.wallpaper = "./desktop/prt.png";
             w95.shell.run([desktop, w95.shell.taskbar()]);
         </script>
