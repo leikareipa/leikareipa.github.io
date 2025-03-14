@@ -101,7 +101,7 @@ export default {
                         for (let y = 1; y < fluidDomainSize - 1; y++) {
                             for (let x = 1; x < fluidDomainSize - 1; x++) {
                                 if (Math.random() < 0.25) {
-                                    fluid.apply_force({x, y, dU: deltaX*Math.random()*2.25, dV: deltaY*Math.random()*2.25});
+                                    fluid.apply_force({x, y, dU: deltaX*Math.random()*1.5, dV: deltaY*Math.random()*1.5});
                                 }
                             }
                         }

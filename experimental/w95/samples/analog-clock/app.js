@@ -171,7 +171,7 @@ export default {
                             y: 18,
                             width: clockFaceTexture.width+12,
                             height: clockFaceTexture.height+12,
-                            shape: w95.frameShape.input,
+                            shape: w95.frameShape.fancyBox,
                             children: [
                                 w95.widget.renderSurface({
                                     x: 6,
