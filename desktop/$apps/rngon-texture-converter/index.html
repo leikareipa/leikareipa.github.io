@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Retro n-gon texture converter</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="/experimental/w95/distributable/w95-api.js"></script>
+        <script src="/experimental/w95/distributable/w95-assets.js"></script>
+        <script src="/experimental/w95/distributable/w95-widgets.js"></script>
+        <link href="/experimental/w95/distributable/w95.css" rel="stylesheet">
+        <style>
+            #desktop {
+                background-color: black;
+            }
+            canvas.ngon-texture-convert {
+                background-color: rgb(192, 192, 192);
+                pointer-events: none;
+                image-rendering: pixelated;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import app from "./app.js";
+            import {icons as rngonTextureConvertIcons}  from "./icons.js";
+
+            const taskbar = w95.shell.taskbar();
+            const desktop = w95.shell.desktop({
+                icons: [
+                    w95.widget.desktopIcon({
+                        text: "Rngon texture converter",
+                        icon: rngonTextureConvertIcons.app32,
+                        onActivate() {
+                            w95.shell.run(app);
+                        },
+                    }),
+                ]
+            });
+
+            w95.shell.boot();
+            w95.shell.run([desktop, taskbar, app]);
+        </script>
+    </body>
+</html>

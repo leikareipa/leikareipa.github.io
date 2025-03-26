@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-iframe .caption > .type > .text {
+                display: none;
+            }
+            .dokki-iframe .caption > .type > .icon > i {
+                visibility: hidden;
+            }
+            .dokki-iframe .caption > .type > .icon > i::before {
+                font-family: "Font Awesome 5 Free";
+                font-weight: normal;
+                content: "\f075";
+                visibility: visible;
+                transform: scaleX(-1);
+                display: inline-block;
+            }
+            .dokki-iframe .caption > .label {
+                margin: 0 !important;
+                display: inline-block !important;
+                margin-left: 0.2em !important;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Comparing ChatGPT models' drawing skills, part 2
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="24 November 2023"></post-date>
+<dokki-topic title="Comparing ChatGPT models&apos; drawing skills, part 2">
+<p>OpenAI released the Turbo version of GPT-4 a short while back, so let's pit it against the original GPT-4 from Q1 2023 in some visual programming tasks.</p>
+<p>For full context, see the original blog post, <a href="/blog/comparing-chatgpt-models-drawing-skills/">comparing ChatGPT models' drawing skills</a>.</p>
+<dokki-table headerless><template #caption>My subjective assessment of task fulfilment</template>
+<table>
+<tr>
+<th>Task</th>
+<th colspan="2">Score</th>
+</tr>
+<tr>
+<th></th>
+<th>GPT-4 (Q1 2023)</th>
+<th>GPT-4 Turbo</th>
+</tr>
+<tr>
+<th>Average</th>
+<th>90%</th>
+<th>70%</th>
+</tr>
+<tr>
+<td>DOOM melt</td>
+<td>80%</td>
+<td>75%</td>
+</tr>
+<tr>
+<td>Snowfall</td>
+<td>80%</td>
+<td>65%</td>
+</tr>
+<tr>
+<td>Ray tracing</td>
+<td>90%</td>
+<td>70%</td>
+</tr>
+<tr>
+<td>Mollweide</td>
+<td>100%</td>
+<td>90%</td>
+</tr>
+<tr>
+<td>Gource</td>
+<td>90%</td>
+<td>70%</td>
+</tr>
+<tr>
+<td>Starfield</td>
+<td>100%</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>Fire</td>
+<td>95%</td>
+<td>60%</td>
+</tr>
+<tr>
+<td>Effect of choice</td>
+<td>90%</td>
+<td>30%</td>
+</tr>
+</table>
+</dokki-table>
+<dokki-subtopic title="DOOM-style screen melt">
+<p class="label-a">"Write JavaScript code that applies onto a pixel buffer an animated screen melt effect, as seen in the 1990s DOS game DOOM. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./melt/4.html" ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<dokki-iframe src="./melt/4-turbo.html" ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<p>Turbo was able to generate the effect in two iterations, much quicker than GPT-4. The first attempt resulted in a glitched upwards-moving animation. For the second iteration, I showed it a screenshot of DOOM with the effect and described it in words.</p>
+<p>Neither model quite replicates the game's distribution of melt speeds (it's less random across neighboring columns).</p>
+</dokki-subtopic><dokki-subtopic title="Snowfall">
+<p class="label-a">"Write JavaScript code that draws animated snowfall that accumulates on the ground. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./snowfall/4.html" ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<dokki-iframe src="./snowfall/4-turbo.html" ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="Ray-tracing likeness">
+<p class="label-a">"Imagine you're a rudimentary ray tracer from the 1990s and you're asked to render a scene containing two spheres, one &ndash; red &ndash; in the middle of your view and another &ndash; blue &ndash; to the left of it. A reflection of the red sphere is visible on the blue sphere. Write JavaScript code that draws into a pixel buffer what your output might be. You don't need to show me the ray tracing code, just a representation of the output image. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<p class="label-a">"Feel free to make changes to the code to more realistically represent the image that you as the ray tracer would produce."</p>
+<dokki-iframe src="./ray-tracer/4.html" ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<dokki-image src="./ray-tracer/4-turbo.png" width="482" height="482"  thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAB7CAAAewgFu0HU+AAACE0lEQVR4nO2TwUtUURTGv3vfPIIikIgY0dpYUSTjtFB3RqCihTjNSplhBgUHJAsTcREiGIGbWlgphoZBgW3s34iIQBSiMdKN4DYhE3He/OKNozOjBi3c1YEH373nnt9779zviGMO/QeSyWTwvCzZ7K7O+iIfvvY8zxdkPS+X/2MP/bqDxcV67zkqdwi4t7m9vc3MzCzt7UmamzsZGHjIysr3/cNra2uMDA0Ra2kh0dbGxPg4v7a2KGao+A2JRC9SBdY2YEwz0lXKy0Ok02nW19epq6rikkSTtdy0lgqJRDRKxm9DHqq9PszPv0eqxHHu4jjPsfYlrjuKdJ3Ozi7upVJckxhxXaas5YXj8MB1qZR4NT2dY/gs7ezsAvv7h5BqCQSeIn1A+or0BqmLU6evUBM8R0xi1hi+SHySGHccGiR64vHdL/S8ArCvbxCpPg/8iPQN6S1SNydOXqb67BniEq+NIS3xWeKZ43BDoruj4zBwbu4d0nkCgftYO4ExM7juY6Q6otEYPckENRKjrsu0MUxay6DrckFianKy8MsFK3hEIvFcH61txZgIUpiysossLCyyurpKdTBItUS7Mdy2Nge709hYctMlttnc/MnY2BPq628RCjUSi6VYWlrcd0F6eZneZJKmcJjW2loeDQ/zY2Oj1DbFpjxo0uL9v83pYDI3WiXrI0YvH77OHjUpxxn694C/ATJPQ25EFZVuAAAAAElFTkSuQmCC"><template #caption>GPT-4 Turbo</template>
+                        </dokki-image>
+<p>Turbo implemented a simple ray tracer in Python and used its code interpreter abilities to run it to generate the image. It failed to include the reflection though, despite multiple attempts.</p>
+</dokki-subtopic><dokki-subtopic title="Checkerboard with Mollweide projection">
+<p class="label-a">"Write JavaScript code that draws into a pixel buffer a chessboard pattern and then applies Mollweide projection to it. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./mollweide/4.html" ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<dokki-iframe src="./mollweide/4-turbo.html" ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="Visualizing the internet in the style of Gource">
+<p class="label-a">"Write JavaScript code that draws into a pixel buffer a representation of the early Internet in the style of Gource. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<p class="label-a">"Could you use this graph to plot a representation of www.geocities.com from the late 1990s as best as you can?"</p>
+<dokki-iframe src="./gource/4.html" ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<dokki-iframe src="./gource/4-turbo.html" ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="Starfield">
+<p class="label-a">"Write JavaScript code that draws an animated starfield effect (a field of stars moving in 3D space) into a pixel buffer. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./starfield/4.html" ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<dokki-iframe src="./starfield/4-turbo.html" ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="Fire">
+<p class="label-a">"Write JavaScript code that plots an animated fire effect into a pixel buffer. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./fire/4.html" ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<dokki-iframe src="./fire/4-turbo.html" ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="An effect of your choice">
+<p class="label-a">"I'm a very experienced graphics developer specializing in 2D image processing. I have an image in a pixel buffer (RGBA). Write JavaScript code that applies an interesting visual effect to the pixel buffer. The effect should be something that someone like me likely doesn't often see &ndash; something interesting."</p>
+<dokki-iframe src="./interesting/4.html" ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<dokki-iframe src="./interesting/4-turbo.html" ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<p>Turbo's implementation is clearly glitched, but it couldn't fix it despite multiple prompts.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

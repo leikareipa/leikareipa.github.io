@@ -1,0 +1,269 @@
+b
+{
+    font-weight: var(--dokkiCSS-bold-text-weight);
+}
+
+body[data-dokki-theme="light"],
+.dokki-topic[data-dokki-theme="light"]:not(#introduction),
+.dokki-toolbar[data-dokki-theme="light"],
+.dokki-embedded[data-dokki-theme="light"]
+{
+    --dokkiCSS-page-inert-bg-color: whitesmoke;
+    --dokkiCSS-page-primary-bg-color: whitesmoke;
+    --dokkiCSS-page-secondary-bg-color: whitesmoke;
+    --dokkiCSS-page-primary-fg-color: #1a1a1a;
+    --dokkiCSS-page-secondary-fg-color: #1a1a1a;
+    background-color: whitesmoke !important;
+}
+
+.post-date
+{
+    font-size: 85%;
+    padding-left: var(--dokkiCSS-topic-horizontal-padding);
+    padding-right: var(--dokkiCSS-topic-horizontal-padding);
+    padding-top: calc(var(--dokkiCSS-topic-vertical-padding) + var(--dokkiCSS-navibar-item-padding-vertical));
+}
+
+.post-date .bit + .bit::before
+{
+    content: "·";
+    margin: 0 0.25rem;
+    display: inline-block; /* Prevent inheriting link styling if parent is <a>.*/
+    color: var(--dokkiCSS-page-inert-fg-color);
+}
+
+.dokki-header .widgets .theme-selector i.fa-adjust
+{
+    transform: rotate(225deg);
+}
+
+body[data-dokki-layout^="vertical"] .dokki-topic:not(.dokki-ignore)
+{
+    padding-bottom: calc(0.5 * var(--dokkiCSS-topic-vertical-padding)) !important;
+}
+
+body[data-dokki-layout^="vertical"] .dokki-tag-filter
+{
+    border-radius: 0;
+}
+
+body[data-dokki-layout^="vertical"] .post-date
+{
+    margin-bottom: 0;
+    padding-top: var(--dokkiCSS-topic-vertical-padding);
+}
+
+body[data-dokki-layout="vertical-narrow"] .post-date
+{
+    line-height: 1.5;
+    margin-bottom: calc(0.25 * var(--dokkiCSS-topic-vertical-padding));
+}
+
+body:not([data-dokki-layout^="vertical"]) .post-date
+{
+    margin-bottom: 1.75rem;
+}
+
+body[data-dokki-layout="horizontal-wide"] .post-date
+{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+body:not([data-dokki-layout^="vertical"]) .post-date + .dokki-topic
+{
+    padding-top: calc(0.25 * var(--dokkiCSS-topic-vertical-padding)) !important;
+}
+
+body[data-dokki-layout^="vertical"] .dokki-tag-cloud.headerless
+{
+    border-radius: 0;
+}
+
+body[data-dokki-layout="vertical-narrow"] .dokki-tag-cloud.headerless > .dokki0-animated-expander > .content
+{
+    overflow: scroll;
+    flex-wrap: unset !important;
+}
+
+.dokki-topics
+{
+    align-items: unset !important;
+}
+
+.dokki-topic em
+{
+    font-style: normal;
+    background-color: var(--dokkiCSS-embedded-auxiliary-color);
+    border-radius: 0;
+    font-weight: normal !important;
+    padding: 0.13rem 0.45rem;
+    margin: 1px;
+    display: inline-flex;
+    font-size: 95%;
+}
+
+.dokki-topic strong
+{
+    font-weight: var(--dokkiCSS-bold-text-weight);
+}
+
+.dokki-header
+{
+    padding-top: 2rem !important;
+}
+
+.dokki-header > .title
+{
+    display: none;
+}
+
+.dokki-header > .widgets
+{
+    margin-top: 0 !important;
+}
+
+body[data-dokki-layout="vertical-narrow"] .dokki-topic em
+{
+    line-break: anywhere;
+}
+
+.dokki-topic td .dokkiCSS-embedded
+{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.dokki-table .data-lacking
+{
+    background: var(--dokkiCSS-embedded-auxiliary-color);
+}
+
+.dokki-table td.with-inline-table
+{
+    padding: 0 !important;
+
+    /* Force the <td> to not expand to fit the width of the inline table, so that the
+     * inline table - and not the parent table - gets the horizontal scroll bar.*/
+    max-width: 0;
+}
+
+.dokki-table td.with-inline-table > .dokki-table
+{
+    width: 100%;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background-color: inherit;
+}
+
+.dokki-table td.with-inline-table > .dokki-table > header
+{
+    padding: 8px;
+    line-height: var(--dokkiCSS-content-line-height);
+    box-shadow: none;
+}
+
+.dokki-table td.with-inline-table > .dokki-table > header > .dokki0-expansion-indicator
+{
+    margin-right: 0.75ch;
+}
+
+.dokki-table td.with-inline-table > .dokki-table > header > .caption > .icon
+{
+    display: none;
+}
+
+.dokki-table td.with-inline-table > .dokki-table > header > .title
+{
+    display: none;
+}
+
+.blog-link,
+.feedback-link
+{
+    color: inherit;
+    text-decoration: none;
+}
+
+.dokki-topic .ths-inline-feedback-button
+{
+    cursor: pointer;
+}
+
+.blog-post-abstract.fields
+{
+    margin-top: 0.75em !important;
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+}
+
+.blog-post-abstract .field
+{
+    display: inline-flex;
+    align-self: start;
+    flex-direction: column;
+}
+
+.blog-post-abstract .field.brief
+{
+    border-left: 1px solid;
+    padding-left: 0.75em;
+}
+
+.blog-post-abstract .field.date .label
+{
+    white-space: nowrap;
+    color: var(--dokkiCSS-page-inert-fg-color);
+}
+
+.blog-post-abstract .field.tags .label
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -6px;
+}
+
+.blog-post-abstract .field.tags .dokki-tag .count
+{
+    display: none;
+}
+
+.blog-post-abstract .field .icon
+{
+    padding: 3px 0;
+    font-weight: var(--dokkiCSS-bold-text-weight);
+    font-size: 95%;
+}
+
+.blog-post-abstract .field .label
+{
+    padding: 3px 0;
+}
+
+.squiggly
+{
+    display: inline-block;
+    white-space: nowrap;
+    margin: 0 0.25ch;
+}
+
+.label-a
+{
+    padding: 1em;
+    background-color: var(--dokkiCSS-embedded-auxiliary-color);
+    max-width: calc(100% - 26px);
+    border-radius: 0;
+    font-style: italic;
+}
+
+.dokki-topic
+{
+    overflow: hidden;
+}
+
+body[data-dokki-layout^="vertical"] .blog-post-abstract + .dokki-hr
+{
+    display: none !important;
+}

@@ -1,0 +1,23 @@
+Meet faux Internet browser, a superficial replica of Microsoft's Internet Explorer 4, built with the w95 UI framework! (Not associated with Microsoft.)
+
+This mock browser lets you stream websites from the Internet Archive, potentially viewing them as you did back in the 1990s.
+
+
+How to use
+===========
+1. Click on the fake browser's address bar.
+
+2. Type in the URL of the website you want to visit, then press Enter. After a short while, the browser will display the website as it might've appeared in the 1990s.
+
+3. Use the year dropdown selector, to the right of the address bar, to wish for a version of the website from a particular year.
+
+
+Issues
+======
+- You can expect to come across various issues when browsing. Don't worry about it.
+
+- Some websites will attempt to navigate your real browser when you click on a link. To warn you in advance, your browser will ask you whether you want to allow the navigation to take place.
+
+- The Back and Forward buttons of the fake browser navigate your real browser's history.
+
+...And other issues for you to discover!

@@ -1,0 +1,144 @@
+html
+{
+    height: 100%;
+}
+
+body
+{
+    background-color: #6e6e6e;
+    color: black;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+#header
+{
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.45);
+    color: lightgray;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: center;
+}
+
+#header main
+{
+    display: flex;
+    gap: 1rem;
+}
+
+#header aside
+{
+    padding-top: 0.5rem;
+    font-size: 90%;
+    color: #b7b7b7;
+}
+
+#header aside + aside
+{
+    padding-top: 0.3em;
+}
+
+#header #usage::before
+{
+    content: "Usage: ";
+}
+
+#header #copyright::before
+{
+    content: "Assets © ";
+}
+
+#header #copyright a
+{
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid;
+}
+
+.selector-container
+{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.selector-container select
+{
+    height: 100%;
+    border: none;
+    color: white;
+    border-radius: 0;
+    margin-left: 0.5em;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    appearance: none;
+    cursor: pointer;
+    background-color: inherit;
+}
+
+.selector-container select option,
+.selector-container select optgroup
+{
+    background-color: dimgray;
+    color: whitesmoke;
+}
+
+.selector-container .selector-tag
+{
+    color: #b7b7b7;
+    background-color: inherit;
+    border: none;
+    white-space: nowrap;
+    height: 100%;
+    display: flex;
+    align-items: inherit;
+}
+
+#sample-frame
+{
+    position: relative;
+    z-index: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+#sample-selector-container
+{
+    flex-grow: 1;
+    align-items: baseline;
+}
+
+@media only screen and (max-width: 850px)
+{
+    #header
+    {
+        width: calc(100% - 20px);
+    }
+}
+
+@media only screen and (max-width: 600px)
+{
+    #sample-selector-container
+    {
+        width: 100% !important;
+    }
+}

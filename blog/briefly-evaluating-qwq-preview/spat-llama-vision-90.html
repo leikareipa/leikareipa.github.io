@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Scene</title>
+</head>
+<body>
+    <canvas id="sceneCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('sceneCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Light properties
+        const lightDirection = { x: -0.5, y: -1 };
+        const lightIntensity = 1;
+        const ambientLight = 0.2;
+
+        function diffuseLighting(point) {
+            const dotProduct = (point.x * lightDirection.x + point.y * lightDirection.y);
+            return Math.max(dotProduct, ambientLight) * lightIntensity;
+        }
+
+        // Draw red sphere in the middle
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(200, 150, 50, 0, Math.PI * 2);
+
+        const gradientRed = ctx.createRadialGradient(200, 150, 0, 200, 150, 50);
+        gradientRed.addColorStop(0, 'rgb(255, 0, 0)'); // Surface color
+        gradientRed.addColorStop(1, 'rgba(255, 0, 0, 0.2)'); // Lighten towards the edge
+        ctx.fillStyle = gradientRed;
+        ctx.fill();
+
+        // Draw blue sphere to the left
+        ctx.beginPath();
+        ctx.arc(100, 170, 48, 0, Math.PI * 2);
+
+        const gradientBlue = ctx.createRadialGradient(100, 170, 0, 100, 170, 48);
+        gradientBlue.addColorStop(0, 'rgb(0, 0, 255)'); // Surface color
+        gradientBlue.addColorStop(1, 'rgba(0, 0, 255, 0.2)'); // Lighten towards the edge
+        ctx.fillStyle = gradientBlue;
+        ctx.fill();
+
+        // Draw reflection of red sphere on blue sphere (simplified)
+        ctx.globalAlpha = 0.5; // Semi-transparent for the reflection effect
+        ctx.beginPath();
+        ctx.arc(138, 206, 19, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.3)'; // Reflection color with alpha
+        ctx.fill();
+
+    </script>
+</body>
+</html>

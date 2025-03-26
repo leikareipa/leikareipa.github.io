@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" crossorigin="anonymous" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc">
+        <style>
+            html {
+                height: 100%;
+            }
+            body {
+                background-color: white;
+                text-align: center;
+                font-family: sans-serif;
+                overflow: hidden;
+                height: 100%;
+                display: grid;
+                margin: 0;
+                padding: 6px;
+                box-sizing: border-box;
+                grid-template-rows: 1fr 1fr;
+            }
+            button#act {
+                padding: 12px;
+                margin-bottom: 6px;
+                cursor: pointer;
+            }
+            #container {
+                display: grid;
+                grid-row-gap: 6px;
+            }
+            #container > * {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #label,
+            #result,
+            #canceled,
+            #spinner {
+                padding: 6px;
+                border-radius: 3px;
+                font-weight: bold;
+                width: 100%;
+                box-sizing: border-box;
+                text-align: center;
+            }
+            #spinner {
+                font-size: 300%;
+            }
+            #canceled {
+                font-weight: normal;
+                font-style: italic;
+                display: none;
+            }
+            #result {
+                border: 1px dashed lightgray;
+                font-weight: normal;
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            #result::before {
+                white-space: break-spaces;
+                font-size: normal;
+                content: "Result: ";
+            }
+            #label:empty,
+            #result:empty {
+                display: none;
+            }
+            #label.success {
+                background-color: seagreen;
+                color: white;
+            }
+            #label.failure {
+                background-color: crimson;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <button id="act" onclick="window.location.reload();">Fetch a random number</button>
+        <div id="container">
+            <i id="spinner" class="fas fa-spin fa-cog"></i>
+            <div id="result" title="The action's return value"></div>
+            <div id="label" title="The action's user-facing message"></div>
+            <div id="canceled">The action was canceled</div>
+        </div>
+        
+        <script type="module">
+            import {AsyncAction} from "./action.js";
+
+            const fetch_random_number = AsyncAction({
+                success: "The action succeeded",
+                failure: "The action failed",
+                async act()
+                {
+                    const data = await send_network_query();
+                    switch (data) {
+                        case 0: return undefined;
+                        case 1: return Math.random();
+                        default: throw new Error("Simulated error");
+                    }
+                },
+                finally()
+                {
+                    document.getElementById("spinner").style.display = "none";
+                },
+                canceled({args})
+                {
+                    document.getElementById("canceled").style.display = "flex";
+                },
+                error({error})
+                {
+                    console.warn(error);
+                },
+                announcer({message})
+                {
+                    const labelEl = document.getElementById("label");
+                    labelEl.classList.add((message === this.success)? "success" : "failure");
+                    labelEl.textContent = message;
+                },
+            });
+            
+            (async()=>{
+                const value = await fetch_random_number();
+                document.getElementById("result").textContent = `${value}`;
+            })();
+        </script>
+
+        <script>
+            function send_network_query(latencyMs = 500)
+            {
+                const data = Math.round(Math.random() * 2);
+                return new Promise(resolve=>{
+                    setTimeout(()=>resolve(data), latencyMs);
+                })
+            }
+        </script>
+    </body>
+</html>

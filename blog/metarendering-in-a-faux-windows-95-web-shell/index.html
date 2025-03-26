@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Metarendering in a faux Windows 95 web shell
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="12 March 2023"></post-date>
+<dokki-topic title="Metarendering in a faux Windows 95 web shell">
+<p>In <a href="/blog/the-unexpectedly-useful-useless-thing/">a previous blog post</a>, I introduced a time-waster project of mine to reproduce the salient aspects of the Windows 95 UI  inside a HTML5 &lt;canvas&gt; and to derive from that a front-end framework for building web apps in that likeness.</p>
+<p>The project is coming along here and there. I recently worked on metarendering, which I'll talk briefly about in this post.</p>
+<p>To render the UI elements, the framework uses a software &lt;canvas&gt; renderer that I wrote previously, <a href="https://github.com/leikareipa/retro-ngon/">the retro n-gon renderer</a>. It's a well-featured renderer capable of 2D and 3D rasterization, although most specifically intended for retro-oriented uses.</p>
+<p>In Windows 95, as in most operating systems no doubt, apps have the ability to render something themselves; for example, a game might render a 3D scene for the player to explore. This is where metarendering comes in: the UI renderer integrates apps' own renderings into the UI, and optionally provides the facilities for custom rendering.</p>
+<p>Here's a sample animation of an app created using the framework rendering a spinning cube (borrowed from <a href="https://leikareipa.github.io/retro-ngon/samples/?sample=textured-cube-model">one of the retro n-gon renderer's render samples</a>) within its window:</p>
+<dokki-image src="./img/w95.gif" width="640" height="480"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,R0lGODlhFAAPAIcAAAAAAAB/fwSHhxU5OQWHhwCAgBBzcwKAgKO3twCCggEBAAB9fwB+fgSBgRY5OQQFBQCAfwB8fGRccQCGfmNccQACApycnQOAgBU4OKO4uAF/f12PmgB/gA17gYV9ggQGBQUFBQQEBRt9fw90cwB9fVWSkwEBAgICAR8eIXVseAsHBFSUkw9zcxodHkd5nACBfRQNCMG5wAMCAleUlFc6Ism4th8fICNVlgCHfrO2utS9vU0wGRgPCBkQCbS1u1c5ILexsB8fIScbEMS4uMG5uQUHBxBycgGBgQCBgbqwr2decsa5uQEBAcC9vbyxsShZlgMDA1U4IFo7ImVFKlU5Ilk8I7W3vMvMzCwgFsPCwVg8JR0dHBYeHl5AKAcFAGZdclA3IsDAwWJFLObm5r29vGRHLls/Jw4KAGZJMQqAgCdZlgIAAA15eQJ+gA0IBFk5IRIMAFM1HF1BKiZZlmpqdAUEAKamqefn5ry8vAuHfwKHfylalwSGfydZlw8KAGJbcQB+fyNWlFxablQ1Hlw9IwCBeVZpp1dXbAF+gFJSY56enru7u7Oz0AB6fIiFwnSooFNTZwECAoOEwdbOxpqazAiGhVJSZJubm7CnqZ6gosjKwhQVFcTEwQWAgMjIwsrKw5KSyJ2dnhg7O12OkAEDAwACARMQCweFhSFJSYOVl1M7JZqvrxoSC0ovGTwpGAOFhYuioBQ2NZesrA4CAAsAAKK3t6K3uBI2Nxc5ORM3OAWIhwWIiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQEBwAAACwAAAAAFAAPAAAI/wDtKLpkIZSFTJhGNUIEqM2ChwE0BChABs8iTp4+aZr0qJAePnkmTMDxgkEBDlfG3GFECZQkR4YC7ekzR82TGy42dIDQJEsYOoksQTokiMIfChK+KJGQwoMICEucWNkCQAEAAHX8wDnj5erVDyMSDEniIwgAKACwoJFTpkuUHgBMAAhhIAERIDlsAJABQMgUM2Ko7IBRFQCIujpqxEAB4AQAHlK0VPlBQ4XXB3VnrCjRAgATAG7iEBr0BozVq5gTRCARgQsAUhVKsXLVSpUpAJEqACjCIsGFI2k2efVKa9ZwAGuMJChQoBOqWA4GDMDlINctBxikYxDFBgkDBgFeESoQQKA8AV27yI8fXyBApVMNLhyYT79+/QYNUsGylQGB//8A+pdBLbKsEhAAOw==">
+                        </dokki-image>
+<p>The animation has been downconverted into 15 FPS for the sake of file size, but you get the idea. The window decorations, menus, widgets, etc. are drawn by the UI renderer, which also displays the image of the cube that the app has rendered.</p>
+<p>Below is a simplified version of the code that defines the app:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>function renderTest()
+{
+    const numTicks = w95.state(0);
+
+    w95.tick.listen(timeDeltaMs=&gt;{
+        numTicks.set(numTicks.now + 1);
+        const fps = (1000 / (timeDeltaMs || 1000));
+        cubeMesh.rotation.y = ((cubeMesh.rotation.y + Rngon.trig.deg(80 / fps)) % Rngon.trig.deg(359));
+    });
+
+    return w95.widget.window({
+        title: &quot;Render test&quot;,
+        children: [
+            w95.widget.renderSurface({
+                meshes: [cubeMesh],
+                options,
+            }),
+        ],
+    });
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The function returns an instance of a window widget, which contains an instance of a render surface widget, which in turn contains the rendering of the cube mesh. Every time the <em>numTicks</em> state variable is mutated – occurring at the browser's refresh rate via the <em>w95.tick</em> listener – the function is called again, which returns updated instances of the widgets.</p>
+<p>The function essentially works like component functions in React, taking in some props as arguments (simplified away in this example) and returning a view of the component; with the ability also to maintain state, <em>w95.state</em> being the equivalent of <nobr><em>React.useState</em>.</nobr></p>
+<p>Here's a simplified version of the code for the render surface widget:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>function renderSurface({
+    width = 100,
+    height = 100,
+    meshes = [Rngon.mesh()],
+    options = {},
+    id = &quot;w95-render-surface&quot;,
+} = {})
+{
+    // Render the input meshes into an off-screen pixel buffer,
+    // which will be accessible via Rngon.state[id].pixelBuffer.
+    Rngon.render(null, meshes, {
+        state: id,
+        width: ~~(width * (options.scale || 1)),
+        height: ~~(height * (options.scale || 1)),
+        ...options,
+    });
+
+    return Rngon.ngon([
+        Rngon.vertex(0, 0),
+        Rngon.vertex(width, 0),
+        Rngon.vertex(width, height),
+        Rngon.vertex(0, height)], {
+            texture: Rngon.state[id].pixelBuffer,
+    });
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p><em>Rngon</em> here is the global namespace of the retro n-gon renderer. The widget uses it to render the given meshes into a texture, then returns a polygon textured with that image to visually represent the widget in the UI. The widget in other words integrates custom app rendering into the UI, and from the app's viewpoint it's basically a passthrough for <nobr><em>Rngon.render</em>.</nobr></p>
+<p>The renderer used on the input meshes could be something other than the retro n-gon renderer, as long as it runs synchronously and outputs a pixel buffer.</p>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

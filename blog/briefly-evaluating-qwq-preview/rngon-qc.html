@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rotating Cube</title>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <script src="/retro-ngon/distributable/rngon.global.js"></script>
+    <script>
+// Define the vertices of the cube
+const vertices = [
+    Rngon.vertex(-1, -1, 1),
+    Rngon.vertex(1, -1, 1),
+    Rngon.vertex(1, 1, 1),
+    Rngon.vertex(-1, 1, 1),
+
+    Rngon.vertex(-1, -1, -1),
+    Rngon.vertex(1, -1, -1),
+    Rngon.vertex(1, 1, -1),
+    Rngon.vertex(-1, 1, -1)
+];
+
+// Define the faces of the cube with different colors
+const cubeFaces = [
+    // Front face (red)
+    Rngon.ngon([vertices[0], vertices[1], vertices[2], vertices[3]], {
+        color: Rngon.color.red,
+        hasWireframe: true,
+        wireframeColor: Rngon.color.black
+    }),
+
+    // Back face (green)
+    Rngon.ngon([vertices[4], vertices[5], vertices[6], vertices[7]], {
+        color: Rngon.color.green,
+        hasWireframe: true,
+        wireframeColor: Rngon.color.black
+    }),
+
+    // Left face (blue)
+    Rngon.ngon([vertices[0], vertices[3], vertices[7], vertices[4]], {
+        color: Rngon.color.blue,
+        hasWireframe: true,
+        wireframeColor: Rngon.color.black
+    }),
+
+    // Right face (yellow)
+    Rngon.ngon([vertices[1], vertices[2], vertices[6], vertices[5]], {
+        color: Rngon.color.yellow,
+        hasWireframe: true,
+        wireframeColor: Rngon.color.black
+    }),
+
+    // Top face (magenta)
+    Rngon.ngon([vertices[3], vertices[2], vertices[6], vertices[7]], {
+        color: Rngon.color.magenta,
+        hasWireframe: true,
+        wireframeColor: Rngon.color.black
+    }),
+
+    // Bottom face (cyan)
+    Rngon.ngon([vertices[0], vertices[1], vertices[5], vertices[4]], {
+        color: Rngon.color.cyan,
+        hasWireframe: true,
+        wireframeColor: Rngon.color.black
+    })
+];
+
+// Create a mesh from the cube faces
+const cubeMesh = Rngon.mesh(cubeFaces);
+
+let rotationAngle = 0;
+
+function renderFrame() {
+    // Rotate the cube mesh
+    rotationAngle += 1;
+    const rotateXMatrix = Rngon.matrix.rotating(rotationAngle, 0, 0);
+    const rotateYMatrix = Rngon.matrix.rotating(0, rotationAngle * 0.5, 0);
+
+    // Apply the rotations to each vertex in the mesh
+    for (const ngon of cubeMesh.ngons) {
+        for (const vertex of ngon.vertices) {
+            Rngon.vector.transform(vertex, rotateXMatrix);
+            Rngon.vector.transform(vertex, rotateYMatrix);
+        }
+        // Recalculate normals if necessary (not needed for this simple example)
+    }
+
+    // Render the cube mesh
+    Rngon.render({
+        target: "canvas",
+        meshes: [cubeMesh],
+        options: {
+            cameraPosition: Rngon.vector(0, 0, -5),
+            resolution: { width: 800, height: 600 },
+            useBackfaceCulling: true
+        }
+    });
+
+    // Request the next animation frame
+    requestAnimationFrame(renderFrame);
+}
+
+// Start rendering
+renderFrame();
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>Oblique 2D tile rendering - Render sample - Retro n-gon renderer</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="../sample-base.css">
+        <style>
+            body
+            {
+                background-color: #6e6e6e;
+            }
+        </style>
+    </head>
+    <body id="sample-container">
+        <div class="content">
+            
+            <iframe id="render-target">
+            </iframe>
+
+            <div class="infoboxes-container additional">
+                <div class="infobox time">
+                    <div class="adjust left" onclick="change_time(-1);"></div>
+                    <div class="content" style="width: 4rem;">
+                        <div class="title">Time</div>
+                        <div class="value">Day</div>
+                    </div>
+                    <div class="adjust right" onclick="change_time(1);"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <script>
+            parent.USAGE = `
+                Click to focus, ESDF to move
+            `;
+
+            const timeTypes = ["Day", "Night"];
+            let timeTypeIdx = 0;
+
+            var TIME_TYPE = timeTypes[timeTypeIdx];
+
+            function change_time(direction = 1)
+            {
+                timeTypeIdx = Math.max(0, Math.min((timeTypes.length - 1), (timeTypeIdx + direction)));
+                TIME_TYPE = timeTypes[timeTypeIdx];
+
+                document.querySelector(".infobox.time .value").innerHTML = TIME_TYPE;
+
+                return;
+            }
+
+            const renderer = (new URLSearchParams(window.location.search).get("renderer") || "dev");
+            const renderTarget = document.getElementById("render-target");
+            renderTarget.src = `../sample-base.html?sample=oblique-2d-tiles&renderer=${renderer}`;
+        </script>
+    </body>
+</html>

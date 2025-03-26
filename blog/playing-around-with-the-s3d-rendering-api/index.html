@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Playing around with the S3d rendering API
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="30 December 2024"></post-date>
+<dokki-topic title="Playing around with the S3d rendering API">
+<p>This past Christmas week I've been playing around with S3's proprietary Win32 hardware rendering API, S3d. It's a lightweight layer for building 3D applications for the (in)famous mid-1990s S3 ViRGE platform.</p>
+<dokki-image src="./s3dtr.png" width="640" height="474"     headerless="true"    thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAYAAADkmO9VAAAACXBIWXMAAC4jAAAuIwF4pT92AAAD8ElEQVR4nB3OaU8UBwCA4fkBTWMaU1AORYQu7AEsO7P3sgcsC7uwzOzsfcg6LDvIJSTVehBAqpWiIASiKNZExHjEaCNHbZp+aH/Y29QP79cnr7BVbGWyt5HF8DesqmfYzPt4ozr5okh8HBF5kfVzXA7zJe3mIC7xVHVzmHTyhyLyRnGwV+xhM1XHtdAprsXOIexMu3g03cfuhI15+Qe0XIjcsItN2cFJwsEHxc7LtJe3KQ/PVSefZJEjxc4D2UEh7mYs5WZhuIaNQgtLhW6E7ckeXi3IvLujMDsaYXxUIav4qBQjHE6P8O/YEIflfvYn45yoLk5GbOyk7MjDLtSYnVifjVS/iXslC89mnQi7c0E+r6msXHaTiDqYq45QLYXJjni4VzCznzSxV7SyVXWyr1r4LW3gVklCHrBTyYW4Oh4jFpZ4WG7n47If4d39PP/84qM8YCI94iEdk8gnPOgZF+sVB+tTQVYrbu6WJVZ1H4+mAtwpdlNUXJTTPaiDNrJxN+MpJ9tLGsLexk0eLur0+SwUEl5mtEGyiSC3UgY+67Vsa53cVppZUhtZyZt5rbfyaaKBK7KZvBpAL4TRi330Byxk/Z0IVwYl9EwAeVCkoHgpZwIUkkEeaWZ+18/wQmtkPtrAdbmJZaWBD5UaDvXvuZ9vJqsG0bJBLiUDZOIuilERYTrcQdTTRsDbRiLSSWJQJDvkYG/cyJ8zdWwX67kUqGest45qXx2vJ1o5ma7nVaWBVFRCjYpfS0ZFIgELws2EF6n7AhG/Cb/9PEG3gULUxKepRv6ereXXdB2a/zSz4RoqgdPsV5s5mW7gr6nv0AYu0Oc34bbWEevtpM9nROh3t+F3G+j3G3GLTYS8JgqDVtZHRXbyTSwp55iJGbmRFJmNtrE7epHtkoEHuXYqgyZ6e0x4pKavI/+jgtVcj9V0lk5jLR3GWro6znMlKfFiIc3azDAbV+Ps/qTwfEHl8XWV9ZkYG3MJnlyPs/6jjEO8SLflLOb2GqwdDQhhn5GQu41ej4GAqxWvo5UbGRM7upVNrYNncz2sjVp4rEtsVW08mXLyZEriwWULm1o3qZgDj9hMyN1KyGtAmCxHmK8OM5brRS/1U708xGLJxnLkFD8nz7OUbuX+0LeslMwsD53mbq6FRbmelYFTrCbOoJciTJZjaNleJkr9CHLUQ0oOEg11UUoHyCV9zOVEDsYvcFBtYV9r51W5g8clFy9LFg40I/uagbd6C0+rbVRTDvJqD0rMTjwiIsznHdwuSqyVutgrmHidN/I+Y+Yw08VRsotj1cZRwsnxiMihbOdYETlOSRxlJA4zVj7mu3k/2s1ezsL2JTv/AZIsXSBw85/YAAAAAElFTkSuQmCC"><template #caption>A level mesh from Tomb Raider being rendered on the ViRGE/DX in Windows 98 using S3d.</template>
+                        </dokki-image>
+<p>The ViRGE, a family of early 3D graphics cards, were known to some as &quot;graphics decelarators&quot; due to their performance comparing unfavorably with that of software rendering. True enough, on my ViRGE/DX, S3d performance is fairly low, as seen in the 640 &times; 480 screenshot, above. Although the renderer isn't fully optimized, the competing 3Dfx Voodoo achieves about 30 FPS in this scene using its native, equally unoptimized-for Glide API.</p>
+<dokki-image src="./s3dtrpcem.png" width="1245" height="651"     headerless="true"    thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAC4jAAAuIwF4pT92AAACpUlEQVR4nC2QWU8TCQCA528Ys2jYxOiLCAueVcBF1lUKooVGCEWZXhyluIBDrRzWHtBzZjpH56BWuosSjWTNSoIx+2B8M/Fh/9BndH34nr7v6RPmfZeZHfawq6/xz595tEoatZxBrWyiyTkcV8G2K7iugq4VKH93uf+bcpaXbpad/Bx6YgLniYgQvtmFeL2DevEhh3slrJrKVjpJPhliPRFDWZ7FTMyjSjG0RIx6cgElEWFrPYblGOzVt2ikQtTWosgJEWHyxnn8vW3o2SU+HWyjGwrp+Ai50EXujvazccfDK7+HnREPz7wdSN5OEgM/kbnXheMYvP1LJhftZ+zXdgrhPoTGdhXLKKJrJUrFLFVNJiOJiP5exu/eQApcoDx1jsq982yMnWVwuJsZ/1nUR2NYjsnBnsYbZYbC3AAF8RKCaShYVpVkUmJudhrTkImGAvT3tjE+chVdPEFqtIXl2624weMEfFfwDXqQAoM4dpXDv5v892+T97sFmsoKgvxtfrXAk40kC/HY94cT43foam/hZl8b9chJFgeOMft7K7vRVsShM3ivdbIy0cO2q/H+tcnn/Qr6ahj1cRhBVfMYeol0eo34/Bw1U+X+5ChnTrdw67d2cpFuMpEestEeijPdhH0X8fb/wqS/F9vWOXih8OWdSu3pDCVpAsHQihi2zOZmigfxGIYuMx0OMHS9E3G4E9l3BMV3jMrtn9FHjvLYd4qhvg4iAS/b9Ro7WoqXykPeNjI0NqcRakaZkl1kq5Rh8UEcrVoil1klJQWpSFM0VqZoLAVpLAbZkUI8WwljSkG0p0s4js6bpsG+neN5eQl5NYxg1mQcS0VVCyz+sYAi53EdDdc1sV0T8wfGNxwT0zGxXBPL1jD0Mh/e7fPxcJ+mkqSwvsxXRvvmJQNdp7sAAAAASUVORK5CYII="><template #caption>The same scene in PCem (in my 3D UI) using its ViRGE/DX emulation. The emulation has worse Z fighting but better performance.</template>
+                        </dokki-image>
+<p>Conveniently, the PC emulator PCem comes with support for ViRGE/DX emulation. It looks reasonably faithful,  though there's more artifacting than seen on real hardware, and performance may not be indicative of real life. Other than that, I'll much rather debug my code in an emulator than go back and forth on a retro PC.</p>
+<dokki-image src="./d3dtr.png" width="640" height="474"     headerless="true"    thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAYAAADkmO9VAAAACXBIWXMAAC4jAAAuIwF4pT92AAAD70lEQVR4nB2U+U+TBwBAv1+XbckSJUDlKEcPetCWtl8PSk9LoS3tV6i9Wz5bSqtFNMyNyDwAt6EExUlwHlNGnNMJZpt4xGX/21vGH/De++0JGzMKLofaWA1/xg8ZDY/yAV6nRI4kO29SIs8rYf6phPiYdvF0ys6vmTE+TIu8l+zspVzsVkPcTbdzOfAVy4kBhB9rDozaAUa0SvSqXgw6Dd2dHVx06TlM2NiNWthJOnmSEHk24+IoaePPlMg1yUlO8lBLu1hLtLFV0rJesiAsZ0fo6ulHpVKjH9KhGejnyy8+Z6C7E7dRjXOwD21PJ2GzhiPJyQfJykbWTSzmYiZiJRKwUJkY4rZs4vGiE2G1LOKy6ujrPIGivQ05FyYveUhP2riZHeJBQsdW3sSmbGd/epjHBR0X83akSSfzxdMs1qeIBYZ5fkHPb9fCCHvLQT6sDFMZ15GIiGRiInPFMK2siztzTrYXgmzOj3KrKrLZ9LHdCnAla0LOBpAzXtJRO6kJG1fqQXZX6wgHj6/z8FqJ8JiRuULouDodH2M9O8jb5im2Zk1cTfWzmu7lVtHIq/l+Xjd6KcVHqKT9NMsRKme8+Fw6aqcNCN+UozTKURLjNippH2dzIWYzQXbOqvm70cEjuZeleDfLkpLbmS4O6+38VW9jOWugkv9f5kfOBIidNnM1PYpQ92qZCRoZ9xtIR21kEm7KSQf7DQ0fFxRs5bsp+7tohLu4EOnij/MqPrXa2SqrSU46yMQdZONOJkIm5PAIwkrag9WiZMKvJ+DsJewfZj6u5t1CD/8udrI+raDuO8G5UBvN4EneLAzyqdXBYb2NmF9L2KMm5B48FttMSoRc0Ix3VEPEp8NtUxL0GqlNWbh/1sJuoYeVpJJLcT1fpywsxVQ8ram4V9SykR0iFdTjH9UwZlOSHLcw6TMimA2nGDGewmTowDKswG5Rcrno5peVLJsLUbYvSTxclti7kWNnKcHW4hT3lqZ5+t008zkfJoMC8zHbhdXcgxBwafCKg3jFATxiPz6nmrXiEPeqBu7XzPx8YZQ7s3oenHdzt2ri0YKLn+ZMbJdVrBQceN1DeGx9+JwDjDkGEVpyhItzcaq5EOfkCZrVKdaKBtaiJ9ko67mR7uPmTA/fl3XclNpZLxm4nlCwmTjBt3kbjdk4zfIEtXyIVi2KMJPwUzgTZipsRc4HyaQ8XK9YOWj28/u8hpc1A8+rDp6U3byUDbyYM/KqoeWgpebGrJVcaoysNEoyYkcuTCIs5UWuFmxsl0zsl/S8yBk4zBh5n7FwlDJzlLIfn+VdwnZ8oHcpK+8zdj7mrbwtjnBQsfCsaGRHFlmXHfwHVSNLIogywicAAAAASUVORK5CYII="><template #caption>The ViRGE/DX rendering the same scene using Direct3D 5. In this case, S3d provided better performance and better visuals. Mipmapping was enabled for Direct3D but not for S3d, which may account for some of the difference in performance.</template>
+                        </dokki-image>
+<p>The S3d API is fairly streamlined and minimalist, the main functions being <code>S3DTK_TriangleSet()</code> to render triangles and <code>S3DTK_SetState()</code> to configure the render state. A typical render loop might look something like this:</p>
+
+                <dokki-code syntax="c"headerless="true">
+                    <template #code>
+                        <pre>/* Clear the surface. */
+S3D-&gt;S3DTK_RectFill(S3D, &amp;s3dSurface[backBufferIdx], &amp;screenRect, 0);
+S3D-&gt;S3DTK_RectFill(S3D, &amp;s3dZBuffer, &amp;screenRect, ~0u);
+
+/* Render a triangle. */
+S3D-&gt;S3DTK_TriangleSet(S3D, triangle, 3, S3DTK_TRILIST);
+
+/* Flip the surface. */
+ddrawSurface-&gt;lpVtbl-&gt;Flip(ddrawSurface, NULL, DDFLIP_WAIT);
+backBufferIdx = !backBufferIdx;
+S3D-&gt;S3DTK_SetState(S3D, S3DTK_DRAWSURFACE, &amp;s3dSurface[backBufferIdx]);
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The API documentation comes in the aged WinHelp format, which I manually converted into Markdown. During the conversion process, I noticed some issues that indicated the documentation hadn't been properly maintained, like obsolete function names and incorrect function signatures. I could almost feel S3 cutting funding to the S3d team as the ViRGE was being obliterated by its competition soon after launch.</p>
+<p>One omission in the documentation that had me debugging for some time in the wrong direction was that apparently when the value of the state variable <code>S3DTK_ZBUFFERSURFACE</code> is changed, the value of <code>S3DTK_ZBUFFERENABLE</code> is reset. So you need to set them in this order:</p>
+
+                <dokki-code syntax="c"headerless="true">
+                    <template #code>
+                        <pre>S3D-&gt;S3DTK_SetState(S3D, S3DTK_ZBUFFERSURFACE, &amp;s3dZBuffer);
+S3D-&gt;S3DTK_SetState(S3D, S3DTK_ZBUFFERENABLE, S3DTK_ON);
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>If <code>S3DTK_ZBUFFERENABLE</code> was set first, the result was various rendering issues like flickering, missing geometry, or nothing but random lines. S3's sample code sets <code>S3DTK_ZBUFFERENABLE</code> on every frame, but that doesn't seem to be necessary, not on my system anyway.</p>
+<p>Looking around the sample code, you can also find this:</p>
+
+                <dokki-code syntax="c"headerless="true">
+                    <template #code>
+                        <pre>/* allocating z-buffer does not work */
+/* ddsd.ddsCaps.dwCaps = DDSCAPS_ZBUFFER; */
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Indeed, the surface (S3d's Win32 version uses DirectDraw for render and texture surfaces) that acts as the Z buffer can't be created as an actual Z buffer surface. Who knows why, but apparently it was a known and unresolved issue at S3. This reinforces the impression that S3d never had time to reach maturity, not for Win32 anyway.</p>
+<p>Whatever the case, S3's sample code can be compiled for Windows 9x using MinGW 4.4.1, including from Linux:</p>
+
+                <dokki-code syntax="bash"headerless="true">
+                    <template #code>
+                        <pre>OUTPUT=&quot;example.exe&quot;
+MINGW=~/mingw441
+
+INPUT=&quot;
+example.c
+winmain.c
+utils.c
+&quot;
+
+OPTIONS=&quot;
+-DCUBE
+-nostdinc
+-isystem $MINGW/lib/gcc/mingw32/4.4.1/include
+-isystem $MINGW/include
+-I ../../H/
+-L ../../LIB/
+-L ../../LIB/WIN95/MSVC/
+&quot;
+
+wine &quot;$MINGW/bin/gcc.exe&quot; $OPTIONS -o $OUTPUT $INPUT -lDDRAW -lS3DTKW
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>In my limited testing I've found MinGW to produce the most performant executables for Windows 9x, so that's what I'd recommend here.</p>
+<p>I didn't mess around with the DOS version of S3d yet, but it may be the more interesting one given that the ViRGE as a 3D solution was quite obsolete by the Windows era of gaming.</p>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

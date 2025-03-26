@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            x-prompt {
+                margin: 2rem 0;
+                margin-bottom: 1.375rem;
+                display: block;
+                padding: calc(1.5 * var(--dokkiCSS-embedded-header-padding));
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                position: relative;
+            }
+
+            x-prompt::before {
+                content: "Prompt:";
+                position: absolute;
+                top: -1.25ex;
+                background-color: var(--dokkiCSS-page-secondary-bg-color);
+                font-weight: var(--dokkiCSS-bold-text-weight);
+                padding: 0 0.5em;
+                margin-left: -0.5em;
+            }
+
+            .model-response {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color) !important;
+                border: none !important;
+            }
+
+            .model-response .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        <template dokki-document>
+            <section title>
+                The two new gpt2-chatbot drops on LMSYS Chatbot Arena
+            </section>
+            <section widgets>
+                <blog-post-widgets/>
+            </section>
+            <section content>
+                <article src="content.md"></article>
+            </section>
+        </template>
+    </body>
+</html>

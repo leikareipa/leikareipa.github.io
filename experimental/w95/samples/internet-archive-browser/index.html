@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Internet Archive browser</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="../../distributable/w95-api.js"></script>
+        <script src="../../distributable/w95-assets.js"></script>
+        <script src="../../distributable/w95-widgets.js"></script>
+        <link href="../../distributable/w95.css" rel="stylesheet">
+    </head>
+    <style>
+        iframe.ia-browser {
+            background-color: rgb(192, 192, 192);
+            width: 1180px;
+            height: 668px;
+            transform: none;
+            filter: none;
+            position: absolute;
+            border: none;
+        }
+    </style>
+    <body>
+        <script type="module">
+            import app from "./app.js";
+            import notepad from "../notepad/app.js";
+            import {icons} from "./assets/icons.js";
+            import {icons as notepadIcons} from "../notepad/assets/icons.js";
+            const desktop = w95.shell.desktop({
+                icons: [
+                    w95.widget.desktopIcon({
+                        text: "Browser",
+                        icon: icons.app32,
+                        onActivate() {
+                            w95.shell.run(app());
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "instructions.txt",
+                        icon: notepadIcons.app32,
+                        async onActivate() {
+                            w95.shell.run(notepad({file: "./assets/instructions.txt"}), {singleInstance: true});
+                        },
+                    }),
+                ],
+            });
+            w95.shell.boot();
+            w95.shell.wallpaper = "./assets/pird.png";
+            w95.shell.run([desktop, w95.shell.taskbar(), app()]);
+        </script>
+        <script>
+            // Some websites like to direct their links to the top window, i.e. the window
+            // in which the app is running. We don't want the app to suddenly exit like that,
+            // so we prevent it with this kludge.
+            window.addEventListener("beforeunload", (event)=>{
+                event.preventDefault();
+                event.returnValue = "";
+            });
+        </script>
+    </body>
+</html>

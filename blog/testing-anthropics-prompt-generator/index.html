@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s {
+                color: transparent;
+                width: 1rem !important;
+                text-align: center !important;
+            }
+            .dokki-table.results td.s0 {
+                background-color: gray;
+            }
+            .dokki-table.results td.s1 {
+                background-color: lightgray;
+            }
+            .dokki-table.results td.s2 {
+                background-color: whitesmoke;
+            }
+            .dokki-table.results td.s {
+                background-color: #303030;
+            }
+            .dokki-table.results td.s::before {
+                content: "**";
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Testing Anthropic's prompt generator
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="13 May 2024"></post-date>
+<dokki-topic title="Testing Anthropic&apos;s prompt generator">
+<p>Anthropic <a href="https://twitter.com/AnthropicAI/status/1788958483565732213">recently released</a> an automated prompt generator for Claude that applies prompt engineering strategies to transform basic task descriptions into more effective prompts.</p>
+<p>Let's give it a try.</p>
+<p>I'm collecting <a href="/blog/testing-a-medley-of-local-llms-for-coding/">coding benchmark results</a> for various LLMs, using a set of proprietary tests of mine. Since the tests exclude the use of engineered prompts, we can compare the results to a new run of the tests fueled by a generated prompt.</p>
+<dokki-subtopic title="The prompt">
+<h3>Input to the prompt generator:</h3>
+<p>You'll be given a programming task to measure your ability in that domain. Write or analyze code to satisfy the requirements of the task. You only get one chance per task, and code that doesn't compile results in automatic disqualification.</p>
+<h3>Generated output:</h3>
+<p>You will be given a programming task to measure your ability in that domain. Here are the details of the task:</p>
+<p>&lt;task&gt;<br>
+{TASK}<br>
+&lt;/task&gt;</p>
+<p>Carefully analyze the requirements of the task. Think through your approach before writing any code.</p>
+<p>&lt;scratchpad&gt;<br>
+Think through the problem here. Break it down into steps. Sketch out the code structure. Don't write the actual code yet.<br>
+&lt;/scratchpad&gt;</p>
+<p>Remember, you only get one chance per task. Code that doesn't compile will result in automatic disqualification.</p>
+<p>Now, write or modify the code to satisfy the task requirements. Make sure to test your code thoroughly.</p>
+<p>When ready, provide your final code solution inside  tags.
+After your code, explain how your code works and how it satisfies all the requirements of the task. Provide this explanation inside  tags.
+</p><p>Good luck!</p>
+</dokki-subtopic><dokki-subtopic title="Results">
+
+            <dokki-table headerless class inline-class="results">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th colspan="2"></th>
+            <th colspan="9">Test</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>Score</th>
+            <th>1</th>
+            <th>2</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>9</th>
+            <th>10</th>
+            <th>11</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="11"><b>Original prompts</b></td>
+        </tr>
+        <tr>
+            <td>Claude 3 Opus (20240229)</td>
+            <td>72%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td>GPT-4 Turbo (2024-04-09)</td>
+            <td>78%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td colspan="11"><b>Generated prompt</b></td>
+        </tr>
+        <tr>
+            <td>Claude 3 Opus (20240229)</td>
+            <td>83%</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td>GPT-4 Turbo (2024-04-09)</td>
+            <td>78%</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>The generated prompt looks to have improved Claude 3's performance by quite a bit, and it now beats the previous record holder, GPT-4 Turbo.</p>
+<p>In contrast, tasking GPT-4 Turbo with the generated prompt resulted in no performance improvement overall. This might not be surprising since the prompt generator is probably tuned for Claude, but it may also suggest that GPT-4 Turbo is already doing some prompt rewriting on the fly and/or is better aligned from the factory.</p>
+</dokki-subtopic><dokki-subtopic title="Caveat">
+<p>The input to the prompt generator contains information not given in the original prompts for these tests. Namely, the original prompts didn't explicitly state that the goal was to measure the AI's ability, nor explain that there would be only one chance per task and that failure to compile would mean disqualification.</p>
+<p>In theory, these differences alone could account for some improvement in performance and so reduce the value of the generated prompt. But even in that case the results would suggest that there's tangible room for prompt engineering to improve Claude 3's performance.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

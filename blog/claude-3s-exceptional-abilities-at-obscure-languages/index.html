@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results th.name {
+                writing-mode: vertical-lr;
+                font-weight: normal;
+            }
+            .dokki-table.results td:first-child {
+                white-space: pre-line;
+                min-width: 20rem;
+            }
+
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s3,
+            .dokki-table.results td.s {
+                text-align: center !important;
+                vertical-align: middle !important;
+                max-width: 0.85em;
+            }
+            .dokki-table.results td.s0 {
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+            .dokki-table.results td.s1 {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            .dokki-table.results td.s2 {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+            .dokki-table.results td.s3 {
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Claude 3's exceptional abilities at obscure languages
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="7 March 2024" edited="8 March 2024"></post-date>
+<dokki-topic title="Claude 3&apos;s exceptional abilities at obscure languages">
+<p>Earlier this week, <a href="https://www.anthropic.com/news/claude-3-family">Anthropic launched Claude 3</a>, its next-generation family of LLMs. The models – Opus, Sonnet, and (soon-to-be-released) Haiku – have already made waves for their ability to trade blows with the previous state-of-the-art, GPT-4.</p>
+<p>In my own testing, I've found Claude 3 quite capable and even worthy of hype to some extent. It's not a GPT-4 killer in a general sense, but, for example, <a href="/blog/testing-a-medley-of-local-llms-for-coding/">it matches GPT-4 in common programming tasks</a>.</p>
+<dokki-subtopic title="The meat">
+<p>One standout aspect of the Claude 3 Opus model in particular is that it appears to be exceptionally good at reconstructing representations from uncommon data.</p>
+<p>User reports are popping up that Opus is very capable at dealing with obscure human languages (<a href="https://www.reddit.com/r/singularity/comments/1b8603h/claude_3_opus_is_the_first_language_model_that/">for example</a>). I can confirm the model is able to hold conversations in more than one endangered language that GPT-4 at best struggles with and at worst is fully confused by.</p>
+<p>While it's possible this is &quot;just&quot; Anthropic boosting training data for these kinds of topics, it seems plausible that the model is unusually strong at extrapolating linguistic structures from limited examples. Its parameter count may be considerably higher than GPT-4's, maybe past the point where some level of universal translation emerges.</p>
+<p>Beyond the implications for linguists and small language communities, it makes you wonder, is the model a strong extrapolator of low-frequency data more generally? In a recent blog post, <a href="/blog/llm-performance-in-retro-assembly-coding/">I found that Opus was almost twice as good as GPT-4 at generating code in an obscure, obsolete variety of assembly language</a>, so this effect may not be limited strictly to human language.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results th.name {
+                writing-mode: vertical-lr;
+                font-weight: normal;
+            }
+            .dokki-table.results td:first-child {
+                white-space: pre-line;
+                min-width: 20rem;
+            }
+
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s3,
+            .dokki-table.results td.s {
+                text-align: center !important;
+                vertical-align: middle !important;
+                max-width: 0.85em;
+            }
+            .dokki-table.results td.s0 {
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+            .dokki-table.results td.s1 {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            .dokki-table.results td.s2 {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+            .dokki-table.results td.s3 {
+                background-color: rgba(0, 0, 0, 0.125);
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Evaluating Claude 3.5 Sonnet in retro assembly programming
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="1 November 2024"></post-date>
+<dokki-topic title="Evaluating Claude 3.5 Sonnet in retro assembly programming">
+<p>Earlier this year, <a href="/blog/llm-performance-in-retro-assembly-coding/">I benchmarked a few LLMs in retro assembly coding</a>. The results were expected to correlate with reasoning ability in the sense that a successful model had to correctly extrapolate from limited knowledge.</p>
+<p>How does the recently-released Claude 3.5 Sonnet do in those tests?</p>
+
+            <dokki-table headerless  inline-class="">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Average score</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Claude 3 Opus</td>
+            <td>38%</td>
+        </tr>
+        <tr>
+            <td>Claude 3.5 Sonnet 2</td>
+            <td>29%</td>
+        </tr>
+        <tr>
+            <td>Claude 3.5 Sonnet</td>
+            <td>21%</td>
+        </tr>
+        <tr>
+            <td>GPT-4 Turbo</td>
+            <td>8%</td>
+        </tr>
+        <tr>
+            <td>Claude 3 Sonnet</td>
+            <td>4%</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>Below is a breakdown of the results per task.</p>
+
+            <dokki-table headerless class inline-class="results">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th colspan="9">Score per task<sup>&dagger;</sup></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th class="name">Claude 3 Opus</th>
+            <th class="name">Claude 3.5 Sonnet 2</th>
+            <th class="name">Claude 3.5 Sonnet</th>
+            <th class="name">Claude 3 Sonnet</th>
+            <th class="name">GPT-4 Turbo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A program that asks the user for a word and prints it out.</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that paints the screen blue and prints something in the middle.</td>
+            <td class="s2">50%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+        </tr>
+        <tr>
+            <td>A program that draws something onto the screen in a VGA graphics mode.</td>
+            <td class="s3">75%</td>
+            <td class="s3">75%</td>
+            <td class="s1">25%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that prints the value in the EDX register in binary format.</td>
+            <td class="s1">25%</td>
+            <td class="s1">25%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+        </tr>
+        <tr>
+            <td>A program that reads mouse input and displays information about it on the screen.</td>
+            <td class="s2">50%</td>
+            <td class="s2">50%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that loads a paletted image and displays it on the screen.</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    <sup>&dagger;</sup>A score of 0% means the code failed to compile, 25% means the code compiled but was very buggy, 50% means the code worked somewhat as intended but not perfectly, 75% means the code worked as intended, and 100% means the code worked as intended and the implementation went the extra mile in including relevant bonus features or had a particularly good presentation.
+                </td>
+            </tr>
+        </tfoot>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>Based on the results, Claude 3.5 Sonnet is a clear upgrade over Claude 3 Sonnet; and the reasoning ability of the second version of Claude 3.5 Sonnet looks to be a tangible upgrade over the first version.</p>
+<p>Claude 3 Opus remains the best model tested, and the large gap between it and Claude 3 Sonnet might suggest that a Claude 3.5 Opus &ndash; yet to be released &ndash; could score in the 60–90% range. There are rumors however that a version of Claude 3.5 Opus was trained and failed to meet Anthropic's expectations.</p>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

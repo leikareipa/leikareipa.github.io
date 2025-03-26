@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chessboard with Visual Effect</title>
+    <style>
+        html, body, canvas {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script src="../parrot.js"></script>
+    <script>
+      do_with_parrot((parrot)=>{
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const imageData = ctx.createImageData(canvas.width, canvas.height);
+        const pixels = parrot.data;
+
+        function animateRipple(time) {
+          let transformedPixelBuffer = applyRippleEffect(pixels, width, height, time);
+          ctx.putImageData(new ImageData(transformedPixelBuffer, width, height), 0, 0);
+
+          // Request the next animation frame
+          requestAnimationFrame(animateRipple);
+        }
+        
+        animateRipple();
+        
+        // Ripple effect function
+        function applyRippleEffect(pixelBuffer, width, height, time) {
+          const rippleRadius = 200;
+          const rippleFrequency = 4;
+          const rippleAmplitude = 5;
+          const rippleSpeed = 0.003;
+
+          let newPixelBuffer = new Uint8ClampedArray(pixelBuffer.length);
+
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              let index = (y * width + x) * 4;
+
+              // Calculate the distance from the center of the ripple
+              const centerX = width / 2;
+              const centerY = height / 2;
+              const dx = x - centerX;
+              const dy = y - centerY;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              // Apply the ripple effect
+              if (distance < rippleRadius) {
+                const ripplePhase = (distance / rippleRadius) * (Math.PI / 2) - (time * rippleSpeed);
+                const displacement = rippleAmplitude * Math.sin(rippleFrequency * ripplePhase);
+
+                // Find the corresponding pixel coordinates in the original buffer
+                const origX = Math.round(x - displacement * (dx / distance));
+                const origY = Math.round(y - displacement * (dy / distance));
+
+                // Copy the pixel from the original position
+                if (origX >= 0 && origX < width && origY >= 0 && origY < height) {
+                  const origIndex = (origY * width + origX) * 4;
+                  newPixelBuffer.set(pixelBuffer.slice(origIndex, origIndex + 4), index);
+                }
+              } else {
+                newPixelBuffer.set(pixelBuffer.slice(index, index + 4), index);
+              }
+            }
+          }
+
+          return newPixelBuffer;
+        }
+      });
+    </script>
+</body>
+</html>

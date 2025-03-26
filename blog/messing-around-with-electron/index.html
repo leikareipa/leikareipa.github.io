@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Messing around with Electron
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="25 December 2022"></post-date>
+<dokki-topic title="Messing around with Electron">
+<p>I had reason recently to convert one of my software, <a href="/#lintulista">Lintulista</a>, from a full-stack web app into a desktop application.</p>
+<p>Normally, I'd use C++ with Qt for building the desktop stuff, but didn't want to rewrite this JavaScript codebase. Instead, I was able to use <a href="https://www.electronjs.org/">Electron</a> to easily glue the app's server and client together into a desktop-runnable bundle.</p>
+<p>In this post, I'll blurt out a few words about the experience, which was my first time with Electron.</p>
+<dokki-subtopic title="Setting up">
+<p>Electron is <a href="https://www.electronjs.org/docs/latest/tutorial/quick-start">quite simple to set up and get running</a>. In short, you install the <em>electron</em> package, create a <strong>package.json</strong> file for it with some metainformation about your project, and add a bit of JavaScript code to tell Electron how to run the application.</p>
+<p>In Lintulista's case, the runner code only needs to do two things:</p>
+<ol>
+<li>Start the server</li>
+<li>Start the client</li>
+</ol>
+<h3>Starting the server</h3>
+<p>Lintulista's server is a regular old Node.js job that takes requests and comes up with responses. While the original version of the server used an SQL database, I replaced it here with a plain flat-file one to cut down on dependencies and make the app easier to distribute.</p>
+<p>Starting the server for Electron is straightforward:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>const {LL_ProcessRequest} = require(&quot;../server/process-request.js&quot;);
+require(&quot;http&quot;).createServer(LL_ProcessRequest).listen(LL_SERVER_PORT, &quot;127.0.0.1&quot;); 
+</pre>
+                    </template>
+                </dokki-code>
+            
+<h3>Starting the client</h3>
+<p>With the server running, the client can be started as well:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>const mainWindow = new Electron.BrowserWindow({show: false});
+
+mainWindow.loadFile(&quot;../client/index.html&quot;);
+
+mainWindow.on(&quot;ready-to-show&quot;, ()=&gt;{
+    mainWindow.show();
+    mainWindow.focus();
+});
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The code will pop out a window displaying Lintulista's React-powered front-end, which interacts with the server as the user navigates the page.</p>
+<dokki-image src="./img/screenshot.webp" width="1620" height="911"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,UklGRoAAAABXRUJQVlA4IHQAAADwAwCdASoUAAsAPm0skkWkIqGYBABABsS0gBd/4DyOcaVIIYb/7YKAAP6yP+HI0ItXL6Cnn7KehMYF9I+7RhdbyH16KMqeQLXszZNz537dQHE1NxlZovuf/YXSTgQo8bEZACQi+UregakqXmAbJtBHPiAAAA==">
+                        </dokki-image>
+</dokki-subtopic><dokki-subtopic title="Distributable footprint">
+<p>As I was only targeting a single platform (Linux), there didn't seem to be a need for custom build tools. I simply distributed the program's source code along with Electron's modules.</p>
+<p>I organized the app's distributable like this:</p>
+<dokki-directory headerless>
+    <template #structure>
+        'client': {
+            '/type': 'folder',
+        },
+        'database': {
+            '/type': 'folder',
+        },
+        'electron': {
+            '/type': 'folder',
+        },
+        'server': {
+            '/type': 'folder',
+        },
+        'lintulista': {}
+    </template>
+</dokki-directory>
+<p>It's a clean and intuitive directory listing for the user – the program's code and Electron fluff are hidden under subdirectories, and the <strong>lintulista</strong> launch script is discoverable at first glance.</p>
+<p>The launch script calls Electron's binary with a user-provided command-line parameter identifying the database resource to operate on:</p>
+
+                <dokki-code syntax="bash"headerless="true">
+                    <template #code>
+                        <pre>./electron/node_modules/electron/dist/electron ./electron/. $1
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The app can then be launched with <em>./lintulista resource_id</em>.</p>
+</dokki-subtopic><dokki-subtopic title="My impressions of Electron">
+<p>My first impression of Electron was that it's easy to set up. You install its package, leaf through their quick-start guide, and a few minutes later you have your previously web-based app running on your desktop. Full disclosure: I tried <a href="https://nwjs.io/">NW.js</a> before settling on Electron, but found the former messier to set up and distribute.</p>
+<p>One downside of Electron was that it apparently tries not to be opinionated. For example, despite this being a predictable need, there was no standard way of persisting application settings. With Qt you might use <a href="https://doc.qt.io/qt-6/qsettings.html">QSettings</a>, but Electron apps are <a href="https://github.com/electron/electron/issues/526">left to implement their own solutions and reinvent stumbling-block workarounds</a>.</p>
+<p>A larger problem was that it felt ass-backwards to build desktop software with the JavaScript front-end ecosystem that's specifically not supposed to run with elevated access. <a href="https://www.electronjs.org/docs/latest/tutorial/security">Security with Electron</a> appeared fairly complicated and easy to get wrong, and potential vulnerabilities felt like a feature of the framework.</p>
+<p>Still, this virgin developer experience I had with Electron was quite pleasant overall, and allowed a rapid transformation of a web app into a desktop application. I don't think I'll be diving head-first into building desktop software from the ground up with Electron, but it's a neat tool for limited purposes.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

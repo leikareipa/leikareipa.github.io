@@ -1,0 +1,561 @@
+:root
+{
+    --zindex-dosbox: 9999;
+    --zindex-popups: 99999;
+}
+
+*
+{
+    font-family: "Arial", sans-serif;
+
+    /* Avoid some issues with double-clicks over the canvas initiating drags.*/
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+body
+{
+    background-color: black;
+    cursor: url("./assets/img/cursors/rsed-cursor-arrow.png"), auto;
+    text-align: center;
+    align-content: center;
+    color: white;
+    padding: 0;
+    margin: 0;
+    font-size: 130%;
+}
+
+body.playing,
+body.loading
+{
+    overflow: hidden;
+    background-image: url("./assets/img/grass.png");
+}
+
+#data-dropdown
+{
+    font-weight: bold;
+    position: absolute;
+    z-index: 9;
+    top: calc(100% + 0.4ch); /* 0.4ch is expected to be the border width of an active/hovered button.*/
+    left: -0.4ch;
+    background-color: white;
+    color: black;
+    text-align: left;
+    border: 1px solid black;
+    padding: 0.75em;
+    white-space: nowrap;
+    background-image: url("./assets/img/grass.png");
+    color: #a2a2a2;
+    border: 0.4ch solid lime;
+    cursor: auto;
+}
+
+#data-dropdown:not(.visible)
+{
+    display: none;
+}
+
+#data-dropdown .button
+{
+    font-weight: normal !important;
+    display: inline-block !important;
+    background: transparent !important;
+    border: 0.4ch solid transparent !important;
+}
+
+#data-dropdown .button:hover
+{
+    border: 0.4ch solid yellow !important;
+    color: white;
+}
+
+#data-dropdown tr:hover
+{
+    color: whitesmoke;
+}
+
+#data-dropdown tr:not(:hover) .button
+{
+    color: #a2a2a2 !important;
+}
+
+#data-dropdown .button + .button
+{
+    margin-left: 2px;
+}
+
+#data-dropdown table td,
+#data-dropdown table th
+{
+    padding: 0.35em;
+}
+
+#canvas
+{
+    width: 100%;
+    height: 100vh;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+#ui-overlay
+{
+    pointer-events: none;
+}
+
+canvas
+{
+    position: absolute;
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.pixelated
+{
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+}
+
+#jsdos-container
+{
+    cursor: default;
+    z-index: var(--zindex-dosbox);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+#jsdos-canvas
+{
+    position: relative;
+    z-index: 0;
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+}
+
+body.w95 #jsdos-container .button
+{
+    display: none !important;
+}
+
+#jsdos-container .button
+{
+    margin: 0;
+    position: fixed;
+    z-index: 1; /* Above the js-dos canvas.*/
+    cursor: pointer;
+    color: yellow;
+    bottom: 1ch;
+    right: 1ch;
+    text-shadow: 3px 3px hotpink;
+    font-size: 500%;
+}
+
+#jsdos-container .button:hover
+{
+    color: whitesmoke;
+}
+
+.dosbox-container
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#html
+{
+    background-image: url("./assets/img/grass.png");
+    background-attachment: fixed;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    padding: 0;
+    cursor: initial;
+    flex-shrink: 0;
+}
+
+body.w95 #button-bar
+{
+    display: none !important;
+}
+
+#button-bar
+{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+}
+
+#button-bar .button
+{
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+#button-bar .button.nested
+{
+    font-size: 100% !important;
+    margin-right: 0;
+}
+
+#button-bar .button.nested:hover
+{
+    border-color: yellow;
+}
+
+#button-bar .button.nested + .button.nested
+{    margin-left: 0;
+}
+
+#button-bar:not(.visible)
+{
+    display: none;
+}
+
+#html .button,
+#html #project-name
+{
+    font-size: 95%;
+    padding: 0.5em 1em;
+    background: black;
+    text-decoration: none;
+    border: 0.4ch solid black;
+    display: flex;
+    align-items: center;
+}
+
+#html .button.disabled
+{
+    color: gray;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+#html .button.hidden
+{
+    display: none;
+}
+
+#html #project-name
+{
+    font-size: 125%;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+#html .button:not(.nonclick)
+{
+    color: #c2c2c2;
+    cursor: pointer;
+}
+
+#html .button:hover,
+#html .button.opened
+{
+    border: 0.4ch solid hotpink;
+    color: white;
+}
+
+#html .button.nonclick:hover
+{
+    border: 0.4ch solid lime;
+} 
+
+#html .button > a
+{
+    color: inherit;
+    text-decoration: none;
+}
+
+#html .button.stream.streamer,
+#html .button.stream.server,
+#html .button.stream.streamer .fas,
+#html .button.stream.server .fas
+{
+    color: white;
+}
+
+#html .button.stream.initializing
+{
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+#html .button.stream.waiting:hover
+{
+    background-color: inherit;
+    background-image: inherit;
+}
+
+#html .button.stream.waiting:active
+{
+    border-bottom: inherit;
+    background-image: inherit;
+}
+
+#stream-button[data-status="server"]
+{
+    color: white !important;
+}
+
+#stream-button .view-count::before
+{
+    content: "(";
+}
+
+#stream-button .view-count::after
+{
+    content: ")";
+}
+
+#stream-button:not([data-status="server"]) .view-count
+{
+    display: none;
+}
+
+#stream-button > i.fa-spin
+{
+    display: none;
+}
+
+#stream-button[data-status="initializing"] > i.fa-spin
+{
+    display: inline-block;
+}
+
+#stream-button > i:not(.fa-spin)
+{
+    display: inline-block;
+}
+
+#stream-button[data-status="initializing"] > i:not(.fa-spin)
+{
+    display: none;
+}
+
+#prop-dropdown
+{
+    position: absolute;
+    right: 0;
+    text-align: left;
+    top: 0;
+    z-index: 3;
+    overflow-y: auto;
+    box-sizing: border-box;
+    visibility: hidden;
+    background: url("./assets/img/grass.png");
+    border-top-left-radius: 0;
+    padding: 0.75em;
+    border: 0.4ch solid lime;
+    cursor: url("./assets/img/cursors/rsed-cursor-arrow.png"), auto;
+}
+
+#prop-dropdown > .item
+{
+    cursor: url("./assets/img/cursors/rsed-cursor-fingerhand.png"), auto;
+    color: white;
+    padding: 0.25em 0.5em;
+    white-space: nowrap;
+    border: 2px solid transparent;
+    font-weight: bold;
+}
+
+#prop-dropdown > .item::first-letter
+{
+    text-transform: capitalize;
+}
+
+#prop-dropdown > .item:hover
+{
+    color: black;
+    border-radius: 0;
+    background: yellow;
+}
+
+#prop-dropdown.show
+{
+    visibility: visible;
+}
+
+#popup-notifications-container
+{
+    cursor: initial;
+    z-index: var(--zindex-popups);
+    width: 420px;
+    height: auto;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#popup-notifications-container .popup-notification
+{
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    height: auto;
+    padding: 20px;
+    text-align: left;
+    word-wrap: break-word;
+    color: black;
+    background-color: yellow;
+    transition: bottom 0.2s ease-in-out,
+                opacity 0.2s ease-in-out,
+                background-color 0.2s ease-in-out,
+                border-radius 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#popup-notifications-container .popup-notification:not(:last-child)
+{
+    opacity: 0.85;
+    background-color: rgb(255, 255, 97);
+}
+
+#popup-notifications-container .icon-element
+{
+    margin-right: 10px;
+}
+
+#popup-notifications-container .popup-notification.error .text-container::before
+{
+    content: "Error! ";
+}
+
+#popup-notifications-container > .popup-notification.transitioning-in
+{
+    bottom: -150px;
+    opacity: 0;
+}
+
+#blue-screen
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999; /* Above everything else.*/
+    cursor: initial; /* Remove RallySportED-js's own cursor graphic.*/
+    display: none; /* Will be displayed when a fatal error occurs.*/
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: gray;
+    color: rgb(210, 210, 210);
+}
+
+#blue-screen > *
+{
+    transform: translateY(-20vh);
+}
+
+#blue-screen h1
+{
+    font-size: 200%;
+    font-weight: bold;
+}
+
+#blue-screen #error-description
+{
+    font-size: 100%;
+    color: white;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+#blue-screen #error-description::before
+{
+    content: "Reason: ";
+}
+
+[v-cloak]
+{
+    display: none !important;
+}
+
+.animation-flip
+{
+    animation-name: animation-flip-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 0.2s;
+}
+
+.animation-popup-slide-in
+{
+    animation-name: animation-popup-slide-in-frames;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 0.3s;
+}
+
+@keyframes animation-flip-frames
+{
+    0% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+@keyframes animation-popup-slide-in-frames
+{
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0px); }
+}
+
+@media only screen and (max-width: 1200px)
+{
+    #button-bar
+    {
+        display: none;
+    }
+
+    #popup-notifications-container
+    {
+        border-radius: 0;
+        bottom: 0;
+        right: 0;
+        transform: none;
+        width: 100%;
+    }
+
+    #popup-notifications-container .popup-notification
+    {
+        border-radius: 0;
+        padding: 15px;
+        width: 100%;
+    }
+}

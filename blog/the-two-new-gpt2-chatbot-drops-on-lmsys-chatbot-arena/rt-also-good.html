@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ray Tracer Scene Representation</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #222;
+    }
+    canvas {
+      border: 1px solid black;
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="rayTracerCanvas" width="600" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById("rayTracerCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Utility function to draw a circle
+    function drawCircle(cx, cy, radius, color) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, 2 * Math.PI, false);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    // Utility function to draw a reflection (simple ellipse)
+    function drawReflection(cx, cy, radiusX, radiusY, color) {
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, radiusX, radiusY, 0, 0, 2 * Math.PI, false);
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.5;
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+      ctx.closePath();
+    }
+
+    // Draw the blue sphere (left)
+    drawCircle(200, 200, 80, 'blue');
+
+    // Draw the red sphere (middle)
+    drawCircle(350, 200, 80, 'red');
+
+    // Draw the reflection of the red sphere on the blue sphere
+    drawReflection(160, 200, 30, 40, 'red');
+
+  </script>
+</body>
+</html>

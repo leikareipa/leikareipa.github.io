@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <template id="dokki">
+
+            <ths-feedback></ths-feedback>
+            
+            <dokki-document>
+                    
+                <dokki-header>
+                    <template #caption>
+                        A few different ways of asserting in JavaScript
+                    </template>
+                    <template #widgets>
+                        <blog-post-widgets/>
+                    </template>
+                </dokki-header>
+            
+                <dokki-topics>
+
+                    <post-date date="20 February 2022"></post-date>
+
+                    <dokki-topic title="A few different ways of asserting in JavaScript" id="introduction">
+
+                        <p>
+                            <a href="https://en.wikipedia.org/wiki/Assertion_(software_development)">Asserting</a> is
+                            a staple of defensive programming, consisting of a run-time check of an operating
+                            condition followed by a noisy error if the condition isn't met.
+                        </p>
+
+                        <p>
+                            In my opinion, an ideal method of assertion would have succint syntax, minimal effect
+                            on run-time performance, and full transparency to the application when disabled (e.g. in production
+                            builds, if desired).
+                        </p>
+
+                        <p>
+                            In this post, I'll present and evaluate a few different ways of asserting in JavaScript, with
+                            code samples and benchmark results. If you want my recommendations straight away, you can
+                            <a href="#conclusions">jump directly to the Conclusions section</a>.
+                        </p>
+
+                        <dokki-tip>
+                            If you use a code transformer like Babel, you probably have the option to fully remove
+                            assertive code from your (production) builds, making the code's performance less of a
+                            factor.
+                        </dokki-tip>
+
+                        <dokki-subtopic title="The ways of asserting" id="some-ways-of-asserting">
+
+                            <p>
+                                The standard
+                                <a href="https://developer.mozilla.org/en-US/docs/Web/API/Console_API">Console API</a>
+                                offers a ready-made <em>assert()</em> function:
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        console.assert(x > y);
+
+                                        // Disable assertions:
+                                        console.assert = function(){};
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Instead of using the Console API, we could define our own assertion function:
+                            </p>
+                                
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        assert(x > y);
+
+                                        function assert(condition)
+                                        {
+                                            if (!condition) {
+                                                console.error("Assertion failed");
+                                            }
+                                        }
+
+                                        // Disable assertions:
+                                        assert = function(){};
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                If we want to avoid the function call when assertions are turned off, we could use
+                                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining#optional_chaining_with_function_calls">
+                                optional chaining</a>:
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        assert?.(x > y);
+                                        
+                                        function assert(condition)
+                                        {
+                                            if (!condition) {
+                                                console.log("Assertion failed");
+                                            }
+                                        }
+
+                                        // Disable assertions:
+                                        assert = undefined;
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                If the optionally-chained assertion function is a property, we can disable it by deleting the
+                                property (we'll see later that this has a big impact on performance over setting the function
+                                to <i>undefined</i>):
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        const debug = {
+                                            assert: function(condition) {
+                                                if (!condition) {
+                                                    console.log("Assertion failed");
+                                                }
+                                            }
+                                        };
+
+                                        debug.assert?.(x > y);
+            
+                                        // Disable assertions:
+                                        delete debug.assert;
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                If we want to avoid pre-error function calls altogether, we could use
+                                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR#short-circuit_evaluation">
+                                short-circuiting</a>:
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        let assert = false;
+
+                                        assert || (x > y) || console.error("Assertion failed");
+                                        
+                                        // Disable assertions (unintuitive!):
+                                        assert = true;
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Finally, we could use the old-timey conditional:
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        let assert = true;
+
+                                        if (assert && !(x > y)) {
+                                            console.error("Assertion failed");
+                                        }
+                                        
+                                        // Disable assertions:
+                                        assert = false;
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Benchmarks" id="benchmarks">
+
+                            <p>
+                                For each way of asserting that I listed above, I ran the following simple benchmark
+                                loop in Google Chrome 98:
+                            </p>
+
+                            <dokki-code headerless syntax="javascript">
+                                <template #code>
+                                    <pre>
+                                        for (let i = 0; i < 100000000; i++) {
+                                            assert(((Math.random() + 1.1) * 2) > 2);
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Using <em>Date.now()</em> to time the loop, I got the following results:
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #table>
+                                    <tr>
+                                        <th>Method</th>
+                                        <th>Execution time (ms)</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Short-circuit</td>
+                                        <td>627</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Old-timey conditional</td>
+                                        <td>628</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Optional chaining (function)</td>
+                                        <td>634</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Optional chaining (property)</td>
+                                        <td>634</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Function</td>
+                                        <td>636</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Console API</td>
+                                        <td>906</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                            <p>
+                                Disabling the assertions and then re-running the benchmark gave the following results
+                                (<i>Baseline</i> represents an empty function, i.e. the complete absence of assertions):
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #table>
+                                    <tr>
+                                        <th>Method</th>
+                                        <th>Execution time (ms)</th>
+                                    </tr>
+                                    <tr class="data-lacking">
+                                        <td>Baseline</td>
+                                        <td>33</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Optional chaining (property)</td>
+                                        <td>33</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Optional chaining (function)</td>
+                                        <td>108</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Old-timey conditional</td>
+                                        <td>130</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Short-circuit</td>
+                                        <td>172</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Console API</td>
+                                        <td>596</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Function</td>
+                                        <td>597</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Conclusions" id="conclusions">
+
+                            <p>
+                                As I outlined in <a href="#introduction">the introduction</a>, a good method of assertion would be
+                                succint, performant, and transparent when disabled. Of <a href="#some-ways-of-asserting">the
+                                ways tested</a>, only the property-based optional chaining method &ndash;
+                                <em>debug.assert?.(x > y)</em> &ndash; could be said to fulfill those ideals. Its
+                                syntax is a bit more verbose and foreign than I'd like, but otherwise it appeared to do well.
+                            </p>
+
+                            <p>
+                                For where optional chaining isn't supported or tolerated, the conditional and
+                                short-circuit methods could be the next-best picks, at least from a performance point of view.
+                                Between them, the conditional is more verbose and the short-circuit method perhaps
+                                a bit awkward syntactically.
+                            </p>
+
+                            <p>
+                                The standard <em>assert()</em> function of the Console API was generally the slowest one,
+                                but it should still be OK for typical web applications. However, be aware that this
+                                API may perform very poorly in Node.
+                            </p>
+
+                            <p>
+                                The only approach I wouldn't recommend &ndash; based on this benchmark &ndash; is rolling
+                                your own plain assertion function. It's less standard than <em>console.assert()</em>
+                                and slower than the other non-standard, non-function ways.
+                            </p>
+                            
+                            <p>
+                                If you just need basic, non-performance-critical assertions, I'd suggest <em>console.assert()</em>,
+                                and otherwise, property-based optional chaining might be the way to go. But as with any benchmark, you're
+                                advised to take the results here with a grain of salt and re-evaluate them in your specific context.
+                            </p>
+
+                        </dokki-subtopic>
+
+                    </dokki-topic>
+
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

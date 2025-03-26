@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Scene</title>
+    <style>
+        body {
+            background-color: #000; /* Black background for better contrast */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="sceneCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('sceneCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Function to draw a sphere with shading and highlight
+        function drawSphere(x, y, radius, color) {
+            const grd = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            grd.addColorStop(0, 'white'); // Highlight at the center
+            grd.addColorStop(1, color);   // Main color at the edge
+            ctx.fillStyle = grd;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Draw red sphere in the middle with shading and highlight
+        drawSphere(200, 150, 50, 'red');
+
+        // Draw blue sphere to the left with shading and highlight
+        drawSphere(138, 170, 46, 'blue');
+
+        // Simplified reflection of red sphere on blue sphere
+        ctx.globalAlpha = 0.5; // Semi-transparent for the reflection effect
+        drawSphere(129, 195, 18, 'red');
+    </script>
+</body>
+</html>
+

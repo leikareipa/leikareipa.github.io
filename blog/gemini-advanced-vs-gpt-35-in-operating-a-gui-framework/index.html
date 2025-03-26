@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            x-prompt {
+                margin: 2rem 0;
+                margin-bottom: 1.375rem;
+                display: block;
+                padding: calc(1.5 * var(--dokkiCSS-embedded-header-padding));
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                position: relative;
+            }
+
+            x-prompt::before {
+                content: "Prompt:";
+                position: absolute;
+                top: -1.25ex;
+                background-color: var(--dokkiCSS-page-secondary-bg-color);
+                font-weight: var(--dokkiCSS-bold-text-weight);
+                padding: 0 0.5em;
+                margin-left: -0.5em;
+            }
+
+            .model-response {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color) !important;
+                border: none !important;
+            }
+
+            .model-response .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Gemini Advanced vs. GPT-3.5 in operating a GUI framework
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="22 February 2024" edited="25 February 2024"></post-date>
+<dokki-topic title="Gemini Advanced vs. GPT-3.5 in operating a GUI framework">
+<p>When it comes to coding, Gemini Advanced struggles to compete with GPT-4. Let's instead put it up against GPT-3.5 in <a href="/blog/gpt-4-implementing-minesweeper-using-a-gui-framework-it-hadnt-seen-before/">a test I had GPT-4 do a year ago</a>; namely, operating a foreign JavaScript GUI framework.</p>
+<p>The framework is one I built myself. It wasn't included in GPT-4's training data and probably remains fairly obscure to the current-gen models.</p>
+<p>The gist of the test is like so:</p>
+<ol>
+<li>Give the AI sample code demonstrating usage of the framework.</li>
+<li>Have the AI use the framework to build a GUI.</li>
+</ol>
+<p>Let's go! Or <a href="https://www.midjourney.com/showcase">be distracted</a>.</p>
+<dokki-subtopic title="Simple window">
+<x-prompt>
+    <p>
+        Below is a sample javascript web app created using a windows 95 lookalike ui framework.
+    </p>
+    <p>
+        Use the framework to create a new app with a menu bar ("File" and "Help", File is empty and Help -> About shows an about dialog) and a tab control with two empty tabs.
+    </p>
+
+
+                <dokki-code syntax="javascript"><template #caption>Code</template>
+                    <template #code>
+                        <pre>export default {
+    Meta: {
+        name: &quot;Test app for w95&quot;,
+        version: &quot;0.1&quot;,
+        author: &quot;Tarpeeksi Hyvae Soft&quot;,
+        description: `
+            This app includes all (or most) widgets available in w95, so the user
+            can test and debug them.
+        `,
+    },
+    App() {
+        const width = w95.state(400);
+        const height = w95.state(Math.max(422, ~~(w95.shell.display.height * 0.8)));
+
+        const x = w95.state(
+            ~~((w95.shell.display.width - width.now) / 2),
+            w95.reRenderOnly
+        );
+        const y = w95.state(
+            ~~(0.5 * (w95.shell.display.visibleHeight - height.now)),
+            w95.reRenderOnly
+        );
+
+        const domEl = w95.state(document.createElement(&quot;div&quot;))
+    
+        const isNameQueryDialogOpen = w95.state(false);
+        const isCustomWarningDialogOpen = w95.state(false);
+        const isQuestionDialogOpen = w95.state(false);
+        const isWarningDialogOpen = w95.state(false);
+        const isErrorDialogOpen = w95.state(false);
+    
+        const sliderValue = w95.state(5);
+        const lineEditText = w95.state(&quot;Left empty&quot;);
+        const textEditText = w95.state(&quot;Text editing, with some bugs remaining.\n\nMultiline.&quot;);
+        const numEditText = w95.state(&quot;123&quot;);
+        const userName = w95.state(&quot;&quot;);
+        const widgetDisable = w95.state(false);
+        const tabIndex = w95.state(1);
+        const tab2Index = w95.state(0);
+        const dropdownIndex = w95.state(2);
+        const isCheckChecked = w95.state(false);
+        const groupItemCheckIdx = w95.state(0);
+
+        return {
+            get x() { return x.now },
+            get y() { return y.now },
+            get width() { return width.now },
+            get height() { return height.now },
+            Opened() {
+                domEl.now.innerHTML = `
+                    &lt;table&gt;
+                        &lt;tr&gt;&lt;td&gt;Final Fantasy VII (1997)&lt;/td&gt;&lt;/tr&gt;
+                        &lt;tr&gt;&lt;td&gt;Metal Gear Solid (1998)&lt;/td&gt;&lt;/tr&gt;
+                        &lt;tr&gt;&lt;td&gt;The Legend of Zelda: Ocarina of Time (1998)&lt;/td&gt;&lt;/tr&gt;
+                        &lt;tr&gt;&lt;td&gt;GoldenEye 007 (1997)&lt;/td&gt;&lt;/tr&gt;
+                        &lt;tr&gt;&lt;td&gt;Destruction Derby (1995)&lt;/td&gt;&lt;/tr&gt;
+                    &lt;/table&gt;
+                    &lt;br&gt;
+                    &lt;div class=&quot;main&quot;&gt;
+                        &lt;img src=&quot;./assets/construction.gif&quot;&gt;
+                        &lt;a target=&quot;_blank&quot; href=&quot;https://www.google.com&quot;&gt;Under construction&lt;/a&gt;
+                        &lt;img src=&quot;./assets/construction.gif&quot;&gt;
+                    &lt;/div&gt;
+                `;
+            },
+            Form() {
+                return w95.widget.window({
+                    parent: this,
+                    title: `${userName.now.length? `${userName.now} - ` : &quot;&quot;}Developer's test app for w95`,
+                    resize(deltaWidth, deltaHeight) {
+                        height.set(Math.max(100, (height.now + deltaHeight)));
+                    },
+                    move(deltaX, deltaY) {
+                        x.set(x.now + deltaX);
+                        y.set(y.now + deltaY);
+                    },
+                    close() {
+                        w95.windowManager.release_window(this)
+                    },
+                    children: [
+                        w95.widget.groupBox({
+                            title: `Sliders &amp; progress (${(sliderValue.now * 10)}%)`,
+                            x: 6,
+                            y: 185,
+                            width: 182,
+                            height: 80,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                w95.widget.progressBar({
+                                    x: 10,
+                                    y: 15,
+                                    width: &quot;pw / 2 - 15&quot;,
+                                    progress: (sliderValue.now * 10),
+                                    showLabel: true,
+                                }),
+                                w95.widget.progressBar({
+                                    x: 94,
+                                    y: 15,
+                                    width: &quot;pw / 2 - 13&quot;,
+                                    progress: (sliderValue.now * 10),
+                                    styleHints: [
+                                        w95.styleHint.dashed,
+                                    ],
+                                }),
+                                w95.widget.horizontalSlider({
+                                    x: 10,
+                                    y: 36,
+                                    width: &quot;pw - 20&quot;,
+                                    minValue: 0,
+                                    maxValue: 10,
+                                    value: sliderValue.now,
+                                    newValue(value) {
+                                        sliderValue.set(value);
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.groupBox({
+                            title: &quot;Fields&quot;,
+                            x: 6,
+                            y: 22,
+                            width: 182,
+                            height: 85,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                w95.widget.dropdownBox({
+                                    x: 10,
+                                    y: 15,
+                                    width: &quot;pw - 20&quot;,
+                                    itemIndex: dropdownIndex.now,
+                                    items: {
+                                        &quot;2 Color&quot;: {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 2);
+                                            },
+                                        },
+                                        &quot;16 Color&quot;: {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 16);
+                                            },
+                                        },
+                                        &quot;True Color (32 bit)&quot;: {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 32e6);
+                                            },
+                                        },
+                                    },
+                                    newItemIndex(idx) {
+                                        dropdownIndex.set(idx);
+                                    },
+                                }),
+                                w95.widget.lineEdit({
+                                    x: 10,
+                                    y: 45,
+                                    width: &quot;pw - 76&quot;,
+                                    text: lineEditText.now,
+                                    newText(text) {
+                                        lineEditText.set(text);
+                                    },
+                                }),
+                                w95.widget.lineEdit({
+                                    x: &quot;pw - 58&quot;,
+                                    y: 45,
+                                    width: &quot;pw - 134&quot;,
+                                    validator: /[0-9]/,
+                                    text: numEditText.now,
+                                    newText(text) {
+                                        numEditText.set(text);
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.groupBox({
+                            title: &quot;Toggleables&quot;,
+                            x: 6,
+                            y: 112,
+                            width: 182,
+                            height: 68,
+                            children: [
+                                w95.widget.checkbox({
+                                    x: 10,
+                                    y: 16,
+                                    label: &quot;Disable all widgets&quot;, 
+                                    isChecked: widgetDisable.now,
+                                    newCheckState(isChecked) {
+                                        widgetDisable.set(isChecked);
+                                    },
+                                }),
+                                w95.widget.radioGroup({
+                                    x: 10,
+                                    y: 38,
+                                    itemIndex: (w95.registry.get(&quot;render-scale&quot;) - 1),
+                                    newItemIndex(idx) {
+                                        w95.registry.set(&quot;render-scale&quot;, (idx + 1));
+                                    },
+                                    items: {
+                                        &quot;1x&quot;: {
+                                            isDisabled: widgetDisable.now,
+                                        },
+                                        &quot;2x&quot;: {
+                                            x: 40,
+                                            y: 0,
+                                            isDisabled: widgetDisable.now,
+                                        },
+                                        &quot;3x&quot;: {
+                                            x: 80,
+                                            y: 0,
+                                            isDisabled: true,
+                                        },
+                                        &quot;4x&quot;: {
+                                            x: 120,
+                                            y: 0,
+                                            isDisabled: widgetDisable.now,
+                                        },
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.groupBox({
+                            title: &quot;Buttons&quot;,
+                            x: 196,
+                            y: 22,
+                            width: 190,
+                            height: 55,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                spawnButton({
+                                    x: 10,
+                                    y: 15,
+                                    width: &quot;pw - 95&quot;,
+                                }),
+                                twoStateButton({
+                                    x: 113,
+                                    y: 15,
+                                    width: &quot;pw - 123&quot;,
+                                }),
+                            ],
+                        }),
+                        w95.widget.groupBox({
+                            title: &quot;Tab widget&quot;,
+                            x: 196,
+                            y: 82,
+                            width: 190,
+                            height: 183,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                w95.widget.tabControl({
+                                    x: 10,
+                                    y: 15,
+                                    width: &quot;pw - 20&quot;,
+                                    height: &quot;ph - 27&quot;,
+                                    tabIndex: tabIndex.now,
+                                    newTabIndex(idx) {
+                                        tabIndex.set(idx);
+                                    },
+                                    tabs: {
+                                        &quot;Status&quot;: {
+                                            children: [
+                                                statistics({
+                                                    width: &quot;pw&quot;,
+                                                    height: 131,
+                                                }),
+                                            ],
+                                        },
+                                        &quot;Notes&quot;: {
+                                            children: [
+                                                w95.widget.label({
+                                                    x: 9,
+                                                    y: 7,
+                                                    text: &quot;1.) Use the #no-debug URL\nhash to disable the DOM\ndebug layer.&quot;,
+                                                }),
+                                                w95.widget.label({
+                                                    x: 9,
+                                                    y: 55,
+                                                    text: &quot;2.) For more info, see the w95\ncode repository on GitHub.*&quot;,
+                                                }),
+                                                w95.widget.label({
+                                                    x: 84,
+                                                    y: 68,
+                                                    text: &quot;on GitHub&quot;,
+                                                    color: (
+                                                        widgetDisable.now
+                                                            ? w95.palette.named.dimgray
+                                                            : w95.palette.named.blue
+                                                    ),
+                                                    styleHints: [
+                                                        (widgetDisable.now? 0 : w95.styleHint.underlined),
+                                                    ],
+                                                    onMouseDown() {
+                                                        if (!widgetDisable.now) {
+                                                            window.open(&quot;https://github.com/leikareipa/w95&quot;, &quot;_blank&quot;);
+                                                            return true;
+                                                        }
+                                                    },
+                                                }),
+                                                w95.widget.horizontalRule({
+                                                    x: 7,
+                                                    y: 90,
+                                                    width: &quot;pw - 14&quot;
+                                                }),
+                                                w95.widget.label({
+                                                    x: 7,
+                                                    y: 95,
+                                                    text: &quot;* This software is not associated\nwith Microsoft.&quot;,
+                                                }),
+                                            ]
+                                        },
+                                        &quot;HTML&quot;: {
+                                            children: [
+                                                w95.widget.frame({ 
+                                                    width: &quot;pw&quot;,
+                                                    height: &quot;ph&quot;,
+                                                    shape: w95.frameShape.input,
+                                                    children: [
+                                                        w95.widget.domElement({
+                                                            x: 2,
+                                                            y: 2,
+                                                            width: &quot;pw - 4&quot;,
+                                                            height: &quot;ph - 4&quot;,
+                                                            element: domEl.now,
+                                                            className: &quot;html-page&quot;,
+                                                            isDisabled: widgetDisable.now,
+                                                        }),
+                                                    ],
+                                                }),
+                                            ]
+                                        },
+                                        &quot;3D&quot;: {
+                                            children: [
+                                                rotatingCube({
+                                                    width: &quot;pw&quot;,
+                                                    height: &quot;ph&quot;,
+                                                    isDisabled: widgetDisable.now,
+                                                }),
+                                            ]
+                                        },
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.tabControl({
+                            x: 6,
+                            y: 271,
+                            width: (width.now - 20),
+                            height: Math.max(110, (height.now - 307)),
+                            isDisabled: widgetDisable.now,
+                            tabIndex: tab2Index.now,
+                            newTabIndex(idx) {
+                                tab2Index.set(idx);
+                            },
+                            tabs: {
+                                &quot;Scroll area&quot;: {
+                                    children: [
+                                        w95.widget.scrollArea({
+                                            x: 3,
+                                            y: 3,
+                                            width: &quot;pw - 6&quot;,
+                                            height: &quot;ph - 6&quot;,
+                                            backgroundColor: w95.palette.named.white,
+                                            children: [
+                                                w95.widget.label({
+                                                    x: 2,
+                                                    y: 0,
+                                                    isDisabled: widgetDisable.now,
+                                                    text: &quot;Stately, plump Buck Mulligan came from the stairhead, bearing a bowl of lather on which a mirror and a razor lay crossed. A yellow dressinggown, ungirdled, was sustained gently behind him by the mild morning air. He held the bowl aloft and intoned:&quot;,
+                                                w95.widget.bitmap({
+                                                    x: 109,
+                                                    y: 24,
+                                                    image: w95.icon.windowsLogo16x16,
+                                                    isDisabled: widgetDisable.now,
+                                                }),
+                                            ],
+                                        }),
+                                    ],
+                                },
+                                &quot;Text edit&quot;: {
+                                    children: [
+                                        w95.widget.textEdit({
+                                            x: 3,
+                                            y: 3,
+                                            width: &quot;pw - 6&quot;,
+                                            height: &quot;ph - 6&quot;,
+                                            text: textEditText.now,
+                                            autofocus: true,
+                                            font: w95.font.fixedsys[9],
+                                            newText(text) {
+                                                textEditText.set(text);
+                                            },
+                                        }),
+                                    ],
+                                },
+                                &quot;Embedded &lt;iframe&gt;&quot;: {
+                                    children: [
+                                        w95.widget.frame({
+                                            x: 3,
+                                            y: 3,
+                                            width: &quot;pw - 6&quot;,
+                                            height: &quot;ph - 6&quot;,
+                                            shape: w95.frameShape.input,
+                                            children: [
+                                                embeddedIframe({
+                                                    x: 2,
+                                                    y: 2,
+                                                    width: &quot;pw - 4&quot;,
+                                                    height: &quot;ph - 4&quot;,
+                                                    isDisabled: widgetDisable.now,
+                                                }),
+                                            ]
+                                        }),
+                                    ],
+                                },
+                            },
+                        }),
+                        w95.widget.menuBar({
+                            width: (width.now - 8),
+                            children: [
+                                w95.widget.menuItem({
+                                    label: &quot;File&quot;,
+                                    isTopLevel: true,
+                                    isDisabled: widgetDisable.now,
+                                    menu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuItem({
+                                                label: &quot;Cloud it&quot;,
+                                                onClick() {
+                                                    w95.shell.wallpaper = &quot;./assets/clouds.gif&quot;;
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: &quot;Exit&quot;,
+                                                onClick(widget) {
+                                                    w95.windowManager.release_window(widget.$app.window);
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                                w95.widget.menuItem({
+                                    label: &quot;Dialogs&quot;,
+                                    isTopLevel: true,
+                                    isDisabled: widgetDisable.now,
+                                    menu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuItem({
+                                                label: &quot;Error&quot;,
+                                                onClick() {
+                                                    isErrorDialogOpen.set(true);
+                                                },
+                                            }),
+                                            w95.widget.menuItem({
+                                                label: &quot;Question&quot;,
+                                                onClick() {
+                                                    isQuestionDialogOpen.set(true);
+                                                },
+                                            }),
+                                            w95.widget.menuItem({
+                                                label: &quot;Warning&quot;,
+                                                onClick() {
+                                                    isWarningDialogOpen.set(true);
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: &quot;Custom warning&quot;,
+                                                onClick() {
+                                                    isCustomWarningDialogOpen.set(true);
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: &quot;String query&quot;,
+                                                onClick() {
+                                                    isNameQueryDialogOpen.set(true);
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                                w95.widget.menuItem({
+                                    label: &quot;Other&quot;,
+                                    isTopLevel: true,
+                                    isDisabled: widgetDisable.now,
+                                    menu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuItem({
+                                                label: &quot;Group item 3&quot;,
+                                                group: &quot;a&quot;,
+                                                isCheckable: true,
+                                                isChecked: (groupItemCheckIdx.now === 2),
+                                                newCheckState(isChecked) {
+                                                    if (isChecked) {
+                                                        groupItemCheckIdx.set(2);
+                                                    }
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: &quot;Show debug layer&quot;,
+                                                isDisabled: !Boolean(w95.shell.display.debugLayer),
+                                                isCheckable: true,
+                                                isChecked: w95.registry.get(&quot;is-debug-enabled&quot;),
+                                                newCheckState(isChecked) {
+                                                    if (w95.shell.display.debugLayer) {
+                                                        w95.shell.display.debugLayer.style.visibility = (isChecked? &quot;visible&quot; : &quot;hidden&quot;);
+                                                    }
+                                                    w95.registry.set(&quot;is-debug-enabled&quot;, isChecked);
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: &quot;Out of service&quot;,
+                                                isDisabled: true,
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: &quot;Operating system&quot;,
+                                                icon: w95.icon.windowsLogo16x16,
+                                            }),
+                                            w95.widget.menuItem({
+                                                label: &quot;Program application&quot;,
+                                                icon: w95.icon.applicationIcon16x16,
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                            ],
+                        }),
+                        w95.shell.popup({
+                            parent: this,
+                            icon: w95.icon.error,
+                            title: &quot;Error&quot;,
+                            text: &quot;The NTVDM CPU has encountered an illegal instruction.&quot;,
+                            buttons: [
+                                w95.widget.button({
+                                    width: 75,
+                                    text: &quot;OK&quot;,
+                                    onClick() {
+                                        isErrorDialogOpen.set(false);
+                                    },
+                                }),
+                            ],
+                        }, {hideIf: !isErrorDialogOpen.now}),
+                    ],
+                });
+            },
+        };
+    },
+};
+</pre>
+                    </template>
+                </dokki-code>
+            
+</x-prompt>
+
+
+                <dokki-code no-line-numbers="true"inline-class="model-response"><template #caption>Gemini Advanced</template>
+                    <template #code>
+                        <pre>Something went wrong.
+</pre>
+                    </template>
+                </dokki-code>
+            
+<dokki-image src="./2-gpt-1.png" width="614" height="450"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAYAAADkmO9VAAAACXBIWXMAAC4jAAAuIwF4pT92AAABYklEQVR4nLXSzU7CQBSG4d4ZCwG5Czbgli1xZ9y4YWcNAY0/JKCklgI2bWk77VCoxELCHb1mmrBUmzQunsxm8s05c472+OhzefnOxcWMdtug2Xzj7GxAtTr8Va02pFIZcHW15PXVR9c/6PUmaPf3Jt3uE63WiHb7hU5nSr1+y/m5/qtGQ6da1el2n+n3n7m5eeD6+g4tCDwsy8C2TUxzTJZtOB7Twna7hCRJ+PzcImWEttt9IURMGCoRQkgcx8d1Azwv/FMQCMJQIITAcVy0/X7PbDZjOp1iWVZuPp+Tpinb7bawNE3z0DxwtVrhOA6u6+J5HrZtE4Yh6/W6sCRJCIIA7XA4sFwuGY1GjMdjDMNgMpmwWCyI45goigqJ4zgvJq9QpW82m/w8Ua+qS0VJKfNO88CfKikVGJck/y0wy7LCH194KFLK0tQQfd9HU9NVi31a6jJM00RT5Z6WugzVrtrnb44BpItSVahiAAAAAElFTkSuQmCC"><template #caption>GPT-3.5</template>
+                        </dokki-image>
+<p>I gave Gemini a day and some number of prompting attempts, but it wasn't able to process this task, although it could respond to other prompts. I can only assume the token count was too high.</p>
+<p>GPT-3.5 did a reasonable job, with only minor issues: the File menu wasn't empty and neither were the tabs, and the tab widget was too wide for the window.</p>
+<p>Assuming the above prompt was too long for Gemini, I cut out some of the sample app and tried again.</p>
+<x-prompt>
+    <p>
+        Below is a sample javascript web app created using a windows 95 lookalike ui framework.
+    </p>
+    <p>
+        Use the framework to create a new app with a menu bar ("File" and "Help", File is empty and Help -> About shows an about dialog) and a tab control with two empty tabs.
+    </p>
+
+
+                <dokki-code syntax="javascript"><template #caption>Code</template>
+                    <template #code>
+                        <pre>export default {
+    Meta: {
+        name: &quot;Test app for w95&quot;,
+        version: &quot;0.1&quot;,
+        author: &quot;Tarpeeksi Hyvae Soft&quot;,
+    },
+    App() {
+        const width = w95.state(400);
+        const height = w95.state(Math.max(422, ~~(w95.shell.display.height * 0.8)));
+
+        const x = w95.state(
+            ~~((w95.shell.display.width - width.now) / 2),
+            w95.reRenderOnly
+        );
+        const y = w95.state(
+            ~~(0.5 * (w95.shell.display.visibleHeight - height.now)),
+            w95.reRenderOnly
+        );
+
+        const isErrorDialogOpen = w95.state(false);
+        const lineEditText = w95.state(&quot;Left empty&quot;);
+        const numEditText = w95.state(&quot;123&quot;);
+        const userName = w95.state(&quot;&quot;);
+        const widgetDisable = w95.state(false);
+        const tabIndex = w95.state(1);
+        const dropdownIndex = w95.state(2);
+
+        return {
+            get x() { return x.now },
+            get y() { return y.now },
+            get width() { return width.now },
+            get height() { return height.now },
+            Form() {
+                return w95.widget.window({
+                    parent: this,
+                    title: `${userName.now.length? `${userName.now} - ` : &quot;&quot;}Developer's test app for w95`,
+                    resize(deltaWidth, deltaHeight) {
+                        height.set(Math.max(100, (height.now + deltaHeight)));
+                    },
+                    move(deltaX, deltaY) {
+                        x.set(x.now + deltaX);
+                        y.set(y.now + deltaY);
+                    },
+                    close() {
+                        w95.windowManager.release_window(this)
+                    },
+                    children: [
+                        w95.widget.groupBox({
+                            title: &quot;Fields&quot;,image.png
+                            x: 6,
+                            y: 22,
+                            width: 182,
+                            height: 85,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                w95.widget.dropdownBox({
+                                    x: 10,
+                                    y: 15,
+                                    width: &quot;pw - 20&quot;,
+                                    itemIndex: dropdownIndex.now,
+                                    items: {
+                                        &quot;2 Color&quot;: {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 2);
+                                            },
+                                        },
+                                        &quot;16 Color&quot;: {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 16);
+                                            },
+                                        },
+                                        &quot;True Color (32 bit)&quot;: {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 32e6);
+                                            },
+                                        },
+                                    },
+                                    newItemIndex(idx) {
+                                        dropdownIndex.set(idx);
+                                    },
+                                }),
+                                w95.widget.lineEdit({
+                                    x: 10,
+                                    y: 45,
+                                    width: &quot;pw - 76&quot;,
+                                    text: lineEditText.now,
+                                    newText(text) {
+                                        lineEditText.set(text);
+                                    },
+                                }),
+                                w95.widget.lineEdit({
+                                    x: &quot;pw - 58&quot;,
+                                    y: 45,
+                                    width: &quot;pw - 134&quot;,
+                                    validator: /[0-9]/,
+                                    text: numEditText.now,
+                                    newText(text) {
+                                        numEditText.set(text);
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.groupBox({
+                            title: &quot;Tab widget&quot;,
+                            x: 196,
+                            y: 82,
+                            width: 190,
+                            height: 183,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                w95.widget.tabControl({
+                                    x: 10,
+                                    y: 15,
+                                    width: &quot;pw - 20&quot;,
+                                    height: &quot;ph - 27&quot;,
+                                    tabIndex: tabIndex.now,
+                                    newTabIndex(idx) {
+                                        tabIndex.set(idx);
+                                    },
+                                    tabs: {
+                                        &quot;Notes&quot;: {
+                                            children: [
+                                                w95.widget.label({
+                                                    x: 9,
+                                                    y: 7,
+                                                    text: &quot;1.) Use the #no-debug URL\nhash to disable the DOM\ndebug layer.&quot;,
+                                                }),
+                                            ]
+                                        },
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.menuBar({
+                            width: (width.now - 8),
+                            children: [
+                                w95.widget.menuItem({
+                                    label: &quot;File&quot;,
+                                    isTopLevel: true,
+                                    isDisabled: widgetDisable.now,
+                                    menu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuItem({
+                                                label: &quot;Cloud it&quot;,
+                                                onClick() {
+                                                    w95.shell.wallpaper = &quot;./assets/clouds.gif&quot;;
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: &quot;Exit&quot;,
+                                                onClick(widget) {
+                                                    w95.windowManager.release_window(widget.$app.window);
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                            ],
+                        }),
+                        w95.shell.popup({
+                            parent: this,
+                            icon: w95.icon.error,
+                            title: &quot;Error&quot;,
+                            text: &quot;The NTVDM CPU has encountered an illegal instruction.&quot;,
+                            buttons: [
+                                w95.widget.button({
+                                    width: 75,
+                                    text: &quot;OK&quot;,
+                                    onClick() {
+                                        isErrorDialogOpen.set(false);
+                                    },
+                                }),
+                            ],
+                        }, {hideIf: !isErrorDialogOpen.now}),
+                    ],
+                });
+            },
+        };
+    },
+};
+</pre>
+                    </template>
+                </dokki-code>
+            
+</x-prompt>
+<dokki-image src="./3-gemini-1.png" width="598" height="498"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAARCAYAAADdRIy+AAAACXBIWXMAAC4jAAAuIwF4pT92AAABfklEQVR4nOWUyWoCQRCG57UEFZcHURTxIJ49iHc9OzmEGBQTyejMqARnCdGepcdxQZ/pD9WTGIIkLnjL4aOpavrvquavlrrdOep1HYWCjlJpjGJRQy43Qj6vIpt9RCrVQTp9TCbTQSLxgGbThKK8o902IMsapG73FbVaD/n8EyqVF1SrGsrloSCVukM83kYiIR+RTMqIxWQ0Gn10Os9otXpote4h2bYNXVdhGBMMBj2EoSdYrXzsdkvs93/DuQ/GPHAewLbfIG02GwQBbQRwXdrg8H2OxYKBMeckjuPAdRk8z4NlmZC22y0sy0K/38d4PMZoNIKmaZjNZlgul/B9X1xyiiAIhI60Xq9FwBgTt0UV+gLKn4JzjjAMMZ/PMZlMvgWj0t0DFJ8DY1G7hmFA1/XfBc/FcRzRDbVLT3YzQdM0b1uh+c8FOecHH14K+7TND0EyJiW/DH0JdI46jP4EPZplCmjUyJzXQNXRlEynU0iUUBQFw+Hwaui8qqpi/QAwNCPyJThLUQAAAABJRU5ErkJggg=="><template #caption>Gemini Advanced</template>
+                        </dokki-image>
+<p>This time it's a good effort from Gemini, just as requested.</p>
+</dokki-subtopic><dokki-subtopic title="Sketch to window">
+<p>Unlike GPT-3.5, Gemini has the ability to process images. So let's feed it a mock sketch of a UI and have it convert it into code.</p>
+<p>...Although the process wasn't quite that smooth. I found Gemini would explicitly refuse to look at the image if given together with the sample code. I had to use separate prompts.</p>
+<x-prompt>
+    <p>
+        Examine the UI in this mockup sketch.
+    </p>
+    <dokki-image src="./1009acd1-0faf-4113-ad1a-60975f7a383d.png" width="556" height="394">
+        <template #caption>
+            Image
+        </template>
+    </dokki-image>
+</x-prompt>
+
+
+                <dokki-code no-line-numbers="true"inline-class="model-response"><template #caption>Gemini Advanced</template>
+                    <template #code>
+                        <pre>[Response omitted for clarity.]
+</pre>
+                    </template>
+                </dokki-code>
+            
+<x-prompt>
+    <p>
+        Below is a sample javascript web app created using a windows 95 lookalike ui framework.
+    </p>
+    <p>
+        Examine the sample app to learn all you can about this framework, then write code to implement the UI from the sketch using the framework.
+    </p>
+
+
+                <dokki-code syntax="javascript"><template #caption>Code</template>
+                    <template #code>
+                        <pre>export default {
+    Meta: {
+        name: &quot;Test app for w95&quot;,
+        version: &quot;0.1&quot;,
+        author: &quot;Tarpeeksi Hyvae Soft&quot;,
+    },
+    App() {
+        const width = w95.state(400);
+        const height = w95.state(Math.max(422, ~~(w95.shell.display.height * 0.8)));
+
+        const x = w95.state(
+            ~~((w95.shell.display.width - width.now) / 2),
+            w95.reRenderOnly
+        );
+        const y = w95.state(
+            ~~(0.5 * (w95.shell.display.visibleHeight - height.now)),
+            w95.reRenderOnly
+        );
+
+        const isErrorDialogOpen = w95.state(false);
+        const lineEditText = w95.state(&quot;Left empty&quot;);
+        const numEditText = w95.state(&quot;123&quot;);
+        const userName = w95.state(&quot;&quot;);
+        const widgetDisable = w95.state(false);
+        const tabIndex = w95.state(1);
+        const dropdownIndex = w95.state(2);
+
+        return {
+            get x() { return x.now },
+            get y() { return y.now },
+            get width() { return width.now },
+            get height() { return height.now },
+            Form() {
+                return w95.widget.window({
+                    parent: this,
+                    title: `${userName.now.length? `${userName.now} - ` : &quot;&quot;}Developer's test app for w95`,
+                    resize(deltaWidth, deltaHeight) {
+                        height.set(Math.max(100, (height.now + deltaHeight)));
+                    },
+                    move(deltaX, deltaY) {
+                        x.set(x.now + deltaX);
+                        y.set(y.now + deltaY);
+                    },
+                    close() {
+                        w95.windowManager.release_window(this)
+                    },
+                    children: [
+                        w95.widget.groupBox({
+                            title: &quot;Fields&quot;,image.png
+                            x: 6,
+                            y: 22,
+                            width: 182,
+                            height: 85,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                w95.widget.dropdownBox({
+                                    x: 10,
+                                    y: 15,
+                                    width: &quot;pw - 20&quot;,
+                                    itemIndex: dropdownIndex.now,
+                                    items: {
+                                        &quot;2 Color&quot;: {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 2);
+                                            },
+                                        },
+                                        &quot;16 Color&quot;: {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 16);
+                                            },
+                                        },
+                                        &quot;True Color (32 bit)&quot;: {
+                                            onSelect(widget) {
+                                                set_color_count(widget, 32e6);
+                                            },
+                                        },
+                                    },
+                                    newItemIndex(idx) {
+                                        dropdownIndex.set(idx);
+                                    },
+                                }),
+                                w95.widget.lineEdit({
+                                    x: 10,
+                                    y: 45,
+                                    width: &quot;pw - 76&quot;,
+                                    text: lineEditText.now,
+                                    newText(text) {
+                                        lineEditText.set(text);
+                                    },
+                                }),
+                                w95.widget.lineEdit({
+                                    x: &quot;pw - 58&quot;,
+                                    y: 45,
+                                    width: &quot;pw - 134&quot;,
+                                    validator: /[0-9]/,
+                                    text: numEditText.now,
+                                    newText(text) {
+                                        numEditText.set(text);
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.groupBox({
+                            title: &quot;Tab widget&quot;,
+                            x: 196,
+                            y: 82,
+                            width: 190,
+                            height: 183,
+                            isDisabled: widgetDisable.now,
+                            children: [
+                                w95.widget.tabControl({
+                                    x: 10,
+                                    y: 15,
+                                    width: &quot;pw - 20&quot;,
+                                    height: &quot;ph - 27&quot;,
+                                    tabIndex: tabIndex.now,
+                                    newTabIndex(idx) {
+                                        tabIndex.set(idx);
+                                    },
+                                    tabs: {
+                                        &quot;Notes&quot;: {
+                                            children: [
+                                                w95.widget.label({
+                                                    x: 9,
+                                                    y: 7,
+                                                    text: &quot;1.) Use the #no-debug URL\nhash to disable the DOM\ndebug layer.&quot;,
+                                                }),
+                                            ]
+                                        },
+                                    },
+                                }),
+                            ]
+                        }),
+                        w95.widget.menuBar({
+                            width: (width.now - 8),
+                            children: [
+                                w95.widget.menuItem({
+                                    label: &quot;File&quot;,
+                                    isTopLevel: true,
+                                    isDisabled: widgetDisable.now,
+                                    menu: w95.widget.menu({
+                                        children: [
+                                            w95.widget.menuItem({
+                                                label: &quot;Cloud it&quot;,
+                                                onClick() {
+                                                    w95.shell.wallpaper = &quot;./assets/clouds.gif&quot;;
+                                                },
+                                            }),
+                                            w95.widget.menuSeparator(),
+                                            w95.widget.menuItem({
+                                                label: &quot;Exit&quot;,
+                                                onClick(widget) {
+                                                    w95.windowManager.release_window(widget.$app.window);
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                }),
+                            ],
+                        }),
+                        w95.shell.popup({
+                            parent: this,
+                            icon: w95.icon.error,
+                            title: &quot;Error&quot;,
+                            text: &quot;The NTVDM CPU has encountered an illegal instruction.&quot;,
+                            buttons: [
+                                w95.widget.button({
+                                    width: 75,
+                                    text: &quot;OK&quot;,
+                                    onClick() {
+                                        isErrorDialogOpen.set(false);
+                                    },
+                                }),
+                            ],
+                        }, {hideIf: !isErrorDialogOpen.now}),
+                    ],
+                });
+            },
+        };
+    },
+};
+</pre>
+                    </template>
+                </dokki-code>
+            
+</x-prompt>
+<dokki-image src="./4-gemini.png" width="602" height="390"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAAC4jAAAuIwF4pT92AAABd0lEQVR4nKWSy2rCQBSG80AiuvRBBG8rX8GNIoogSFe6qFhaL7XWkijRoKBNNSYmxoyjC/NGfzkRSyn10rr4mDmX+fnPcIR6XUUq1UMiMUAkIiEcFhGP9xEKPcLvv0cgUP2VYLAKn6+KbHYIUVRRLisoFJoQRPEdpVIf6bSCXE5BJiMjn1eQTL4gGm0gFmueJBJpoVjsotF4Q6Xyiru7Jwi7HYdtG7BtzWO3W2G7tbDfr+G6Dlx3fRbObdi2Dc4dmKYBYbPhkOUharUHtFrPWCwMLBY6NO3AIT6NrhswDAPLpQlV/YDgOA5WqxU45x6Msa+Taofm5UUsy8JsNjsIkmVKzudzdDodyLIMXdehqipGo5HXfEnYOgqSm/F4DEmSMBgM0O120ev1vJyiKJ6oaZrXO2SMeReCxNrtNqbTqeeamq4RW/4cmR5Rggp0p/G+8ydBxpj3X8fCtQJnHRr/FDnp8DjqLdDq0ZYIFJAyBbegaRomkwk+AcM7JxnAg7HDAAAAAElFTkSuQmCC"><template #caption>Gemini Advanced</template>
+                        </dokki-image>
+<p>Not perfect, but a start.</p>
+<p>Gemini didn't understand which widget the &quot;First option&quot; scribble was supposed to represent (it's a combo box), nor did it acknowledge at all the scroll bar widget (which isn't demonstrated in the sample code), nor did it realize &quot;Hello!!!!!&quot; was supposed to be the window title.</p>
+<p>The model appears to have understood only the most obvious widgets, ie. &quot;Press&quot; is a button and &quot;Enabled&quot; is a boolean toggle.</p>
+</dokki-subtopic><dokki-subtopic title="Minesweeper">
+<p>Harking back to <a href="/blog/gpt-4-implementing-minesweeper-using-a-gui-framework-it-hadnt-seen-before/">the test I gave GPT-4 where I had it create Minesweeper using the framework</a>, let's see how the other two models do using the first two prompts from that test.</p>
+<dokki-image src="./5-gemini.png" width="598" height="798"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAbCAYAAAB836/YAAAACXBIWXMAAC4jAAAuIwF4pT92AAABcklEQVR4nO2VzWrCQBDH814RP95A8OpBDyoIXr2Id3OtuVTBlLbQ2rQFaTZuPjabbxG8Sp9A6Fv8y4YqlLYitpdCDj+WnR3+M7Pszkia5mIweEKr9Yx6fY5G4wHNpo5q9QbF4gTl8vRbKpUpZHmC0YhgPncwHhtQ1UdImrZAv6+h29XRbt+h07lHr6ejVpuhULhAuayiVPqKsMuyiuHwGtPpLRTlCopyCcmybOi6jtUqQpoGSNMwW9frCJtNcoQ4IwxDMBYgDGNQakESBkpNmKYJy3IgAgjE4TEch2W4LgNjDJ7ngRACiVJRP8FspoOQFzDmwXXdowiBJEkQRdGBOI6xXC4hicPd7g3b7SsWi0VWgojGOf8R3/c/SmWZ794/y9DzGAgxYBgGKKWwbfskRKaO4xwQe8uyhKB3iLqPdg6c82z9JHgunHMEQZAL+vkd+vmz8fOf4v/b5sAY+3vBfQv/DUInGwFi2BwbSKciMhVT7x0+Y7CIN6YOQQAAAABJRU5ErkJggg=="><template #caption>Gemini Advanced</template>
+                        </dokki-image>
+<dokki-image src="./5-gpt.png" width="698" height="498"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAYAAAAvxDzwAAAACXBIWXMAAC4jAAAuIwF4pT92AAAB4klEQVR4nK1TW27bMBDUZYIAyTmSWwQIcoccIn9tgziGgMKB++NCliWRFEXr6acMyPCZpphFaCRAP9qiHwMOd7izu6QUhKHD42OC+/sEd3cRHh4WuL2d4PLyK66vv+Hq6vegdnHxBTc33zGZKDw/x3h6+oGgrncIwxjTaYUwVJhMLMLQYDw2eH1VgvFY4+UlRRjmGI0yAc+MRkpy3t5+YjZTmE4jBMfjAK0T7PcdyjJHXRdomgKrVYm2LdC2Dl23RFXl2GwqNI0Vfb2m7lDXFtYaDMMBXdcg6PsDoihGWdZIUwWtcyhlYIyV1XNq1jpkmYZSGnleiJZlGmmaYbPZwLklgv1+jyiKUJYl0jSF1lpgjJFVKSWcmrUWWZZJLM9ZWMme2na7xXK55MhHCa7XaxRFIUGiqqpPnFrTNHDOCeq6Fs05J8Znw//eYd/3mM/n0gVFb8QEb05OjV3ShDGa+4LpR8NhGCSwWq3kkB+DHfvxyKlxTK40ZgPUivciZ8PD4YA4juV+fGV2xINcPafGBE5A0IyaMXzp7M9H5v6vRu7/4Q6Jj4afOjydTiLsdrvzJ0LwCj5yjth1/JtKQdu2opGzCeaTB/z+ZrOZVORdJkkiYFXPORI1drNYLARe93v/qL8AVSxYRozaRaAAAAAASUVORK5CYII="><template #caption>GPT-3.5</template>
+                        </dokki-image>
+<p>The efforts from Gemini and GPT-3.5 aren't worth discussing in the sense that they don't cut the mustard by comparison to GPT-4, which understood the layout of the game board down to the menu bar and was able to recreate it well.</p>
+<p>But if we must, Gemini's idea of the overall layout of the board was better than GPT-3.5's, although still not very accurate. It hallucinated a status bar and made a bit of a mess otherwise. GPT-3.5 was hyper-focused on the core gameplay section.</p>
+</dokki-subtopic><dokki-subtopic title="Final notes">
+<p>As I spend more time with Gemini Advanced, I develop some concerns. The model is good at talking but its ability to reason can be superficial and it easily ends up hallucinating extrapolations from a weak basis. It has smells of a small model or one confused by excessive guardrails.</p>
+<p>The next version of Gemini reportedly will ship with a very large context window but is otherwise expected to be comparable to the current model. Which is to say, the near-term usefulness of Gemini for coding looks uncertain – as per this test and others, Gemini as-is does tend to beat GPT-3.5, but that bar is too low in my opinion.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

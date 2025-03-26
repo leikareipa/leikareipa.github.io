@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Snowfall Accumulation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0f1c2c;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<canvas id="snowCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('snowCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const snowflakes = [];
+    const groundHeight = 50; // Height of the snow accumulation layer
+    const ground = new Array(canvas.width).fill(canvas.height - groundHeight);
+
+    class Snowflake {
+        constructor(x, y, radius, speed) {
+            this.x = x;
+            this.y = y;
+            this.radius = radius;
+            this.speed = speed;
+            this.velocityX = Math.random() * 1 - 0.5;
+        }
+
+        update() {
+            this.y += this.speed;
+            this.x += this.velocityX;
+
+            // Check if the snowflake has hit the ground
+            if (this.y + this.radius >= ground[Math.floor(this.x)]) {
+                ground[Math.floor(this.x)] -= this.radius / 2;
+                this.y = ground[Math.floor(this.x)] + this.radius / 2;
+                this.speed = 0;
+                this.velocityX = 0;
+                return false; // Stop updating this snowflake
+            }
+
+            // Wrap around the edges
+            if (this.x < 0) this.x = canvas.width;
+            if (this.x > canvas.width) this.x = 0;
+
+            return true; // Continue updating this snowflake
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+
+    // Generate initial snowflakes
+    function generateSnowflakes(count) {
+        for (let i = 0; i < count; i++) {
+            const radius = Math.random() * 2 + 2;
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            const speed = Math.random() * 1.5 + 0.5;
+            snowflakes.push(new Snowflake(x, y, radius, speed));
+        }
+    }
+
+    function updateSnowflakes() {
+        snowflakes.forEach((snowflake, index) => {
+            if (!snowflake.update()) {
+                // Replace settled snowflakes with new ones
+                const radius = Math.random() * 2 + 2;
+                const x = Math.random() * canvas.width;
+                const speed = Math.random() * 1.5 + 0.5;
+                snowflakes[index] = new Snowflake(x, 0, radius, speed);
+            }
+        });
+    }
+
+    function drawGround() {
+        ctx.fillStyle = 'white';
+        for (let x = 0; x < canvas.width; x++) {
+            ctx.fillRect(x, ground[x], 1, canvas.height - ground[x]);
+        }
+    }
+
+    function drawSnowflakes() {
+        snowflakes.forEach(snowflake => snowflake.draw());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawGround();
+        drawSnowflakes();
+        updateSnowflakes();
+        requestAnimationFrame(animate);
+    }
+
+    generateSnowflakes(200);
+    animate();
+</script>
+</body>
+</html>

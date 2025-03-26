@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fire Effect</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: black;
+        }
+        canvas {
+            image-rendering: pixelated; /* Gives the fire a more retro, pixelated look */
+        }
+    </style>
+</head>
+<body>
+<canvas id="fireCanvas"></canvas>
+<script>
+    const canvas = document.getElementById('fireCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size
+    const width = 200;
+    const height = 100;
+    canvas.width = width;
+    canvas.height = height;
+
+    // Create fire palette
+    const palette = [];
+    for (let i = 0; i < 256; i++) {
+        const red = i < 128 ? i * 2 : 255;
+        const green = i < 128 ? 0 : i - 128;
+        const blue = 0;
+        palette[i] = `rgb(${red}, ${green}, ${blue})`;
+    }
+
+    // Create fire data array
+    const firePixels = [];
+    for (let i = 0; i < width * height; i++) {
+        firePixels[i] = 0; // Initialize with cold (black)
+    }
+
+    // Function to spread the fire
+    function spreadFire() {
+        for (let x = 0; x < width; x++) {
+            for (let y = 1; y < height; y++) {
+                const idx = x + y * width;
+                const randIdx = Math.round(Math.random() * 3) & 3; // Random index for wind effect
+                const dst = idx - randIdx + 1;
+                const decay = Math.floor(Math.random() * 2);
+                firePixels[dst - width] = Math.max(firePixels[idx] - decay, 0);
+            }
+        }
+    }
+
+    // Function to render the fire
+    function renderFire() {
+        for (let x = 0; x < width; x++) {
+            for (let y = 0; y < height; y++) {
+                const idx = x + y * width;
+                const color = palette[firePixels[idx]];
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, 1, 1); // Draw each pixel
+            }
+        }
+    }
+
+    // Function to create the fire source
+    function createFireSource() {
+        for (let x = 0; x < width; x++) {
+            const idx = x + (height - 1) * width;
+            firePixels[idx] = 255; // Hottest part of the fire
+        }
+    }
+
+    // Animation loop
+    function animate() {
+        spreadFire();
+        renderFire();
+        requestAnimationFrame(animate);
+    }
+
+    createFireSource();
+    animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chessboard with Visual Effect</title>
+    <style>
+        html, body, canvas {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script src="../parrot.js"></script>
+    <script>
+      do_with_parrot((parrot)=>{
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const bufferA = new Float32Array(imageData.data.length / 4); 
+        const bufferB = new Float32Array(imageData.data.length / 4);
+
+        function initializeWithRandomness(buffer, variation = 0.2) {
+            const midPoint = 0.5;
+            for (let i = 0; i < buffer.length; i++) {
+                buffer[i] = midPoint + (Math.random() - 0.5) * variation;
+            }
+        }
+
+        initializeWithRandomness(bufferA);
+        initializeWithRandomness(bufferB, 0.2); // Slightly different noise scale
+
+        let f = 0.030; 
+        let frameCount = 0;
+        function reactionDiffusionStep() {
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) {
+                    const i = (y * canvas.width + x) * 4; // Index in pixel buffers
+
+                    // Laplacian for Diffusion (simplified, assumes square pixels)
+                    let laplacianA = -4 * bufferA[i] + 
+                                    bufferA[i - 4] + bufferA[i + 4] +  // (x-1, x+1)
+                                    bufferA[i - 4 * canvas.width] + bufferA[i + 4 * canvas.width]; // (y-1, y+1)
+                    let laplacianB = -4 * bufferB[i] + 
+                                    bufferB[i - 4] + bufferB[i + 4] + 
+                                    bufferB[i - 4 * canvas.width] + bufferB[i + 4 * canvas.width];
+
+                    // Gray-Scott Reaction  
+                    let da = 0.001; // Diffusion of A (adjust for pattern density)
+                    let db = 0.005; // Diffusion of B
+                    let f = 0.030;  // Feed rate
+                    let k = 0.062;  // Kill rate
+                    let newA = bufferA[i] + da * laplacianA - bufferA[i] * bufferB[i] * bufferB[i] + f * (1 - bufferA[i]);
+                    let newB = bufferB[i] + db * laplacianB + bufferA[i] * bufferB[i] * bufferB[i] - (k + f) * bufferB[i];
+
+                    bufferA[i] = newA;
+                    bufferB[i] = newB;
+                }
+            }
+
+            mapChemicalsToImage(bufferA, bufferB, imageData.data);  
+            ctx.putImageData(imageData, 0, 0);
+
+            f += 0.0001 * Math.sin(frameCount * 0.05); 
+            frameCount++;
+        }
+
+        function mapChemicalsToImage(chemA, chemB, imagePixels) {
+            for (let i = 0; i < imagePixels.length / 4; i++) {
+                // Normalize chemical values (important!)
+                const normA = (chemA[i] - 0.2) / 0.8; // Assume chemicals range ~0.2 to 1 
+                const normB = (chemB[i] - 0.1) / 0.2; 
+
+                // Example: Map B to color,  A to Alpha 
+                imagePixels[i * 4] = 0;     // R 
+                imagePixels[i * 4 + 1] = 0; // G
+                imagePixels[i * 4 + 2] = Math.floor(normB * 255);  // B 
+                imagePixels[i * 4 + 3] = Math.floor(normA * 255);  // Alpha
+            }
+        }
+
+        setInterval(reactionDiffusionStep, 0); // Update approximately 30 times/second
+      });
+    </script>
+</body>
+</html>

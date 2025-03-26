@@ -1,0 +1,133 @@
+body {
+    color: whitesmoke;
+    background: url(grass.png);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+#file-eater {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+}
+
+#file-eater .filename::before {
+    background-image: url("appicon.png");
+    width: 16px;
+    content: "";
+    height: 13px;
+    transform: translateY(1px);
+    display: inline-block;
+}
+
+#controls {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: none;
+    background-color: white;
+    color: black;
+    border-radius: 12px;
+}
+
+#controls.visible {
+    display: block;
+}
+
+#controls > .container{
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#controls .control-setter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 1em;
+    min-width: 23em;
+    padding: 1.75em;
+}
+
+#controls .control-setter:not(:first-child) {
+    border-top: 1px solid lightgray;
+}
+
+#controls .control-setter:last-child {
+    border-bottom: 1px solid lightgray;
+}
+
+#controls .control-setter > label {
+    font-size: 120%;
+    text-transform: capitalize;
+    flex-grow: 1;
+}
+
+#controls .control-setter > label:empty::before {
+    content: "Unchanged";
+    color: gray;
+    font-style: italic;
+    font-size: initial;
+}
+
+#controls .control-setter > reset-default {
+    cursor: pointer;
+}
+
+#controls .control-setter > reset-default::before {
+    content: "\00d7";
+    font-size: 140%;
+}
+
+#controls .control-setter > label:empty + reset-default {
+    display: none;
+}
+
+#query-tarp {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+    display: none;
+    font-weight: bold;
+    font-size: 300%;
+    text-shadow: 0 3px black;
+}
+
+#query-tarp.visible {
+    display: flex;
+}
+
+button#save {
+    width: calc(100% - 4em);
+    margin: 2em;
+}
+
+button {
+    padding: 1em;
+    min-width: 6em;
+}
+
+.filename {
+    font-weight: bold;
+    font-family: monospace;
+    padding: 1em;
+    background-color: black;
+    border-radius: 8px;
+}

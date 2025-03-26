@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .aside-caption.custom {
+                font-style: italic;
+                font-size: .875em;
+                margin: 0;
+                margin-top: calc(-1.375rem);
+                padding: 1em;
+                background-color: var(--dokkiCSS-page-link-color);
+                color: white;
+            }
+
+            body[data-dokki-theme="light"] .aside-caption.custom
+            {
+                color: black;
+            }
+
+            .dokki-image .content.first-level > *
+            {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        <template dokki-document>
+            <section title>
+                Playing around with painterly Stable Diffusion
+            </section>
+            <section widgets>
+                <blog-post-widgets/>
+            </section>
+            <section content>
+                <article src="content.md"></article>
+            </section>
+        </template>
+    </body>
+</html>

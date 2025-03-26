@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s {
+                color: transparent;
+                width: 1rem !important;
+                text-align: center !important;
+            }
+            .dokki-table.results td.s0 {
+                background-color: gray;
+            }
+            .dokki-table.results td.s1 {
+                background-color: lightgray;
+            }
+            .dokki-table.results td.s2 {
+                background-color: whitesmoke;
+            }
+            .dokki-table.results td.s {
+                background-color: #303030;
+            }
+            .dokki-table.results td.s::before {
+                content: "**";
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Brief speculation about the next GPT
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="25 March 2024"></post-date>
+<dokki-topic title="Brief speculation about the next GPT">
+<p>The year is well underway and many eyes have turned toward the next iteration of GPT, whether it be called GPT-4.5, GPT-5, or something else.</p>
+<p>I personally don't see OpenAI benefiting from GPT-5 coming out just yet. GPT-4 is still underutilized, third-party integrators can't keep up, and guardrails struggle even with current-gen. For the mass market, GPT-4 with agency would make more sense.</p>
+<p>With reference to <a href="/blog/testing-a-medley-of-local-llms-for-coding/">my zero-shot coding tests for LLMs</a>, here's how I might expect an agentic GPT to perform relative to the current state of the playing field:</p>
+
+            <dokki-table headerless class inline-class="results">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th colspan="2"></th>
+            <th colspan="9">Test</th>
+        </tr>
+        <tr>
+            <th>Model</th>
+            <th>Score</th>
+            <th>1</th>
+            <th>2</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>9</th>
+            <th>10</th>
+            <th>11</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Agentic GPT?</td>
+            <td>89%</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td>GPT-4</td>
+            <td>72%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td>Claude 3 Opus</td>
+            <td>72%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td>Mistral Large</td>
+            <td>61%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td>Gemini 1.0 Ultra</td>
+            <td>56%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+        </tr>
+        <tr>
+            <td>ChatGPT 3.5</td>
+            <td>56%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>In these tests, I think a score of 72% approaches the maximum for a system with no ability to iteratively evaluate its responses. Even just one or two extra iterations could significantly raise that ceiling.</p>
+<p>I'd expect a successful agentic GPT based on GPT-4 to score in the range 80–90%, at a cost of 2–3 times the base.</p>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

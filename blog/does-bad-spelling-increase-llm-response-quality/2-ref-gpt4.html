@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Snowfall Animation</title>
+    <style>
+        body, html { margin: 0; padding: 0; overflow: hidden; }
+        canvas { display: block; background-color: black; }
+    </style>
+</head>
+<body>
+<canvas id="snowCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('snowCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let snowflakes = [];
+    const maxSnowflakes = 200;
+    const groundHeight = 50; // Initial ground height for snow accumulation
+
+    // Snowflake class
+    class Snowflake {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = -10;
+            this.size = Math.random() * 3 + 2;
+            this.speed = Math.random() * 1 + 0.5;
+        }
+
+        update() {
+            this.y += this.speed;
+            if (this.y > canvas.height - groundHeight) {
+                this.y = -10;
+                this.x = Math.random() * canvas.width;
+            }
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFF';
+            ctx.fill();
+        }
+    }
+
+    // Initialize snowflakes
+    function initSnowflakes() {
+        for (let i = 0; i < maxSnowflakes; i++) {
+            snowflakes.push(new Snowflake());
+        }
+    }
+
+    // Update and draw snowflakes
+    function updateSnow() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let flake of snowflakes) {
+            flake.update();
+            flake.draw();
+        }
+
+        // Draw ground
+        ctx.fillStyle = '#FFF';
+        ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
+
+        requestAnimationFrame(updateSnow);
+    }
+
+    initSnowflakes();
+    updateSnow();
+</script>
+</body>
+</html>

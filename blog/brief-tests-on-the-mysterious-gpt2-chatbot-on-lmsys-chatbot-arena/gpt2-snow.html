@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snowfall Animation</title>
+    <style>
+        body, html { height: 100%; margin: 0; overflow: hidden; }
+        canvas { display: block; background: #000; }
+    </style>
+</head>
+<body>
+<canvas id="snowCanvas"></canvas>
+<script>
+    class Snowflake {
+    constructor(x, y, radius, speed) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.speed = speed;
+        this.density = Math.random() * Math.PI * 2;
+    }
+
+    update() {
+        this.y += this.speed;
+        this.x += Math.sin(this.density);
+        if (this.y > canvas.height - accumulatedSnow[Math.floor(this.x)]) {
+            accumulatedSnow[Math.floor(this.x)] += this.radius * 0.15;
+            this.reset();
+        }
+    }
+
+    reset() {
+        this.y = -this.radius;
+        this.x = Math.random() * canvas.width;
+        this.speed = Math.random() * 3 + 1;
+        this.radius = Math.random() * 5 + 2;
+    }
+
+    draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    }
+}
+
+const canvas = document.getElementById('snowCanvas');
+const ctx = canvas.getContext('2d');
+
+let snowflakes = [];
+let accumulatedSnow = new Array(canvas.width).fill(0);
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    accumulatedSnow = new Array(canvas.width).fill(0);
+}
+
+function initSnow() {
+    const numSnowflakes = canvas.width * 0.15;
+    for (let i = 0; i < numSnowflakes; i++) {
+        snowflakes.push(new Snowflake(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height,
+            Math.random() * 5 + 2,
+            Math.random() * 3 + 1
+        ));
+    }
+}
+
+function drawSnow() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < snowflakes.length; i++) {
+        snowflakes[i].update();
+        snowflakes[i].draw(ctx);
+    }
+    drawAccumulation();
+    requestAnimationFrame(drawSnow);
+}
+
+function drawAccumulation() {
+    for (let x = 0; x < accumulatedSnow.length; x++) {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(x, canvas.height - accumulatedSnow[x], 1, accumulatedSnow[x]);
+    }
+}
+
+window.addEventListener('resize', resizeCanvas);
+document.addEventListener('DOMContentLoaded', () => {
+    resizeCanvas();
+    initSnow();
+    drawSnow();
+});
+</script>
+</body>
+</html>

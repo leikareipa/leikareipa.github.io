@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chessboard with Visual Effect</title>
+    <style>
+        html, body, canvas {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script src="../parrot.js"></script>
+    <script>
+      do_with_parrot((parrot)=>{
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const width = 256;
+        const height = 256;
+        const pixelBuffer = parrot.data;
+ 
+        // Define some constants for the effect and animation
+        const SCALE_FACTOR = 5; // Controls the size of the effect
+        const NOISE_AMOUNT = 1; // Controls the amount of noise applied
+        const ANIMATION_SPEED = 1; // Controls the speed of the animation
+
+        // Define a function to apply the effect to the pixel buffer
+        function applyPixelSwirl(pixelBuffer, time) {
+          // Loop through each pixel in the buffer and apply the effect
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              // Calculate the new x and y positions for the current pixel based on the current time
+              const newX = x + Math.sin((y + time) / 10) * SCALE_FACTOR;
+              const newY = y + Math.cos((x + time) / 10) * SCALE_FACTOR;
+
+              // Calculate the noise value for the current pixel based on the current time
+              const noiseValue = (Math.random() * NOISE_AMOUNT) - (NOISE_AMOUNT / 2);
+
+              // Get the color values for the current pixel
+              const r = pixelBuffer[(y * width + x) * 4];
+              const g = pixelBuffer[(y * width + x) * 4 + 1];
+              const b = pixelBuffer[(y * width + x) * 4 + 2];
+              const a = pixelBuffer[(y * width + x) * 4 + 3];
+
+              // Calculate the new x and y positions for the current pixel
+              const newPixelX = Math.floor(newX + noiseValue);
+              const newPixelY = Math.floor(newY + noiseValue);
+
+              // Get the color values for the new pixel location
+              const newR = pixelBuffer[(newPixelY * width + newPixelX) * 4];
+              const newG = pixelBuffer[(newPixelY * width + newPixelX) * 4 + 1];
+              const newB = pixelBuffer[(newPixelY * width + newPixelX) * 4 + 2];
+              const newA = pixelBuffer[(newPixelY * width + newPixelX) * 4 + 3];
+
+              // Set the color values of the current pixel to the new pixel's color values
+              pixelBuffer[(y * width + x) * 4] = newR;
+              pixelBuffer[(y * width + x) * 4 + 1] = newG;
+              pixelBuffer[(y * width + x) * 4 + 2] = newB;
+              pixelBuffer[(y * width + x) * 4 + 3] = newA;
+            }
+          }
+        }
+
+        // Define a function to animate the effect
+        function animatePixelSwirl(pixelBuffer) {
+          let time = 0;
+
+          // Define a function to render the current frame of the animation
+          function renderFrame() {
+            // Clear the canvas and apply the pixel swirl effect to the pixel buffer
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            applyPixelSwirl(pixelBuffer, time);
+
+            // Update the canvas with the modified pixel buffer
+            context.putImageData(parrot, 0, 0);
+
+            // Increment the time and request the next frame
+            time += ANIMATION_SPEED;
+            requestAnimationFrame(renderFrame);
+          }
+
+          // Request the first frame of the animation
+          requestAnimationFrame(renderFrame);
+        }
+
+        // Call the animatePixelSwirl function to start the animation
+        animatePixelSwirl(parrot.data);
+      });
+    </script>
+</body>
+</html>

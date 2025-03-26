@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Fire Effect</title>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            image-rendering: pixelated; /* Prevents blurring when scaling */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireCanvas"></canvas>
+    <script>
+        // Get the canvas and context
+        const canvas = document.getElementById('fireCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set the width and height of the fire buffer
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Create ImageData for the pixel buffer
+        let imageData = ctx.createImageData(width, height);
+        let pixels = imageData.data;
+
+        // Initialize fire palette (optional for colored fire)
+        const palette = [];
+        for (let i = 0; i < 256; i++) {
+            const t = i / 255;
+            // Simple gradient from black to red to yellow to white
+            let r, g, b;
+            if (t < 0.33) {
+                r = Math.floor(255 * (t / 0.33));
+                g = 0;
+                b = 0;
+            } else if (t < 0.66) {
+                r = 255;
+                g = Math.floor(255 * ((t - 0.33) / 0.33));
+                b = 0;
+            } else {
+                r = 255;
+                g = 255;
+                b = Math.floor(255 * ((t - 0.66) / 0.34));
+            }
+            palette.push([r, g, b]);
+        }
+
+        // Initialize the fire buffer
+        let fireBuffer = new Uint8ClampedArray(width * height);
+
+        // Function to set the bottom row of the fire buffer to maximum intensity
+        function initializeFireSource() {
+            for (let x = 0; x < width; x++) {
+                fireBuffer[(width * (height - 1)) + x] = 255;
+            }
+        }
+
+        // Function to propagate the fire
+        function propagateFire() {
+            for (let y = 0; y < height - 1; y++) {
+                for (let x = 0; x < width; x++) {
+                    const src = y * width + x;
+                    // Pick a random number to create flickering
+                    const decay = Math.floor(Math.random() * 3);
+                    const dst = (y + 1) * width + ((x + decay) % width);
+                    const value = fireBuffer[src] - decay;
+                    fireBuffer[dst] = value >= 0 ? value : 0;
+                }
+            }
+        }
+
+        // Function to update the ImageData pixels based on the fire buffer
+        function updatePixels() {
+            for (let i = 0; i < fireBuffer.length; i++) {
+                const value = fireBuffer[i];
+                const [r, g, b] = palette[value];
+                const pixelIndex = i * 4;
+                pixels[pixelIndex] = r;     // Red
+                pixels[pixelIndex + 1] = g; // Green
+                pixels[pixelIndex + 2] = b; // Blue
+                pixels[pixelIndex + 3] = 255; // Alpha
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            propagateFire();
+            updatePixels();
+            ctx.putImageData(imageData, 0, 0);
+
+            // Scale the canvas for better visibility
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(canvas, 0, 0, width, height, 0, 0, width, height);
+
+            requestAnimationFrame(animate);
+        }
+
+        // Initialize fire and start animation
+        initializeFireSource();
+        animate();
+    </script> <!-- Link to the JavaScript file -->
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rotating Cube</title>
+</head>
+<body>
+    <canvas id="renderCanvas" width="640" height="480"></canvas>
+    <script src="/retro-ngon/distributable/rngon.global.js"></script>
+    <script>
+// Create vertices for a cube
+const vertices = [
+    // Front face vertices
+    Rngon.vertex(-1, -1,  1),
+    Rngon.vertex( 1, -1,  1),
+    Rngon.vertex( 1,  1,  1),
+    Rngon.vertex(-1,  1,  1),
+    
+    // Back face vertices  
+    Rngon.vertex(-1, -1, -1),
+    Rngon.vertex( 1, -1, -1),
+    Rngon.vertex( 1,  1, -1),
+    Rngon.vertex(-1,  1, -1),
+];
+
+// Create faces with different colors
+const faces = [
+    // Front face (red)
+    Rngon.ngon([vertices[0], vertices[1], vertices[2], vertices[3]], {
+        color: Rngon.color(255, 0, 0),
+    }),
+    
+    // Back face (green)
+    Rngon.ngon([vertices[5], vertices[4], vertices[7], vertices[6]], {
+        color: Rngon.color(0, 255, 0),
+    }),
+    
+    // Top face (blue)
+    Rngon.ngon([vertices[3], vertices[2], vertices[6], vertices[7]], {
+        color: Rngon.color(0, 0, 255),
+    }),
+    
+    // Bottom face (yellow)
+    Rngon.ngon([vertices[4], vertices[5], vertices[1], vertices[0]], {
+        color: Rngon.color(255, 255, 0),
+    }),
+    
+    // Right face (magenta)
+    Rngon.ngon([vertices[1], vertices[5], vertices[6], vertices[2]], {
+        color: Rngon.color(255, 0, 255),
+    }),
+    
+    // Left face (cyan)
+    Rngon.ngon([vertices[4], vertices[0], vertices[3], vertices[7]], {
+        color: Rngon.color(0, 255, 255),
+    }),
+];
+
+let rotation = 0;
+
+function animate() {
+    // Create a mesh with the current rotation
+    const mesh = Rngon.mesh(faces, {
+        rotate: Rngon.vector(rotation, rotation, 0),
+    });
+
+    // Render the scene
+    Rngon.render({
+        target: "renderCanvas",
+        meshes: [mesh],
+        options: {
+            cameraPosition: Rngon.vector(0, 0, -5),
+            useBackfaceCulling: true,
+        },
+    });
+
+    // Increment rotation for next frame
+    rotation += 1;
+    
+    // Request next animation frame
+    requestAnimationFrame(animate);
+}
+
+// Start the animation
+animate();
+</script>
+</body>
+</html>
+

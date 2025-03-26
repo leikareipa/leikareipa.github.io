@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Animated Snowfall</title>
+  <style>
+    canvas {
+      background-color: black;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas" width="800" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    const snowflakes = [];
+    const groundHeight = 100; // Height of the ground
+    const groundColor = '#8B8B83'; // Color of the ground
+
+    // Snowflake object
+    function Snowflake() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.radius = Math.random() * 3 + 1;
+      this.speed = Math.random() * 2 + 1;
+    }
+
+    // Draw a single snowflake
+    Snowflake.prototype.draw = function() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+    };
+
+    // Update the position of a snowflake
+    Snowflake.prototype.update = function() {
+      this.y += this.speed;
+
+      // Reset snowflake to the top if it goes off the bottom
+      if (this.y > canvas.height + this.radius) {
+        this.y = -this.radius;
+        this.x = Math.random() * canvas.width;
+      }
+    };
+
+    // Create snowflakes
+    for (let i = 0; i < 200; i++) {
+      snowflakes.push(new Snowflake());
+    }
+
+    // Draw the ground
+    function drawGround() {
+      ctx.fillStyle = groundColor;
+      ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
+    }
+
+    // Animation loop
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGround();
+
+      for (let i = 0; i < snowflakes.length; i++) {
+        snowflakes[i].draw();
+        snowflakes[i].update();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

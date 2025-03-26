@@ -1,0 +1,76 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="640" height="320"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Scene Parameters
+          const WIDTH = canvas.width;
+          const HEIGHT = canvas.height;
+          const redSphere = { center: [150, 100], radius: 50, color: [255, 0, 0, 255] }; // Red sphere shifted right
+          const blueSphere = { center: [50, 120], radius: 40, color: [0, 0, 255, 255] }; 
+          const pixelBuffer = new Uint8ClampedArray(WIDTH * HEIGHT * 4); 
+
+
+          // Helper Functions
+          function distance(p1, p2) {
+              return Math.sqrt(Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2));
+          }
+
+          function calculateReflection(fromPoint, sphere) {
+              const direction = [fromPoint[0] - sphere.center[0], fromPoint[1] - sphere.center[1]]; 
+              const normal = [direction[0] / sphere.radius, direction[1] / sphere.radius]; // Approximate normal
+              const reflectDir = [direction[0] - 2 * (direction[0] * normal[0] + direction[1] * normal[1]) * normal[0],
+                                  direction[1] - 2 * (direction[0] * normal[0] + direction[1] * normal[1]) * normal[1]];
+              return [sphere.center[0] + reflectDir[0] * sphere.radius, 
+                      sphere.center[1] + reflectDir[1] * sphere.radius];
+          }
+
+          // Rendering Loop
+          for (let y = 0; y < HEIGHT; y++) {
+              for (let x = 0; x < WIDTH; x++) {
+                  const pixelIndex = (y * WIDTH + x) * 4;
+
+                  // Check which sphere the pixel belongs to
+                  const distToRed = distance([x, y], redSphere.center);
+                  const distToBlue = distance([x, y], blueSphere.center);
+
+                  if (distToRed <= redSphere.radius) {
+                      // Basic shading
+                      const shadeFactor = 1 - distToRed / redSphere.radius; 
+                      pixelBuffer.set(redSphere.color.map(c => c * shadeFactor), pixelIndex);
+                  } else if (distToBlue <= blueSphere.radius) {
+                      // Check for reflection of the red sphere
+                      const reflectedPos = calculateReflection([x, y], redSphere);
+
+                      if (reflectedPos[0] >= 0 && reflectedPos[0] < WIDTH && reflectedPos[1] >= 0 && reflectedPos[1] < HEIGHT) { 
+                          const refPixelIndex = (Math.floor(reflectedPos[1]) * WIDTH + Math.floor(reflectedPos[0])) * 4;
+                          pixelBuffer.set(pixelBuffer.slice(refPixelIndex, refPixelIndex + 4), pixelIndex); 
+                      } else {
+                          pixelBuffer.set(blueSphere.color, pixelIndex); // Draw base blue
+                      }
+                  } else {
+                      pixelBuffer.set([0, 0, 0, 255], pixelIndex); // Background color
+                  }
+              }
+          }
+
+          const imageData = ctx.createImageData(WIDTH, HEIGHT);
+            imageData.data.set(pixelBuffer); 
+          ctx.putImageData(imageData, 0, 0);
+        </script>
+    </body>
+</html>

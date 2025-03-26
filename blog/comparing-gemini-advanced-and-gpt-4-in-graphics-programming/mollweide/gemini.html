@@ -1,0 +1,74 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="800" height="400"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas'); 
+            const context = canvas.getContext('2d');
+
+            const width = canvas.width; // Example: 500 pixels
+            const height = canvas.width; // For a square canvas
+            const bufferSize = width * height * 4; // RGBA
+
+            const imageData = context.createImageData(width, height);
+            const pixelBuffer = imageData.data; // Uint8ClampedArray representing pixels
+
+            const blockSize = 20; // Size of each chessboard square
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const offset = (y * width + x) * 4;
+
+                    const isBlack = ((x / blockSize) + (y / blockSize)) % 2 === 1;
+                    const color = isBlack ? 0 : 255; // 0 for black, 255 for white
+
+                    pixelBuffer[offset] = color;   // Red
+                    pixelBuffer[offset + 1] = color; // Green
+                    pixelBuffer[offset + 2] = color; // Blue
+                    pixelBuffer[offset + 3] = 255;   // Alpha (fully opaque)
+                }
+            }
+
+            function mollweide(x, y) {
+                const theta = Math.asin(2 * y / (Math.sqrt(2) * Math.PI));
+                const phi = Math.PI * x / (2 * Math.cos(theta / 2)); 
+
+                // Scale and translate for appropriate positioning 
+                const scaleFactor = 0.8; 
+                const xOffset = width / 2;
+                const yOffset = height / 2;
+
+                const projectedX = scaleFactor * phi * Math.cos(theta) + xOffset;
+                const projectedY = scaleFactor * Math.sin(theta) + yOffset;  
+
+                return { x: projectedX, y: projectedY };
+            }
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    // Normalize coordinates to [-1, 1] range
+                    const normX = 2 * (x / width) - 1;
+                    const normY = 2 * (y / height) - 1;
+
+                    const { x: projectedX, y: projectedY } = mollweide(normX, normY);
+
+                    // Bilinear interpolation goes here (see notes below) 
+                }
+            }
+
+            // Update the canvas with the modified image data
+            context.putImageData(imageData, 0, 0); 
+        </script>
+    </body>
+</html>

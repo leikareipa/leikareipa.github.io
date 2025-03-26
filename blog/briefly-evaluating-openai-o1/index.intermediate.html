@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-iframe .caption > .type > .text {
+                display: none;
+            }
+            .dokki-iframe .caption > .type > .icon > i {
+                visibility: hidden;
+            }
+            .dokki-iframe .caption > .type > .icon > i::before {
+                font-family: "Font Awesome 5 Free";
+                font-weight: normal;
+                content: "\f075";
+                visibility: visible;
+                transform: scaleX(-1);
+                display: inline-block;
+            }
+            .dokki-iframe .caption > .label {
+                margin: 0 !important;
+                display: inline-block !important;
+                margin-left: 0.2em !important;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        <template dokki-document>
+            <section title>
+                Briefly evaluating OpenAI o1
+            </section>
+            <section widgets>
+                <blog-post-widgets/>
+            </section>
+            <section content>
+                <article src="content.md"></article>
+            </section>
+        </template>
+    </body>
+</html>

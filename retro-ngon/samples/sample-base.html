@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="../distributable/rngon.global.js"></script>
+        <link rel="stylesheet" type="text/css" href="./sample-base.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <title>Sample template - Retro n-gon renderer</title>
+        <style>
+            html {
+                background-color: #6e6e6e;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loading-bar">
+            <i class="fas fa-skiing fa-fw spin"
+               style="position: relative;
+                      padding-bottom: 50px;
+                      top: -25px;
+                      left: -25px;
+                      margin-right: 10px;"
+            ></i>
+            Loading render sample...
+        </div>
+
+        <canvas id="canvas" class="rngon-canvas rngon-pixelated-upscale"></canvas>
+
+        <div class="infoboxes-container">
+            <div class="infobox scale">
+                <div class="adjust left" onclick="change_render_scale(-1);"></div>
+                <div class="content">
+                    <div class="title">Scale</div>
+                    <div class="value">
+                        <i class="fas fa-sm fa-spin fa-spinner"></i>
+                    </div>
+                </div>
+                <div class="adjust right" onclick="change_render_scale(1);"></div>
+            </div>
+            <div class="infobox polycount">
+                <div class="content">
+                    <div class="title">Polygons</div>
+                    <div class="value">
+                        <i class="fas fa-sm fa-spin fa-spinner"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="infobox fps">
+                <div class="content">
+                    <div class="title">FPS</div>
+                    <div class="value">
+                        <i class="fas fa-sm fa-spin fa-spinner"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="infobox refresh-rate">
+                <div class="content">
+                    <div class="title">Refresh</div>
+                    <div class="value">
+                        <i class="fas fa-sm fa-spin fa-spinner"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Start rendering.
+            window.addEventListener("load", async()=>{
+                // These render options are used if the render sample doesn't provide
+                // overrides for them.
+                const defaultRenderOptions = {
+                    resolution: 0.25,
+                    useDepthBuffer: true,
+                    useBackfaceCulling: true,
+                    cameraDirection: Rngon.vector(0, 0, 0),
+                    cameraPosition: Rngon.vector(0, 0, -170),
+                };
+
+                const defaultScene = [Rngon.mesh()];
+
+                const change_render_scale = window.change_render_scale = function(dir)
+                {
+                    const scales = [0.05, 0.10, 0.15, 0.20, 0.25, 0.5, 0.75, 1];
+                    const newScaleIdx = Math.max(0, Math.min((scales.length - 1), (scales.indexOf(defaultRenderOptions.resolution) + Math.sign(dir))));
+                    defaultRenderOptions.resolution = (scales[newScaleIdx] || scales[0]);
+                    document.querySelector(".infobox.scale .value").innerHTML = defaultRenderOptions.resolution.toFixed(2);
+                }
+
+                // Force the UI's render scale indicator to initialize to the value set
+                // in defaultRenderOptions.scale.
+                change_render_scale(0);
+
+                // Load the render sample.
+                const sampleId = (new URLSearchParams(window.location.search).get("sample") || "textured-cube-model");
+                const {sample} = await import(`./${sampleId}/${sampleId}.js`);
+                await sample.initialize?.(structuredClone(defaultRenderOptions));
+
+                // The render sample will now have finished loading, so we can remove the
+                // loading indicator.
+                document.getElementById("loading-bar").remove();
+
+                let uiUpdateTimer = 0;
+                const uiUpdateIntervalMs = 500;
+
+                (function render_loop(timestamp = 0, frameTimeDeltaMs = 0, frameCount = 0)
+                {
+                    const perfTimer = performance.now();
+                 
+                    const queue_new_frame = (additionalTimeDelta = 0)=>{
+                        window.requestAnimationFrame((newTimestamp)=>{
+                            render_loop(
+                                newTimestamp,
+                                (additionalTimeDelta + (newTimestamp - timestamp)),
+                                (frameCount + 1)
+                            );
+                        });
+                    };
+
+                    const scene = sample.tick(structuredClone(defaultRenderOptions));
+
+                    // Attempt to limit the renderer's refresh rate, if so requested by the user.
+                    if (scene.targetRefreshRate && (frameTimeDeltaMs < Math.floor(1000 / (scene.targetRefreshRate + 1))))
+                    {
+                        queue_new_frame(frameTimeDeltaMs);
+                        return;
+                    }
+
+                    const renderInfo = Rngon.render({
+                        target: "canvas",
+                        meshes: (scene.mesh? [scene.mesh] : defaultScene),
+                        options: {
+                            ...defaultRenderOptions,
+                            ...(scene.renderOptions || {}),
+                        },
+                        pipeline: (scene.renderPipeline || {}),
+                    });
+
+                    if ((uiUpdateTimer += frameTimeDeltaMs) >= uiUpdateIntervalMs)
+                    {
+                        document.querySelector(".infobox.fps .value").textContent = Math.floor(1000 / ((performance.now() - perfTimer) || 1));
+                        document.querySelector(".infobox.polycount .value").textContent = renderInfo.numNgonsRendered;
+                        document.querySelector(".infobox.refresh-rate .value").textContent = `${Math.round(1000 / (frameTimeDeltaMs || 1))} Hz`;
+                        uiUpdateTimer = 0;
+                    }
+
+                    queue_new_frame();
+                })();
+            });
+        </script>
+    </body>
+</html>

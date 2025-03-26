@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results th.name {
+                writing-mode: vertical-lr;
+                font-weight: normal;
+            }
+            .dokki-table.results td:first-child {
+                white-space: pre-line;
+                min-width: 20rem;
+            }
+
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s3,
+            .dokki-table.results td.s {
+                text-align: center !important;
+                vertical-align: middle !important;
+                max-width: 0.85em;
+            }
+            .dokki-table.results td.s0 {
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+            .dokki-table.results td.s1 {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            .dokki-table.results td.s2 {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+            .dokki-table.results td.s3 {
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                LLM performance in retro assembly coding
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="4 March 2024" edited="11 March 2024"></post-date>
+<dokki-topic title="LLM performance in retro assembly coding">
+<p>How well can the various publically-available LLMs assist you in retro assembly coding? Here's nine of them compared.</p>
+<dokki-subtopic title="Results">
+<p>Each of the seven LLMs was given a set of discrete tasks to create various beginner-level MS-DOS 386 assembly programs in COM format using the FASM syntax.</p>
+<p>For example: &quot;Write a DOS COM program that asks the user for a word and prints it out. Use 386 assembly in the FASM syntax.&quot;</p>
+<p>Here's how they did:</p>
+
+            <dokki-table headerless class inline-class="results">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th colspan="9">Score per task</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th class="name">Claude 3 Opus</th>
+            <th class="name">GPT-4</th>
+            <th class="name">Mistral Large</th>
+            <th class="name">Phind-70B</th>
+            <th class="name">GPT-4 Turbo</th>
+            <th class="name">Gemini Ultra 1.0</th>
+            <th class="name">DeepSeek Coder</th>
+            <th class="name">Claude 3 Sonnet</th>
+            <th class="name">GPT-3.5</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A program that asks the user for a word and prints it out.</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that paints the screen blue and prints something in the middle.</td>
+            <td class="s2">50%</td>
+            <td class="s1">25%</td>
+            <td class="s2">50%</td>
+            <td class="s2">50%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that draws something onto the screen in a VGA graphics mode.</td>
+            <td class="s3">75%</td>
+            <td class="s2">50%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that prints the value in the EDX register in binary format.</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s2">50%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s1">25%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that reads mouse input and displays information about it on the screen.</td>
+            <td class="s2">50%</td>
+            <td class="s2">50%</td>
+            <td class="s0">0%</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+        <tr>
+            <td>A program that loads a paletted image and displays it on the screen.</td>
+            <td class="s1">25%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+            <td class="s0">0%</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>A score of 0% means the code failed to compile, 25% means the code compiled but was very buggy, 50% means the code worked somewhat as intended but not perfectly, 75% means the code worked as intended, and 100% means the code worked as intended and the implementation went the extra mile in including relevant bonus features or had a particularly good presentation.</p>
+<p>Below are the average test scores per model across all tasks:</p>
+
+            <dokki-table headerless  inline-class="">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Average score</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Claude 3 Opus</td>
+            <td>38%</td>
+        </tr>
+        <tr>
+            <td>GPT-4</td>
+            <td>21%</td>
+        </tr>
+        <tr>
+            <td>Mistral Large</td>
+            <td>17%</td>
+        </tr>
+        <tr>
+            <td>Phind-70B</td>
+            <td>13%</td>
+        </tr>
+        <tr>
+            <td>GPT-4 Turbo</td>
+            <td>8%</td>
+        </tr>
+        <tr>
+            <td>Gemini Ultra 1.0</td>
+            <td>8%</td>
+        </tr>
+        <tr>
+            <td>DeepSeek Coder</td>
+            <td>4%</td>
+        </tr>
+        <tr>
+            <td>Claude 3 Sonnet</td>
+            <td>4%</td>
+        </tr>
+        <tr>
+            <td>GPT-3.5</td>
+            <td>0%</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>It's an interesting ordering of models, given that regular GPT-4 beats GPT-4 Turbo so clearly. The results for Claude 3 are interesting as well; I've written a bit more about them <a href="/blog/claude-3s-exceptional-abilities-at-obscure-languages/">here</a>.</p>
+<p>One thing to note about these scores is that, as explained above, failure to produce compilable code resulted in a score of 0% in the corresponding test, regardless of the quality of the implementation otherwise. So it would be possible for a reasonably good model that tends to make small mistakes to have a deceptively low score.</p>
+</dokki-subtopic><dokki-subtopic title="Final words">
+<p>Well, although the results revealed some interesting metapatterns, these LLMs – which are among the best available – don't appear to make for great retro DOS assembly programming assistants. The tasks were seemingly quite challenging for them, probably in part due to limited training data specific to this blend of assembly.</p>
+<p>Across all tests, Claude 3 Opus was the most capable and consistent; but with an average score of just 38%, it can't be called apt.</p>
+<p>That said, these tests measured the ability to create complete implementations independently. More limited code completion tasks etc. might show notably higher scores.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

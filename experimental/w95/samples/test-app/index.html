@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Developer's test app for w95</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="../../distributable/w95-api.js"></script>
+        <script src="../../distributable/w95-assets.js"></script>
+        <script src="../../distributable/w95-widgets.js"></script>
+        <link href="../../distributable/w95.css" rel="stylesheet">
+        <style>
+            #w95-debug-layer {
+                visibility: hidden;
+            }
+            canvas.w95.composite {
+                opacity: 0.8;
+            }
+            canvas.w95.composite[style*="z-index: 0"] {
+                filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.7));
+            }
+            iframe {
+                border: none;
+            }
+            .html-page {
+                background-color: deepskyblue;
+                background-image: url("./assets/clouds.gif");
+                font-family: "Comic Sans MS", sans-serif;
+                text-align: center;
+            }
+            .html-page .main {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="w95-debug-layer"></div>
+        <script type="module">
+            import testApp from "./app.js";
+            import {dither_shader} from "./dither-shader.js";
+            
+            const taskbar = w95.shell.taskbar();
+            const desktop = w95.shell.desktop({
+                showWatermark: true,
+                icons: [
+                    w95.widget.desktopIcon({
+                        text: "Test app",
+                        icon: w95.icon.applicationIcon32x32,
+                        onActivate() {
+                            w95.shell.run(testApp, {singleInstance: false});
+                        },
+                    }),
+                ],
+            });
+
+            w95.registry["num-windows-spawned"] = 0;
+            w95.registry["is-debug-enabled"] = false;
+            w95.shell.display.screenShader = dither_shader;
+
+            w95.shell.boot();
+            w95.shell.wallpaper = "./assets/woman.png";
+            w95.shell.run([desktop, taskbar, testApp]);
+
+            w95.registry["render-scale"] = w95.shell.display.scale;
+        </script>
+    </body>
+</html>

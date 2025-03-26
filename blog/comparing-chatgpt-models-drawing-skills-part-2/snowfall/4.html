@@ -1,0 +1,91 @@
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Snowfall</title>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+              background-color: black;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+  <body>
+      <canvas id="snowfall" width="400" height="400"></canvas>
+      <script>
+        const canvas = document.getElementById('snowfall');
+        const ctx = canvas.getContext('2d');
+
+        const snowflakes = [];
+        const ground = new Array(canvas.width).fill(canvas.height);
+
+        class Snowflake {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = 0;
+                this.radius = Math.random() * 2 + 1;
+                this.speed = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.y += this.speed;
+                if (this.y + this.radius >= ground[Math.floor(this.x)]) {
+                    ground[Math.floor(this.x)] -= this.radius;
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+                ctx.fill();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = 0;
+                this.radius = Math.random() * 2 + 1;
+                this.speed = Math.random() * 2 + 1;
+            }
+        }
+
+        function createSnowflakes() {
+            for (let i = 0; i < 200; i++) {
+                snowflakes.push(new Snowflake());
+            }
+        }
+
+        function drawGround() {
+            ctx.beginPath();
+            for (let x = 0; x < ground.length; x++) {
+                ctx.moveTo(x, ground[x]);
+                ctx.lineTo(x, canvas.height);
+            }
+            ctx.strokeStyle = 'rgba(255, 255, 255, 1)';
+            ctx.stroke();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGround();
+
+            for (const snowflake of snowflakes) {
+                snowflake.update();
+                snowflake.draw();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        createSnowflakes();
+        animate();
+      </script>
+  </body>
+</html>

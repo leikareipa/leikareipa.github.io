@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Snowfall Animation</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+      background-color: black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="snowCanvas"></canvas>
+  <script>
+    // Get the canvas element and its 2D rendering context
+    const canvas = document.getElementById('snowCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set the canvas dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Define the snow flake properties
+    const snowFlakes = [];
+    const maxSnowFlakes = 200; // Maximum number of snow flakes
+    const snowFlakeRadius = 2; // Radius of each snow flake
+
+    // Define the ground properties
+    const groundHeight = canvas.height * 0.2; // Height of the ground plane
+    const groundColor = 'brown'; // Color of the ground plane
+
+    // Initialize the snow flakes
+    for (let i = 0; i < maxSnowFlakes; i++) {
+      snowFlakes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: snowFlakeRadius,
+        speed: Math.random() * 3 + 1, // Random speed between 1 and 4
+        angle: Math.random() * Math.PI * 2 // Random angle
+      });
+    }
+
+    // Draw the ground plane
+    function drawGround() {
+      ctx.fillStyle = groundColor;
+      ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
+    }
+
+    // Draw a single snow flake
+    function drawSnowFlake(snowFlake) {
+      ctx.beginPath();
+      ctx.arc(snowFlake.x, snowFlake.y, snowFlake.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+    }
+
+    // Update the position of a snow flake
+    function updateSnowFlake(snowFlake) {
+      snowFlake.y += snowFlake.speed;
+      snowFlake.x += Math.cos(snowFlake.angle);
+
+      // Check for collision with the ground plane
+      if (snowFlake.y + snowFlake.radius > canvas.height - groundHeight) {
+        snowFlake.y = canvas.height - groundHeight - snowFlake.radius;
+      }
+
+      // Reset the position if the snow flake goes off-screen
+      if (snowFlake.x < -snowFlake.radius || snowFlake.x > canvas.width + snowFlake.radius) {
+        snowFlake.x = Math.random() * canvas.width;
+        snowFlake.y = -snowFlake.radius;
+      }
+    }
+
+    // Render the animation
+    function render() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw the ground plane
+      drawGround();
+
+      // Draw and update the snow flakes
+      for (const snowFlake of snowFlakes) {
+        drawSnowFlake(snowFlake);
+        updateSnowFlake(snowFlake);
+      }
+
+      // Request the next animation frame
+      requestAnimationFrame(render);
+    }
+
+    // Start the animation
+    render();
+  </script>
+</body>
+</html>

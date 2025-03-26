@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Integrating DOSBox into a faux Windows 95 web shell
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="18 March 2023"></post-date>
+<dokki-topic title="Integrating DOSBox into a faux Windows 95 web shell">
+<p>In <a href="/blog/#/w95">previous blog posts</a>, I've talked about my casual side project to implement a Windows 95-lookalike front-end framework that lives inside a canvas element.</p>
+<p>This time, I'll outline the steps to integrating a DOSBox web client (<a href="https://js-dos.com/">js-dos</a>) into the framework. If you want more background on the framework itself, check out some of those earlier posts.</p>
+<dokki-image src="./img/anim.gif" width="962" height="570"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,R0lGODlhFAAMAIcAAAAAAAACAgECAhV2dgICAnWsrAMDAwYGBhV3dwAAARk3NwEBAgwMBgCDfBQMDBk4ODIyNFOEhAsLCw4ODhR3dxEKCkd/fwAAAgMEAAEBAQECAwEBAAoLBBMQWRk3OAsLBBQRWhdvkQIDABQRWRdwkRZvkRMRWQ4LWDEwMhdukBESWxRskDw6YgCDfQQEBFaFhbS1wAB/fSKEjCqDlzyTmwCEfAB/ezxYaAB8ezMzNFhQXBY1NQ8RWgCCewYGAnqCpBg2NraytgMAAAcICBF6ehw7Ozg2Nrm5wGCUjS0uaJaNr8CzsggIAxYODrKytL6+vzM0bH6hmpuWtMXFxLq8wnWblUZHRzY3a5yVs7a2uFSFhba2vS4wMQwEA29whmmPiZ6YtPP19cHCxa6os/Hx8WqQi8LDw7++vcHBwLOvrrS0tUM8PfDw8Lexsb/AwLS2vry9xtTCwsDCwmeNi8qoqXSqqr+5ua2np2aMjL2+vu/x8bexsLKztbu8w7y0vlmKimeNjbu+vs+wsO3k5KqkpHGmprm8wrWmp2qbmnOoqHKoqEuWmbWxsLmxtm6UlG+WlmucncjCwqumpneXmGmamrKxsMG6xMusrGiamkGTk2qbm3CcnHSrq7+1tNOursmurn6urgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQEAwAAACwAAAAAFAAMAAAI5gAXTXrkCBCeOWW+VImCpEeLBg1q2MARA9IhSYTutBkDBosUJT9SlAhBYsUMGjIURQqUx40ZL1egJOGhwgSIDiNOsNBxI9EgPWzIhLECgIkPBgw+cMCwQQQAADsK2ZGDZsoSIwBcLFiQ4EKCBE81AHhQJ84ZMU+CoACQ4albtwIAeChAJw0VJzAgACDwdoKEpwEAKCggaA+cLEdy7H1rwABgwQUuMeqjZotevm/hjuX0qZIhPm+4ZB4NAAgoT50sNfKzpksTBw4qHJg9e4iQIpk2YdJECdGfCFoivLAwgAKC4wgGEAkIADs=">
+                        </dokki-image>
+<p>The animation above shows an instance of js-dos presented as an app created using the framework.</p>
+<p>The gist of it is that js-dos renders the output of DOSBox into a canvas element, while the framework associates the canvas element with a window widget (itself rendered on another canvas).</p>
+<p>Here's a simplified version of the HTML/JavaScript that defines the page in which the whole thing runs:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>&lt;body&gt;
+    &lt;canvas id=&quot;jsdos-canvas&quot;&gt;&lt;/canvas&gt;
+    &lt;canvas id=&quot;w95-canvas&quot;&gt;&lt;/canvas&gt;
+    &lt;script&gt;
+        Dos(document.getElementById(&quot;jsdos-canvas&quot;)).ready((fs, main)=&gt;main());
+    &lt;/script&gt;
+    &lt;script&gt;
+        w95.shell.boot(document.getElementById(&quot;w95-canvas&quot;));
+        w95.shell.run(()=&gt;{
+            return w95.widget.window({
+                title: &quot;MS-DOS Prompt&quot;,
+                children: [
+                    w95.widget.domElement({
+                        element: document.getElementById(&quot;jsdos-canvas&quot;),
+                    }),
+                ],
+            });
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>In that code, we first start js-dos with its <em>Dos</em> function, then the framework with <nobr><em>w95.shell.boot</em>.</nobr> The output of js-dos gets directed to one canvas, and the output of the framework to another. We then use <em>w95.shell.run</em> to define and start the faux Windows 95 app in which js-dos's output is displayed via a <em>domElement</em> widget.</p>
+<p>The <em>domElement</em> widget is defined about like this (simplified):</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>function domElement({
+    width = 100,
+    height = 100,
+    element = undefined,
+} = {})
+{
+    function relay_event_to_dom(event) {
+        element.dispatchEvent(new event.constructor(event.type, event));
+    }
+    
+    return {
+        get dom() { return element },
+        Event: {
+            mousemove: relay_event_to_dom,
+            mouseup: relay_event_to_dom,
+            mousedown: relay_event_to_dom,
+        },
+        Form() {
+            return Rngon.ngon([
+                Rngon.vertex(0, 0),
+                Rngon.vertex(width, 0),
+                Rngon.vertex(width, height),
+                Rngon.vertex(0, height)], {
+                    color: Rngon.color(0, 0, 0, 0),
+            });
+        },
+    };
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The widget binds a DOM element into the framework's UI by carving out a transparent rectangle (using <em>Rngon.ngon</em>) through which the element will be visible and relaying user input events from the UI to the element.</p>
+<p>Here's what the UI canvas would look like without js-dos, with a checkerboard pattern indicating transparent areas:</p>
+<dokki-image src="./img/layer-1.webp" width="1280" height="960"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,UklGRloAAABXRUJQVlA4IE4AAAAQAwCdASoUAA8APm0skkWkIqGYBABABsSzgGWWEfZ7NaAA/vUHkn/AiDhhbXQUfT//zddf/wS1VSqApIi1Zwn88ZlOJMymN3dAsJr8UAA=">
+                        </dokki-image>
+<p>When the js-dos canvas is added to the HTML, it shows through the UI canvas's transparent region, inside the <i>DOS Prompt</i> window:</p>
+<dokki-image src="./img/layer-2.webp" width="1280" height="960"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,UklGRpQAAABXRUJQVlA4IIgAAABQAwCdASoUAA8APm0skkWkIqGYBABABsS0AE6AD0OhJ9nHwAD+9QeSf8B6PmQHRi6tdZrISjZzEmpBkx4fIossLCz318mczEl5fTScv/+oFFLTAnxnnN3JKNMFfUQg12AVyVeA4vkq1zF+ORsi//n/jJcT/Db9eOzEssMbybcH+Z+Y0sS+3WAA">
+                        </dokki-image>
+<p>Other windows drawn in the UI canvas can occlude the transparent rectangle, which provides a corresponding occlusion of the underlying js-dos canvas:</p>
+<dokki-image src="./img/layer-3.webp" width="1280" height="960"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,UklGRoYAAABXRUJQVlA4IHoAAABQAwCdASoUAA8APm0skkWkIqGYBABABsSzAFp0ELF9e/3AAAD+7bP0brNnp1EjZgoPcNvcoz3Xqvd8HfKsF0jllX+jiAVf/UCil1aUpwJA7v55BidIxCMyicVtJPHfo6ceEpPovfjwV4pZDGcTWxk6fwPBt3oDQIAAAA==">
+                        </dokki-image>
+<p>To move the js-dos canvas in tandem with the UI widget, we update its CSS accordingly:</p>
+
+                <dokki-code syntax="javascript"headerless="true">
+                    <template #code>
+                        <pre>const canvasRect = w95.shell.display.canvas.getBoundingClientRect();
+
+function recursively_concat_child_meshes(widget, dstArray = [], x = 0, y = 0) {
+    x += widget.x;
+    y += widget.y;
+
+    const selfMesh = transformed_ngons(widget._mesh, x, y);
+
+    if (widget.dom) {
+        widget.dom.style.left = `${(x * w95.shell.display.scale) + canvasRect.x}px`;
+        widget.dom.style.top = `${(y * w95.shell.display.scale) + canvasRect.y}px`;
+    }
+
+    if (!widget._hideMesh) {
+        dstArray.unshift(...selfMesh);
+        for (const child of widget.$childWidgets) {
+            recursively_concat_child_meshes(child, dstArray, x, y);
+        }
+    }
+
+    return dstArray;
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>One downside here is that the size of the js-dos output doesn't quite match the size of the UI: it's a bit too small at its base resolution of 640 × 400, and upscales cleanly only to integer multiples, at which point it's too big. Below is a screenshot of it in a multiple of 1.5, where it's a good fit with the UI but shows fairly noticeable scaling artifacts (you can tap the image to view it in its full size):</p>
+<dokki-image src="./img/1.5.webp" width="980" height="658"     headerless  no-border-rounding thumbnail-src="data:image/png;base64,UklGRuIAAABXRUJQVlA4INYAAADwBQCdASoUAA0APm0qkUWkIqGYBABABsS2AE6ZQjub0mTO4LB6/93SfrMBgbA5BEu9L4xadl/bgAD+9swnUmCDKlSzeyGZQe67EZyPBdv8ykrWkA8p9NinaO2+kKhkTjnW9xs/wRc5FKsUK2444H/8mz79/6yj/tKfvAJexiU8JHV3k+9KoZZFmoyrswFcK2+OIZmeaH8ttcN19B/8THFGlKUftsf8pMnHNe7wfGvmSrf37/+6f2IaqMfBYf4w5bvll/0udfv1ZsA3DbyTwUHMWL8i4iAA">
+                        </dokki-image>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

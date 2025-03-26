@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="../sample-base.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <title>Multipass rendering - Render sample - Retro n-gon renderer</title>
+    </head>
+    <body>
+        <script src="../../distributable/rngon.global.js"></script>
+
+        <div id="loading-bar">
+            <i class="fas fa-skiing fa-fw spin"
+               style="position: relative;
+                      padding-bottom: 50px;
+                      top: -25px;
+                      left: -25px;
+                      margin-right: 10px;"></i>
+            Loading render sample...
+        </div>
+
+        <canvas id="canvas" class="rngon-canvas rngon-pixelated-upscale"></canvas>
+
+        <div class="infoboxes-container">
+            <div class="infobox fps">
+                <div class="content">
+                    <div class="title">FPS</div>
+                    <div class="value"><i class="fas fa-sm fa-spin fa-spinner"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="infoboxes-container additional">
+            <div class="infobox effect">
+                <div class="adjust left" onclick="change_effect(-1);"></div>
+                <div class="content" style="width: 11em;">
+                    <div class="title">Multipass effect</div>
+                    <div class="value">None</div>
+                </div>
+                <div class="adjust right" onclick="change_effect(1);"></div>
+            </div>
+        </div>
+
+        <script>
+            parent.USAGE = `
+                Click to capture mouse, ESDF & QA to move.
+            `;
+        </script>
+        <script defer type="module">
+            const effects = [
+                {name: "Portal",        function: portal},
+                {name: "Motion blur",   function: motion_blur},
+                {name: "MSAA",          function: msaa},
+            ];
+
+            window.change_effect = function(direction = 1)
+            {
+                // Rotate the current shader selection (array element #0) left or right.
+                if (direction > 0) effects.push(effects.shift());
+                else if (direction < 0) effects.unshift(effects.pop());
+
+                activeEffect = effects[0];
+                document.querySelector(".infobox.effect .value").innerHTML = activeEffect.name;
+
+                return;
+            }
+
+            let activeEffect = undefined;
+            change_effect(0);
+
+            import {first_person_camera} from "../first-person-camera/camera.js";
+
+            const camera = first_person_camera("canvas", {
+                position: {x:-70, y:33, z:-7},
+                direction: {x:7, y:90, z:0},
+                movementSpeed: 0.05,
+            });
+
+            function portal(scene, camera, numTicks = 0)
+            {
+                // Render the scene from the viewpoint of the portal.
+                Rngon.render({
+                    target: "canvas",
+                    meshes: scene,
+                    options: {
+                        context: "portal",
+                        resolution: 0.125,
+                        cameraDirection: camera.direction,
+                        cameraPosition: Rngon.vector(-105.77, 69.72, -66.2),
+                    },
+                    pipeline: {
+                        vertexShader(ngon)
+                        {
+                            if (ngon.material.isPortal)
+                            {
+                                const growAmount = Math.sin(numTicks / 22) * 5;
+
+                                for (let v = 0; v < ngon.vertices.length; v++)
+                                {
+                                    ngon.vertices[v].x += (growAmount * ngon.vertexNormals[v].x);
+                                    ngon.vertices[v].y += (growAmount * ngon.vertexNormals[v].y);
+                                    ngon.vertices[v].z += (growAmount * ngon.vertexNormals[v].z);
+                                }
+                            }
+                        },
+                    }
+                });
+
+                // Render the scene from the viewpoint of the camera, pasting the previous
+                // pass's image over portal polygons.
+                Rngon.render({
+                    target: "canvas",
+                    meshes: scene,
+                    options: {
+                        resolution: 0.25,
+                        cameraDirection: camera.direction,
+                        cameraPosition: camera.position,
+                        useFragmentBuffer: true,
+                        fragments: {
+                            ngon: true
+                        },
+                    },
+                    pipeline: {
+                        // Make the portal sphere a bit bigger, so the portal effect is easier to see.
+                        vertexShader(ngon)
+                        {
+                            if (ngon.material.isPortal)
+                            {
+                                const growAmount = 10;
+
+                                for (let v = 0; v < ngon.vertices.length; v++)
+                                {
+                                    ngon.vertices[v].x += (growAmount * ngon.vertexNormals[v].x);
+                                    ngon.vertices[v].y += (growAmount * ngon.vertexNormals[v].y);
+                                    ngon.vertices[v].z += (growAmount * ngon.vertexNormals[v].z);
+                                }
+                            }
+                        },
+                        // Insert the portal pass's image over portal polygons.
+                        pixelShader(renderContext)
+                        {
+                            const {width, height, data:pixels} = renderContext.pixelBuffer;
+                            const fragments = renderContext.fragmentBuffer.data;
+                            const reflectionPixelBuffer = Rngon.context["portal"].pixelBuffer.data;
+
+                            for (let y = 0; y < height; y++)
+                            {
+                                for (let x = 0; x < width; x++)
+                                {
+                                    const fragment = fragments[x + y * width];
+                                    if (!fragment) {
+                                        continue;
+                                    }
+
+                                    const dstIdx = ((x + y * width) * 4);
+                                    const srcIdx = ((~~(x/2) + ~~(y/2) * ~~(width/2)) * 4);
+
+                                    if (fragment.ngon.material.isPortal) {
+                                        pixels[dstIdx] = reflectionPixelBuffer[srcIdx] * 1.8;
+                                        pixels[dstIdx + 1] = reflectionPixelBuffer[srcIdx + 1] * 1.8;
+                                        pixels[dstIdx + 2] = reflectionPixelBuffer[srcIdx + 2] * 1.8;
+                                    }
+                                }
+                            }
+                        },
+                    },
+                });
+            }
+
+            function msaa(scene, camera, numTicks = 0)
+            {
+                Rngon.render({
+                    target: "canvas",
+                    meshes: scene,
+                    options: {
+                        context: "big",
+                        resolution: 0.5,
+                        cameraDirection: camera.direction,
+                        cameraPosition: camera.position,
+                    },
+                });
+
+                Rngon.render({
+                    target: "canvas",
+                    meshes: scene,
+                    options: {
+                        resolution: 0.25,
+                        cameraDirection: camera.direction,
+                        cameraPosition: camera.position,
+                    },
+                    pipeline: {
+                        surfaceWiper(renderContext) {
+                            const dstBuf = renderContext.pixelBuffer;
+                            const srcBuf = Rngon.context["big"].pixelBuffer;
+                            bilinear_scale(dstBuf, srcBuf);
+                        },
+                        transformClipLighter: null,
+                        rasterizer: null,
+                    }
+                });
+
+                function bilinear_scale(dst, src)
+                {
+                    const xRatio = (src.width - 1) / (dst.width - 1);
+                    const yRatio = (src.height - 1) / (dst.height - 1);
+
+                    for (let y = 0; y < dst.height; y++) {
+                        for (let x = 0; x < dst.width; x++) {
+                            const xSrc = x * xRatio;
+                            const ySrc = y * yRatio;
+
+                            const xSrcFloor = Math.floor(xSrc);
+                            const ySrcFloor = Math.floor(ySrc);
+                            const xSrcCeil = Math.min(xSrcFloor + 1, src.width - 1);
+                            const ySrcCeil = Math.min(ySrcFloor + 1, src.height - 1);
+
+                            const xInterp = xSrc - xSrcFloor;
+                            const yInterp = ySrc - ySrcFloor;
+
+                            const indexTopLeft = (ySrcFloor * src.width + xSrcFloor) * 4;
+                            const indexTopRight = (ySrcFloor * src.width + xSrcCeil) * 4;
+                            const indexBottomLeft = (ySrcCeil * src.width + xSrcFloor) * 4;
+                            const indexBottomRight = (ySrcCeil * src.width + xSrcCeil) * 4;
+
+                            const outputIndex = (y * dst.width + x) * 4;
+
+                            for (let channel = 0; channel < 4; channel++) {
+                                const topLeft = src.data[indexTopLeft + channel];
+                                const topRight = src.data[indexTopRight + channel];
+                                const bottomLeft = src.data[indexBottomLeft + channel];
+                                const bottomRight = src.data[indexBottomRight + channel];
+
+                                const topInterpolation = topLeft + (topRight - topLeft) * xInterp;
+                                const bottomInterpolation = bottomLeft + (bottomRight - bottomLeft) * xInterp;
+
+                                const finalValue = topInterpolation + (bottomInterpolation - topInterpolation) * yInterp;
+                                dst.data[outputIndex + channel] = finalValue;
+                            }
+                        }
+                    }
+                }
+            }
+
+            function motion_blur(scene, camera, numTicks = 0)
+            {
+                camera.update();
+
+                // We use 2 render contexts, "0" and "1", alternating between them.
+                const contextId = (numTicks % 2);
+
+                Rngon.render({
+                    target: "canvas",
+                    meshes: scene,
+                    options: {
+                        context: contextId,
+                        resolution: 0.25,
+                        cameraDirection: camera.direction,
+                        cameraPosition: camera.position,
+                    },
+                    pipeline: {
+                        pixelShader(renderContext)
+                        {
+                            const pixels = renderContext.pixelBuffer.data;
+                            const prevPixelBuffer = Rngon.context[~~!contextId]?.pixelBuffer.data;
+                            if (!prevPixelBuffer) return;
+
+                            const blurStrength = 0.6;
+
+                            for (let i = 0; i < pixels.length; i += 4)
+                            {
+                                pixels[i+0] = lerp(pixels[i+0], prevPixelBuffer[i+0], blurStrength);
+                                pixels[i+1] = lerp(pixels[i+1], prevPixelBuffer[i+1], blurStrength);
+                                pixels[i+2] = lerp(pixels[i+2], prevPixelBuffer[i+2], blurStrength);
+                                pixels[i+3] = lerp(pixels[i+3], prevPixelBuffer[i+3], blurStrength);
+                            }
+                        },
+                    },
+                });
+            }
+
+            function lerp(x, y, interval)
+            {
+                return (x + (interval * (y - x)));
+            }
+
+            window.addEventListener("load", (async()=>
+            {
+                const {scene} = await import("./scene.js");
+                scene.initialize();
+                
+                const sceneMesh = Rngon.mesh(scene.ngons, {
+                    scale: Rngon.vector(25, 25, 25)
+                });
+
+                // The renderable assets will have finished loading when we reach this,
+                // so it's safe to remove the loading indicator.
+                document.getElementById("loading-bar").remove();
+
+                (function render(numTicks = 0)
+                {
+                    camera.update();
+
+                    const startTime = performance.now();
+                    activeEffect.function([sceneMesh], camera, numTicks);
+                    const fps = (1000 / ((performance.now() - startTime) || 1));
+
+                    if (numTicks % 2 === 0)
+                    {
+                        document.querySelector(".infobox.fps .value").textContent = Math.floor(fps);
+                    }
+
+                    window.requestAnimationFrame(()=>render(numTicks + 1));
+                })();
+            }));
+        </script>
+    </body>
+</html>

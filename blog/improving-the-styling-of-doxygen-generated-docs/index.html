@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <template id="dokki">
+
+            <ths-feedback></ths-feedback>
+
+            <dokki-document>
+
+                <dokki-header>
+                    <template #caption>
+                        Improving the styling of Doxygen-generated docs
+                    </template>
+                    <template #widgets>
+                        <blog-post-widgets/>
+                    </template>
+                </dokki-header>
+            
+                <dokki-topics>
+
+                    <post-date date="28 February 2022"></post-date>
+
+                    <dokki-topic title="Improving the styling of Doxygen-generated docs" id="introduction">
+
+                        <p>
+                            <a href="https://www.doxygen.nl/">Doxygen</a> is an industry-standard tool for generating
+                            standalone HTML documentation from in-code comments.
+                        </p>
+
+                        <p>
+                            Although Doxygen is useful for its purpose, the default styling of its output
+                            is somewhat old-fashioned.
+                        </p>
+
+                        <dokki-image width="1920" height="918" src="./img/default-doxygen.png">
+                            <template #caption>
+                                Doxygen's default styling
+                            </template>
+                        </dokki-image>
+
+                        <dokki-image width="1920" height="918" src="./img/custom-html.png">
+                            <template #caption>
+                                Custom styling by modifying Doxygen's HTML output
+                            </template>
+                        </dokki-image>
+
+                        <dokki-image width="1280" height="845" src="./img/custom-xml-horizontal.png">
+                            <template #caption>
+                                Custom styling by generating new HTML from Doxygen's XML output
+                            </template>
+                        </dokki-image>
+
+                        <p>
+                            In this post, I'll briefly discuss two different ways of improving the styling of Doxygen
+                            docs: first, by modifying the generated HTML; and second, by generating your own HTML
+                            from Doxygen's XML output.
+                        </p>
+
+                        <dokki-subtopic title="Modifying Doxygen's HTML output" id="modifying-html">
+
+                            <p>
+                                Doxygen's HTML output consists of a mix of HTML, CSS, and JS files. Something
+                                along these lines:
+                            </p>
+
+                            <dokki-directory headerless>
+                                <template #structure>
+                                    'html': {
+                                        'index.html': {
+                                            '/content': 'code',
+                                        },
+                                        'navtree.css': {
+                                            '/content': 'code',
+                                        },
+                                        'navtree.js': {
+                                            '/content': 'code',
+                                        },
+                                    }
+                                </template>
+                            </dokki-directory>
+
+                            <p>
+                                You can modify these output files in various ways to implement custom styling.
+                                For reference, the modifications I wrote for an early version of <a href="/#vcs">VCS</a>'s docs are
+                                <a href="https://github.com/leikareipa/vcs/blob/4b2c1fbdb7bcbffb965831bca78c35cbac04475f/devdocs/custom-theme/">
+                                available on GitHub</a> (although they've since been deprecated in favor
+                                of <a href="#generating-from-xml">generating custom HTML from Doxygen's XML</a>).
+                            </p>
+
+                            <p>
+                                You can achieve a fair bit just by adding custom CSS &ndash; either via the
+                                <em>HTML_EXTRA_STYLESHEET</em> option in Doxygen's config file or by modifying
+                                the generated files. For example, you can use pseudo-elements to insert Font
+                                Awesome icons:
+                            </p>
+
+                            <dokki-code headerless syntax="css">
+                                <template #code>
+                                    <pre>
+                                        @import url("https://use.fontawesome.com/releases/v5.12.0/css/all.css");
+
+                                        #main-menu li:first-child::before
+                                        {
+                                            font-family: "Font Awesome 5 Free";
+                                            content: "\f054";
+                                            font-weight: 900;
+                                        }
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Besides introducing custom CSS, you can modify the generated HTML files. The following sample
+                                Python code simplifies Doxygen's enumerator declarations from <em>enum { enum::a, enum::b }</em>
+                                to <em>enum { a, b }</em>:
+                            </p>
+
+                            <dokki-code headerless syntax="python">
+                                <template #code>
+                                    <pre>
+                                        from bs4 import BeautifulSoup
+
+                                        # Read and parse Doxygen's generated HTML.
+                                        htmlFile = open("./html/xxxx.html", "r+")
+                                        dom = BeautifulSoup(htmlFile.read(), "html.parser")
+
+                                        # Find all enumerator declarations.
+                                        enumDeclNodes = dom.select("table.memberdecls tr[class^=memitem] > td.memItemRight > a")
+                                        enumDeclNodes = list(filter(lambda x: x.string != None, enumDeclNodes))
+
+                                        # Modify the declarations' HTML.
+                                        for node in enumDeclNodes:
+                                            node.string = re.sub(r'.*?::', '', node.string)
+
+                                        # Replace the original HTML file's data with the modified HTML.
+                                        htmlFile.seek(0)
+                                        htmlFile.write(str(dom))
+                                        htmlFile.truncate()
+                                        htmlFile.close()
+                                    </pre>
+                                </template>
+                            </dokki-code>
+
+                            <p>
+                                Modifying Doxygen's HTML output is fine for relatively limited stylistic tweaks, but it
+                                can get quite cumbersome if you're looking to make larger changes, e.g. to introduce
+                                mobile-friendlier layouts. For that, you should perhaps prefer to generate your own custom
+                                docs from Doxygen's XML output, as discussed in the next section.
+                            </p>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Generating your own docs from Doxygen's XML output" id="generating-from-xml">
+
+                            <p>
+                                Instead of just tweaking Doxygen's output, you can have Doxygen produce the
+                                documentation in an intermediate XML format, then parse the XML yourself and generate
+                                whatever final output you want.
+                            </p>
+
+                            <p>
+                                To have Doxygen generate XML, set the <em>GENERATE_XML</em> option in Doxygen's
+                                config file to "YES". You'll then get output along these lines:
+                            </p>
+
+                            <dokki-directory headerless>
+                                <template #structure>
+                                    'xml': {
+                                        'index.xml': {
+                                            '/content': 'code',
+                                        },
+                                        'memory_8h.xml': {
+                                            '/content': 'code',
+                                        },
+                                    }
+                                </template>
+                            </dokki-directory>
+
+                            <p>
+                                The <i>index.xml</i> file is in effect a table of contents, outlining all of the structures, classes,
+                                files, etc. that belong to the documentation. For example, the following snippet from the index file
+                                declares the contents of VCS's <i>memory.h</i> source file:
+                            </p>
+
+                            <dokki-code headerless syntax="xml"
+                                code='
+                                <compound refid="memory_8h" kind="file">
+                                    <name>memory.h</name>
+                                    <member refid="memory_8h_xxxx" kind="function">
+                                        <name>kmem_allocate</name>
+                                    </member>
+                                    <member refid="memory_8h_yyyy" kind="function">
+                                        <name>kmem_release</name>
+                                    </member>
+                                    <member refid="memory_8h_zzzz" kind="function">
+                                        <name>kmem_sizeof_allocation</name>
+                                    </member>
+                                </compound>
+                                '>
+                            </dokki-code>
+
+                            <p>
+                                The <em>refid</em> values can be used to find the actual documentation from among the various output
+                                XML files. For instance, with the value "memory_8h_xxxx", we'd find the <em>kmem_allocate()</em> function
+                                in <i>memory_8h.xml</i>:
+                            </p>
+
+                            <dokki-code headerless syntax="xml"
+                                code='
+                                <sectiondef kind="func">
+                                    <memberdef kind="function" id="memory_8h_xxxx" ...>
+                                        <definition>void* kmem_allocate</definition>
+                                        <argsstring>(const int numBytes, const char *const reason)</argsstring>
+                                        <location file="src/common/memory/memory.h" .../>
+                                        ...
+                                    </memberdef>
+                                </sectiondef>
+                                '
+                            >
+                            </dokki-code>
+
+                            <p>
+                                The following sample Python code snippet uses the
+                                <a href="https://docs.python.org/3/library/xml.etree.elementtree.html">ElementTree XML API</a>
+                                to select all plain functions in <i>memory_8h.xml</i>, then inserts their data into a custom
+                                HTML string:
+                            </p>
+
+                            <dokki-code headerless syntax="python"
+                                code="
+                                    from xml.etree import ElementTree
+
+                                    tree = ElementTree.parse('memory_8h.xml')
+                                    plainFunctions = tree.findall('./compounddef/sectiondef[@kind='func']/memberdef')
+
+                                    if plainFunctions:
+                                        html = f&quot;&quot;&quot;
+                                        <section id='function-declarations'>
+                                            <header>
+                                                <h1>Functions</h1>
+                                            </header>
+                                            {make_function_table(plainFunctions)}
+                                        </section>
+                                        &quot;&quot;&quot;
+                                "
+                            >
+                            </dokki-code>
+
+                            <p>
+                                For more samples, you can explore <a href="https://github.com/leikareipa/vcs-doxy-theme">
+                                VCS's Doxygen XML-to-HTML converter</a>. It's currently not documented for developers
+                                unfortunately, but hopefully you'll find your way around it with a bit of effort. For
+                                example, the meat of the HTML generator is in
+                                <a hreF="https://github.com/leikareipa/vcs-doxy-theme/blob/master/src/components/vcs/RootDocument.py">
+                                RootDocument.py</a>.
+                            </p>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Conclusions" id="conclusions">
+
+                            <p>
+                                We've looked briefly at a few ways to improve Doxygen's default styling.
+                            </p>
+
+                            <p>
+                                Modifying the auto-generated HTML/CSS can be a relatively easy way to customize the styling of
+                                your Doxygen docs. But larger-scale transformations
+                                may require a lot of effort to work around the limitations of Doxygen's way of doing things.
+                            </p>
+
+                            <p>
+                                If you're rather looking to make larger-scale customizations, you should potentially bite the bullet
+                                and generate your own fully custom output based on Doxygen's XML.
+                            </p>
+
+                        </dokki-subtopic>
+
+                    </dokki-topic>
+
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

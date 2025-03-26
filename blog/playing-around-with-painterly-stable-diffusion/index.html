@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .aside-caption.custom {
+                font-style: italic;
+                font-size: .875em;
+                margin: 0;
+                margin-top: calc(-1.375rem);
+                padding: 1em;
+                background-color: var(--dokkiCSS-page-link-color);
+                color: white;
+            }
+
+            body[data-dokki-theme="dark"] .aside-caption.custom
+            {
+                color: black;
+            }
+
+            .dokki-image .content.first-level > *
+            {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Playing around with painterly Stable Diffusion
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="11 June 2023"></post-date>
+<dokki-topic title="Playing around with painterly Stable Diffusion">
+<p>It's well known that Stable Diffusion is adept at imitating various artists' styles. You can also take advantage of this when generating realistic images.</p>
+<p>For example, below are two images side by side, the left one generated normally and the right one with &quot;Anders Zorn&quot; added to the positive prompt and &quot;painting&quot; to the negative prompt (both generated using the Dreamlike Photoreal 2.0 model).</p>
+<dokki-image src="./img/base.jpg" width="1024" height="512" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAKABQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAMHBP/EACUQAAIBAwQCAQUAAAAAAAAAAAECAwQRIQAFBhMSMRUiQVFhgf/EABYBAQEBAAAAAAAAAAAAAAAAAAQCBf/EAB4RAAICAgIDAAAAAAAAAAAAAAECAAMEMRESQaHB/9oADAMBAAIRAxEAPwBXN+V/Iy7dUGkp++aoVJOmU/WgF2BJtY+IOR+NKrt8ho6Cak2PbZTOHPU3cZXC5Yn0L2GfXoamnKmPVBk4nsP1ga3QEtOQxJskpF/ses6zmy7rUXs249MWpeCF8n5Ky3NKvb/Gmq6REnRV8g4dDewzYnF/f90al9dI7LSMzsWamjJJOSbaNHN9gO/QkWUIrkT/2Q==">
+                        </dokki-image>
+<p>They're somewhat crude images as they're demonstrational, but in any case it's obvious that while they're both realistic enough the second one is more visually coherent and has a stronger sense of artistic vision.</p>
+<dokki-subtopic title="Anders Zorn">
+<p>Females in the style of Zorn tend to come out with robust faces (and rosy cheeks).</p>
+<dokki-image src="./img/tall.jpg" width="512" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAoABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAYFBwT/xAAqEAACAQMEAgEBCQAAAAAAAAABAgMABBEFEiExBhNRQRQiIzJxgZGxwf/EABgBAAMBAQAAAAAAAAAAAAAAAAEDBAUC/8QAIREAAQQBAwUAAAAAAAAAAAAAAQACAxEEEiGRIjFBUWH/2gAMAwEAAhEDEQA/AKqPz2dyPs8FojdbmG4/5UrpPn99c6rGJb2KS7uROot/QFiVVbIZVxnodknsisaG2f0OTHuYKSNv1OKmvONXvkk0O1aBUn0i2iQSEg4LLlkHAJHPX61kxTulJAIsfAqoobBBHddFudb115mYXjKPhW2j+AtKm7Tdc2kFwsxCyxq4AY8ZHVKUc2X2OEowUaIPK1baVkiZjGv3VJPyMVz7yieK/vbr8T2iSNXZiCMPtXPfwQarDqSxW0oZgG2Hk8jqo2+giScjOQV3Nz3k8/3S8Vukly0HbilY+PLLDotnHeNC8qxgbk5BH0/fFK8miW0mnaelu9w04UkoxUDCnoUqeRtuJCG3lYs8vvgePIwwxnFYcscjz42yMPy8njBpSr4+m0RI5raBVJb3xjhVWZ8gAdUpSuNAKXa//9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Anders Zorn, Finnish Sami woman in a field, (whole body portrait), (wide brush strokes:1.2), earthy palette, very detailed, alla prima, subject in foreground"
+    <b>Negative prompt:</b>
+    "painting"
+</div>
+<dokki-image src="./img/sleepy.jpg" width="768" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAbABQDASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUEBgcB/8QAKhAAAQMDAwIGAgMAAAAAAAAAAQIDBAAFERIhQQYxBxMUInGBIyRCUZH/xAAXAQEBAQEAAAAAAAAAAAAAAAAEAgAF/8QAHxEAAQMFAAMAAAAAAAAAAAAAAQACAxESITFhBEHh/9oADAMBAAIRAxEAPwCvt2jrcw34ki7tLiPYS+gyidSAc40nmmFwVAnwI9obgtM+afJZkuEBxpwjYjSexUMEH/aY21wvSym4uBhhhpbr7mQcIAyD8nIA+aS+F1mfvYam3lY9BHll1Lp9pASTpG3PeuDHNLMTjKdCyMNJOlTJvh71M8+VpMLGAB+0KK1fqK3LYujht/mSYjn5G1oHB4I4IINFSfPmYbSNc+o5jZ1TujLCHLfcYq/TSXioerc1FTWj+KAQBv3J+j2xU69PCCzDgoQ3DiBzShvGydiNjz9706tEVm3W9yPBSWGWn2EoQhRA9+nXn+yeSd6rfiW6sdKXJwLUFolKQlWdwNXFOiAjZQelnnPF2zvWx+IVTnXUOBZ0jWU+3uNvuiscvBULg5hx0Zx2WRx80UJzmvN1Nqy+020X/9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Anders Zorn, Finnish woman sleeping in a field, (whole body portrait), (wide brush strokes:1.2), very detailed, alla prima, storm clouds, autumn"
+    <b>Negative prompt:</b>
+    "(painting:1.3)"
+</div>
+<dokki-image src="./img/tiara-kitchen.jpg" width="1024" height="731" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAOABQDASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAYCBAUH/8QAIxAAAgEEAgICAwAAAAAAAAAAAQIDBAURIQAGEjEiYRRxkf/EABYBAQEBAAAAAAAAAAAAAAAAAAMEBf/EABwRAQACAwADAAAAAAAAAAAAAAEAAgMREhMhMf/aAAwDAQACEQMRAD8AQ+p9Yp7vJcLnVTwx0lG8aKrsEFRI2fh5E6GFyTyL2WOmCRtPGz+I9NnORnWfY3750joFPRLQXqrnpIpnCQIgkXyVQWY6B0N42N65l9+prVQ3+mmktiSLWwfDEhBjKN45A9bBH85nAZK9nyWXUtwxRXrNprEV6m6rTSqPExtgfed/vhylcro1xnGIwIqZfxolLHIRScD798OH5KHqMY8qb3P/2Q==">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Anders Zorn, woman wearing a tiara in a messy rural kitchen,(wide brush strokes:1.1), very detailed, alla prima, banal, unremarkable, earthy, white dress, oppressive atmosphere, foreboding, rotting, decadence"
+    <b>Negative prompt:</b>
+    "(painting:0.6)"
+</div>
+</dokki-subtopic><dokki-subtopic title="John Singer Sargent">
+<p>Sargent's women have an air of fragility.</p>
+<dokki-image src="./img/cooking.jpg" width="768" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAbABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAUGBAf/xAAnEAACAgEEAgEDBQAAAAAAAAABAgMEEQAFBiESMRMUUWEjQUJxof/EABgBAAMBAQAAAAAAAAAAAAAAAAECAwQF/8QAHxEAAgEDBQEAAAAAAAAAAAAAAAECERNRISIyQZHh/9oADAMBAAIRAxEAPwBhw3fqu+0Zr3wtVq/N4R/OApzgZyc4PemPMeMVOVUau3JvLUsTkTCFycjwJPmF/Zem761O7JS2KbZXE0QkqCRv045GXD99hs5+2snDrDvyWJ1mlioO7VivnkSKVOQRjsnAyfeuVuTTaNqS6Ygsxx0bM1Sw6/NA5jfHokHGdGqnlez0J99szfR+TvguwkI8mwASe/fWjSBoc0g5NDFRWpG7pLOwIQqeicjH2+2rPYJkq7JUs9Zjv4H5GANcy3mCI5yg9k60UtyuPw+GNrDlUtNID/LyB679nTco1wUcNS033ntCrvNyvYeRJYpCjAof8/GjU5LEjOWZQzHsluyT/Z0ajdjh+/A2z//Z">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "John Singer Sargent, homely woman in a messy rural kitchen, (wide brush strokes:1.1), very detailed, alla prima, banal, unremarkable, earthy, white dress, oppressive atmosphere, foreboding, rotting, decadence"
+    <b>Negative prompt:</b>
+    "(painting:1.1)"
+</div>
+<dokki-image src="./img/sargent-down.jpg" width="768" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAbABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAUGAgf/xAAoEAABAwMEAgIBBQAAAAAAAAABAgMEABEhBQYSMRNBByIUFVFSYbH/xAAXAQEBAQEAAAAAAAAAAAAAAAACBQED/8QAGhEAAwEBAQEAAAAAAAAAAAAAAAERAhIhgf/aAAwDAQACEQMRAD8AXQN0NvQt0z1TocZmYw2H1LbKHHGeZKkIzg5se8XqOjyEzdQ0hv8AFebiyJvNXmb48za1hf16Ip58LRtJ1LcrkLcCW3ISGvJ4XLcXFBYKQbjPo2/qjeolR94wEyXFPsJfQ5HewEuN8iLpA6sLCw9ipbUhSe1H8Odj6qWB1yNFZKzzXb+R/wBopw5wt/iZMhGrxXm2leVLxUpJwSEi576IF6sfkrRm3P0yciYt67ZUgEABux6FZ2WfHuOCpGFEkE/vg0y3aBzdasPG3JdSlPoDGK14Tx0K18nC9QiuwZrrDtitJv8ARQWMi/YxfNFPtXaQ3PcShICe7UUFsNa8P//Z">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "John Singer Sargent, woman at a dilapidated finnish streetside cade, banal, unremarkable, very detailed hair, foul stench"
+    <b>Negative prompt:</b>
+    "strange, surreal, painting, modern"
+</div>
+<dokki-image src="./img/dirty.jpg" width="768" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAbABQDASIAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAAUGBwIE/8QAJxAAAgEDAwIGAwAAAAAAAAAAAQIEAAMRBRIhBzEGEyJBYYFRobH/xAAZAQACAwEAAAAAAAAAAAAAAAAAAgEDBAX/xAAbEQEAAgMBAQAAAAAAAAAAAAABACECAxESBP/aAAwDAQACEQMRAD8AxDRrsqI0WeyERXkbUuMmQxBBPHvWydROqMjUpWqaZCNhoFuVbewwt84VR+iecUhl6azdL4UeXfv3BDlq+zd6VBDbVA9hzn7NRhtxgp2Wl8vlnYElvgAVz8tgiEc1duWsLqb4nhRxGiXTZsW2O1baEDk5J4/JJNFJNPlXGjKUkyLSdghRQQPsZooPo81cHXj25TaLabUGSNJkyRYu3AWtFzsYjt6aQeJdFOkTXQHehyBzwO3OPun+lkiVHAONgwvx6zXPid2kxrb3zvcMuCe/IOf4KoE8zTZkElofmG0clCAcAs4HGB7UV52c27txUwFDHAxRUcjT/9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "John Singer Sargent, woman with a tiara at a rural finnish streeside cade, foreboding, doom, rotten, decadent, foul stench"
+    <b>Negative prompt:</b>
+    "painting, strange, surreal"
+</div>
+</dokki-subtopic><dokki-subtopic title="James Abbott McNeill Whistler">
+<p>Whistler's style is similar to Sargent's but quieter.</p>
+<dokki-image src="./img/whistler-down.jpg" width="768" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAbABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAMGBQT/xAApEAACAQMCBQMFAQAAAAAAAAABAgMABBEFEgYTISIxQWGhFEJxgZHh/8QAFwEBAAMAAAAAAAAAAAAAAAAABAEDBf/EABsRAQADAAMBAAAAAAAAAAAAAAEAAhEDEiEx/9oADAMBAAIRAxEAPwDLuLk2ul3k6sA0aMQT4Bx0+aYiW6Wekqrlrxc89zLzC+fB27e3+1N6hqRAktsK0bsqtn0JP+VQTarpU/CWnC0YLqaSlpwcZbcMZz5z0HT81gunsXxJiJOvhDWdPsdOuIbuC8aX6qVsxbMYLe9FSWnyzLC+xwoMrk7zgnuPWios+/IitqhMIyc9LlvuL4A8ncMFenvgikQxuLhXVTzlfO0nA+a5GJW5bacdxq74UvJjoOtRty3Ai7WeJWZcqQcMRkfo0mx1IPjp3cmbHMw3cpl27ie/GaKZpKKLMDHg+vWijWAZeXcn/9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "James Abbott McNeill Whistler, wet woman at a dilapidated finnish rural streetside cafe, banal, unremarkable, photo, doom, decadence, wet, neon mood, foreboding, foul stench, unusual composition, very detailed plants, detailed face"
+    <b>Negative prompt:</b>
+    "strange, surreal, (painting:1.1), modern, uneven skintone"
+</div>
+<dokki-image src="./img/down.jpg" width="768" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAbABQDASIAAhEBAxEB/8QAGgAAAgIDAAAAAAAAAAAAAAAAAAQFBwIDBv/EACoQAAIBBAEDAwIHAAAAAAAAAAECAwAEBRESBhQhEyIxUbEHM0FCQ2Fx/8QAGAEBAAMBAAAAAAAAAAAAAAAAAwACBAX/xAAZEQADAQEBAAAAAAAAAAAAAAAAARECAyH/2gAMAwEAAhEDEQA/AOGz+PTJYqQEu0kEbyoOWyTURlun4pcHipII0gnt4WS4BbfctvlzX6aBGwfpWXVF7cWtrb9q/FpXaNhxB5AgePIp29tltcXFMkkhlj4n3NsHfg+NVylUacO5NdnaTLisesOGu7xBD+bE+lPubx8UVb34ZdgOhMS01vHJIyyFi3n+Vx9gKKN9I5CtKc6gt/Xez4IyiN/UZSCfimpZI7zHwwMy7mjKgEgb2RqrLssNjxEX7ZWc+CWJb7ml8f07iIL6aaKwhEgKkMdnRPz808FWZ4RvS12tj0/Z2crKjwB0I4k/vY/p/tFN5WxtjfSExDf9EiiifNN+kiP/2Q==">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "James Abbott McNeill Whistler, woman at a dilapidated finnish rural streetside cafe, banal, unremarkable, photo, doom, decadence, foreboding, foul stench, unusual composition, very detailed plants, detailed face"
+    <b>Negative prompt:</b>
+    "strange, surreal, (painting:1.1), modern, uneven skintone"
+</div>
+<dokki-image src="./img/snow.jpg" width="768" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAbABQDASIAAhEBAxEB/8QAGQAAAwADAAAAAAAAAAAAAAAAAAYHAgUI/8QALxAAAQIFAgMECwAAAAAAAAAAAQIDAAQFESEGQQcSMRMUImEyUXFykaGxssLR4f/EABcBAQEBAQAAAAAAAAAAAAAAAAQFAQP/xAAfEQABBAICAwAAAAAAAAAAAAABAAIDEQQSFCEFE/D/2gAMAwEAAhEDEQA/AEaXmHR2ocbWFAg2Vi2D1jOtGYpeoXJFLyJuUfYTMMPIABF8EEjGxPsi4cX6maboaeUlLAL5DSiG7Eg4tff+xGNOMCiolpxuxmeUFAUnwto2Rbz39d4DkOEEmtJePtNEZFqpOoOIaVbnyon0oI6OpFB07qCns1NmkypS+kEgA+FQwU4OxghwxGuFilP5b29FI/HLnVRaQgKJDs+hkjY5Cr/BBhBqcykc2el/pFM4ugKptIByO+lVvMNqsfnEfqnV73vxMT/J1yaCdgX6AT92mbTur6lSZFUvJTPZtFwr5fMgfqCFFgkBVidvtEEcmzPaKBK10TSbIX//2Q==">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "James Abbott McNeill Whistler, Sami woman in wintry Finnish outdoors, (wide brush strokes:1.1), alla prima, very detailed, alla prima, banal, unremarkable"
+    <b>Negative prompt:</b>
+    "(painting:1.3), mutated eye, strange eye, strange iris, harsh lighting, modern"
+</div>
+</dokki-subtopic><dokki-subtopic title="Alfred Sisley">
+<p>Sisley being the impressionist gives off a dreamier vibe.</p>
+<dokki-image src="./img/sisley-portrait-2.jpg" width="614" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAiABQDASIAAhEBAxEB/8QAGwAAAgIDAQAAAAAAAAAAAAAAAAYFBwECAwT/xAAkEAACAQMEAgMBAQAAAAAAAAABAgMABBEFEiExBlETIkFhof/EABgBAAMBAQAAAAAAAAAAAAAAAAIDBAAF/8QAHREBAQABBQEBAAAAAAAAAAAAAQARAgMEITESMv/aAAwDAQACEQMRAD8AV7qSOGWeOWNkWLOXPWACc/4aitKuWurlRJZXNsrp8sTSgASIemHrscGnVbKxupZblo1bcoGU7kLHaB/prxassian8kgRj8SxQxLyxVAeSf09Z/tczOOqkBFkqfV71LiZIre32I5UFiSTg90VyuNsl3cOmQrSsceuaKB3MVWnj6EOp8muJ/naORDFt2y5GDgqcjP8NRmmXKXmvSXkkrPtjKqDwBzg4rTxM3nkeoxmKGUafkrNLjIB2n6gn96qzrLTNE0212xacioftJI3LAE8liee/XWeqb8OctKoGKg9VeRNVvljZ9gnfBAz+0VdWoeDeNTXTyzWm13+30k2ZB5BIBHNFZ0k83uvKU09VgsjHABFGqghUG0A7ewBWL1EFxbAKuMx8Y9y80UUXJ/RTbXjJXnM0q684WRwNn4x9miiiifZ5f/Z">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Alfred Sisley, homely woman in a messy rural bedroom with lots of small photos on the wall, (wide brush strokes:1.1), very detailed, alla prima, banal, unremarkable, earthy, oppressive atmosphere, foreboding, rotting, decadence"
+    <b>Negative prompt:</b>
+    "(painting:1.2)"
+</div>
+<dokki-image src="./img/sisley-portrait.jpg" width="768" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAbABQDASIAAhEBAxEB/8QAGQABAQADAQAAAAAAAAAAAAAABgABAwUE/8QALRAAAgEDAgQEBQUAAAAAAAAAAQIDAAQRBSEGEiIxBxNBYRQVMlFxgZGxweH/xAAXAQEBAQEAAAAAAAAAAAAAAAAEAgEF/8QAHhEAAgICAgMAAAAAAAAAAAAAAQIAEQMhEkETMVH/2gAMAwEAAhEDEQA/ADU1qyE7V5ZYiAcg0g4ohkFhOtrPFbTNhRLJ2QE4LfoM1ydc4dteEL2JkupXhkBnndnZw0ZCqux2HVk5rl6BAMQiM6lh1OC8Z526fWqsXWtacLhxFOGXOxVSR/FVVwm2fkScPaJa6botjq91Gtze3jtIjT7hOrCxqDtkg5z3/atfGrX+pTSNPcYS+jEQ8xgIlHMAnYbH1J96QykrpHCcQ2jVrRgvvj/TQnxAuZlW4VZCFFwFA+wyD/VLXEpWzCeZzkO+4wsPDnT3tIm+V3F1zKD5010UMm31co7A9wKqW24+ItrdpmZiIYgOojA5FPp+aqo4BcQHavc//9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Alfred Sisley, homely woman in a messy rural bedroom with lots of small photos on the wall, (wide brush strokes:1.1), very detailed, alla prima, banal, unremarkable, earthy, oppressive atmosphere, foreboding, rotting, decadence"
+    <b>Negative prompt:</b>
+    "(painting:1.2)"
+</div>
+</dokki-subtopic><dokki-subtopic title="Berthe Morisot">
+<p>Another impressionist,  Morisot-like images come out with dreamlike qualities. People tend to look like they're on vacation, and usually there's rose-like flowers around.</p>
+<dokki-image src="./img/odd.jpg" width="819" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAZABQDASIAAhEBAxEB/8QAFwABAQEBAAAAAAAAAAAAAAAABgAHA//EAC0QAAEDAgQEAwkAAAAAAAAAAAECAwQAEQUSITEGIkFhEyOxFDM0NXOBg7Lw/8QAFwEBAAMAAAAAAAAAAAAAAAAAAwAEBf/EAB0RAAICAgMBAAAAAAAAAAAAAAECABEDIQQTMbH/2gAMAwEAAhEDEQA/AEr/ABHHnYHNZa9ha8RpSeU2uE6jcVlkiI7iHD7kxL6RdLgS3kJzAm5TfZO2lt7dK7owyYmOq7zadCPLurfekfC2CFyGqPiEtxMEKQhgNi3mgXN+2trHvWe3JZwABv7JhxK7EP5Uyl2QpxQWpIWVAHMUanSqkErAVsyXWgQQ2ooFuxqouyFajUSx322IqlpeBWSd9/tSBLi4rLTTrSzZedLoAygk3sevW1CX/dJ+oP2rRcV+Df8A7qKRUAFx8Jo1A+OuLjYxLbUL8+YFJ0IOo9aq48Z/OvxI9KqIqLlPJpjP/9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Berthe Morisot, woman in Finnish countryside, (wide brush strokes:1.1), alla prima, banal, unremarkable, decadence, heavy clouds, moist, neglected, earthy, very high contrast, bright sunlight, unusual camera angle, very detailed face"
+    <b>Negative prompt:</b>
+    "(painting:1.2)"
+</div>
+<dokki-image src="./img/looming.jpg" width="1280" height="768" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAMABQDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQAG/8QAJhAAAgIBAwMDBQAAAAAAAAAAAQMCBBEAEjEFBiEUImEjQUJRgf/EABcBAAMBAAAAAAAAAAAAAAAAAAEDBAX/xAAaEQADAAMBAAAAAAAAAAAAAAAAAQIREiFB/9oADAMBAAIRAxEAPwDJlbLsa6C1IjH2kzJJJ3GW0Y4yPGkKFjqUqU0UItalrCz0xQGxmJHG6JPEgOCD+PzpC106pHsxC4ohGS60bQaB7zOZGcy/XnGNPUZGrQMK/wBPav2yHIxAYwf5rN1dPAyalda8MG3vDqq1or1nWVrrLCdu8wOQTyPsfPnVo3vVXq+uGwycw1ioGZicbjjk/OrR0kld2ng//9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Berthe Morisot, woman in Finnish countryside, (wide brush strokes:1.1), alla prima, banal, unremarkable, decadence, heavy clouds, moist, neglected,earthy, very high contrast, bright sunlight, unusual camera angle, very detailed face"
+    <b>Negative prompt:</b>
+    "(painting:1.2)"
+</div>
+</dokki-subtopic><dokki-subtopic title="Interior">
+<dokki-image src="./img/messy-3.jpg" width="1024" height="768" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAPABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAUGAgT/xAAkEAACAgEDBAIDAAAAAAAAAAABAwIEEQAFIQYSQWETIjFRcf/EABcBAAMBAAAAAAAAAAAAAAAAAAADBAX/xAAcEQACAgIDAAAAAAAAAAAAAAAAAgESAxEhIlH/2gAMAwEAAhEDEQA/ANb9e6fr0KsjWvhpSszEoR4kYA/nPvUvVbs91G42pGwqvWBa2QSMiOPR51D0Op7O/MijeGgKTEBYQqKvGOe0ZPjTmlSro2u+mFlkxaSVNjyPfHB1nPFZ7l647coO7m3wWyPwbcGLlESjKbJZIP7xjH80a4b3U7luiuMfrCEYjuHOAPRGjRoXRvD/2Q==">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Isaac Levitan, messy ship interior, (wide brush strokes:1.1), very detailed, alla prima, banal, unremarkable, oppressive atmosphere, foreboding, rotting, decadence, unusual camera angle"
+    <b>Negative prompt:</b>
+    "(painting:1.2)"
+</div>
+<dokki-image src="./img/room.jpg" width="1024" height="768" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAPABQDASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUDBAYH/8QAJhAAAgEEAQIGAwAAAAAAAAAAAQIDAAQFERIGEyEiMUFCUWGh0f/EABYBAQEBAAAAAAAAAAAAAAAAAAUDBP/EABoRAAMBAAMAAAAAAAAAAAAAAAABEQITMTL/2gAMAwEAAhEDEQA/AKzC3tbWWeNFeFXjVDHIG5hjx5a+gabCCIXT2/FjKEZvwdDZrleGvbsrKdoRIFBBA+LBh+xT7CZi5supXyd2XmjfluJXPl2PbZ9KJcsYhw6lRo8KFzVo90sHaHcZOJbZ8KKlk65x/M6Dx/amP+UVdJTszPG75Z//2Q==">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Isaac Levitan, Finnish home, indoors, (wide brush strokes:1.2), very detailed, alla prima, banal, unremarkable, earthy"
+    <b>Negative prompt:</b>
+    "(painting:1.1)"
+</div>
+<dokki-image src="./img/bedroom.jpg" width="768" height="768" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAUABQDASIAAhEBAxEB/8QAGQABAQADAQAAAAAAAAAAAAAAAAYBAgQF/8QAJhAAAQMEAAYCAwAAAAAAAAAAAQIDBAAFERIGFCExQVEHInGx8P/EABgBAAIDAAAAAAAAAAAAAAAAAAIDAQQF/8QAHhEAAgEDBQAAAAAAAAAAAAAAAAECESFREhMiMUH/2gAMAwEAAhEDEQA/AIFq7XJDqW1ylEbFJyB7q1hQHpMdLhyonH9+63tHATMlyXPvtxZiMPL1hIYfQpalA/Yq76gej17nxWb+xO4asXNplyQ4pwpZjtuJX9AnuskdyfXis1xbuWnLxHM7EKXCNc0qVhfIExMZBkRor7qxupWSnGfGB6pUbbyHfB4XDHEd3RIlp595WygFFZ22APTOa7ZNzmTESDJfW5hrYAnonr4HYD8UpTZ9gJciAgNNvMbuo2WVHJyaUpRSb1MbGKorH//Z">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Anders Zorn, messy bedroom, (wide brush strokes:1.1), very detailed, alla prima, banal, unremarkable, earthy, oppressive atmosphere, foreboding, rotting, decadence"
+    <b>Negative prompt:</b>
+    "(painting:1.2)"
+</div>
+<dokki-image src="./img/bedroom-2.jpg" width="768" height="1024" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAbABQDASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAYCBQcE/8QAKxAAAQMEAAMGBwAAAAAAAAAAAQIDEQAEBRIGITETFCJBUaEWI2JxcoGx/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAMFBP/EAB8RAAIBBAIDAAAAAAAAAAAAAAABAgMRExQSYSFCUf/aAAwDAQACEQMRAD8AbH8u1kOEmrBws7Jt0IACpJ8MdP1Wcqxrj9s3eStpCk+FtTgHaAGJj79CYpURxA23cvoOzyis6K7SAkQPKJPOfOn3h3L2t5wMLrI94FxZOhkNb6lUn5fXygHmPSp6v7GrEkvBZtYy7uGWnbN1kMKQnWUyekH3opeey4Lqi1aKQk84N2sH2op2aAnXl0cHCGIbRgUXy0iVr1gp/h9KjxXbuP4xwWiCp2UkBJg8qtbJxXwbjxsQN1CB+RqvcUSkyamVHxmpIr07yi0zOVW+Q2OzCgfqkminlZOx50UzZfwMXZ//2Q==">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Alfred Sisley, messy rural bedroom, (wide brush strokes:1.1), very detailed, alla prima, banal, unremarkable, earthy"
+    <b>Negative prompt:</b>
+    "(painting:1.3)"
+</div>
+</dokki-subtopic><dokki-subtopic title="Plants">
+<dokki-image src="./img/nature-1.jpg" width="1024" height="614" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAMABQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGB//EACMQAAICAgEDBQEAAAAAAAAAAAECAxEABAUSMWEiMkFRYoH/xAAVAQEBAAAAAAAAAAAAAAAAAAACBf/EABsRAAICAwEAAAAAAAAAAAAAAAABAhEDEhMh/9oADAMBAAIRAxEAPwBbvvpRvCXknaMG7WQnqavbXf8AuMUWNydiJpyo/bHpPyb83mTcrNMk1iZyZUVmJqzlIeU2dLg+Cn1CkUm1C6zkLYkqu4Ni/OQ3GdWpBlapMrtrmJRMeueYn7LthkfyvNbc88bOUBEYHpWhWGDplXmzCkf/2Q==">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Anders Zorn, finnish countryside, (wide brush strokes:1.1), alla prima, banal, unremarkable, decadence, rotten, doom, wet, neglected,earthy, detailed face, unsettling camera angle, very detailed plants"
+    <b>Negative prompt:</b>
+    "(painting:1.2)"
+</div>
+<dokki-image src="./img/nature-2.jpg" width="1024" height="614" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAMABQDASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAcDBAUG/8QAIxAAAgEEAgEFAQAAAAAAAAAAAQIDAAQFERIxIRMiNEFhsf/EABYBAQEBAAAAAAAAAAAAAAAAAAEDBf/EABoRAAMBAAMAAAAAAAAAAAAAAAABAiEDEUL/2gAMAwEAAhEDEQA/AK87WhwtysasY0jdVYtobK9AfZqC5yVk2OuZm18pWfg3JzplbvojquAusxfwYZrlLh/WaVIwQePAaPWtVmW+VuriESB1hYR6YwoF5aBGz+keKwoi2tZGXXWDXzWaxZvdTQ3UjKoGxKAP5RSfvcteJeTAzO/uPl3YnQ8a7/KKVHIvQOt0/9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Anders Zorn, finnish countryside, (wide brush strokes:1.1), alla prima, banal, unremarkable, wet, neglected,earthy, unsettling camera angle, very detailed plants"
+    <b>Negative prompt:</b>
+    "(painting:1.2), rain"
+</div>
+<dokki-image src="./img/nature-3.jpg" width="1280" height="768" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAMABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAUGBAf/xAAjEAACAQQBBAMBAAAAAAAAAAABAgQAAwUREhMhQWEUFVGR/8QAFgEBAQEAAAAAAAAAAAAAAAAAAwEF/8QAHxEAAgICAQUAAAAAAAAAAAAAAQIAEQMhBBJRodHw/9oADAMBAAIRAxEAPwBFh8NGtxuNrIXlW6ApHAbb1rzThGk2msD5st1jv1UUKp02979GubvPvzo/O43B0BKm2SOJH5/K1JmZUyyVkFHIUNzOy2wDrvv1WOcbgG22IC8nKSN6P3aWcrNX48m4PtslbZmLsASvc+dUVGyspITpDatu2DthuiqyZVNdUFeYWFm/Hqf/2Q==">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Eero Nelimarkka, finnish countryside, (wide brush strokes:1.1), alla prima, banal, unremarkable, decadence, rotten, doom, wet, neglected,earthy, unsettling camera angle, very detailed plants"
+    <b>Negative prompt:</b>
+    "(painting:1.3)"
+</div>
+<dokki-image src="./img/nature-4.jpg" width="1024" height="614" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAMABQDASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAMBBAUG/8QAJxAAAQIFAgUFAAAAAAAAAAAAAgEDAAQFERIhMQYTUWHBIjJBcZH/xAAWAQEBAQAAAAAAAAAAAAAAAAADAQX/xAAbEQADAAIDAAAAAAAAAAAAAAAAAQIREiFBUf/aAAwDAQACEQMRAD8AypWkLJshy53BwMvaPW3f7/YZOyL05MPOOVElM7ZrjrolvEPebRp4SaIxUmhVbFf47xLK408x3IiUc1X1Im+ixlq69CpNPBepXFlSp0okvJ1HFpF2VrLt4SCOImG+U8YAR2v1ghN76ZeT/9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Berthe Morisot, plants in finnish countryside, banal, unremarkable, decadence, rotten, doom, wet, neglected,earthy, awkward camera angle, very detailed plants"
+    <b>Negative prompt:</b>
+    "(painting:1.2)"
+</div>
+</dokki-subtopic><dokki-subtopic title="Landscapes">
+<dokki-image src="./img/heavy-weather.jpg" width="1344" height="768" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAALABQDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwYA/8QAKRAAAQQAAwUJAAAAAAAAAAAAAQACAwQFERQGEhUhUzEyUWFygZGSwf/EABcBAAMBAAAAAAAAAAAAAAAAAAECBAX/xAAbEQABBQEBAAAAAAAAAAAAAAAAAQQRYZHwYv/aAAwDAQACEQMRAD8APj8ArOMc8D9498v7D4JMP2gr1iTI+vJK7k1z3ZtZ55ZKUiuWW8hPIPdLrrXXk+yyVceSiLKqxjdN0pLsapk+h4/FlKa6z15PlZMjmuwMX2n/2Q==">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "James Abbott McNeill Whistler, Finnish countryside, heavy clouds, heavy fog, (wide brush strokes:1.2), very detailed, alla prima, banal, unremarkable, earthy"
+    <b>Negative prompt:</b>
+    "(painting:1.3)"
+</div>
+<dokki-image src="./img/lazy.jpg" width="1024" height="512" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAKABQDASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAcCAwX/xAAmEAACAQMCBAcAAAAAAAAAAAABAgMABBEhIgUSMVETFEFCYXGB/8QAFwEAAwEAAAAAAAAAAAAAAAAAAQIDBP/EACERAQACAAQHAAAAAAAAAAAAAAEAAgURYeEEFCExM1OR/9oADAMBAAIRAxEAPwDZ4M3D4LG4Fk9jxGZ2D8yBW2429fTJJ/KnFFDFaThLOFZJgq+CI1IAGcnJ+6WUVtBECYoIkPTKoBpVgjRdyooYdCBqKwWxi2ap1ddoTgwAOxpvGVNd3t1PIwuI3KHkIjIYKR7fjHailx5eFdVijBbccKNT3NFMYpXLxn2V5O/sZ//Z">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Isaac Levitan, summer clouds lazily floating in the sky, (wide brush strokes:1.2), alla prima, sketchy, very detailed"
+    <b>Negative prompt:</b>
+    "(painting:1.3)"
+</div>
+<dokki-image src="./img/bog.jpg" width="1024" height="768" headerless="true"no-border-rounding="true" thumbnail-src="data:image/png;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAPABQDASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQCBQb/xAAkEAACAQMEAgIDAAAAAAAAAAABAgMABBEFEiEiMUEGQlGBof/EABYBAQEBAAAAAAAAAAAAAAAAAAQBAv/EACERAAIBAQkBAAAAAAAAAAAAAAECAAMEBRESExUhQaGR/9oADAMBAAIRAxEAPwB6abSpdRe6jubWS4lUrKs0DYYHztO3qce6uNPu9EstPW00qWO37tJIjq8ikkY+w5/FZgTmTbGjKJcDcmD05OQT7/VOJCWtS0e5nU9nJ4wfGBQ3vOqwwYD7CpZVViyyF9qHxq1uXjXTDJnsWhtndST55I/g4opI34DEZPBoqbnUPfpmNOmOMvgn/9k=">
+                        </dokki-image>
+<div class="aside-caption custom">
+    <b>Positive prompt:</b>
+    "Berthe Morisot, Finnish countryside bog with cumulus clouds in the background, (wide brush strokes:1), alla prima, very detailed rocks"
+    <b>Negative prompt:</b>
+    "painting"
+</div></dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

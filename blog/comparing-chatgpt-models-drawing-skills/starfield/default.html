@@ -1,0 +1,89 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <script>
+          // Set up the canvas
+          const canvas = document.getElementById('canvas');
+
+          // Get the context and pixel buffer
+          const ctx = canvas.getContext('2d');
+          const buffer = new ArrayBuffer(canvas.width * canvas.height * 4);
+          const pixels = new Uint32Array(buffer);
+
+          // Create an array to store the stars
+          const stars = [];
+
+          // Function to create a new star
+          function createStar() {
+            const star = {
+              x: Math.random() * canvas.width - canvas.width / 2,
+              y: Math.random() * canvas.height - canvas.height / 2,
+              z: Math.random() * 1000,
+              size: Math.random() * 3 + 1,
+            };
+            stars.push(star);
+          }
+
+          // Create some stars to start with
+          for (let i = 0; i < 100; i++) {
+            createStar();
+          }
+
+          // Function to update the position of the stars
+          function update() {
+            // Clear the canvas
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Update the position of each star
+            for (let i = 0; i < stars.length; i++) {
+              const star = stars[i];
+
+              // Move the star closer to the viewer
+              star.z -= 20;
+
+              // If the star is too close, create a new one
+              if (star.z <= 0) {
+                createStar();
+                stars.splice(i, 1);
+                i--;
+                continue;
+              }
+
+              // Calculate the position of the star on the screen
+              const x = (star.x * canvas.width) / star.z + canvas.width / 2;
+              const y = (star.y * canvas.width) / star.z + canvas.height / 2;
+
+              // Draw the star
+              const index = Math.round(y) * canvas.width + Math.round(x);
+              if (index >= 0 && index < pixels.length) {
+                const brightness = Math.max(0, Math.min(255, 255 - Math.round(star.z / 10)));
+                pixels[index] = (255 << 24) | (brightness << 16) | (brightness << 8) | brightness;
+              }
+            }
+
+            // Update the canvas with the new pixels
+            ctx.putImageData(new ImageData(new Uint8ClampedArray(buffer), canvas.width, canvas.height), 0, 0);
+
+            // Schedule the next update
+            requestAnimationFrame(update);
+          }
+
+          // Start the animation
+          update();
+        </script>
+    </body>
+</html>

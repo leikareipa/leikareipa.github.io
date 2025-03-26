@@ -1,0 +1,82 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="256" height="256"></canvas>
+        <script src="../parrot.js"></script>
+        <script>
+          do_with_parrot((parrot)=>{
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const WIDTH = 256;
+            const HEIGHT = 256;
+            const pixelBuffer = parrot.data;
+
+            // Generates a random noise map for the melting effect
+            function generateNoiseMap() {
+              const noiseMap = [];
+              for (let y = 0; y < HEIGHT; y++) {
+                noiseMap[y] = [];
+                for (let x = 0; x < WIDTH; x++) {
+                  noiseMap[y][x] = Math.random();
+                }
+              }
+              return noiseMap;
+            }
+
+            // Applies the screen melt effect onto the pixel buffer
+            function applyMeltEffect(pixelBuffer, noiseMap, time) {
+              let completed = true;
+              for (let y = HEIGHT - 1; y >= 0; y--) {
+                for (let x = 0; x < WIDTH; x++) {
+                  const offset = (Math.sin(noiseMap[y][x] * 10 + time / 10) * 10) | 0;
+                  const sourceY = y + offset;
+                  if (sourceY >= HEIGHT) {
+                    continue;
+                  }
+                  completed = false;
+                  const sourceIndex = (sourceY * WIDTH + x) * 4;
+                  const destIndex = (y * WIDTH + x) * 4;
+                  pixelBuffer[destIndex + 0] = pixelBuffer[sourceIndex + 0];
+                  pixelBuffer[destIndex + 1] = pixelBuffer[sourceIndex + 1];
+                  pixelBuffer[destIndex + 2] = pixelBuffer[sourceIndex + 2];
+                  pixelBuffer[destIndex + 3] = pixelBuffer[sourceIndex + 3];
+                }
+              }
+              if (completed) {
+                for (let i = 0; i < pixelBuffer.length; i += 4) {
+                  pixelBuffer[i + 0] = 0;
+                  pixelBuffer[i + 1] = 0;
+                  pixelBuffer[i + 2] = 0;
+                  pixelBuffer[i + 3] = 255;
+                }
+              }
+              ctx.putImageData(parrot, 0, 0);
+            }
+
+            // Example usage
+            const noiseMap = generateNoiseMap();
+            let time = 0;
+
+            function update() {
+              applyMeltEffect(pixelBuffer, noiseMap, time);
+              time++;
+              requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+          });
+        </script>
+    </body>
+</html>

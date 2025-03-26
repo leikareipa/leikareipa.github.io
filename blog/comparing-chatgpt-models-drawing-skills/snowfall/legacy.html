@@ -1,0 +1,69 @@
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Snowfall</title>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+              background-color: black;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+  <body>
+      <canvas id="snowfall" width="400" height="400"></canvas>
+      <script>
+        const canvas = document.getElementById("snowfall");
+        const context = canvas.getContext("2d");
+
+        const snowflakes = [];
+        const groundLevel = canvas.height * 0.8;
+        const snowflakeColors = [
+            [255, 255, 255, 255], // white
+            [200, 200, 200, 255], // light gray
+            [150, 150, 150, 255], // gray
+        ];
+
+        // Generate snowflakes
+        for (let i = 0; i < 500; i++) {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            const size = Math.random() * 5 + 2;
+            const color = snowflakeColors[Math.floor(Math.random() * snowflakeColors.length)];
+
+            snowflakes.push({ x, y, size, color });
+        }
+
+        // Draw snowflakes
+        function drawSnowflakes() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for (const snowflake of snowflakes) {
+                context.fillStyle = `rgba(${snowflake.color[0]}, ${snowflake.color[1]}, ${snowflake.color[2]}, ${snowflake.color[3]})`;
+                context.beginPath();
+                context.arc(snowflake.x, snowflake.y, snowflake.size, 0, 2 * Math.PI);
+                context.fill();
+            }
+        }
+
+        // Animate snowflakes
+        function animateSnowflakes() {
+            for (const snowflake of snowflakes) {
+                snowflake.y += 1;
+                if (snowflake.y > groundLevel) {
+                    snowflake.y = 0;
+                }
+            }
+            drawSnowflakes();
+            requestAnimationFrame(animateSnowflakes);
+        }
+
+        animateSnowflakes();
+      </script>
+  </body>
+</html>

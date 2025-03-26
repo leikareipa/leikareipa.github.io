@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chessboard with Visual Effect</title>
+    <style>
+        html, body, canvas {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script src="../parrot.js"></script>
+    <script>
+      do_with_parrot((parrot)=>{
+        /**
+         * Applies a Voronoi-Based Dynamic Image Distortion effect to a pixel buffer.
+         *
+         * @param {Uint8ClampedArray} pixelBuffer - The RGBA pixel buffer of the image.
+         * @param {number} width - The width of the image.
+         * @param {number} height - The height of the image.
+         * @param {number} cellCount - Number of Voronoi cells.
+         * @param {number} distortionMagnitude - Maximum pixels to displace.
+         * @param {number} time - A time parameter to animate cell movement.
+         * @returns {Uint8ClampedArray} - The distorted pixel buffer.
+         */
+         function applyVoronoiDistortion(pixelBuffer, width, height, cellCount = 50, distortionMagnitude = 20, time = 0) {
+            // Initialize cell centers with random positions and movement directions
+            if (!applyVoronoiDistortion.cells) {
+                applyVoronoiDistortion.cells = [];
+                for (let i = 0; i < cellCount; i++) {
+                    applyVoronoiDistortion.cells.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        // Random movement vectors
+                        dx: (Math.random() - 0.5) * 2,
+                        dy: (Math.random() - 0.5) * 2,
+                    });
+                }
+            }
+
+            const cells = applyVoronoiDistortion.cells;
+
+            // Update cell positions for dynamic movement
+            for (let cell of cells) {
+                cell.x += cell.dx;
+                cell.y += cell.dy;
+
+                // Bounce cells within image boundaries
+                if (cell.x < 0 || cell.x > width) cell.dx *= -1;
+                if (cell.y < 0 || cell.y > height) cell.dy *= -1;
+            }
+
+            // Create an output buffer
+            const outputBuffer = new Uint8ClampedArray(pixelBuffer.length);
+
+            // Helper function to clamp values
+            function clamp(value, min, max) {
+                return Math.max(min, Math.min(max, value));
+            }
+
+            // Iterate over each pixel
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    let nearestCell = null;
+                    let minDistSq = Infinity;
+
+                    // Find the nearest cell
+                    for (let cell of cells) {
+                        let dx = x - cell.x;
+                        let dy = y - cell.y;
+                        let distSq = dx * dx + dy * dy;
+                        if (distSq < minDistSq) {
+                            minDistSq = distSq;
+                            nearestCell = cell;
+                        }
+                    }
+
+                    // Calculate displacement based on distance to cell center
+                    let distance = Math.sqrt(minDistSq);
+                    let angle = Math.atan2(y - nearestCell.y, x - nearestCell.x);
+                    let displacement = Math.sin((distance / 50) - (time * 0.05)) * distortionMagnitude;
+
+                    // New coordinates after displacement
+                    let newX = clamp(Math.round(x + Math.cos(angle) * displacement), 0, width - 1);
+                    let newY = clamp(Math.round(y + Math.sin(angle) * displacement), 0, height - 1);
+
+                    // Get source pixel
+                    let srcIndex = (newY * width + newX) * 4;
+                    let dstIndex = (y * width + x) * 4;
+
+                    // Copy RGBA values
+                    outputBuffer[dstIndex] = pixelBuffer[srcIndex];     // R
+                    outputBuffer[dstIndex + 1] = pixelBuffer[srcIndex + 1]; // G
+                    outputBuffer[dstIndex + 2] = pixelBuffer[srcIndex + 2]; // B
+                    outputBuffer[dstIndex + 3] = pixelBuffer[srcIndex + 3]; // A
+                }
+            }
+
+            return outputBuffer;
+        }
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let originalBuffer = imageData.data;
+
+        function animate(time) {
+            // Apply the distortion effect
+            let distortedBuffer = applyVoronoiDistortion(originalBuffer, canvas.width, canvas.height, 100, 5, time/100);
+            
+            // Put the distorted data back to canvas
+            let distortedImageData = new ImageData(distortedBuffer, canvas.width, canvas.height);
+            ctx.putImageData(distortedImageData, 0, 0);
+            
+            requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+      });
+    </script>
+</body>
+</html>
+

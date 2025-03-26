@@ -1,0 +1,93 @@
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Snowfall</title>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+  <body>
+      <canvas id="snowfall" width="400" height="400"></canvas>
+      <script>
+        const canvas = document.getElementById("snowfall");
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#000'; // Set the background color to black
+
+        // Create the snowflake particle object
+        const snowflake = {
+          x: 0,
+          y: 0,
+          speed: 1,
+          size: 3,
+          color: '#fff',
+        };
+
+        // Create an array to store the snowflake particles
+        const snowflakes = [];
+
+        // Create the ground object
+        const ground = {
+          y: canvas.height - 50,
+          thickness: 50,
+          color: '#fff',
+        };
+
+        // Draw the ground on the canvas
+        function drawGround() {
+          ctx.fillStyle = ground.color;
+          ctx.fillRect(0, ground.y, canvas.width, ground.thickness);
+        }
+
+        // Add a new snowflake to the array every second
+        setInterval(() => {
+          snowflakes.push({
+            ...snowflake,
+            x: Math.random() * canvas.width,
+            y: -snowflake.size,
+          });
+        }, 100);
+
+        // Draw the snowflakes on the canvas
+        function drawSnowflakes() {
+          // Clear the canvas
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // Draw the ground
+          drawGround();
+
+          // Draw the snowflakes
+          snowflakes.forEach((flake) => {
+            // Move the snowflake down
+            flake.y += flake.speed;
+
+            // Stick the snowflake to the ground if it reaches the bottom
+            if (flake.y + flake.size >= ground.y) {
+              flake.y = ground.y - flake.size;
+            }
+
+            // Draw the snowflake on the canvas
+            ctx.fillStyle = flake.color;
+            ctx.beginPath();
+            ctx.arc(flake.x, flake.y, flake.size, 0, 2 * Math.PI);
+            ctx.fill();
+          });
+
+          // Request the next frame
+          requestAnimationFrame(drawSnowflakes);
+        }
+
+        // Start the animation
+        drawSnowflakes();
+    </script>
+  </body>
+</html>

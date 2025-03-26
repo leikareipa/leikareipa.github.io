@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+    </head>
+    <body>
+        <template id="dokki">
+
+            <ths-feedback></ths-feedback>
+
+            <dokki-document>
+                    
+                <dokki-header>
+                    <template #caption>
+                        Running Google Lighthouse on old Wayback Machine captures
+                    </template>
+                    <template #widgets>
+                        <blog-post-widgets/>
+                    </template>
+                </dokki-header>
+            
+                <dokki-topics>
+
+                    <post-date date="21 January 2022"></post-date>
+
+                    <dokki-topic title="Running Google Lighthouse on old Wayback Machine captures" id="introduction">
+
+                        <p>
+                            How do decades-old web pages look to a modern quality assurance tool? Let's see.
+                        </p>
+
+                        <p>
+                            <a href="https://developers.google.com/web/tools/lighthouse">Google Lighthouse</a> is a
+                            tool for measuring the basic quality compliance of a given web page. The tool audits pages
+                            in an automated way and outputs scores along various metrics intended to reflect the
+                            quality of the page.
+                        </p>
+
+                        <p>
+                            The <a href="https://archive.org/web/">Wayback Machine</a> is an archival service that allows
+                            you to view old versions of websites. Their archives go back all the way to the 1990s &ndash;
+                            see for instance <a href="https://web.archive.org/web/19961112163115/http://www.nvidia.com/">
+                            this punny NVIDIA website from 1996</a>.
+                        </p>
+                        
+                        <dokki-subtopic title="Setup" id="test-setup">
+
+                            <p>
+                                I chose to run a Lighthouse audit on these five pages:
+                            </p>
+
+                            <ul>
+                                <li>microsoft.com</li>
+                                <li>nngroup.com</li>
+                                <li>nvidia.com</li>
+                                <li>usa.gov</li>
+                                <li>yahoo.com</li>
+                            </ul>
+
+                            <p>
+                                They were selected for being notable in their respective fields and for having
+                                existed on the web from the 1990s to the time of writing.
+                            </p>
+
+                            <p>
+                                Archived copies of the pages from the following five eras were included:
+                            </p>
+
+                            <dokki-table headerless>
+                                <table>
+                                    <tr>
+                                        <th>Era</th>
+                                        <th>Archival date sampled</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Late 1990s</td>
+                                        <td>~1999</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mid 2000s</td>
+                                        <td>~2006</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Early 2010s</td>
+                                        <td>~2011</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Late 2020s</td>
+                                        <td>~2018</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Early 2020s</td>
+                                        <td>2022</td>
+                                    </tr>
+                                </table>
+                            </dokki-table>
+
+                            <p>
+                                For each page, I fetched a corresponding archived copy from the Wayback Machine (using the
+                                <em>fw_</em> flag; see
+                                <a href="https://en.wikipedia.org/wiki/Help:Using_the_Wayback_Machine#URL_formats">
+                                Using the Wayback Machine: URL formats</a>), ran a Lighthouse audit on it via the Chrome
+                                (version 97) developer tools, and wrote down the scores.
+                            </p>
+
+                            <p>
+                                Below is a brief recap of the Lighthouse metrics for which scores were recorded.
+                            </p>
+
+                            <dokki-table headerless>
+                                <table>
+                                    <tr>
+                                        <th>Metric</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Accessibility</td>
+                                        <td>
+                                            According to Lighthouse, "[t]hese checks highlight opportunities to improve the accessibility of your web app."
+                                            They include things like checking whether the site has a &lt;title&gt; element, whether links have discernible names, etc.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Best practices</td>
+                                        <td>
+                                            These include testing for the use of vulnerable JavaScript libraries, whether images are displayed in their natural aspect ratios, etc.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Search engine<br>optimization</td>
+                                        <td>
+                                            According to Lighthouse, "[t]hese checks ensure that your page is following basic search engine optimization advice."
+                                            This metric includes checking whether the site has a meta description, whether its links are crawlable, etc.
+                                        </td>
+                                    </tr>
+                                </table>
+                            </dokki-table>
+
+                            <p>
+                                Although commonly included in Lighthouse reports, I chose to leave out the <strong>performance</strong>
+                                metric, since it was in large part just measuring the variable performance of the Wayback Machine servers.
+                            </p>
+
+                        </dokki-subtopic>
+                        
+                        <dokki-subtopic title="Results" id="results">
+
+                            <p>
+                                The overall results are presented in the table below. They represent averages of
+                                <a href="#reference-data">the individual results</a> and so are an estimate of the quality
+                                of websites from a given era as seen by Lighthouse today.
+                            </p>
+
+                            <dokki-table headerless>
+                                <template #caption>
+                                    Average score of each Lighthouse metric by year of capture in the Wayback Machine
+                                </template>
+                                <template #table>
+                                    <tr>
+                                        <th>Era</th>
+                                        <th>Accessibility</th>
+                                        <th>Best practices</th>
+                                        <th>Search engine opt.</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Late 1990s</td>
+                                        <td>68</td>
+                                        <td>91</td>
+                                        <td>80</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mid 2000s</td>
+                                        <td>73</td>
+                                        <td>83</td>
+                                        <td>76</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Early 2010s</td>
+                                        <td>76</td>
+                                        <td>85</td>
+                                        <td>76</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Late 2020s</td>
+                                        <td>84</td>
+                                        <td>84</td>
+                                        <td>79</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Early 2020s</td>
+                                        <td>87</td>
+                                        <td>88</td>
+                                        <td>93</td>
+                                    </tr>
+                                </template>
+                            </dokki-table>
+
+                            <p>
+                                The most notable trend is an apparent linear increase in the accessibility score over the years.
+                                In the <i>late 1990s</i> group, the most common accessibility issues were missing <i>lang</i> attributes,
+                                links without discernible names, and images without an <i>alt</i> attribute. The most common
+                                issues in the <i>early 2020s</i> group were low contrast ratio and non-sequentially-ordered heading elements.
+                                The latter group was almost void of the issues of the former group, and vice versa.
+                            </p>
+
+                            <p>
+                                The scores for best practices don't indicate a clear trend. Virtually the only
+                                issue in the <i>late 1990s</i> group was a missing <i>DOCTYPE</i> declaration, which was reported for all
+                                of the sites. The <i>late 2010s</i>  group's most common issues were browser errors logged into the console
+                                (possibly a side-effect of the Wayback Machine system) and the use of vulnerable JavaScript libraries
+                                (their vulnerabilities known with modern hindsight and probably not widely known
+                                at the time). In practical words, ignoring the noise in the results, the scores for best practices
+                                look to be potentially unchanged across the sampled time.
+                            </p>
+
+                            <p>
+                                There seems to be an uptick in search engine optimization scores on captures newer than
+                                2018. My initial hunch was that this might coincide with increasing adoption of Lighthouse itself
+                                (which appears to have been introduced around 2017), but if that were the case then I'd
+                                expect a similar trend across the other scores, and it's not immediately obvious that there
+                                is. But in any case,
+                                <a href="https://trends.google.com/trends/explore?date=all&geo=US&q=seo">
+                                Google's search trends</a> show elevated interest in "seo" starting in early 2020, which
+                                at least co-occurs with these results.
+                            </p>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Conclusion" id="parting-words">
+
+                            <p>
+                                Overall, the results are mildly interesting. Among the sites sampled, accessibility
+                                could be interpreted to have improved over time, and there seemed to have been a recent
+                                uptake of SEO focus. The results did have a fair bit of noise too, so ideally a larger
+                                sample of pages &ndash; with better filtering-out of artifacts generated by the
+                                Wayback Machine &ndash; would be tested to get a better feel for any patterns.
+                            </p>
+
+                            <p>
+                                For more serious insight into the evolution of quality compliance on the web, you'd probably
+                                also prefer to derive custom scores instead of relying only on the ones generated by Lighthouse.
+                                The tool is after all a reflection of modern thinking and won't be entirely compatible
+                                with that of 20 years ago. A page from 1999 may check all the boxes for accessibility for
+                                its time but have a poor score with today's expectations, e.g. due to the evolution of
+                                end-user devices.
+                            </p>
+
+                        </dokki-subtopic>
+
+                    </dokki-topic>
+
+                    <dokki-topic title="Appendix: Full dataset" id="reference-data">
+
+                        <p>
+                            For reference, here are the individual Lighthouse scores for each of the sampled pages
+                            from each of the eras (see <a href="#test-setup">Setup</a>).
+                        </p>
+
+                        <dokki-table headerless>
+                            <template #caption>
+                                The full dataset
+                            </template>
+                            <template #table>
+                                <tr>
+                                    <th>Era</th>
+                                    <th>Scores</th>
+                                </tr>
+                                <tr>
+                                    <td>Late 1990s</td>
+                                    <td class="with-inline-table">
+                                        <dokki-table>
+                                            <template #table>
+                                                <tr>
+                                                    <th>Page</th>
+                                                    <th>Accessibility</th>
+                                                    <th>Best practices</th>
+                                                    <th>Search engine opt.</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>microsoft.com</td>
+                                                    <td>78</td>
+                                                    <td>87</td>
+                                                    <td>90</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nngroup.com</td>
+                                                    <td>92</td>
+                                                    <td>93</td>
+                                                    <td>89</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nvidia.com</td>
+                                                    <td>55</td>
+                                                    <td>93</td>
+                                                    <td>70</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>usa.gov</td>
+                                                    <td>61</td>
+                                                    <td>87</td>
+                                                    <td>80</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>yahoo.com</td>
+                                                    <td>52</td>
+                                                    <td>93</td>
+                                                    <td>70</td>
+                                                </tr>
+                                            </template>
+                                        </dokki-table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mid 2000s</td>
+                                    <td class="with-inline-table">
+                                        <dokki-table>
+                                            <template #table>
+                                                <tr>
+                                                    <th>Page</th>
+                                                    <th>Accessibility</th>
+                                                    <th>Best practices</th>
+                                                    <th>Search engine opt.</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>microsoft.com</td>
+                                                    <td>82</td>
+                                                    <td>93</td>
+                                                    <td>90</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nngroup.com</td>
+                                                    <td>87</td>
+                                                    <td>93</td>
+                                                    <td>80</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nvidia.com</td>
+                                                    <td>46</td>
+                                                    <td>67</td>
+                                                    <td>60</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>usa.gov</td>
+                                                    <td>96</td>
+                                                    <td>87</td>
+                                                    <td>80</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>yahoo.com</td>
+                                                    <td>52</td>
+                                                    <td>73</td>
+                                                    <td>70</td>
+                                                </tr>
+                                            </template>
+                                        </dokki-table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Early 2010s</td>
+                                    <td class="with-inline-table">
+                                        <dokki-table>
+                                            <template #table>
+                                                <tr>
+                                                    <th>Page</th>
+                                                    <th>Accessibility</th>
+                                                    <th>Best practices</th>
+                                                    <th>Search engine opt.</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>microsoft.com</td>
+                                                    <td>61</td>
+                                                    <td>73</td>
+                                                    <td>70</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nngroup.com</td>
+                                                    <td>87</td>
+                                                    <td>93</td>
+                                                    <td>82</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nvidia.com</td>
+                                                    <td>66</td>
+                                                    <td>93</td>
+                                                    <td>78</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>usa.gov</td>
+                                                    <td>87</td>
+                                                    <td>87</td>
+                                                    <td>91</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>yahoo.com</td>
+                                                    <td>81</td>
+                                                    <td>80</td>
+                                                    <td>60</td>
+                                                </tr>
+                                            </template>
+                                        </dokki-table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Late 2020s</td>
+                                    <td class="with-inline-table">
+                                        <dokki-table>
+                                            <template #table>
+                                                <tr>
+                                                    <th>Page</th>
+                                                    <th>Accessibility</th>
+                                                    <th>Best practices</th>
+                                                    <th>Search engine opt.</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>microsoft.com</td>
+                                                    <td>91</td>
+                                                    <td>80</td>
+                                                    <td>73</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nngroup.com</td>
+                                                    <td>82</td>
+                                                    <td>87</td>
+                                                    <td>90</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nvidia.com</td>
+                                                    <td>66</td>
+                                                    <td>87</td>
+                                                    <td>78</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>usa.gov</td>
+                                                    <td>100</td>
+                                                    <td>87</td>
+                                                    <td>82</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>yahoo.com</td>
+                                                    <td>79</td>
+                                                    <td>80</td>
+                                                    <td>73</td>
+                                                </tr>
+                                            </template>
+                                        </dokki-table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Early 2020s</td>
+                                    <td class="with-inline-table">
+                                        <dokki-table>
+                                            <template #table>
+                                                <tr>
+                                                    <th>Page</th>
+                                                    <th>Accessibility</th>
+                                                    <th>Best practices</th>
+                                                    <th>Search engine opt.</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>microsoft.com</td>
+                                                    <td>99</td>
+                                                    <td>87</td>
+                                                    <td>82</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nngroup.com</td>
+                                                    <td>84</td>
+                                                    <td>93</td>
+                                                    <td>100</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>nvidia.com</td>
+                                                    <td>96</td>
+                                                    <td>80</td>
+                                                    <td>91</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>usa.gov</td>
+                                                    <td>100</td>
+                                                    <td>93</td>
+                                                    <td>100</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>yahoo.com</td>
+                                                    <td>55</td>
+                                                    <td>87</td>
+                                                    <td>91</td>
+                                                </tr>
+                                            </template>
+                                        </dokki-table>
+                                    </td>
+                                </tr>
+                            </template>
+                        </dokki-table>
+
+                    </dokki-topic>
+
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

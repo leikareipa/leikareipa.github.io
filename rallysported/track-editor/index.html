@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>RallySportED</title>
+
+        <meta name="description" content="Track editor for the classic DOS game Rally-Sport">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="shortcut icon" href="./assets/img/favicon.ico">
+        <link rel="stylesheet" type="text/css" href="index.css">
+
+        <script defer src="./assets/js/rngon.js"></script>
+        <script defer src="./assets/js/jszip.min.js"></script>
+        <script defer src="./assets/js/FileSaver.min.js"></script>
+        <script defer src="./js-dos/js-dos.js"></script>
+        <script defer src="./rallysported.js"></script>
+    </head>
+    <body ondrop="window.drop_handler(event);" ondragover="event.preventDefault();">
+        
+        <section id="html">
+
+            <div id="button-bar">
+
+                <div id="project-name"
+                    class="label"
+                    onclick="Rsed.$currentProject.rename();">
+
+                    <span class="label"></span>
+
+                </div>
+
+                <div class="button"
+                    onclick="Rsed.$currentProject.download_as_zip();">
+
+                    Download
+
+                </div>
+
+                <div class="button data"
+                    onclick="Rsed.ui.dom.html.toggle_data_dropdown();"
+                    style="position: relative;">
+
+                    Data
+
+                    <div id="data-dropdown">
+                    </div>
+
+                </div>
+
+                <div class="button nonclick">
+
+                    <div class="button nested"
+                        onclick="Rsed.player.play_with_opponent();"
+                    >
+
+                        Play
+
+                    </div>
+
+                    <div class="button nested"
+                        onclick="Rsed.player.play_test_drive();"
+                    >
+
+                        Test
+
+                    </div>
+
+                    <div class="button nested"
+                        onclick="Rsed.player.record_ai_lap();"
+                    >
+
+                        Record
+
+                    </div>
+
+                </div>
+
+                <div class="button"
+                    onclick="window.open('https://github.com/leikareipa/rallysported/blob/master/track-editor/users-guide.md', '_blank', 'noopener');">
+
+                    Help
+
+                </div>
+            </div>
+
+            <div id="prop-dropdown" class="dropdown-menu">
+
+        </section>
+
+        <div id="popup-notifications-container"></div>
+
+        <div id="jsdos-container">
+
+            <canvas id="jsdos-canvas" width="320" height="200"></canvas>
+
+            <div id="stop-jsbox-button"
+                class="button stop"
+                style="display: none;"
+                title="Exit the player"
+                v-if="Rsed.player.is_playing()"
+                onclick="Rsed.player.stop();">
+
+                &times;
+                
+            </div>
+
+        </div>
+
+        <section id="canvas">
+
+             <canvas id="base-render" class="pixelated"></canvas>
+             
+             <canvas id="ui-overlay" class="pixelated"></canvas>
+
+        </section>
+
+        <div id="blue-screen">
+
+            <h1>
+                <i class="fas fa-fw fa-otter"></i>
+                That failed... Maybe reloading would fix it?
+            </h1>
+
+            <div id="error-description">
+                Undefined error
+            </div>
+
+        </div>
+    
+    </body>
+</html>

@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chessboard with Visual Effect</title>
+    <style>
+        html, body, canvas {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script src="../parrot.js"></script>
+    <script>
+      do_with_parrot((parrot)=>{
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const imageData = ctx.createImageData(width, height);
+        const pixelBuffer = parrot.data;
+        const centerX = (width / 2);
+        const centerY = (height / 2);
+        const radius = 200;
+        const swirlAmount = 10;
+        const tempBuffer = new Uint8ClampedArray(pixelBuffer.length);
+
+        let swirlAngle = 0;
+        let direction = 1;
+
+        function animate() {
+          swirlAngle += 0.00003;
+
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              let dx = x - centerX;
+              let dy = y - centerY;
+              let distance = Math.sqrt(dx * dx + dy * dy);
+              if (distance < radius) {
+                let angle = Math.atan2(dy, dx);
+                let swirlFactor = 1 - (distance / radius);
+                swirlFactor = Math.pow(swirlFactor, 2);
+                angle += swirlFactor * swirlAmount * swirlAngle;
+                let newX = centerX + distance * Math.cos(angle);
+                let newY = centerY + distance * Math.sin(angle);
+                let x1 = Math.floor(newX);
+                let x2 = Math.ceil(newX);
+                let y1 = Math.floor(newY);
+                let y2 = Math.ceil(newY);
+                let srcIndex1 = (y1 * width + x1) * 4;
+                let srcIndex2 = (y1 * width + x2) * 4;
+                let srcIndex3 = (y2 * width + x1) * 4;
+                let srcIndex4 = (y2 * width + x2) * 4;
+                let destIndex = (y * width + x) * 4;
+                for (let i = 0; i < 4; i++) {
+                  let color1 = pixelBuffer[srcIndex1 + i];
+                  let color2 = pixelBuffer[srcIndex2 + i];
+                  let color3 = pixelBuffer[srcIndex3 + i];
+                  let color4 = pixelBuffer[srcIndex4 + i];
+                  let weightX = newX - x1;
+                  let weightY = newY - y1;
+                  let colorX1 = color1 + (color2 - color1) * weightX;
+                  let colorX2 = color3 + (color4 - color3) * weightX;
+                  let color = colorX1 + (colorX2 - colorX1) * weightY;
+                  tempBuffer[destIndex + i] = color;
+                }
+              } else {
+                let srcIndex = (y * width + x) * 4;
+                let destIndex = srcIndex;
+                for (let i = 0; i < 4; i++) {
+                  tempBuffer[destIndex + i] = pixelBuffer[srcIndex + i];
+                }
+              }
+            }
+          }
+
+          for (let i = 0; i < pixelBuffer.length; i++) {
+            pixelBuffer[i] = tempBuffer[i];
+          }
+
+          imageData.data.set(parrot.data);
+          ctx.putImageData(imageData, 0, 0);
+
+          requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+      });
+    </script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <template id="dokki">
+
+            <ths-feedback></ths-feedback>
+            
+            <dokki-document>
+                    
+                <dokki-header>
+                    <template #caption>
+                        A path-tracing pixel shader in a JavaScript software renderer
+                    </template>
+                    <template #widgets>
+                        <blog-post-widgets/>
+                    </template>
+                </dokki-header>
+            
+                <dokki-topics>
+
+                    <post-date date="24 January 2022"></post-date>
+
+                    <dokki-topic title="A path-tracing pixel shader in a JavaScript software renderer" id="introduction">
+
+                        <p>
+                            I recently implemented a path-tracing pixel shader in a JavaScript software renderer
+                            (<a href="https://github.com/leikareipa/retro-ngon">the retro n-gon renderer</a>).
+                            In this post, I'll go over the gist of how it works.
+                        </p>
+
+                        <p>
+                            If you want to skip the talk and go straight to the demonstration, you can jump to
+                            the <a href="#outcome">Outcome</a> section. This section also includes a link to
+                            the full source code.
+                        </p>
+
+                        <p>
+                            The rest of the post is structured like this: first, we'll go over the tools that were
+                            used to create the shader &ndash; namely, the software renderer itself and an auxiliary
+                            path-tracing library; then, we'll have a brief look at how the renderer works; and finally,
+                            we'll implement the path-tracing shader and test it out.
+                        </p>
+
+                        <dokki-subtopic title="Tools" id="tools">
+
+                            <dokki-item id="the-retro-ngon-renderer">
+                                The retro n-gon renderer
+                            </dokki-item>
+
+                            <p>
+                                This retro-vibed renderer of <i>n</i>-sided convex polygons was among my first
+                                projects in JavaScript when I transitioned from C++ desktop apps to web development.
+                                I initially wrote it for replicating the pseudo-3D rendering in an old game for the purposes of a track editor, then eventually forked
+                                it into becoming a standalone project. You can learn more about this renderer on
+                                <a href="https://github.com/leikareipa/retro-ngon">its GitHub page</a>.
+                            </p>
+
+                            <dokki-image headerless no-border-rounding width="1920" height="890" src="./img/rngon.webp">
+                                <template #caption>
+                                    A rendering made with the retro n-gon renderer (assets: Tomb Raider / Core Design)
+                                </template>
+                            </dokki-image>
+
+                            <dokki-item id="the-path-tracing-library">
+                                The path-tracing library
+                            </dokki-item>
+
+                            <p>
+                                To avoid reinventing the wheel on tracing rays, we'll use this basic path-tracing
+                                library called <i>Wray</i> that I wrote a few years back. It supports the usual features of
+                                vanilla path tracers, including
+                                <a href="https://en.wikipedia.org/wiki/Bounding_volume_hierarchy">BVH</a>, multi-threading,
+                                and tone-mapping &ndash; though we'll only need its BVH generation and ray&ndash;BVH
+                                tracing facilities. You can learn more about Wray on <a href="https://github.com/leikareipa/wray">
+                                its GitHub page</a>.
+                            </p>
+
+                            <dokki-image headerless no-border-rounding width="1280" height="781" src="./img/wray.png">
+                                <template #caption>
+                                    Wray rendering a mesh (model: Jotero GbR)
+                                </template>
+                            </dokki-image>
+                        
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Rendering a polygon" id="rendering-a-polygon">
+
+                            <p>
+                                Before getting on with the path tracing, it may be helpful to know a little about how the
+                                retro n-gon renderer works.
+                            </p>
+
+                            <p>
+                                The renderer has a fairly straightforward API: the <em>Rngon.render()</em>
+                                function takes as an argument the canvas element to be rendered onto, as well as
+                                the array of <em>Rngon.mesh</em> objects to be rendered, each of which contains some number of
+                                polygons (instances of <em>Rngon.ngon</em>, "ngon" standing for <i>n</i>-sided polygon)
+                                of which each is made up of some number of vertices (<em>Rngon.vertex</em>).
+                            </p>
+
+                            <dokki-code
+                                headerless
+                                syntax="JavaScript"
+                                code='
+                                <canvas id="canvas" style="width: 300px; height: 300px;"></canvas>
+                                <script>
+                                    const triangle = Rngon.ngon([
+                                        Rngon.vertex(-1, -1, 3),
+                                        Rngon.vertex( 1, -1, 3),
+                                        Rngon.vertex( 1,  1, 3)], {
+                                            color: Rngon.color(0, 150, 255)
+                                        }
+                                    );
+
+                                    const mesh = Rngon.mesh([triangle]);
+
+                                    Rngon.render("canvas", [mesh]);
+                                </script>'
+                            ></dokki-code>
+
+                            <p>
+                                The above code is meant to render a blue triangle. You can expand the widget below to see how
+                                your browser renders it.
+                            </p>
+
+                            <dokki-iframe
+                                height="200px"
+                                srcdoc="
+                                    <style scoped>
+                                        body {
+                                            height: 100vh;
+                                            overflow: hidden;
+                                            padding: 0;
+                                            margin: 0;
+                                            text-align: center;
+                                        }
+                                    </style>
+                                    <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
+                                    <script src='//leikareipa.github.io/retro-ngon/distributable/rngon.global.js'></script>
+                                    <script>
+                                        const triangle = Rngon.ngon([
+                                            Rngon.vertex(-1, -1, 3),
+                                            Rngon.vertex( 1, -1, 3),
+                                            Rngon.vertex( 1,  1, 3)], {
+                                                color: Rngon.color(0, 150, 255)
+                                        });
+                                        
+                                        const mesh = Rngon.mesh([triangle]);
+
+                                        Rngon.render({
+                                            target: 'canvas',
+                                            meshes: [mesh]
+                                        });
+                                    </script>
+                                "
+                                >
+                                    <template #caption>
+                                        Render the triangle
+                                    </template>
+                            </dokki-iframe>
+
+                            <p>
+                                In addition to basic fixed-pipeline rendering, the retro n-gon renderer supports custom
+                                pixel and vertex shaders. They're written as regular JavaScript functions, receive as
+                                arguments certain metadata about the state of the renderer, and modify those data to
+                                effect the shading.
+                            </p>
+
+                            <p>
+                                For example, the vertex shader below modifies the vertex colors of each polygon to create
+                                an animated pulsing effect:
+                            </p>
+
+                            <dokki-code
+                                headerless
+                                syntax="JavaScript"
+                            >
+
+                                <template #code>
+                                    <pre>
+                                        // A vertex shader that receives a given polygon of the scene as an argument.
+                                        // The renderer calls this function for each n-gon following the lighting and
+                                        // world-space transformation steps but prior to screen-space transformation
+                                        // and rasterization. The function can modify the properties of the polygon to
+                                        // influence how it gets rendered.
+                                        function vs_pulse(ngon) {
+                                            const timer = (performance.now() / 900);
+                                            const pulseMult = Math.abs(Math.sin(timer));
+
+                                            for (let v = 0; v < ngon.vertices.length; v++) {
+                                                ngon.vertices[v].shade = Math.max(0.5, (pulseMult * v));
+                                            }
+                                        }
+
+                                        // Run the renderer in a loop matching the device's display refresh rate.
+                                        (function render() {
+                                            Rngon.render("canvas", [mesh], {
+                                                vertexShader: vs_pulse,
+                                            });
+
+                                            window.requestAnimationFrame(render);
+                                        })();
+                                    </pre>
+                                </template>
+                        
+                            </dokki-code>
+
+                            <p>
+                                You can expand the widget below to see how your browser renders the above code.
+                                The output should be a blue triangle with a pulse of light emanating from the top corner.
+                            </p>
+
+                            <dokki-iframe
+                                height="200px"
+                                srcdoc="
+                                    <style scoped>
+                                        body {
+                                            height: 100vh;
+                                            overflow: hidden;
+                                            padding: 0;
+                                            margin: 0;
+                                            text-align: center;
+                                        }
+                                    </style>
+                                    <canvas id='canvas' style='width: 200px; height: 200px;'></canvas>
+                                    <script src='//leikareipa.github.io/retro-ngon/distributable/rngon.global.js'></script>
+                                    <script>
+                                        const triangle = Rngon.ngon([
+                                            Rngon.vertex(-1, -1, 3),
+                                            Rngon.vertex( 1, -1, 3),
+                                            Rngon.vertex( 1,  1, 3)], {
+                                                color: Rngon.color(0, 150, 255)
+                                        });
+                                        
+                                        const mesh = Rngon.mesh([triangle]);
+
+                                        (function render()
+                                        {
+                                            Rngon.render({
+                                                target: 'canvas',
+                                                meshes: [mesh],
+                                                pipeline: {
+                                                    vertexShader: (ngon)=>
+                                                    {
+                                                        const timer = (performance.now() / 900);
+                                                        const pulseMult = Math.abs(Math.sin(timer));
+
+                                                        for (let v = 0; v < ngon.vertices.length; v++) {
+                                                            ngon.vertices[v].shade = Math.max(0.5, (pulseMult * v));
+                                                        }
+                                                    }
+                                                },
+                                            });
+
+                                            window.requestAnimationFrame(render);
+                                        })();
+                                    </script>
+                                "
+                                >
+                                    <template #caption>
+                                        Render the vertex-shaded triangle
+                                    </template>
+                            </dokki-iframe>
+                            
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Implementing the path-tracing shader" id="implementing-the-path-tracing-shader">
+
+                            <p>
+                                With the simple ingredients of rendering polygons and applying shaders to them (and assuming
+                                some prior knowledge about path tracing), we're ready to build a path-tracing shader.
+                            </p>
+
+                            <p>
+                                Typically in path tracing, you cast rays from a given camera
+                                position through pixels on an imaginary view plane and out into the polygonal scene, then
+                                record the light arriving from that ray backwards onto the corresponding pixel on the view plane,
+                                ending up with a path-traced image of the scene.
+                            </p>
+
+                            <p>
+                                However, here, instead of starting with an empty view plane, we start with an image produced
+                                of the scene by the retro n-gon renderer's fixed-pipeline rasterizer (which basically
+                                is a first pass of ray tracing, finding which polygons are in front of which pixels), then
+                                apply the path-tracing shader as a post-process. In other words, the shader creates a lightmap
+                                representing the scene's global illumination, then overlays it on the original image,
+                                darkening some pixels and lightening others.
+                            </p>
+
+                            <p>
+                                Due to the way the retro n-gon renderer works, we'll need to implement the path-tracing shader
+                                as two separate shaders: a vertex shader to construct a world-space mesh of the scene, and a
+                                pixel shader to compute the global illumination lightmap and apply it to the original
+                                image.
+                            </p>
+
+                            <dokki-item>The vertex shader</dokki-item>
+
+                            <p>
+                                The vertex shader is used to reconstruct a world-space representation of the scene, in which
+                                individual meshes have been composited into the space such that their polygons
+                                have been translated from object coordinates into world coordinates and any mesh rotations
+                                have been applied. This is the version of the scene that the retro n-gon renderer
+                                will eventually rasterize, but prior to any such viewport clipping, screen-space transformation
+                                or the like that deforms polygon geometry or removes some parts of the scene altogether. Once
+                                polygons are removed or deformed, we can no longer properly trace rays in the scene,
+                                so we'd like to have the scene's full mesh available for tracing.
+                            </p>
+
+                            <p>
+                                With the retro n-gon renderer, the only way to access polygons' world-space data is
+                                with a vertex shader, as the renderer passes each world-space polygon into the vertex
+                                shader prior to applying the further polygonal transformations. So by
+                                adding a vertex shader that simply copies each input polygon into an array, we can
+                                reconstruct a world-space mesh of the scene.
+                            </p>
+                            
+                            <p>
+                                The following vertex shader does the job (since we're going to be using Wray for the
+                                path tracing, we'll also convert polygon data into Wray's format):
+                            </p>
+
+                            <dokki-code
+                                headerless
+                                syntax="JavaScript"
+                            >
+
+                                <template #code>
+                                    <pre>
+                                        // The array into which we'll place the world-space polygons.
+                                        const worldSpaceMesh = [];
+
+                                        // A vertex shader that copies world-space polygons into an array.
+                                        function vs_copy_ngons(ngon)
+                                        {
+                                            // Convert the vertices into Wray's format.
+                                            const wrayVertices = ngon.vertices.map(v=>(
+                                                Wray.vertex(Wray.vector3(v.x, v.y, v.z)))
+                                            );
+                                            
+                                            // Convert the material into Wray's format (for simplicity, we'll
+                                            // assume that all surfaces are Lambertian).
+                                            const wrayMaterial = Wray.material.lambertian(
+                                                Wray.color_rgb(
+                                                    ngon.material.color.unitRange.red,
+                                                    ngon.material.color.unitRange.green,
+                                                    ngon.material.color.unitRange.blue,
+                                                )
+                                            );
+
+                                            worldSpaceMesh.push(
+                                                Wray.triangle(wrayVertices, wrayMaterial)
+                                            );
+                                        }
+                                    </pre>
+                                </template>
+                        
+                            </dokki-code>
+
+                            <p>
+                                If we now render one frame of the scene using the above vertex shader, our world-space
+                                mesh array will be populated with the world-space versions of the scene's polygons:
+                            </p>
+
+                            <dokki-code
+                                headerless
+                                syntax="JavaScript"
+                            >
+
+                                <template #code>
+                                    <pre>
+                                        Rngon.render("canvas", [mesh], {vertexShader: vs_copy_ngons});
+
+                                        // The 'worldSpaceMesh' array now contains the scene's world-space
+                                        // mesh, so we can build its BVH in preparation for path tracing.
+                                        const sceneBVH = Wray.bvh(worldSpaceMesh);
+                                    </pre>
+                                </template>
+                        
+                            </dokki-code>
+                        
+                        </dokki-item>
+
+                        <dokki-item>The pixel shader</dokki-item>
+
+                            <p>
+                                The pixel shader does the actual tracing of rays inside the world-space mesh that was
+                                generated by the vertex shader.
+                            </p>
+                            
+                            <p>
+                                The retro n-gon renderer sends metadata to each pixel shader about the pixels in the
+                                rasterized image, including &ndash; usefully for our purposes &ndash; the XYZ world-space
+                                coordinates of a point on a polygon's surface corresponding to a given pixel in the
+                                image.
+                            </p>
+                            
+                            <p>
+                                For example, if the rendered image contains a blue triangle, we'll know for any of its
+                                pixels the XYZ world coordinates of the corresponding point on the polygon's surface.
+                                Then with that knowledge, we can place a ray at those coordinates and cast it out into the
+                                world-space scene to sample the global illumination arriving at that point on the
+                                polygon, and so derive the amount of shading we should apply to its blue pixel in
+                                the image.
+                            </p>
+                            
+                            <p>
+                                The pixel shader simply loops over all of the pixels in the original image,
+                                casting out rays from each of their corresponding polygon surfaces, generating
+                                a global illumination lightmap that is then used to shade the original image:
+                            </p>
+
+                            <dokki-code
+                                headerless
+                                syntax="JavaScript"
+                            >
+
+                                <template #code>
+                                    <pre>
+                                        // A pixel shader that traces rays in the world-space scene to generate
+                                        // a global illumination lightmap for shading the rendered image (whose
+                                        // pixels are in 'pixelBuffer').
+                                        function ps_path_trace({renderWidth, renderHeight, fragmentBuffer, pixelBuffer, ngonCache})
+                                        {
+                                            // Loop through each pixel in the rendered image.
+                                            for (let i = 0; i < (renderWidth * renderHeight); i++)
+                                            {
+                                                // Find which polygon was rasterized onto this pixel.
+                                                const thisFragment = fragmentBuffer[i];
+                                                const thisNgon = (thisFragment? ngonCache[thisFragment.ngonIdx] : null);
+
+                                                // If no polygon was rasterized here.
+                                                if (!thisNgon) {
+                                                    continue;
+                                                }
+
+                                                // The fragment buffer gives us the corresponding XYZ world-space
+                                                // coordinates of the current pixel.
+                                                const initialRayOrigin = Wray.vector3(
+                                                    thisFragment.worldX,
+                                                    thisFragment.worldY,
+                                                    thisFragment.worldZ
+                                                );
+
+                                                // For simplicity, we'll assume flat-shaded polygons and so don't
+                                                // need to care about interpolating normals.
+                                                const normalAtRayOrigin = Wray.vector3(
+                                                    thisNgon.normal.x,
+                                                    thisNgon.normal.y,
+                                                    thisNgon.normal.z
+                                                );
+
+                                                if (!lightmap[i]) {
+                                                    lightmap[i] = {
+                                                        red: 0,
+                                                        green: 0,
+                                                        blue: 0,
+                                                        numSamples: 0,
+                                                    };
+                                                }
+
+                                                const accumulation = lightmap[i];
+
+                                                // Cast n rays from the current surface out into the scene to
+                                                // sample the global illumination.
+                                                for (let samples = 0; samples < 1; samples++)
+                                                {
+                                                    const light = (
+                                                        Wray.ray(initialRayOrigin)
+                                                        .step(Wray.epsilon, normalAtRayOrigin)
+                                                        .aimAt.random_in_hemisphere_cosine_weighted(normalAtRayOrigin)
+                                                        .trace(sceneBVH)
+                                                    );
+
+                                                    accumulation.red += light.red;
+                                                    accumulation.green += light.green;
+                                                    accumulation.blue += light.blue;
+                                                    accumulation.numSamples++;
+                                                }
+
+                                                // Use the lightmap to shade the original image. Since path
+                                                // tracing is an iterative process, the more times we run this
+                                                // shader, the more accurate (less noisy) the lightmap will be.
+                                                const pixelIdx = (i * 4);
+                                                pixelBuffer[pixelIdx + 0] *= (accumulation.red / accumulation.numSamples);
+                                                pixelBuffer[pixelIdx + 1] *= (accumulation.green / accumulation.numSamples);
+                                                pixelBuffer[pixelIdx + 2] *= (accumulation.blue / accumulation.numSamples);
+                                            }
+                                        }
+                                    </pre>
+                                </template>
+                        
+                            </dokki-code>
+
+                        </dokki-subtopic>
+
+                        <dokki-subtopic title="Outcome" id="outcome">
+
+                            <p>
+                                You can view a sample of the path-tracing shader in action either on the retro n-gon renderer's
+                                <a href="https://leikareipa.github.io/retro-ngon/samples/?sample=path-tracing">
+                                samples page</a> or by expanding the embedded frame below. The source code to the full
+                                implementation of the sample &ndash; including the shader &ndash; is
+                                <a href="https://github.com/leikareipa/retro-ngon/tree/master/samples/path-tracing">
+                                available here</a>.
+                            </p>
+
+                            <dokki-iframe
+                                autofocus
+                                src="https://leikareipa.github.io/retro-ngon/samples/path-tracing/"
+                                height="600px">
+
+                                <template #caption>
+                                    Run a sample of the path-tracing shader
+                                </template>
+                                
+                            </dokki-iframe>
+
+                            <p>
+                                The sample will first show the scene (a simplified <a href="https://www.graphics.cornell.edu/online/box/">
+                                Cornell box</a>) without path tracing; you can then operate the controls at the
+                                bottom to enable it. As is typical with path tracing, you'll see that the image
+                                starts out very noisy and then gradually becomes smoother, taking longer
+                                and longer to halve the relative amount of noise. You can leave it rendering for
+                                a few minutes to get a reasonably smooth image (the rendering will pause if you
+                                hide the browser tab).
+                            </p>
+
+                            <p>
+                                There are some artifacts around intersecting polygon seams (e.g. along the bottom
+                                rims of the two boxes), but overall the thing works reasonably well. The scene is lit by
+                                an (invisible) sky dome modeling an overcast tint, the boxes casting
+                                shadows onto the floor and walls, and indirect light paths producing expected color
+                                bleed from the cyan and yellow walls onto the white boxes and floor.
+                            </p>
+
+                            <p>
+                                I purposefully chose a large light source (the entire sky dome) and removed some of
+                                the walls from the Cornell box to allow even more light in, since with smaller light
+                                sources and narrower apertures it takes a much longer time
+                                for the image to become noise-free. It's a common problem for vanilla path tracers,
+                                and this renderer in particular isn't performant enough for that kind of thing (as
+                                to be expected).
+                            </p>
+
+                        </dokki-subtopic>
+
+                    </dokki-topic>
+
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

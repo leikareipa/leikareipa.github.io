@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gource-like Visualization of GeoCities</title>
+<style>
+  canvas {
+    border: 1px solid black;
+  }
+</style>
+</head>
+<body>
+<canvas id="gourceCanvas" width="800" height="600"></canvas>
+<script>
+  const canvas = document.getElementById('gourceCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Function to draw a simple node representing a file or directory
+  function drawNode(x, y, text) {
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2, false);
+    ctx.fillStyle = 'green';
+    ctx.fill();
+    ctx.font = '10px Arial';
+    ctx.fillText(text, x + 10, y + 3);
+  }
+
+  // Function to draw a line connecting nodes (representing directory structure)
+  function drawLine(x1, y1, x2, y2) {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.strokeStyle = 'blue';
+    ctx.stroke();
+  }
+
+  // Recursive function to draw a tree structure
+  function drawTree(root, x, y, level) {
+    if (!root) return;
+
+    drawNode(x, y, root.name);
+    const childrenY = y + 50;
+    let childX = x - (root.children.length * 20) / 2;
+
+    for (const child of root.children) {
+      drawLine(x, y, childX, childrenY);
+      drawTree(child, childX, childrenY, level + 1);
+      childX += 40;
+    }
+  }
+
+  // Simulate a GeoCities directory structure
+  const geocitiesTree = {
+    name: 'GeoCities',
+    children: [
+      {
+        name: 'Community',
+        children: [
+          { name: 'Chat', children: [] },
+          { name: 'Forums', children: [] }
+        ],
+      },
+      {
+        name: 'Personal',
+        children: [
+          { name: 'Homepages', children: [] }
+        ],
+      },
+      {
+        name: 'Themes',
+        children: [
+          { name: 'SciFi', children: [] },
+          { name: 'Sports', children: [] }
+        ],
+      },
+    ],
+  };
+
+  // Draw the GeoCities directory tree
+  drawTree(geocitiesTree, canvas.width / 2, 20, 0);
+</script>
+</body>
+</html>

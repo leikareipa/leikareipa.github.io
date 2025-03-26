@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ray Tracer Output Simulation</title>
+</head>
+<body>
+    <canvas id="rayTracerCanvas" width="400" height="400"></canvas>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var canvas = document.getElementById('rayTracerCanvas');
+            var ctx = canvas.getContext('2d');
+
+            // Set the background
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the red sphere
+            ctx.fillStyle = 'red';
+            ctx.beginPath();
+            ctx.arc(200, 200, 50, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Draw the blue sphere with a "reflection"
+            ctx.fillStyle = 'blue';
+            ctx.beginPath();
+            ctx.arc(100, 200, 50, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Simplified reflection on the blue sphere
+            // This is a very basic representation and doesn't simulate actual ray tracing
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'; // Semi-transparent red
+            ctx.beginPath();
+            ctx.arc(90, 190, 20, 0, 2 * Math.PI);
+            ctx.fill();
+        });
+    </script>
+</body>
+</html>

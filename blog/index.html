@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="description" content="
+            Welcome to Tarpeeksi Hyvae Soft's blog! Here you'll find articles related to software
+            development as written by a life-long self-taught developer.
+        ">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="/blog/+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <link rel="stylesheet" href="/blog/+assets/blog.css">
+
+        <script type="module" src="/blog/+assets/blog-post-abstract.js"></script>
+
+        <style>
+            body
+            {
+                --dokkiCSS-navibar-item-padding-vertical: 0.5em !important;
+                --dokkiCSS-topic-vertical-padding: 1.85em !important;
+            }
+
+            b-stickies
+            {
+                margin-top: 1em;
+                display: inline-flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.5em;
+            }
+
+            b-stickies > a.sticky
+            {
+                border-bottom: 1px solid;
+                padding: 0.5em 0.65em;
+                text-decoration: none;
+                line-height: 1.45;
+                font-size: 90%;
+                background-color: var(--dokkiCSS-page-primary-fg-color) !important;
+                color: var(--dokkiCSS-page-primary-bg-color) !important;
+            }
+
+            body[data-dokki-theme="dark"] b-stickies > a.sticky
+            {
+                border-bottom: none;
+                box-shadow: none;
+                background-color: black;
+            }
+
+            .dokki-tag-filter
+            {
+                margin-top: var(--dokkiCSS-embedded-vertical-padding) !important;
+            }
+
+            .dokki-tag-filter .button::after
+            {
+                display: none;
+            }
+
+            .dokki-tag > .count
+            {
+                display: none !important;
+            }
+
+            .dokki-topics
+            {
+                padding-top: calc(1 * var(--dokkiCSS-topic-vertical-padding));
+                max-width: calc(var(--dokkiCSS-topics-container-max-width) + var(--dokkiCSS-side-panel-width)) !important;
+            }
+
+            .dokki-document .idx
+            {
+                display: none !important;
+            }
+
+            .dokki-topic.abstract.fake
+            {
+                box-shadow: none !important;
+            }
+
+            body[data-dokki-layout^="vertical"] .dokki-topic.abstract.fake:not(:last-child)
+            {
+                padding-bottom: 0 !important;
+            }
+
+            .dokki-topic.abstract .fields
+            {
+                margin-top: 0;
+            }
+
+            .dokki-topic.abstract .dokkiCSS-topic-title
+            {
+                margin-bottom: 0.5rem !important;
+            }
+
+            .dokki-topic.abstract .dokkiCSS-topic-title a
+            {
+                text-decoration: none !important;
+            }
+
+            .dokki-topics .dokki-tag-filter
+            {
+                margin-top: 0;
+                margin-bottom: var(--dokkiCSS-embedded-vertical-padding);
+            }
+
+            .dokki-toolbar
+            {
+                display: none;
+            }
+
+            body[data-dokki-layout="horizontal-wide"] .dokki-document
+            {
+                left: 50% !important;
+                max-width: 1300px !important;
+            }
+
+            body[data-dokki-layout="horizontal"] .dokki-document
+            {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            body[data-dokki-layout="horizontal"] .dokki-header,
+            body[data-dokki-layout="horizontal-narrow"] .dokki-header
+            {
+                padding-left: var(--dokkiCSS-topic-horizontal-padding) !important;
+                padding-right: var(--dokkiCSS-topic-horizontal-padding) !important;
+            }
+
+            body:not([data-dokki-layout^="vertical"]) .dokki-header
+            {
+                margin-bottom: 0 !important;
+            }
+
+            #introduction
+            {
+                padding: 0;
+                margin: var(--dokkiCSS-topic-vertical-padding) 0;
+            }
+
+            #introduction h1
+            {
+                display: none;
+            }
+
+            #introduction p
+            {
+                margin: 0;
+            }
+
+            body[data-dokki-layout^="vertical"] #introduction
+            {
+                width: calc(100% - 2 * var(--dokkiCSS-topic-horizontal-padding));
+                margin: var(--dokkiCSS-topic-vertical-padding) var(--dokkiCSS-topic-horizontal-padding);
+            }
+        </style>
+    </head>
+    <body>
+        <template id="dokki">
+
+            <dokki-document>
+
+                <dokki-header>
+                    
+                    <template #caption>
+                        Blog
+                    </template>
+                    
+                </dokki-header>
+
+                <dokki-topics>
+
+                    <dokki-topic dokki-ignore title="Introduction" inline-class="abstract dokki-ignore">
+                        <p>
+                            This is the blog of a veteran software developer with no background in
+                            commercial development. Expect the outside perspective. 
+                        </p>
+                        <b-stickies>
+                            <a class="sticky" href="/blog/testing-open-and-closed-llms-some-more/">
+                                <i class="fas fa-xs fa-thumbtack" style="transform: rotate(-45deg); margin-right: 0.5em;"></i>
+                                Testing open and closed LLMs some more
+                            </a>
+                            <a class="sticky" href="/blog/testing-visual-understanding-in-llms/">
+                                <i class="fas fa-xs fa-thumbtack" style="transform: rotate(-45deg); margin-right: 0.5em;"></i>
+                                Testing visual understanding in LLMs
+                            </a>
+                        </b-stickies>
+                    </dokki-topic>
+
+                    <blog-post-abstract
+                        date="8 March 2025"
+                        :tags="['ai']"
+                        title="QwQ-32B vs. QwQ-32B-Preview"
+                        brief="Nuff said, or is it?"
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="3 March 2025"
+                        :tags="['rendering']"
+                        title="Wrapping old graphics APIs"
+                        brief="
+                            It's been an interesting start to the year as I've been exploring something
+                            I haven't done before: writing wrappers for (retro) graphics APIs.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="30 December 2024"
+                        :tags="['rendering']"
+                        title="Playing around with the S3d rendering API"
+                        brief="
+                            This past Christmas week I've been playing around with S3's proprietary
+                            Win32 hardware rendering API, S3d. It's a lightweight layer for building
+                            3D applications for the (in)famous mid-1990s S3 ViRGE platform.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="17 December 2024"
+                        :tags="['ai']"
+                        title="Comparing quants of QwQ Preview in Ollama"
+                        brief="
+                            My previous coding tests showed a bell curve for the quants of QwQ Preview in
+                            Ollama, where Q4_K_M was more capable than the lower and higher quants. Let's
+                            do some more testing to see if the curve holds up.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="10 December 2024"
+                        :tags="['ai']"
+                        title="Looking back on speculation about the next version of GPT"
+                        brief="
+                            In Q1 2024, I speculated the next major version of GPT would be an agentic
+                            GPT-4 rather than GPT-5. That ended up being the case when o1 came out a
+                            few quarters later.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="4 December 2024"
+                        :tags="['ai']"
+                        title="Briefly evaluating QwQ Preview"
+                        brief="
+                            Alibaba has somewhat stunned the AI community by their releasing a relatively
+                            capable o1 competitor as an open model, mere months after the unveiling of o1.
+                            Let's briefly evaluate its coding chops.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="12 November 2024"
+                        :tags="['ai']"
+                        title="Comparing Qwen 2.5 and Qwen 2.5 Coder for programming"
+                        brief="
+                            As per my previous tests, Qwen 2.5 shows strong promise as a capable
+                            local LLM for programming. On top of that, a specifically coding-oriented
+                            version, Qwen 2.5 Coder, is available. How does the coder variant compare to the original?
+                            Here's a few tests using the 32-billion parameter versions of the two models.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="2 November 2024"
+                        :tags="['industry']"
+                        title="Recapping this year's developer job search"
+                        brief="
+                            The developer job search has been uninspiring this year as openings
+                            have remained at record lows. The key numbers for the year are 6%
+                            interview rate and 0% offer rate, for a developer with a few decades of
+                            background in programming and no relevant work experience.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="1 November 2024"
+                        :tags="['ai']"
+                        title="Evaluating Claude 3.5 Sonnet in retro assembly programming"
+                        brief="
+                            Earlier this year, I benchmarked a few LLMs in retro assembly coding, the results
+                            of which were expected to correlate with reasoning ability. How does the
+                            recently-released Claude 3.5 Sonnet do in those tests?
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="15 October 2024"
+                        :tags="['ai']"
+                        title="Superintelligence vs. taking it easy on UBI"
+                        brief="
+                            There's plenty of talk about AI putting people out of jobs.
+                            The discourse always ends up at UBI, where AI works to solve our problems
+                            and we get free money to pursue our dreams. The parallel is that this
+                            motivates the emergence of an AI superintelligence, which makes the UBI
+                            utopia an unlikely endgame.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="2 October 2024"
+                        :tags="['ai']"
+                        title="Briefly evaluating OpenAI o1"
+                        brief="
+                            OpenAI are taking their time bringing o1 to all usage tiers on their API,
+                            so for now I'll make do with testing it at random via the LMSYS chat.
+                            Here's a few basic graphics programming tests for the o1 Mini.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="27 September 2024"
+                        :tags="['ai']"
+                        title="The future of FOSS"
+                        brief="
+                            I've been releasing free software for a decade now, of which the last five
+                            years were dedicated full-time to FOSS. Has it paid off, and what's the
+                            future for this kind of thing?
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="25 September 2024"
+                        :tags="['ai']"
+                        title="Testing open and closed LLMs some more"
+                        brief="
+                            Nuff said.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="14 September 2024"
+                        :tags="['ai']"
+                        title="Hello OpenAI o1, goodbye developers"
+                        brief="
+                            How's that for toxic clickbait? Anyway, OpenAI has finally released
+                            a preview of their reasoning AI, the o1. Its performance in many ways
+                            looks to be a strong improvement over the various previous versions
+                            of GPT-4.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="18 July 2024"
+                        :tags="['ai']"
+                        title="AI outlook for 2024 so far"
+                        brief="
+                            The first half of 2024 is done, and along have come a number of new AI models.
+                            What else is up?
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="15 May 2024"
+                        :tags="['ai']"
+                        title="Testing visual understanding in LLMs"
+                        brief="
+                            A collection of visual tests and their results for various LLMs.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="13 May 2024"
+                        :tags="['ai']"
+                        title="Testing Anthropic's prompt generator"
+                        brief="
+                            Anthropic recently released an automated prompt generator for Claude that
+                            applies prompt engineering strategies to transform basic task descriptions
+                            into more effective prompts. Let's give it a try.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="9 May 2024"
+                        :tags="['ai']"
+                        title="The two new gpt2-chatbot drops on LMSYS Chatbot Arena"
+                        brief="
+                            The week prior, a mysterious entity named gpt2-chatbot appeared on LMSYS Chatbot
+                            Arena. This week, two new entities &ndash; im-a-good-gpt2-chatbot and
+                            im-also-a-good-gpt2-chatbot &ndash; have shown up. Let's give these new drops
+                            some graphics programming tests and speculate a bit on WTF their agenda is.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="29 April 2024"
+                        :tags="['ai']"
+                        title="Brief tests on the mysterious gpt2-chatbot on LMSYS Chatbot Arena"
+                        brief="
+                            Over the weekend, people noticed a new entry on LMSYS Chatbot Arena called gpt2-chatbot.
+                            Mysteriously titled, nobody seems to know whose LLM it is, just that it identifies itself
+                            as a derivative of GPT-4 and performs about on par. I ran a few benchmarks of my own to
+                            get a feel for what it's capable of.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="24 April 2024"
+                        :tags="['ai']"
+                        title="The human agent holding back AI"
+                        brief="
+                            I speculated in a previous blog post that humans performing agentic duties
+                            for the current crop of agentless LLMs are holding back their potential
+                            (post-AGI FTW). Here's an example of where this appears to be happening.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="11 April 2024"
+                        :tags="['ai']"
+                        title="Briefly evaluating the new GPT-4 Turbo"
+                        brief="
+                            OpenAI recently put out a new, 'majorly improved' version of GPT-4 Turbo.
+                            Let's test it against the previous version.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="25 March 2024"
+                        :tags="['ai']"
+                        title="Brief speculation about the next GPT"
+                        brief="
+                            The year is well underway and many eyes have turned toward the next iteration
+                            of GPT, whether it be called GPT-4.5, GPT-5, or something else.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="20 March 2024"
+                        :tags="['ai']"
+                        title="Does bad spelling increase LLM response quality?"
+                        brief="
+                            About a week ago some dude on Reddit posted about Claude 3 producing better
+                            answers when spelling mistakes were incorporated into the prompt. Let's see
+                            if that holds up.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="7 March 2024"
+                        :tags="['ai']"
+                        title="Claude 3's exceptional abilities at obscure languages"
+                        brief="
+                            Earlier this week, Anthropic launched Claude 3, its next-generation family
+                            of LLMs. The models have already made waves for their ability to trade blows
+                            with the previous state-of-the-art, GPT-4. One standout aspect of Claude 3
+                            is that it appears to be exceptionally good at reconstructing representations
+                            from uncommon data.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="4 March 2024"
+                        :tags="['ai']"
+                        title="Is GPT-4 AGI?"
+                        brief="
+                            The release by OpenAI of GPT-4 a year ago moved forward the possibility
+                            of achieving AGI, although people couldn't quite agree to what extent. Now,
+                            with Elon Musk suing OpenAI and the lawsuit revolving in part over these
+                            kinds of definitions, the question of the extent to which GPT-4 moves the
+                            needle toward AGI is again topical.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="4 March 2024"
+                        :tags="['ai']"
+                        title="LLM performance in retro assembly coding"
+                        brief="
+                            How well can the various publically-available LLMs assist you in retro
+                            assembly coding? Here's nine of them compared.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="26 February 2024"
+                        :tags="['ai']"
+                        title="Testing a medley of local LLMs for coding"
+                        brief="
+                            While the release of GPT-4 last year upgraded my expectations for LLMs,
+                            the recent release of Gemini Ultra has somewhat downgraded them. With
+                            that in mind, let's look at some of the smaller players' LLM offerings,
+                            and in particular some of the open models that're available to run locally.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="22 February 2024"
+                        :tags="['ai', 'gemini', 'gpt', 'javascript']"
+                        title="Gemini Advanced vs. GPT-3.5 in operating a GUI framework"
+                        brief="
+                            When it comes to coding, Gemini Advanced struggles to compete with
+                            GPT-4. Let's instead put it up against GPT-3.5 in a test I had GPT-4
+                            do a year ago; namely, operating a foreign JavaScript GUI framework.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="12 February 2024"
+                        :tags="['pcbi']"
+                        title="Lookback: PCbi, the 3D UI for PCem"
+                        brief="
+                            Remember PCbi, the 3D UI I wrote for PCem? Probably not, since it never
+                            really caught on and hasn't been available for many years. With that said,
+                            let's look back at the project.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="10 February 2024"
+                        :tags="['ai', 'gemini', 'gpt', 'assembly', 'javascript']"
+                        title="Gemini Advanced dealing with assembly code"
+                        brief="
+                            A while ago, I wrote a comparison of ChatGPT models dealing with assembly code.
+                            This time, let's look at how the assemblic realm gets on with the new Gemini
+                            Advanced.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="8 February 2024"
+                        :tags="['ai', 'gemini', 'gpt', 'javascript']"
+                        title="Comparing Gemini Advanced and GPT-4 in graphics programming"
+                        brief="
+                            Google's Gemini Advanced chatbot is fresh out of the oven. Let's see how it does
+                            against GPT-4 in some visual effects programming.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="November 24, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'javascript']"
+                        title="Comparing ChatGPT models' drawing skills, part 2"
+                        brief="
+                            OpenAI released the Turbo version of GPT-4 a short while back, so let's pit it
+                            against the original GPT-4 from Q1 2023 in some visual programming tasks.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="June 11, 2023"
+                        :tags="['ai', 'stable diffusion', 'art']"
+                        title="Playing around with painterly Stable Diffusion"
+                        brief="
+                            It's well known that Stable Diffusion is adept at imitating various artists' styles.
+                            You can also take advantage of this when generating realistic images.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="April 23, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'documentation']"
+                        title="In an AI future, what should end-user documentation look like?"
+                        brief="
+                            Wearing the hat of technical writer for my software projects, the day usually
+                            starts with an attempt to predict the needs of the target audience, then aligning
+                            the documentation along those parameters. But now that stronger AI is on the horizon,
+                            this approach is starting to feel old-fashioned. It produces static content that
+                            can't adapt to the reader's needs. An obvious way forward is to use AI to project
+                            the documentation into the user's frame of mind, i.e. having the user issue queries
+                            to the AI about the software and the AI transforming the underlying documentation
+                            accordingly.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="April 9, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'assembly', 'javascript']"
+                        title="ChatGPT dealing with assembly code"
+                        brief="
+                            About a year ago, in the time before ChatGPT, I wrote a blog post comparing the
+                            pixel-plotting performance of 386 assembly and JavaScript. This time, let's look
+                            at whether ChatGPT &ndash; with GPT-3.5 and GPT-4 &ndash; can improve on the performance
+                            of the code from that post.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="April 2, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'gui', 'javascript']"
+                        title="GPT-4 implementing Minesweeper using a GUI framework it hadn't seen before"
+                        brief="
+                            I've been casually working on a custom front-end framework &ndash; tentatively
+                            called w95 &ndash; for building apps in the style of Windows 95. The w95 framework
+                            isn't currently public nor would GPT-4 have prior knowledge about it. Still, I
+                            found that just by feeding it the GUI code of a single window built using the
+                            framework, the AI learns enough about the framework to compose new applications
+                            with it
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="March 31, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'javascript']"
+                        title="Comparing ChatGPT models' drawing skills"
+                        brief="
+                            Let's benchmark and compare the visual abilities of the various ChatGPT
+                            models by prompting them with rendering tasks and eyeballing the output.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="March 29, 2023"
+                        :tags="['ai', 'gpt', 'chatgpt', 'javascript', 'typescript']"
+                        title="Low-hanging code optimizing with GPT"
+                        brief="
+                            In this post, I'll feed GPT-3.5 and GPT-4 some not-so-thoroughly-optimized but
+                            performance-critical JavaScript code (my own open-source work) and see
+                            whether the AI can help me optimize it without too much work on my part.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="March 17, 2023"
+                        :tags="['w95', 'rendering', 'gui', 'javascript', 'retro']"
+                        title="Integrating DOSBox into a faux Windows 95 web shell"
+                        brief="
+                            In previous blog posts, I've talked about my casual side project to implement a
+                            Windows 95-lookalike front-end framework that lives inside a canvas element.
+                            This time, I'll outline the steps to integrating a DOSBox web client (js-dos)
+                            into the framework.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="March 12, 2023"
+                        :tags="['w95', 'rendering', 'gui', 'javascript', 'retro']"
+                        title="Metarendering in a faux Windows 95 web shell"
+                        brief="
+                            In a previous blog post, I introduced a time-waster project of mine to reproduce
+                            the salient aspects of the Windows 95 UI  inside a HTML5 &lt;canvas&gt; and to derive
+                            from that a front-end framework for building web apps in that likeness. The
+                            project is coming along here and there. I recently worked on its metarendering,
+                            which I'll talk briefly about in this post.
+                        "
+                    ></blog-post-abstract>
+                    
+                    <blog-post-abstract
+                        date="February 21, 2023"
+                        :tags="['c++', 'gaming', 'mangohud']"
+                        title="Adding workaround support for unsupported GPUs in MangoHud"
+                        brief="
+                            In a previous post, I went over the steps required to add support for
+                            older Radeons in MangoHud. But those steps are specific to AMD GPUs &ndash;
+                            what if you have an unsupported non-AMD GPU, like Intel's integrated graphics?
+                            In this post, I'll describe a patch to MangoHud in the vein of the previous
+                            one, this time covering unsupported GPUs in general.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="February 11, 2023"
+                        :tags="['c++', 'gaming', 'mangohud']"
+                        title="Adding support for older Radeons in MangoHud"
+                        brief="
+                            MangoHud is a popular Linux on-screen display for Vulkan and OpenGL that by default
+                            doesn't support older, pre-amdgpu Radeon GPUs. Luckily, we can easily implement a
+                            workaround fix for them.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="January 31, 2023"
+                        :tags="['hardware']"
+                        title="Benefits of upgrading a Ryzen 5600X to a 5900X"
+                        brief="
+                            Competition between AMD and Intel has been pushing down CPU prices. I hopped on
+                            the bandwagon by swapping my Ryzen 5 5600X for a Ryzen 9 5900X. I'll take a
+                            moment in this post to talk about the benefits (and non-benefits) of the upgrade
+                            in some of my workflows.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="January 1, 2023"
+                        :tags="['recruiting', 'ai', 'gpt', 'chatgpt']"
+                        title="Exploring the applicant&ndash;HR dynamic with ChatGPT"
+                        brief="
+                            ChatGPT is an advanced AI that can convincingly approximate the responses of a
+                            human to various contexts. In this post, we'll look to see whether we can learn
+                            something new about the patterns underlying the applicant&ndash;HR dynamic that
+                            a developer comes across when applying for work, by experimentally varying the
+                            inputs in a controlled environment to a stand-in HR, ChatGPT.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="December 28, 2022"
+                        :tags="['retro','gaming']"
+                        title="Can Wine replace Windows as a platform for gaming with retro graphics cards?"
+                        brief="
+                            I have a collection of retro graphics cards from the late 1990s and early 2000s and was
+                            wondering, would Wine on Linux run games of that era well on these things? Could it
+                            be an alternative to a period-correct retro OS, maybe even smooth out some
+                            compatibility issues? To find out, I tested a bunch of the cards on a fresh
+                            installation of Ubuntu MATE 20.04 with kernel 5.15.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="December 25, 2022"
+                        :tags="['electron','javascript']"
+                        title="Messing around with Electron"
+                        brief="
+                            I had reason recently to convert one of my software from a full-stack web app into a
+                            desktop application. Normally, I'd use C++ with Qt for building the desktop stuff, but
+                            didn't want to rewrite this JavaScript codebase. Instead, I was able to use Electron
+                            to easily glue the app's server and client together into a desktop-runnable bundle.
+                            In this post, I'll blurt out a few words about the experience, which was my first time
+                            with Electron.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="September 28, 2022"
+                        :tags="['C++', 'inter-process communication', 'vcs']"
+                        title="Capturing DOSBox's frame buffer via shared memory"
+                        brief="
+                            VCS is a free program I wrote for doing high-quality video capture with Datapath's
+                            VisionRGB capture devices, aimed particularly at capturing retro PCs etc. For
+                            debugging purposes, I needed a convenient source of period-correct images to capture,
+                            so I implemented DOSBox capturing, where VCS reads from a shared memory buffer where
+                            DOSBox streams its output. This blog post describes that implementation in general
+                            outlines.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="August 25, 2022"
+                        :tags="['w95', 'user interface', 'front-end framework', 'retro']"
+                        title="The unexpectedly useful useless thing"
+                        brief="I've been spending time lately on what was supposed to be an intentionally useless
+                               project. Turns out it's far less useless than intended: it's been giving me a 
+                               deep dive into some of the underlying mechanics of modern front-end frameworks."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="July 23, 2022"
+                        :tags="['Video streaming', 'linux']"
+                        title="Brief look at the state of video streaming on Linux compared to Windows"
+                        brief="Over the past year or so, I've been accumulating subscriptions to video streaming
+                               services. Though all of them provide a good selection of content, using
+                               them on my desktop Linux PC has felt like a bit of a waste due to their low video
+                               quality on that platform. To get a better feel for the Linux streaming quality
+                               landscape, I ran some tests on a few PC platforms."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="July 18, 2022"
+                        :tags="['Historical', 'rendering', 'simulation']"
+                        title="How I wrote a cloud simulator/renderer"
+                        brief="About a decade ago, I wrote a desktop app for simulating the atmospheric formation of
+                               water clouds and rendering them into fairly realistic images. It was an interesting
+                               project, crossing the fields of physics, chemistry, and optics, among others. In this
+                               post, I'll describe a brief overview of the project's implementation &ndash; to the
+                               extent that I can remember."
+                    ></blog-post-abstract>
+                    
+                    <blog-post-abstract
+                        date="June 21, 2022"
+                        :tags="['JavaScript','rendering']"
+                        title="Implementing a paletted API for <canvas>"
+                        brief="Palettes were used liberally in the earlier days of computing but aren't too common
+                            nowadays. But you'll come across them if you fancy retro computing. I'd previously
+                            written a retro-themed 3D renderer for <canvas> and now wanted to add support for
+                            paletted rendering. So I wrote a drop-in replacement interface for <canvas> that
+                            provides a paletted API/UX for direct pixel manipulation. The rest of this post
+                            describes the implementation in brief terms."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="June 7, 2022"
+                        :tags="['Documentation','JavaScript','Vue','webpack']"
+                        title="Integrating end-user-oriented documentation into Vue SFC files"
+                        brief="The single-file component (SFC) is a preferred pattern in Vue development, in
+                            which a UI component's template, styling and logic are all defined in a single
+                            file. The pattern also allows the inclusion of custom data, such as documentation.
+                            This post describes one way to integrate Markdown-formatted long-form documentation
+                            &ndash; introductory articles, tutorials, and the like &ndash; into SFC files."
+                    ></blog-post-abstract>
+                    
+                    <blog-post-abstract
+                        date="February 28, 2022"
+                        :tags="['C++', 'Python', 'documentation', 'Doxygen']"
+                        title="Improving the styling of Doxygen-generated docs"
+                        brief="In this post, I'll briefly discuss two different ways of improving the styling
+                            of Doxygen docs: first, by modifying the generated HTML; and second, by generating
+                            your own HTML from Doxygen's XML output."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="February 20, 2022"
+                        :tags="['JavaScript', 'coding style', 'benchmark']"
+                        title="A few different ways of asserting in JavaScript"
+                        brief="Asserting is a staple of defensive programming, consisting of a run-time check
+                            of an operating condition followed by a noisy error if the condition isn't met.
+                            In this post, I'll present and evaluate a few different ways of asserting in
+                            JavaScript, with code samples and benchmark results."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="February 16, 2022"
+                        :tags="['C', 'rendering', 'retro']"
+                        title="Creating a unifying C89 interface for legacy 3D rendering APIs"
+                        brief="The 1990s saw a proliferation of 3D accelerator cards on the home computing
+                            market. Along with this rush of products came a medley of 3D rendering APIs,
+                            as manufacturers explored the new possibilities and looked to advantage their
+                            own hardware."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="February 4, 2022"
+                        :tags="['JavaScript', 'coding style']"
+                        title="JavaScript: Avoiding try/catch repetition with an action system"
+                        brief="Try/catch blocks are a common method of error-checking, but they also
+                            add a fair bit of verbosity to the code. In this post, I'll describe one
+                            method I've used to cut down on their clutteriness."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="February 2, 2022"
+                        :tags="['C', 'C++', 'benchmark', 'retro']"
+                        title="Comparing retro C/C++ compilers' performance"
+                        brief="What's the fastest C/C++ compiler for your retro DOS and Win32 projects?
+                            To find out, I've compiled three C/C++ language benchmarks using a variety
+                            of DOS and Win32 compilers, then measured the executables' run-time performance
+                            on a bunch of platforms ranging from rather old to fairly modern. The rest of
+                            this post describes the results."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="January 24, 2022"
+                        :tags="['JavaScript', 'rendering']"
+                        title="A path-tracing pixel shader in a JavaScript software renderer"
+                        brief="I recently implemented a path-tracing pixel shader in a JavaScript software renderer.
+                               In this post, I'll go over the gist of how it works."
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="January 21, 2022"
+                        :tags="['standards']"
+                        title="Running Google Lighthouse on old Wayback Machine captures"
+                        brief="How do decades-old web pages look to a modern quality assurance tool?"
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="January 7, 2022"
+                        :tags="['JavaScript', 'assembly', 'benchmark']"
+                        title="Comparing pixel-plotting performance in JavaScript and 386 assembly"
+                        brief="Something that's always intrigued me is the ability to write directly into video memory.
+                               In this post, we'll look at whether direct-to-VRAM IO with assembly is faster than writing
+                               into a canvas element with JavaScript."
+                    ></blog-post-abstract>
+
+                </dokki-topics>
+
+            </dokki-document>
+
+        </template>
+    </body>
+</html>

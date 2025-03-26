@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>First-person camera - Render sample - Retro n-gon renderer</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="../sample-base.css">
+        <style>
+            body
+            {
+                background-color: #6e6e6e;
+            }
+        </style>
+    </head>
+    <body id="sample-container">
+        <div class="content">
+            
+            <iframe id="render-target">
+            </iframe>
+
+            <div class="infoboxes-container additional">
+                <div class="infobox refresh-rate">
+                    <div class="adjust left" onclick="change_rate(-1);"></div>
+                    <div class="content" style="width: 10rem;">
+                        <div class="title">Target refresh rate</div>
+                        <div class="value">60 Hz</div>
+                    </div>
+                    <div class="adjust right" onclick="change_rate(1);"></div>
+                </div>
+            </div>
+            
+        </div>
+
+        <script>
+            parent.USAGE = `
+                Click to capture mouse, ESDF & QA to move
+            `;
+
+            const refreshRates = [12, 24, 25, 30, 36, 40, 50, 60, 72, 100, 120, 144];
+            let rateIdx = refreshRates.indexOf(60);
+
+            window.REFRESH_RATE = refreshRates[rateIdx];
+
+            function change_rate(direction = 1)
+            {
+                rateIdx = Math.max(0, Math.min((refreshRates.length - 1), (rateIdx + direction)));
+                window.REFRESH_RATE = refreshRates[rateIdx];
+
+                document.querySelector(".infobox.refresh-rate .value").innerHTML = `${window.REFRESH_RATE} Hz`;
+
+                return;
+            }
+
+            const renderer = (new URLSearchParams(window.location.search).get("renderer") || "dev");
+            const renderTarget = document.getElementById("render-target");
+            renderTarget.src = `../sample-base.html?sample=framerate-limiter&renderer=${renderer}`;
+        </script>
+    </body>
+</html>

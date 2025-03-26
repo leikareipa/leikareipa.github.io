@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>RallySportED / Key remapper</title>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="./index.css">
+        <script defer src="./FileSaver.min.js"></script>
+    </head>
+    <body>
+        <h1 id="title">
+            RallySportED's key remapper
+        </h1>
+        <div id="file-eater" ondrop="drop_handler(event)" ondragover="event.preventDefault()">
+            Drop your
+            <div class="filename">
+                RALLYE.EXE
+            </div>
+            here!
+        </div>
+        <div id="controls">
+            <div class="container">
+                <div class="control-setter">
+                    <button onclick="query_key(event)">Throttle</button>
+                    <label></label>
+                    <reset-default></reset-default>
+                </div>
+                <div class="control-setter">
+                    <button onclick="query_key(event)">Brake</button>
+                    <label></label>
+                    <reset-default></reset-default>
+                </div>
+                <div class="control-setter">
+                    <button onclick="query_key(event)">Left</button>
+                    <label></label>
+                    <reset-default></reset-default>
+                </div>
+                <div class="control-setter">
+                    <button onclick="query_key(event)">Right</button>
+                    <label></label>
+                    <reset-default></reset-default>
+                </div>
+            </div>
+            <button id="save" onclick="save_keys()">
+                Save
+            </button>
+        </div>
+        <div id="query-tarp">
+            Press a key
+        </div>
+
+        <script>
+            if ((new URLSearchParams(window.location.search)).has("w95")) {
+                document.getElementById("title").remove();
+            }
+
+            const tarpEl = document.getElementById("query-tarp");
+
+            // The keys supported by this remapper.
+            //
+            // 'keyCode' = the KeyboardEvent.code corresponding to the key.
+            // 'scanCode' = the DOS scan code corresponding to the key.
+            const keys = [
+                {keyCode: "ArrowLeft",  scanCode: 0x4b},
+                {keyCode: "ArrowRight", scanCode: 0x4d},
+                {keyCode: "ArrowUp",    scanCode: 0x48},
+                {keyCode: "ArrowDown",  scanCode: 0x50},
+
+                {keyCode: "Comma",        scanCode: 0x33},
+                {keyCode: "Period",       scanCode: 0x34},
+                {keyCode: "Slash",        scanCode: 0x35},
+                {keyCode: "Semicolon",    scanCode: 0x27},
+                {keyCode: "Quote",        scanCode: 0x28},
+                {keyCode: "Backslash",    scanCode: 0x2b},
+                {keyCode: "BracketLeft",  scanCode: 0x1a},
+                {keyCode: "BracketRight", scanCode: 0x1b},
+
+                {keyCode: "Digit0", scanCode: 0xb},
+                {keyCode: "Digit1", scanCode: 0x2},
+                {keyCode: "Digit2", scanCode: 0x3},
+                {keyCode: "Digit3", scanCode: 0x4},
+                {keyCode: "Digit4", scanCode: 0x5},
+                {keyCode: "Digit5", scanCode: 0x6},
+                {keyCode: "Digit6", scanCode: 0x7},
+                {keyCode: "Digit7", scanCode: 0x8},
+                {keyCode: "Digit8", scanCode: 0x9},
+                {keyCode: "Digit9", scanCode: 0xa},
+
+                {keyCode: "KeyA", scanCode: 0x1e},
+                {keyCode: "KeyB", scanCode: 0x30},
+                {keyCode: "KeyC", scanCode: 0x2e},
+                {keyCode: "KeyD", scanCode: 0x20},
+                {keyCode: "KeyE", scanCode: 0x12},
+                {keyCode: "KeyF", scanCode: 0x21},
+                {keyCode: "KeyG", scanCode: 0x22},
+                {keyCode: "KeyH", scanCode: 0x23},
+                {keyCode: "KeyI", scanCode: 0x17},
+                {keyCode: "KeyJ", scanCode: 0x24},
+                {keyCode: "KeyK", scanCode: 0x25},
+                {keyCode: "KeyL", scanCode: 0x26},
+                {keyCode: "KeyM", scanCode: 0x32},
+                {keyCode: "KeyN", scanCode: 0x31},
+                {keyCode: "KeyO", scanCode: 0x18},
+                {keyCode: "KeyP", scanCode: 0x19},
+                {keyCode: "KeyQ", scanCode: 0x10},
+                {keyCode: "KeyR", scanCode: 0x13},
+                {keyCode: "KeyS", scanCode: 0x1f},
+                {keyCode: "KeyT", scanCode: 0x14},
+                {keyCode: "KeyU", scanCode: 0x16},
+                {keyCode: "KeyV", scanCode: 0x2f},
+                {keyCode: "KeyW", scanCode: 0x11},
+                {keyCode: "KeyX", scanCode: 0x2d},
+                {keyCode: "KeyY", scanCode: 0x15},
+                {keyCode: "KeyZ", scanCode: 0x2c},
+            ];
+
+            let targetButton = undefined;
+            let rallyeExeData = undefined;
+
+            function query_key(event)
+            {
+                targetButton = event.target;
+                tarpEl.classList.add("visible");
+                document.activeElement.blur();
+                tarpEl.textContent = "Press a key for " + event.target.textContent
+            }
+
+            function save_keys()
+            {
+                // Byte offsets in RALLYE.EXE (demo version) where the various keyboard
+                // controls are stored.
+                const byteOffsets = {
+                    "Throttle": 3663,
+                    "Left": 3674,
+                    "Right": 3685,
+                    "Brake": 3718,
+                };
+
+                const setterEls = (
+                    Array.from(document.querySelectorAll("#controls > .container > .control-setter"))
+                    .filter(el=>el.querySelector("label").dataset.code)
+                );
+
+                for (const setter of setterEls) {
+                    const actionName = setter.querySelector("button").textContent;
+                    const keyCode = setter.querySelector("label").dataset.code;
+                    const scanCode = keys.find(k=>k.keyCode == keyCode)?.scanCode;
+
+                    console.assert(byteOffsets.hasOwnProperty(actionName));
+                    rallyeExeData[byteOffsets[actionName]] = scanCode;
+                }
+
+                saveAs(new Blob([rallyeExeData]), "RALLYE.EXE");
+            }
+
+            function assign_key(setterEl, key, code)
+            {
+                console.assert(setterEl instanceof HTMLElement);
+                console.assert(typeof key === "string");
+                console.assert(typeof code === "string");
+
+                const labelEl = setterEl.querySelector("label");
+                console.assert(labelEl instanceof HTMLLabelElement);
+                labelEl.innerHTML = event.key;
+                labelEl.dataset.code = event.code;
+
+                const resetEl = setterEl.querySelector("reset-default");
+                console.assert(resetEl instanceof HTMLElement);
+                resetEl.onclick = function()
+                {
+                    labelEl.innerHTML = "";
+                    delete labelEl.dataset.code;
+                }
+            }
+
+            // Assumes the user has just dropped in their RALLYE.EXE.
+            async function drop_handler(event)
+            {
+                event.preventDefault();
+
+                const rallyeExe = Array.from(event.dataTransfer.items, (item)=>item.getAsFile())?.[0];
+
+                if (
+                    !rallyeExe ||
+                    (rallyeExe.size !== 133452)
+                ){
+                    console.log("Unsupported file.");
+                    return;
+                }
+                
+                rallyeExeData = new Uint8ClampedArray(await rallyeExe.arrayBuffer());
+                document.body.querySelector("#file-eater").remove();
+                document.body.querySelector("#controls").classList.add("visible");
+            }
+
+            window.addEventListener("keydown", (event)=>{
+                event.preventDefault();
+
+                if (!targetButton) {
+                    return;
+                }
+
+                if (event.key != "Escape") {
+                    if (!keys.find(key=>key.keyCode === event.code)) {
+                        console.warn("Unsupported key", event.code);
+                        return;
+                    }
+
+                    assign_key(targetButton.parentElement, event.key, event.code);
+                }
+
+                tarpEl.classList.remove("visible");
+                targetButton = undefined;
+            });
+        </script>
+    </body>
+</html>

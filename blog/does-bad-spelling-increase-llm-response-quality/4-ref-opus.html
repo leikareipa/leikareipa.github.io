@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>1990s Ray Tracer Output</title>
+</head>
+<body>
+  <canvas id="canvas" width="400" height="300"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Draw background
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw blue sphere
+    const blueGradient = ctx.createRadialGradient(100, 150, 0, 100, 150, 80);
+    blueGradient.addColorStop(0, 'white');
+    blueGradient.addColorStop(1, 'blue');
+    ctx.fillStyle = blueGradient;
+    ctx.beginPath();
+    ctx.arc(100, 150, 80, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // Draw red sphere
+    const redGradient = ctx.createRadialGradient(250, 150, 0, 250, 150, 100);
+    redGradient.addColorStop(0, 'white');
+    redGradient.addColorStop(1, 'red');
+    ctx.fillStyle = redGradient;
+    ctx.beginPath();
+    ctx.arc(250, 150, 100, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // Draw reflection of red sphere on blue sphere
+    const reflectionGradient = ctx.createRadialGradient(140, 150, 0, 140, 150, 20);
+    reflectionGradient.addColorStop(0, 'rgba(255, 0, 0, 0.5)');
+    reflectionGradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+    ctx.fillStyle = reflectionGradient;
+    ctx.beginPath();
+    ctx.arc(140, 150, 20, 0, 2 * Math.PI);
+    ctx.fill();
+  </script>
+</body>
+</html>

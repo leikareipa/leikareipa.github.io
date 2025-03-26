@@ -1,0 +1,98 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="800" height="400"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+
+          function drawChessboard(buffer, width, height) {
+          const tileSize = Math.floor(Math.min(width, height) / 8);
+          for (let y = 0; y < height; y++) {
+              for (let x = 0; x < width; x++) {
+                  let tileX = Math.floor(x / tileSize);
+                  let tileY = Math.floor(y / tileSize);
+                  let isBlack = (tileX + tileY) % 2 === 1;
+                  let color = isBlack ? 0 : 255; // Black or white
+
+                  let index = (y * width + x) * 4;
+                  buffer[index] = color;     // Red
+                  buffer[index + 1] = color; // Green
+                  buffer[index + 2] = color; // Blue
+                  buffer[index + 3] = 255;   // Alpha (opaque)
+              }
+          }
+      }
+
+      function mollweideProjection(buffer, width, height) {
+          const pi = Math.PI;
+          const twoPi = 2 * pi;
+          const mollweideRatio = 2 * Math.sqrt(2) / pi;
+
+          let outputBuffer = new Uint8ClampedArray(width * height * 4);
+
+          for (let y = 0; y < height; y++) {
+              for (let x = 0; x < width; x++) {
+                  let longitude = (x / width - 0.5) * twoPi;
+                  let latitude = (0.5 - y / height) * pi;
+
+                  let theta = latitude;
+                  let delta = Infinity;
+                  while (Math.abs(delta) > 0.0000001) {
+                      delta = (theta + Math.sin(theta) - pi * Math.sin(latitude)) / (1 + Math.cos(theta));
+                      theta -= delta;
+                  }
+
+                  let projectedX = width * (0.5 + longitude * Math.cos(theta / 2) / twoPi);
+                  let projectedY = height * (0.5 - mollweideRatio * Math.sin(theta / 2) / 2);
+
+                  let srcIndex = (y * width + x) * 4;
+
+                  for (let dy = -1; dy <= 1; dy++) {
+                      for (let dx = -1; dx <= 1; dx++) {
+                          let destX = Math.floor(projectedX) + dx;
+                          let destY = Math.floor(projectedY) + dy;
+
+                          if (destX >= 0 && destX < width && destY >= 0 && destY < height) {
+                              let destIndex = (destY * width + destX) * 4;
+
+                              // Copy pixel data
+                              outputBuffer[destIndex] = buffer[srcIndex];
+                              outputBuffer[destIndex + 1] = buffer[srcIndex + 1];
+                              outputBuffer[destIndex + 2] = buffer[srcIndex + 2];
+                              outputBuffer[destIndex + 3] = buffer[srcIndex + 3];
+                          }
+                      }
+                  }
+              }
+          }
+
+          for (let i = 0; i < buffer.length; i++) {
+              buffer[i] = outputBuffer[i];
+          }
+      }
+
+      // Example usage
+      const width = 800;
+      const height = 400;
+      const imageData = ctx.getImageData(0, 0, 800, 400);
+      let pixelBuffer = imageData.data;
+
+      drawChessboard(pixelBuffer, width, height);
+      mollweideProjection(pixelBuffer, width, height);
+
+      ctx.putImageData(imageData, 0, 0);
+        </script>
+    </body>
+</html>

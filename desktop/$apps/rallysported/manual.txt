@@ -1,0 +1,78 @@
+Introduction
+============
+
+This is a brief barebones manual for RallySportED's track editor, a
+contemporary modding tool for the MS-DOS racing game Rally-Sport.
+
+RallySportED is (c) 2016-2024 ArtisaaniSoft.
+
+
+Controls in the terrain view
+============================
+
+Keyboard:
+
+E S D F ....... Move the camera.
+1 2 3 4 5 ..... Set the pen radius.
+L ............. Level the ground to a height of 0.
+W ............. Toggle wireframe on/off.
+B ............. Toggle prop transparency on/off.
+T ............. Open in texture editor.
+G ............. Toggle mouse hover PALA preview on/off.
+A ............. Toggle the texture pane on/off.
+Q ............. Open the tilemap editor.
+Space ......... Toggle ground smoothing on/off.
+Up ............ Raise the ground by one unit.
+Down .......... Lower the ground by one unit.
+Ctrl+S ........ Download (save) the current track.
+Ctrl+Z ........ Undo changes (across all views).
+Ctrl+Shift+Z .. Redo changes (across all views).
+
+Mouse:
+
+Left (ground) .......... Move the ground up; or, if in smoothing
+                         mode, apply a smoothing filter.
+Right (ground) ......... Move the ground down; or, if in smoothing
+                         mode, apply a smoothing filter.
+Right (prop) ........... Prop type selector.
+Middle (ground) ........ Paint the ground.
+Left + drag (prop) ..... Move the prop.
+Shift + Left (prop) .... Remove the prop.
+Shift + Left (ground) .. Add a prop.
+Tab + Left (ground) .... Eye dropper.
+Shift + Wheel .......... Tilt the camera.
+
+
+Controls in the texture view
+============================
+
+Keyboard:
+
+E S D F ....... Move the camera.
+R ............. Rotate the texture.
+Ctrl+C ........ Copy the texture onto the clipboard.
+Ctrl+V ........ Paste the clipboard over the texture.
+Ctrl+Z ........ Undo changes (across all views).
+Ctrl+Shift+Z .. Redo changes (across all views).
+
+Mouse:
+
+Left (texture) ........ Paint the texture.
+Tab + Left (texture) .. Eye dropper.
+Shift + Wheel ......... Zoom.
+
+
+Controls in the tilemap view
+============================
+
+Keyboard:
+
+E S D F ....... Move the camera.
+A ............. Toggle the texture pane.
+Ctrl+Z ........ Undo changes (across all views).
+Ctrl+Shift+Z .. Redo changes (across all views).
+
+Mouse:
+
+Left ........... Paint the tilemap.
+Shift + Wheel .. Zoom.

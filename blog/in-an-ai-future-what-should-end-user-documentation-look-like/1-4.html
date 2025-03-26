@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+<script src="./highlight.min.js"></script>
+<script>hljs.highlightAll();</script><h1>Beginner's Quick-Start Guide for JavaScript Software Renderer</h1>
+
+<style>
+    body {
+        color: #dfdfe2;
+        background-color: #181a1e;
+        margin: 1.25rem;
+    }
+    code {
+        border-radius: 8px;
+    }
+</style>
+
+<p>This guide will walk you through the basics of using the JavaScript software renderer. Follow the steps below to set up a simple scene and render it onto a canvas.</p>
+<h2>Step 1: Import the Renderer</h2>
+<p>Add the renderer's script to your HTML file:</p>
+<pre><code class="language-html">&lt;script src=&quot;distributable/rngon.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<h2>Step 2: Create an HTML Canvas Element</h2>
+<p>Add a canvas element to your HTML file and give it an id attribute:</p>
+<pre><code class="language-html">&lt;canvas id=&quot;canvas&quot;&gt;&lt;/canvas&gt;
+</code></pre>
+<h2>Step 3: Create a Scene</h2>
+<p>In your JavaScript code, create a scene by defining a mesh with one or more n-gons:</p>
+<pre><code class="language-javascript">const quad = Rngon.ngon([
+    Rngon.vertex(-1, -1, 0),
+    Rngon.vertex(1, -1, 0),
+    Rngon.vertex(1, 1, 0),
+    Rngon.vertex(-1, 1, 0)], {
+        color: Rngon.color(255, 255, 0),
+});
+
+const mesh = Rngon.mesh([quad], {
+    rotation: Rngon.vector(0, 0, 45)
+});
+</code></pre>
+<p>In this example, we create a quad (a polygon with four vertices) and assign a color to it. Then, we create a mesh containing that quad and apply a 45-degree rotation around the Z-axis.</p>
+<h2>Step 4: Render the Scene</h2>
+<p>Now that we have a mesh, we can render the scene using the Rngon.render() function:</p>
+<pre><code class="language-javascript">Rngon.render({
+    target: &quot;canvas&quot;,
+    scene: [mesh],
+    options: {
+        cameraPosition: Rngon.vector(0, 0, -5),
+    },
+});
+</code></pre>
+<p>In this example, we specify the target as the id attribute of the canvas element we created earlier. We also set the camera position so that it's placed 5 units away from the mesh along the Z-axis.</p>
+<h2>Step 5: Run Your Code</h2>
+<p>Save your HTML and JavaScript files, and then open the HTML file in a web browser. You should see the rendered scene on the canvas element.</p>
+<h2>Sample Complete Code</h2>
+<p>Here's a complete example of an HTML file that uses the renderer:</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Software Renderer Quick Start&lt;/title&gt;
+    &lt;script src=&quot;distributable/rngon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;canvas id=&quot;canvas&quot;&gt;&lt;/canvas&gt;
+    &lt;script&gt;
+        const quad = Rngon.ngon([
+            Rngon.vertex(-1, -1, 0),
+            Rngon.vertex(1, -1, 0),
+            Rngon.vertex(1, 1, 0),
+            Rngon.vertex(-1, 1, 0)], {
+                color: Rngon.color(255, 255, 0),
+        });
+
+        const mesh = Rngon.mesh([quad], {
+            rotation: Rngon.vector(0, 0, 45)
+        });
+
+        Rngon.render({
+            target: &quot;canvas&quot;,
+            scene: [mesh],
+            options: {
+                cameraPosition: Rngon.vector(0, 0, -5),
+            },
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>This basic example should help you get started with the JavaScript software renderer. Refer to the API documentation for more information on available features and options.</p>

@@ -1,0 +1,39 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="640" height="320"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Draw blue sphere
+          ctx.fillStyle = "blue";
+          ctx.beginPath();
+          ctx.arc(100, 175, 50, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Draw reflection of red sphere on blue sphere
+          ctx.fillStyle = "red";
+          ctx.beginPath();
+          ctx.arc(75, 175, 25, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Draw red sphere
+          ctx.fillStyle = "red";
+          ctx.beginPath();
+          ctx.arc(250, 175, 50, 0, 2 * Math.PI);
+          ctx.fill();
+        </script>
+    </body>
+</html>

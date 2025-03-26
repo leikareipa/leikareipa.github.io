@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animated Snowfall</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="snowCanvas" width="800" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById('snowCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const snowflakes = [];
+        const groundLevel = canvas.height * 0.9; // Ground level for snow accumulation
+
+        // Snowflake object
+        function Snowflake() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.radius = Math.random() * 3 + 1;
+            this.speed = Math.random() * 2 + 1;
+        }
+
+        // Create initial snowflakes
+        for (let i = 0; i < 200; i++) {
+            snowflakes.push(new Snowflake());
+        }
+
+        // Draw snowflakes and accumulate snow
+        function drawSnow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw accumulated snow
+            ctx.beginPath();
+            ctx.moveTo(0, groundLevel);
+            for (let x = 0; x < canvas.width; x++) {
+                const snowHeight = Math.max(0, groundLevel - snowflakes.filter(s => s.x >= x && s.x < x + 1).length * 2);
+                ctx.lineTo(x, snowHeight);
+            }
+            ctx.lineTo(canvas.width, groundLevel);
+            ctx.closePath();
+            ctx.fillStyle = 'white';
+            ctx.fill();
+
+            // Draw snowflakes
+            for (let i = 0; i < snowflakes.length; i++) {
+                const snowflake = snowflakes[i];
+                ctx.beginPath();
+                ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+
+                // Move snowflake
+                snowflake.y += snowflake.speed;
+
+                // Reset snowflake position if it goes off-screen
+                if (snowflake.y > canvas.height) {
+                    snowflake.x = Math.random() * canvas.width;
+                    snowflake.y = 0;
+                }
+            }
+
+            requestAnimationFrame(drawSnow);
+        }
+
+        drawSnow();
+    </script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            x-prompt {
+                margin: 2rem 0;
+                margin-bottom: 1.375rem;
+                display: block;
+                padding: calc(1.5 * var(--dokkiCSS-embedded-header-padding));
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                position: relative;
+            }
+
+            x-prompt::before {
+                content: "Prompt:";
+                position: absolute;
+                top: -1.25ex;
+                background-color: var(--dokkiCSS-page-secondary-bg-color);
+                font-weight: var(--dokkiCSS-bold-text-weight);
+                padding: 0 0.5em;
+                margin-left: -0.5em;
+            }
+
+            .model-response {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color) !important;
+                border: none !important;
+            }
+
+            .model-response .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
+
+            .dokki-area {
+                max-height: 55vh;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Comparing quants of QwQ Preview in Ollama
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="17 December 2024"></post-date>
+<dokki-topic title="Comparing quants of QwQ Preview in Ollama">
+<p>My <a href="/blog/testing-open-and-closed-llms-some-more/">coding tests</a> show a bell curve for the quants of QwQ Preview in Ollama, where Q4_K_M is more capable than the lower and higher quants:</p>
+
+            <dokki-table headerless  inline-class="">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Q2_K</th>
+            <th>Q3_K_M</th>
+            <th>Q4_K_M</th>
+            <th>Q5_K_M</th>
+            <th>Q8_0</th>
+            <th>FP16</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>10%</td>
+            <td>40%</td>
+            <td>70%</td>
+            <td>60%</td>
+            <td>50%</td>
+            <td>50%</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>Let's do some more testing to see if the curve holds up.</p>
+<x-prompt>
+    <dokki-code word-wrap no-line-numbers>
+        <template #caption>
+            Reference manual
+        </template>
+        <template #code>
+            <pre>
+                [Reference manual omitted for clarity. See https://github.com/leikareipa/retro-ngon/blob/7e7bf5902b626483fb946eea8895ecb5983505fd/docs/api-reference.md]
+            </pre>
+        </template>
+    </dokki-code>
+    <p>
+        Above is the reference manual for a JavaScript software 3D renderer. Write a pixel shader function that applies a fisheye lens effect.
+    </p>
+</x-prompt>
+<dokki-image src="./q2-fisheye.png" width="627" height="316"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAkUlEQVR4nI2SSw7AIAhEwe8t1Hj/O9JgizEUbRcTCZqXGQQQkXZyzg1572ctff0WAO5zB1lhIn1nmYATjBVCoBjjENcC3jrFTUQRg3LOlFIyoahiHyOLu947tdYmVM8UBaaBVlyG1FqplDKccs+aI1hAHXud38kd/o2swSfYJ1Bqa23eP/vEtYBfa/Sa3QoDoAuKqM0I20UtoQAAAABJRU5ErkJggg=="><template #caption>Q2_K</template>
+                        </dokki-image>
+<dokki-image src="./q3-fisheye.png" width="627" height="316"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAC4jAAAuIwF4pT92AAACrElEQVR4nCWQy28TBxCHFxRhG+oY196tUriVh0hsiCOIX4lxnfgV22kSBxB2nOyu13ESaAvKgZeTrNe7dgxqkThwRnBDAgmpUg+teukBVbRqbxxAIPGPfJWXw+8ymvlm5hPMuMR+WGIz4+VScRgzIhKvuAgoDiZUJwHNgZbzcqXgYazhILTqZFQ5RKn8hd07X3azM+3HjEr04hKCFRfphyXKC25uzvjYTn1JsO4gpDgJrbkIai6+//Yo8pyH0YaTiTUnQdnBhZoLIyqxWvCwnvXSC0tYUxKCEZHYmxIpLrrtLQvzbs7In4HjsoPTtYPczhxHK/g5qR4gJDsZX3MyWnfYX91O+lguuXkQ/QojJiIYkyLbg+J3wxhRkenqYc7VXUzILoKrQ9x7rPHnr7/w6sVTqrsJxqoHCdUOE1CdzC+56cYkFhfcdOIivZiEMPB3Pe1lreRhZ1okKA8RUA7xTUWgZiX58O4T7z985O3bd/z+x29EmxJjtQOcVoaIVRyYkc+67ib89KIDh2GJGykfVwvD6DGRknqMrPY10eoRVm7FePP3X/zz73+8fv2G5y+fkmqMMFX1km6MsFwZoT3pp7wwTGvKz0CfYMZE9MQId8tnsRLH2F9J0m0WuL9V4J6aoL9d4dkjkyc/63S2iuyoF7HWc+xvluhfjmAkj3NnMUA74qc9uLAT9tE578FaCmE2MrTVGYxGxk5/cw5dSdGqTWMoSXrrWTqNHO16Gl3LYGqz6MoMZvoE+oQHfdKH0C6MYuVPsV+N0Gnm6TZzWM0cu+osLTmF1czz4FqRPTWDuZ7j/rU5zGaWtpax093I0106h5E9SasYRDA38jaopaQxG1n0etqG9rfyNlhX0+zKs9xaSbKjzNDbyNugXjPPwx9K9sxePUNvs8BPP87zP2XHiAJ5oTxsAAAAAElFTkSuQmCC"><template #caption>Q3_K_M</template>
+                        </dokki-image>
+<dokki-image src="./q4-fisheye.png" width="627" height="316"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAC4jAAAuIwF4pT92AAACvElEQVR4nC3O60tTARzG8dMFt1lupXMVEUREF/MyzSSbnuXcnG7aBWrVprucs3kpiS6WWqttx22ZRGW9kl4VRUiB9VYjWi3pit2zixEW/hvf8NDLHzzP5/kJiepC9u3JI24pxOVZSnFYQ4WsxdymZYuswbF7IcmyPM5XLcXsWYBZ1lEe0mIOaCmSNHib9fRZjfhaDAxuNyFERSMHdxmI1RSy/ZCOkqCG8pAOs5RDqZRLIurhwfAFRi/FCPbWsEVaSIWsw+zXUjw/6FmiPuPZpWdgHuy1FuBrMtArGikNaDD/Xy8JLGbk/hAf3n/l++9Zpmd+MzH+mJOX29jcKlDm01ES0rDDm0u8ppCDLj0DognheF0BQZeBnroCSsNatkq5bDwkEErVM/PjF69eveTv3z/8mvnJs6dZMs+eYO1aQ7F3EWUBHdv8Os5ajQTcBs6JRoRj9fmEXcs4Zl/OZmkx5ZKODT6B66Mxpj9/59Onj8zNzTE7O8vzySzv3r7HH61nk09QwbJADqfEAoJugwoLJ3bm09ao57RtBZZwPlVSHms9Av0jEb58/Ma36a8qODU1RSaTYXLyBS29ZtZ7BSpDeVhDy+mzmvC59ZypNSKcE1fR17yOZO1qlI4Gou02ukNbOXxUJJt9wsvXb5l4NMHY2BiTL95w+84IrZEiuvyV9EfqUKSdKJaV9LjXE7eYEJRqE8n9VSQ921BkB0Ndbq507yYRsHEtGuHh3ZtMjI+TzWS4d+sG6e69pCUng+1uLna5Sct2Up5KknsriFflI6R2GEl7q0keaUEJO4jJDpLtTpSIk/5WESVo4+pJH8PHD3DeX0eq3Um6s4mYbCcm2dVOorOZREsxyjyYDoikwg6UcAMXOpsYiDiJhewMHXaR7nSpcFyqV4tDR5rVe35wINJAXHao2VRHI4OyjaTPwj+zZ6sPRU9zGQAAAABJRU5ErkJggg=="><template #caption>Q4_K_M</template>
+                        </dokki-image>
+<dokki-image src="./q8-fisheye.png" width="627" height="316"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAAC4jAAAuIwF4pT92AAACV0lEQVR4nEWQ7U/aUBTG+0nMhuKAXpxzn2ecxswZobzIm0IBX7Yxp3OiSCmIiVvMzIxOkLa0OM38l39Lq8k+nJznnnvz3N9zJCsucJQIG5/8/MgHsRSZpdoos5qPpfooc00fDXWC7fI4s80RFvdHedMcobTt5/59hOrmGE31BfdKBDspkJy4YJgQ9BNhrx+sB/i6HqBS9TPb8DGv+ahVAmxvjvNW9zF36OPjhzHPyANIylhJ4YFYcRmpH5MZxAV2XHAbF1yshHESAl2dILP7jJnmCFvVcTaqY8xoI+R2nvM9H6SbCnOdDuPEBKYiezBul7pR2RO9qIyhyDiKwF1DNyVzkQ2T3/GT3h0lteuj8MXPVTrs3d0qAjsmGCYfjVwItySXzjVyh2ZMpqeE6SohT18ngpynAuztTfH520t+rgT4nQpiKzLdVIhBXMb2SjyllJFcMze/N4gJLnMROuVJzGSEs4N3nNUW+Hu+x935Lie1ee98k5Bpbk5iJP7DuKtztWQ/ZXdxzeUgZmqKQT3L4DCDpatYrRKDVhFLLzA8ruDoKuZhBmNH8d7fREMYntmjuTSIhTGjIfqKYJidZlhdxGqp2MdlnHaRm8Yqfa3A1WGO4XEJUy9gdyoMW0WcjVmslVeYiqC3HKIfDSEZmdc4HxcYNHL06jmsdglLL9I7Wn0iK2JoBX7tZ+ge5bk7KfNwus5tp4zVVrEaeax6FmNrgX56GslpFbjR1jyKvrbmEQ2PVf6clLntlDC0NS5rOS5rWU+7n3TrqzhtlYfTCna7iOkmaqvYeoF/HW969/uVrjAAAAAASUVORK5CYII="><template #caption>Q8_0</template>
+                        </dokki-image>
+<p>Q3_K_M and Q4_K_M managed to produce the requested fisheye effect; Q2_K failed completely and so did Q8_0. I think Q4_K_M's version is the best one.</p>
+<x-prompt>
+    <p>
+        Write a program using QBasic that draws a natural-looking lightning bolt.
+    </p>
+</x-prompt>
+
+
+                <dokki-code no-line-numbers="true"inline-class="model-response"><template #caption>Q2_K</template>
+                    <template #code>
+                        <pre>[Syntax errors]
+</pre>
+                    </template>
+                </dokki-code>
+            
+
+
+                <dokki-code no-line-numbers="true"inline-class="model-response"><template #caption>Q3_K_M</template>
+                    <template #code>
+                        <pre>[Syntax errors]
+</pre>
+                    </template>
+                </dokki-code>
+            
+<dokki-image src="./q4-lightning.png" width="640" height="480"        inline-class="model-response" thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAYAAADkmO9VAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAyUlEQVR4nM2SSwuDMBCEswYfUUHwFUQ9efAgiOL//21TdimllNa0mEMPSw7JfpmdHaWUgudSzkdEBK21P2AQBIjj+I+BURShKAp/QGMMyrIUL70A0zRFVVX+gG3bous6UXoZqLVG0zSo6xp5nl8DhmEo3i3Lgr7vMU0TsiyTu5Px1cfN8pgM27ZNgPM8w1ornv4MpHsDQ8ZxxHEcWNdVPjodmYik+bWewewjK9v33Q38MqyPPDqjw97wBvlkFbzRYRiQJMlbC1x1A1qwNpz+EvfSAAAAAElFTkSuQmCC"><template #caption>Q4_K_M</template>
+                        </dokki-image>
+
+
+                <dokki-code no-line-numbers="true"inline-class="model-response"><template #caption>Q5_K_M</template>
+                    <template #code>
+                        <pre>[Syntax errors]
+</pre>
+                    </template>
+                </dokki-code>
+            
+
+
+                <dokki-code no-line-numbers="true"inline-class="model-response"><template #caption>Q8_0</template>
+                    <template #code>
+                        <pre>[Syntax errors]
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Q4_K_M was the only quant that managed to produce syntactically valid, runnable code; all other quants' code had various syntax errors.</p>
+<x-prompt>
+    <dokki-code syntax="js"><template #caption>Code</template>
+        <template #code>
+            <pre>
+                // Pixel shader: Applies a vignette effect to the pixel buffer.
+                function ps_vignette(renderContext)
+                {
+                    const {width, height, data:pixels} = renderContext.pixelBuffer;
+                    const centerX = (width / 2);
+                    const centerY = (height / 2);
+                    const radius = Math.max(centerX, centerY);
+                    const intensity = 1.0;
+                    for (let y = 0; y < height; y++)
+                    {
+                        for (let x = 0; x < width; x++)
+                        {
+                            const dx = x - centerX;
+                            const dy = y - centerY;
+                            const distanceSquared = (dx * dx) + (dy * dy);
+                            const vignette = Math.max(0, 1 - (distanceSquared / (radius * radius)));
+                            const i = (x + y * width) * 4;
+                            pixels[i + 0] *= (1 - intensity + (vignette * intensity));
+                            pixels[i + 1] *= (1 - intensity + (vignette * intensity));
+                            pixels[i + 2] *= (1 - intensity + (vignette * intensity));
+                        }
+                    }
+                }
+            </pre>
+        </template>
+    </dokki-code>
+    <p>
+        Above is a sample pixel shader for a JavaScript 3D software renderer. Write a pixel shader that applies a fisheye effect.
+    </p>
+</x-prompt>
+
+            <dokki-table headerless  inline-class="">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Q2_K</th>
+            <th>Q3_K_M</th>
+            <th>Q4_K_M</th>
+            <th>Q5_K_M</th>
+            <th>Q8_0</th>
+            <th>HF Playground (F16)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>16%</td>
+            <td>41%</td>
+            <td>31%</td>
+            <td>34%</td>
+            <td>9%</td>
+            <td>31%</td>
+        </tr>
+        <tr>
+            <td><i>n</i> = 8</td>
+            <td><i>n</i> = 8</td>
+            <td><i>n</i> = 8</td>
+            <td><i>n</i> = 8</td>
+            <td><i>n</i> = 8</td>
+            <td><i>n</i> = 8</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>Taking the average of eight runs of this prompt, and accounting for spread in the results, the sweet spot appears to be Q3_K_M through K5_K_M, while Q8_0 performs worse than Q2_K.</p>
+<p>For reference, the table includes the unquantized version of QwQ as hosted on Hugging Face Playground.</p>
+</dokki-topic><dokki-topic title="Conclusions">
+<p>These tests roughly confirm the previously-found bell curve, where Q4_K_M is the apex quant and categorically better than Q8_0. More broadly, the sweet spot appears to be between Q3_K_M and Q5_K_M, inclusive.</p>
+<p>Q8_0 was in fact so bad that it indicates a potential problem with Ollama. Outside of these tests, I've also seen preliminary indications that Ollama's FP16 struggles in a similar way. I opened an issue for this, but it was closed without resolution, so it's not something the Ollama authors are concerned about.</p>
+<p>All of that said, my time with QwQ has also shown a fair bit of variance in output quality within any given quant. You'd ideally do very many runs of a test to find a realistic average.</p>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

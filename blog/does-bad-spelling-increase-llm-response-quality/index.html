@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            x-prompt {
+                margin: 2rem 0;
+                margin-bottom: 1.375rem;
+                display: block;
+                padding: calc(1.5 * var(--dokkiCSS-embedded-header-padding));
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                position: relative;
+            }
+
+            x-prompt::before {
+                content: "Prompt:";
+                position: absolute;
+                top: -1.25ex;
+                background-color: var(--dokkiCSS-page-secondary-bg-color);
+                font-weight: var(--dokkiCSS-bold-text-weight);
+                padding: 0 0.5em;
+                margin-left: -0.5em;
+            }
+
+            .model-response {
+                background-color: var(--dokkiCSS-embedded-auxiliary-color) !important;
+                border: none !important;
+            }
+
+            .model-response .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Does bad spelling increase LLM response quality?
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="20 March 2024"></post-date>
+<dokki-topic title="Does bad spelling increase LLM response quality?">
+<p>About a week ago some dude on Reddit posted about Claude 3 producing better answers when spelling mistakes were incorporated into the prompt. Let's see if that holds up.</p>
+<p>We'll ask three models – Claude 3 Opus, Claude 3 Sonnet, and GPT-4 Turbo – to code up a few graphics effects, first in more-or-less proper English and then the same with poor spelling.</p>
+<dokki-subtopic title="Snowfall">
+<x-prompt>
+    Write JavaScript code that draws animated snowfall that accumulates on the ground.
+</x-prompt>
+<dokki-iframe src="./2-ref-opus.html"        inline-class="model-response"><template #caption>Claude 3 Opus</template>
+                    </dokki-iframe>
+<dokki-iframe src="./2-ref-sonnet.html"        inline-class="model-response"><template #caption>Claude 3 Sonnet</template>
+                    </dokki-iframe>
+<dokki-iframe src="./2-ref-gpt4.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<x-prompt>
+    Write JavaScript codde that drawsanimated snow&lt;&lt;fall that accumulates on the ground.
+</x-prompt>
+<dokki-iframe src="./2-en-opus.html"        inline-class="model-response"><template #caption>Claude 3 Opus</template>
+                    </dokki-iframe>
+<dokki-iframe src="./2-en-sonnet.html"        inline-class="model-response"><template #caption>Claude 3 Sonnet</template>
+                    </dokki-iframe>
+<dokki-iframe src="./2-en-gpt4.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="Fire">
+<x-prompt>
+    Write JavaScript code that draws the animated fire effect often seen in the demoscene.
+</x-prompt>
+<dokki-iframe src="./3-ref-opus.html"        inline-class="model-response"><template #caption>Claude 3 Opus</template>
+                    </dokki-iframe>
+<dokki-iframe src="./3-ref-sonnet.html"        inline-class="model-response"><template #caption>Claude 3 Sonnet</template>
+                    </dokki-iframe>
+<dokki-iframe src="./3-ref-gpt4.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<x-prompt>
+    Write JavaScrpt codde thatdraws the animated fire efect often seen in the demoscene.
+</x-prompt>
+<dokki-iframe src="./3-en-opus.html"        inline-class="model-response"><template #caption>Claude 3 Opus</template>
+                    </dokki-iframe>
+<dokki-iframe src="./3-en-sonnet.html"        inline-class="model-response"><template #caption>Claude 3 Sonnet</template>
+                    </dokki-iframe>
+<dokki-iframe src="./3-en-gpt4.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="Ray tracer">
+<x-prompt>
+    <p>Imagine you're a ray tracer from the 1990s. You're asked to render a scene containing two spheres, one (red) in the middle of your view and another (blue) to the left of it; and a reflection of the red sphere is visible on the blue sphere.</p>
+    <p>Use JavaScript to draw an image to represent your output.</p>
+    <p>Don't write actual ray-tracing code, just an image to represent your most likely output.</p>
+</x-prompt>
+<dokki-iframe src="./4-ref-opus.html"        inline-class="model-response"><template #caption>Claude 3 Opus</template>
+                    </dokki-iframe>
+<dokki-iframe src="./4-ref-sonnet.html"        inline-class="model-response"><template #caption>Claude 3 Sonnet</template>
+                    </dokki-iframe>
+<dokki-iframe src="./4-ref-gpt4.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<x-prompt>
+    <p>Imagine your a ray tracer from the 1990s. Your asked to render a scene contaning two spheres, one (red) in the middle of your view andanother (blue) to the left of it; and a reflection of the red spehre is visible on the blue sphere.</p>
+    <p>Use JavaScript to draw an image to represent your output.</p>
+    <p>Don't write actual ray-tracing code, just an image to represent ur most likely output.</p>
+</x-prompt>
+<dokki-iframe src="./4-en-opus.html"        inline-class="model-response"><template #caption>Claude 3 Opus</template>
+                    </dokki-iframe>
+<dokki-iframe src="./4-en-sonnet.html"        inline-class="model-response"><template #caption>Claude 3 Sonnet</template>
+                    </dokki-iframe>
+<dokki-iframe src="./4-en-gpt4.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="Results">
+<p>The table below condenses the outcomes, ❌ representing the poorly-spelled prompt producing a better result, and ✅ the opposite.</p>
+
+            <dokki-table headerless  inline-class="">
+                <template #table>
+                    
+  <thead>
+    <tr>
+      <th></th>
+      <th>Opus</th>
+      <th>Sonnet</th>
+      <th>GPT-4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Snowfall</th>
+      <td>❌</td>
+      <td>❌</td>
+      <td>❌</td>
+    </tr>
+    <tr>
+      <th>Fire</th>
+      <td>✅</td>
+      <td>❌</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <th>Ray tracer</th>
+      <td>✅</td>
+      <td>✅</td>
+      <td>✅</td>
+    </tr>
+  </tbody>
+
+                </template>
+            </dokki-table>
+<p>Snowfall was consistently better when prompted with poor spelling, while Ray tracer was the opposite. Fire was inconclusive on the surface.</p>
+<p>Assuming these results are representative, my guess is that Snowfall is a mundane enough request that the LLM does a half-assed job if not pressed harder. The other two requests are less common, so the LLM is already putting some effort into it, and here bad spelling is more of a distraction.</p>
+<p>So it would seem that poor spelling may elicit higher-quality responses when the request is on the mundane side. Whether it's the <i>best</i> way to prompt is another matter – if spelling mistakes were a distraction in the less mundane prompts of Fire and Ray tracer, they may be so in mundane ones as well to some extent.</p>
+</dokki-subtopic><dokki-subtopic title="Snowfall #2">
+<p>To test the hypothesis that the Snowfall request was too bland for a high-effort response, let's re-word the prompt using technical jargon instead of spelling mistakes. This isn't totally an apples-to-apples comparison, but take it as a starting point.</p>
+<x-prompt>
+    Develop a JavaScript implementation employing canvas rendering techniques to generate a dynamic snowfall animation. Utilize a collision detection mechanism to determine accumulation on the ground plane.
+</x-prompt>
+<dokki-iframe src="./2-2-opus.html"        inline-class="model-response"><template #caption>Claude 3 Opus</template>
+                    </dokki-iframe>
+<dokki-iframe src="./2-2-sonnet.html"        inline-class="model-response"><template #caption>Claude 3 Sonnet</template>
+                    </dokki-iframe>
+<dokki-iframe src="./2-2-gpt4.html"        inline-class="model-response"><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<p>These responses are in a way better than the normally-elicited ones, as now there's some level of flake accumulation on the ground. But the presentation is less consistent than the ones from broken spelling.</p>
+<p>It's a fairly unusual way to word this request, so maybe it's not surprising that the first-iteration responses are a mixed bag. In that sense, simply misspelling the original predictable prompt would be the way to go.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

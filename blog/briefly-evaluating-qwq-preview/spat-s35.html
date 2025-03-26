@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ray Traced Scene</title>
+</head>
+<body>
+    <canvas id="sceneCanvas" width="400" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('sceneCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = '#f0f0f0';
+        ctx.fillRect(0, 0, 400, 300);
+
+        // Shadows
+        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+        ctx.beginPath();
+        ctx.ellipse(100, 230, 45, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(200, 230, 45, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Blue sphere
+        let gradient = ctx.createRadialGradient(85, 155, 0, 100, 170, 48);
+        gradient.addColorStop(0, '#4040ff');
+        gradient.addColorStop(1, '#000080');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(100, 170, 48, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Red sphere
+        gradient = ctx.createRadialGradient(185, 135, 0, 200, 150, 50);
+        gradient.addColorStop(0, '#ff4040');
+        gradient.addColorStop(1, '#800000');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(200, 150, 50, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Specular highlights
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        // Blue sphere highlight
+        ctx.beginPath();
+        ctx.arc(85, 155, 15, 0, Math.PI * 2);
+        ctx.fill();
+        // Red sphere highlight
+        ctx.beginPath();
+        ctx.arc(185, 135, 16, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Reflection of red sphere on blue sphere (slightly distorted)
+        ctx.globalAlpha = 0.3;
+        gradient = ctx.createRadialGradient(138, 206, 0, 138, 206, 19);
+        gradient.addColorStop(0, '#ff4040');
+        gradient.addColorStop(1, '#800000');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.ellipse(138, 206, 19, 15, -0.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+    </script>
+</body>
+</html>

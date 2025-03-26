@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            iframe {
+                border-radius: unset !important;
+            }
+            .gpt-response-text .dokki-area {
+                background-color: transparent !important;
+                padding: 0.25rem !important;
+                padding-top: 0 !important;
+            }
+            .gpt-response.dokki0-embedded-expandable .caption > .type > .text {
+                display: none;
+            }
+            .gpt-response.dokki0-embedded-expandable .caption > .type > .icon > i {
+                visibility: hidden;
+            }
+            .gpt-response.dokki0-embedded-expandable .caption > .type > .icon > i::before {
+                font-family: "Font Awesome 5 Free";
+                font-weight: normal;
+                content: "\f075";
+                visibility: visible;
+                transform: scaleX(-1);
+                display: inline-block;
+            }
+            .gpt-response.dokki0-embedded-expandable .caption > .label {
+                margin: 0;
+                display: inline-block;
+                margin-left: 0.2em !important;
+            }
+
+            .prompt-input.dokki0-embedded-expandable .caption > .type {
+                display: none;
+            }
+            .prompt-input.dokki0-embedded-expandable .caption > .label{
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                In an AI future, what should end-user documentation look like?
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="23 April 2023"></post-date>
+<dokki-topic title="In an AI future, what should end-user documentation look like?">
+<p>Wearing the hat of technical writer for my software projects, the day usually starts with an attempt to predict the needs of the target audience, their backgrounds and expectations, etc., then aligning the documentation along those parameters.</p>
+<p>Now that stronger AI is on the horizon, this approach is starting to feel old-fashioned. It produces static content that can't adapt to the reader's needs.</p>
+<p>An obvious way forward is to use AI to project the documentation into the user's frame of mind, i.e. having the user issue queries to the AI about the software and the AI transforming the underlying documentation accordingly.</p>
+<dokki-subtopic title="AI-friendly documentation">
+<p>Suppose we're a technical writer and want to create documentation the user can interface with via AI. Let's also say that this AI is ChatGPT powered by GPT-4. How should we structure our documentation to ensure a workable outcome?</p>
+<p>Here are some idealistic key considerations:</p>
+<ul>
+<li>The documentation should fit in its entirety into ChatGPT's context space, so the AI can fully reason about it.</li>
+<li>The documentation should be easy for the user to incorporate into their ChatGPT prompts, ideally located all in one place.</li>
+<li>The documentation needs to be readable to both humans and ChatGPT.</li>
+</ul>
+<p>Here's a format I've been trialing in <a href="https://github.com/leikareipa/retro-ngon/">one of my projects</a>, a JavaScript 3D software renderer:</p>
+
+                <dokki-code syntax="markdown"headerless="true"no-line-numbers="true">
+                    <template #code>
+                        <pre>    # API reference
+
+    The renderer's public API consists of the following functions:
+
+    | Function | Brief description                     |
+    | -------- | ------------------------------------- |
+    | ...      | ...                                   |
+    | texture  | A 2D RGBA image for texturing n-gons. |
+    | ...      | ...                                   |
+
+    All but *`render()`* and *`render_async()`* are factory functions, i.e. their purpose is to construct and return an object based on the input arguments.
+
+    ## texture([data])
+
+    A 2D RGBA image for texturing n-gons. Supports 16 and 32-bit input data and generates mipmaps automatically.
+
+    ### Parameters
+
+    - **data** (object): The texture's data:
+        - **width** (number = *0*): The width of the image.
+        - **height** (number = *0*): The height of the image.
+        - **pixels** (array | string = *[]*): The texture's pixels. The layout of the data is determimned by the `data.channels` property, and the encoding of the data is determined by the `data.encoding` property.
+        - **channels** (string = *&quot;rgba:8+8+8+8&quot;*): Specifies the layout of the pixel data:
+            - &quot;rgba:5+5+5+1&quot;: Each pixel is a 16-bit integer with 5 bits each for red, green, and blue; and 1 bit for alpha.
+            - &quot;rgba:8+8+8+8&quot;: Each pixel consists of four consecutive 8-bit values for red, green, blue, and alpha.
+        - **encoding** (string = *&quot;none&quot;*): Specifies the encoding of the pixel data:
+            - &quot;none&quot;: The value of the `data.pixels` property is an array, and its elements are numbers according to the `data.channels` property.
+            - &quot;base64&quot;: The value of the `data.pixels` property is a string representing a Base64-encoded array whose elements are numbers according to the `data.channels` property.
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The documentation has been reduced to a technical API reference – written in Markdown – that briefs the salient details. The text uses various formatting strategies to pattern and compress the information, and sparsely includes sample code to demonstrate usage (not shown here).</p>
+<p>For end-user consumption, the raw Markdown can be rendered into HTML. For example, it looks like this when viewed on GitHub:</p>
+<dokki-image src="./rend.webp" width="981" height="544"     headerless="true"  no-border-rounding="true"  thumbnail-src="data:image/png;base64,UklGRmAAAABXRUJQVlA4IFQAAADQAwCdASoUAAsAPm0skkWkIqGYBABABsS0gFp0EfbotptSZQ8rQ6AA/vxpjAFJto/bQzou5VKFBrIhRvJkIX5getHWWuxyfvEmtdA6x8o5ThHwAAA=">
+                        </dokki-image>
+</dokki-subtopic><dokki-subtopic title="Trying it out">
+<p>Let's paste the API reference (or relevant parts of it, as it currently doesn't entirely fit the 4,000-token context limit) into ChatGPT and see whether the AI can have it accommodate some potential end-user needs.</p>
+<h3>Quick-start guide</h3>
+<p class="label-a">"Write a beginner-level quick-start guide on how to use the renderer."</p>
+<dokki-iframe src="./1-4.html"        ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<p>This is a reasonable quick-start guide, with logical steps and code snippets that work. It's not the best writing ever, but enough to get the user's feet wet, and they could ask follow-up questions to keep the ball rolling.</p>
+<h3>Isometric rendering</h3>
+<p class="label-a">"Show me how to draw an isometric tilemap using the renderer."</p>
+<dokki-iframe src="./2.html"        ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<p>Not a bad effort, as the output is more or less correct. The UV coordinates are off though.</p>
+<p class="label-a">"The textures look like they're not mapped correctly to the tile's orientation."</p>
+
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
+                    <template #code>
+                        <pre>I apologize for the confusion. You're right; the texture mapping is not properly aligned with the isometric tile orientation. To fix this, we need to adjust the texture coordinates (UV coordinates) of each vertex in the isometric tile.
+
+Here's an updated version of the createIsometricTile function with corrected UV coordinates:
+
+...
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Here the conversation exceeded ChatGPT's 4,000-token context limit and the model started hallucinating functionality (the <em>createIsometricTile</em> function) that wasn't in its original response. Still, it was correct about needing to adjust the UV coordinates, which I've done here:</p>
+<dokki-iframe src="./2-h.html"        ><template #caption>GPT-4 + Human assistance</template>
+                    </dokki-iframe>
+<p>This highlights the problem of context length, as when the documentation takes up most of the available 4,000 tokens, there's not much room left for continued discussion, and the coherency goes south very quickly. But as the context length ceiling is expected to go up in future releases of ChatGPT, it's effectively a solved problem.</p>
+<h3>Performance test</h3>
+<p class="label-a">"Write a performance test that renders at three different resolutions and displays the FPS results in a HTML table."</p>
+<dokki-iframe src="./perf.html"        ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<p>If I wanted a quick pulse on the renderer's performance, I'd be pretty well covered, as ChatGPT is able to convert the API reference into this performance test scaffold.</p>
+<h3>Idea generation</h3>
+<p class="label-a">"List several possible render effects that can be accomplished by consecutive calls to render() with a custom surfaceWiper function."</p>
+
+
+                <dokki-code no-line-numbers="true"word-wrap="true"inline-class="gpt-response-text"><template #caption>GPT-4</template>
+                    <template #code>
+                        <pre>Here are several render effects that can be accomplished by consecutive calls to render() with a custom surfaceWiper function:
+
+1. Motion blur effect: By accumulating pixel values over multiple frames and blending them together, a motion blur effect can be achieved. The custom surfaceWiper function should not clear the entire render surface but instead blend the new frame with the previous frames using a specific weight or decay factor.
+
+2. Cross-fade or dissolve transition: To create a cross-fade transition between two different scenes or dissolve effect, the custom surfaceWiper function should store the pixel buffer of the previous frame and blend it with the current frame using a specific interpolation factor that changes over time.
+
+3. Double exposure effect: This effect can be achieved by combining two different scenes with different opacities. The custom surfaceWiper function should render the first scene and then render the second scene on top of it with a certain opacity level without clearing the render surface in between.
+
+4.Image overlay or watermark: A custom surfaceWiper function can be used to overlay an image or watermark on top of the rendered scene. It can load the overlay image data and blend it with the current frame without clearing the render surface.
+
+5. Multi-pass rendering effects: Some advanced rendering effects require multiple rendering passes. The custom surfaceWiper function can be used to manage these passes, selectively clearing parts of the render surface or blending them together as needed.
+
+Remember that to achieve these effects, you might need to modify other parts of the rendering pipeline, such as the pixelShader, vertexShader, or other rendering options.
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Background: <em>render()</em> is an API call to render polygons, and <em>surfaceWiper</em> is a function used by <em>render()</em> to clear the pixel buffers prior to rasterization.</p>
+<p>Not a bad job extrapolating practical ideas from the technical API reference – though as ChatGPT points out at the end, many of the suggestions would be better handled by other parts of the render pipeline.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

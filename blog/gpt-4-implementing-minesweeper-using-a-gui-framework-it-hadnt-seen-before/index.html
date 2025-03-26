@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .gpt-response.dokki-code .caption > .type > .text {
+                display: none;
+            }
+            .gpt-response.dokki-code .caption > .type > .icon {
+                margin-right: 0.4em;
+            }
+            .gpt-response.dokki-code .caption > .type > .icon > i {
+                visibility: hidden;
+            }
+            .gpt-response.dokki-code .caption > .type > .icon > i::before {
+                font-family: "Font Awesome 5 Free";
+                font-weight: normal;
+                content: "\f075";
+                visibility: visible;
+                transform: scaleX(-1);
+                display: inline-block;
+            }
+            .gpt-response.dokki-code .caption > .label {
+                margin: 0;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                GPT-4 implementing Minesweeper using a GUI framework it hadn't seen before
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="2 April 2023"></post-date>
+<dokki-topic title="GPT-4 implementing Minesweeper using a GUI framework it hadn&apos;t seen before">
+<p>I've been casually working on a custom front-end framework – tentatively called <i>w95</i> – for building apps in the style of Windows 95. It does its own rendering into a &lt;canvas&gt;, etc. You can find out more about it <a href="/blog/#/w95">in these blog posts</a>.</p>
+<p>The w95 framework isn't currently public nor would GPT-4 have prior knowledge about it. Still, I found that just by feeding the AI the GUI code of a single window built using the framework, it learns enough about the framework to compose new applications with it – with some help from the human along the way (chiefly adapting some of the AI's code to work with undisclosed implementation details of the framework).</p>
+<p>This blog post outlines the steps the AI took in replicating a fair bit of the functionality of Windows Minesweeper as a w95 app. I didn't bother trying to get it to fully replicate the game, as I think what it did here is indication enough that it could've done most of the rest as well, if not all.</p>
+<dokki-subtopic title="Warming up">
+<dokki-area inline-class="blockquote">
+<p><i>&quot;Here's an example of a Windows 95-like GUI window built using a GUI framework called w95. Study this example and generate another window using the framework. The window should be like a typical Windows 95 application.&quot;</i></p>
+</dokki-area>
+
+
+                <dokki-code syntax="javascript"><template #caption>Input code</template>
+                    <template #code>
+                        <pre>w95.widget.window({
+    x: x.now,
+    y: y.now,
+    width: width.now,
+    height: height.now,
+    title: &quot;The Internet&quot;,
+    icon: icons.blankPageSmall,
+    move(newX, newY, {isRelative}) {
+        x.set(newX + (isRelative? x.now : 0));
+        y.set(newY + (isRelative? y.now : 0));
+    },
+    resize(newWidth, newHeight, {isRelative}) {
+        width.set(newWidth + (isRelative? width.now : 0));
+        height.set(newHeight + (isRelative? width.now : 0));
+    },
+    children: [
+        // Controls.
+        w95.widget.frame({
+            x: 0,
+            y: 0,
+            width: (width.now - 8),
+            height: 92,
+            shape: w95.enum.frameShape.box,
+            children: [
+                // Menu bar.
+                w95.widget.frame({
+                    x: 4,
+                    y: 4,
+                    width: 3,
+                    height: 18,
+                    shape: w95.enum.frameShape.box,
+                    styleHints: [
+                        w95.enum.styleHint.raised,
+                    ],
+                }),
+                w95.widget.frame({
+                    x: 1,
+                    y: 1,
+                    width: (width.now - 10),
+                    height: 24,
+                    shape: w95.enum.frameShape.box,
+                    styleHints: [
+                        w95.enum.styleHint.raised,
+                    ],
+                    children: [
+                        w95.widget.menuBar({
+                            x: 8,
+                            y: 3,
+                            width: (width.now - 6),
+                            children: [
+                                w95.widget.menuItem({
+                                    text: &quot;File&quot;,
+                                    isTopLevel: true,
+                                }),
+                                w95.widget.menuItem({
+                                    text: &quot;Edit&quot;,
+                                    isTopLevel: true,
+                                }),
+                                w95.widget.menuItem({
+                                    text: &quot;View&quot;,
+                                    isTopLevel: true,
+                                }),
+                                w95.widget.menuItem({
+                                    text: &quot;Go&quot;,
+                                    isTopLevel: true,
+                                }),
+                                w95.widget.menuItem({
+                                    text: &quot;Favorites&quot;,
+                                    isTopLevel: true,
+                                }),
+                                w95.widget.menuItem({
+                                    text: &quot;Help&quot;,
+                                    isTopLevel: true,
+                                }),
+                            ],
+                        }),
+                    ],
+                }),
+
+                // Button bar.
+                w95.widget.frame({
+                    x: 4,
+                    y: 28,
+                    width: 3,
+                    height: 36,
+                    shape: w95.enum.frameShape.box,
+                    styleHints: [
+                        w95.enum.styleHint.raised,
+                    ],
+                }),
+                w95.widget.frame({
+                    x: 1,
+                    y: 25,
+                    width: (width.now - 10),
+                    height: 42,
+                    shape: w95.enum.frameShape.box,
+                    styleHints: [
+                        w95.enum.styleHint.raised,
+                    ],
+                    children: [
+                        FlatButton({
+                            x: 10,
+                            y: 1,
+                            width: 60,
+                            height: 40,
+                            text: &quot;Back&quot;,
+                            icon: icons.buttonLeft,
+                            onClick() {
+                                window.history.back();
+                            },
+                        }),
+                        FlatButton({
+                            x: 70,
+                            y: 1,
+                            width: 60,
+                            height: 40,
+                            text: &quot;Forward&quot;,
+                            icon: icons.buttonRight,
+                            onClick() {
+                                window.history.forward();
+                            },
+                        }),
+                        FlatButton({
+                            x: 130,
+                            y: 1,
+                            width: 50,
+                            height: 40,
+                            text: &quot;Stop&quot;,
+                            icon: icons.buttonStop,
+                            onClick() {
+                                window.stop();
+                            }
+                        }),
+                        FlatButton({
+                            x: 180,
+                            y: 1,
+                            width: 50,
+                            height: 40,
+                            text: &quot;Refresh&quot;,
+                            icon: icons.buttonReload,
+                            onClick() {
+                                viewportIframe.src += &quot;&quot;;
+                            }
+                        }),
+                        FlatButton({
+                            x: 230,
+                            y: 1,
+                            width: 50,
+                            height: 40,
+                            text: &quot;Home&quot;,
+                            icon: icons.buttonHome,
+                            onClick: ()=&gt;{
+                                 this.$form.addressBar.Message.replaceText(&quot;about:serlain&quot;);
+                                 this.$form.addressBar.Message.submit();
+                            },
+                        }),
+                    ]
+                }),
+
+                // Address bar.
+                w95.widget.frame({
+                    x: 4,
+                    y: 70,
+                    width: 3,
+                    height: 18,
+                    shape: w95.enum.frameShape.box,
+                    styleHints: [
+                        w95.enum.styleHint.raised,
+                    ],
+                }),
+                w95.widget.frame({
+                    x: 1,
+                    y: 67,
+                    width: (width.now - 10),
+                    height: 24,
+                    shape: w95.enum.frameShape.box,
+                    styleHints: [
+                        w95.enum.styleHint.raised,
+                    ],
+                    children: [
+                        w95.widget.label({
+                            x: 11,
+                            y: 0,
+                            height: 24,
+                            text: &quot;Address&quot;,
+                            styleHints: [
+                                w95.enum.styleHint.alignVCenter,
+                            ],
+                        }),
+                        w95.widget.lineEdit({
+                            $name: &quot;addressBar&quot;,
+                            x: 52,
+                            y: 1,
+                            width: (width.now - 43 - 25),
+                            height: 22, 
+                            padding: 19,
+                            text: address.now,
+                            onSubmit(text) {
+                                let targetUrl = &quot;&quot;;
+
+                                switch (text) {
+                                    case &quot;about:serlain&quot;: {
+                                        viewportIframe.removeAttribute(&quot;srcdoc&quot;);
+                                        viewportIframe.src = &quot;./assets/home.html&quot;;
+                                        return;
+                                    }
+                                    default: targetUrl = text; break;
+                                }
+
+                                // Show a blank page while we load the next one.
+                                viewportIframe.srcdoc = &quot;&quot;;
+
+                                targetUrl = targetUrl.replace(/[\s\:&lt;&gt;%&amp;?\'\&quot;]/g, &quot;_&quot;);
+
+                                (async()=&gt;{
+                                    const response = await fetch(`https://archive.org/wayback/available?timestamp=1998&amp;url=${targetUrl}`);
+
+                                    if (!response.ok) {
+                                        console.error(&quot;Unhandled error&quot;);
+                                        viewportIframe.src = &quot;&quot;;
+                                        viewportIframe.srcdoc = &quot;Page not found&quot;;
+                                    }
+                                    
+                                    try {
+                                        const json = await response.json();
+                                        const url = json.archived_snapshots.closest.url.replace(/^http:/, &quot;https:&quot;);
+                                        viewportIframe.removeAttribute(&quot;srcdoc&quot;);
+                                        viewportIframe.src = url;
+                                    }
+                                    catch {
+                                        console.error(&quot;Unhandled error&quot;);
+                                        viewportIframe.src = &quot;&quot;;
+                                        viewportIframe.srcdoc = &quot;Page not found&quot;;
+                                    }
+                                })();
+                            },
+                            onTextChange(newText) {
+                                w95.debug?.assert(typeof newText === &quot;string&quot;);
+                                address.set(newText);
+                            },
+                        }),
+                        w95.widget.bitmap({
+                            x: 55,
+                            y: 4,
+                            image: icons.blankPageSmall,
+                        }),
+                    ],
+                }),
+            ],
+        }),
+
+        // Iframe.
+        w95.widget.domElement({
+            x: 2,
+            y: 97,
+            width: (width.now - 10),
+            height: (height.now - 144),
+            element: viewportIframe,
+        }),
+        w95.widget.frame({
+            x: 0,
+            y: 95,
+            width: (width.now - 8),
+            height: (height.now - 142),
+            shape: w95.enum.frameShape.input,
+        }),
+
+        // Footer field #1.
+        w95.widget.frame({
+            x: 0,
+            y: (height.now - 45),
+            width: 248,
+            height: 18,
+            shape: w95.enum.frameShape.box,
+        }),
+
+        // Footer field #2.
+        w95.widget.frame({
+            x: 250,
+            y: (height.now - 45),
+            width: 148,
+            height: 18,
+            shape: w95.enum.frameShape.box,
+            children: [
+            ],
+        }),
+
+        // Footer field #3.
+        w95.widget.frame({
+            x: 400,
+            y: (height.now - 45),
+            width: 22,
+            height: 18,
+            shape: w95.enum.frameShape.box,
+            children: [
+            ],
+        }),
+
+        // Footer field #4.
+        w95.widget.frame({
+            x: 424,
+            y: (height.now - 45),
+            width: 22,
+            height: 18,
+            shape: w95.enum.frameShape.box,
+            children: [
+            ],
+        }),
+
+        // Footer field #5.
+        w95.widget.frame({
+            x: 448,
+            y: (height.now - 45),
+            width: 22,
+            height: 18,
+            shape: w95.enum.frameShape.box,
+            children: [
+            ],
+        }),
+
+        // Footer field #6.
+        w95.widget.frame({
+            x: 472,
+            y: (height.now - 45),
+            width: (width.now - 472 - 8),
+            height: 18,
+            shape: w95.enum.frameShape.box,
+            children: [
+                w95.widget.bitmap({
+                    x: 2,
+                    y: 1,
+                    image: icons.ieLogoSmall,
+                }),
+                w95.widget.label({
+                    x: 24,
+                    y: 0,
+                    height: 18,
+                    text: &quot;Internet zone&quot;,
+                    styleHints: [
+                        w95.enum.styleHint.alignVCenter,
+                    ],
+                }),
+            ],
+        }),
+    ],
+});
+</pre>
+                    </template>
+                </dokki-code>
+            
+<dokki-image src="./0.png" width="1202" height="958"       no-border-rounding="true"  thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAYAAAAWGF8bAAAACXBIWXMAAAsTAAALEwEAmpwYAAABQUlEQVR4nO3UPWvCQBzH8bzAFKMvQ3wZLk6OpaIupbZSlTMxbcjFpxgqdXMVjeDDpg7GSdRvSaCd6qDt1v7hw9394X7c3XBKJqOTSj2RTJbRtDyqmuPmJoeq3hGL5YnHi2ha4axYrEAiUSSbrZBO36LYtkQIHcMwI7reoFx+jua27WBZNlI2cZzWWVI2abc7VCpVFNftIoSg2WxRrwscR1IXAsuyIo2GQbvdwvN69Hrut1y3S7/fR9d1FCkltZqg03ljMHhnOBwynU4Zj8dMJhN834+EvXN832e5XOJ5HspsNmO327HdbgmCIBKuLxEEAfv9ntFohLJerwnrdDpxbR2Px2icz+coq9XqqxmGXuNwOEQZ4W1//4Tr/8A/8IabzebHgZ97F4sFimEYmKZ5sdcXk6owyd0Lyo8P0QdTKpX4AP0ClVRlzxHFAAAAAElFTkSuQmCC"><template #caption>The input code would produce a window like this if rendered with w95</template>
+                        </dokki-image>
+<p>For clarity, I've omitted a screenshot of the window GPT-4 chose to create.</p>
+</dokki-subtopic><dokki-subtopic title="First go at Minesweeper">
+<dokki-area inline-class="blockquote">
+<p><i>Generate the Windows 95 Minesweeper game using the API.</i></p>
+</dokki-area>
+
+
+                <dokki-code syntax="javascript"inline-class="gpt-response"><template #caption>GPT-4</template>
+                    <template #code>
+                        <pre>w95.widget.window({
+    x: x.now,
+    y: y.now,
+    width: width.now,
+    height: height.now,
+    title: &quot;Minesweeper&quot;,
+    icon: icons.minesweeper,
+    move(newX, newY, {isRelative}) {
+        x.set(newX + (isRelative ? x.now : 0));
+        y.set(newY + (isRelative ? y.now : 0));
+    },
+    resize(newWidth, newHeight, {isRelative}) {
+        width.set(newWidth + (isRelative ? width.now : 0));
+        height.set(newHeight + (isRelative ? width.now : 0));
+    },
+    children: [
+        // Menu bar.
+        w95.widget.frame({
+            x: 1,
+            y: 1,
+            width: (width.now - 10),
+            height: 24,
+            shape: w95.enum.frameShape.box,
+            styleHints: [
+                w95.enum.styleHint.raised,
+            ],
+            children: [
+                w95.widget.menuBar({
+                    x: 8,
+                    y: 3,
+                    width: (width.now - 6),
+                    children: [
+                        w95.widget.menuItem({
+                            text: &quot;Game&quot;,
+                            isTopLevel: true,
+                        }),
+                        w95.widget.menuItem({
+                            text: &quot;Help&quot;,
+                            isTopLevel: true,
+                        }),
+                    ],
+                }),
+            ],
+        }),
+
+        // Game header.
+        w95.widget.frame({
+            x: 1,
+            y: 25,
+            width: (width.now - 10),
+            height: 42,
+            shape: w95.enum.frameShape.box,
+            styleHints: [
+                w95.enum.styleHint.raised,
+            ],
+            children: [
+                w95.widget.label({
+                    x: 4,
+                    y: 8,
+                    width: 42,
+                    height: 24,
+                    text: &quot;000&quot;,
+                    styleHints: [
+                        w95.enum.styleHint.alignVCenter,
+                        w95.enum.styleHint.alignHCenter,
+                    ],
+                }),
+                w95.widget.label({
+                    x: (width.now - 52),
+                    y: 8,
+                    width: 42,
+                    height: 24,
+                    text: &quot;000&quot;,
+                    styleHints: [
+                        w95.enum.styleHint.alignVCenter,
+                        w95.enum.styleHint.alignHCenter,
+                    ],
+                }),
+                w95.widget.button({
+                    x: Math.floor((width.now - 10) / 2 - 21),
+                    y: 8,
+                    width: 42,
+                    height: 24,
+                    text: &quot;:)&quot;,
+                    onClick() {
+                        // Reset the game board
+                    },
+                }),
+            ],
+        }),
+
+        // Minesweeper game board.
+        w95.widget.frame({
+            x: 1,
+            y: 67,
+            width: (width.now - 10),
+            height: (height.now - 92),
+            shape: w95.enum.frameShape.box,
+            styleHints: [
+                w95.enum.styleHint.raised,
+            ],
+            children: [
+                // ...Add Minesweeper game board elements here...
+            ],
+        }),
+    ],
+});
+
+// Implement the Minesweeper game board elements and logic here.
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Plugging GPT-4's code into w95 gave this output:</p>
+<dokki-image src="./1.png" width="1202" height="958"     headerless="true"  no-border-rounding="true"  thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAYAAAAWGF8bAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA3ElEQVR4nO2TPY7CMBCFfUSIqDgE3IIDpEsDSBRxBE62cBAIZ2Yc8tPkTg85Wy3LohUlovikGb83rxh5VBxbLBZ7LJcHzOc7TCZrRNHmB9PpeuT+/VvbYDbbIo4LrFYJ1Pl8gTFfOB5PIBJUFf9CpB415+ih7hyBiKF1BuV9MF5wvdYI9T117VFVDmVpIcIPPd4LRARpmkJ1XTc2zyAiMPOfOjOjbVsURQEVimfm/8DMaJoGeZ5/AuWzQ3nLbzMMA8L59X3/MmE+5FhroUKq1hpZlr1MmDfGIEkS3ABjU/ZzbrtoGQAAAABJRU5ErkJggg==">
+                        </dokki-image>
+<p>It's striking to me that the AI knew the layout of Minesweeper so well. I guess it's a massively well-known program, but still.</p>
+<p>The menu bar entries are correct, the two score counters are where they should be, the smiley face button is reproduced and centered, and the window title has been set properly as well – all using an API the AI hadn't seen before. The vertical placement of the counters and smiley button is off by one pixel, and the background frame extends too far past the bottom of the window, but these are minor issues.</p>
+</dokki-subtopic><dokki-subtopic title="Implementing game logic">
+<dokki-area inline-class="blockquote">
+<p><i>&quot;Could you show a full implementation of the game board frame widget?&quot;</i></p>
+</dokki-area>
+
+
+                <dokki-code syntax="javascript"inline-class="gpt-response"><template #caption>GPT-4</template>
+                    <template #code>
+                        <pre>// Generate the game board grid
+function generateBoard(rows, cols, mines) {
+    const board = Array.from({ length: rows }, () =&gt; Array(cols).fill(0));
+    let minesPlaced = 0;
+
+    while (minesPlaced &lt; mines) {
+        const row = Math.floor(Math.random() * rows);
+        const col = Math.floor(Math.random() * cols);
+
+        if (board[row][col] !== -1) {
+            board[row][col] = -1;
+            minesPlaced++;
+        }
+    }
+
+    return board;
+}
+
+// Calculate the number of adjacent mines for each cell
+function calculateAdjacentMines(board) {
+    const rows = board.length;
+    const cols = board[0].length;
+
+    for (let row = 0; row &lt; rows; row++) {
+        for (let col = 0; col &lt; cols; col++) {
+            if (board[row][col] === -1) continue;
+
+            let count = 0;
+            const neighbors = [
+                [-1, -1], [-1, 0], [-1, 1],
+                [0, -1],           [0, 1],
+                [1, -1], [1, 0], [1, 1]
+            ];
+
+            for (const [dx, dy] of neighbors) {
+                const newRow = row + dx;
+                const newCol = col + dy;
+
+                if (
+                    newRow &gt;= 0 &amp;&amp; newRow &lt; rows &amp;&amp;
+                    newCol &gt;= 0 &amp;&amp; newCol &lt; cols &amp;&amp;
+                    board[newRow][newCol] === -1
+                ) {
+                    count++;
+                }
+            }
+
+            board[row][col] = count;
+        }
+    }
+
+    return board;
+}
+
+const rows = 8;
+const cols = 8;
+const mines = 10;
+const cellSize = 20;
+
+const board = calculateAdjacentMines(generateBoard(rows, cols, mines));
+
+// Create Minesweeper game board elements
+const boardChildren = [];
+for (let row = 0; row &lt; rows; row++) {
+    for (let col = 0; col &lt; cols; col++) {
+        const cell = w95.widget.button({
+            x: col * cellSize,
+            y: row * cellSize,
+            width: cellSize,
+            height: cellSize,
+            text: &quot;&quot;, // Initially, the cell content is hidden
+            onClick() {
+                // Reveal cell content (number of adjacent mines or mine)
+                this.text = board[row][col] === -1 ? &quot;*&quot; : board[row][col] || &quot;&quot;;
+            },
+        });
+
+        boardChildren.push(cell);
+    }
+}
+
+// Add the game board elements to the Minesweeper window
+w95.widget.frame({
+    x: 1,
+    y: 67,
+    width: (width.now - 10),
+    height: (height.now - 92),
+    shape: w95.enum.frameShape.box,
+    styleHints: [
+        w95.enum.styleHint.raised,
+    ],
+    children: boardChildren,
+});
+</pre>
+                    </template>
+                </dokki-code>
+            
+<dokki-image src="./2.png" width="1202" height="958"     headerless="true"  no-border-rounding="true"  thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAYAAAAWGF8bAAAACXBIWXMAAAsTAAALEwEAmpwYAAABOUlEQVR4nO2TS26DMBCGfcQkyiqHSG6RA7Bjk1TqIqDycBIgIPCD9yZ3+qsxLVJpVKV028Unmxn8ycMMzLIibLdv2O08bDavWCwOWK2OX1guD4ZpfMgdsV6/wLJC7Pc2WJbl8P0QSZJCSg0h1De0rkyuKOTDfFFISKngOC5YWZYQokBd16A9obVGWQ5U1ZCP4whaqzE+RWuN0+kEluc5rtcrwjBEFEXgnCOOY1RVZV4ipJRQSo3PU5RSaNvWOFiapkbieZ4R03q5XIzwJ8lU2DQNgiAYhLQhO4ld18X5fP6bkHMO3/dNgG5Ipc8W3m63UUY3oz2VPlsohDBNIJIkMWuWZWO3fy3suu5jTD7H5XnRQ2Hbtk+X9i/Ew294v99Bjen7fjZ0njw0v4ysjuOYP2QudJ7m17ZtvANk4PBrU+xQ6QAAAABJRU5ErkJggg==">
+                        </dokki-image>
+<p>The AI added the game board buttons, correctly using the <em>onClick</em> callback function to interactively reveal the contents when the button is pressed (I've pressed some of the buttons in the above picture).</p>
+<dokki-area inline-class="blockquote">
+<p><i>&quot;Can you add logic for revealing the relevant surrounding empty cells when  an empty cell is clicked?&quot;</i></p>
+</dokki-area>
+
+
+                <dokki-code syntax="javascript"inline-class="gpt-response"><template #caption>GPT-4</template>
+                    <template #code>
+                        <pre>// ... (previous code to generate the board)
+
+// DFS to reveal empty cells and adjacent numbered cells
+function revealEmptyCells(board, row, col, visited) {
+    if (
+        row &lt; 0 || row &gt;= board.length ||
+        col &lt; 0 || col &gt;= board[0].length ||
+        visited[row][col]
+    ) {
+        return;
+    }
+
+    visited[row][col] = true;
+    const cell = boardCells[row][col];
+    cell.text = board[row][col] || '';
+
+    if (board[row][col] === 0) {
+        const neighbors = [
+            [-1, -1], [-1, 0], [-1, 1],
+            [0, -1],           [0, 1],
+            [1, -1], [1, 0], [1, 1]
+        ];
+
+        for (const [dx, dy] of neighbors) {
+            const newRow = row + dx;
+            const newCol = col + dy;
+            revealEmptyCells(board, newRow, newCol, visited);
+        }
+    }
+}
+
+const boardCells = Array.from({ length: rows }, () =&gt; Array(cols).fill(null));
+
+// Create Minesweeper game board elements
+const boardChildren = [];
+for (let row = 0; row &lt; rows; row++) {
+    for (let col = 0; col &lt; cols; col++) {
+        const cell = w95.widget.button({
+            x: col * cellSize,
+            y: row * cellSize,
+            width: cellSize,
+            height: cellSize,
+            text: &quot;&quot;, // Initially, the cell content is hidden
+            onClick() {
+                if (board[row][col] === -1) {
+                    this.text = &quot;*&quot;;
+                    // Add game over logic here
+                } else {
+                    revealEmptyCells(board, row, col, Array.from({ length: rows }, () =&gt; Array(cols).fill(false)));
+                }
+            },
+        });
+
+        boardCells[row][col] = cell;
+        boardChildren.push(cell);
+    }
+}
+
+// Add the game board elements to the Minesweeper window
+w95.widget.frame({
+    x: 1,
+    y: 67,
+    width: (width.now - 10),
+    height: (height.now - 92),
+    shape: w95.enum.frameShape.box,
+    styleHints: [
+        w95.enum.styleHint.raised,
+    ],
+    children: boardChildren,
+});
+</pre>
+                    </template>
+                </dokki-code>
+            
+<dokki-image src="./3.png" width="1202" height="958"     headerless="true"  no-border-rounding="true"  thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAYAAAAWGF8bAAAACXBIWXMAAAsTAAALEwEAmpwYAAABQUlEQVR4nO2TwY6CMBCG+4hqPPkQ+hY+ADcuugkxgCAQBVmltFMievGd/s3UXZNlycaw1z18KUzp1+kwFY6TYz6PsFjEmM08jEYrTCbrb4zHK0s3/phbYzp9g+OkWC5diPO5QpJkKMt3aE2oa/0DogZKEaRUvfNSKiilEQQhBBGhqs5omgZaaxhD4BiPTNMY1LVEUeQgesz3QUTwfR/icDhgs9kgCAIbiOMYeZ7bDfgjRillN/t676K1Rtu2SNMUYr/fWyHjeR622+1T+JukK7xcLkiSBOJ0OtmHKIqQZRl2ux0468HCsiztMRkOhGEIznqw8Hg82qw4Q64h1/JPGUopraAoCjsyXAZjzEsy6gqv1+tnm5gnr4p6hW3bvny0fyF6a3i/38E/5na7DYbXs4dvmGAr9x439FB4Pfey67r4AByU7vYPeQGIAAAAAElFTkSuQmCC">
+                        </dokki-image>
+<p>The AI implemented depth-first search to reveal adjacent empty cells (marked here with &quot;#&quot;). I don't know whether this is a good approach, but it seems to work.</p>
+</dokki-subtopic><dokki-subtopic title="Cleaning up">
+<dokki-area inline-class="blockquote">
+<p><i>&quot;Thanks, looks good. The initial values for width.now and height.now determine the size of the Minesweeper window. Could you give me their values so that the window is properly sized to contain the board and other GUI elements?&quot;</i></p>
+</dokki-area>
+
+
+                <dokki-code syntax="javascript"inline-class="gpt-response"><template #caption>GPT-4</template>
+                    <template #code>
+                        <pre>const cellSize = 24;
+const rows = 9;
+const cols = 9;
+
+const menuBarHeight = 24;
+const statusBarHeight = 24;
+const paddingVertical = 10;
+const paddingHorizontal = 8;
+
+const widthNow = paddingHorizontal + (cellSize * cols);
+const heightNow = paddingVertical + menuBarHeight + statusBarHeight + (cellSize * rows);
+</pre>
+                    </template>
+                </dokki-code>
+            
+<dokki-image src="./4.png" width="340" height="508"     headerless="true"  no-border-rounding="true"  thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEwUlEQVR4nH2VW09TWxSF96/wj+iric8anozPBhM1opZWCCSASkWOPBiKF4IgBSq2BXov11LaItobiFXRGGPCXxkn34RVPC/nYWXtveacY44551h7e5lMTWNjaY2NZdXfn1MgkJbPl7R1/35Sfn+q/dzbm1EgkNL09J7W11uKRne1sFBROFxWPt9SMDglLxRKKxwuqrMzJJ9vUx0dMZ0//1aXLkV05UpMFy7M6OLFeXV0LOncuRF5nl937oQVi8U0MjKmzk6/enrGNTAwpKtXA/Lm5wuanMyotzeiGzeWdPduSrduLaurK6F799K6fTuhnp6MfL6Url1b0OXLs+rqeqv+/gkNDk6quzuk3t5pPX06p5s3h+X9/PlTpdKeNjY2tLtbUrlcVKNRtee1tbxKpW1Vqx9Vr9d0eNhQq9VUs9lUrXagWm1fjcaBqtW6Wq0jTU1Nyfv+/buKxW1NT0/ryZMRPXv2TMlkSplMVqOj/ygYfKJ8Pq/d3V2VSiUViyXby+WztbOzo3q9qpcvX8r7+vWryuWyKpWKLQLd+4cPH8yZBQiLc+x/rx0DrJ8A/vjxQx8/UlL9tJSaPn36ZGe8f/nypb0ODw8NFDsL32azabHYXr9+Le/bt2/a29tTNBrVxMSEEolEm9nBwYEtQByLd+/etdmvra1pcnLSetdoNE4YAggbZMBBKpWyBARVq1UVi0WtrKxoaWlJm5ubCofDBobP+vq63rx5Y/3f398/AWQoLhj6lEIfCdra2tL79+8Vj8dtLS4utivAB9B6vW6xMLSSAQTENR7n7e1tO4MdjgSyYIEfZ86nUqnYc6vV0vPnz+X9+vXLmks/cGZqq6ur1gZ2GGGj7FevXpleYZLJZBSJRDQ3N2fPs7OzCgaD8kDGiR6l02kDoZ+FQsEGhTNglOzKp3Se8YtEIrYvLy/r4cOHZ4AEYQCERQKC2XHGNj8/bzYG587j8bjZcrncCSBXz00smUyaE8ZsNmtsYe1KRiLYXCX4JhIJS0Alw8PD8mg0B+iLMgikLzjSF94XFhbMBhCyITE7cbHTspHUwMDA2VDoGQ4wowVMjDs8MzNjCRxbbK63DK5QKJi8uACPHj06YegmRjaYkZ0zx8YNgWdYs7sqotGoVUDL2gwpC2bsONMnd2sAddJwNrSKDd1unA4U9tZDrh6lkY1FABOEFYyZIv0FDFBsCB4bYNls1lgSZyUDSDlIAicYsQMCqCsJYJjg62TEWlxctHPYDg4Oyvvz54+BuHuKNJAJJcOIcklGFbBxsnFSWllZsQlzp9tDwcHJxjWeYDcAkrFgxhn9c5KKRqOWEBXYUH7//m0OZHSywYgzl57PEwEkDYVCJpHx8XFLxFkulzPpIJvHjx/L+/z5sxncECgbAIDpHcCwd9cRm5MNe/x0aAzIGB4dHdknCFC0RDanL3bKpJfsVACIk5n7YOTzeRO53WWmjAycxtyXx11+QFiAOGCSk4yYWCxm73xwh4aGToZCNkomI06USk9d6bDFBqAbALvT5X9KPj4+tq8tH1f396Ns/mLujvLR5Xbwi+CMPyA77+5/zd9zdHRU3osXL+T3+9Xd3W17IBCQz+fTgwcP2vv/2Tjnua+vT9evX9e/M3X8b5q5pgUAAAAASUVORK5CYII=">
+                        </dokki-image>
+<p>GPT-4 shows it has a working understading of what elements contribute to the dimensions of the window. Not all of the values it gave are precisely correct, but in the right ballpark. I adjusted the small inaccuracies by hand.</p>
+<p>I made some tweaks on my own to the way the app looks:</p>
+<dokki-image src="./5.png" width="340" height="508"     headerless="true"  no-border-rounding="true"  thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFJUlEQVR4nGWV209TWRTGz1/hP6KvJj5reDI+8oCJN8RChYREx2QAHZsYgaiIDFOgEioIbbGBIpQWCp5euNgWlFovoKLGxOjbJL59k9+Cg5P4sLL3Xnuvb3/rW2uf48RiWQUCUQUCk2ptfSK/Pyqfb8Ls0qUJNTVFDuYtLTH5/RH19S1perqokZFFDQ0tKBhMKx4vqq2tV05XV1TBYFJ1dV3y+WZUUxPW4cP9OnYspBMnwjpy5G8dPTqomppRHTrUIcdp0oULQYXDYXV0BFRX16Tm5k5dufKHTp70yxkcnFVPT0wtLSGdPj2qixcjOnt2TPX142poiOrcuXE1N8fk80V06tSQjh//R/X1/Wpt7dbVqz1qbOxSS0ufrl8f0Jkzf8p5+fKlUqklJRIJLS6mlE4nlc+7Np+aiiuVmpPrLiuXy2p9Pa9isaBCoaBsdlXZ7Iry+VW5bk7F4qZ6e3vlbGxsKJmcU19fn9rbO3Tz5k1NTEQUi03qxo2/1NbWrng8rsXFRaVSKSWTKRvT6V82Pz+vXM7VnTt35JRKJaXTaS0sLJgR6K0zmYwdxgDB8LP/f5s3wNwe4IsXL7S8TEq5/VSyevbsmflYP3/+/MDW19cNlH2Ms4VCwWLZu3fvnpxyuaylpSWNjIyou7tb4+PjB8xWV1fNAPFYPHz48ID91NSUenp6TLt8Pr/HEA1hQxvcvXtXkUjELiDIdV0lk0k9fvxYo6OjmpmZUTAYNDDOTE9P68GDB6b/ysrKL0B0IAUYeGBoCcDw8LBdRgawGxsbM0CPZXZfogMNNzc3ja6nCxuM+GC4trZmOmHM2ffOM3dd10ggnWn47t07ff78Wa9fvxbzDx8+qFKp6NOnTzayZu/Nmzd6//79b3tv375VtVrV9+/fLXWHBQGkTsU5yG2AF4tFA8LPA+AcbcYeI7FbW1t2HlLW2DgJInWCWAOEyACRHpeRLq3BHJ+3t7a2ZgaoMYTyx48f9erVKwPe2dkxcA6xBsRjRhDn8G1vb5uu5XLZLsEGBgbkkCLMaFyCPDB8BMCULqCaBDHSm0+fPrWiZDIZay3ieLa/FQW2XuUBpT3oN69FYIdvcnLSWiuRSFiDs3ft2rU9hgiLbtBHG4LQkobnwzAxMWFtwrnZ2Vlr/sHBQfOHw2Hr1bm5ObW1te1p6LWDxxJg0vFAuYQL6Tkk4ClGo1EbE4mEjcjQ398vBxAKQZBXGLTE8DF6GgNK6oDADCmi0ahdShzP0ABBhxXFIBDxYQ4A+wB6LQNzigBb0kyn0/ZSwGhvb5cDO0AI9HRkTnHQDDmQwWPIHuDEkX6pVDJACmRF8YpA5bjda2Jv5ALAGLkAJujtZVUsFq3K6BgIBORwiBvQhTSwSrUqd2VF2zs71g6kDEuveLBHM/YqlYqBUsChoSE5sKCnEDnruiqVyyosL2uLL7jramNz8+AlEEw2jLCmX8v72nOhvWWcCBuLxTQ3M6PZXE5rtbWS46h0/rwWSiWtFwoGRJp0As8OqQCpVquWwdevX/feMjdQNZr0STSqJ+m0MrW1+tdxlGto0CrveF9TLscAYk3alUrFfF++fNlrGypFynT7o0ePDHgoFFIsHtfwyIjpy7ulimjlvXNGgKgyc1jfv39fDhMO8hPy/n48LzTiF8AaSUiX3tzd3dWPHz+sQN++fTNmFOnnz58KhUJy+NM1NTWpsbHRRr/fL5/Pp8uXL5uvubnZfLdu3bJ/xu3bt+3v2NnZaWNXV5f5YEf8f2Euf25N/uPsAAAAAElFTkSuQmCC">
+                        </dokki-image>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport"
+              content="width=device-width">
+
+        <meta http-equiv="content-type"
+              content="text/html; charset=UTF-8">
+              
+        <link rel="stylesheet"
+              type="text/css"
+              href="index.css">
+
+        <title>DOSBox</title>
+
+        <script src="./js-dos/js-dos.js"></script>
+    </head>
+    <body>
+        <div id="message-display" class="loading">
+            Loading DOS...
+        </div>
+
+        <main id="dosbox">
+            <canvas id="jsdos-canvas" oncontextmenu="return false;"></canvas>
+        </main>
+
+        <script type="module">
+            import content from "./content-ths.js";
+            import {start_dosbox} from "./dosbox.js";
+
+            const targetContentKey = (window.location.hash || "#").substr(1);
+            let targetContent = undefined;
+
+            const contentKeys = Object.keys(content);
+            for (let i = 0; i < contentKeys.length; i++)
+            {
+                const contentKey = contentKeys[i];
+
+                if ((new RegExp(contentKey, "i")).test(targetContentKey))
+                {
+                    targetContent = Object.values(content)[i];
+                    break;
+                }
+            }
+
+            start_dosbox(targetContent || content[undefined]);
+        </script>
+    
+    </body>
+</html>

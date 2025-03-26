@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        
+        <script type="module" src="./js/diff.js"></script>
+        <script type="module" src="../+assets/feedback-inline-button.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .x-diff {
+                display: block;
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                border-radius: var(--dokkiCSS-embedded-border-radius);
+                padding: 12px;
+                margin: 1.375rem 0;
+            }
+
+            .x-diff > p {
+                margin: 0;
+                margin-bottom: 0;
+                padding: 2px;
+            }
+
+            .x-diff > p.added {
+                background-color: #00990019;
+            }
+            
+            .x-diff > p.removed {
+                background-color: #ed143d19;
+            }
+
+            .x-diff > p.not-changed {
+                margin-left: 2ch;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Capturing DOSBox's frame buffer via shared memory
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="28 September 2022"></post-date>
+<dokki-topic title="Capturing DOSBox&apos;s frame buffer via shared memory">
+<p><a href="/#vcs">VCS</a> is a free program I wrote for doing high-quality video capture with Datapath's VisionRGB capture devices. The program's aimed chiefly at capturing old analog sources, e.g. DOS-era PCs.</p>
+<p>For debugging purposes, I needed a convenient source of period-correct images to capture, as it was a chore booting up a real retro PC every time. So I implemented DOSBox capturing, where instead of a capture device, VCS reads from a shared memory buffer where DOSBox streams its output.</p>
+<p>This blog post describes that implementation in general outlines.</p>
+<p>The post assumes that you have some familiarity with the concept of shared memory and are working in Linux – shared memory in Windows is a little bit different in the details. I don't claim to be an expert on this topic though, so feel free to <ths-inline-feedback-button>drop feedback</ths-inline-feedback-button> if something here seems out of line.</p>
+<dokki-image src="./img/rally.webp" width="1284" height="431"     headerless   thumbnail-src="data:image/png;base64,UklGRroAAABXRUJQVlA4IK4AAABwBACdASoUAAYAPm0skkWkIqGYBABABsSgCdMoR3Ac+xB0uuq/oNVuMP5tcAD++p9lX4Pz1/gZpizZYJ+szErgWfzt4UeWiFf0p8kLRsGWDKd0QxL97FlZVJdK6L36Z++Lf/H6+4n5IZ605wUgpaDzEPnCrLiTBylMt/iLPutc3GlrTOqGj6+0PaFez+z2l9IcsCcf8Qt/+OoKoOs8ipD0REQHOtITbB9as1mEAAA="><template #caption>Capturing DOS gameplay. DOSBox is on the left, and on the right VCS captures and displays DOSBox's output in real time.</template>
+                        </dokki-image>
+<dokki-subtopic title="On the VCS side">
+<p>VCS's responsibility in this system is to set up the shared memory and respond to frame buffer images being shared by DOSBox. This implementation's full original code can be found <a href="https://github.com/leikareipa/vcs/blob/master/src/capture/dosbox_mmap/capture_dosbox_mmap.cpp">here</a>; the code snippets below have been simplified for clarity by e.g. removing error checking.</p>
+<p>First, we'll use <em><a href="https://linux.die.net/man/3/shm_open">shm_open()</a></em> to create a shared memory object, which will be represented as a file in <strong>/dev/shm</strong>. Then, <em><a href="https://linux.die.net/man/2/ftruncate">ftruncate()</a></em> to initialize the size of the corresponding shared memory allocation and <em><a href="https://linux.die.net/man/2/mmap">mmap()</a></em> to get a local-space pointer to the allocation. Data written via the pointer will be visible to other processes that likewise access the memory object.</p>
+
+                <dokki-code syntax="cpp"headerless="true">
+                    <template #code>
+                        <pre>uint8_t *MMAP_STATUS_BUF = nullptr;
+uint8_t *MMAP_SCREEN_BUF = nullptr;
+const char MMAP_STATUS_BUF_FILENAME[] = &quot;vcs_dosbox_mmap_status&quot;;
+const char MMAP_SCREEN_BUF_FILENAME[] = &quot;vcs_dosbox_mmap_screen&quot;;
+
+// Create the shared status buffer.
+int fd = shm_open(MMAP_STATUS_BUF_FILENAME, (O_RDWR | O_CREAT), 0666);
+ftruncate(fd, MMAP_STATUS_BUF_SIZE);
+MMAP_STATUS_BUF = (uint8_t*)mmap(nullptr, MMAP_STATUS_BUF_SIZE, 0666, MAP_SHARED, fd, 0);
+
+// Create the shared screen buffer.
+fd = shm_open(MMAP_SCREEN_BUF_FILENAME, (O_RDWR | O_CREAT), 0666);
+ftruncate(fd, MMAP_SCREEN_BUF_SIZE);
+MMAP_SCREEN_BUF = (uint8_t*)mmap(nullptr, MMAP_SCREEN_BUF_SIZE, 0666, MAP_SHARED, fd, 0);
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The snippet above creates two shared memory buffers: a status buffer, and a screen buffer. The screen buffer is for sharing frame data from DOSBox to VCS, and the status buffer for control flow signaling between DOSBox and VCS – e.g. to control which program is allowed to access the shared memory at a given time.</p>
+<p>We'll spawn a new thread in VCS to monitor the status buffer for a signal indicating that new frame buffer data is available in the screen buffer:</p>
+
+                <dokki-code syntax="cpp"headerless="true">
+                    <template #code>
+                        <pre>while (RUN_CAPTURE_THREAD)
+{
+    if (get_status_buffer_value(status_buffer_value_e::is_new_frame_available))
+    {
+        const char *framePixels = get_screen_buffer_value(screen_buffer_value_e::pixels_ptr);
+        const uint16_t frameWidth = get_screen_buffer_value(screen_buffer_value_e::width);
+        const uint16_t frameHeight = get_screen_buffer_value(screen_buffer_value_e::height);
+
+        memcpy(localPixelBuffer, framePixels, (frameWidth * frameHeight * 4));
+
+        set_status_buffer_value(status_buffer_value_e::is_new_frame_available, false);
+    }
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>When DOSBox has shared a new frame's data, the above code copies it into VCS's internal pixel buffer for further processing and displaying, and resets the shared status buffer flag to indicate to DOSBox that it's again free to share the next frame, as VCS has finished reading the existing data.</p>
+<p>The code above uses helper functions like <em>get_screen_buffer_value()</em> and <em>set_status_buffer_value()</em> for extra readability. These functions simply map plain-language enumerators to specific regions of the shared memory buffers, like so:</p>
+
+                <dokki-code syntax="cpp"headerless="true">
+                    <template #code>
+                        <pre>intptr_t get_screen_buffer_value(const screen_buffer_value_e valueEnum)
+{
+    switch (valueEnum)
+    {
+        case screen_buffer_value_e::width: return *((uint16_t*)&amp;MMAP_SCREEN_BUF[0]);
+        case screen_buffer_value_e::height: return *((uint16_t*)&amp;MMAP_SCREEN_BUF[2]);
+        case screen_buffer_value_e::pixels_ptr: return (intptr_t)&amp;MMAP_SCREEN_BUF[4];
+        default: assert(!&quot;Unrecognized enumerator for querying the screen buffer.&quot;);
+    }
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+</dokki-subtopic><dokki-subtopic title="On the DOSBox side">
+<p>To get DOSBox to share its data with VCS, we'll need to patch its code a bit. This basically boils down to</p>
+<ol>
+<li>having DOSBox acquire access to the shared memory buffers that were set up by VCS, and</li>
+<li>copying DOSBox's frame buffer pixel data into the shared memory every time DOSBox updates its screen.</li>
+</ol>
+<p>You'll find the full original patch <a href="https://github.com/leikareipa/vcs/blob/master/src/capture/dosbox_mmap/dosbox-0.74.3-linux-for-vcs-mmap.patch">here</a>; the snippets below have been simplified for clarity e.g. by removing error checks.</p>
+<p>As with VCS, we'll use <em>shm_open()</em> and <em>mmap()</em> to access the shared memory objects and map them into DOSBox's address space.</p>
+
+                <dokki-code syntax="cpp"headerless="true">
+                    <template #code>
+                        <pre>unsigned char *THS_MMAP_STATUS_BUF;
+unsigned char *THS_MMAP_SCREEN_BUF;
+
+unsigned char* ths_acquire_shared_memory_buffer(const char *filename)
+{
+    const int fd = shm_open(filename, O_RDWR, 0666);
+    unsigned char *sharedMemPtr = (unsigned char*)mmap(NULL, stat.st_size, 0666, MAP_SHARED, fd, 0);
+    return sharedMemPtr;
+}
+
+void ths_init_shared_memory_interface(void)
+{
+    THS_MMAP_STATUS_BUF = ths_acquire_shared_memory_buffer(&quot;vcs_dosbox_mmap_status&quot;);
+    THS_MMAP_SCREEN_BUF = ths_acquire_shared_memory_buffer(&quot;vcs_dosbox_mmap_screen&quot;);
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The memory object names – &quot;vcs_dosbox_mmap_status&quot; and &quot;vcs_dosbox_mmap_screen&quot; – are the same as we set up with VCS and which should be found under <strong>/dev/shm</strong> once VCS has been started.</p>
+<p>To share the frame buffer data, we'll first check a flag in the status buffer to determine whether VCS has processed the previous frame we shared. This is a simple memory barrier looking to ensure that we don't write into the shared memory while a VCS thread is reading it.</p>
+
+                <dokki-code syntax="cpp"headerless="true">
+                    <template #code>
+                        <pre>void ths_copy_frame_buffer(SDL_Block *sdl)
+{
+    // VCS will set this value to 0 once it's done accessing the shared pixel
+    // buffer, meaning that DOSBox is free to modify the buffer again.
+    if (THS_MMAP_STATUS_BUF[0] != 0)
+    {
+        return;
+    }
+
+    // Copy the contents of DOSBox's frame buffer into the shared memory buffer.
+    if (sdl-&gt;opengl.framebuf)
+    {
+        const uint16_t frameWidth = sdl-&gt;draw.width;
+        const uint16_t frameHeight = sdl-&gt;draw.height;
+        
+        *((uint16_t*)&amp;THS_MMAP_SCREEN_BUF[0]) = frameWidth;
+        *((uint16_t*)&amp;THS_MMAP_SCREEN_BUF[2]) = frameHeight;
+
+        memcpy(&amp;THS_MMAP_SCREEN_BUF[4], sdl-&gt;opengl.framebuf, (frameHeight * sdl-&gt;opengl.pitch));
+    }
+
+    // Signal to VCS that the shared memory buffer contains a new frame.
+    THS_MMAP_STATUS_BUF[0] = 1;
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>If we've been cleared to modify the shared memory, we'll <em>memcpy()</em> the pixel buffer data using the pointer we got from <em>mmap()</em>. Note that this code assumes DOSBox to have been configured to output using OpenGL.</p>
+<p>At the end of that code, we raise the status buffer flag to indicate to VCS that a new frame's data has been shared. Until VCS finishes processing that frame and clears the status buffer flag, <em>ths_copy_frame_buffer()</em> will return without sharing any more data, effectively dropping frames until VCS catches up.</p>
+<p>Finally, as we want DOSBox to call <em>ths_copy_frame_buffer()</em> whenever its frame buffer contains a new, finished frame to be displayed, we'll append the call to instances of <em><a href="https://wiki.libsdl.org/SDL_GL_SwapWindow">SDL_GL_SwapBuffers()</a></em> in <strong>src/gui/sdlmain.cpp</strong>:</p>
+<x-diff>
+      SDL_GL_SwapBuffers();\
+    + ths_copy_frame_buffer(&sdl);
+</x-diff>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

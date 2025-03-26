@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            x-size {
+                border-radius: 7px;
+                margin-right: 1ch;
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+            td span {
+                padding: 0.85ch;
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                border-radius: 10px;
+                margin-right: 0.5ch;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                display: none;
+            }
+            .results input {
+                width: 100%;
+                box-sizing: border-box;
+                border: 1px solid var(--dokkiCSS-page-primary-line-color);
+                padding: 0.5em;
+                border-radius: 5px;
+                background-color: var(--dokkiCSS-page-primary-bg-color);
+                color: var(--dokkiCSS-page-primary-fg-color);
+            }
+            .results input:focus {
+                outline: none;
+            }
+            td span.first {
+                box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1), inset 0 6px 5px white;
+            }
+            td span.last {
+                box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s {
+                color: transparent;
+                width: 1rem !important;
+                text-align: center !important;
+            }
+            .dokki-table.results td.s0 {
+                background-color: gray;
+            }
+            .dokki-table.results td.s1 {
+                background-color: lightgray;
+            }
+            .dokki-table.results td.s2 {
+                background-color: white;
+            }
+            .dokki-table.results td.s {
+                background-color: #303030;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        <template dokki-document>
+            <section title>
+                Testing open and closed LLMs some more
+            </section>
+            <section widgets>
+                <blog-post-widgets/>
+            </section>
+            <section content>
+                <article src="content.md"></article>
+            </section>
+        </template>
+        <script>
+            window.addEventListener("dokki-mounted", ()=>{
+                const filterEl = document.querySelector('.results input');
+                if (filterEl) {
+                    filterEl.addEventListener('keyup', function() {
+                        const searchWords = this.value.toLowerCase().trim().split(" ");
+                        const table = document.querySelector('.results');
+                        const rows = table.querySelectorAll('tbody tr');
+                    
+                        for (let i = 0; i < rows.length; i++) {
+                            let firstCell = rows[i].getElementsByTagName('td')[0];
+                            if (firstCell) {
+                                let textValue = firstCell.textContent || firstCell.innerText;
+                                if (searchWords.some(w=>textValue.toLowerCase().indexOf(w) > -1)) {
+                                    rows[i].style.display = '';
+                                } else {
+                                    rows[i].style.display = 'none';
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

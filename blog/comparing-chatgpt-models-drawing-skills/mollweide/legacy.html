@@ -1,0 +1,51 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="400" height="400"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+          const width = canvas.width;
+          const height = canvas.height;
+          const imageData = ctx.createImageData(width, height);
+
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              const i = (y * width + x) * 4;
+
+              const lat = (y / height) * Math.PI - Math.PI / 2;
+              const lon = (x / width) * 2 * Math.PI - Math.PI;
+
+              const theta = Math.asin(Math.sin(lat) / Math.sqrt(2));
+              const x2 = 2 * Math.sqrt(2) / Math.PI * lon * Math.cos(theta);
+              const y2 = Math.sin(lat);
+
+              let color;
+              if ((Math.floor(x2 / Math.PI * 7) + Math.floor(y2 / Math.PI * -7)) % 2 === 0) {
+                color = [255, 255, 255, 255];
+              } else {
+                color = [0, 0, 0, 255];
+              }
+
+              imageData.data[i + 0] = color[0];
+              imageData.data[i + 1] = color[1];
+              imageData.data[i + 2] = color[2];
+              imageData.data[i + 3] = color[3];
+            }
+          }
+
+          ctx.putImageData(imageData, 0, 0);
+        </script>
+    </body>
+</html>

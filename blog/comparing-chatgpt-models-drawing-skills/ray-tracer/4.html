@@ -1,0 +1,52 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="640" height="320"></canvas>
+        <script>
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          function drawSphere(x, y, radius, color) {
+            const gradient = ctx.createRadialGradient(x - radius / 4, y - radius / 4, 0, x, y, radius);
+            gradient.addColorStop(0, '#FFF');
+            gradient.addColorStop(0.5, color);
+            gradient.addColorStop(1, '#000');
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+          }
+
+          function drawReflection(x, y, radius, color) {
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+          }
+
+          const centerX = canvas.width / 2;
+          const centerY = canvas.height / 2;
+
+          // Draw red sphere in the middle
+          drawSphere(centerX, centerY, 50, 'rgba(255, 0, 0, 1)');
+
+          // Draw blue sphere further to the left
+          drawSphere(centerX - 150, centerY, 50, 'rgba(0, 0, 255, 1)');
+
+          // Draw reflection of red sphere on blue sphere
+          drawReflection(centerX - 130, centerY - 20, 20, 'rgba(255, 0, 0, 0.4)');
+        </script>
+    </body>
+</html>

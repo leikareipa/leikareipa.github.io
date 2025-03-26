@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="https://leikareipa.github.io/dosbox/js-dos/js-dos.js"></script>
+        <script src="/experimental/w95/distributable/w95-api.js"></script>
+        <script src="/experimental/w95/distributable/w95-assets.js"></script>
+        <script src="/experimental/w95/distributable/w95-widgets.js"></script>
+        <link href="/experimental/w95/distributable/w95.css" rel="stylesheet">
+    </head>
+    <style>
+        #desktop {
+            background-size: cover !important;
+        }
+
+        iframe.rsed,
+        iframe.dosbox,
+        iframe.geoclock,
+        iframe.ia-browser {
+            background-color: rgb(192, 192, 192);
+            border: none;
+        }
+
+        iframe.ia-browser {
+            width: 1180px;
+            height: 668px;
+            transform: none;
+            filter: none;
+            position: absolute;
+        }
+
+        canvas.ngon-texture-convert,
+        canvas.image-viewer {
+            background-color: rgb(192, 192, 192);
+            pointer-events: none;
+            image-rendering: pixelated;
+        }
+        
+        .jsdos-canvas {
+            width: unset;
+            height: unset;
+            position: absolute;
+            cursor: none;
+            padding: 0;
+            background-color: black;
+        }
+        .dosbox-container {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+        }
+    </style>
+    <body>
+        <div id="w95-debug-layer"></div>
+        <script type="module">
+            import {icons} from "./desktop/icons.js";
+
+            import notepad from "/experimental/w95/samples/notepad/app.js";
+            import {icons as notepadIcons} from "/experimental/w95/samples/notepad/assets/icons.js";
+
+            import analogClock from "/experimental/w95/samples/analog-clock/app.js";
+
+            import browser from "/experimental/w95/samples/internet-archive-browser/app.js";
+            import {icons as browserIcons} from "/experimental/w95/samples/internet-archive-browser/assets/icons.js";
+
+            import pillunsaamislaskuri from "./desktop/$apps/pillunsaamislaskuri/app.js";
+            import {icons as pillunsaamislaskuriIcons} from "./desktop/$apps/pillunsaamislaskuri/icons.js";
+
+            import rallySportEdTrackEditor from "./desktop/$apps/rallysported/track-editor.js";
+            import {icons as rallySportEdIcons} from "./desktop/$apps/rallysported/icons.js";
+
+            import apina from "./desktop/$apps/apina/app.js";
+            import {icons as apinaIcons} from "./desktop/$apps/apina/icons.js";
+
+            import heightmapGen from "./desktop/$apps/heightmap/app.js";
+            import {icons as heightmapGenIcons} from "./desktop/$apps/heightmap/icons.js";
+
+            import xmas94 from "./desktop/$apps/xmas94/app.js";
+            import {icons as xmas94Icons} from "./desktop/$apps/xmas94/icons.js";
+
+            import aiDos from "./desktop/$apps/aidos/app.js";
+
+            import command from "./desktop/$apps/command/app.js";
+            import {icons as commandIcons} from "./desktop/$apps/command/icons.js";
+
+            import gorillas from "./desktop/$apps/gorillas/app.js";
+
+            import rngonTextureConvert from "./desktop/$apps/rngon-texture-converter/app.js";
+            import {icons as rngonTextureConvertIcons}  from "./desktop/$apps/rngon-texture-converter/icons.js";
+
+            import imageViewer from "./desktop/$apps/image-viewer/app.js";
+            import {icons as imageViewerIcons} from "./desktop/$apps/image-viewer/icons.js";
+
+            import fileExplorer from "./desktop/$apps/file-explorer/app.js";
+            import {icons as fileExplorerIcons} from "./desktop/$apps/file-explorer/icons.js";
+
+            import acq from "./desktop/$apps/acq/widgets/control-panel/app.js";
+            import {appicon32 as acqIcon} from "./desktop/$apps/acq/widgets/textures.js";
+
+            const desktop = w95.shell.desktop({
+                showWatermark: (window.location.hostname === "localhost"),
+                icons: [
+                    w95.widget.desktopIcon({
+                        text: "Nettiselain",
+                        icon: browserIcons.app32,
+                        onActivate() {
+                            w95.shell.run(browser({year: 1999, url: "www.altavista.com"}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "PC.txt",
+                        icon: notepadIcons.app32,
+                        onActivate() {
+                            w95.shell.run(notepad({file: "./desktop/PC.txt"}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Rally-Sport Track Editor",
+                        icon: rallySportEdIcons.app32,
+                        onActivate() {
+                            w95.shell.run(rallySportEdTrackEditor);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Pillunsaamis laskuri",
+                        icon: pillunsaamislaskuriIcons.app32,
+                        onActivate() {
+                            w95.shell.run(pillunsaamislaskuri, {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Copy of PC.txt",
+                        icon: notepadIcons.app32,
+                        onActivate() {
+                            w95.shell.run(notepad({file: "./desktop/Copy of PC.txt"}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Quake",
+                        icon: commandIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(command({url: "/dosbox/#/quake/sw/"}), {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Jaana Lapissa.gif",
+                        icon: imageViewerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(imageViewer("./desktop/Jaana Lapissa.gif"));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Pyörivä apina",
+                        icon: apinaIcons.app32,
+                        onActivate() {
+                            w95.shell.run(apina, {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Valokuvia",
+                        icon: fileExplorerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(fileExplorer({
+                                defaultRunners: {
+                                    image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
+                                },
+                                files: {
+                                    "Valokuvia/": {
+                                        "Näyttis/": {
+                                            "G400.gif": {},
+                                            "TNT2 M64.gif": {},
+                                        },
+                                        "kokko.gif": {},
+                                        "pappa.gif": {},
+                                        "pappa nuorena.gif": {},
+                                        "syksy.gif": {},
+                                        "talvi.gif": {},
+                                    },
+                                },
+                            }));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Rngon texture converter",
+                        icon: rngonTextureConvertIcons.app32,
+                        onActivate() {
+                            w95.shell.run(rngonTextureConvert);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "GeoClock",
+                        icon: commandIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(command({url: "/dosbox/#/geoclock/"}), {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Operation Cleaner",
+                        icon: commandIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(command({url: "/dosbox/#/operation-cleaner/"}), {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "COMI",
+                        icon: fileExplorerIcons.url32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(browser({year: 1999, url: "www.lucasarts.com/products/monkey/default.htm"}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "SÄÄTÖÄ.GIF",
+                        icon: imageViewerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(imageViewer("./desktop/SÄÄTÖÄ.GIF"));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Real2Int.h",
+                        icon: icons.fileH32,
+                        onActivate() {
+                            w95.shell.run(notepad({file: "./desktop/Real2Int.h", isWordWrap: false}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "ACQ",
+                        icon: acqIcon,
+                        async onActivate() {
+                            const models = [];
+
+                            try {
+                                const response = await fetch('http://localhost:11434/api/tags');
+                                if (!response.ok) {
+                                    throw "";
+                                }
+
+                                const json = await response.json();
+                                if (!Array.isArray(json.models)) {
+                                    throw "";
+                                }
+                                
+                                models.push(...json.models.map(m=>m.model).sort());
+                            }
+                            catch {
+                                models.length = 0;
+                            }
+
+                            w95.shell.run(acq({models}), {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Wrapperit",
+                        icon: fileExplorerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(fileExplorer({
+                                defaultRunners: {
+                                    unknown: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    ini: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    text: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    library: (filePath)=>{
+                                        const link = document.createElement("a");
+                                        link.href = `/desktop/${filePath}`;
+                                        link.click();
+                                    },
+                                },
+                                files: {
+                                    "Wrapperit/": {
+                                        "APIt/": {
+                                            "S3d-2-Sw/": {
+                                                "readme.txt": {},
+                                                "s3dtkw.dll": {},
+                                                "s3dtkw.ini": {},
+                                            },
+                                            "Glide-2-S3d/": {
+                                                "Glide2x/": {
+                                                    "glide2x.dll": {},
+                                                    "glide2x.ini": {},
+                                                    "readme.txt": {},
+                                                },
+                                            },
+                                        },
+                                        "Pelit/": {
+                                            "Destruction Derby/": {
+                                                "S3d-2-Sw/": {
+                                                    "readme.txt": {},
+                                                    "s3dtkw.dll": {},
+                                                    "s3dtkw.ini": {},
+                                                },
+                                            },
+                                            "Destruction Derby 2/": {
+                                                "Msi-2-Sw/": {
+                                                    "msi95.dll": {},
+                                                    "msi95.ini": {},
+                                                    "readme.txt": {},
+                                                },
+                                            },
+                                            "Havoc/": {
+                                                "S3d-2-Sw/": {
+                                                    "readme.txt": {},
+                                                    "s3dtkw.dll": {},
+                                                },
+                                            },
+                                            "Ignition/": {
+                                                "Glide-2-S3d/": {
+                                                    "glide2x.dll": {},
+                                                    "glide2x.ini": {},
+                                                    "readme.txt": {},
+                                                },
+                                            },
+                                            "Monster Truck Madness 2/": {
+                                                "Glide-2-S3d/": {
+                                                    "glide2x.dll": {},
+                                                    "glide2x.ini": {},
+                                                    "readme.txt": {},
+                                                },
+                                            },
+                                            "Need for Speed 2 SE/": {
+                                                "Glide-2-S3d/": {
+                                                    "glide2x.dll": {},
+                                                    "glide2x.ini": {},
+                                                    "readme.txt": {},
+                                                },
+                                            },
+                                            "POD Gold/": {
+                                                "S3d-2-Sw/": {
+                                                    "readme.txt": {},
+                                                    "s3dtkw.dll": {},
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            }));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "A-Clock",
+                        icon: pillunsaamislaskuriIcons.app32,
+                        onActivate() {
+                            w95.shell.run(analogClock, {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "RALLYS",
+                        icon: fileExplorerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(fileExplorer({
+                                defaultRunners: {
+                                    batch: (_, filename)=>w95.shell.run(command({url: `/dosbox/?run=['cls','${filename}']#/rally-sport/rallys/`})),
+                                    executable: (_, filename)=>w95.shell.run(command({url: `/dosbox/?run=['cls','${filename}']#/rally-sport/rallys/`})),
+                                    unknown: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    text: (filename)=>w95.shell.run(notepad({
+                                        file: `./desktop/${filename}`,
+                                        decoder: (bytes)=>(new TextDecoder("iso-8859-15").decode(bytes)),
+                                    })),
+                                    image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
+                                },
+                                files: {
+                                    "RALLYS/": {
+                                        "ANIMS.DTA": {},
+                                        "CARA1.DTA": {},
+                                        "CARA2.DTA": {},
+                                        "CARA3.DTA": {},
+                                        "CARA4.DTA": {},
+                                        "CARB1.DTA": {},
+                                        "CARB2.DTA": {},
+                                        "CARB3.DTA": {},
+                                        "CARB4.DTA": {},
+                                        "CARC1.DTA": {},
+                                        "CARC2.DTA": {},
+                                        "FILE_ID.DIZ": {},
+                                        "FONTTI.BMP": {},
+                                        "GAME.DTA": {},
+                                        "HAHA1.WAV": {},
+                                        "HIRES2.BMP": {},
+                                        "HITABLE.ORG": {},
+                                        "HITABLE.TXT": {},
+                                        "ISOTAUS1.BMP": {},
+                                        "KIERROS1.DTA": {},
+                                        "KIERROS2.DTA": {},
+                                        "KIERROS3.DTA": {},
+                                        "KIERROS4.DTA": {},
+                                        "KIERROS5.DTA": {},
+                                        "KIERROS6.DTA": {},
+                                        "KIERROS7.DTA": {},
+                                        "KIERROS8.DTA": {},
+                                        "KIERROS.DTA": {},
+                                        "KLONK1.WAV": {},
+                                        "KOKOFONT.BMP": {},
+                                        "MAASTO.001": {},
+                                        "MAASTO.002": {},
+                                        "MAASTO.003": {},
+                                        "MAASTO.004": {},
+                                        "MAASTO.005": {},
+                                        "MAASTO.006": {},
+                                        "MAASTO.007": {},
+                                        "MAASTO.008": {},
+                                        "MAASTO.100": {},
+                                        "MAASTO.DTA": {},
+                                        "MAASTO.OHO": {},
+                                        "MAASTO.OLD": {},
+                                        "PALAT.001": {},
+                                        "PALAT.002": {},
+                                        "PIKKUAUT.BMP": {},
+                                        "RALLY.BAT": {},
+                                        "RALLYE.EXE": {},
+                                        "README.TXT": {},
+                                        "RESULTS.DTA": {},
+                                        "SBLASTER.CFG": {},
+                                        "SOUND1.WAV": {},
+                                        "SOUND2.WAV": {},
+                                        "TEXT1.DTA": {},
+                                        "TKUVA1.BMP": {},
+                                        "TKUVA2.BMP": {},
+                                        "TKUVA3.BMP": {},
+                                        "TKUVA4.BMP": {},
+                                        "TKUVA5.BMP": {},
+                                        "TKUVA6.BMP": {},
+                                        "TKUVA7.BMP": {},
+                                        "TKUVA8.BMP": {},
+                                        "TKUVA.BMP": {},
+                                        "VALIKKO.EXE": {},
+                                        "VALOT.BMP": {},
+                                        "VARIMAA.001": {},
+                                        "VARIMAA.002": {},
+                                        "VARIMAA.003": {},
+                                        "VARIMAA.004": {},
+                                        "VARIMAA.005": {},
+                                        "VARIMAA.006": {},
+                                        "VARIMAA.007": {},
+                                        "VARIMAA.008": {},
+                                        "VARIMAA.100": {},
+                                        "VARIMAA.555": {},
+                                        "VARIMAA.DTA": {},
+                                        "VARIMAA.ODD": {},
+                                        "VARIMAA.OLD": {},
+                                    },
+                                },
+                            }));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Xmas '94",
+                        icon: xmas94Icons.app32,
+                        onActivate() {
+                            w95.shell.run(xmas94, {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Heightmap Generator",
+                        icon: heightmapGenIcons.app32,
+                        onActivate() {
+                            w95.shell.run(heightmapGen);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "AI-DOS",
+                        icon: w95.icon.application32,
+                        onActivate() {
+                            w95.shell.run(aiDos({isWindowed: true}), {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "QBasic",
+                        icon: commandIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(command({url: "/dosbox/#/qbasic/", textMode: true}));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "FPU Bench",
+                        icon: commandIcons.app32,
+                        styleHints: [
+                            w95.styleHint.shortcut,
+                        ],
+                        onActivate() {
+                            w95.shell.run(command({url: "/dosbox/#/pp/", textMode: true}), {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "GORILLAS",
+                        onActivate() {
+                            w95.shell.run(gorillas, {singleInstance: true});
+                        },
+                    }),
+                ],
+            });
+            w95.shell.boot();
+            w95.registry["pillua"] = 3125;
+            w95.shell.wallpaper = "./desktop/prt.png";
+            w95.shell.run([desktop, w95.shell.taskbar()]);
+        </script>
+    </body>
+</html>

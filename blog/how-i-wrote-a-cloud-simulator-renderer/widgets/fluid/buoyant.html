@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html,
+            body
+            {
+                height: 100%;
+            }
+
+            body
+            {
+                padding: 0;
+                margin: 0;
+                background-color: transparent;
+                display: flex;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            const simulationDomainSize = 200;
+
+            import * as fluid from "./fluid.js";
+            import * as atmosphere from "./atmosphere.js";
+            import * as canvas from "./canvas.js";
+
+            canvas.initialize({
+                domainSize: simulationDomainSize,
+            });
+
+            fluid.initialize({
+                domainSize: simulationDomainSize,
+                vorticityStrength: 1,
+            });
+
+            atmosphere.initialize({
+                domainSize: simulationDomainSize,
+                fluid,
+            });
+
+            (function run_simulation(numTicks = 0)
+            {
+                const start = 60+Math.floor(Math.cos(numTicks/100)*40);
+
+                for (let i = (simulationDomainSize / 2 - 50); i < (simulationDomainSize / 2 + 50); i++)
+                {
+                    if (Math.cos(numTicks/50) > 0)
+                    {
+                        atmosphere.set_temperature({
+                            x: i,
+                            y: (simulationDomainSize - 5),
+                            c: 50 + Math.random()*20,
+                        });
+
+                        atmosphere.set_moisture({
+                            x: i,
+                            y: (simulationDomainSize - 5),
+                            g: Math.random()*11,
+                        });
+                    }
+                }
+
+                fluid.tick();
+                atmosphere.tick({fluid});
+                canvas.tick({fluid, atmosphere, graph: "humidity"});
+
+                window.requestAnimationFrame(()=>run_simulation(numTicks + 1));
+            })();
+        </script>
+    </body>
+</html>

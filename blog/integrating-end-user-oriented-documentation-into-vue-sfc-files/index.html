@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+
+        <script type="module" src="../+assets/feedback-inline-button.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Integrating end-user-oriented documentation into Vue SFC files
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="7 June 2022"></post-date>
+<dokki-topic title="Integrating end-user-oriented documentation into Vue SFC files">
+<p>The <a href="https://vuejs.org/guide/scaling-up/sfc.html">single-file component</a> (SFC) is a preferred pattern in Vue development, in which a UI component's template, styling and logic are all defined in a single file. The pattern also allows the inclusion of custom data, such as documentation.</p>
+<p>This post describes one way to integrate Markdown-formatted, end-user-oriented, long-form documentation – introductory articles, tutorials, and the like – into SFC files.</p>
+<dokki-subtopic title="Long-form documentation vs. in-code documentation">
+<p>Industry-standard tools like <a href="https://doxygen.nl/">Doxygen</a> allow developers to write documentation into the program source code using specially-formatted comment blocks, which are then post-processed into externally-viewable formats. However, the in-code environment isn't well suited for hosting verbose documentation, as it reduces the readability of the source code itself.</p>
+<p>End-user-oriented documentation is less concerned with documenting lines of code as it is with ensuring that the reader gains an understanding of how the product can be used. It makes sense not to tangle this kind of documentation in-between lines of code.</p>
+<p>By using a custom documentation block in an SFC file, long-form documentation can be given its freedom from the specifics of the implementation while also keeping it coupled to the functionality it's documenting.</p>
+</dokki-subtopic><dokki-subtopic title="Creating a custom SFC documentation block">
+<p>As mentioned above, SFC files typically include one or more of a component's (1) template, (2) style, and/or (3) logic.</p>
+<p>Below is a sample of an SFC file containing a component's template and style, defined using the standard tag notation (&lt;template&gt; and &lt;style&gt;, correspondingly). By convention, the template block contains HTML and the style block CSS.</p>
+
+
+                <dokki-code syntax="html"headerless="true"><template #caption>A barebones sample SFC file</template>
+                    <template #code>
+                        <pre>&lt;template&gt;
+Hello there.
+&lt;/template&gt;
+
+&lt;style&gt;
+span { color: red; }
+&lt;/style&gt;
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Adding a custom documentation block is simply a matter of filling a custom tag block with your documentation. In the next sample, a custom &lt;api-doc&gt; block has been added and populated with dummy API documentation in Markdown format.</p>
+
+
+                <dokki-code syntax="html"headerless="true"><template #caption>The sample SFC file with added dummy documentation in a custom &lt;api-doc&gt; block</template>
+                    <template #code>
+                        <pre>&lt;template&gt;
+Hello there.
+&lt;/template&gt;
+
+&lt;style&gt;
+span { color: red; }
+&lt;/style&gt;
+
+&lt;api-doc&gt;
+# The Hello component
+
+This component is used to say hello. Lorem ipsum dolor sit amet &amp;hellip;
+
+## Props
+
+| Prop | Description |
+| ---- | ----------- |
+| A    | Does X      |
+
+## Usage
+
+The simplest way to use the component is to invoke it without props:
+
+```
+x-hello
+```
+
+In this case, the component will &amp;hellip;
+&lt;/api-doc&gt;
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The long-form documentation now lives together with the rest of the component's data in the SFC file. (Technically, the sample documentation shown here isn't very verbose, but the idea is that a real-life version of it would have full paragraphs, various kinds of content, and so on.)</p>
+</dokki-subtopic><dokki-subtopic title="Creating a custom webpack loader">
+<p>If you've dealt with standard SFC files before, you've likely been building them using webpack and a configuration in <em>webpack.config.js</em> along these lines:</p>
+
+
+                <dokki-code syntax="javascript"headerless="true"><template #caption>A sample webpack.config.js for Vue SFC files</template>
+                    <template #code>
+                        <pre>module.exports = {
+    module: {
+        rules: [
+            {
+                test: /\.vue$/i,
+                use: &quot;vue-loader&quot;,
+            },
+        ],
+    },
+};
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>However, with the custom &lt;api-doc&gt; block now included in the SFC file, the above configuration is no longer enough, since the default Vue SFC loader won't know how to process the custom data. We need to create a custom webpack loader to deal with it.</p>
+<p>To do that, first, the webpack configuration needs to be modified to have it pass the contents of each SFC file's &lt;api-doc&gt; block into a custom loader (which we'll create shortly):</p>
+
+
+                <dokki-code syntax="javascript"headerless="true"><template #caption>A sample webpack.config.js for a custom &lt;api-doc&gt; block</template>
+                    <template #code>
+                        <pre>rules: [
+    {
+        test: /\.vue$/i,
+        resourceQuery: /blockType=api-doc/,
+        loader: path.resolve(&quot;api-doc.loader.js&quot;),
+    },
+    {
+        test: /\.vue$/i,
+        use: &quot;vue-loader&quot;,
+    },
+],
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The basic idea with webpack loaders is that they consist of a function that receives data from the webpack build process, does something with the data, then passes the data (or some part of the data, or nothing) to the next loader.</p>
+<p>The simplest form of our <em>api-doc.loader.js</em> loader would be the following function, which receives the contents of a component's &lt;api-doc&gt; block and discards them by returning an empty string:</p>
+
+
+                <dokki-code syntax="javascript"headerless="true"><template #caption>A null block loader</template>
+                    <template #code>
+                        <pre>// Will be called by webpack with the contents of each SFC file's &lt;api-doc&gt; block, one file at a time.
+module.exports = function(blockContents) {
+    // We won't pass the block's contents to other loaders.
+    return &quot;&quot;;
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>Between receiving the block's contents and returning from the function, it's up to you to deal with the data as you see fit.</p>
+<p>For the purposes of this article, let's say we want to take the Markdown contents of an &lt;api-doc&gt; block, convert that into HTML, and insert the converted data into an output HTML file that can be viewed by our end user. The following version of <em>api-doc.loader.js</em> achieves the goal:</p>
+
+
+                <dokki-code syntax="javascript"headerless="true"><template #caption>A sample loader for a custom &lt;api-doc&gt; block</template>
+                    <template #code>
+                        <pre>const fs = require(&quot;fs&quot;);
+const htmlParser = require(&quot;node-html-parser&quot;);
+const markdownIt = require(&quot;markdown-it&quot;)({html: true});
+
+const templateFilename = &quot;api-doc.template.html&quot;;
+const outputFilename = &quot;api-doc.html&quot;;
+
+// Load the template of the output HTML document.
+const templateDoc = htmlParser.parse(fs.readFileSync(templateFilename, &quot;utf-8&quot;));
+const outputContainerEl = templateDoc.querySelector(&quot;#component-article-container&quot;);
+
+// Will contain each component's documentation as a HTML string, keyed by the SFC filename.
+const apiDocHtml = {};
+
+// Converts the block's Markdown into HTML and appends it into an output document.
+module.exports = function(apiDocMarkdown) {
+    const srcFilename = this.resourcePath;
+
+    apiDocHtml[srcFilename] = `&lt;article&gt;${markdownIt.render(apiDocMarkdown)}&lt;/article&gt;`;
+
+    outputContainerEl.innerHTML = Object.values(apiDocHtml).join(&quot;\n&quot;);
+    fs.writeFileSync(outputFilename, templateDoc.toString(), &quot;utf-8&quot;);
+
+    return &quot;&quot;;
+}
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>The script starts by loading the contents of an output template HTML file – this template (shown below) provides a container element into which we can insert the converted HTML documentation. The script then does the conversion from Markdown into HTML, and appends the converted data into an object that will come to hold all of the processed components' documentation. Finally, the script inserts the converted HTML into the template document's container and saves the result as the output document.</p>
+<p>The template document's HTML would look like this:</p>
+
+
+                <dokki-code syntax="html"headerless="true"><template #caption>The contents of api-doc.template.html</template>
+                    <template #code>
+                        <pre>&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;
+            Components
+        &lt;/h1&gt;
+        &lt;div id=&quot;component-article-container&quot;&gt;
+            &lt;!-- The components' HTML gets inserted here. --&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+                    </template>
+                </dokki-code>
+            
+<p>When the project is built, webpack will produce a file called <strong>api-doc.html</strong> containing the converted, concatenated documentation. The file would render something like this (without styling applied):</p>
+<dokki-iframe height="20em" srcdoc="
+    <html>
+        <head>
+            <style>
+                body {
+                    background-color: white;
+                    color: black;
+                }
+                body :first-child {
+                    margin-top: 0;
+                }
+                body :last-child {
+                    margin-bottom: 0;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Components</h1>
+            <div id='component-article-container'>
+                <article>
+                    <h1>The Hello component</h1>
+                    <p>This component is used to say hello. Lorem ipsum dolor sit amet …</p>
+                    <h2>Props</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Prop</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td>
+                                <td>Does X</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h2>Usage</h2>
+                    <p>The simplest way to use the component is to invoke it without props:</p>
+                    <code>
+                        x-hello
+                    </code>
+                    <p>In this case, the component will …</p>
+                </article></div>
+        </body>
+    <html>
+"><template #caption>A plain rendering of api-doc.html</template>
+</dokki-iframe>
+<p>That's about it for this basic example.</p>
+<p>It's worth noting that the implementation for the <em>api-doc.loader.js</em> script isn't quite ideal; for example, it writes the output document each time the webpack function is called (i.e. for each SFC file) rather than waiting for the build process to complete first. I'm not particularly experienced in writing webpack loaders, so I'll leave it up to you to improve it as needed for your purposes (you can <ths-inline-feedback-button>send feedback</ths-inline-feedback-button> if you do).</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

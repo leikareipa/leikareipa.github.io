@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html,
+            body
+            {
+                height: 100%;
+            }
+
+            body
+            {
+                padding: 0;
+                margin: 0;
+                background-color: transparent;
+                display: flex;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            const simulationDomainSize = 200;
+
+            import * as fluid from "./fluid.js";
+            import * as canvas from "./canvas.js";
+
+            canvas.initialize({
+                domainSize: simulationDomainSize,
+            });
+
+            fluid.initialize({
+                domainSize: simulationDomainSize,
+                vorticityStrength: 0.02,
+            });
+
+            (function run_simulation()
+            {
+                for (let i = (simulationDomainSize / 2 - 10); i < (simulationDomainSize / 2 + 10); i++)
+                {
+                    fluid.set_force({
+                        x: i,
+                        y: (simulationDomainSize + 1),
+                        dV: -(0.04 + (Math.random() / 100)),
+                    });
+                }
+
+                fluid.tick();
+                canvas.tick({fluid, graph: "fluid"});
+
+                window.requestAnimationFrame(run_simulation);
+            })();
+        </script>
+    </body>
+</html>

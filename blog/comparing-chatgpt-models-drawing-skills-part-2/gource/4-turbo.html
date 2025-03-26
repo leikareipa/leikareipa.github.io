@@ -1,0 +1,80 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="700" height="600"></canvas>
+        <script>
+            // Set up the canvas
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Define nodes and edges more clearly
+            const nodes = [
+                { id: 'HomePage', x: 300, y: 300 },
+                { id: 'AboutPage', x: 500, y: 300 },
+                { id: 'ContactPage', x: 400, y: 500 },
+                // ... add more nodes as needed
+            ];
+
+            const edges = [
+                { from: 'HomePage', to: 'AboutPage' },
+                { from: 'HomePage', to: 'ContactPage' },
+                // ... add more edges as needed
+            ];
+
+            // Function to draw a node with label
+            function drawNode(node) {
+                // Draw the node (circle)
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 20, 0, 2 * Math.PI);
+                ctx.fillStyle = 'green';  // Geocities had a lot of vibrant colors
+                ctx.fill();
+                ctx.stroke();
+
+                // Draw the label
+                ctx.font = '12px Arial'; // Consider using a retro-style font
+                ctx.fillStyle = 'black';
+                ctx.textAlign = 'center';
+                ctx.fillText(node.id, node.x, node.y - 30); // Adjust label position as needed
+            }
+
+            // Function to draw an edge
+            function drawEdge(edge) {
+                let fromNode = nodes.find(node => node.id === edge.from);
+                let toNode = nodes.find(node => node.id === edge.to);
+
+                // Check if both nodes exist
+                if (!fromNode || !toNode) {
+                    console.error('Missing node for edge: ', edge);
+                    return; // Skip this edge if a node is missing
+                }
+
+                ctx.beginPath();
+                ctx.moveTo(fromNode.x, fromNode.y);
+                ctx.lineTo(toNode.x, toNode.y);
+                ctx.stroke();
+            }
+
+            // Function to update and redraw the graph
+            function update() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                edges.forEach(drawEdge);
+                nodes.forEach(drawNode);
+                requestAnimationFrame(update);
+            }
+
+            // Start the animation
+            update();
+        </script>
+    </body>
+</html>

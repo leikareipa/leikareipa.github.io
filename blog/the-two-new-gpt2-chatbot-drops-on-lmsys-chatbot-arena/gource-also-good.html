@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GeoCities Gource Visualization</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Initialize scene, camera, and renderer
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Adjust camera position
+camera.position.set(0, 0, 100);
+
+// Create mock data for GeoCities representation
+const geocitiesData = {
+    "www.geocities.com": {
+        "Area51": ["page1.html", "page2.html"],
+        "SunsetStrip": ["music.html"],
+        "SiliconValley": ["tech.html", "index.html"],
+        "Heartland": ["family.html", "recipes.html"],
+        "Hollywood": ["actors.html", "movies.html"]
+    }
+};
+
+// Function to create folder-like nodes
+function createSphereNode(color, size = 1) {
+    const geometry = new THREE.SphereGeometry(size, 32, 32);
+    const material = new THREE.MeshBasicMaterial({ color });
+    return new THREE.Mesh(geometry, material);
+}
+
+// Function to create a text label
+function createTextLabel(message, size = 1, color = 'white') {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    context.font = `${size * 20}px Arial`;
+    context.fillStyle = color;
+    context.fillText(message, 0, size * 20);
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    const material = new THREE.SpriteMaterial({ map: texture });
+    return new THREE.Sprite(material);
+}
+
+// Recursive function to build the tree structure
+function buildTree(data, parent, level = 0, xOffset = 0, yOffset = 0) {
+    const keys = Object.keys(data);
+    const spacing = 20;
+    
+    keys.forEach((key, index) => {
+        const node = createSphereNode(0x00ff00, 1.5);
+        const label = createTextLabel(key, 1.5, 'white');
+        
+        const x = xOffset + (index - keys.length / 2) * spacing;
+        const y = yOffset - level * spacing * 2;
+        
+        node.position.set(x, y, 0);
+        label.position.set(x, y + 2, 0);
+        
+        scene.add(node);
+        scene.add(label);
+        
+        const edgeGeometry = new THREE.BufferGeometry().setFromPoints([
+            parent.position,
+            node.position
+        ]);
+        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+        const edge = new THREE.Line(edgeGeometry, edgeMaterial);
+        scene.add(edge);
+        
+        if (typeof data[key] === 'object') {
+            buildTree(data[key], node, level + 1, x, y);
+        } else {
+            const fileNode = createSphereNode(0xff0000, 1);
+            const fileLabel = createTextLabel(data[key], 1, 'white');
+            
+            fileNode.position.set(x + 5, y - spacing, 0);
+            fileLabel.position.set(x + 5, y - spacing + 2, 0);
+            
+            scene.add(fileNode);
+            scene.add(fileLabel);
+            
+            const fileEdgeGeometry = new THREE.BufferGeometry().setFromPoints([
+                node.position,
+                fileNode.position
+            ]);
+            const fileEdge = new THREE.Line(fileEdgeGeometry, edgeMaterial);
+            scene.add(fileEdge);
+        }
+    });
+}
+
+// Initialize root node
+const rootNode = createSphereNode(0x0000ff, 2);
+const rootLabel = createTextLabel('www.geocities.com', 2, 'white');
+rootNode.position.set(0, 0, 0);
+rootLabel.position.set(0, 2, 0);
+
+scene.add(rootNode);
+scene.add(rootLabel);
+
+// Build tree structure
+buildTree(geocitiesData['www.geocities.com'], rootNode);
+
+// Handle window resizing
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+window.addEventListener('resize', onWindowResize, false);
+
+// Animation loop
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+animate();
+    </script>
+</body>
+</html>

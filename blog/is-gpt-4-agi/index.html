@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s {
+                color: transparent;
+                width: 1rem !important;
+                text-align: center !important;
+            }
+            .dokki-table.results td.s0 {
+                background-color: gray;
+            }
+            .dokki-table.results td.s1 {
+                background-color: lightgray;
+            }
+            .dokki-table.results td.s2 {
+                background-color: whitesmoke;
+            }
+            .dokki-table.results td.s {
+                background-color: #303030;
+            }
+            .dokki-table.results td.s::before {
+                content: "**";
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Is GPT-4 AGI?
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="4 March 2024"></post-date>
+<dokki-topic title="Is GPT-4 AGI?">
+<p>The release by OpenAI of GPT-4 a year ago moved forward the possibility of achieving AGI; although people couldn't quite agree to what extent. Some called it just a stochastic parrot, others felt it was proto-AGI, etc.</p>
+<p>Now, with Elon Musk suing OpenAI and the lawsuit revolving in part over these kinds of definitions, the question of the extent to which GPT-4 moves the needle toward AGI is again topical.</p>
+<dokki-subtopic title="The human developer">
+<p>Recently, I <a href="/blog/testing-a-medley-of-local-llms-for-coding/">benchmarked various LLMs in programming tests</a>.</p>
+<p>What happens if I plop into the test results the estimated performance level of myself, an experienced software developer?</p>
+
+            <dokki-table headerless class inline-class="results">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th colspan="2"></th>
+            <th colspan="9">Test</th>
+        </tr>
+        <tr>
+            <th>Informant</th>
+            <th>Score</th>
+            <th>1</th>
+            <th>2</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>9</th>
+            <th>10</th>
+            <th>11</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><i>Human</i></td>
+            <td><i>72%</i></td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td>GPT-4</td>
+            <td>72%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td>Mistral Large</td>
+            <td>61%</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+        </tr>
+        <tr>
+            <td>Gemini Ultra 1.0</td>
+            <td>56%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+        </tr>
+        <tr>
+            <td>ChatGPT 3.5</td>
+            <td>56%</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s0">0</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table>
+<p>These are zero-shot, one-chance tests at various programming tasks using languages I'm familiar with. In this pinpoint domain, the performance of GPT-4 (version 0613) matches my estimated level, i.e. it appears to have my general ability.</p>
+<p>If you were to incorporate speed of processing into the test scores, I'd lose badly: while I'd have to manually google some details etc., GPT-4 is able to provide implementations in seconds. Its output would contain some mistakes, but so would mine.</p>
+<p>That said, these particular tests required only limited contextual awareness, operating on at most a single file of source code. While GPT-4's ability to reason is notable, the tooling around it hasn't taken off yet to enable it to act more independently. But you can see that if it were to do so, this human developer would be in for a ride.</p>
+</dokki-subtopic><dokki-subtopic title="Iterative improvement">
+<p>In an earlier blog post comparing GPT-3.5 and GPT-4 in some programming tasks, I saw that <a href="/blog/chatgpt-dealing-with-assembly-code/#chatgpt-dealing-with-assembly-code-make-it-into-javascript">GPT-4 had a strong ability to improve iteratively</a>.</p>
+<p>In that particular case, GPT-4 was able to convert its initial sub-optimal implementation into a well-optimized one – matching my performance – in 2–4 steps of iteration. I simply gave the AI a performance target and reported back the performance level of each of its attempts, based on which GPT-4 adjusted its code to eventually reach the target.</p>
+<p>Again, in this pinpoint domain, with a framework in which GPT-4 could iterate on solutions, it matched my ability and provided the implementation faster than I could.</p>
+</dokki-subtopic><dokki-subtopic title="AGI, ASI">
+<p>That's cool, but it's only coding and AGI is supposed to match humans in a more general sense.</p>
+<p>I can't speak for all human professions, but consider these theoretical ideas:</p>
+<ol>
+<li>AGI without agency depends on the abilities of an agent to carry out tasks.</li>
+<li>Society as an agent has internal friction toward the utilization of AGI.</li>
+<li>Improving the general reasoning of an AGI is a way to an ASI.</li>
+</ol>
+<p>So, GPT-4 accounting for the shortcomings of the agent may well be AGI, the development of ASI can proceed parallel to society perceiving proto-AGI, and the question of whether we have AGI may be well behind the times.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

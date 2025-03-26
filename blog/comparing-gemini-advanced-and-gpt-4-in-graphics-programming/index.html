@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-iframe .caption > .type > .text {
+                display: none;
+            }
+            .dokki-iframe .caption > .type > .icon > i {
+                visibility: hidden;
+            }
+            .dokki-iframe .caption > .type > .icon > i::before {
+                font-family: "Font Awesome 5 Free";
+                font-weight: normal;
+                content: "\f075";
+                visibility: visible;
+                transform: scaleX(-1);
+                display: inline-block;
+            }
+            .dokki-iframe .caption > .label {
+                margin: 0 !important;
+                display: inline-block !important;
+                margin-left: 0.2em !important;
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Comparing Gemini Advanced and GPT-4 in graphics programming
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="8 February 2024"></post-date>
+<dokki-topic title="Comparing Gemini Advanced and GPT-4 in graphics programming">
+<p>Google's Gemini Advanced chatbot is fresh out of the oven. Let's see how it does against GPT-4 in some visual effects programming.</p>
+<p>For full context, see the original blog posts:</p>
+<ul>
+<li><a href="/blog/comparing-chatgpt-models-drawing-skills/">Comparing ChatGPT models' drawing skills</a></li>
+<li><a href="/blog/comparing-chatgpt-models-drawing-skills-part-2/">Comparing ChatGPT models' drawing skills, part 2</a></li>
+</ul>
+<dokki-subtopic title="DOOM-style screen melt">
+<p class="label-a">"Write JavaScript code that applies onto a pixel buffer an animated screen melt effect, as seen in the 1990s DOS game DOOM. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./melt/gemini.html"       ><template #caption>Gemini Advanced</template>
+                    </dokki-iframe>
+<dokki-iframe src="./melt/4-turbo.html"       ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<dokki-iframe src="./melt/4.html"       ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="Snowfall">
+<p class="label-a">"Write JavaScript code that draws animated snowfall that accumulates on the ground. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./snowfall/gemini.html"       ><template #caption>Gemini Advanced</template>
+                    </dokki-iframe>
+<dokki-iframe src="./snowfall/4-turbo.html"       ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<dokki-iframe src="./snowfall/4.html"       ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<p>Gemini would at first create tiny snowflakes that were colored red, which on my monitor made them invisible as they moved. Snow accumulation was also not working, which the AI couldn't fix after a few rounds of prompting.</p>
+</dokki-subtopic><dokki-subtopic title="Ray-tracing likeness">
+<p class="label-a">"Imagine you're a rudimentary ray tracer from the 1990s and you're asked to render a scene containing two spheres, one &ndash; red &ndash; in the middle of your view and another &ndash; blue &ndash; to the left of it. A reflection of the red sphere is visible on the blue sphere. Write JavaScript code that draws into a pixel buffer what your output might be. You don't need to show me the ray tracing code, just a representation of the output image. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<p class="label-a">"Feel free to make changes to the code to more realistically represent the image that you as the ray tracer would produce."</p>
+<dokki-iframe src="./ray-tracer/gemini.html"       ><template #caption>Gemini Advanced</template>
+                    </dokki-iframe>
+<dokki-image src="./ray-tracer/4-turbo.png" width="482" height="482"        thumbnail-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAB7CAAAewgFu0HU+AAACE0lEQVR4nO2TwUtUURTGv3vfPIIikIgY0dpYUSTjtFB3RqCihTjNSplhBgUHJAsTcREiGIGbWlgphoZBgW3s34iIQBSiMdKN4DYhE3He/OKNozOjBi3c1YEH373nnt9779zviGMO/QeSyWTwvCzZ7K7O+iIfvvY8zxdkPS+X/2MP/bqDxcV67zkqdwi4t7m9vc3MzCzt7UmamzsZGHjIysr3/cNra2uMDA0Ra2kh0dbGxPg4v7a2KGao+A2JRC9SBdY2YEwz0lXKy0Ok02nW19epq6rikkSTtdy0lgqJRDRKxm9DHqq9PszPv0eqxHHu4jjPsfYlrjuKdJ3Ozi7upVJckxhxXaas5YXj8MB1qZR4NT2dY/gs7ezsAvv7h5BqCQSeIn1A+or0BqmLU6evUBM8R0xi1hi+SHySGHccGiR64vHdL/S8ArCvbxCpPg/8iPQN6S1SNydOXqb67BniEq+NIS3xWeKZ43BDoruj4zBwbu4d0nkCgftYO4ExM7juY6Q6otEYPckENRKjrsu0MUxay6DrckFianKy8MsFK3hEIvFcH61txZgIUpiysossLCyyurpKdTBItUS7Mdy2Nge709hYctMlttnc/MnY2BPq628RCjUSi6VYWlrcd0F6eZneZJKmcJjW2loeDQ/zY2Oj1DbFpjxo0uL9v83pYDI3WiXrI0YvH77OHjUpxxn694C/ATJPQ25EFZVuAAAAAElFTkSuQmCC"><template #caption>GPT-4 Turbo</template>
+                        </dokki-image>
+<dokki-iframe src="./ray-tracer/4.html"       ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<p>Gemini insisted there's a reflection of the red sphere on the blue sphere, and made no visible changes on the second prompt.</p>
+</dokki-subtopic><dokki-subtopic title="Checkerboard with Mollweide projection">
+<p class="label-a">"Write JavaScript code that draws into a pixel buffer a chessboard pattern and then applies Mollweide projection to it. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./mollweide/gemini.html"       ><template #caption>Gemini Advanced</template>
+                    </dokki-iframe>
+<dokki-iframe src="./mollweide/4-turbo.html"       ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<dokki-iframe src="./mollweide/4.html"       ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<p>Gemini's first attempt was nowhere close, and the second attempt (shown here) is only slightly better. I didn't bother prompting it any further.</p>
+</dokki-subtopic><dokki-subtopic title="Starfield">
+<p class="label-a">"Write JavaScript code that draws an animated starfield effect (a field of stars moving in 3D space) into a pixel buffer. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./starfield/gemini.html"       ><template #caption>Gemini Advanced</template>
+                    </dokki-iframe>
+<dokki-iframe src="./starfield/4-turbo.html"       ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<dokki-iframe src="./starfield/4.html"       ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+</dokki-subtopic><dokki-subtopic title="Fire">
+<p class="label-a">"Write JavaScript code that plots an animated fire effect into a pixel buffer. The pixel buffer has four bytes per pixel: red, green, blue, alpha."</p>
+<dokki-iframe src="./fire/gemini.html"       ><template #caption>Gemini Advanced</template>
+                    </dokki-iframe>
+<dokki-iframe src="./fire/4-turbo.html"       ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<dokki-iframe src="./fire/4.html"       ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<p>Gemini couldn't get the fire to span the entire canvas, similar to <a href="/blog/comparing-chatgpt-models-drawing-skills/#comparing-chatgpt-models-drawing-skills-fire">the struggles of GPT-3.5</a>.</p>
+</dokki-subtopic><dokki-subtopic title="An effect of your choice">
+<p class="label-a">"I'm a very experienced graphics developer specializing in 2D image processing. I have an image in a pixel buffer (RGBA). Write JavaScript code that applies an interesting visual effect to the pixel buffer. The effect should be something that someone like me likely doesn't often see &ndash; something interesting."</p>
+<dokki-iframe src="./interesting/gemini.html"       ><template #caption>Gemini Advanced</template>
+                    </dokki-iframe>
+<dokki-iframe src="./interesting/4-turbo.html"       ><template #caption>GPT-4 Turbo</template>
+                    </dokki-iframe>
+<dokki-iframe src="./interesting/4.html"       ><template #caption>GPT-4</template>
+                    </dokki-iframe>
+<p>In its words, Gemini attempted to showcase &quot;Reaction-Diffusion Based Organic Pattern Generation&quot;. Its output was more expert-sounding than the GPT-4 models', but the effect isn't very relevant as it just replaces the parrot image and doesn't animate (despite an attempt).</p>
+</dokki-subtopic><dokki-subtopic title="Finishing notes">
+<p>I've only just stated trialing Gemini Advanced (the first two months are free by the way), but what I see here leaves a mixed impression. The quality of its output in these tests was more inconsistent than that of GPT-4, and you might even say it looks a generation behind.</p>
+<dokki-table headerless><template #caption>My subjective assessment of task fulfilment</template>
+<table>
+<tr>
+<th>Task</th>
+<th colspan="3">Score</th>
+</tr>
+<tr>
+<th></th>
+<th>Gemini Advanced (Q1 2024)</th>
+<th>GPT-4 Turbo (Q4 2023)</th>
+<th>GPT-4 (Q1 2023)</th>
+</tr>
+<tr>
+<th>Average</th>
+<th>40%</th>
+<th>70%</th>
+<th>90%</th>
+</tr>
+<tr>
+<td>DOOM melt</td>
+<td>20%</td>
+<td>75%</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>Snowfall</td>
+<td>70%</td>
+<td>65%</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>Ray tracing</td>
+<td>50%</td>
+<td>70%</td>
+<td>90%</td>
+</tr>
+<tr>
+<td>Mollweide</td>
+<td>0%</td>
+<td>90%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Starfield</td>
+<td>90%</td>
+<td>80%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Fire</td>
+<td>10%</td>
+<td>60%</td>
+<td>95%</td>
+</tr>
+<tr>
+<td>Effect of choice</td>
+<td>50%</td>
+<td>30%</td>
+<td>90%</td>
+</tr>
+</table>
+</dokki-table>
+<p>Compared to GPT-4, Gemini's style feels more like pair programming. Its output is more prose-y and it tries to engage you in a conversation about the problem. This is both good and bad – if you just want the code then Gemini will work you for it, but on the other hand you might enjoy its conversational, exploratory approach (or is that just Google farming for more training data?). Though the code it produced had no shortage of &quot;fill in the functionality here&quot; moments, it would also happily fill everything in if asked.</p>
+<p>Overall, with an asking price matching that of GPT-4, Gemini Advanced is a hard sell. Given the inconsistent quality seen from it here, it may end up better than GPT-4 at certain tasks but much worse at some others. I get the impression there might be a more solid base on Gemini than on GPT-4, but until Google can get more out of it, I'd say GPT-4 is the winner.</p>
+</dokki-subtopic></dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

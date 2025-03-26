@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RallySportED</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="/experimental/w95/distributable/w95-api.js"></script>
+        <script src="/experimental/w95/distributable/w95-assets.js"></script>
+        <script src="/experimental/w95/distributable/w95-widgets.js"></script>
+        <link href="/experimental/w95/distributable/w95.css" rel="stylesheet">
+        <style>
+            canvas.ngon-texture-convert {
+                background-color: rgb(192, 192, 192);
+                pointer-events: none;
+                image-rendering: pixelated;
+            }
+            iframe.rsed {
+                background-color: rgb(192, 192, 192);
+                border: none;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import trackEditor from "./track-editor.js";
+            import keyRemapper from "./key-remapper.js";
+            import corruptor from "./corruptor.js";
+            import {icons}  from "./icons.js";
+
+            const taskbar = w95.shell.taskbar();
+            const desktop = w95.shell.desktop({
+                icons: [
+                    w95.widget.desktopIcon({
+                        text: "Track editor",
+                        icon: icons.app32,
+                        onActivate() {
+                            w95.shell.run(trackEditor);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Key remapper",
+                        icon: icons.app32,
+                        onActivate() {
+                            w95.shell.run(keyRemapper);
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Corruptor",
+                        icon: icons.app32,
+                        onActivate() {
+                            w95.shell.run(corruptor);
+                        },
+                    }),
+                ]
+            });
+
+            w95.shell.boot();
+            w95.shell.wallpaper = "./hires2.png";
+            w95.shell.run([desktop, taskbar]);
+        </script>
+    </body>
+</html>

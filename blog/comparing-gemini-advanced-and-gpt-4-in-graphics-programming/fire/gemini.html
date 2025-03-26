@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <style>
+            html, body, canvas {
+                width: 100vw;
+                height: 100vh;
+                background-color: black;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            const canvas = document.createElement('canvas');
+            canvas.width = 1000;
+            canvas.height = 400;
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+
+            const fireEffect = createFireEffect(1000, 400);
+            fireEffect.start(); 
+
+            function createFireEffect(width, height) {
+                const firePixels = new Uint8ClampedArray(width * height * 4); // Pixel buffer
+                const fireWidth = width;
+                const fireHeight = height;
+                let decay = 3; // Adjust how quickly the fire cools
+
+                // Function to spread the fire based on neighboring pixels
+                function spreadFire(src) {
+                    const pixelBelow = src + fireWidth * 4; 
+                    const decayFactor = Math.floor(Math.random() * 3); 
+                    let dst = pixelBelow - decayFactor * 4;
+
+                    // Spread slightly sideways too
+                    for (let i = -1; i <= 1; i++) {
+                        let neighbor = dst + i * 4;
+                        if (neighbor >= 0 && neighbor < firePixels.length) {
+                            const maxIntensity = firePixels[src] - decayFactor;
+                            firePixels[neighbor] = maxIntensity >= 0 ? maxIntensity : 0;
+                        }
+                    }
+                }
+
+                // Function to generate the fire source (bottom row)
+                function generateFireSource() {
+                    for (let col = 0; col < fireWidth; col++) {
+                    const pixelIndex = (fireHeight - 1) * fireWidth * 4 + col * 4;
+                    const fireIntensity = Math.floor(Math.random() * 256);
+                    firePixels[pixelIndex] = fireIntensity; // Red
+                    firePixels[pixelIndex + 1] = fireIntensity; // Green
+                    firePixels[pixelIndex + 2] = 0; // Blue
+                    firePixels[pixelIndex + 3] = 255; // Alpha
+                    }
+                }
+
+                // Animation loop
+                function renderFire() {
+                    for (let col = 0; col < fireWidth; col++) {
+                    for (let row = 0; row < fireHeight; row++) {
+                        const pixelIndex = col * 4 + row * fireWidth * 4;
+                        spreadFire(pixelIndex);
+                    }
+                    }
+
+                    generateFireSource();
+
+                    // *** You would update your display with firePixels here ***
+                    const imageData = ctx.createImageData(width, height);
+                    imageData.data.set(firePixels); 
+                    // Draw the image data onto the canvas
+                    ctx.putImageData(imageData, 0, 0);
+
+                    requestAnimationFrame(renderFire); 
+                }
+
+                return {
+                    start: renderFire,
+                    firePixels // Expose the buffer if needed
+                };
+                }
+        </script>
+    </body>
+</html>

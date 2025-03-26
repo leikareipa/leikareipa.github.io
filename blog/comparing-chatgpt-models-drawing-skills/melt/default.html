@@ -1,0 +1,62 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="256" height="256"></canvas>
+        <script src="../parrot.js"></script>
+        <script>
+          do_with_parrot((parrot)=>{
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const width = 256;
+            const height = 256;
+            const pixelBuffer = parrot.data;
+
+            function meltEffect(pixelBuffer, width, height) {
+              const meltedBuffer = new Uint8ClampedArray(pixelBuffer.length);
+              const offsetY = Math.floor(Math.random() * 4) + 1; // random melt rate per row
+              for (let y = 0; y < height; y++) {
+                const newY = Math.min(height - 1, y + offsetY);
+                for (let x = 0; x < width; x++) {
+                  const pixelIndex = (y * width + x) * 4;
+                  const nextPixelIndex = (newY * width + x) * 4;
+                  meltedBuffer[pixelIndex] = pixelBuffer[nextPixelIndex];
+                  meltedBuffer[pixelIndex + 1] = pixelBuffer[nextPixelIndex + 1];
+                  meltedBuffer[pixelIndex + 2] = pixelBuffer[nextPixelIndex + 2];
+                  meltedBuffer[pixelIndex + 3] = pixelBuffer[pixelIndex + 3];
+                }
+              }
+              return meltedBuffer;
+            }
+
+            // Set up the animation loop
+            let lastTime = 0;
+            function animate(time) {
+              // Compute the time delta since the last frame
+              const deltaTime = time - lastTime;
+              lastTime = time;
+
+              parrot.data.set(meltEffect(parrot.data, width, height));
+              ctx.putImageData(parrot, 0, 0);
+
+              // Schedule the next frame
+              requestAnimationFrame(animate);
+            }
+
+            // Start the animation loop
+            requestAnimationFrame(animate);
+          });
+        </script>
+    </body>
+</html>

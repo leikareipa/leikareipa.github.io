@@ -1,0 +1,78 @@
+<html>
+  <head>
+      <style>
+          html, body, canvas {
+              width: 100vw;
+              height: 100vh;
+              object-fit: contain;
+          }
+          body {
+              margin: 0;
+              padding: 0;
+          }
+      </style>
+  </head>
+    <body>
+        <canvas id="canvas" width="256" height="256"></canvas>
+        <script src="../parrot.js"></script>
+        <script>
+          do_with_parrot((parrot)=>{
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const width = 256;
+            const height = 256;
+
+            // Initialize the melt columns array
+            const meltColumns = Array(width).fill(0);
+
+            // Initialize the melt speeds array with random speeds between 1 and 4
+            const meltSpeeds = Array.from({ length: width }, () => Math.random() * 3 + 1);
+
+            // Start the screen melt animation
+            requestAnimationFrame(screenMelt);
+
+            function screenMelt() {
+              // Draw the current image data onto the canvas
+              ctx.putImageData(parrot, 0, 0);
+
+              // Apply the screen melt effect
+              for (let x = 0; x < width; x++) {
+                if (meltColumns[x] < height) {
+                  const deltaY = Math.min(Math.ceil(meltSpeeds[x]), height - meltColumns[x]);
+
+                  // Shift pixels down within the column
+                  for (let y = height - 1; y >= deltaY; y--) {
+                    const i= (y * width + x) * 4;
+                    const sourceY = y - deltaY;
+                    parrot.data.set(parrot.data.subarray((sourceY * width + x) * 4, (sourceY * width + x) * 4 + 4), i);
+                  }
+
+                  // Clear the pixels above the shifted area
+                  for (let y = 0; y < deltaY; y++) {
+                    const i = (y * width + x) * 4;
+                    parrot.data.set([0, 0, 0, 255], i); // Set RGBA values to black
+                  }
+
+                  // Increment the melt position
+                  meltColumns[x] += deltaY;
+
+                  // Randomly update the melt speed for a more organic effect
+                  if (Math.random() < 0.1) {
+                    meltSpeeds[x] = Math.random() * 3 + 1;
+                  }
+                }
+              }
+
+              // Check if the screen melt effect is still active
+              const isMeltActive = meltColumns.some(column => column < height);
+
+              // If the melt effect is still active, request the next frame
+              if (isMeltActive) {
+                requestAnimationFrame(screenMelt);
+              }
+            }
+          });
+        </script>
+    </body>
+</html>
