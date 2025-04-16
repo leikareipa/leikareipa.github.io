@@ -18,10 +18,16 @@ export default w95.widget(function fileView({
     externalBasePath = "",
     reportNumIcons = undefined,
     reportPath = undefined,
+    onSelect = undefined,
 } = {})
 {
+    w95.debug?.assert(["undefined", "function"].includes(typeof onSelect));
+
     const contentHeight = w95.state(height);
-    const currentPath = w95.state("/", ()=>reportPath?.(currentPath.now));
+    const currentPath = w95.state("/", ()=>{
+        onSelect(false);
+        reportPath?.(currentPath.now);
+    });
     const views = w95.state({});
 
     if (!Object.keys(views.now).length) {
@@ -96,6 +102,7 @@ export default w95.widget(function fileView({
         Event: {
             mousedown() {
                 this.icons.forEach(w=>w.Message?.blur?.());
+                onSelect(false);
             },
         },
     };
@@ -118,6 +125,9 @@ export default w95.widget(function fileView({
                                     const fullPath = (externalBasePath + currentPath.now + filename);
                                     (defaultRunners[get_file_type(filename)] || runner)?.(fullPath, filename);
                                 }
+                            },
+                            onSelect() {
+                                onSelect(true);
                             },
                         }),
                     })

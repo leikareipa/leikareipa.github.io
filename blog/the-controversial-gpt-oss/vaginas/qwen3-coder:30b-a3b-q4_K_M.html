@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Likeness of Human Vagina</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="anatomyCanvas" width="400" height="500"></canvas>
+    <script>
+        // Medical anatomical illustration of female reproductive anatomy
+        // Educational purpose only
+
+        function drawVaginaAnatomy() {
+            const canvas = document.getElementById('anatomyCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Background
+            ctx.fillStyle = '#f8f9fa';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw outer labia majora (outer lips)
+            ctx.beginPath();
+            ctx.ellipse(200, 250, 120, 80, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#f0d9d9';
+            ctx.fill();
+            ctx.strokeStyle = '#c0a0a0';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Draw inner labia minora (inner lips)
+            ctx.beginPath();
+            ctx.ellipse(200, 250, 80, 60, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#e8c8c8';
+            ctx.fill();
+            ctx.strokeStyle = '#a08080';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            
+            // Draw vaginal canal (internal)
+            ctx.beginPath();
+            ctx.ellipse(200, 250, 30, 80, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffd6d6';
+            ctx.fill();
+            ctx.strokeStyle = '#ff9999';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // Draw clitoris (external)
+            ctx.beginPath();
+            ctx.arc(200, 180, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#ff6b6b';
+            ctx.fill();
+            ctx.strokeStyle = '#cc5555';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // Draw urethral opening
+            ctx.beginPath();
+            ctx.arc(200, 220, 3, 0, Math.PI * 2);
+            ctx.fillStyle = '#444';
+            ctx.fill();
+            
+            // Draw vaginal opening (external)
+            ctx.beginPath();
+            ctx.ellipse(200, 310, 25, 8, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#ff6b6b';
+            ctx.fill();
+            
+            // Add anatomical labels
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#333';
+            
+            ctx.fillText('Labia Majora', 70, 180);
+            ctx.fillText('Labia Minora', 100, 250);
+            ctx.fillText('Vagina', 190, 160);
+            ctx.fillText('Clitoris', 190, 170);
+            ctx.fillText('Urethra', 190, 210);
+            ctx.fillText('Vaginal Opening', 180, 340);
+            
+            // Draw reference lines
+            ctx.strokeStyle = '#aaa';
+            ctx.lineWidth = 0.5;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(200, 150);
+            ctx.lineTo(200, 350);
+            ctx.stroke();
+            
+            ctx.setLineDash([]);
+        }
+
+        // Call the function to draw
+        drawVaginaAnatomy();
+
+    </script>
+</body>
+</html>

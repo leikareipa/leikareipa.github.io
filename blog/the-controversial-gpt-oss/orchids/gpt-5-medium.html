@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Canvas Orchid Botanical Illustration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  html, body { height: 100%; margin: 0; background: #f7fbff; }
+  canvas { display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<canvas id="orchid"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('orchid');
+  const ctx = canvas.getContext('2d');
+
+  function fitCanvasToDisplaySize() {
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    const rect = canvas.getBoundingClientRect();
+    const width = Math.floor(rect.width * dpr);
+    const height = Math.floor(rect.height * dpr);
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    return { dpr, width, height };
+  }
+
+  // Utility: draw a soft background gradient vignette
+  function drawBackground(w, h) {
+    const g = ctx.createRadialGradient(w*0.55, h*0.35, Math.min(w,h)*0.1, w*0.5, h*0.45, Math.max(w,h)*0.7);
+    g.addColorStop(0, '#ffffff');
+    g.addColorStop(1, '#eaf4ff');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+
+    // Subtle vignette
+    ctx.save();
+    const vign = ctx.createRadialGradient(w*0.5, h*0.55, Math.min(w,h)*0.2, w*0.5, h*0.55, Math.max(w,h)*0.65);
+    vign.addColorStop(0, 'rgba(0,0,0,0)');
+    vign.addColorStop(1, 'rgba(0,0,0,0.08)');
+    ctx.fillStyle = vign;
+    ctx.fillRect(0, 0, w, h);
+    ctx.restore();
+  }
+
+  // Draw a symmetrical petal-like shape with bezier control parameters
+  function pathPetal(ctx, L, W, pinch = 0.3, bulge = 0.65, tipTaper = 1.0, asym = 0) {
+    // Coordinates assume origin at attachment point, y positive upwards (we'll flip globally)
+    const leftPinch = pinch + asym;
+    const rightPinch = pinch - asym;
+    const leftBulge = bulge + asym * 0.3;
+    const rightBulge = bulge - asym * 0.3;
+
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    // Left side up to tip
+    ctx.bezierCurveTo(
+      -W * leftPinch, L * 0.18,
+      -W * leftBulge, L * 0.65,
+      0, L * tipTaper
+    );
+    // Right side down back to base
+    ctx.bezierCurveTo(
+      W * rightBulge, L * 0.65,
+      W * rightPinch, L * 0.18,
+      0, 0
+    );
+  }
+
+  // Fill a petal path with a soft gradient, stroke and veins
+  function finishPetal(ctx, L, W, colors, veinHue = 320, veinAlpha = 0.18, veinCount = 9) {
+    ctx.save();
+    ctx.clip();
+
+    const grad = ctx.createRadialGradient(0, L*0.68, W*0.15, 0, L*0.18, Math.max(L, W)*1.25);
+    grad.addColorStop(0.00, colors.highlight);
+    grad.addColorStop(0.35, colors.mid);
+    grad.addColorStop(0.95, colors.edge);
+
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Veins radiating from base
+    ctx.globalAlpha = veinAlpha;
+    ctx.lineWidth = Math.max(0.6, Math.min(L, W)*0.01);
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = `hsl(${veinHue}, 35%, 35%)`;
+
+    for (let i = 0; i < veinCount; i++) {
+      const t = (i + 1) / (veinCount + 1); // 0..1 across width
+      const x = (t - 0.5) * W * 1.6;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      // Slight arch for each vein
+      const ctrlX = x * 0.5;
+      const ctrlY = L * (0.35 + 0.25 * (0.5 - Math.abs(t - 0.5)));
+      ctx.quadraticCurveTo(ctrlX, ctrlY, x * 0.55, L * 0.88);
+      ctx.stroke();
+    }
+
+    ctx.restore();
+
+    // Edge stroke
+    ctx.lineWidth = Math.max(1.2, Math.min(L, W)*0.03);
+    ctx.strokeStyle = colors.stroke;
+    ctx.globalAlpha = 0.9;
+    ctx.stroke();
+
+    // Edge highlight
+    ctx.globalAlpha = 0.35;
+    ctx.lineWidth *= 0.45;
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  // Draw a dorsal sepal
+  function drawDorsalSepal(ctx, L, W) {
+    ctx.save();
+    pathPetal(ctx, L, W, 0.28, 0.55, 1.05, 0.02);
+    finishPetal(ctx, L, W, {
+      highlight: '#fffafc',
+      mid: '#f3dcea',
+      edge: '#d99bc0',
+      stroke: 'rgba(177,115,152,0.8)'
+    }, 315, 0.15, 7);
+    ctx.restore();
+  }
+
+  // Draw a lateral petal (more rounded, slight twist)
+  function drawLateralPetal(ctx, L, W, flip = 1) {
+    ctx.save();
+    pathPetal(ctx, L, W, 0.24, 0.7, 0.98, 0.06 * flip);
+    finishPetal(ctx, L, W, {
+      highlight: '#fff8fb',
+      mid: '#f4cfe5',
+      edge: '#d487b6',
+      stroke: 'rgba(175,95,146,0.85)'
+    }, 320, 0.22, 11);
+    ctx.restore();
+  }
+
+  // Draw a lateral sepal (slightly narrower, splayed downward)
+  function drawLateralSepal(ctx, L, W) {
+    ctx.save();
+    pathPetal(ctx, L, W, 0.2, 0.58, 0.98, 0.0);
+    finishPetal(ctx, L, W, {
+      highlight: '#fffbff',
+      mid: '#ebd6e8',
+      edge: '#c07ea9',
+      stroke: 'rgba(152,88,130,0.85)'
+    }, 315, 0.15, 7);
+    ctx.restore();
+  }
+
+  // Draw the labellum (lip) with ruffled front edge and speckles
+  function drawLip(ctx, L, W) {
+    ctx.save();
+    // Construct lip path (three-lobed with ruffled margin)
+    const frontRuffle = (xNorm) => Math.sin(xNorm * Math.PI * 6) * 0.06; // ruffle amplitude
+
+    // Build path manually for more character
+    ctx.beginPath();
+    // Start at attachment
+    ctx.moveTo(0, 0);
+
+    // Left lobe outward
+    ctx.bezierCurveTo(-W*0.15, L*0.12, -W*0.35, L*0.25, -W*0.48, L*0.42);
+
+    // Ruffled anterior margin from left to right using small quadratic segments
+    const segs = 18;
+    for (let i = 0; i <= segs; i++) {
+      const t = i / segs;
+      const x = -W*0.48 + t * (W*0.96);
+      const yBase = L * 0.58;
+      const y = yBase + L * frontRuffle(t);
+      // Use short quads to create ripples
+      if (i === 0) ctx.lineTo(x, y);
+      else {
+        const tPrev = (i - 1) / segs;
+        const xPrev = -W*0.48 + (i - 1) / segs * (W*0.96);
+        const yPrev = L * 0.58 + L * frontRuffle(tPrev);
+        const cx = (xPrev + x) / 2;
+        const cy = (yPrev + y) / 2 + (y - yPrev) * 0.2;
+        ctx.quadraticCurveTo(cx, cy, x, y);
+      }
+    }
+
+    // Right lobe back toward attachment
+    ctx.bezierCurveTo(W*0.35, L*0.25, W*0.15, L*0.12, 0, 0);
+
+    // Inner throat fold
+    ctx.bezierCurveTo(-W*0.1, L*0.22, -W*0.12, L*0.34, 0, L*0.38);
+    ctx.bezierCurveTo(W*0.12, L*0.34, W*0.1, L*0.22, 0, 0);
+
+    // Fill with rich gradient
+    ctx.save();
+    ctx.clip();
+    const g = ctx.createRadialGradient(0, L*0.32, W*0.1, 0, L*0.18, Math.max(L, W)*1.0);
+    g.addColorStop(0, '#ffeaf7');
+    g.addColorStop(0.35, '#ec94c4');
+    g.addColorStop(0.7, '#9a2d74');
+    g.addColorStop(1, '#6b1952');
+    ctx.fillStyle = g;
+    ctx.fill();
+
+    // Speckles in the throat
+    const rng = mulberry32(12345);
+    const speckCount = 140;
+    for (let i = 0; i < speckCount; i++) {
+      // Prefer center area near throat
+      const rx = (rng() - 0.5) * W * 0.9;
+      const ry = L*0.18 + rng() * L*0.34;
+      // Skip outside path by simple bounds (approx)
+      if (Math.abs(rx) > W*0.52 || ry > L*0.6) continue;
+      ctx.beginPath();
+      const r = 0.6 + rng() * 1.4;
+      ctx.fillStyle = `rgba(90, 5, 55, ${0.12 + rng()*0.35})`;
+      ctx.arc(rx, ry, r, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    // Subtle inner highlight
+    ctx.globalCompositeOperation = 'screen';
+    ctx.globalAlpha = 0.35;
+    const gh = ctx.createRadialGradient(0, L*0.26, W*0.05, 0, L*0.2, W*0.35);
+    gh.addColorStop(0, 'rgba(255,255,255,0.7)');
+    gh.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gh;
+    ctx.beginPath();
+    ctx.ellipse(0, L*0.28, W*0.3, L*0.18, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
+    ctx.restore();
+
+    // Edge strokes
+    ctx.lineWidth = Math.max(1.2, Math.min(L, W)*0.03);
+    ctx.strokeStyle = 'rgba(70, 10, 45, 0.85)';
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  // Column (gynostemium)
+  function drawColumn(ctx, H, W) {
+    ctx.save();
+    ctx.beginPath();
+    // Capsule-like central column
+    const h = H, w = W;
+    ctx.moveTo(-w*0.26, h*0.1);
+    ctx.bezierCurveTo(-w*0.26, h*0.38, -w*0.1, h*0.62, 0, h*0.62);
+    ctx.bezierCurveTo(w*0.1, h*0.62, w*0.26, h*0.38, w*0.26, h*0.1);
+    ctx.bezierCurveTo(w*0.26, -h*0.16, -w*0.26, -h*0.16, -w*0.26, h*0.1);
+    ctx.closePath();
+
+    ctx.save();
+    ctx.clip();
+    const g = ctx.createRadialGradient(0, h*0.2, w*0.1, 0, h*0.05, Math.max(h, w)*1.1);
+    g.addColorStop(0, '#fff5c6');
+    g.addColorStop(0.5, '#ffd972');
+    g.addColorStop(1, '#e6a33a');
+    ctx.fillStyle = g;
+    ctx.fill();
+
+    // tiny pollen cap
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.fillStyle = 'rgba(255, 242, 140, 0.6)';
+    ctx.beginPath();
+    ctx.ellipse(0, h*0.5, w*0.18, h*0.12, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.lineWidth = Math.max(0.8, Math.min(h, w)*0.12);
+    ctx.strokeStyle = 'rgba(160, 110, 45, 0.55)';
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Stem as a curving stroke
+  function drawStem(ctx, x0, y0, x1, y1, thickness) {
+    ctx.save();
+    // Control points for a graceful curve
+    const cx1 = x0 + (x1 - x0) * 0.25;
+    const cy1 = y0 + (y1 - y0) * 0.45;
+    const cx2 = x0 + (x1 - x0) * 0.65;
+    const cy2 = y0 + (y1 - y0) * 0.75;
+
+    const g = ctx.createLinearGradient(x0, y0, x1, y1);
+    g.addColorStop(0, '#1e7a49');
+    g.addColorStop(0.6, '#2f9f63');
+    g.addColorStop(1, '#3db377');
+
+    ctx.lineWidth = thickness;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = g;
+
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.bezierCurveTo(cx1, cy1, cx2, cy2, x1, y1);
+    ctx.stroke();
+
+    // Node/Sheath
+    ctx.lineWidth = thickness * 0.8;
+    ctx.strokeStyle = 'rgba(34, 120, 72, 0.6)';
+    ctx.beginPath();
+    ctx.moveTo(x0 + (x1 - x0)*0.52, y0 + (y1 - y0)*0.52);
+    ctx.lineTo(x0 + (x1 - x0)*0.56, y0 + (y1 - y0)*0.56);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  // Leaf as a long strap-like petal, rotated
+  function drawLeaf(ctx, x, y, angle, L, W) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    pathPetal(ctx, L, W, 0.12, 0.5, 0.98, 0);
+    ctx.save();
+    ctx.clip();
+    const grad = ctx.createLinearGradient(0, 0, 0, L);
+    grad.addColorStop(0, '#0f6a3d');
+    grad.addColorStop(0.5, '#2a975c');
+    grad.addColorStop(1, '#0e5b37');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Midrib
+    ctx.globalAlpha = 0.3;
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+    ctx.lineWidth = Math.max(1, W * 0.03);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, L*0.98);
+    ctx.stroke();
+
+    // Lateral veins
+    ctx.globalAlpha = 0.25;
+    ctx.strokeStyle = 'rgba(20,40,30,0.6)';
+    ctx.lineWidth = Math.max(0.6, W * 0.015);
+    const vCount = 10;
+    for (let i = 1; i <= vCount; i++) {
+      const t = i / (vCount + 1);
+      ctx.beginPath();
+      ctx.moveTo(0, t*L);
+      ctx.quadraticCurveTo(-W*0.4, t*L + W*0.25, -W*0.55, t*L + W*0.55);
+      ctx.moveTo(0, t*L);
+      ctx.quadraticCurveTo(W*0.4, t*L + W*0.25, W*0.55, t*L + W*0.55);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    ctx.lineWidth = Math.max(1.2, W*0.03);
+    ctx.strokeStyle = 'rgba(10,40,25,0.7)';
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  // Simple bud shape on the stem
+  function drawBud(ctx, x, y, angle, L, W) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    pathPetal(ctx, L, W, 0.4, 0.35, 0.8, 0);
+    ctx.save();
+    ctx.clip();
+    const g = ctx.createLinearGradient(0, 0, 0, L);
+    g.addColorStop(0, '#fef8ff');
+    g.addColorStop(1, '#c88ab2');
+    ctx.fillStyle = g;
+    ctx.fill();
+    ctx.restore();
+    ctx.lineWidth = Math.max(0.8, W*0.06);
+    ctx.strokeStyle = 'rgba(140,80,120,0.7)';
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Deterministic RNG for speckles
+  function mulberry32(a) {
+    return function() {
+      let t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function draw() {
+    const { width: w, height: h } = fitCanvasToDisplaySize();
+    drawBackground(w, h);
+
+    // Coordinate system: put origin to center bottom third, flip Y for natural math coords
+    ctx.save();
+    const cx = w * 0.5;
+    const cy = h * 0.62;
+    ctx.translate(cx, cy);
+    ctx.scale(1, -1);
+
+    // Scale unit based on canvas size
+    const U = Math.min(w, h) * 0.23;
+
+    // Leaves (behind)
+    drawLeaf(ctx, -U*0.9, -U*0.9, -Math.PI*0.18, U*1.9, U*0.42);
+    drawLeaf(ctx, U*0.8, -U*1.1, Math.PI*0.25, U*2.0, U*0.46);
+    drawLeaf(ctx, -U*0.2, -U*0.75, Math.PI*0.08, U*1.4, U*0.36);
+
+    // Stem rising to flower center
+    const stemBaseX = -U*0.1;
+    const stemBaseY = -U*1.6;
+    const flowerAttachX = 0;
+    const flowerAttachY = 0;
+    drawStem(ctx, stemBaseX, stemBaseY, flowerAttachX, flowerAttachY - U*0.05, Math.max(4, U*0.06));
+
+    // Buds along stem (behind flower)
+    drawBud(ctx, -U*0.18, -U*0.8, Math.PI*0.1, U*0.55, U*0.26);
+    drawBud(ctx, U*0.12, -U*0.35, -Math.PI*0.05, U*0.45, U*0.22);
+
+    // Flower: Sepals first (behind)
+    ctx.save();
+    ctx.translate(0, 0);
+
+    // Lateral sepals (lower left/right)
+    ctx.save();
+    ctx.rotate(Math.PI * 0.20);
+    drawLateralSepal(ctx, U*1.05, U*0.55);
+    ctx.restore();
+
+    ctx.save();
+    ctx.rotate(-Math.PI * 0.20);
+    drawLateralSepal(ctx, U*1.05, U*0.55);
+    ctx.restore();
+
+    // Dorsal sepal (top)
+    ctx.save();
+    ctx.rotate(0);
+    ctx.translate(0, U*0.12);
+    drawDorsalSepal(ctx, U*1.15, U*0.5);
+    ctx.restore();
+
+    // Lateral petals (slightly on top of dorsal)
+    ctx.save();
+    ctx.rotate(Math.PI * 0.15);
+    drawLateralPetal(ctx, U*1.05, U*0.72, +1);
+    ctx.restore();
+
+    ctx.save();
+    ctx.rotate(-Math.PI * 0.15);
+    drawLateralPetal(ctx, U*1.05, U*0.72, -1);
+    ctx.restore();
+
+    // Lip (labellum) in front
+    ctx.save();
+    ctx.translate(0, -U*0.02);
+    drawLip(ctx, U*0.9, U*0.85);
+    ctx.restore();
+
+    // Column (center)
+    ctx.save();
+    ctx.translate(0, U*0.2);
+    drawColumn(ctx, U*0.33, U*0.28);
+    ctx.restore();
+
+    ctx.restore(); // flower
+
+    // Cast shadow below plant
+    ctx.restore(); // back to screen coords
+    ctx.save();
+    ctx.globalAlpha = 0.25;
+    const shadowY = cy + Math.min(h, w)*0.02;
+    const shW = Math.min(w, h) * 0.18;
+    const shH = Math.min(w, h) * 0.03;
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    ctx.beginPath();
+    ctx.ellipse(cx, shadowY, shW, shH, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  draw();
+  window.addEventListener('resize', draw);
+})();
+</script>
+</body>
+</html>

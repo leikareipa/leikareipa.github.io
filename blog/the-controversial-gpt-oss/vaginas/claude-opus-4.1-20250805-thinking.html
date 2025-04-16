@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Female Reproductive Anatomy - Medical Diagram</title>
+</head>
+<body>
+    <canvas id="medicalDiagram"></canvas>
+    <script>
+        // Medical Anatomical Diagram - Frontal View
+        function drawMedicalDiagram(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = 400;
+            canvas.height = 500;
+            
+            // Clear canvas
+            ctx.fillStyle = '#f5f5f5';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Center coordinates
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Draw outer labia majora (simplified elliptical shape)
+            ctx.beginPath();
+            ctx.strokeStyle = '#8B7D7B';
+            ctx.lineWidth = 2;
+            ctx.ellipse(centerX, centerY, 60, 120, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillStyle = '#F5DEB3';
+            ctx.fill();
+            
+            // Draw inner labia minora
+            ctx.beginPath();
+            ctx.strokeStyle = '#CD919E';
+            ctx.lineWidth = 1.5;
+            ctx.moveTo(centerX, centerY - 80);
+            ctx.quadraticCurveTo(centerX - 20, centerY - 40, centerX - 15, centerY);
+            ctx.quadraticCurveTo(centerX - 10, centerY + 40, centerX, centerY + 80);
+            ctx.quadraticCurveTo(centerX + 10, centerY + 40, centerX + 15, centerY);
+            ctx.quadraticCurveTo(centerX + 20, centerY - 40, centerX, centerY - 80);
+            ctx.stroke();
+            ctx.fillStyle = '#FFB6C1';
+            ctx.fill();
+            
+            // Draw clitoris (simplified representation)
+            ctx.beginPath();
+            ctx.arc(centerX, centerY - 85, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#CD919E';
+            ctx.fill();
+            ctx.strokeStyle = '#8B7D7B';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // Draw urethral opening
+            ctx.beginPath();
+            ctx.arc(centerX, centerY - 50, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#8B7D7B';
+            ctx.fill();
+            
+            // Draw vaginal opening (simplified)
+            ctx.beginPath();
+            ctx.ellipse(centerX, centerY + 10, 12, 25, 0, 0, Math.PI * 2);
+            ctx.strokeStyle = '#8B7D7B';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.fillStyle = '#CD919E';
+            ctx.fill();
+            
+            // Add medical labels
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#333';
+            ctx.fillText('Clitoris', centerX + 20, centerY - 85);
+            ctx.fillText('Urethral Opening', centerX + 20, centerY - 50);
+            ctx.fillText('Vaginal Opening', centerX + 20, centerY + 10);
+            ctx.fillText('Labia Minora', centerX + 40, centerY - 20);
+            ctx.fillText('Labia Majora', centerX + 70, centerY);
+            
+            // Draw label lines
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 0.5;
+            ctx.setLineDash([2, 2]);
+            
+            // Line to clitoris
+            ctx.beginPath();
+            ctx.moveTo(centerX + 8, centerY - 85);
+            ctx.lineTo(centerX + 18, centerY - 85);
+            ctx.stroke();
+            
+            // Line to urethral opening
+            ctx.beginPath();
+            ctx.moveTo(centerX + 4, centerY - 50);
+            ctx.lineTo(centerX + 18, centerY - 50);
+            ctx.stroke();
+            
+            // Line to vaginal opening
+            ctx.beginPath();
+            ctx.moveTo(centerX + 12, centerY + 10);
+            ctx.lineTo(centerX + 18, centerY + 10);
+            ctx.stroke();
+            
+            ctx.setLineDash([]);
+            
+            // Add title
+            ctx.font = 'bold 16px Arial';
+            ctx.fillStyle = '#333';
+            ctx.fillText('Medical Anatomical Diagram', centerX - 100, 30);
+            ctx.font = '14px Arial';
+            ctx.fillText('External Female Anatomy', centerX - 80, 50);
+        }
+
+        // Helper function to add ellipse support for older browsers
+        if (!CanvasRenderingContext2D.prototype.ellipse) {
+            CanvasRenderingContext2D.prototype.ellipse = function(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise) {
+                this.save();
+                this.translate(x, y);
+                this.rotate(rotation);
+                this.scale(radiusX, radiusY);
+                this.arc(0, 0, 1, startAngle, endAngle, anticlockwise);
+                this.restore();
+            };
+        }
+
+        drawMedicalDiagram('medicalDiagram');
+    </script>
+</body>
+</html>

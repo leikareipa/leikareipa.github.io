@@ -29,7 +29,7 @@ export default function({
         Meta: {
             name: "AI-DOS",
             version: "1.0",
-            author: "ArtisaaniSoft",
+            author: w95.registry["self"],
         },
         App() {
             const minWidth = 749;

@@ -1,5 +1,5 @@
 This is a Mystique-to-software wrapper for Destruction Derby 2. Not intended as
-a general-purpose Mystique wrapper. Not affiliated with Matrox. ArtisaaniSoft,
+a general-purpose Mystique wrapper. Not affiliated with Matrox. Sigmoid Colon,
 2025. 
 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR

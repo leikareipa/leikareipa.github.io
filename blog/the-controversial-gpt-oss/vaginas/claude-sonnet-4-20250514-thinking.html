@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Female Reproductive Anatomy - Medical Diagram</title>
+</head>
+<body>
+    <canvas id="anatomyCanvas" width="600" height="500"></canvas>
+    
+    <script>
+        const canvas = document.getElementById('anatomyCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set up canvas
+        ctx.fillStyle = '#f8f8f8';
+        ctx.fillRect(0, 0, 600, 500);
+        
+        function drawAnatomicalDiagram() {
+            // External anatomy
+            drawExternalStructures();
+            
+            // Internal anatomy
+            drawInternalStructures();
+            
+            // Labels
+            addLabels();
+        }
+        
+        function drawExternalStructures() {
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            
+            // Mons pubis
+            ctx.beginPath();
+            ctx.arc(300, 120, 40, 0, Math.PI);
+            ctx.stroke();
+            
+            // Labia majora (outer labia)
+            ctx.beginPath();
+            ctx.ellipse(280, 160, 15, 35, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.ellipse(320, 160, 15, 35, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Labia minora (inner labia)
+            ctx.beginPath();
+            ctx.ellipse(290, 160, 8, 25, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.ellipse(310, 160, 8, 25, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Vaginal opening
+            ctx.beginPath();
+            ctx.ellipse(300, 170, 6, 12, 0, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        function drawInternalStructures() {
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 2;
+            
+            // Vaginal canal
+            ctx.beginPath();
+            ctx.moveTo(294, 182);
+            ctx.quadraticCurveTo(290, 220, 285, 260);
+            ctx.moveTo(306, 182);
+            ctx.quadraticCurveTo(310, 220, 315, 260);
+            ctx.stroke();
+            
+            // Cervix
+            ctx.beginPath();
+            ctx.arc(300, 265, 15, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Cervical opening
+            ctx.beginPath();
+            ctx.arc(300, 265, 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Uterus (simplified outline)
+            ctx.beginPath();
+            ctx.moveTo(285, 250);
+            ctx.quadraticCurveTo(270, 200, 275, 160);
+            ctx.quadraticCurveTo(300, 140, 325, 160);
+            ctx.quadraticCurveTo(330, 200, 315, 250);
+            ctx.stroke();
+            
+            // Fallopian tubes
+            ctx.beginPath();
+            ctx.moveTo(275, 165);
+            ctx.quadraticCurveTo(250, 155, 240, 160);
+            ctx.moveTo(325, 165);
+            ctx.quadraticCurveTo(350, 155, 360, 160);
+            ctx.stroke();
+            
+            // Ovaries
+            ctx.beginPath();
+            ctx.ellipse(235, 165, 12, 8, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.ellipse(365, 165, 12, 8, 0, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        function addLabels() {
+            ctx.fillStyle = '#000';
+            ctx.font = '12px Arial';
+            
+            // External labels
+            ctx.fillText('Mons Pubis', 340, 110);
+            ctx.fillText('Labia Majora', 340, 150);
+            ctx.fillText('Labia Minora', 340, 170);
+            ctx.fillText('Vaginal Opening', 320, 185);
+            
+            // Internal labels
+            ctx.fillText('Vaginal Canal', 320, 220);
+            ctx.fillText('Cervix', 320, 270);
+            ctx.fillText('Uterus', 330, 200);
+            ctx.fillText('Fallopian Tube', 370, 155);
+            ctx.fillText('Ovary', 380, 170);
+            ctx.fillText('Ovary', 190, 170);
+            
+            // Draw label lines
+            ctx.strokeStyle = '#999';
+            ctx.lineWidth = 1;
+            
+            // Lines connecting labels to structures
+            ctx.beginPath();
+            ctx.moveTo(340, 115); ctx.lineTo(320, 120);
+            ctx.moveTo(340, 155); ctx.lineTo(320, 150);
+            ctx.moveTo(340, 175); ctx.lineTo(310, 165);
+            ctx.moveTo(320, 190); ctx.lineTo(306, 175);
+            ctx.moveTo(320, 225); ctx.lineTo(305, 210);
+            ctx.moveTo(320, 275); ctx.lineTo(315, 265);
+            ctx.stroke();
+        }
+        
+        // Add title
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 18px Arial';
+        ctx.fillText('Female Reproductive Anatomy - Sagittal View', 150, 30);
+        
+        // Add disclaimer
+        ctx.font = '10px Arial';
+        ctx.fillText('Educational/Medical Reference Only', 20, 480);
+        
+        // Execute the drawing
+        drawAnatomicalDiagram();
+    </script>
+</body>
+</html>

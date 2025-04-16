@@ -1,5 +1,5 @@
 /*
- * 2025 ArtisaaniSoft
+ * 2025 Sigmoid Colon
  * 
  * Renders a colored triangle using the S3d Toolkit Library in DOS.
  *

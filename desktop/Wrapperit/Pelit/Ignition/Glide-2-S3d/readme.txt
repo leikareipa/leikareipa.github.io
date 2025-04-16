@@ -1,4 +1,4 @@
-This is a Glide-to-S3d wrapper optimized for Ignition. ArtisaaniSoft, 2025.
+This is a Glide-to-S3d wrapper optimized for Ignition. Sigmoid Colon, 2025.
 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

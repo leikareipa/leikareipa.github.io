@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Likeness of Human Vagina</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="500"></canvas>
+    <script>
+        function drawBreast(ctx, x, y, width, height, color = '#ffdddd') {
+            // Draw breast shape using quadratic curves
+            ctx.beginPath();
+            
+            // Left side of breast
+            ctx.moveTo(x, y + height);
+            ctx.quadraticCurveTo(x - width/4, y + height/3, x, y);
+            ctx.quadraticCurveTo(x + width/4, y + height/3, x + width, y + height);
+            
+            // Close the shape
+            ctx.closePath();
+            
+            // Fill and stroke
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.strokeStyle = '#cc9999';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // Draw areola
+            ctx.beginPath();
+            ctx.arc(x + width/2, y + height/3, width/6, 0, Math.PI * 2);
+            ctx.fillStyle = '#8b4513';
+            ctx.fill();
+            ctx.strokeStyle = '#5d2906';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // Draw nipple
+            ctx.beginPath();
+            ctx.arc(x + width/2, y + height/4, width/12, 0, Math.PI * 2);
+            ctx.fillStyle = '#3a1a0f';
+            ctx.fill();
+        }
+
+        function drawMedicalBreast(ctx, x, y, width, height) {
+            // Draw main breast shape
+            drawBreast(ctx, x, y, width, height);
+            
+            // Add anatomical reference lines
+            ctx.beginPath();
+            ctx.moveTo(x, y + height);
+            ctx.lineTo(x + width, y + height);
+            ctx.strokeStyle = '#999999';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+            
+            // Draw vertical center line
+            ctx.beginPath();
+            ctx.moveTo(x + width/2, y);
+            ctx.lineTo(x + width/2, y + height);
+            ctx.strokeStyle = '#999999';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+            
+            // Draw horizontal division (for symmetry reference)
+            ctx.beginPath();
+            ctx.moveTo(x, y + height/2);
+            ctx.lineTo(x + width, y + height/2);
+            ctx.strokeStyle = '#999999';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+        }
+
+        // Usage example:
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+        drawMedicalBreast(ctx, 100, 50, 150, 200);
+    </script>
+</body>
+</html>
