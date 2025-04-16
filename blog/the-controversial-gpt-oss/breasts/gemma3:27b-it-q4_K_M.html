@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Breast Anatomy Diagram</title>
+<style>
+  canvas {
+    border: 1px solid black;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="breastCanvas" width="400" height="400"></canvas>
+
+<script>
+  const canvas = document.getElementById('breastCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Function to draw a simplified breast diagram
+  function drawBreastDiagram(x, y, size) {
+    // Overall breast shape (simplified oval)
+    ctx.beginPath();
+    ctx.ellipse(x, y, size / 2, size * 0.75, 0, 0, 2 * Math.PI);
+    ctx.fillStyle = '#F0E68C'; // Light yellow - Skin tone
+    ctx.fill();
+    ctx.stroke();
+
+
+    // Nipple
+    const nippleX = x;
+    const nippleY = y - size * 0.25;
+    ctx.beginPath();
+    ctx.arc(nippleX, nippleY, size * 0.075, 0, 2 * Math.PI);
+    ctx.fillStyle = '#A0522D'; //Sienna
+    ctx.fill();
+
+    // Areola
+    ctx.beginPath();
+    ctx.ellipse(nippleX, nippleY, size * 0.125, size * 0.075, 0, 0, 2 * Math.PI);
+    ctx.fillStyle = '#E9967A'; //light coral
+    ctx.fill();
+
+
+    //Lobes (Simplified - radiating lines)
+    const numLobes = 10;
+    for (let i = 0; i < numLobes; i++) {
+      const angle = (i / numLobes) * 2 * Math.PI;
+      const lobeX = x + (size * 0.3) * Math.cos(angle);
+      const lobeY = y + (size * 0.3) * Math.sin(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(lobeX, lobeY);
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)'; //Semi-transparent dark gray
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Ducts (also simplified)
+    const numDucts = 8;
+    for (let i = 0; i < numDucts; i++) {
+        const angle = (i / numDucts) * 2 * Math.PI;
+        const ductX = x + (size * 0.2) * Math.cos(angle);
+        const ductY = y - (size * 0.15) * Math.sin(angle);
+
+        ctx.beginPath();
+        ctx.moveTo(nippleX, nippleY);
+        ctx.lineTo(ductX, ductY);
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+    }
+    //Connective Tissue
+    ctx.beginPath();
+    ctx.ellipse(x, y, size / 2, size * 0.75, 0, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgba(128, 128, 128, 0.1)';//gray, transparent
+    ctx.fill();
+
+
+
+  }
+
+  // Draw two breasts
+  drawBreastDiagram(100, 200, 100); // Left Breast
+  drawBreastDiagram(300, 200, 100); // Right Breast
+</script>
+
+</body>
+</html>
