@@ -1,4 +1,4 @@
-<post-date date="25 September 2024" edited="26 March 2025"/>
+<post-date date="25 September 2024" edited="16 April 2025"/>
 
 # Testing open and closed LLMs some more
 
@@ -116,7 +116,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <x-size>23G</x-size><b>qwq</b>:32b-preview-q5_K_M</td>
+            <td><x-size>23G</x-size><b>qwq</b>:32b-preview-q5_K_M</td>
             <td>60%</td>
             <td class="s1"></td>
             <td class="s1"></td>
@@ -143,7 +143,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <x-size>19G</x-size><b>deepseek-r1</b>:32b-qwen-distill-q4_K_M</td>
+            <td><x-size>19G</x-size><b>deepseek-r1</b>:32b-qwen-distill-q4_K_M</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -161,7 +161,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <b>o1-preview</b>:2024-09-12</td>
+            <td><b>o1-preview</b>:2024-09-12</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -170,7 +170,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <x-size>34G</x-size><b>qwq</b>:32b-preview-q8_0</td>
+            <td><b>o4-mini</b>:high-2025-04-16</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -179,16 +179,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <x-size>30G</x-size><b>qwen-2.5</b>:72b-instruct-q2_K</td>
-            <td>50%</td>
-            <td class="s1"></td>
-            <td class="s1"></td>
-            <td class="s0"></td>
-            <td class="s2"></td>
-            <td class="s1"></td>
-        </tr>
-        <tr>
-            <td><span>🥈</span> <x-size>52G</x-size><b>mistral-large</b>:123b-instruct-2407-q3_K_S</td>
+            <td><x-size>34G</x-size><b>qwq</b>:32b-preview-q8_0</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -197,7 +188,7 @@
             <td class="s2"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <b>gemini-2.0-flash</b>:exp</td>
+            <td><x-size>30G</x-size><b>qwen-2.5</b>:72b-instruct-q2_K</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s1"></td>
@@ -206,7 +197,16 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <b>gemini-2.0-pro</b>:exp-02-05</td>
+            <td><x-size>52G</x-size><b>mistral-large</b>:123b-instruct-2407-q3_K_S</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s2"></td>
+        </tr>
+        <tr>
+            <td><b>gemini-2.0-flash</b>:exp</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s1"></td>
@@ -215,7 +215,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <b>gemini-exp</b>:1206</td>
+            <td><b>gemini-2.0-pro</b>:exp-02-05</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s1"></td>
@@ -224,7 +224,16 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <b>claude-3.5</b>:sonnet-20240620</td>
+            <td><b>gemini-exp</b>:1206</td>
+            <td>50%</td>
+            <td class="s1"></td>
+            <td class="s1"></td>
+            <td class="s0"></td>
+            <td class="s2"></td>
+            <td class="s1"></td>
+        </tr>
+        <tr>
+            <td><b>claude-3.5</b>:sonnet-20240620</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s0"></td>
@@ -233,7 +242,7 @@
             <td class="s1"></td>
         </tr>
         <tr>
-            <td><span>🥈</span> <x-size>54G</x-size><b>llama-3.2-vision</b>:90b-instruct-q4_K_M</td>
+            <td><x-size>54G</x-size><b>llama-3.2-vision</b>:90b-instruct-q4_K_M</td>
             <td>50%</td>
             <td class="s1"></td>
             <td class="s1"></td>
