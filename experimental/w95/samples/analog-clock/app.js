@@ -9,7 +9,7 @@ import {icons} from "/desktop/$apps/pillunsaamislaskuri/icons.js";
 export default {
     Meta: {
         name: "Analog clock",
-        author: "ArtisaaniSoft",
+        author: "PippeLeeSoft",
     },
     App() {
         const width = w95.state(clockFaceTexture.width + 20);

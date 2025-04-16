@@ -16,12 +16,12 @@ export default function({
         Meta: {
             name: "Notepad",
             version: "1.0",
-            author: "ArtisaaniSoft",
+            author: "PippeLeeSoft",
         },
         App() {
             const minWidth = 100;
             const minHeight = 150;
-            const width = w95.state(585);
+            const width = w95.state(666);
             const height = w95.state(Math.max(minHeight, Math.min(400, ~~(w95.shell.display.height * 0.9))));
 
             const x = w95.state(

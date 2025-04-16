@@ -14,7 +14,7 @@ export default function({
         Meta: {
             name: "File Explorer",
             version: "1.0",
-            author: "ArtisaaniSoft",
+            author: "PippeLeeSoft",
         },
         App() {
             const minWidth = 200;

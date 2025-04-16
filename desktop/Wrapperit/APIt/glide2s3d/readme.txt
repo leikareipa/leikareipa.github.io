@@ -1,42 +1,36 @@
-This is an alpha-level Glide wrapper for the S3d API, translating Glide 2.4
-calls into S3d. ArtisaaniSoft, 2025.
+glide2s3d
+^^^^^^^^^
+An alpha-level graphics wrapper that translates Glide 2.4 calls into S3d for
+running on the S3 ViRGE.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-    DEALINGS IN THE SOFTWARE.
-
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 System requirements
-===================
-
-- Windows 9x
-
-- Some variant of the S3 ViRGE, ideally with 4 MB of video memory
-
+^^^^^^^^^^^^^^^^^^^
+- Windows 9x or compatible
+- S3d-compatible video card, preferably with 4 MB of video memory
 - Pentium 2 or better
 
-
 Troubleshooting
-===============
+^^^^^^^^^^^^^^^
+The ViRGE platform is considerably more limited compared to the Voodoo; many
+Glide games are simply too demanding to work well on it. This should be your
+baseline expectation when using this wrapper.
 
-The S3d platform is considerably less performant and more feature poor than the
-Glide platform. As such, many Glide games will simply not work well on S3d, and
-this should be your baseline expectation when using the wrapper.
-
-But some games do work, and for those that don't, the GLIDE2X.INI file provides
-some options for you to try and tweak to make them work.
-
+For the many games that have issues, the GLIDE2X.INI file exposes some wrapper
+options for you to tweak.
 
 Compatibility report
-====================
-
-The author has briefly tested some version of the wrapper with the following
-applications using an emulated ViRGE/DX in 86Box. The emulated machine also
-included a Voodoo to help bypass any hardware checks.
+^^^^^^^^^^^^^^^^^^^^
+The following applications have been tested to some extent using this wrapper
+with an emulated ViRGE/DX in 86Box. The emulated machine also included a Voodoo
+to bypass hardware checks enforced by some Glide games.
 
 -------------------------------------------------------------------------------
 APPLICATION                 STATUS      NOTES

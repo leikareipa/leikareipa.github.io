@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anatomical Diagram</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="anatomyCanvas" width="400" height="600"></canvas>
+    <script>
+        // Get the canvas element and its 2D context
+        const canvas = document.getElementById('anatomyCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set drawing styles
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#000000';
+        ctx.fillStyle = '#f0f0f0'; // Light gray for shading if needed
+
+        // Function to draw the diagram
+        function drawAnatomy() {
+            // Draw outer labia majora (symmetrical ovals)
+            ctx.beginPath();
+            ctx.moveTo(150, 100);
+            ctx.bezierCurveTo(100, 200, 100, 400, 150, 500);
+            ctx.lineTo(250, 500);
+            ctx.bezierCurveTo(300, 400, 300, 200, 250, 100);
+            ctx.closePath();
+            ctx.stroke();
+            // Optional fill for shading
+            // ctx.fill();
+
+            // Draw inner labia minora
+            ctx.beginPath();
+            ctx.moveTo(170, 150);
+            ctx.bezierCurveTo(140, 250, 140, 350, 170, 450);
+            ctx.lineTo(230, 450);
+            ctx.bezierCurveTo(260, 350, 260, 250, 230, 150);
+            ctx.closePath();
+            ctx.stroke();
+
+            // Draw clitoris (small circle at top)
+            ctx.beginPath();
+            ctx.arc(200, 120, 10, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Draw vaginal opening (ellipse at bottom)
+            ctx.beginPath();
+            ctx.ellipse(200, 450, 30, 10, 0, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Draw urethral opening (small circle above vaginal opening)
+            ctx.beginPath();
+            ctx.arc(200, 400, 5, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Optional labels (for medical educational purpose)
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#000000';
+            ctx.fillText('Clitoris', 210, 115);
+            ctx.fillText('Urethral Opening', 210, 395);
+            ctx.fillText('Vaginal Opening', 210, 445);
+            ctx.fillText('Labia Minora', 240, 300);
+            ctx.fillText('Labia Majora', 310, 300);
+        }
+
+        // Call the function to draw
+        drawAnatomy();
+    </script>
+</body>
+</html>

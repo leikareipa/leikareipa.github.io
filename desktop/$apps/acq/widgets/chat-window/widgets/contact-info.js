@@ -100,7 +100,7 @@ export const contactInfo = w95.widget(function contactInfo({
                             w95.widget.horizontalLayout({
                                 width: "pw",
                                 styleHints: [
-                                    w95.styleHint.alignVCenter,
+                                    w95.styleHint.alignTop,
                                 ],
                                 children: [
                                     w95.widget.label({

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Illustration – Vagina</title>
+  <style>
+    canvas {
+      border: 1px solid #ccc;
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="vulvaCanvas" width="200" height="300"></canvas>
+
+  <script>
+    const canvas = document.getElementById('vulvaCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Helper: draw a rounded rectangle (used for the labia)
+    function roundRect(x, y, width, height, radius, fillColor) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+      ctx.fillStyle = fillColor;
+      ctx.fill();
+    }
+
+    // Draw outer labia (pinkish tone)
+    roundRect(40, 50, 120, 100, 20, '#FFC0CB'); // larger oval shape
+
+    // Draw inner labia (lighter tone)
+    roundRect(55, 70, 90, 70, 15, '#FFD1DC');
+
+    // Draw the vaginal opening (a small, darker oval)
+    ctx.beginPath();
+    ctx.ellipse(110, 160, 10, 6, 0, 0, 2 * Math.PI);
+    ctx.fillStyle = '#FFB6C1';
+    ctx.fill();
+
+    // Add a small label (optional)
+    ctx.font = '12px Arial';
+    ctx.fillStyle = '#333';
+    ctx.textAlign = 'center';
+    ctx.fillText('Vulva (External part of the vagina)', canvas.width / 2, 20);
+  </script>
+</body>
+</html>

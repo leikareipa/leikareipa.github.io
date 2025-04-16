@@ -5,7 +5,7 @@ export default function(imageUrl = "") {
         Meta: {
             name: "Image Viewer",
             version: "1.0",
-            author: "ArtisaaniSoft",
+            author: "PippeLeeSoft",
         },
         App() {
             const minWidth = 50;
