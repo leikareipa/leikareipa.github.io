@@ -113,7 +113,7 @@ export default {
                                                 onClick() {send_message("save:project")},
                                             }),
                                             w95.widget.menuAction({
-                                                label: "Load",
+                                                label: "Load track",
                                                 submenu: w95.widget.menu({
                                                     children: [
                                                         w95.widget.menuAction({
@@ -122,7 +122,7 @@ export default {
                                                         }),
                                                         w95.widget.menuSeparator(),
                                                         w95.widget.menuAction({
-                                                            label: "Rally-Sport (demo)",
+                                                            label: "Original",
                                                             submenu: w95.widget.menu({
                                                                 children: [
                                                                     w95.widget.menuAction({
@@ -354,14 +354,14 @@ export default {
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
-                                                label: "Race",
+                                                label: "Race...",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:play");
                                                 },
                                             }),
                                             w95.widget.menuAction({
-                                                label: "Debug",
+                                                label: "Debug...",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:test");
@@ -369,7 +369,7 @@ export default {
                                             }),
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuAction({
-                                                label: "Record lap",
+                                                label: "Ghost lap...",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:record");
@@ -445,7 +445,6 @@ export default {
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuAction({
                                                 label: "Manual",
-                                                isChecked: (currentEditorView.now === "texture-editor"),
                                                 onClick() {
                                                     w95.shell.run(notepad({
                                                         file: "/desktop/$apps/rallysported/manual.txt",

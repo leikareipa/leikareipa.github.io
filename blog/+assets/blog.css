@@ -18,6 +18,7 @@ body[data-dokki-theme="light"],
 
 .post-date
 {
+    display: none;
     font-size: 85%;
     padding-left: var(--dokkiCSS-topic-horizontal-padding);
     padding-right: var(--dokkiCSS-topic-horizontal-padding);
@@ -70,9 +71,11 @@ body[data-dokki-layout="horizontal-wide"] .post-date
     padding-right: 0;
 }
 
-body:not([data-dokki-layout^="vertical"]) .post-date + .dokki-topic
+.dokki0-table-of-contents .contents .navi-link .label .idx
 {
-    padding-top: calc(0.25 * var(--dokkiCSS-topic-vertical-padding)) !important;
+    background: black;
+    color: white;
+    padding: 0 0.25em;
 }
 
 body[data-dokki-layout^="vertical"] .dokki-tag-cloud.headerless
@@ -89,6 +92,12 @@ body[data-dokki-layout="vertical-narrow"] .dokki-tag-cloud.headerless > .dokki0-
 .dokki-topics
 {
     align-items: unset !important;
+    padding-bottom: 0 !important;
+}
+
+.dokki-topic:last-child
+{
+    padding-bottom: 0 !important;
 }
 
 .dokki-topic em
@@ -194,9 +203,6 @@ body[data-dokki-layout="vertical-narrow"] .dokki-topic em
 .blog-post-abstract.fields
 {
     margin-top: 0.75em !important;
-    display: flex;
-    align-items: center;
-    gap: 0.75em;
 }
 
 .blog-post-abstract .field
@@ -208,14 +214,13 @@ body[data-dokki-layout="vertical-narrow"] .dokki-topic em
 
 .blog-post-abstract .field.brief
 {
-    border-left: 1px solid;
-    padding-left: 0.75em;
+    display: block;
+    margin-top: 0.75em;
 }
 
 .blog-post-abstract .field.date .label
 {
     white-space: nowrap;
-    color: var(--dokkiCSS-page-inert-fg-color);
 }
 
 .blog-post-abstract .field.tags .label
@@ -235,11 +240,6 @@ body[data-dokki-layout="vertical-narrow"] .dokki-topic em
     padding: 3px 0;
     font-weight: var(--dokkiCSS-bold-text-weight);
     font-size: 95%;
-}
-
-.blog-post-abstract .field .label
-{
-    padding: 3px 0;
 }
 
 .squiggly
