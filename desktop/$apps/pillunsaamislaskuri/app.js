@@ -51,7 +51,7 @@ export default {
                                 w95.widget.frame({
                                     width: "pw",
                                     height: 28,
-                                    backgroundColor: w95.color(0, 0, 0, 192),
+                                    backgroundColor: w95.color(0, 0, 0),
                                     children: [
                                         w95.widget.horizontalLayout({
                                             y: 6,

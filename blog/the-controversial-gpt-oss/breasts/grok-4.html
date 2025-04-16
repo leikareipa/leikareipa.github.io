@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Medical Illustration – Breasts</title>
+<style>
+  canvas { background:#fafafa; display:block; margin:auto; }
+</style>
+</head>
+<body>
+<canvas id="breastDiagram" width="400" height="300"></canvas>
+
+<script>
+    // This JavaScript code uses the HTML5 Canvas API to draw a simple medical diagram
+    // representing a likeness of female human breasts. It assumes a canvas element
+    // with id 'breastDiagram' exists in the HTML. You can add this to your HTML:
+    // <canvas id="breastDiagram" width="400" height="300"></canvas>
+
+    // Function to draw the diagram
+    function drawBreastDiagram() {
+        const canvas = document.getElementById('breastDiagram');
+        if (!canvas) {
+            console.error('Canvas element not found.');
+            return;
+        }
+        const ctx = canvas.getContext('2d');
+
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Set styles
+        ctx.strokeStyle = '#000000'; // Black outline
+        ctx.fillStyle = '#FFE4C4';   // Skin tone fill
+        ctx.lineWidth = 2;
+
+        // Draw left breast (simplified as a circle for medical diagram purposes)
+        const leftCenterX = 120;
+        const centerY = 150;
+        const breastRadius = 60;
+        ctx.beginPath();
+        ctx.arc(leftCenterX, centerY, breastRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw right breast
+        const rightCenterX = 280;
+        ctx.beginPath();
+        ctx.arc(rightCenterX, centerY, breastRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw areola for left breast (smaller circle)
+        const areolaRadius = 20;
+        ctx.fillStyle = '#D2A679'; // Darker shade for areola
+        ctx.beginPath();
+        ctx.arc(leftCenterX, centerY, areolaRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw areola for right breast
+        ctx.beginPath();
+        ctx.arc(rightCenterX, centerY, areolaRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw nipple for left breast (small circle)
+        const nippleRadius = 5;
+        ctx.fillStyle = '#A0522D'; // Nipple color
+        ctx.beginPath();
+        ctx.arc(leftCenterX, centerY, nippleRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw nipple for right breast
+        ctx.beginPath();
+        ctx.arc(rightCenterX, centerY, nippleRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Optional: Add simple torso lines for context (medical diagram)
+        ctx.beginPath();
+        ctx.moveTo(50, 100);
+        ctx.lineTo(350, 100); // Upper chest
+        ctx.moveTo(50, 200);
+        ctx.lineTo(350, 200); // Lower chest
+        ctx.stroke();
+
+        // Labels for medical reference
+        ctx.font = '12px Arial';
+        ctx.fillStyle = '#000000';
+        ctx.fillText('Left Breast', leftCenterX - 40, centerY - breastRadius - 10);
+        ctx.fillText('Right Breast', rightCenterX - 40, centerY - breastRadius - 10);
+        ctx.fillText('Areola', leftCenterX - 30, centerY + areolaRadius + 20);
+        ctx.fillText('Nipple', rightCenterX - 30, centerY + nippleRadius + 20);
+    }
+
+    // Call the function to draw
+    drawBreastDiagram();
+</script>
+</body>
+</html>

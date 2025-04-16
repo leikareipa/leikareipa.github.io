@@ -23,6 +23,16 @@
                 --dokkiCSS-topic-vertical-padding: 1.85em !important;
             }
 
+            .dokki-header > .widgets > .dokki-user-widget:last-child
+            {
+                margin-left: 0;
+            }
+
+            .dokki-topic#introduction
+            {
+                display: none;
+            }
+
             b-stickies
             {
                 margin-top: 1em;
@@ -176,31 +186,43 @@
 
                     <dokki-topic dokki-ignore title="Introduction" inline-class="abstract dokki-ignore">
                         <p>
-                            This is the blog of a veteran software developer with no background in
-                            commercial development. Expect the outside perspective. 
+                            This is the blog of a veteran hobbyist software developer.
                         </p>
-                        <b-stickies>
-                            <a class="sticky" href="/blog/testing-open-and-closed-llms-some-more/">
-                                <i class="fas fa-xs fa-thumbtack" style="transform: rotate(-45deg); margin-right: 0.5em;"></i>
-                                Testing open and closed LLMs some more
-                            </a>
-                            <a class="sticky" href="/blog/testing-visual-understanding-in-llms/">
-                                <i class="fas fa-xs fa-thumbtack" style="transform: rotate(-45deg); margin-right: 0.5em;"></i>
-                                Testing visual understanding in LLMs
-                            </a>
-                        </b-stickies>
                     </dokki-topic>
+
+                    <dokki-tag-filter entity-name="posts"></dokki-tag-filter>
+
+                    <blog-post-abstract
+                        date="11 August 2025"
+                        :tags="['ai', 'benchmark', 'openai']"
+                        title="The controversial gpt-oss"
+                        brief="
+                            The new open-weights model from OpenAI &ndash; gpt-oss &ndash; has brought up controversy
+                            for its censorship.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="26 May 2025"
+                        :tags="['ai', 'benchmark', 'assembly', 'anthropic', 'retro']"
+                        title="Claude 4 in retro assembly programming"
+                        brief="
+                            Last year I did an interesting benchmark evaluating AI models in obscure assembly coding.
+                            It was a test in which even the best models struggled. Running the benchmark now for the
+                            new Claude 4 shows interesting progress.
+                        "
+                    ></blog-post-abstract>
 
                     <blog-post-abstract
                         date="8 March 2025"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="QwQ-32B vs. QwQ-32B-Preview"
                         brief="Nuff said, or is it?"
                     ></blog-post-abstract>
 
                     <blog-post-abstract
                         date="3 March 2025"
-                        :tags="['rendering']"
+                        :tags="['rendering', 'retro']"
                         title="Wrapping old graphics APIs"
                         brief="
                             It's been an interesting start to the year as I've been exploring something
@@ -210,7 +232,7 @@
 
                     <blog-post-abstract
                         date="30 December 2024"
-                        :tags="['rendering']"
+                        :tags="['rendering', 'retro']"
                         title="Playing around with the S3d rendering API"
                         brief="
                             This past Christmas week I've been playing around with S3's proprietary
@@ -221,7 +243,7 @@
 
                     <blog-post-abstract
                         date="17 December 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="Comparing quants of QwQ Preview in Ollama"
                         brief="
                             My previous coding tests showed a bell curve for the quants of QwQ Preview in
@@ -232,7 +254,7 @@
 
                     <blog-post-abstract
                         date="10 December 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'openai']"
                         title="Looking back on speculation about the next version of GPT"
                         brief="
                             In Q1 2024, I speculated the next major version of GPT would be an agentic
@@ -243,7 +265,7 @@
 
                     <blog-post-abstract
                         date="4 December 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="Briefly evaluating QwQ Preview"
                         brief="
                             Alibaba has somewhat stunned the AI community by their releasing a relatively
@@ -254,7 +276,7 @@
 
                     <blog-post-abstract
                         date="12 November 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="Comparing Qwen 2.5 and Qwen 2.5 Coder for programming"
                         brief="
                             As per my previous tests, Qwen 2.5 shows strong promise as a capable
@@ -265,20 +287,8 @@
                     ></blog-post-abstract>
 
                     <blog-post-abstract
-                        date="2 November 2024"
-                        :tags="['industry']"
-                        title="Recapping this year's developer job search"
-                        brief="
-                            The developer job search has been uninspiring this year as openings
-                            have remained at record lows. The key numbers for the year are 6%
-                            interview rate and 0% offer rate, for a developer with a few decades of
-                            background in programming and no relevant work experience.
-                        "
-                    ></blog-post-abstract>
-
-                    <blog-post-abstract
                         date="1 November 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark', 'anthropic', 'retro']"
                         title="Evaluating Claude 3.5 Sonnet in retro assembly programming"
                         brief="
                             Earlier this year, I benchmarked a few LLMs in retro assembly coding, the results
@@ -289,7 +299,7 @@
 
                     <blog-post-abstract
                         date="15 October 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'speculation']"
                         title="Superintelligence vs. taking it easy on UBI"
                         brief="
                             There's plenty of talk about AI putting people out of jobs.
@@ -302,7 +312,7 @@
 
                     <blog-post-abstract
                         date="2 October 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark', 'openai']"
                         title="Briefly evaluating OpenAI o1"
                         brief="
                             OpenAI are taking their time bringing o1 to all usage tiers on their API,
@@ -313,7 +323,7 @@
 
                     <blog-post-abstract
                         date="27 September 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'industry']"
                         title="The future of FOSS"
                         brief="
                             I've been releasing free software for a decade now, of which the last five
@@ -324,7 +334,7 @@
 
                     <blog-post-abstract
                         date="25 September 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="Testing open and closed LLMs some more"
                         brief="
                             Nuff said.
@@ -333,7 +343,7 @@
 
                     <blog-post-abstract
                         date="14 September 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'openai']"
                         title="Hello OpenAI o1, goodbye developers"
                         brief="
                             How's that for toxic clickbait? Anyway, OpenAI has finally released
@@ -355,7 +365,7 @@
 
                     <blog-post-abstract
                         date="15 May 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="Testing visual understanding in LLMs"
                         brief="
                             A collection of visual tests and their results for various LLMs.
@@ -364,7 +374,7 @@
 
                     <blog-post-abstract
                         date="13 May 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark', 'anthropic']"
                         title="Testing Anthropic's prompt generator"
                         brief="
                             Anthropic recently released an automated prompt generator for Claude that
@@ -375,7 +385,7 @@
 
                     <blog-post-abstract
                         date="9 May 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="The two new gpt2-chatbot drops on LMSYS Chatbot Arena"
                         brief="
                             The week prior, a mysterious entity named gpt2-chatbot appeared on LMSYS Chatbot
@@ -387,7 +397,7 @@
 
                     <blog-post-abstract
                         date="29 April 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="Brief tests on the mysterious gpt2-chatbot on LMSYS Chatbot Arena"
                         brief="
                             Over the weekend, people noticed a new entry on LMSYS Chatbot Arena called gpt2-chatbot.
@@ -410,7 +420,7 @@
 
                     <blog-post-abstract
                         date="11 April 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark', 'openai']"
                         title="Briefly evaluating the new GPT-4 Turbo"
                         brief="
                             OpenAI recently put out a new, 'majorly improved' version of GPT-4 Turbo.
@@ -420,7 +430,7 @@
 
                     <blog-post-abstract
                         date="25 March 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'speculation']"
                         title="Brief speculation about the next GPT"
                         brief="
                             The year is well underway and many eyes have turned toward the next iteration
@@ -430,7 +440,7 @@
 
                     <blog-post-abstract
                         date="20 March 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="Does bad spelling increase LLM response quality?"
                         brief="
                             About a week ago some dude on Reddit posted about Claude 3 producing better
@@ -441,7 +451,7 @@
 
                     <blog-post-abstract
                         date="7 March 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'anthropic']"
                         title="Claude 3's exceptional abilities at obscure languages"
                         brief="
                             Earlier this week, Anthropic launched Claude 3, its next-generation family
@@ -467,7 +477,7 @@
 
                     <blog-post-abstract
                         date="4 March 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark', 'retro']"
                         title="LLM performance in retro assembly coding"
                         brief="
                             How well can the various publically-available LLMs assist you in retro
@@ -477,7 +487,7 @@
 
                     <blog-post-abstract
                         date="26 February 2024"
-                        :tags="['ai']"
+                        :tags="['ai', 'benchmark']"
                         title="Testing a medley of local LLMs for coding"
                         brief="
                             While the release of GPT-4 last year upgraded my expectations for LLMs,
@@ -489,7 +499,7 @@
 
                     <blog-post-abstract
                         date="22 February 2024"
-                        :tags="['ai', 'gemini', 'gpt', 'javascript']"
+                        :tags="['ai', 'benchmark', 'gemini', 'gpt', 'javascript']"
                         title="Gemini Advanced vs. GPT-3.5 in operating a GUI framework"
                         brief="
                             When it comes to coding, Gemini Advanced struggles to compete with
@@ -511,7 +521,7 @@
 
                     <blog-post-abstract
                         date="10 February 2024"
-                        :tags="['ai', 'gemini', 'gpt', 'assembly', 'javascript']"
+                        :tags="['ai', 'benchmark', 'gemini', 'gpt', 'assembly', 'javascript']"
                         title="Gemini Advanced dealing with assembly code"
                         brief="
                             A while ago, I wrote a comparison of ChatGPT models dealing with assembly code.
@@ -522,7 +532,7 @@
 
                     <blog-post-abstract
                         date="8 February 2024"
-                        :tags="['ai', 'gemini', 'gpt', 'javascript']"
+                        :tags="['ai', 'benchmark', 'gemini', 'gpt', 'javascript']"
                         title="Comparing Gemini Advanced and GPT-4 in graphics programming"
                         brief="
                             Google's Gemini Advanced chatbot is fresh out of the oven. Let's see how it does
@@ -532,7 +542,7 @@
 
                     <blog-post-abstract
                         date="November 24, 2023"
-                        :tags="['ai', 'gpt', 'chatgpt', 'javascript']"
+                        :tags="['ai', 'benchmark', 'gpt', 'chatgpt', 'javascript']"
                         title="Comparing ChatGPT models' drawing skills, part 2"
                         brief="
                             OpenAI released the Turbo version of GPT-4 a short while back, so let's pit it
@@ -568,7 +578,7 @@
 
                     <blog-post-abstract
                         date="April 9, 2023"
-                        :tags="['ai', 'gpt', 'chatgpt', 'assembly', 'javascript']"
+                        :tags="['ai', 'benchmark', 'gpt', 'chatgpt', 'assembly', 'javascript']"
                         title="ChatGPT dealing with assembly code"
                         brief="
                             About a year ago, in the time before ChatGPT, I wrote a blog post comparing the
@@ -594,7 +604,7 @@
 
                     <blog-post-abstract
                         date="March 31, 2023"
-                        :tags="['ai', 'gpt', 'chatgpt', 'javascript']"
+                        :tags="['ai', 'benchmark', 'gpt', 'chatgpt', 'javascript']"
                         title="Comparing ChatGPT models' drawing skills"
                         brief="
                             Let's benchmark and compare the visual abilities of the various ChatGPT
@@ -676,7 +686,7 @@
 
                     <blog-post-abstract
                         date="January 1, 2023"
-                        :tags="['recruiting', 'ai', 'gpt', 'chatgpt']"
+                        :tags="['industry', 'ai', 'gpt', 'chatgpt']"
                         title="Exploring the applicant&ndash;HR dynamic with ChatGPT"
                         brief="
                             ChatGPT is an advanced AI that can convincingly approximate the responses of a
@@ -841,7 +851,7 @@
 
                     <blog-post-abstract
                         date="January 21, 2022"
-                        :tags="['standards']"
+                        :tags="['web standards']"
                         title="Running Google Lighthouse on old Wayback Machine captures"
                         brief="How do decades-old web pages look to a modern quality assurance tool?"
                     ></blog-post-abstract>

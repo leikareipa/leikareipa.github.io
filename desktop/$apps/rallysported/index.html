@@ -17,6 +17,10 @@
                 background-color: rgb(192, 192, 192);
                 border: none;
             }
+            #desktop {
+                background-repeat: no-repeat;
+                background-position: center;
+            }
         </style>
     </head>
     <body>
@@ -30,21 +34,21 @@
             const desktop = w95.shell.desktop({
                 icons: [
                     w95.widget.desktopIcon({
-                        text: "Track editor",
+                        text: "RallySportED - Track editor",
                         icon: icons.app32,
                         onActivate() {
                             w95.shell.run(trackEditor);
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Key remapper",
+                        text: "RallySportED - Key remapper",
                         icon: icons.app32,
                         onActivate() {
                             w95.shell.run(keyRemapper);
                         },
                     }),
                     w95.widget.desktopIcon({
-                        text: "Corruptor",
+                        text: "RallySportED - Corruptor",
                         icon: icons.app32,
                         onActivate() {
                             w95.shell.run(corruptor);
@@ -54,7 +58,7 @@
             });
 
             w95.shell.boot();
-            w95.shell.wallpaper = "./hires2.png";
+            w95.shell.wallpaper = "./logo.png";
             w95.shell.run([desktop, taskbar]);
         </script>
     </body>

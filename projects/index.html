@@ -11,16 +11,16 @@
         <link rel="stylesheet" href="/blog/+assets/blog.css">
 
         <style>
-            a,
-            a:visited
-            {
-                color: revert !important;
-            }
-
             body[data-dokki-theme]
             {
                 --dokkiCSS-embedded-border-radius: 5px;
                 --dokkiCSS-topic-vertical-padding: 1.5em;
+            }
+
+            ul > li + .dokki0-embedded-expandable
+            {
+                margin-top: 10px !important;
+                margin-bottom: 0 !important;
             }
 
             .dokki0-embedded-expandable > header > .caption > .type
@@ -89,29 +89,28 @@
                 color: var(--dokkiCSS-page-secondary-fg-color) !important;
             }
 
-            body[data-dokki-theme] .dokki-tag,
-            body[data-dokki-theme] .dokki-tag-filter .button
-            {
-                background-color: var(--dokkiCSS-page-secondary-bg-color) !important;
-                color: inherit !important;
-                border: 1px solid var(--dokkiCSS-page-primary-line-color) !important;
-            }
-
-            body[data-dokki-theme] .dokki-tag:hover,
-            body[data-dokki-theme] .dokki-tag-filter .button:hover
-            {
-                color: var(--dokkiCSS-page-primary-bg-color) !important;
-                background-color: var(--dokkiCSS-page-primary-fg-color) !important;
-                border-color: var(--dokkiCSS-page-primary-fg-color) !important;
-            }
-
             .dokki-area.tag-list
             {
-                display: flex;
-                flex-wrap: wrap;
                 padding: 0;
                 background-color: inherit;
                 margin-top: -6px; /* Negate <dokki-tag>'s' top margin.*/
+
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 10px;
+                align-items: center;
+                padding: 8px 0;
+                margin: -8px 0;
+                padding-right: 8px;
+                padding-left: 3px;
+                mask-image: linear-gradient(to right, black calc(100% - 8px), transparent);
+                -webkit-mask-image: linear-gradient(to right, black calc(100% - 8px), transparent);
+            }
+
+            .dokki-area.tag-list::-webkit-scrollbar
+            {
+                display: none;
             }
 
             .blog-link
@@ -151,11 +150,25 @@
 
             .dokki-tag
             {
-                padding: 4px 14px !important;
-                margin: 10px 10px 0 0 !important;
-                color: inherit !important;
-                font-size: inherit !important;
-                border-color: var(--dokkiCSS-page-primary-line-color) !important;
+                box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.3);
+                border-radius: 5px !important;
+            }
+
+            .dokki-tag,
+            .dokki0-embedded-expandable:not(.headerless)
+            {
+                background-color: white !important;
+            }
+
+            body[data-dokki-theme="dark"] .dokki-tag,
+            body[data-dokki-theme="dark"] .dokki0-embedded-expandable:not(.headerless)
+            {
+                background-color: black !important;
+            }
+            .dokki0-embedded-expandable.has-after.headerless footer
+            {
+                overflow: auto;
+                border-top: none !important;
             }
 
             .dokki-tag .count
@@ -181,38 +194,127 @@
                     </dokki-header>
                     <dokki-topics>
                         
-<dokki-topic dokki-ignore title="Introduction">
-    <p>
-        This page talks about a few of the software applications I've made over the decades.
-        For more recent activity, <a href="/blog">see my blog</a>.
-    </p>
-    <dokki-tag-cloud headerless></dokki-tag-cloud>
-</dokki-topic>
-
 <dokki-tag-filter entity-name="software"></dokki-tag-filter>
 
-<dokki-topic title="JavaScript software 3D renderer">
+<dokki-topic title="Software 3D renderer (JavaScript)">
 <dokki-area inline-class="tag-list dokkiCSS-area-container">
     <dokki-tag>2019</dokki-tag>
     <dokki-tag>Rendering</dokki-tag>
     <dokki-tag>JavaScript</dokki-tag>
 </dokki-area>
-    <p>A low-level retro-oriented 3D and 2D software renderer for the HTML5 &lt;canvas&gt;.</p>
+    <p>A modular, low-level, retro-oriented software renderer for the HTML5 &lt;canvas&gt;, providing rasterization of <i>n</i>-sided convex
+        polygons, lines and points, with optional support for pixel and vertex shading and multipass effects. Also supports rendering into an
+        off-screen buffer.
+    </p>
     <dokki-image src="./img/rngon/tomb-raider-1-texture-lightmap-2.webp" width="1920" height="890" headerless="true">
     </dokki-image>
-    <p>The renderer supports <i>n</i>-sided convex polygons, as well as lines and points. It provides a good approximation of the sort of
-    fixed-pipeline rendering that was done in the 1990s, but also exposes full modularity and programmability of the pipeline, including
-    pixel and vertex shaders.</i></p>
+    <p>By default, this renderer produces a realistic approximation of the style of fixed-pipeline rendering of the 1990s with its characteristic
+        imperfections. But thanks to the renderer's modular nature, you can just as well replace any core part of the rendering pipeline with your own
+        implementation; for example, the rasterization logic.</i></p>
     <dokki-image src="./img/rngon/rngon-3.png" width="1919" height="930" headerless="true">
     </dokki-image>
     <p>The renderer performs quite well for scenes typical of mid-1990s gaming, exceeding 60 FPS on a Ryzen 5000 series desktop CPU.
     Shaders are also fairly performant.
     </p>
+    <dokki-iframe src="/retro-ngon/samples/tomb-raider-home/">
+        <template #caption>View interactive render sample (mouse and keyboard)</template>
+    </dokki-iframe>
+    <dokki-iframe src="/retro-ngon/samples/path-tracing/">
+        <template #caption>View path-tracing pixel shader</template>
+    </dokki-iframe>
+    <p>The API is relatively straightforward. For example:</p>
+    <dokki-code
+        headerless
+        syntax="JavaScript"
+        code='
+        <canvas id="canvas" style="width: 300px; height: 300px;"></canvas>
+        <script src="rngon.global.js"></script>
+        <script>
+            const quad = Rngon.ngon([
+                Rngon.vertex(-1, -1, 0),
+                Rngon.vertex( 1, -1, 0),
+                Rngon.vertex( 1,  1, 0),
+                Rngon.vertex(-1,  1, 0)], {
+                    color: Rngon.color(0, 150, 255)
+            });
+
+            const quadMesh = Rngon.mesh([quad], {
+                rotate: Rngon.vector(0, 0, 45),
+            });
+
+            Rngon.render({
+                target: "canvas",
+                meshes: [quadMesh],
+                options: {
+                    resolution: 0.25,
+                    cameraPosition: Rngon.vector(0, 0, -5),
+                    useFragmentBuffer: true,
+                    fragments: {
+                        worldY: true,
+                    },
+                },
+                pipeline: {
+                    pixelShader: sample_shader,
+                },
+            });
+
+            function sample_shader(renderContext) {
+                const {width, height, data:pixels} = renderContext.pixelBuffer;
+                const fragmentBuffer = renderContext.fragmentBuffer.data;
+                
+                for (let i = 0; i < (width * height); i++) {
+                    if (fragmentBuffer[i]?.worldY < 0) {
+                        pixels[(i * 4) + 0] = 0;
+                        pixels[(i * 4) + 1] = 150;
+                        pixels[(i * 4) + 2] = 255;
+                    }
+                }
+            }
+        </script>'
+    ></dokki-code>
     <p>For more information:</p>
     <ul>
     <li><a href="https://leikareipa.github.io/retro-ngon/samples/">Interactive render samples</a></li>
     <li><a href="/blog/a-path-tracing-pixel-shader-in-a-javascript-software-renderer/">Blog post on writing a path-tracing pixel shader</a></li>
     </ul>
+</dokki-topic>
+
+<dokki-topic title="Control app for capture devices">
+    <dokki-area inline-class="tag-list dokkiCSS-area-container">
+        <dokki-tag>2017</dokki-tag>
+        <dokki-tag>Video capture</dokki-tag>
+        <dokki-tag>C++</dokki-tag>
+        <dokki-tag>Qt</dokki-tag>
+        <dokki-tag>OpenCV</dokki-tag>
+        <dokki-tag>Video4Linux</dokki-tag>
+    </dokki-area>
+    <p>A Linux (formerly also Windows) control application for various capture devices, mainly the Vision line of high-end capture cards from Datapath.
+        Apart from the Vision API, this application supports Video4Linux devices (webcams etc.), digital cameras via gPhoto2, and generic inter-process
+        capture via shared memory.</p>
+    <dokki-image src="./img/vcs/vcs.png" width="2110" height="841" headerless="true">
+    </dokki-image>
+    <p>The app receives image data from the capture device, processes it with various scaling and filtering options, and displays it on the screen. There are
+    also controls for adjusting the capture device's operational parameters (resolution, analog properties, etc.). In its early years, when it was limited to
+    Datapath capture devices, the software was particularly useful for its analog presets, which were not provided by Datapath's own software and which made
+    the hardware much more suited for analog (e.g. retro) capture.
+    </p>
+    <dokki-image src="./img/vcs/screenshot3.png" width="2075" height="693" headerless="true">
+        <template #caption>Applying image filters</template>
+    </dokki-image>
+    <p>As such, the program became popular particularly with users who wanted to capture retro devices using Datapath Vision cards, which at the time were
+    available for affordable prices and in high quantities on the second-hand market.</p>
+    <dokki-video platform="youtube" src="_gNywFJFRWo">
+        <template #caption>Video: Demonstrating VCS's anti-tearing feature (2018)</template>
+    </dokki-video>
+    <p>Several features were developed specifically for the benefit of retro capture; for example, the anti-tearing filter as demonstrated in the video, above.
+        This feature would accumulate frame fragments into an off-screen buffer until the entire frame had been built up, thereby
+        avoiding the display of tearing artifacts.
+    </p>
+    <dokki-image src="./img/vcs/v4l.jpg" width="1540" height="571" headerless="true">
+        <template #caption>Capturing a webcam via Video4Linux</template>
+    </dokki-image>
+    <p>Written in modular C++. Uses Qt for the UI, but this has been abstracted so that a different UI framework could be substituted without rewriting.
+    </p>
 </dokki-topic>
 
 <dokki-topic title="Windows 95 web UI framework">
@@ -221,18 +323,153 @@
         <dokki-tag>JavaScript</dokki-tag>
         <dokki-tag>Framework</dokki-tag>
     </dokki-area>
-    <p>A JavaScript UI framework for building web apps in the style of Windows 95.</p>
+    <p>A React-like JavaScript UI framework for building web apps in the style of Windows 95. Unlike the usual fare of retro Windows
+        lookalike web styling, this is a genuine UI framework with its own widget-based API and whose rendering is done in a &lt;canvas&gt;
+        for pixel-perfect retro accuracy.
+    </p>
     <dokki-image src="./img/w95/ss.png" width="2560" height="1440" headerless="true">
         <template #caption>Replica Windows 95 desktop, both it and the apps built using the framework</template>
     </dokki-image>
-    <p>The framework implements all widget functionality from scratch and renders the entire UI in a canvas
-    using a custom rasterizer. A functional API modeled after React hooks is exposed to developers to
-    build applications using the framework.</p>
+    <p>The framework's functional API is modeled after React hooks. A simple sample application:</p>
+    <dokki-code headerless syntax="JavaScript">
+        <template #code>
+            <pre>
+                export default {
+                    Meta: {
+                        name: "A sample w95 app",
+                        version: "0.0",
+                        author: "Unknown",
+                        description: "This app was created using create-w95-app.sh",
+                    },
+                    App() {
+                        const minWidth = 200;
+                        const minHeight = 100;
+                        const width = w95.state(minWidth);
+                        const height = w95.state(minHeight);
+                        const x = w95.state(~~(0.5 * (w95.shell.display.width - width.now)), w95.reRenderOnly);
+                        const y = w95.state(~~(0.5 * (w95.shell.display.visibleHeight - height.now)), w95.reRenderOnly);
+                        
+                        // Persistent state variable.
+                        const isPissed = w95.state(false);
+                
+                        return {
+                            get x() { return x.now },
+                            get y() { return y.now },
+                            get width() { return width.now },
+                            get height() { return height.now },
+                            Form() {
+                                return w95.widget.window({
+                                    parent: this,
+                                    title: this.$app.Meta.name,
+                                    resize(newWidth, newHeight) {
+                                        width.set(Math.max(minWidth, (width.now + newWidth)));
+                                        height.set(Math.max(minHeight, (height.now + newHeight)));
+                                    },
+                                    move(deltaX, deltaY) {
+                                        x.set(x.now + deltaX);
+                                        y.set(y.now + deltaY);
+                                    },
+                                    close() {
+                                        w95.windowManager.release_window(this)
+                                    },
+                                    children: [
+                                        w95.widget.verticalLayout({
+                                            width: "pw",
+                                            height: "ph",
+                                            padding: 6,
+                                            styleHints: [
+                                                w95.styleHint.alignHCenter,
+                                                w95.styleHint.alignVCenter,
+                                            ],
+                                            children: [
+                                                w95.widget.label({
+                                                    text: (isPissed.now? "Piss off." : "Hello, world!"),
+                                                }),
+                                                w95.widget.button({
+                                                    text: "Tell a joke",
+                                                    onClick() {
+                                                        isPissed.set(true);
+                                                    },
+                                                }, {hideIf: isPissed.now}),
+                                            ],
+                                        }),
+                                    ],
+                                });
+                            },
+                        };
+                    },
+                };
+            </pre>
+        </template>
+        <template #output>
+            <dokki-iframe src="/experimental/w95/samples/sample/">
+                <template #caption>Run the app</template>
+            </dokki-iframe>
+        </template>
+    ></dokki-code>
     <dokki-image src="./img/w95/form-designer.png" width="1500" height="900" headerless="true">
         <template #caption>Work-in-progress visual form designer, built using the framework</template>
     </dokki-image>
-    <p>Unlike CSS styling, the framework achieves pixel-level replication of the Windows 95 look thanks to in-canvas rendering.</p>
-    <p><a href="https://leikareipa.github.io">Visit my desktop</a> to see an example of the framework in action.</p>
+    <p>For more information:</p>
+    <ul>
+        <li><a href="/experimental/w95/samples/test-app/">Developer's test app with all widgets</a></li>
+        <li><a href="/experimental/w95/samples/dosbox/">DOSBox integrated into the UI</a></li>
+    </ul>
+</dokki-topic>
+
+<dokki-topic title="Retro graphics wrappers">
+    <dokki-area inline-class="tag-list dokkiCSS-area-container">
+        <dokki-tag>2025</dokki-tag>
+        <dokki-tag>C</dokki-tag>
+        <dokki-tag>rendering</dokki-tag>
+    </dokki-area>
+    <p>In 3D accelerated graphics, much of the 1990s were a standardless wild west of proprietary 3D rendering APIs as the many hardware manufacturers threw
+        their guesses at the nascent market. Direct3D eventually tied the loose ends together, but until then, games had to support each brand of 3D
+        accelerator separately via the corresponding vendor API.
+    </p>
+    <dokki-image src="./img/wrap/dd1.jpg" width="1278" height="478" headerless="true">
+        <template #caption>Destruction Derby running on the S3 ViRGE with its S3d API (right); and with a software wrapper (left)</template>
+    </dokki-image>
+    <p>On Windows, the 3D API calls are typically exported from a DLL. This means you can write a drop-in replacement DLL which intercepts the API calls and
+        directs them somewhere else &ndash; for example, to another vendor's 3D API. This is called graphics wrapping.
+    </p>
+    <dokki-image src="./img/wrap/ignition.jpg" width="630" height="472" headerless="true">
+        <template #caption>The Glide version of Ignition running on the S3 ViRGE (with 2 MB of video memory)</template>
+    </dokki-image>
+    <dokki-image src="./img/wrap/manx.jpg" width="640" height="480" headerless="true">
+        <template #caption>The Glide version of Manx TT Super Bike running on the ATI Rage Pro Turbo (with a debug overlay)</template>
+    </dokki-image>
+    <p>So far, I've written graphics wrappers for the following APIs:</p>
+
+    <dokki-table headerless>
+        <table>
+            <tr>
+                <th>From</th>
+                <th>To</th>
+            </tr>
+            <tr>
+                <td>3dfx Glide</td>
+                <td>ATI 3DCIF (ATI Rage Pro)</td>
+            </tr>
+            <tr>
+                <td>3dfx Glide</td>
+                <td>S3 S3d (S3 ViRGE)</td>
+            </tr>
+            <tr>
+                <td>ATI 3DCIF</td>
+                <td>software</td>
+            </tr>
+            <tr>
+                <td>Matrox MSI</td>
+                <td>software (for Destruction Derby 2)</td>
+            </tr>
+            <tr>
+                <td>S3 S3d</td>
+                <td>software</td>
+            </tr>
+        </table>
+    </dokki-table>
+    <p>For more information, <a href="/blog/wrapping-old-graphics-apis/">see this blog post</a>.</p>
 </dokki-topic>
 
 <dokki-topic title="Track editor for Rally-Sport">
@@ -246,47 +483,29 @@
         <dokki-tag>Qt</dokki-tag>
         <dokki-tag>OpenGL</dokki-tag>
     </dokki-area>
-    <p>A modding toolset for the classic MS-DOS shareware racing game Rally-Sport, chiefly focused on track editing.</p>
+    <p>A modding toolset for the classic MS-DOS shareware racing game Rally-Sport, chiefly focused on track editing. As far as I know, this is and has been
+        the only available modding tool for the game.
+    </p>
     <dokki-image src="./img/rsed/rsed.png" width="1440" height="810" headerless="true">
     </dokki-image>
-    <p>The editor came to have versions for a variety of platforms, including DOS, Windows 95, Linux, and browsers; written in assembly, C++, and JavaScript, respectively.</p>
+    <p>Over the years, the toolset came to have versions for a variety of platforms: DOS, Windows 95, modern Windows, Linux, and web browsers. Written in
+        assembly, C/C++, and JavaScript.</p>
     <dokki-image src="./img/rsed/rsed2.png" width="3425" height="1266" headerless="true">
     </dokki-image>
-    <p>Integration with a content repository allowed custom tracks to be uploaded online and from there imported into the editor's browser front-end. Support was also
-        added for streaming your edits to others via WebRTC, and for simultaneous multi-user editing via a PHP-based server.
+    <p>At some point, simultaneous multi-user editing via a PHP-based web server was also offered, as was streaming via WebRTC; although these features
+        were later retired for underutilization.
     </p>
     <dokki-image src="./img/rsed/rgeo-dos.png" width="1276" height="798" headerless="true">
         <template #caption>A version of the editor running in pure DOS.</template>
     </dokki-image>
+    <p>Even though this is among my favorite projects to have worked on, it also became very obscure &ndash; for the first decade of its existence, I've been the
+        only known user. I knew to expect a muted reception but I also assumed there should be at least a handful of people on the internet
+        with some interest in making tracks for
+        this cult game. Whatever the case, I ended up putting out about 20 or so new tracks myself, so that should keep some random passer-by busy for a while.</p>
     <p>For more information:</p>
     <ul>
         <li><a href="https://leikareipa.github.io/desktop/$apps/rallysported/">Web versions of the toolset</a></li>
     </ul>
-</dokki-topic>
-
-<dokki-topic title="Control app for capture devices">
-    <dokki-area inline-class="tag-list dokkiCSS-area-container">
-        <dokki-tag>2017</dokki-tag>
-        <dokki-tag>Video capture</dokki-tag>
-        <dokki-tag>C++</dokki-tag>
-        <dokki-tag>Qt</dokki-tag>
-        <dokki-tag>OpenCV</dokki-tag>
-        <dokki-tag>Video4Linux</dokki-tag>
-    </dokki-area>
-    <p>A Linux control application mainly for Datapath Vision capture cards. Also has experimental support for generic Video4Linux devices (webcams etc.), digital cameras via gPhoto2, and a shared memory interface for inter-process capture.</p>
-    <dokki-image src="./img/vcs/vcs.png" width="2110" height="841" headerless="true">
-    </dokki-image>
-    <p>The app receives image data from a capture device, processes it with various scaling and filtering options, and displays it on the screen. There are
-    also controls for adjusting the capture device's operational parameters (resolution, analog properties, etc.).
-    </p>
-    <dokki-image src="./img/vcs/screenshot3.png" width="2075" height="693" headerless="true">
-        <template #caption>Applying image filters</template>
-    </dokki-image>
-    <p>The program became popular especially with users who intended to capture retro PCs and consoles using Datapath Vision cards, as compared to Datapath's bundled software this app
-    improves considerably the hardware's compatibility with analog signals.</p>
-    <p>Written in modular C++. Provides an internal interface to support any capture source without rewriting the program. Uses Qt for the UI, but this has been
-    abstracted so that a different UI framework can be substituted without rewriting.
-    </p>
 </dokki-topic>
 
 <dokki-topic title="3D UI for PCem">
@@ -297,84 +516,83 @@
         <dokki-tag>OpenGL</dokki-tag>
         <dokki-tag>JavaScript</dokki-tag>
     </dokki-area>
-    <p>A 3D user interface/experience for the PC emulator PCem.</p>
+    <p>A 3D user interface/experience for the PC emulator PCem. Replaces boring text-based menus with something more visually interesting.</p>
     <dokki-image src="./img/pcbi/pcbi-5.png" width="1282" height="749" headerless="true">
     </dokki-image>
     <p>You assemble a PC by dragging components (CPUs, video cards, RAM sticks, etc.) onto a motherboard. The configuration is
     then transmitted to PCem to be emulated, during which PCem's frame buffer is displayed in the 3D view.
     </p>
-    <dokki-video platform="youtube" src="4Xh8L9PbXeM" ><template #caption>Video: Assembling and booting a Cyrix-based Socket 7 machine</template>
+    <dokki-video platform="youtube" src="4Xh8L9PbXeM">
+        <template #caption>Video: Assembling and booting a Cyrix-based Socket 7 machine (2020)</template>
     </dokki-video>
     <p>The program is implemented as a standalone process that communicates with PCem via shared memory. Written in C++,
         Qt is used for the GUI, and rendering is done with OpenGL. Early versions used a custom software renderer.
     </p>
     <dokki-image src="./img/pcbi/pcbi-1.png" width="1169" height="748" headerless="true">
     </dokki-image>
-    <p>The program allows modders to easily add new components, as nothing about the component system is hard-coded. Later
-        versions came bundled with a component editor.
+    <p>The program allowed users to easily add new hardware components with a bundled component editor.
     </p>
 </dokki-topic>
 
-<dokki-topic title="Retro graphics wrappers">
+<dokki-topic title="Retro game fixes">
     <dokki-area inline-class="tag-list dokkiCSS-area-container">
-        <dokki-tag>2025</dokki-tag>
+        <dokki-tag>assembly</dokki-tag>
         <dokki-tag>C</dokki-tag>
-        <dokki-tag>rendering</dokki-tag>
+        <dokki-tag>C++</dokki-tag>
+        <dokki-tag>AI</dokki-tag>
     </dokki-area>
-    <p>Replacement DLLs for various hardware 3D rendering APIs to get them to run on other platforms.</p>
-    <dokki-image src="./img/wrap/ignition.jpg" width="630" height="472" headerless="true">
-        <template #caption>The Glide version of Ignition running on the original S3 ViRGE (with 2 MB of video memory)</template>
-    </dokki-image>
-    <p>Apart from generic API-to-API wrappers, I've made versions optimized for specific games:
-    </p>
-    <dokki-table headerless>
-        <table>
-            <tr>
-                <th>Game</th>
-                <th>From</th>
-                <th>To</th>
-            </tr>
-            <tr>
-                <td>Destruction Derby</td>
-                <td><a href="https://en.wikipedia.org/wiki/S3_ViRGE">S3d</a></td>
-                <td>Software</td>
-            </tr>
-            <tr>
-                <td>Destruction Derby 2</td>
-                <td><a href="https://en.wikipedia.org/wiki/Matrox_Simple_Interface">MSI</a></td>
-                <td>Software</td>
-            </tr>
-            <tr>
-                <td>Havoc</td>
-                <td>S3d</td>
-                <td>Software</td>
-            </tr>
-            <tr>
-                <td>Ignition</td>
-                <td><a href="https://en.wikipedia.org/wiki/Glide_(API)">Glide</a></td>
-                <td>S3d</td>
-            </tr>
-            <tr>
-                <td>Monster Truck Madness 2</td>
-                <td>Glide</td>
-                <td>S3d</td>
-            </tr>
-            <tr>
-                <td>Need for Speed 2 SE</td>
-                <td>Glide</td>
-                <td>S3d</td>
-            </tr>
-            <tr>
-                <td>POD Gold</td>
-                <td>S3d</td>
-                <td>Software</td>
-            </tr>
-        </table>
-    </dokki-table>
-    <p>For more information, <a href="/blog/wrapping-old-graphics-apis/">see this blog post</a>.</p>
+    <p>Out of necessity in my retro hobby, I've ended up patching issues in certain older games. This is the list so far:</p>
+    <ul>
+        <li>
+            <b>Gothic 2 and Matrox P690.</b> With the P690 graphics card &ndash; and potentially others in the Parhelia family &ndash; certain
+            objects ignore the depth cull and incorrectly render in front of everything else. This actually happens not only in Gothic 2 but in some other games
+            as well. I figured it looked like a depth bias issue
+            and had AI write a DirectX wrapper to ignore calls to set a depth bias value, which effectively disables depth biasing. Gemini 3
+            coded the initial implementation and Claude 4.5 did code review. The resulting wrapper fixed the issue.
+        </li>
+        <dokki-image src="./img/patch/p690-gothic-2.png" width="1116" height="528" headerless="true">
+            <template #caption>The depth bias issue in Gothic 2 (left) and with the fix applied (right)</template>
+        </dokki-image>
+        <li>
+            <b>Gothic 2 and Radeon under Windows XP.</b> Another issue Gothic 2 has is with Radeon graphics cards under Windows XP, where the render
+            performance is significantly lower than what it should be. Browsing the net, I found that the issue can be worked around by pre-allocating about
+            200 MB of VRAM. There were various kludge methods suggested to achieve this, including running a VRAM tester in the background; but instead
+            I had Gemini 3 write a DirectX wrapper that automatically allocates the VRAM on game launch, which solved the issue.
+        </li>
+        <li>
+            <b>Thief and delayed surface allocation.</b> On certain graphics cards &ndash; Quadro FX 1500, GeForce GTX 980, and others &ndash; Thief refuses
+            to run, claiming in an error popup that the graphics driver is misreporting the amount of VRAM. After some debugging, the short of it is that the game expects DirectDraw's
+            CreateSurface() to result in an immediate memory allocation, which some graphics drivers delay. A workaround was to catch GetAvailableVidMem()
+            and force lpdwFree to report lpdwTotal subtracted by a byte for every surface created. A bit of a kludge but fine for the purpose.
+        </li>
+        <li>
+            <b>Ultima VII resetting CPU flags on initialization.</b> This DOS game is infamous for being difficult to run at a correct speed
+            on newer, faster CPUs. The general trick of disabling CPU caches to slow it down doesn't work because the game re-enables the caches on launch. Turns out this is
+            an accidental side effect of how the game enters <a href="https://en.wikipedia.org/wiki/Unreal_mode">unreal mode</a>; it can be fixed without ill effect
+            by more carefully preserving the CPU flags, as shown below. After this, the game can be run at a correct speed by cache-disabling even on relatively recent CPUs.
+        </li>
+        <dokki-code syntax="x86asm"headerless="true">
+            <template #code>
+                <pre>
+                    ; Enable protected mode (how the game does it).
+                    ; mov ebx, 1
+                    ; mov cr0, ebx
+
+                    ; Enable protected mode but preserve unrelated flags.
+                    mov ebx, cr0
+                    or bl, 1
+                    mov cr0, ebx
+
+                    ; Disable protected mode but preserve unrelated flags.
+                    and bl, 0feh
+                    mov cr0, ebx
+                </pre>
+            </template>
+        </dokki-code>
+    </ul>
 </dokki-topic>
 
-<dokki-topic title="Cloud simulator and renderer">
+<dokki-topic title="Cloud simulator">
     <dokki-area inline-class="tag-list dokkiCSS-area-container">
         <dokki-tag>2011</dokki-tag>
         <dokki-tag>Simulation</dokki-tag>
@@ -386,30 +604,14 @@
         <dokki-tag>Qt</dokki-tag>
         <dokki-tag>OpenCL</dokki-tag>
     </dokki-area>
-    <p>Ever wanted a cloud physics simulator and renderer? Maybe not, but this software provides.</p>
+    <p>Ever wanted a cloud physics simulator and renderer? Maybe not, but this software does it.</p>
     <dokki-image src="./img/cloud/fluff-1.png" width="512" height="353" headerless="true">
     </dokki-image>
-    <p>The program simulates the rising of moist air and the subsequent condensation of
-    cloud-forming droplets as the air cools, then renders the resulting 3D droplet grid
+    <p>The program simulates the rising of moist air and the resulting condensation into
+    cloud-forming water droplets as the air cools, then renders the resulting 3D droplet grid
     into a realistic (thereabouts) image of clouds.</p>
-    <p>The code is written in multi-threaded C++ and uses Qt for the UI. OpenCL is used to accelerate the 
-    computation of atmospheric condensation, which ran almost 100 times faster on my
-    Radeon HD 5770 GPU than it did on my Athlon 64 CPU.
-    </p>
-    <p>Rendering is done via volumetric path tracing, with an initial photon-mapping pass to deposit sunlight.
+    <p>Written in multi-threaded C++, with Qt for the UI. OpenCL is used to accelerate the 
+    computation of atmospheric condensation. Rendering is done via volumetric path tracing, with an initial photon-mapping pass to deposit sunlight.
     </p>
     <p>For more information, <a href="/blog/how-i-wrote-a-cloud-simulator-renderer/">see this blog post</a>.</p>
-</dokki-topic>
-
-<dokki-topic title="Typing statistics">
-    <dokki-area inline-class="tag-list dokkiCSS-area-container">
-        <dokki-tag>2015</dokki-tag>
-        <dokki-tag>C++</dokki-tag>
-        <dokki-tag>Qt</dokki-tag>
-    </dokki-area>
-    <p>A program that has you type out words to receive various statistics on your technique. Written in C++ for Linux and Windows.</p>
-    <dokki-image src="./img/typing/1.png" width="1002" height="566" headerless="true">
-    </dokki-image>
-    <dokki-image src="./img/typing/2.png" width="1002" height="564" headerless="true">
-    </dokki-image>
 </dokki-topic>

@@ -12,7 +12,7 @@ const fluidDomainSize = 150;
 export default {
     Meta: {
         name: "Xmas '94",
-        author: "ArtisaaniSoft",
+        author: "PippeLeeSoft",
     },
     App() {
         const width = w95.state(150);

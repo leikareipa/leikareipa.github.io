@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results th.name {
+                writing-mode: vertical-lr;
+                font-weight: normal;
+            }
+            .dokki-table.results td:first-child {
+                white-space: pre-line;
+                min-width: 20rem;
+            }
+
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s3,
+            .dokki-table.results td.s4,
+            .dokki-table.results td.s {
+                text-align: center !important;
+                vertical-align: middle !important;
+                max-width: 0.85em;
+            }
+            .dokki-table.results td.s0 {
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+            .dokki-table.results td.s1 {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            .dokki-table.results td.s2 {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+            .dokki-table.results td.s3 {
+                background-color: rgba(0, 0, 0, 0.125);
+            }
+            .dokki-table.results td.s4 {
+                background-color: rgba(0, 0, 0, 0.25);
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        
+    
+            <template id="dokki">
+                <dokki-document>
+                    <dokki-header>
+                        <template #caption>
+                            
+                Claude 4 in retro assembly programming
+            
+                        </template>
+                        <template #widgets>
+                <blog-post-widgets></blog-post-widgets>
+            </template>
+                    </dokki-header>
+                    <dokki-topics>
+                        
+<post-date date="26 May 2025"></post-date>
+<dokki-topic title="Claude 4 in retro assembly programming">
+<p><a href="/blog/llm-performance-in-retro-assembly-coding/">Last year I did an interesting benchmark</a> evaluating AI models in obscure assembly coding. It was a test in which even the best models struggled.</p>
+<p>Running the benchmark now for the new Claude 4 shows interesting progress, with other non-thinking models for context:</p>
+
+            <dokki-table headerless  inline-class="">
+                <template #table>
+                    
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Claude 4 Sonnet</td>
+            <td>79%</td>
+        </tr>
+        <tr>
+            <td>Claude 4 Opus</td>
+            <td>71%</td>
+        </tr>
+        <tr>
+            <td>Claude 3 Opus</td>
+            <td>38%</td>
+        </tr>
+        <tr>
+            <td>Claude 3.5 Sonnet 2</td>
+            <td>29%</td>
+        </tr>
+        <tr>
+            <td>Claude 3.5 Sonnet</td>
+            <td>21%</td>
+        </tr>
+        <tr>
+            <td>GPT-4 (2023)</td>
+            <td>21%</td>
+        </tr>
+        <tr>
+            <td>Claude 3.7 Sonnet</td>
+            <td>17%</td>
+        </tr>
+        <tr>
+            <td>GPT-4 Turbo</td>
+            <td>8%</td>
+        </tr>
+        <tr>
+            <td>Claude 3 Sonnet</td>
+            <td>4%</td>
+        </tr>
+        <tr>
+            <td>GPT-3.5</td>
+            <td>0%</td>
+        </tr>
+    </tbody>
+
+                </template>
+            </dokki-table> 
+<p><a href="/blog/evaluating-claude-35-sonnet-in-retro-assembly-programming/">At one point in the past</a>, given the large gap between Claude 3 Sonnet and Opus and looking at fresh results for Claude 3.5 Sonnet, I speculated with some internal scepticism that a future Claude 3.5 Opus might score as high as 60–90%. We didn't get an Opus version of 3.5, but looks like Claude 4 has slotted into that extrapolated performance range.</p>
+<p>It's a very tangible jump in capability. There are no syntax errors at all in Claude 4's assembly code, and virtually all implementations do what they're supposed to do, if not always with absolute perfection. This was rare to say the least in previous models' attempts.</p>
+<p>For example, Claude 4 Sonnet's zero-shot implementation of a program that prints out information about mouse input:</p>
+<dokki-iframe src="/dosbox/#/ai-asm-bench/claude-4-sonnet/mouse/" height="500px">
+    <template #caption>
+        MOUSE
+    </template>
+</dokki-iframe>
+<p>It has a bug or two but is head and shoulders above previous models.</p>
+<p>Another example, a task that no other model was able to do, loading and displaying a paletted image:</p>
+<dokki-iframe src="/dosbox/#/ai-asm-bench/claude-4-sonnet/parrot/" height="500px">
+    <template #caption>
+        PARROT
+    </template>
+</dokki-iframe>
+</dokki-topic>
+
+                    </dokki-topics>
+                </dokki-document>
+            </template>
+        </body>
+</html>

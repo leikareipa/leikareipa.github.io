@@ -29,11 +29,15 @@ const blogPostAbstract = {
         </h1>
 
         <p class="blog-post-abstract fields">
-
+    
             <span class="field date">
                 <span class="label">
                     {{date}}
                 </span>
+
+                <dokki-tag v-for="tag of tags">
+                    {{tag}}
+                </dokki-tag>
             </span>
 
             <span class="field brief">

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" href="../+assets/blog.css">
+        <link rel="stylesheet" href="/assets/font-awesome-5-15-4/css/all.min.css">
+        <script defer src="/assets/font-awesome-5-15-4/attribution.js"></script>
+        <script defer src="../+assets/highlight.min.js"></script>
+        <script defer src="/dokki/distributable/dokki.js"></script>
+        <script type="module" src="../+assets/blog-post-widgets.js"></script>
+        <script type="module" src="../+assets/post-date.js"></script>
+
+        <style>
+            .dokki-table.results th.name {
+                writing-mode: vertical-lr;
+                font-weight: normal;
+            }
+            .dokki-table.results td:first-child {
+                white-space: pre-line;
+                min-width: 20rem;
+            }
+
+            .dokki-table.results td,
+            .dokki-table.results th {
+                width: 0px !important;
+            }
+            .dokki-table.results td.s0,
+            .dokki-table.results td.s1,
+            .dokki-table.results td.s2,
+            .dokki-table.results td.s3,
+            .dokki-table.results td.s4,
+            .dokki-table.results td.s {
+                text-align: center !important;
+                vertical-align: middle !important;
+                max-width: 0.85em;
+            }
+            .dokki-table.results td.s0 {
+                color: var(--dokkiCSS-page-inert-fg-color);
+            }
+            .dokki-table.results td.s1 {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            .dokki-table.results td.s2 {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+            .dokki-table.results td.s3 {
+                background-color: rgba(0, 0, 0, 0.125);
+            }
+            .dokki-table.results td.s4 {
+                background-color: rgba(0, 0, 0, 0.25);
+            }
+        </style>
+    </head>
+    <body>
+        <ths-feedback></ths-feedback>
+        <template dokki-document>
+            <section title>
+                Claude 4 in retro assembly programming
+            </section>
+            <section widgets>
+                <blog-post-widgets/>
+            </section>
+            <section content>
+                <article src="content.md"></article>
+            </section>
+        </template>
+    </body>
+</html>

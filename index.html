@@ -10,9 +10,11 @@
         <link href="/experimental/w95/distributable/w95.css" rel="stylesheet">
     </head>
     <style>
+        /*
         #desktop {
             background-size: cover !important;
         }
+        */
 
         iframe.rsed,
         iframe.dosbox,
@@ -202,6 +204,46 @@
                         },
                     }),
                     w95.widget.desktopIcon({
+                        text: "Fixailuja",
+                        icon: fileExplorerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(fileExplorer({
+                                defaultRunners: {
+                                    unknown: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    ini: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    text: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    library: (filePath)=>{
+                                        const link = document.createElement("a");
+                                        link.href = `/desktop/${filePath}`;
+                                        link.click();
+                                    },
+                                    executable: (filePath)=>{
+                                        const link = document.createElement("a");
+                                        link.href = `/desktop/${filePath}`;
+                                        link.click();
+                                    },
+                                },
+                                files: {
+                                    "Fixailuja/": {
+                                        "Gothic 2/": {
+                                            "Radeon XP/": {
+                                                "ddraw.dll": {},
+                                            },
+                                        },
+                                        "Thief/": {
+                                            "VRAM/": {
+                                                "ddraw.dll": {},
+                                            },
+                                        },
+                                        "Ultima VII/": {
+                                            "U7DCP.EXE": {},
+                                        },
+                                    },
+                                },
+                            }));
+                        },
+                    }),
+                    w95.widget.desktopIcon({
                         text: "Operation Cleaner",
                         icon: commandIcons.app32,
                         styleHints: [
@@ -279,17 +321,19 @@
                                 files: {
                                     "Wrapperit/": {
                                         "APIt/": {
-                                            "S3d-2-Sw/": {
+                                            "glide2cif/": {
+                                                "glide2x.dll": {},
+                                                "readme.txt": {},
+                                            },
+                                            "glide2s3d/": {
+                                                "glide2x.dll": {},
+                                                "glide2x.ini": {},
+                                                "readme.txt": {},
+                                            },
+                                            "s3d2sw/": {
                                                 "readme.txt": {},
                                                 "s3dtkw.dll": {},
                                                 "s3dtkw.ini": {},
-                                            },
-                                            "Glide-2-S3d/": {
-                                                "Glide2x/": {
-                                                    "glide2x.dll": {},
-                                                    "glide2x.ini": {},
-                                                    "readme.txt": {},
-                                                },
                                             },
                                         },
                                         "Pelit/": {
@@ -499,11 +543,34 @@
                             w95.shell.run(gorillas, {singleInstance: true});
                         },
                     }),
+                    w95.widget.desktopIcon({
+                        text: "VIRGE",
+                        icon: fileExplorerIcons.app32,
+                        onActivate() {
+                            w95.shell.run(fileExplorer({
+                                defaultRunners: {
+                                    archive: (filePath)=>{
+                                        const link = document.createElement("a");
+                                        link.href = `/desktop/${filePath}`;
+                                        link.click();
+                                    },
+                                },
+                                files: {
+                                    "VIRGE/": {
+                                        "Pelei/": {
+                                            "cards.zip": {},
+                                            "ufo-se.zip": {},
+                                        },
+                                    },
+                                },
+                            }));
+                        },
+                    }),
                 ],
             });
             w95.shell.boot();
             w95.registry["pillua"] = 3125;
-            w95.shell.wallpaper = "./desktop/prt.png";
+            w95.shell.wallpaper = "./desktop/rock.png";
             w95.shell.run([desktop, w95.shell.taskbar()]);
         </script>
     </body>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Likeness of Human Vagina</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="vaginaCanvas" width="400" height="500"></canvas>
+    <script>
+        /**
+         * This script draws a simplified, medical likeness of a human vagina on an HTML5 canvas.
+         * It is intended for educational and informational purposes only.
+         */
+
+        // Get the canvas element and its 2D rendering context
+        const canvas = document.getElementById('vaginaCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set the center coordinates of the canvas
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // Set the fill and stroke styles for the drawing
+        ctx.fillStyle = '#f2d4d7'; // A light pinkish color
+        ctx.strokeStyle = '#d1a3a8'; // A darker pinkish color for outlines
+        ctx.lineWidth = 2;
+
+        // --- Draw the Labia Majora (Outer Lips) ---
+        // We will use two quadratic curves to create the shape of the outer lips.
+        ctx.beginPath();
+        ctx.moveTo(centerX - 80, centerY - 150);
+        ctx.quadraticCurveTo(centerX - 120, centerY, centerX - 80, centerY + 150);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(centerX + 80, centerY - 150);
+        ctx.quadraticCurveTo(centerX + 120, centerY, centerX + 80, centerY + 150);
+        ctx.stroke();
+
+        // --- Draw the Labia Minora (Inner Lips) ---
+        // The inner lips are drawn using two more quadratic curves inside the labia majora.
+        ctx.beginPath();
+        ctx.moveTo(centerX - 40, centerY - 100);
+        ctx.quadraticCurveTo(centerX - 60, centerY, centerX - 40, centerY + 100);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(centerX + 40, centerY - 100);
+        ctx.quadraticCurveTo(centerX + 60, centerY, centerX + 40, centerY + 100);
+        ctx.stroke();
+
+        // --- Draw the Clitoral Glans ---
+        // A small circle at the top represents the clitoral glans.
+        ctx.beginPath();
+        ctx.arc(centerX, centerY - 110, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+
+        // --- Draw the Vaginal Opening ---
+        // An ellipse represents the vaginal opening.
+        ctx.beginPath();
+        ctx.ellipse(centerX, centerY + 20, 20, 35, Math.PI / 2, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+    </script>
+</body>
+</html>

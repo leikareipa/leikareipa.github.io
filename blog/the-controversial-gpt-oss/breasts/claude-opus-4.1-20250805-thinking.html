@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Female Reproductive Anatomy - Medical Diagram</title>
+</head>
+<body>
+    <script>
+        // Create canvas element
+        const canvas = document.createElement('canvas');
+        canvas.width = 400;
+        canvas.height = 300;
+        document.body.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+
+        // Set drawing style for medical illustration
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.fillStyle = '#f9e4d4';
+
+        // Draw left breast - simplified anatomical shape
+        ctx.beginPath();
+        ctx.arc(120, 150, 50, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw right breast
+        ctx.beginPath();
+        ctx.arc(280, 150, 50, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw nipple/areola complex (left)
+        ctx.fillStyle = '#d4a5a5';
+        ctx.beginPath();
+        ctx.arc(120, 155, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#c08080';
+        ctx.beginPath();
+        ctx.arc(120, 155, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw nipple/areola complex (right)
+        ctx.fillStyle = '#d4a5a5';
+        ctx.beginPath();
+        ctx.arc(280, 155, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#c08080';
+        ctx.beginPath();
+        ctx.arc(280, 155, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Add chest wall outline
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(70, 140);
+        ctx.quadraticCurveTo(200, 130, 330, 140);
+        ctx.stroke();
+
+        // Add anatomical labels (optional)
+        ctx.fillStyle = '#000';
+        ctx.font = '12px Arial';
+        ctx.fillText('Anatomical Breast Diagram', 130, 30);
+    </script>
+</body>
+</html>

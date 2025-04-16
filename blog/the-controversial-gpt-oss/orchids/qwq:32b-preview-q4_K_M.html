@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orchid Illustration</title>
+</head>
+<body>
+    <canvas id="orchidCanvas" width="800" height="600"></canvas>
+    <script>
+    const canvas = document.getElementById('orchidCanvas');
+const ctx = canvas.getContext('2d');
+
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const stemHeight = 200;
+const sepalsSize = 50;
+const petalsSize = 60;
+const lipSize = 80;
+
+// Draw stem
+ctx.beginPath();
+ctx.moveTo(centerX, centerY);
+ctx.lineTo(centerX, centerY - stemHeight);
+ctx.strokeStyle = 'green';
+ctx.stroke();
+
+// Function to draw a sepal or petal with gradient
+function drawSepalOrPetal(centerX, centerY, size, angle, startAngle, endAngle, colorStart, colorEnd) {
+    const gradient = ctx.createRadialGradient(
+        centerX, centerY, 0,
+        centerX, centerY, size
+    );
+    gradient.addColorStop(0, colorStart);
+    gradient.addColorStop(1, colorEnd);
+
+    ctx.fillStyle = gradient;
+
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.arc(0, 0, size, startAngle, endAngle, false);
+    ctx.fill();
+    ctx.restore();
+}
+
+// Draw sepals
+const sepalAngle = Math.PI / 4; // 45 degrees
+drawSepalOrPetal(centerX, centerY - stemHeight / 2, sepalsSize, 0, 0, Math.PI, 'lightgreen', 'green');
+drawSepalOrPetal(centerX, centerY - stemHeight / 2, sepalsSize, sepalAngle, 0, Math.PI, 'lightgreen', 'green');
+drawSepalOrPetal(centerX, centerY - stemHeight / 2, sepalsSize, -sepalAngle, 0, Math.PI, 'lightgreen', 'green');
+
+// Draw petals
+const petalAngle = Math.PI / 6; // 30 degrees
+drawSepalOrPetal(centerX, centerY - stemHeight / 2, petalsSize, petalAngle, 0, Math.PI, 'lightpink', 'pink');
+drawSepalOrPetal(centerX, centerY - stemHeight / 2, petalsSize, -petalAngle, 0, Math.PI, 'lightpink', 'pink');
+
+// Draw lip with gradient
+ctx.beginPath();
+ctx.arc(centerX, centerY - stemHeight / 2, lipSize, Math.PI, 0, false);
+ctx.lineTo(centerX, centerY - stemHeight / 2);
+const lipGradient = ctx.createRadialGradient(
+    centerX, centerY - stemHeight / 2, 0,
+    centerX, centerY - stemHeight / 2, lipSize
+);
+lipGradient.addColorStop(0, 'pink');
+lipGradient.addColorStop(1, 'white');
+ctx.fillStyle = lipGradient;
+ctx.fill();
+
+// Draw veins on the lip
+ctx.save();
+ctx.translate(centerX, centerY - stemHeight / 2);
+ctx.strokeStyle = 'darkpink';
+ctx.lineWidth = 2;
+
+// Vein 1
+ctx.beginPath();
+ctx.moveTo(lipSize / 4, -lipSize / 2);
+ctx.quadraticCurveTo(0, 0, lipSize / 4, lipSize / 2);
+ctx.stroke();
+
+// Vein 2
+ctx.beginPath();
+ctx.moveTo(-lipSize / 4, -lipSize / 2);
+ctx.quadraticCurveTo(0, 0, -lipSize / 4, lipSize / 2);
+ctx.stroke();
+
+ctx.restore();
+
+// Draw column
+ctx.save();
+ctx.translate(centerX, centerY - stemHeight / 2 - sepalsSize);
+ctx.fillStyle = 'yellow';
+ctx.fillRect(-10, -30, 20, 30);
+ctx.beginPath();
+ctx.arc(0, -30, 10, 0, Math.PI * 2);
+ctx.fill();
+ctx.restore();
+
+// Draw leaves
+// Leaf 1
+ctx.save();
+ctx.translate(centerX - 30, centerY + stemHeight / 4);
+ctx.rotate(-Math.PI / 6); // -30 degrees
+ctx.beginPath();
+ctx.arc(0, 0, 40, 0, Math.PI, false);
+ctx.fillStyle = 'green';
+ctx.fill();
+ctx.restore();
+
+// Leaf 2
+ctx.save();
+ctx.translate(centerX + 30, centerY + stemHeight / 4);
+ctx.rotate(Math.PI / 6); // 30 degrees
+ctx.beginPath();
+ctx.arc(0, 0, 40, 0, Math.PI, false);
+ctx.fillStyle = 'green';
+ctx.fill();
+ctx.restore();
+
+// Draw roots
+// Root 1
+ctx.beginPath();
+ctx.moveTo(centerX - 20, centerY + stemHeight / 3);
+ctx.quadraticCurveTo(centerX - 30, centerY + stemHeight / 2, centerX - 40, centerY + stemHeight / 2);
+ctx.strokeStyle = 'brown';
+ctx.stroke();
+
+// Root 2
+ctx.beginPath();
+ctx.moveTo(centerX + 20, centerY + stemHeight / 3);
+ctx.quadraticCurveTo(centerX + 30, centerY + stemHeight / 2, centerX + 40, centerY + stemHeight / 2);
+ctx.stroke();
+
+</script>
+</body>
+</html>
+

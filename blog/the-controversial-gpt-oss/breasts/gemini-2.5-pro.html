@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medical Illustration of Female Breasts</title>
+<style>
+  body {
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  canvas {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+  }
+</style>
+</head>
+<body>
+<canvas id="breastCanvas" width="600" height="400"></canvas>
+
+<script>
+  const canvas = document.getElementById('breastCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // --- Helper Functions ---
+
+  /**
+   * Draws a simple representation of a mammary lobe.
+   * @param {number} startX - The starting x-coordinate.
+   * @param {number} startY - The starting y-coordinate.
+   * @param {number} controlX - The x-coordinate of the Bezier curve control point.
+   * @param {number} controlY - The y-coordinate of the Bezier curve control point.
+   * @param {number} endX - The ending x-coordinate.
+   * @param {number} endY - The ending y-coordinate.
+   */
+  function drawLobe(startX, startY, controlX, controlY, endX, endY) {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+    ctx.strokeStyle = 'rgba(200, 100, 100, 0.5)';
+    ctx.lineWidth = 10;
+    ctx.stroke();
+  }
+
+  /**
+   * Draws a duct leading to the nipple.
+   * @param {number} startX - The starting x-coordinate from the lobe.
+   * @param {number} startY - The starting y-coordinate from the lobe.
+   * @param {number} endX - The x-coordinate of the nipple.
+   * @param {number} endY - The y-coordinate of the nipple.
+   */
+  function drawDuct(startX, startY, endX, endY) {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
+    ctx.strokeStyle = 'rgba(150, 80, 80, 0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+
+  // --- Main Drawing ---
+
+  // Define key coordinates
+  const centerX = 300;
+  const centerY = 200;
+  const breastRadius = 120;
+  const areolaRadius = 40;
+  const nippleRadius = 10;
+
+  // 1. Pectoralis Major Muscle (underlying muscle)
+  ctx.fillStyle = '#d9a0a0';
+  ctx.fillRect(0, centerY + breastRadius * 0.5, canvas.width, 50);
+
+  // Add text label for muscle
+  ctx.fillStyle = '#000000';
+  ctx.font = '12px Arial';
+  ctx.fillText('Pectoralis Major Muscle', 50, centerY + breastRadius * 0.5 + 30);
+
+
+  // 2. Fatty Tissue (represented by a gradient)
+  const fatGradient = ctx.createRadialGradient(centerX, centerY, 1, centerX, centerY, breastRadius);
+  fatGradient.addColorStop(0, 'rgba(255, 245, 220, 0.7)');
+  fatGradient.addColorStop(1, 'rgba(255, 235, 200, 0.9)');
+  ctx.fillStyle = fatGradient;
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, breastRadius, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Add text label for fatty tissue
+  ctx.fillText('Fatty Tissue', centerX + breastRadius + 10, centerY - 60);
+
+  // 3. Mammary Gland Lobes and Ducts
+  const numberOfLobes = 15;
+  for (let i = 0; i < numberOfLobes; i++) {
+    const angle = (i / numberOfLobes) * 2 * Math.PI;
+    const lobeStartX = centerX + Math.cos(angle) * breastRadius * 0.8;
+    const lobeStartY = centerY + Math.sin(angle) * breastRadius * 0.8;
+    const lobeControlX = centerX + Math.cos(angle + 0.1) * breastRadius * 0.5;
+    const lobeControlY = centerY + Math.sin(angle + 0.1) * breastRadius * 0.5;
+    const lobeEndX = centerX + Math.cos(angle - 0.1) * breastRadius * 0.6;
+    const lobeEndY = centerY + Math.sin(angle - 0.1) * breastRadius * 0.6;
+
+    drawLobe(lobeStartX, lobeStartY, lobeControlX, lobeControlY, lobeEndX, lobeEndY);
+    drawDuct(lobeEndX, lobeEndY, centerX, centerY);
+  }
+
+  // Add text labels for lobe and duct
+  ctx.fillText('Lobe', centerX - breastRadius, centerY - breastRadius - 20);
+  ctx.beginPath();
+  ctx.moveTo(centerX - breastRadius * 0.8, centerY - breastRadius * 0.8);
+  ctx.lineTo(centerX - breastRadius, centerY - breastRadius - 10);
+  ctx.stroke();
+
+  ctx.fillText('Duct', centerX + 40, centerY - areolaRadius - 20);
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY - areolaRadius);
+  ctx.lineTo(centerX + 30, centerY - areolaRadius - 10);
+  ctx.stroke();
+
+
+  // 4. Areola
+  ctx.fillStyle = 'rgba(210, 145, 145, 0.8)';
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, areolaRadius, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Add text label for areola
+  ctx.fillText('Areola', centerX + areolaRadius + 10, centerY);
+
+
+  // 5. Nipple
+  ctx.fillStyle = 'rgba(180, 100, 100, 1)';
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, nippleRadius, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Add text label for nipple
+  ctx.fillText('Nipple', centerX, centerY + nippleRadius + 20);
+
+</script>
+</body>
+</html>

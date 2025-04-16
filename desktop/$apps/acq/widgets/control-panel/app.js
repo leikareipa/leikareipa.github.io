@@ -18,7 +18,7 @@ export default function({
         Meta: {
             name: "ACQ",
             version: "1.0",
-            author: "ArtisaaniSoft",
+            author: "PippeLeeSoft",
         },
         App() {
             // The dimensions of the app's window.

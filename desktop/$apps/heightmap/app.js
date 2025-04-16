@@ -11,7 +11,7 @@ export default {
     Meta: {
         name: "Heightmap Generator",
         version: "1.0",
-        author: "ArtisaaniSoft",
+        author: "PippeLeeSoft",
     },
     App() {
         const minWidth = 268;
@@ -237,13 +237,13 @@ export default {
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
-                                                label: "Export to OBJ",
+                                                label: "Export as OBJ",
                                                 onClick() {
                                                     download_terrain();
                                                 },
                                             }),
                                             w95.widget.menuAction({
-                                                label: "Export to PNG",
+                                                label: "Export as PNG",
                                                 onClick() {
                                                     download_heightmap();
                                                 },
@@ -466,7 +466,6 @@ export default {
                         }, {hideIf: !isSeedQueryDialogOpen.now}),
                         w95.shell.popup.about({
                             parent: this,
-                            text: "Generate heightmaps using Perlin noise and export\nthem as OBJ/PNG.",
                             onClose() {
                                 isAboutDialogOpen.set(false);
                             },

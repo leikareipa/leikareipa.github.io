@@ -306,25 +306,6 @@ export default function({
                                             w95.widget.layoutSpacer({
                                                 width: 10,
                                             }),
-                                            w95.widget.label({
-                                                text: "Chars:",
-                                            }),
-                                            w95.widget.frame({
-                                                width: 70,
-                                                height: 16,
-                                                children: [
-                                                    w95.widget.label({
-                                                        width: "pw",
-                                                        height: "ph",
-                                                        text: `${messageHistory.now.reduce((len, m)=>(len + m.text.length), 0)}`,
-                                                        elide: true,
-                                                        styleHints: [
-                                                            w95.styleHint.alignVCenter,
-                                                            w95.styleHint.alignHCenter,
-                                                        ],
-                                                    }),
-                                                ],
-                                            }),
                                         ],
                                     }),
                                     w95.widget.layoutSpacer({
@@ -340,8 +321,16 @@ export default function({
                                         ],
                                         children: [
                                             w95.widget.button({
-                                                width: 16,
-                                                height: 16,
+                                                width: 18,
+                                                height: 18,
+                                                icon: textures.clipboard,
+                                                onClick() {
+                                                    navigator.clipboard.writeText(chatText.now.replace(/{}/g, "").trim());
+                                                },
+                                            }),
+                                            w95.widget.button({
+                                                width: 18,
+                                                height: 18,
                                                 icon: textures.clear,
                                                 isDisabled: (
                                                     isWaitingForResponse.now ||
@@ -354,8 +343,8 @@ export default function({
                                                 },
                                             }),
                                             w95.widget.button({
-                                                width: 16,
-                                                height: 16,
+                                                width: 18,
+                                                height: 18,
                                                 icon: textures.edit,
                                                 isDisabled: (
                                                     isWaitingForResponse.now ||
@@ -364,27 +353,6 @@ export default function({
                                                 onClick() {
                                                     isOverrideStringDialogOpen.set(true);
                                                 },
-                                            }),
-                                            w95.widget.verticalRule({
-                                                height: 16,
-                                            }),
-                                            w95.widget.button({
-                                                width: 16,
-                                                height: 16,
-                                                icon: textures.clipboard,
-                                                onClick() {
-                                                    navigator.clipboard.writeText(chatText.now.replace(/{}/g, "").trim());
-                                                },
-                                            }),
-                                            w95.widget.button({
-                                                width: 16,
-                                                height: 16,
-                                                icon: textures.trash,
-                                                isDisabled: (
-                                                    isWaitingForResponse.now ||
-                                                    !messageHistory.now.length
-                                                ),
-                                                onClick: reset_chat_history,
                                             }),
                                         ],
                                     }),
@@ -437,6 +405,7 @@ function curtime() {
     const formatter = new Intl.DateTimeFormat('en-US', {
         hour: '2-digit',
         minute: '2-digit',
+        second: '2-digit',
         hour12: true
     });
 

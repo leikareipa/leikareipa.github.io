@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orchid Illustration</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+  }
+  canvas {
+    border: 1px solid #ccc;
+  }
+</style>
+</head>
+<body>
+<canvas id="orchidCanvas" width="600" height="800"></canvas>
+<script>
+  const canvas = document.getElementById('orchidCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Colors for the orchid
+  const petalColor = '#e3b8d4';
+  const lipColor = '#d99cc4';
+  const centerColor = '#f0e4a0';
+  const stemColor = '#6b8e23';
+  const outlineColor = '#5d4361';
+
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = outlineColor;
+
+  // Function to draw a petal using quadratic curves
+  function drawPetal(x, y, scale, rotation) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+    ctx.scale(scale, scale);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(40, -80, 80, 0);
+    ctx.quadraticCurveTo(40, 80, 0, 0);
+    ctx.fillStyle = petalColor;
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Function to draw the labellum (lip) of the orchid
+  function drawLabellum(x, y, scale) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scale, scale);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(20, 60, 60, 70);
+    ctx.quadraticCurveTo(100, 60, 100, 20);
+    ctx.quadraticCurveTo(80, -20, 50, -10);
+    ctx.quadraticCurveTo(20, -20, 0, 0);
+    ctx.fillStyle = lipColor;
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Function to draw the center of the orchid
+  function drawCenter(x, y) {
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, 2 * Math.PI);
+    ctx.fillStyle = centerColor;
+    ctx.fill();
+    ctx.stroke();
+  }
+
+  // Function to draw the stem
+  function drawStem() {
+    ctx.beginPath();
+    ctx.moveTo(300, 800);
+    ctx.bezierCurveTo(320, 600, 280, 400, 300, 350);
+    ctx.strokeStyle = stemColor;
+    ctx.lineWidth = 8;
+    ctx.stroke();
+
+    // Reset line width for flower outlines
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = outlineColor;
+  }
+
+  // *** Main drawing execution ***
+
+  // Draw the stem first so it appears behind the flower
+  drawStem();
+
+  // Draw the petals of the orchid
+  drawPetal(300, 250, 1.5, Math.PI / 2); // Top petal
+  drawPetal(240, 220, 1.4, Math.PI / 6); // Top-left petal
+  drawPetal(360, 220, 1.4, -Math.PI / 6); // Top-right petal
+  drawPetal(250, 290, 1.3, (5 * Math.PI) / 6); // Bottom-left petal
+  drawPetal(350, 290, 1.3, (-5 * Math.PI) / 6); // Bottom-right petal
+
+  // Draw the labellum (lip)
+  drawLabellum(250, 260, 0.7);
+
+  // Draw the center of the flower
+  drawCenter(300, 250);
+
+</script>
+</body>
+</html>

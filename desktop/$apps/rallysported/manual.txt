@@ -4,7 +4,7 @@ Introduction
 This is a brief barebones manual for RallySportED's track editor, a
 contemporary modding tool for the MS-DOS racing game Rally-Sport.
 
-RallySportED is (c) 2016-2024 ArtisaaniSoft.
+RallySportED is (c) 2016-2025 ArtisaaniSoft.
 
 
 Controls in the terrain view

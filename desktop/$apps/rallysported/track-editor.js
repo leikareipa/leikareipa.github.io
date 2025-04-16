@@ -9,7 +9,7 @@ import notepad from "../../../experimental/w95/samples/notepad/app.js";
 export default {
     Meta: {
         name: "RallySportED's track editor",
-        author: "ArtisaaniSoft",
+        author: "PippeLeeSoft",
         description: "A w95 wrapper for the browser version of RallySportED's track editor.",
     },
     App() {
@@ -113,7 +113,7 @@ export default {
                                                 onClick() {send_message("save:project")},
                                             }),
                                             w95.widget.menuAction({
-                                                label: "Load",
+                                                label: "Load track",
                                                 submenu: w95.widget.menu({
                                                     children: [
                                                         w95.widget.menuAction({
@@ -122,7 +122,7 @@ export default {
                                                         }),
                                                         w95.widget.menuSeparator(),
                                                         w95.widget.menuAction({
-                                                            label: "Rally-Sport (demo)",
+                                                            label: "Original",
                                                             submenu: w95.widget.menu({
                                                                 children: [
                                                                     w95.widget.menuAction({
@@ -354,22 +354,22 @@ export default {
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
+                                                label: "Test",
+                                                isDisabled: (dosboxRunState.now !== 0),
+                                                onClick() {
+                                                    send_message("run:test");
+                                                },
+                                            }),
+                                            w95.widget.menuAction({
                                                 label: "Race",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:play");
                                                 },
                                             }),
-                                            w95.widget.menuAction({
-                                                label: "Debug",
-                                                isDisabled: (dosboxRunState.now !== 0),
-                                                onClick() {
-                                                    send_message("run:test");
-                                                },
-                                            }),
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuAction({
-                                                label: "Record lap",
+                                                label: "Ghost lap",
                                                 isDisabled: (dosboxRunState.now !== 0),
                                                 onClick() {
                                                     send_message("run:record");
@@ -445,7 +445,6 @@ export default {
                                             w95.widget.menuSeparator(),
                                             w95.widget.menuAction({
                                                 label: "Manual",
-                                                isChecked: (currentEditorView.now === "texture-editor"),
                                                 onClick() {
                                                     w95.shell.run(notepad({
                                                         file: "/desktop/$apps/rallysported/manual.txt",
@@ -475,6 +474,7 @@ export default {
                             ],
                         }),
                         w95.shell.popup.about({
+                            icon: icons.app32,
                             parent: this,
                             text: "Create, edit, and play Rally-Sport tracks.",
                             onClose() {
