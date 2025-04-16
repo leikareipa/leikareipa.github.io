@@ -11,12 +11,6 @@
         <link rel="stylesheet" href="/blog/+assets/blog.css">
 
         <style>
-            a,
-            a:visited
-            {
-                color: revert !important;
-            }
-
             body[data-dokki-theme]
             {
                 --dokkiCSS-embedded-border-radius: 5px;
@@ -89,29 +83,28 @@
                 color: var(--dokkiCSS-page-secondary-fg-color) !important;
             }
 
-            body[data-dokki-theme] .dokki-tag,
-            body[data-dokki-theme] .dokki-tag-filter .button
-            {
-                background-color: var(--dokkiCSS-page-secondary-bg-color) !important;
-                color: inherit !important;
-                border: 1px solid var(--dokkiCSS-page-primary-line-color) !important;
-            }
-
-            body[data-dokki-theme] .dokki-tag:hover,
-            body[data-dokki-theme] .dokki-tag-filter .button:hover
-            {
-                color: var(--dokkiCSS-page-primary-bg-color) !important;
-                background-color: var(--dokkiCSS-page-primary-fg-color) !important;
-                border-color: var(--dokkiCSS-page-primary-fg-color) !important;
-            }
-
             .dokki-area.tag-list
             {
-                display: flex;
-                flex-wrap: wrap;
                 padding: 0;
                 background-color: inherit;
                 margin-top: -6px; /* Negate <dokki-tag>'s' top margin.*/
+
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 10px;
+                align-items: center;
+                padding: 8px 0;
+                margin: -8px 0;
+                padding-right: 8px;
+                padding-left: 3px;
+                mask-image: linear-gradient(to right, black calc(100% - 8px), transparent);
+                -webkit-mask-image: linear-gradient(to right, black calc(100% - 8px), transparent);
+            }
+
+            .dokki-area.tag-list::-webkit-scrollbar
+            {
+                display: none;
             }
 
             .blog-link
@@ -151,11 +144,14 @@
 
             .dokki-tag
             {
-                padding: 4px 14px !important;
-                margin: 10px 10px 0 0 !important;
-                color: inherit !important;
-                font-size: inherit !important;
-                border-color: var(--dokkiCSS-page-primary-line-color) !important;
+                box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.3);
+                background-color: white !important;
+                border-radius: 5px !important;
+            }
+
+            body[data-dokki-theme="dark"] .dokki-tag
+            {
+                background-color: black !important;
             }
 
             .dokki-tag .count
@@ -181,14 +177,6 @@
                     </dokki-header>
                     <dokki-topics>
                         
-<dokki-topic dokki-ignore title="Introduction">
-    <p>
-        This page talks about a few of the software applications I've made over the decades.
-        For more recent activity, <a href="/blog">see my blog</a>.
-    </p>
-    <dokki-tag-cloud headerless></dokki-tag-cloud>
-</dokki-topic>
-
 <dokki-tag-filter entity-name="software"></dokki-tag-filter>
 
 <dokki-topic title="JavaScript software 3D renderer">
@@ -399,17 +387,4 @@
     <p>Rendering is done via volumetric path tracing, with an initial photon-mapping pass to deposit sunlight.
     </p>
     <p>For more information, <a href="/blog/how-i-wrote-a-cloud-simulator-renderer/">see this blog post</a>.</p>
-</dokki-topic>
-
-<dokki-topic title="Typing statistics">
-    <dokki-area inline-class="tag-list dokkiCSS-area-container">
-        <dokki-tag>2015</dokki-tag>
-        <dokki-tag>C++</dokki-tag>
-        <dokki-tag>Qt</dokki-tag>
-    </dokki-area>
-    <p>A program that has you type out words to receive various statistics on your technique. Written in C++ for Linux and Windows.</p>
-    <dokki-image src="./img/typing/1.png" width="1002" height="566" headerless="true">
-    </dokki-image>
-    <dokki-image src="./img/typing/2.png" width="1002" height="564" headerless="true">
-    </dokki-image>
 </dokki-topic>
