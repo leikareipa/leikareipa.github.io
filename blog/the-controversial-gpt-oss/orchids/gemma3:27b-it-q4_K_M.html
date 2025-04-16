@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Orchid Illustration</title>
+</head>
+<body>
+  <script>
+  // This code is a starting point.  Creating a truly complex botanical illustration 
+// using just JavaScript and Canvas is *extremely* involved.  This provides a 
+// basic structure and some shapes to get you started.  Expect to spend a lot
+// of time refining the parameters and adding complexity for a realistic result.
+
+function drawOrchid(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+
+  if (!canvas || !ctx) {
+    console.error("Canvas not found or context not supported.");
+    return;
+  }
+
+  const width = canvas.width;
+  const height = canvas.height;
+
+  // --- Helper Functions ---
+
+  function drawEllipse(x, y, radiusX, radiusY, rotation, color, fill) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+    ctx.scale(radiusX / radiusY, 1);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, radiusX, radiusY, 0, 0, 2 * Math.PI);
+    if (fill) {
+      ctx.fillStyle = color;
+      ctx.fill();
+    } else {
+      ctx.strokeStyle = color;
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawLeaf(x, y, width, height, color, angle) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(width / 2, height, width, height);
+    ctx.lineTo(width, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawPetal(x, y, width, height, color, curveFactor) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.quadraticCurveTo(x + width / 2, y + height * curveFactor, x + width, y + height);
+      ctx.quadraticCurveTo(x + width * 0.8, y + height + height * curveFactor, x, y + height);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.restore();
+  }
+
+  // --- Orchid Drawing ---
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, width, height);
+
+  // --- Stem ---
+  ctx.beginPath();
+  ctx.moveTo(width / 2, height);
+  ctx.lineTo(width / 2, height / 2);
+  ctx.strokeStyle = '#4CAF50';
+  ctx.lineWidth = 5;
+  ctx.stroke();
+
+  // --- Leaves ---
+  drawLeaf(width / 2 - 40, height / 2 - 50, 80, 30, '#77DD77', Math.PI / 4);
+  drawLeaf(width / 2 + 40, height / 2 - 20, 60, 25, '#90EE90', -Math.PI / 6);
+
+  // --- Orchid Flower ---
+  const flowerX = width / 2;
+  const flowerY = height / 2 - 30;
+  const petalWidth = 25;
+  const petalHeight = 40;
+
+  // Petals
+  ctx.fillStyle = '#F5F5DC'; // Beige
+  drawPetal(flowerX - petalWidth, flowerY - petalHeight / 2, petalWidth, petalHeight, '#F5F5DC', 0.5);
+  drawPetal(flowerX + petalWidth, flowerY - petalHeight / 2, petalWidth, petalHeight, '#F5F5DC', 0.5);
+  drawPetal(flowerX, flowerY - petalHeight, petalWidth * 1.2, petalHeight * 1.2, '#F5F5DC', 0.6);
+  drawPetal(flowerX - petalWidth / 2, flowerY + petalHeight / 2, petalWidth, petalHeight, '#F5F5DC', 0.4); // A slightly different petal
+
+
+  // Lip (central petal)
+  ctx.fillStyle = '#FF8A65'; // Light Salmon
+  ctx.beginPath();
+  ctx.arc(flowerX, flowerY + petalHeight * 0.5, 15, 0, 2 * Math.PI);
+  ctx.fill();
+
+  // Stamens (simplified)
+  ctx.fillStyle = '#FFD700'; // Gold
+  ctx.beginPath();
+  ctx.arc(flowerX - 10, flowerY + 10, 3, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(flowerX + 10, flowerY + 10, 3, 0, 2 * Math.PI);
+  ctx.fill();
+
+}
+
+
+// --- Example Usage ---
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'orchidCanvas';
+  canvas.width = 500;
+  canvas.height = 500;
+  document.body.appendChild(canvas);
+
+  drawOrchid('orchidCanvas');
+});
+
+  </script>
+</body>
+</html>
+

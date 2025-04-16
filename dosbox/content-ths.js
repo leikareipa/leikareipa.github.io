@@ -89,6 +89,16 @@ export default {
         zip: "./content/o1-test/o1-test.zip",
         run: ["cls", "c3o.com"],
     },
+    "^/?ai-asm-bench/claude-4-sonnet/mouse/?$": {
+        title: "AI ASM BENCH",
+        zip: "./content/ai-asm-bench/claude-4-sonnet.zip",
+        run: ["cls", "mouse.com"],
+    },
+    "^/?ai-asm-bench/claude-4-sonnet/parrot/?$": {
+        title: "AI ASM BENCH",
+        zip: "./content/ai-asm-bench/claude-4-sonnet.zip",
+        run: ["cls", "parrot.com"],
+    },
 
     undefined: {
         zip: "",
