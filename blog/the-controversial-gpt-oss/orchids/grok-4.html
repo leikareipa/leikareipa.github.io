@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anatomical Diagram</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // JavaScript code to draw a botanical illustration of an orchid using HTML5 Canvas
+
+        // Create canvas element
+        const canvas = document.createElement('canvas');
+        canvas.width = 400;
+        canvas.height = 600;
+        document.body.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+
+        // Set background to light beige for illustration feel
+        ctx.fillStyle = '#f5f5dc';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the stem
+        ctx.beginPath();
+        ctx.moveTo(200, 550);
+        ctx.quadraticCurveTo(210, 400, 190, 250);
+        ctx.quadraticCurveTo(180, 150, 200, 50);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#228b22'; // Dark green
+        ctx.stroke();
+
+        // Draw leaves
+        function drawLeaf(x, y, rotation) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(rotation * Math.PI / 180);
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(50, -50, 100, -50, 150, 0);
+          ctx.bezierCurveTo(100, 50, 50, 50, 0, 0);
+          ctx.fillStyle = '#32cd32'; // Lime green
+          ctx.fill();
+          ctx.restore();
+        }
+
+        drawLeaf(180, 500, -20);
+        drawLeaf(220, 450, 20);
+        drawLeaf(170, 350, -15);
+
+        // Draw the orchid flower
+        // Central part (column)
+        ctx.beginPath();
+        ctx.arc(200, 100, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ffd700'; // Gold
+        ctx.fill();
+
+        // Petals (three sepals and two petals)
+        function drawPetal(x, y, width, height, rotation, color) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(rotation * Math.PI / 180);
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(width / 2, -height / 2, width, -height / 2, width, 0);
+          ctx.bezierCurveTo(width, height / 2, width / 2, height / 2, 0, 0);
+          ctx.fillStyle = color;
+          ctx.fill();
+          ctx.restore();
+        }
+
+        // Upper sepal
+        drawPetal(200, 70, 40, 60, 0, '#c71585'); // Pink
+
+        // Side sepals
+        drawPetal(160, 100, 50, 40, -45, '#c71585');
+        drawPetal(240, 100, 50, 40, 45, '#c71585');
+
+        // Side petals
+        drawPetal(170, 120, 30, 50, -60, '#ff69b4'); // Light pink
+        drawPetal(230, 120, 30, 50, 60, '#ff69b4');
+
+        // Labellum (lip)
+        ctx.beginPath();
+        ctx.moveTo(200, 120);
+        ctx.bezierCurveTo(150, 150, 150, 200, 200, 180);
+        ctx.bezierCurveTo(250, 200, 250, 150, 200, 120);
+        ctx.fillStyle = '#db7093'; // Pale violet red with patterns
+        ctx.fill();
+
+        // Add veins/patterns to labellum
+        ctx.beginPath();
+        ctx.moveTo(200, 120);
+        ctx.lineTo(200, 180);
+        ctx.strokeStyle = '#8b008b'; // Dark magenta
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(180, 140);
+        ctx.quadraticCurveTo(190, 160, 180, 180);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(220, 140);
+        ctx.quadraticCurveTo(210, 160, 220, 180);
+        ctx.stroke();
+
+        // Add smaller flowers or buds
+        function drawBud(x, y, size) {
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, 2 * Math.PI);
+          ctx.fillStyle = '#ff69b4';
+          ctx.fill();
+        }
+
+        drawBud(195, 200, 15);
+        drawBud(205, 300, 10);
+
+        // Add some shading or details
+        ctx.globalAlpha = 0.2;
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height); // Light overlay for depth, but optional
+        ctx.globalAlpha = 1.0;
+    </script>
+</body>
+</html>

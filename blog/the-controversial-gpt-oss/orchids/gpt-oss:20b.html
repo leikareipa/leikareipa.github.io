@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Orchid Illustration</title>
+<style>
+  body{margin:0;background:#f0f8ff;}
+  canvas{display:block;margin:0 auto;background:#fff;}
+</style>
+</head>
+<body>
+<canvas id="orchidCanvas" width="600" height="600"></canvas>
+
+<script>
+const canvas = document.getElementById('orchidCanvas');
+const ctx     = canvas.getContext('2d');
+
+/**
+ * Draws a botanical orchid centred at (x, y).
+ * @param {CanvasRenderingContext2D} ctx   Canvas 2‑D context
+ * @param {number} x                      X‑coordinate of the centre
+ * @param {number} y                      Y‑coordinate of the centre
+ * @param {number} scale                  Size multiplier (default = 1)
+ */
+function drawOrchid(ctx, x, y, scale = 1) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(scale, scale);
+
+    /* ---------- Stem ---------- */
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(0, 70, 12, 90, 0, 140);          // Slightly curved stem
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#228B22';
+    ctx.stroke();
+
+    /* ---------- Sepals (leaf‑like base) ---------- */
+    ctx.fillStyle = '#006400';
+    for (let i of [-1, 1]) {                          // Left & right
+        ctx.save();
+        ctx.rotate(i * 0.25);                         // Slight tilt
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-25, -70, -40, -110, 0, -160);
+        ctx.bezierCurveTo(40, -110, 25, -70, 0, 0);
+        ctx.fill();
+        ctx.restore();
+    }
+
+    /* ---------- Petals ---------- */
+    ctx.fillStyle = '#8B008B';
+    for (let i = 0; i < 3; i++) {                     // Three petals per side
+        ctx.save();
+        ctx.rotate(i * 2 * Math.PI / 3 - Math.PI / 6); // Spread around the centre
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(0, -80, 35, -120, 70, -80);
+        ctx.bezierCurveTo(35, -120, 0, -80, 0, 0);
+        ctx.fill();
+        ctx.restore();
+    }
+
+    /* ---------- Lip (the unique orchid flower part) ---------- */
+    ctx.fillStyle = '#DA70D6';
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(-20, -30, -45, -40, -60, 0);
+    ctx.bezierCurveTo(-45, 40, -20, 30, 0, 0);
+    ctx.fill();
+
+    ctx.restore();
+}
+
+/* Draw a single orchid in the centre of the canvas */
+drawOrchid(ctx, canvas.width / 2, canvas.height / 2 + 50, 1.5);
+
+/* Optional: Draw multiple orchids in a pattern */
+for (let i = 0; i < 12; i++) {
+    const angle = (i / 12) * 2 * Math.PI;
+    const radius = 200;
+    const cx = canvas.width / 2 + Math.cos(angle) * radius;
+    const cy = canvas.height / 2 + Math.sin(angle) * radius;
+    drawOrchid(ctx, cx, cy, 0.8);
+}
+</script>
+</body>
+</html>
+
