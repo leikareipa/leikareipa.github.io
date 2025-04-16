@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Likeness of Human Vagina</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="vaginaCanvas" width="400" height="500"></canvas>
+    <script>
+        function drawVagina() {
+            const canvas = document.getElementById('vaginaCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw outer labia (labia majora)
+            ctx.beginPath();
+            ctx.ellipse(150, 150, 50, 30, Math.PI / 4, 0, Math.PI * 2);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ff6b6b';
+            ctx.stroke();
+            ctx.fillStyle = '#ff9e9e';
+            ctx.fill();
+
+            // Draw inner labia (labia minora)
+            ctx.beginPath();
+            ctx.ellipse(150, 150, 30, 20, Math.PI / 4, 0, Math.PI * 2);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ff8b8b';
+            ctx.stroke();
+            ctx.fillStyle = '#ffb3b3';
+            ctx.fill();
+
+            // Draw vaginal opening
+            ctx.beginPath();
+            ctx.arc(150, 150, 10, 0, Math.PI * 2);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ff6b6b';
+            ctx.stroke();
+            ctx.fillStyle = '#ff9e9e';
+            ctx.fill();
+
+            // Draw urethral opening (simplified)
+            ctx.beginPath();
+            ctx.arc(160, 140, 3, 0, Math.PI * 2);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#ff6b6b';
+            ctx.stroke();
+            ctx.fillStyle = '#ff9e9e';
+            ctx.fill();
+
+            // Draw clitoris (simplified)
+            ctx.beginPath();
+            ctx.arc(140, 130, 5, 0, Math.PI * 2);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#ff6b6b';
+            ctx.stroke();
+            ctx.fillStyle = '#ff9e9e';
+            ctx.fill();
+        }
+
+        // Create canvas element
+        const canvas = document.createElement('canvas');
+        canvas.id = 'vaginaCanvas';
+        canvas.width = 300;
+        canvas.height = 300;
+        document.body.appendChild(canvas);
+
+        // Call the function to draw
+        drawVagina();
+    </script>
+</body>
+</html>

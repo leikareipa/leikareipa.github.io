@@ -3,6 +3,8 @@
  * 
  */
 
+import {icons} from "../icons.js";
+
 export default w95.widget(function largeIcon({
     x = 0,
     y = 0,
@@ -12,6 +14,7 @@ export default w95.widget(function largeIcon({
     icon = w95.icon.applicationIcon32x32,
     styleHints = [],
     onActivate = undefined,
+    onSelect = undefined,
     isDisabled = false,
 } = {})
 {
@@ -23,6 +26,7 @@ export default w95.widget(function largeIcon({
     w95.debug?.assert(typeof icon === "object");
     w95.debug?.assert(Array.isArray(styleHints));
     w95.debug?.assert(["undefined", "object"].includes(typeof icon));
+    w95.debug?.assert(["undefined", "function"].includes(typeof onSelect));
     w95.debug?.assert(["undefined", "function"].includes(typeof onActivate));
     w95.debug?.assert((icon.width === 32) && (icon.height === 32));
 
@@ -107,10 +111,18 @@ export default w95.widget(function largeIcon({
             mousedown() {
                 w95.$recurseDescendantWidgets(w95.windowManager.root_widget(this), (widget)=>{widget.Message?.blur?.()});
                 hasFocus.set(true);
+                onSelect();
                 return true;
             },
             dblclick() {
                 onActivate?.(this);
+
+                // If directory.
+                if (icon == icons.dir32)
+                {
+                    hasFocus.set(false);
+                }
+
                 return true;
             },
         },

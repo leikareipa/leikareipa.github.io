@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Likeness of Human Vagina</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Medical schematic of the external female genitalia (vulva) drawn on HTML5 Canvas
+        // This is a simplified, non-sexual, educational diagram.
+        // Run in a browser; it will create a canvas and draw the illustration.
+
+        (function () {
+        const width = 560;
+        const height = 760;
+        const cx = width / 2;
+
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.display = 'block';
+        canvas.style.margin = '20px auto';
+        canvas.style.background = '#fff';
+        document.body.appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+
+        // Style palette (soft, neutral tones)
+        const skinLight = '#f2cdb6';
+        const skinDark = '#e6b79a';
+        const mucosaLight = '#eab0a9';
+        const mucosaDark = '#d78f88';
+        const outline = '#7b5651';
+        const line = '#444';
+        const labelColor = '#1a1a1a';
+        const highlight = '#f7e9e6';
+
+        // Helpers
+        function setStroke(color, w = 1, dash = []) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = w;
+        ctx.setLineDash(dash);
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        }
+        function setFill(color) {
+        ctx.fillStyle = color;
+        }
+        function label(text, fromX, fromY, toX, toY, align = 'left') {
+        setStroke(line, 1, [4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+        ctx.font = '14px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+        ctx.fillStyle = labelColor;
+        ctx.textAlign = align;
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, toX + (align === 'left' ? 6 : -6), toY);
+        }
+        function ellipse(x, y, rx, ry, rotation = 0, fillColor = null, strokeColor = null, strokeW = 1) {
+        ctx.beginPath();
+        ctx.ellipse(x, y, rx, ry, rotation, 0, Math.PI * 2);
+        if (fillColor) {
+        setFill(fillColor);
+        ctx.fill();
+        }
+        if (strokeColor) {
+        setStroke(strokeColor, strokeW);
+        ctx.stroke();
+        }
+        }
+
+        // Layout reference
+        const topY = 150;
+        const bottomY = 620;
+        const midY = (topY + bottomY) / 2;
+
+        // Background soft vignette
+        const bgGrad = ctx.createRadialGradient(cx, midY, 60, cx, midY, width * 0.6);
+        bgGrad.addColorStop(0, '#ffffff');
+        bgGrad.addColorStop(1, '#f9f6f5');
+        setFill(bgGrad);
+        ctx.fillRect(0, 0, width, height);
+
+        // Mons region (subtle)
+        setFill('#f8ece7');
+        ellipse(cx, topY - 40, 120, 50, 0, '#f8ece7', null);
+
+        // Labia majora (outer folds) - symmetrical closed shape
+        function drawLabiaMajora() {
+        const wTop = 70;
+        const wMid = 150;
+        const wBottom = 60;
+
+        ctx.save();
+        const grad = ctx.createLinearGradient(cx, topY, cx, bottomY);
+        grad.addColorStop(0, skinLight);
+        grad.addColorStop(1, skinDark);
+
+        ctx.beginPath();
+        ctx.moveTo(cx, topY);
+        // Left side down
+        ctx.bezierCurveTo(cx - wTop, topY + 70, cx - wMid, midY - 20, cx - wBottom, bottomY);
+        // Bottom bridge
+        ctx.quadraticCurveTo(cx, bottomY + 18, cx + wBottom, bottomY);
+        // Right side up (mirror)
+        ctx.bezierCurveTo(cx + wMid, midY - 20, cx + wTop, topY + 70, cx, topY);
+        setFill(grad);
+        ctx.fill();
+
+        setStroke(outline + 'cc', 2);
+        ctx.stroke();
+        ctx.restore();
+        }
+
+        // Labia minora (inner folds)
+        function drawLabiaMinora() {
+        const wTop = 40;
+        const wMid = 80;
+        const wBottom = 28;
+
+        const innerTop = topY + 40;
+        const innerBottom = bottomY - 40;
+
+        ctx.save();
+        const grad = ctx.createLinearGradient(cx, innerTop, cx, innerBottom);
+        grad.addColorStop(0, mucosaLight);
+        grad.addColorStop(1, mucosaDark);
+
+        ctx.beginPath();
+        ctx.moveTo(cx, innerTop);
+        ctx.bezierCurveTo(cx - wTop, innerTop + 50, cx - wMid, midY - 30, cx - wBottom, innerBottom);
+        ctx.quadraticCurveTo(cx, innerBottom + 10, cx + wBottom, innerBottom);
+        ctx.bezierCurveTo(cx + wMid, midY - 30, cx + wTop, innerTop + 50, cx, innerTop);
+        setFill(grad);
+        ctx.fill();
+
+        setStroke(outline + 'aa', 1.5);
+        ctx.stroke();
+        ctx.restore();
+        }
+
+        // Clitoral hood and glans
+        const hoodY = topY + 35;
+        const glansY = hoodY + 10;
+        function drawClitoralComplex() {
+        // Hood (small arch)
+        ctx.save();
+        setFill(highlight);
+        setStroke(outline + '88', 1.2);
+        ctx.beginPath();
+        ctx.moveTo(cx - 36, hoodY + 10);
+        ctx.quadraticCurveTo(cx, hoodY - 12, cx + 36, hoodY + 10);
+        ctx.quadraticCurveTo(cx, hoodY + 24, cx - 36, hoodY + 10);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        // Glans clitoris (tiny oval under hood)
+        ellipse(cx, glansY + 4, 6.5, 4.5, 0, '#ffffff', outline + 'aa', 1);
+
+        // Frenulum/commissure hint (subtle line)
+        setStroke(outline + '55', 0.8);
+        ctx.beginPath();
+        ctx.moveTo(cx - 10, glansY + 12);
+        ctx.quadraticCurveTo(cx, glansY + 16, cx + 10, glansY + 12);
+        ctx.stroke();
+        }
+
+        // Vestibule openings: urethral meatus and vaginal introitus
+        const urethraY = glansY + 44;
+        const introitusY = urethraY + 60;
+        function drawOpenings() {
+        // Urethral opening (small vertical oval)
+        ellipse(cx, urethraY, 7, 10, 0, '#fff', outline + '88', 1);
+
+        // Vaginal opening (larger vertical oval)
+        ellipse(cx, introitusY, 22, 34, 0, '#fff', outline + '88', 1.2);
+
+        // Vestibule shading
+        ctx.save();
+        const grad = ctx.createRadialGradient(cx, introitusY, 10, cx, introitusY, 70);
+        grad.addColorStop(0, '#fdf7f6');
+        grad.addColorStop(1, '#f3d7d3');
+        setFill(grad);
+        ctx.globalAlpha = 0.6;
+        ellipse(cx, (urethraY + introitusY) / 2 + 8, 50, 78, 0, grad, null);
+        ctx.restore();
+        }
+
+        // Perineum area (below introitus)
+        function drawPerineum() {
+        const y0 = introitusY + 52;
+        ctx.save();
+        setFill('#f2ddd6');
+        setStroke(outline + '55', 1);
+        ctx.beginPath();
+        ctx.moveTo(cx - 36, y0);
+        ctx.quadraticCurveTo(cx, y0 + 16, cx + 36, y0);
+        ctx.quadraticCurveTo(cx, y0 - 8, cx - 36, y0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+        }
+
+        // Midline seam hint
+        function drawRaphe() {
+        setStroke(outline + '40', 1, [3, 4]);
+        ctx.beginPath();
+        ctx.moveTo(cx, topY + 80);
+        ctx.lineTo(cx, bottomY - 60);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        }
+
+        // Draw all parts
+        drawLabiaMajora();
+        drawLabiaMinora();
+        drawClitoralComplex();
+        drawOpenings();
+        drawPerineum();
+        drawRaphe();
+
+        // Labels
+        // Positions near features (annotation lines go from feature to margin text)
+        const leftColX = 70;
+        const rightColX = width - 70;
+
+        // Labia majora label (left)
+        label('Labia majora (outer folds)', cx - 150, midY - 30, leftColX, midY - 40, 'left');
+
+        // Labia minora label (right)
+        label('Labia minora (inner folds)', cx + 90, midY - 40, rightColX, midY - 50, 'right');
+
+        // Clitoral hood
+        label('Clitoral hood', cx + 54, hoodY + 6, rightColX, hoodY - 6, 'right');
+
+        // Glans clitoris
+        label('Glans clitoris', cx + 16, glansY + 6, rightColX, glansY + 10, 'right');
+
+        // Urethral opening
+        label('Urethral opening (meatus)', cx + 14, urethraY, rightColX, urethraY + 20, 'right');
+
+        // Vaginal opening (introitus)
+        label('Vaginal opening (introitus)', cx + 30, introitusY + 6, rightColX, introitusY + 40, 'right');
+
+        // Perineum
+        label('Perineum', cx - 42, introitusY + 56, leftColX, introitusY + 80, 'left');
+
+        // Mons pubis
+        label('Mons pubis', cx - 40, topY - 40, leftColX, topY - 60, 'left');
+
+        // Title
+        ctx.font = '18px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+        ctx.fillStyle = '#222';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText('External Genital Anatomy (Vulva) — Simplified Medical Diagram', cx, 40);
+
+        // Legend note
+        ctx.font = '12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+        ctx.fillStyle = '#555';
+        ctx.fillText('Schematic, not to scale. For educational purposes.', cx, height - 20);
+        })();
+    </script>
+</body>
+</html>

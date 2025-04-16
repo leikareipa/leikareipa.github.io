@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Medical Breast Illustration</title>
+</head>
+<body>
+   <canvas id="breastCanvas" width="400" height="400"></canvas>
+   <script>
+      // Get the canvas element and its context
+       const canvas = document.getElementById('breastCanvas');
+       const ctx = canvas.getContext('2d');
+
+       // Function to draw a single breast
+       function drawBreast(x, y, radius) {
+           ctx.beginPath();
+           ctx.arc(x, y, radius, 0, Math.PI * 2);
+           ctx.fillStyle = '#FFC0CB'; // Pink color for the breast
+           ctx.fill();
+           ctx.strokeStyle = 'black';
+           ctx.stroke();
+       }
+
+       // Draw two breasts
+       drawBreast(150, 200, 80); // Left breast
+       drawBreast(250, 200, 80); // Right breast
+
+       // Optionally, add some nipples
+       function drawNipple(x, y, size) {
+           ctx.beginPath();
+           ctx.arc(x, y, size, 0, Math.PI * 2);
+           ctx.fillStyle = 'brown';
+           ctx.fill();
+       }
+
+       drawNipple(150, 200, 5); // Left nipple
+       drawNipple(250, 200, 5); // Right nipple
+    </script>
+</body>
+</html>
+

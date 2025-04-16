@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Likeness of Human Breasts</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function drawBreasts() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 400;
+            canvas.height = 300;
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+
+            // Draw torso outline
+            ctx.beginPath();
+            ctx.moveTo(100, 150);
+            ctx.lineTo(150, 100);
+            ctx.lineTo(250, 100);
+            ctx.lineTo(300, 150);
+            ctx.lineTo(300, 300);
+            ctx.lineTo(100, 300);
+            ctx.closePath();
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw left breast
+            ctx.beginPath();
+            ctx.ellipse(175, 175, 50, 60, Math.PI/4, 0, Math.PI*2);
+            ctx.stroke();
+
+            // Draw right breast
+            ctx.beginPath();
+            ctx.ellipse(225, 175, 50, 60, -Math.PI/4, 0, Math.PI*2);
+            ctx.stroke();
+
+            // Draw nipples
+            ctx.beginPath();
+            ctx.arc(175, 175, 5, 0, Math.PI*2);
+            ctx.fillStyle = '#a0a0a0';
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(225, 175, 5, 0, Math.PI*2);
+            ctx.fillStyle = '#a0a0a0';
+            ctx.fill();
+            ctx.stroke();
+
+            // Add some anatomical labels
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#000000';
+
+            // Left breast label
+            ctx.fillText('Mammary Gland', 150, 150);
+
+            // Right breast label
+            ctx.fillText('Mammary Gland', 250, 150);
+
+            // Nipple label
+            ctx.fillText('Nipple', 175, 190);
+            ctx.fillText('Nipple', 225, 190);
+        }
+
+        drawBreasts();
+    </script>
+</body>
+</html>

@@ -11,7 +11,7 @@ export default {
     Meta: {
         name: "Heightmap Generator",
         version: "1.0",
-        author: "ArtisaaniSoft",
+        author: w95.registry["self"],
     },
     App() {
         const minWidth = 268;
@@ -46,8 +46,6 @@ export default {
         const uiDistortion = w95.state("0.5");
         const viewMode = w95.state("3D");
         const isWindowResizing = w95.state(false);
-
-        generate_heightmap();
 
         function generate_heightmap() {
             if (isWindowResizing.now) {
@@ -199,6 +197,7 @@ export default {
             get height() { return height.now },
             Opened() {
                 randomize_seed();
+                generate_heightmap();
             },
             Form() {
                 return w95.widget.window({
@@ -237,13 +236,13 @@ export default {
                                     submenu: w95.widget.menu({
                                         children: [
                                             w95.widget.menuAction({
-                                                label: "Export to OBJ",
+                                                label: "Export as OBJ",
                                                 onClick() {
                                                     download_terrain();
                                                 },
                                             }),
                                             w95.widget.menuAction({
-                                                label: "Export to PNG",
+                                                label: "Export as PNG",
                                                 onClick() {
                                                     download_heightmap();
                                                 },
@@ -400,6 +399,7 @@ export default {
                             text: "Roll",
                             onClick() {
                                 randomize_seed();
+                                generate_heightmap();
                             },
                         }),
                         w95.widget.label({
@@ -466,7 +466,6 @@ export default {
                         }, {hideIf: !isSeedQueryDialogOpen.now}),
                         w95.shell.popup.about({
                             parent: this,
-                            text: "Generate heightmaps using Perlin noise and export\nthem as OBJ/PNG.",
                             onClose() {
                                 isAboutDialogOpen.set(false);
                             },

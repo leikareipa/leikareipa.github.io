@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Likeness of Human Vagina</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Educational, clinical-style schematic of adult breast anatomy drawn on HTML5 Canvas.
+        // Run in a browser. This script creates a canvas, draws a neutral, non-erotic medical diagram,
+        // and labels external and internal structures.
+
+        (() => {
+        const dpr = Math.max(1, window.devicePixelRatio || 1);
+
+        // Canvas setup
+        const canvas = document.createElement('canvas');
+        const width = 900;
+        const height = 540;
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+        document.body.appendChild(canvas);
+
+        // Palette (neutral, clinical)
+        const colors = {
+        bg: '#ffffff',
+        outline: '#4b5563',
+        fill: '#e5e7eb',
+        areola: '#b6b6b8',
+        nipple: '#6b7280',
+        muscle: 'rgba(244, 114, 182, 0.18)', // muted magenta tint
+        rib: '#cbd5e1',
+        duct: '#2563eb',
+        lobule: '#10b981',
+        label: '#111827',
+        leader: '#9ca3af'
+        };
+
+        // Clear background
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, width, height);
+
+        // Helpers
+        function label(text, x, y, lx, ly) {
+        ctx.strokeStyle = colors.leader;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(lx, ly);
+        ctx.stroke();
+
+        ctx.fillStyle = colors.label;
+        ctx.font = '12px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, lx + 6, ly);
+        }
+
+        function breastOutlinePath(cx, cy, size, orientation = 1) {
+        // orientation: 1 = right-facing, -1 = left-facing (relative to chest center)
+        // A smooth teardrop-like contour anchored at chest wall
+        const x0 = cx - orientation * size * 0.9;
+        const y0 = cy - size * 0.05;
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.bezierCurveTo(
+        cx - orientation * size * 0.6, cy - size * 0.7,
+        cx + orientation * size * 0.35, cy - size * 0.55,
+        cx + orientation * size * 0.85, cy + size * 0.02
+        );
+        ctx.bezierCurveTo(
+        cx + orientation * size * 0.25, cy + size * 0.72,
+        cx - orientation * size * 0.6, cy + size * 0.55,
+        x0, cy + size * 0.25
+        );
+        ctx.closePath();
+        }
+
+        function drawAreola(cx, cy, radius) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fillStyle = colors.areola;
+        ctx.globalAlpha = 0.45;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = colors.outline;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        }
+
+        function drawNipple(cx, cy, radius) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fillStyle = colors.nipple;
+        ctx.globalAlpha = 0.75;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        }
+
+        function drawPectoralMuscle(x, y, w, h) {
+        ctx.beginPath();
+        ctx.ellipse(x, y, w, h, -0.2, 0, Math.PI * 2);
+        ctx.fillStyle = colors.muscle;
+        ctx.fill();
+        }
+
+        function drawRibs(yCenter) {
+        ctx.strokeStyle = colors.rib;
+        ctx.lineWidth = 1;
+        for (let i = -2; i <= 2; i++) {
+        const y = yCenter + i * 26;
+        ctx.beginPath();
+        ctx.moveTo(120, y);
+        ctx.quadraticCurveTo(450, y - 14 * Math.sign(i || 1), width - 120, y);
+        ctx.stroke();
+        }
+        }
+
+        function drawDuctsAndLobules(nippleX, nippleY, radius, spreadR) {
+        // Draw several ducts converging to nipple and lobules at ends
+        const ducts = 6;
+        for (let i = 0; i < ducts; i++) {
+        const angle = (-Math.PI / 4) + (i * (Math.PI / 10));
+        const midR = spreadR * 0.55;
+        const endR = spreadR;
+        const x1 = nippleX - Math.cos(angle) * radius * 0.8;
+        const y1 = nippleY - Math.sin(angle) * radius * 0.8;
+        const cx1 = nippleX - Math.cos(angle) * midR;
+        const cy1 = nippleY - Math.sin(angle) * midR;
+        const x2 = nippleX - Math.cos(angle) * endR;
+        const y2 = nippleY - Math.sin(angle) * endR;
+
+          // Duct
+          ctx.strokeStyle = colors.duct;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.quadraticCurveTo(cx1, cy1, x2, y2);
+          ctx.stroke();
+
+          // Lobule (cluster of rounded petals)
+          const lobulePetals = 6;
+          const petalR = 10;
+          for (let p = 0; p < lobulePetals; p++) {
+            const a = angle + p * ((Math.PI * 2) / lobulePetals);
+            const px = x2 + Math.cos(a) * 12;
+            const py = y2 + Math.sin(a) * 12;
+            ctx.beginPath();
+            ctx.ellipse(px, py, petalR, petalR * 0.6, a, 0, Math.PI * 2);
+            ctx.strokeStyle = colors.lobule;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          }
+        }
+        }
+
+        function drawBreast(cx, cy, size, orientation, options = {}) {
+        // External contour
+        breastOutlinePath(cx, cy, size, orientation);
+        ctx.fillStyle = colors.fill;
+        ctx.strokeStyle = colors.outline;
+        ctx.lineWidth = 2;
+        ctx.fill();
+        ctx.stroke();
+
+        // Nipple/areola position toward apex
+        const nippleX = cx + orientation * size * 0.7;
+        const nippleY = cy;
+        const areolaR = Math.max(12, size * 0.16);
+        const nippleR = Math.max(3, size * 0.05);
+
+        drawAreola(nippleX, nippleY, areolaR);
+        drawNipple(nippleX, nippleY, nippleR);
+
+        // Optional internal anatomy (cross-sectional schematic)
+        if (options.internal) {
+          // Pectoral muscle behind
+          drawPectoralMuscle(cx - orientation * size * 0.65, cy - size * 0.15, size * 0.55, size * 0.25);
+
+          // Ducts and lobules
+          drawDuctsAndLobules(nippleX, nippleY, areolaR, size * 0.55);
+
+          // Labels for internal structures
+          label('Lactiferous ducts', nippleX - orientation * size * 0.35, nippleY - size * 0.22, nippleX - orientation * size * 0.95, nippleY - size * 0.35);
+          label('Lobules (glandular tissue)', nippleX - orientation * size * 0.55, nippleY + size * 0.35, nippleX - orientation * size * 1.05, nippleY + size * 0.45);
+          label('Pectoral muscle', cx - orientation * size * 0.65, cy - size * 0.38, cx - orientation * size * 1.15, cy - size * 0.55);
+        }
+
+        // External labels
+        label('Breast', cx + orientation * size * 0.35, cy - size * 0.55, cx + orientation * size * 0.95, cy - size * 0.75);
+        label('Areola', nippleX + orientation * areolaR * 0.2, nippleY - areolaR - 10, nippleX + orientation * areolaR * 0.2 + 60 * orientation, nippleY - areolaR - 26);
+        label('Nipple', nippleX + orientation * (areolaR + 10), nippleY + 2, nippleX + orientation * (areolaR + 70), nippleY + 2);
+        }
+
+        // Title
+        ctx.fillStyle = colors.label;
+        ctx.font = '18px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif';
+        ctx.fillText('Adult Breast Anatomy (clinical schematic)', 20, 28);
+        ctx.font = '12px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif';
+        ctx.fillStyle = '#6b7280';
+        ctx.fillText('Left: cross-sectional schematic; Right: external contour. Educational/medical illustration.', 20, 46);
+
+        // Draw guides (ribs) lightly in background
+        drawRibs(270);
+
+        // Positions
+        const leftCx = 330;
+        const rightCx = 570;
+        const cy = 270;
+        const size = 140;
+
+        // Draw left breast with internal schematic
+        drawBreast(leftCx, cy, size, 1, { internal: true });
+
+        // Draw right breast external only
+        drawBreast(rightCx, cy, size, -1, { internal: false });
+
+        // Optional: sternum marker
+        ctx.strokeStyle = '#e5e7eb';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(width / 2, cy - size * 0.9);
+        ctx.lineTo(width / 2, cy + size * 0.9);
+        ctx.stroke();
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '11px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif';
+        ctx.fillText('Sternum (midline)', width / 2 + 6, cy - size * 0.75);
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Medical Illustration – Breasts</title>
+<style>
+  canvas { background:#fafafa; display:block; margin:auto; }
+</style>
+</head>
+<body>
+<canvas id="breastCanvas" width="400" height="300"></canvas>
+
+<script>
+  const canvas = document.getElementById('breastCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Helper to draw an ellipse using the new Canvas API
+  function drawEllipse(cx, cy, rx, ry, fillStyle, strokeStyle, lineWidth) {
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+    ctx.fillStyle = fillStyle;
+    ctx.fill();
+    if (strokeStyle) {
+      ctx.lineWidth = lineWidth || 1;
+      ctx.strokeStyle = strokeStyle;
+      ctx.stroke();
+    }
+  }
+
+  // Draw the left breast
+  drawEllipse(120, 150, 45, 60, '#ffe0e0', '#d6006d', 2);
+
+  // Draw the right breast
+  drawEllipse(280, 150, 45, 60, '#ffe0e0', '#d6006d', 2);
+
+  // Add a simple line to indicate tissue layering (e.g., chest wall)
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(80, 210);
+  ctx.lineTo(320, 210);
+  ctx.stroke();
+
+  // Optional: small shading to give a 3‑D feel
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.beginPath();
+  ctx.ellipse(120, 150, 45, 60, 0, 0, Math.PI);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.ellipse(280, 150, 45, 60, 0, 0, Math.PI);
+  ctx.fill();
+</script>
+</body>
+</html>

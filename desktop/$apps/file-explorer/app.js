@@ -14,7 +14,7 @@ export default function({
         Meta: {
             name: "File Explorer",
             version: "1.0",
-            author: "ArtisaaniSoft",
+            author: w95.registry["self"],
         },
         App() {
             const minWidth = 200;
@@ -24,6 +24,7 @@ export default function({
             const width = w95.state(Math.min(maxWidth, 501));
             const height = w95.state(Math.min(maxHeight, 350));
             const contentHeight = w95.state(height.now);
+            const isAnIconSelected = w95.state(false);
 
             const x = w95.state(
                 ~~((w95.shell.display.width - width.now) / 2),
@@ -58,10 +59,10 @@ export default function({
                                 break;
                             }
                             /* Enter.*/
-                            case 13: {
+                            /*case 13: {
                                 this.$("fileView").Message.activate_current_item();
                                 break;
-                            }
+                            }*/
                         }
                     },
                 },
@@ -140,6 +141,9 @@ export default function({
                                         reportPath(path) {
                                             currentPath.set(path);
                                         },
+                                        onSelect(is) {
+                                            isAnIconSelected.set(is);
+                                        }
                                     }),
                                 ],
                             }), 
@@ -154,7 +158,11 @@ export default function({
                                     w95.widget.label({
                                         x: 5,
                                         y: 2,
-                                        text: `${viewFileCount.now} object(s)`,
+                                        text: (
+                                            isAnIconSelected.now
+                                                ? `1 object(s) selected`
+                                                : `${viewFileCount.now} object(s)`
+                                        )
                                     }),
                                 ],
                             }),

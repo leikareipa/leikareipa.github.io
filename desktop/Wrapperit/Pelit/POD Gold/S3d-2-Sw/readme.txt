@@ -1,5 +1,5 @@
 This is a software-rendered wrapper for the S3d version of POD. Other S3d games
-are not supported. ArtisaaniSoft, 2025.
+are not supported. Sigmoid Colon, 2025.
 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

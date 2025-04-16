@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasteful medical-style drawing using SVG and JavaScript</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function drawFemaleAnatomy() {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("width", "400");
+            svg.setAttribute("height", "500");
+            svg.style.backgroundColor = "#fde6e6";
+
+            // Outer structure
+            const outerPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            outerPath.setAttribute("d", "M200,100 C300,150 300,350 200,400 C100,350 100,150 200,100");
+            outerPath.setAttribute("fill", "#ffb6c1");
+            outerPath.setAttribute("stroke", "#db7093");
+            outerPath.setAttribute("stroke-width", "2");
+
+            // Inner structure
+            const innerPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            innerPath.setAttribute("d", "M200,150 C250,200 250,300 200,350 C150,300 150,200 200,150");
+            innerPath.setAttribute("fill", "#ff69b4");
+            innerPath.setAttribute("stroke", "#c71585");
+            innerPath.setAttribute("stroke-width", "2");
+
+            // Opening
+            const opening = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+            opening.setAttribute("cx", "200");
+            opening.setAttribute("cy", "250");
+            opening.setAttribute("rx", "15");
+            opening.setAttribute("ry", "30");
+            opening.setAttribute("fill", "#db7093");
+
+            // Add anatomical details
+            svg.appendChild(outerPath);
+            svg.appendChild(innerPath);
+            svg.appendChild(opening);
+
+            // Labels
+            const labels = [
+                {text: "Labia majora", x: 320, y: 250},
+                {text: "Labia minora", x: 320, y: 280},
+                {text: "Vaginal opening", x: 320, y: 310}
+            ];
+
+            labels.forEach(label => {
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", label.x);
+                text.setAttribute("y", label.y);
+                text.setAttribute("font-family", "Arial");
+                text.setAttribute("font-size", "12");
+                text.textContent = label.text;
+                svg.appendChild(text);
+            });
+
+            return svg;
+        }
+
+        document.body.appendChild(drawFemaleAnatomy());
+    </script>
+</body>
+</html>
