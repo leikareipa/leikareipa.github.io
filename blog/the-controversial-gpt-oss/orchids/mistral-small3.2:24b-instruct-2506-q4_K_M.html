@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botanical Orchid Illustration</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid #000;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="orchidCanvas" width="400" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('orchidCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Draw the stem
+        ctx.beginPath();
+        ctx.moveTo(200, 400);
+        ctx.lineTo(200, 200);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        // Draw the leaves
+        ctx.beginPath();
+        ctx.moveTo(200, 350);
+        ctx.lineTo(150, 300);
+        ctx.lineTo(200, 350);
+        ctx.lineTo(250, 300);
+        ctx.lineTo(200, 350);
+        ctx.fillStyle = '#7cb342';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        // Draw the flower
+        ctx.beginPath();
+        ctx.ellipse(200, 150, 50, 70, Math.PI / 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff8f00';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        // Draw the petals
+        ctx.beginPath();
+        ctx.ellipse(180, 130, 30, 50, Math.PI / 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff8f00';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.ellipse(220, 130, 30, 50, Math.PI / 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff8f00';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        // Draw the sepals
+        ctx.beginPath();
+        ctx.ellipse(200, 100, 30, 50, Math.PI / 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff8f00';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.ellipse(200, 200, 30, 50, Math.PI / 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff8f00';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        // Draw the lip (central petal)
+        ctx.beginPath();
+        ctx.ellipse(200, 170, 40, 30, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff8f00';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        // Draw the details on the lip
+        ctx.beginPath();
+        ctx.ellipse(200, 170, 20, 10, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff5722';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        // Draw the column (central part of the flower)
+        ctx.beginPath();
+        ctx.ellipse(200, 150, 5, 15, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#5a3921';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+
+        // Draw the anther cap
+        ctx.beginPath();
+        ctx.ellipse(200, 140, 8, 5, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#ff5722';
+        ctx.fill();
+        ctx.strokeStyle = '#5a3921';
+        ctx.stroke();
+    </script>
+</body>
+</html>
