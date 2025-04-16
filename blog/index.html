@@ -23,6 +23,16 @@
                 --dokkiCSS-topic-vertical-padding: 1.85em !important;
             }
 
+            .dokki-header > .widgets > .dokki-user-widget:last-child
+            {
+                margin-left: 0;
+            }
+
+            .dokki-topic#introduction
+            {
+                display: none;
+            }
+
             b-stickies
             {
                 margin-top: 1em;
@@ -176,20 +186,30 @@
 
                     <dokki-topic dokki-ignore title="Introduction" inline-class="abstract dokki-ignore">
                         <p>
-                            This is the blog of a veteran software developer with no background in
-                            commercial development. Expect the outside perspective. 
+                            This is the blog of a veteran hobbyist software developer.
                         </p>
-                        <b-stickies>
-                            <a class="sticky" href="/blog/testing-open-and-closed-llms-some-more/">
-                                <i class="fas fa-xs fa-thumbtack" style="transform: rotate(-45deg); margin-right: 0.5em;"></i>
-                                Testing open and closed LLMs some more
-                            </a>
-                            <a class="sticky" href="/blog/testing-visual-understanding-in-llms/">
-                                <i class="fas fa-xs fa-thumbtack" style="transform: rotate(-45deg); margin-right: 0.5em;"></i>
-                                Testing visual understanding in LLMs
-                            </a>
-                        </b-stickies>
                     </dokki-topic>
+
+                    <blog-post-abstract
+                        date="11 August 2025"
+                        :tags="['ai']"
+                        title="The controversial gpt-oss"
+                        brief="
+                            The new open-weights model from OpenAI &ndash; gpt-oss &ndash; has brought up controversy
+                            for its censorship.
+                        "
+                    ></blog-post-abstract>
+
+                    <blog-post-abstract
+                        date="26 May 2025"
+                        :tags="['ai']"
+                        title="Claude 4 in retro assembly programming"
+                        brief="
+                            Last year I did an interesting benchmark evaluating AI models in obscure assembly coding.
+                            It was a test in which even the best models struggled. Running the benchmark now for the
+                            new Claude 4 shows interesting progress.
+                        "
+                    ></blog-post-abstract>
 
                     <blog-post-abstract
                         date="8 March 2025"
