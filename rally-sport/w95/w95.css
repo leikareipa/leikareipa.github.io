@@ -1,0 +1,70 @@
+body {
+    background-color: black;
+    color: whitesmoke;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+canvas.w95 {
+    background-color: transparent;
+    image-rendering: pixelated;
+    user-select: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+canvas.w95[data-w95-app="Desktop"] {
+    background-color: teal;
+}
+
+.w95-dom-element {
+    position: absolute;
+    background-color: white;
+    cursor: auto;
+    visibility: hidden;
+    overflow: auto;
+    color: black;
+    pointer-events: auto;
+    filter: none;
+}
+
+.w95-dom-element.hidden {
+    display: none;
+}
+
+.w95-dom-element.disabled {
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+#w95-debug-layer {
+    width: 100%;
+    height: 100%;
+}
+
+#w95-debug-layer * {
+    z-index: 1;
+    pointer-events: none;
+    border: 1px solid blue;
+    box-sizing: border-box;
+    position: fixed;
+    font-size: 0;
+}
+
+#w95-debug-layer *.hidden {
+    border-color: green;
+    display: none;
+}
+
+#w95-debug-layer *.focused {
+    outline: 2px solid yellow;
+}
+
+#w95-debug-layer *.rerendered {
+    border-color: red;
+}
