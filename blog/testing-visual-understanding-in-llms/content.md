@@ -1,4 +1,4 @@
-<post-date date="15 May 2024" edited="5 September 2026"/>
+<post-date date="15 May 2024" edited="15 October 2026"/>
 
 # Testing visual understanding in LLMs
 
@@ -30,6 +30,22 @@ A collection of visual tests and their results for various LLMs.
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td><b>gemini-4-argon</b>:medium</td>
+            <td>83%</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s1">1</td>
+            <td class="s1">1</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+            <td class="s2">2</td>
+        </tr>
         <tr>
             <td><b>claude-fable-5.1</b>:high</td>
             <td>71%</td>
