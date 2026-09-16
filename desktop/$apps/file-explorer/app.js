@@ -7,6 +7,7 @@ import {icons} from "./icons.js";
 import fileView from "./custom-widgets/fileView.js";
 
 export default function({
+    view = "files",
     files = {},
     defaultRunners = {},
 } = {}) {
@@ -70,8 +71,16 @@ export default function({
                     return w95.widget.window({
                         $name: "window",
                         parent: this,
-                        title: `C:\\${basePath}${currentPath.now}`.replace(/\/$/, "").replace(/\//g, "\\"),
-                        icon: icons.app16,
+                        title: (
+                            (view == "recycle-bin")
+                                ? "Recycle Bin"
+                                : `C:\\${basePath}${currentPath.now}`.replace(/\/$/, "").replace(/\//g, "\\")
+                        ),
+                        icon: (
+                            (view == "recycle-bin")
+                                ? icons.recycleBin16
+                                : icons.app16
+                        ),
                         move(deltaX, deltaY) {
                             x.set(x.now + deltaX);
                             y.set(y.now + deltaY);

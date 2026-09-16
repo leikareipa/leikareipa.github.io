@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <title>Rally-Sport w/ network multiplayer</title>
+        <meta name="description" content="The demo version of the 1996 MS-DOS racing game Rally-Sport running in the browser.">
+        <script src="./w95/w95-api.js"></script>
+        <script src="./w95/w95-assets.js"></script>
+        <script src="./w95/w95-widgets.js"></script>
+        <link href="./w95/w95.css" rel="stylesheet">
+        <style>
+          :root {
+            --bg: #000;
+            --text: white;
+            --dim: whitesmoke;
+          }
+          html, body {
+            margin: 0;
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+          }
+          body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+          }
+          #stage {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            background: var(--bg);
+          }
+          #screen {
+            display: block;
+            width: 100%;
+            height: 100%;
+          }
+          #stats {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            padding: 6px 8px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #e0e0e0;
+            font: 12px/1.35 ui-monospace, Menlo, Consolas, monospace;
+            white-space: pre;
+            pointer-events: none;
+          }
+          #overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5em;
+            background: rgba(0, 0, 0, 0.55);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+            font-size: 3rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 1rem;
+          }
+          #overlay[hidden] { display: none; }
+          #overlay.clickable { cursor: pointer; }
+          #banner {
+            position: absolute;
+            left: 50%;
+            top: 12px;
+            transform: translateX(-50%);
+            padding: 6px 14px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #f0f0f0;
+            font-size: 1rem;
+            border-radius: 4px;
+            pointer-events: none;
+            white-space: nowrap;
+          }
+          #banner[hidden] { display: none; }
+          #overlay small {
+            display: block;
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--dim);
+          }
+
+          /* The touch controls (touch.js). --u: one percent of the screen's shorter side. */
+          #touch {
+            --u: min(1vw, 1vh);
+            --gap: calc(3 * var(--u));
+            --left: calc(env(safe-area-inset-left, 0px) + var(--gap));
+            --right: calc(env(safe-area-inset-right, 0px) + var(--gap));
+            --bottom: calc(env(safe-area-inset-bottom, 0px) + var(--gap));
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            color: rgba(255, 255, 255, 0.85);
+            font: 700 calc(3.2 * var(--u))/1 system-ui, -apple-system, "Segoe UI", sans-serif;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+          }
+          #touch[hidden], #touch .set { display: none; }
+          #touch[data-mode="race"] .race,
+          #touch[data-mode="menu"] .menu,
+          #touch[data-mode="type"] .type { display: block; }
+          #touch .button {
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: max(2px, calc(0.3 * var(--u))) solid rgba(255, 255, 255, 0.5);
+            border-radius: calc(2.5 * var(--u));
+            background: rgba(0, 0, 0, 0.25);
+          }
+          #touch .button.on { background: rgba(255, 255, 255, 0.45); }
+          #touch .arrow {
+            display: block;
+            width: calc(6 * var(--u));
+            height: calc(6 * var(--u));
+            background: currentColor;
+            clip-path: polygon(0 50%, 100% 0, 100% 100%);
+          }
+          #touch .arrow.right { transform: rotate(180deg); }
+          #touch .arrow.up { transform: rotate(90deg); }
+          #touch .arrow.down { transform: rotate(-90deg); }
+          #touch .left-hand, #touch .right-hand { position: absolute; bottom: var(--bottom); }
+          #touch .left-hand { left: var(--left); }
+          #touch .right-hand {
+            right: var(--right);
+            display: flex;
+            flex-direction: column;
+            gap: calc(2 * var(--u));
+            width: calc(26 * var(--u));
+          }
+          #touch .small { height: calc(11 * var(--u)); }
+          #touch .large { height: calc(26 * var(--u)); }
+          #touch .steer {
+            display: flex;
+            justify-content: space-between;
+            width: calc(48 * var(--u));
+            height: calc(26 * var(--u));
+          }
+          #touch .steer .button { width: calc(21 * var(--u)); }
+          #touch .dpad {
+            display: grid;
+            grid-template: repeat(3, calc(12 * var(--u))) / repeat(3, calc(12 * var(--u)));
+            gap: calc(1 * var(--u));
+          }
+          #touch .dpad [data-control="up"] { grid-area: 1 / 2; }
+          #touch .dpad [data-control="menu-left"] { grid-area: 2 / 1; }
+          #touch .dpad [data-control="menu-right"] { grid-area: 2 / 3; }
+          #touch .dpad [data-control="down"] { grid-area: 3 / 2; }
+          #touch .quit {
+            position: absolute;
+            top: calc(env(safe-area-inset-top, 0px) + 10 * var(--u));     /* below the HUD's numbers */
+            right: var(--right);
+            width: calc(13 * var(--u));
+            height: calc(8 * var(--u));
+          }
+          #touch .space, #touch .fullscreen {
+            position: absolute;
+            left: var(--left);
+          }
+          #touch .space {
+            top: calc(env(safe-area-inset-top, 0px) + 10 * var(--u));     /* across from Esc */
+            width: calc(13 * var(--u));
+            height: calc(8 * var(--u));
+          }
+          #touch .fullscreen {
+            top: calc(env(safe-area-inset-top, 0px) + var(--gap));
+            width: calc(10 * var(--u));
+            height: calc(10 * var(--u));
+          }
+          #touch .fullscreen svg {
+            width: 60%;
+            height: 60%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+          }
+          #touch .quit::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transform: scaleX(0);
+            transform-origin: left;
+            background: rgba(255, 255, 255, 0.55);
+          }
+          #touch .quit.arming::before { transform: scaleX(1); transition: transform 0.8s linear; }
+          #touch .quit span { position: relative; }
+          #touch .keyboard {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: var(--u);
+            padding: var(--u) var(--left) var(--bottom) var(--left);
+            background: rgba(0, 0, 0, 0.6);
+          }
+          #touch .row { display: flex; gap: var(--u); justify-content: center; }
+          #touch .row .button { flex: 1; height: calc(9.5 * var(--u)); border-radius: var(--u); }
+          #touch .row .button.wide { flex: 1.6; }
+          #touch .row .button.widest { flex: 6; }
+          #touch .type.shifted .letter { text-transform: uppercase; }
+        </style>
+    </head>
+    <body>
+        <div id="stage">
+            <canvas id="screen" width="320" height="200"></canvas>
+            <div id="overlay" hidden></div>
+            <div id="banner" hidden></div>
+        </div>
+        <script src="rally-core.js"></script>
+        <script src="touch.js"></script>
+        <script src="rally.js"></script>
+        <script type="module">
+            import networkRaceSetup, {closeWindow} from "./network-lobby.js";
+            import splash from "./splash.js";
+            w95.shell.boot();
+
+            /* rally.js opens it when the game has loaded, and when the player quits at the menu. */
+            window.rallySplashUI = {
+                open() { w95.shell.run(splash, {singleInstance: true}); },
+            };
+
+            /* rally.js opens and closes the dialog (see "The connection dialog" there). */
+            window.rallyNetUI = {
+                open() { w95.shell.run(networkRaceSetup, {singleInstance: true}); },
+                close() { closeWindow(); },
+            };
+
+            window.rallyDialogsReady();
+        </script>
+    </body>
+</html>

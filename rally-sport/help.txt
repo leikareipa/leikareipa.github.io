@@ -1,0 +1,31 @@
+Verkkomoninpeli Rally-Sportissa!
+1. Aseta racetype:Network pelivalikon Game Setup -alaosiosta.
+2. Aloita peli.
+3. Jaa koodi vastustajallesi ja pelaatte vastakkain suoralla
+   verkkoyhteydellä. Välissä ei ole pelipalvelinta.
+- Voit halutessasi pelata myös normaalia yksinpeliä. Aseta
+  tällöin Game Setup -alaosiosta muu kuin racetype:Network.
+- Verkkomoninpeli on kolmannen osapuolen tuottama ominaisuus.
+
+---
+
+Network multiplayer in Rally-Sport!
+1. Choose racetype:Network in the Game Setup menu.
+2. Start the race.
+3. Share the code with your opponent to establish a direct
+   network connection.
+- Normal single-player racing is also available. Choose
+  something other than racetype:Network in the Game Setup
+  menu.
+- Network multiplayer is a third-party feature.
+
+---
+
+Mánggaspealli fierpmádaga bokte Rally-Sportas!
+Bija racetype:Network speallofálu vuolleoasis Game Setup.
+
+---
+
+Den här är nätverk spel i Rally-Sport. Du kan köra med
+andra person by going into the Game Setup menu and selecting
+racetype:Network.
