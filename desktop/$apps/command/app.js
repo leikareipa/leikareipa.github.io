@@ -19,14 +19,14 @@ export default function({
             const minWidth = 200;
             const minHeight = 200;
             const width = w95.state(653);
-            const height = w95.state(textMode? 460 : 540);
+            const height = w95.state(Math.min(w95.shell.display.visibleHeight, (textMode? 460 : 540)));
 
             const x = w95.state(
                 ~~(0.5 * (w95.shell.display.width - width.now)),
                 w95.reRenderOnly
             );
             const y = w95.state(
-                ~~(0.5 * (w95.shell.display.visibleHeight - height.now)),
+                Math.max(0, ~~(0.5 * (w95.shell.display.visibleHeight - height.now))),
                 w95.reRenderOnly
             );
 

@@ -57,9 +57,11 @@
         <div id="w95-debug-layer"></div>
         <script>
             w95.registry["self"] = "Sigmoid Colon";
+            w95.registry["videoSignal"] = "Analog";
         </script>
         <script type="module">
             import {icons} from "./desktop/icons.js";
+            import {analog_video_pixel_shader} from "./desktop/$apps/display-properties/app.js";
 
             import notepad from "/experimental/w95/samples/notepad/app.js";
             import {icons as notepadIcons} from "/experimental/w95/samples/notepad/assets/icons.js";
@@ -105,9 +107,45 @@
             import acq from "./desktop/$apps/acq/widgets/control-panel/app.js";
             import {appicon32 as acqIcon} from "./desktop/$apps/acq/widgets/textures.js";
 
+            import displayProperties from "./desktop/$apps/display-properties/app.js";
+            import {icons as displayPropertieIcons} from "./desktop/$apps/display-properties/icons.js";
+
+            import {icons as recycleBinIcons} from "./desktop/$apps/recycle-bin/icons.js";
+
             const desktop = w95.shell.desktop({
                 showWatermark: (window.location.hostname === "localhost"),
                 icons: [
+                    w95.widget.desktopIcon({
+                        text: "Display Properties",
+                        icon: displayPropertieIcons.app32,
+                        onActivate() {
+                            w95.shell.run(displayProperties, {singleInstance: true});
+                        },
+                    }),
+                    w95.widget.desktopIcon({
+                        text: "Recycle Bin",
+                        icon: recycleBinIcons.app32,
+                        onActivate() {
+                            w95.shell.run(fileExplorer({
+                                view: "recycle-bin",
+                                defaultRunners: {
+                                    unknown: (filename)=>w95.shell.run(notepad({file: `./desktop/${filename}`})),
+                                    text: (filename)=>w95.shell.run(notepad({
+                                        file: `./desktop/${filename}`,
+                                        decoder: (bytes)=>(new TextDecoder("iso-8859-15").decode(bytes)),
+                                    })),
+                                    image: (filename)=>w95.shell.run(imageViewer(`./desktop/${filename}`)),
+                                },
+                                files: {
+                                    "Recycle Bin/": {
+                                        "1.gif": {},
+                                        "Copy of PC.txt": {},
+                                        "pershiki.bmp": {},
+                                    },
+                                },
+                            }));
+                        },
+                    }),
                     w95.widget.desktopIcon({
                         text: "Nettiselain",
                         icon: browserIcons.app32,
@@ -141,13 +179,6 @@
                         icon: pillunsaamislaskuriIcons.app32,
                         onActivate() {
                             w95.shell.run(pilluohjelma, {singleInstance: true});
-                        },
-                    }),
-                    w95.widget.desktopIcon({
-                        text: "Copy of PC.txt",
-                        icon: notepadIcons.app32,
-                        onActivate() {
-                            w95.shell.run(notepad({file: "./desktop/Copy of PC.txt"}));
                         },
                     }),
                     w95.widget.desktopIcon({
@@ -583,6 +614,9 @@
             });
             w95.shell.boot();
             w95.shell.wallpaper = "./desktop/rock.png";
+            if (w95.registry["videoSignal"] == "Analog") {
+                w95.shell.display.screenShader = analog_video_pixel_shader;
+            }
             w95.shell.run([desktop, w95.shell.taskbar()]);
         </script>
     </body>

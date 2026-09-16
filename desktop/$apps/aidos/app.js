@@ -37,7 +37,7 @@ export default function({
             const width = w95.state(isWindowed? minWidth : w95.shell.display.width);
             const height = w95.state(isWindowed? minHeight : w95.shell.display.height);
             const x = w95.state(~~(0.5 * (w95.shell.display.width - width.now)), w95.reRenderOnly);
-            const y = w95.state(~~(0.5 * (w95.shell.display.height - height.now)), w95.reRenderOnly);
+            const y = w95.state(~~(0.5 * (w95.shell.display.visibleHeight - height.now)), w95.reRenderOnly);
 
             const output = w95.state(initialPrompt, ()=>{
                 if (!stdoutTimer.now && (output.now.at(-1) === "\n")) {
